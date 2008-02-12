@@ -19,6 +19,12 @@
 <br><a href="http://www.wetherobots.com">We The Robots</a> inspired this creation.
 </p>
 
+<p>
+	<b>Assignment 2</b>
+	<br>This assignment examines simple shading models - specifically, the Phone Illuminiation Model
+
+</p>
+
 	 </td>
       </tr>
     </table>
