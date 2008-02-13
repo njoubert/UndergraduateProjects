@@ -21,7 +21,6 @@
 	<br/><i>Eclipse Plugins Installed:</i> Subclipse, CDT 
 	<br/><i>Debian Packages Installed:</i> 	
 	<blockquote>
-    <br/>
     Setting up x11proto-core-dev (7.0.10-2) ...
     <br/>
     Setting up libice-dev (2:1.0.3-3) ...
@@ -64,7 +63,7 @@
     <br/>
     Setting up mesademos (6.2.1-1) ...
 	</blockquote>
-	<br><a href="http://www.oreillynet.com/pub/a/network/2000/06/23/magazine/opengl_build.html?page=2">This link</a> helped me get up and running!
+	<a href="http://www.oreillynet.com/pub/a/network/2000/06/23/magazine/opengl_build.html?page=2">This link</a> helped me get up and running!
 </p>
 
 <p>
