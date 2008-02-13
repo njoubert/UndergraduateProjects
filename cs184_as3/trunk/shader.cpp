@@ -1,4 +1,11 @@
-// Simple OpenGL example for CS184 F06 by Nuttapong Chentanez, modified from sample code for CS184 on Sp06
+//============================================================================
+// Name        : shader.cpp
+// Author      : Niels Joubert CS184-dv
+// Version     :
+// Copyright   : 2008
+// Description : A shader using the Phong Illumination Model
+//============================================================================
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -18,14 +25,7 @@
 #include <GL/glu.h>
 #endif
 
-#include <time.h>
 #include <math.h>
-
-#ifdef _WIN32
-static DWORD lastTime;
-#else
-static struct timeval lastTime;
-#endif
 
 #define PI 3.14159265
 
@@ -47,22 +47,66 @@ public:
 // Global Variables
 //****************************************************
 Viewport	viewport;
-int 		plotX = 0;
-int 		plotY = 0;
+int 		plotX = 400;
+int 		plotY = 300;
 
+
+
+void setPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b) {
+	glColor3f(r, g, b);
+	glVertex2f(x, y);
+}
+
+void circle(int x, int y, int radius) {
+	glBegin(GL_POINTS);
+
+	for (int i = -radius; i <= radius; i++) {
+		int width = (int)(sqrt((float)(radius*radius-i*i)) + 0.5f);
+		for (int j = -width; j <= width; j++) {
+
+			setPixel(x + j, y + i, 1.0f, 1.0f, 1.0f);
+		}
+	}
+	glEnd();
+
+}
+
+//========================================
+//
+// OpenGL Callbacks Follow
+//
+//========================================
+
+/*
+ * Initializes Viewport
+ */
 void initScene(){
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
-
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport (0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(0,viewport.w, 0, viewport.h);
 }
 
+/*
+ * Callback function to draw scene 
+ */
+void myDisplay() {
 
-//****************************************************
-// reshape viewport if the window is resized
-//****************************************************
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
+
+	glFlush();
+	glutSwapBuffers();
+	
+}
+
+/*
+ * Callback function for window reshape event
+ */
 void myReshape(int w, int h) {
 	viewport.w = w;
 	viewport.h = h;
@@ -74,123 +118,25 @@ void myReshape(int w, int h) {
 
 }
 
-void setPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b) {
-	glColor3f(r, g, b);
-	glVertex2f(x, y);
-}
-
-void circle(int x, int y, int radius) {
-	// Draw inner circle
-	glBegin(GL_POINTS);
-
-	for (int i = -radius; i <= radius; i++) {
-		int width = (int)(sqrt((float)(radius*radius-i*i)) + 0.5f);
-		for (int j = -width; j <= width; j++) {
-
-			// Set the red pixel
-			setPixel(x + j, y + i, 1.0f, 0.0f, 0.0f);
-		}
-	}
-	glEnd();
-
-	// Draw border, using line strip primitive
-	glBegin(GL_LINE_STRIP);
-	
-	// White border
-	glColor3f(1.0f, 1.0f, 1.0f);
-	for (int i = 0; i <= 360; i++)
-	{
-		// Need to perform similar coordinate conversion
-		float radian = i*PI/180.0f;
-		glVertex2f(x + cos(radian)*radius, y + sin(radian)*radius);
-	}
-
-	glEnd();
-}
-//****************************************************
-// function that does the actual drawing of stuff
-//***************************************************
-void myDisplay() {
-	
-	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer
-	
-	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
-	glLoadIdentity();							// make sure transformation is "zero'd"
-
-
-	// Start drawing
-	circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
-
-	glFlush();
-	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
-}
-
-
-//****************************************************
-// for updating the position of the circle
-//****************************************************
-
-void myFrameMove() {
-	float dt;
-	// Compute the time elapsed since the last time the scence is redrawn
-#ifdef _WIN32
-	DWORD currentTime = GetTickCount();
-	dt = (float)(currentTime - lastTime)*0.001f; 
-#else
-	timeval currentTime;
-	gettimeofday(&currentTime, NULL);
-	dt = (float)((currentTime.tv_sec - lastTime.tv_sec) + 1e-6*(currentTime.tv_usec - lastTime.tv_usec));
-#endif
-
-	// Update the position of the circle
-	static float totalTime = 0.0f;
-	const float rotSpeed = 1.0f; // In one revolution per second
-	float pathRadius = min(viewport.w, viewport.h) * 0.25f;  // Radius of the circular path	
-	plotX = (int)(viewport.w*0.5f + pathRadius*cos(rotSpeed*PI*2.0f*totalTime));
-	plotY = (int)(viewport.h*0.5f + pathRadius*sin(rotSpeed*PI*2.0f*totalTime));
-	
-	// Accumulate the time since the program starts
-	totalTime += dt;
-	
-	// Store the time
-	lastTime = currentTime;
-	glutPostRedisplay();
-}
-//****************************************************
-// the usual stuff, nothing exciting here
-//****************************************************
 int main(int argc, char *argv[]) {
-  	//This initializes glut
-  	glutInit(&argc, argv);
-  
-  	//This tells glut to use a double-buffered window with red, green, and blue channels 
-  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	viewport.w = 800;
+	viewport.h = 600;
+	glutInitWindowSize(viewport.w, viewport.h);
+	glutInitWindowPosition(0,0);
+	glutCreateWindow(argv[0]);
 
-  	// Initalize theviewport size
-  	viewport.w = 400;
-  	viewport.h = 400;
+	initScene();
 
-  	//The size and position of the window
-  	glutInitWindowSize(viewport.w, viewport.h);
-  	glutInitWindowPosition(0,0);
-  	glutCreateWindow(argv[0]);
+	glutDisplayFunc(myDisplay);					// function to run when its time to draw something
+	glutReshapeFunc(myReshape);					// function to run when the window gets resized
+	//glutIdleFunc(myFrameMove); 		
+	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
 
-   	// Initialize timer variable
-	#ifdef _WIN32
-	lastTime = GetTickCount();
-	#else
-	gettimeofday(&lastTime, NULL);
-	#endif 	
-
-  	initScene();							// quick function to set up scene
-  
-  	glutDisplayFunc(myDisplay);					// function to run when its time to draw something
-  	glutReshapeFunc(myReshape);					// function to run when the window gets resized
-  	glutIdleFunc(myFrameMove);			
-
-  	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
-  
-  	return 0;
+	return 0;
+	
 }
 
 

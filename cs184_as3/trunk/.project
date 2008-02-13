@@ -38,6 +38,10 @@
 					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
 				</dictionary>
 				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildLocation</key>
+					<value>${workspace_loc:/CS184_as3}</value>
+				</dictionary>
+				<dictionary>
 					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
 					<value>true</value>
 				</dictionary>
@@ -55,7 +59,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
-					<value>all</value>
+					<value></value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
