@@ -27,7 +27,7 @@
 
 #include <math.h>
 
-#define PI 3.14159265
+const double PI = 3.14159265;
 
 using namespace std;
 
@@ -36,10 +36,43 @@ using namespace std;
 //****************************************************
 
 class Viewport;
+class Vector3d;
+class Light;
 
 class Viewport {
 public:
 	int w, h; // width and height
+};
+
+
+class Vector3d {
+public:
+	float x, y, z; // width and height
+};
+
+class Light {
+public:
+	Light() {
+		
+	}
+	Light(Vector3d pos) : position(pos) {
+		
+	}
+	void setPosition(float x, float y, float z) {
+		
+	}
+	void setPosition(Vector3d v) {
+		
+	}
+	void setLuminosity(float r, float g, float b) {
+		
+	}
+	void setLuminosity(Vector3d v) {
+		
+	}
+private:
+	Vector3d position;
+	Vector3d luminosity;
 };
 
 
@@ -67,6 +100,7 @@ void circle(int x, int y, int radius) {
 			setPixel(x + j, y + i, 1.0f, 1.0f, 1.0f);
 		}
 	}
+	
 	glEnd();
 
 }
@@ -97,7 +131,7 @@ void myDisplay() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
+	//circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
 
 	glFlush();
 	glutSwapBuffers();
@@ -118,7 +152,21 @@ void myReshape(int w, int h) {
 
 }
 
+void parseCommandLine(int argc, char *argv[], vector<Light> & lights) {
+	Light * l = new Light();
+	l->setLuminosity(1.0, 1.0, 1.0);
+	l->setPosition(50, 50, 0);
+	
+	lights.push_back(l);
+}
+
+
+
 int main(int argc, char *argv[]) {
+	
+	vector<Light> lights;
+	
+	parseCommandLine(argc, argv, lights);
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -135,14 +183,8 @@ int main(int argc, char *argv[]) {
 	//glutIdleFunc(myFrameMove); 		
 	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
 
+	//cleanUp();
+	
 	return 0;
 	
 }
-
-
-
-
-
-
-
-

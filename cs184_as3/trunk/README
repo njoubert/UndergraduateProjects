@@ -1,0 +1,42 @@
+//============================================================================
+// Name        : README for Shader
+// Author      : Niels Joubert CS184-dv
+// Version     :
+// Copyright   : 2008
+// Description : A shader using the Phong Illumination Model
+//============================================================================
+
+
+This program implements a shader using the Phong Illumination Model. 
+For output purposes, it uses the OpenGL engine.
+
+Usage:
+	shader []
+
+// Design Questions
+
+***Coordinate System***
+
+Since we represent points in space, we need to pick a coordinate system
+in which these points have meaning. The OpenGL coordinate system has its
+origin at the bottom left corner of the screen. I will follow this
+convention, but leave place for a transform matrix to be defined
+between my object representation and the actual output on the screen.
+
+***Normalization of Vectors***
+
+Vectors in space are represented in our coordinate system as an 
+absolute position from the origin. This is excellent for object
+representation and contains all the properties needed to fully
+define a vector (those properties being direction and length).
+
+In shading calculations, we need to find angles between vectors, thus
+we normaliza vectors to have a length in the range of [0.0,1.0] while
+keeping their direction the same.
+
+***Normalization of Illumination***
+
+I define my illumination figures to be an absolute value in the range
+[0.0, 1.0]. Thus, anywhere where illumination figures occurs, we
+assume it is in this range. This works fine, since this range is closed
+under multiplication, which is the operation we use on illumination values.
