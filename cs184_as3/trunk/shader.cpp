@@ -36,12 +36,9 @@ using namespace std;
 //****************************************************
 
 class Viewport;
-<<<<<<< .mine
 class Color;
-=======
 class Vector3d;
 class Light;
->>>>>>> .r13
 
 class Viewport {
 public:
@@ -172,21 +169,16 @@ void myReshape(int w, int h) {
 
 }
 
-<<<<<<< .mine
-int main(int argc, char *argv[]) {	
-=======
 void parseCommandLine(int argc, char *argv[], vector<Light> & lights) {
 	Light * l = new Light();
 	l->setLuminosity(1.0, 1.0, 1.0);
 	l->setPosition(50, 50, 0);
 	
-	lights.push_back(l);
+	//lights.push_back(l);
 }
 
-
-
 int main(int argc, char *argv[]) {
->>>>>>> .r13
+
 	
 	vector<Light> lights;
 	
