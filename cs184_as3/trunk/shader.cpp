@@ -36,14 +36,34 @@ using namespace std;
 //****************************************************
 
 class Viewport;
+<<<<<<< .mine
+class Color;
+=======
 class Vector3d;
 class Light;
+>>>>>>> .r13
 
 class Viewport {
 public:
 	int w, h; // width and height
 };
 
+class Color {
+public:
+	int r, g, b;	
+	Color & operator*=(const Color& other) {
+		r *= other.r;
+		g *= other.g;
+		b *= other.b;
+		return *this;
+	}
+
+	Color operator *(const Color& other) const {
+		Color result = *this; //Make a copy of the current class
+		result *= other;
+		return result;
+	}
+};
 
 class Vector3d {
 public:
@@ -152,6 +172,9 @@ void myReshape(int w, int h) {
 
 }
 
+<<<<<<< .mine
+int main(int argc, char *argv[]) {	
+=======
 void parseCommandLine(int argc, char *argv[], vector<Light> & lights) {
 	Light * l = new Light();
 	l->setLuminosity(1.0, 1.0, 1.0);
@@ -163,6 +186,7 @@ void parseCommandLine(int argc, char *argv[], vector<Light> & lights) {
 
 
 int main(int argc, char *argv[]) {
+>>>>>>> .r13
 	
 	vector<Light> lights;
 	
