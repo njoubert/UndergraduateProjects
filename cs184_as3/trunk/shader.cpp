@@ -50,6 +50,13 @@ class PointLight;
 class DirectionalLight;
 class Object3d;
 
+class Viewport;
+
+class Viewport {
+public:
+	int w, h; // width and height
+};
+
 class Color {
 public:
 	
@@ -79,7 +86,7 @@ public:
 		b *= v;
 		return *this;
 	}	
-	Color operator *(const Color& other) const {
+	Color operator *(const Color & other) const {
 		Color result = *this; //Make a copy of the current class
 		result *= other;
 		return result;
@@ -123,19 +130,19 @@ private:
 
 class Position3d {
 public:
-	Position3d() { x = 0; y = 0; z = 0; }
-	float getX() { return x; }
-	float getY() { return y; }
-	float getZ() { return z; }
-	void setX(float x) { this->x = x; }
-	void setY(float y) { this->y = y; }
-	void setZ(float z) { this->z = z; }	
+	Position3d() { inputx = 0; inputy = 0; inputz = 0; }
+	float getX() { return inputx; }
+	float getY() { return inputy; }
+	float getZ() { return inputz; }
+	void setX(float x) { this->inputx = x; }
+	void setY(float y) { this->inputy = y; }
+	void setZ(float z) { this->inputz = z; }	
 	void setPos(float x, float y, float z) {
 		setX(x); setY(y); setZ(z);
 	}
-	void debugMe() { printDebug("(" << x << "," << y << "," << z << ")"); }
+	void debugMe() { printDebug("(" << inputx << "," << inputy << "," << inputz << ")"); }
 private:	
-	float x, y, z; // width and height
+	float inputx, inputy, inputz; // width and height
 };
 
 class Vector3d {
@@ -147,6 +154,14 @@ public:
 		setX(end->getX() - start->getX());
 		setY(end->getY() - start->getY());
 		setZ(end->getZ() - start->getZ());
+	}
+	
+	void calculateReflective(Vector3d * in, Vector3d * normal) {
+		Vector3d temp = *normal;
+		float scale = 2.0f*(in->dot(normal));
+		*this = *in; //Copy this
+		temp = temp*scale;
+		*this += temp;
 	}
 	
 	float dot(Vector3d * other) {
@@ -170,6 +185,41 @@ public:
 	}
 	void debugMe() { printDebug("(" << x << "," << y << "," << z << ")"); }
 	
+	Vector3d & operator*=(float v) {
+		x *= v;
+		y *= v;
+		z *= v;
+		return *this;
+	}
+	Vector3d operator*(float v) {
+		Vector3d result = *this; //Make a copy of the current class
+		result *= v;
+		return result;
+	}
+	Vector3d & operator+=(float v) {
+		x += v;
+		y += v;
+		z += v;
+		return *this;
+	}
+	Vector3d operator+(float v) const {
+		Vector3d result = *this; //Make a copy of the current class
+		result += v;
+		return result;
+	}
+	
+	Vector3d & operator+=(Vector3d & other) {
+		x += other.x;
+		y += other.y;
+		z += other.z;
+		return *this;
+	}
+	Vector3d operator +(Vector3d & other) const {
+		Vector3d result = *this; //Make a copy of the current class
+		result += other;
+		return result;
+	}
+
 	float getX() { return (int) x; }
 	float getY() { return (int) y; }
 	float getZ() { return (int) z; }
@@ -201,9 +251,13 @@ public:
 	Position3d * getPosition() {
 		return &P_relPosition;
 	}
+	
 	void setLuminosity(float r, float g, float b) {
 		C_lum.setColor(r,g,b);	
 	}
+	
+	virtual Vector3d getLightingVector(Position3d pos) = 0;
+	
 	Color * getLuminosity() {
 		return &C_lum;
 	}
@@ -215,11 +269,19 @@ private:
 class PointLight: public Light {
 public:
 	PointLight(float x, float y, float z, float r, float g, float b):Light(x,y,z,r,g,b){}
+	Vector3d getLightingVector(Position3d pos) {
+		Vector3d temp;
+		return temp;
+	}
 };
 
 class DirectionalLight: public Light {
 public:
 	DirectionalLight(float x, float y, float z, float r, float g, float b):Light(x,y,z,r,g,b){}	
+	Vector3d getLightingVector(Position3d pos) {
+		Vector3d temp;
+		return temp;
+	}
 };
 
 class Object3d {
@@ -261,17 +323,27 @@ public:
 	}
 	~Sphere() {}
 	
+	void setRadiusfromViewport(Viewport & v) {
+		radius = (int) (0.4 * min(v.w, v.h));
+	}
+	
 	void setRadius(float x) {
 		radius = x;
+	}
+	
+	int getRadius() {
+		return (int) radius;
 	}
 	
 	void render(vector<Light*> & lights, Vector3d & view) {
 		Position3d point;
 		Vector3d normal;
+		Vector3d normalcp;
 		Vector3d incidence;
 		Vector3d reflectance;
 		Color C_pixel;
 		Color C_tempDiff;
+		Color C_tempSpec;
 		Light* l;
 		
 		printDebug("Shading a sphere...");
@@ -314,15 +386,22 @@ public:
 					l = lights[i];
 					incidence.calculateFromPositions(l->getPosition(),&point);
 					incidence.normalize();
+
+					reflectance.calculateReflective(&incidence, &normal);
+					
 					C_tempDiff = C_diffuse * ((l->getLuminosity()));
 					C_tempDiff *= max(0.0f, incidence.dot(&normal));
+					
+					C_tempSpec = C_specular * ((l->getLuminosity()));
+					C_tempSpec *= pow(max(0.0f, view.dot(&reflectance)), v);
+					
 					C_pixel += C_tempDiff;
+					C_pixel += C_tempSpec;
 					
 				}
 				
 				C_pixel.normalizeTo(C_pixel.getMaxVal());
 				setPixel(point.getX(), point.getY(), C_pixel.getNormalizedR(1), C_pixel.getNormalizedG(1), C_pixel.getNormalizedB(1));
-				
 				
 				
 			}
@@ -354,7 +433,7 @@ private:
 // Global Variables
 //****************************************************
 Color 		bgColor(0,0,0);
-Vector3d	viewport;
+Viewport	viewport;
 vector<Light*> lights(0);
 Sphere		sphr;
 
@@ -371,13 +450,15 @@ Sphere		sphr;
  * Callback function for window reshape event
  */
 void myReshape(int w, int h) {
-	viewport.setX(w);
-	viewport.setY(h);
+	viewport.w = w;
+	viewport.h = h;
 	
-	glViewport (0,0,(int)viewport.getX(),(int)viewport.getY());
+	sphr.setRadiusfromViewport(viewport);
+	
+	glViewport (0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-1*viewport.getX()/2,viewport.getX()/2,-1*viewport.getY()/2,viewport.getY()/2);
+	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
 	//gluOrtho2D(-1*viewport.x*100,viewport.x*100, -1*viewport.y*100, viewport.y*100);
 
 }
@@ -408,7 +489,7 @@ void myDisplay() {
  */
 void initScene(){
 	glClearColor(bgColor.getNormalizedR(1), bgColor.getNormalizedG(1), bgColor.getNormalizedB(1), 0.0f);
-	myReshape((int)viewport.getX(),(int)viewport.getY());
+	myReshape(viewport.w,viewport.h);
 }
 
 
@@ -552,10 +633,10 @@ int main(int argc, char *argv[]) {
 	Object3d *obj = &sphr;
 		
 	//Set some default values. changes as the person drags the window around
-	viewport.setX(800);
-	viewport.setY(600);
-	viewport.setZ(0);
-	sphr.setRadius(150);
+	viewport.w = 800;
+	viewport.h = 600;
+	
+	sphr.setRadiusfromViewport(viewport);
 	
 	if (parseCommandLine(argc, argv, lights, obj)) {
 		printUsage();
@@ -564,7 +645,7 @@ int main(int argc, char *argv[]) {
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize((int)viewport.getX(),(int)viewport.getY());
+	glutInitWindowSize(viewport.w,viewport.h);
 	glutInitWindowPosition(0,0);
 	glutCreateWindow(argv[0]);
 
