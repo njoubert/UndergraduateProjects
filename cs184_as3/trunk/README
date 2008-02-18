@@ -1,6 +1,7 @@
 //============================================================================
 // Name        : README for Shader
 // Author      : Niels Joubert CS184-dv
+// Platform    : Linux (freeglut3)
 // Version     :
 // Copyright   : 2008
 // Description : A shader using the Phong Illumination Model
@@ -11,17 +12,24 @@ This program implements a shader using the Phong Illumination Model.
 For output purposes, it uses the OpenGL engine.
 
 Usage:
-	shader []
+	shader [-d] -ka r g b -kd r g b -ks r g b -sp v \
+		[[-pl x y z r g b] ... [-pl x y z r g b]] \
+		[[-dl x y z r g b] ... [-dl x y z r g b]]
 
 // Design Questions
 
 ***Coordinate System***
 
 Since we represent points in space, we need to pick a coordinate system
-in which these points have meaning. The OpenGL coordinate system has its
-origin at the bottom left corner of the screen. I will follow this
-convention, but leave place for a transform matrix to be defined
-between my object representation and the actual output on the screen.
+in which these points have meaning. 
+ - The OpenGL coordinate system has its origin at the bottom left 
+   corner of the screen. 
+ - The input coordinates are relative to the center of the sphere
+ 
+I will follow the input coordinates to store internal points, and do a basis
+conversion to finally write the output. This will allow me to support various
+file format and display utilities with possibly different coordinate systems.
+
 
 ***Normalization of Vectors***
 
