@@ -14,7 +14,10 @@ For output purposes, it uses the OpenGL engine.
 Usage:
 	shader [-d] -ka r g b -kd r g b -ks r g b -sp v \
 		[[-pl x y z r g b] ... [-pl x y z r g b]] \
-		[[-dl x y z r g b] ... [-dl x y z r g b]]
+		[[-dl x y z r g b] ... [-dl x y z r g b]] \
+		[-bg r g b]	
+		
+		-bg sets the background (viewport) color.
 
 // Design Questions
 
