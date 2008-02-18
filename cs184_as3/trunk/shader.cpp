@@ -1,6 +1,7 @@
 //============================================================================
-// Name        : shader.cpp
+// Name        : README for Shader
 // Author      : Niels Joubert CS184-dv
+// Platform    : Linux (freeglut3)
 // Version     :
 // Copyright   : 2008
 // Description : A shader using the Phong Illumination Model
@@ -10,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+//#include <stdlib>
 
 #ifdef _WIN32
 #	include <windows.h>
@@ -27,7 +29,11 @@
 
 #include <math.h>
 
+#define printDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl; }
+#define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
+
 const double PI = 3.14159265;
+int DEBUG = 0;
 
 using namespace std;
 
@@ -39,6 +45,9 @@ class Viewport;
 class Color;
 class Vector3d;
 class Light;
+class PointLight;
+class DirectionalLight;
+class Object3d;
 
 class Viewport {
 public:
@@ -72,8 +81,11 @@ public:
 	Light() {
 		
 	}
-	Light(Vector3d pos) : position(pos) {
-		
+	//This creates a light with position (x,y,z) and color (r,g,b)
+	//x, y, z are relative to sphere's center (0 is center, 1 is radius)
+	//r, g, b are positive floats between [0.0, max_float]
+	Light(float x, float y, float z, float r, float g, float b) : position(), luminosity() {
+		printDebug("Object3d::setAmbientColor(" << r << "," << g << "," << b << ");");
 	}
 	void setPosition(float x, float y, float z) {
 		
@@ -90,6 +102,42 @@ public:
 private:
 	Vector3d position;
 	Vector3d luminosity;
+};
+
+class PointLight: public Light {
+public:
+	PointLight(float x, float y, float z, float r, float g, float b):Light(x,y,z,r,g,b){}
+};
+
+class DirectionalLight: public Light {
+public:
+	DirectionalLight(float x, float y, float z, float r, float g, float b):Light(x,y,z,r,g,b){}	
+};
+
+class Object3d {
+public:
+	
+	void setAmbientColor(float r, float g, float b) {
+		//Assume r g b values are [0.0,1.0]
+		printDebug("Object3d::setAmbientColor(" << r << "," << g << "," << b << ");");
+	}
+	void setDiffuseColor(float r, float g, float b) {
+		//Assume r g b values are [0.0,1.0]
+		printDebug("Object3d.setDiffuseColor(" << r << "," << g << "," << b << ");");
+		
+	}
+	void setSpecularColor(float r, float g, float b) {
+		//Assume r g b values are [0.0,1.0]
+		printDebug("Object3d.setSpecularColor(" << r << "," << g << "," << b << ");");
+		
+	}
+	void setSpecularCoeff(float arg) {
+		printDebug("Object3d.setSpecular(" << arg << ");");
+		v = arg;
+	}
+private:
+	float v;
+	
 };
 
 
@@ -169,20 +217,126 @@ void myReshape(int w, int h) {
 
 }
 
-void parseCommandLine(int argc, char *argv[], vector<Light> & lights) {
+int parseCommandLine(int argc, char *argv[], vector<Light*> & lights, Object3d & obj) {
+	/* 
 	Light * l = new Light();
 	l->setLuminosity(1.0, 1.0, 1.0);
 	l->setPosition(50, 50, 0);
+	lights[0] = l; 
+	*/
+	bool malformedArg;
+	float r=0, g=0, b=0, x=0, y=0, z=0, v=0;
 	
-	//lights.push_back(l);
+	for (int i = 1; i < argc; i++) {
+		
+			malformedArg = false;
+		
+			if (strcmp(argv[i],"-d") == 0) {
+				
+				DEBUG = 1;
+				
+			} else if (!strcmp(argv[i], "-ka")) {
+				
+				if (isThereMore(i, argc, 3)) {
+					r = atof(argv[++i]);
+					g = atof(argv[++i]);
+					b = atof(argv[++i]);
+					obj.setAmbientColor(r,g,b);
+				} else {
+					malformedArg = true;
+				}
+				
+			} else if (!strcmp(argv[i], "-kd")) {
+				
+				
+				if (isThereMore(i, argc, 3)) {
+					r = atof(argv[++i]);
+					g = atof(argv[++i]);
+					b = atof(argv[++i]);
+					obj.setDiffuseColor(r,g,b);
+				} else {
+					malformedArg = true;
+				}
+				
+			} else if (!strcmp(argv[i], "-ks")) {
+				
+				
+				if (isThereMore(i, argc, 3)) {
+					r = atof(argv[++i]);
+					g = atof(argv[++i]);
+					b = atof(argv[++i]);
+					obj.setSpecularColor(r,g,b);
+				} else {
+					malformedArg = true;
+				}
+				
+			} else if (!strcmp(argv[i], "-sp")) {
+				
+				
+				if (isThereMore(i, argc, 1)) {
+					v = atof(argv[++i]);
+					obj.setSpecularCoeff(v);
+				} else {
+					malformedArg = true;
+				}
+				
+			} else if (!strcmp(argv[i], "-pl")) {
+				
+				if (isThereMore(i, argc, 6)) {
+					x = atof(argv[++i]);
+					y = atof(argv[++i]);
+					z = atof(argv[++i]);
+					r = atof(argv[++i]);
+					g = atof(argv[++i]);
+					b = atof(argv[++i]);
+					lights.push_back(new PointLight(x,y,z,r,g,b));
+				} else {
+					malformedArg = true;
+				}
+				
+			} else if (!strcmp(argv[i], "-dl")) {
+			
+				if (isThereMore(i, argc, 6)) {
+					x = atof(argv[++i]);
+					y = atof(argv[++i]);
+					z = atof(argv[++i]);
+					r = atof(argv[++i]);
+					g = atof(argv[++i]);
+					b = atof(argv[++i]);
+					lights.push_back(new DirectionalLight(x,y,z,r,g,b));
+				} else {
+					malformedArg = true;
+				}
+				
+			} else {
+				malformedArg = true;
+			}
+			
+			if (malformedArg)
+				printDebug("Malformed input arg in parsing command \"" << argv[i] << "\"");
+
+		
+	}
+	return 0;
+	
 }
 
+void printUsage() {
+	cout << "Usage: "<< endl;
+	cout << "  shader -ka r g b -kd r g b -ks r g b -sp v \\" << endl;
+	cout << "      [[-pl x y z r g b] ... [-pl x y z r g b]] \\" << endl;
+	cout << "      [[-dl x y z r g b] ... [-dl x y z r g b]" << endl;
+}
 int main(int argc, char *argv[]) {
 
 	
-	vector<Light> lights;
+	vector<Light*> lights(10);
+	Object3d obj;
 	
-	parseCommandLine(argc, argv, lights);
+	if (parseCommandLine(argc, argv, lights, obj)) {
+		printUsage();
+		return 1;
+	}
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
