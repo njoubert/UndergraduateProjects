@@ -25,24 +25,26 @@ Usage:
 
 Since we represent points in space, we need to pick a coordinate system
 in which these points have meaning. 
- - The OpenGL coordinate system has its origin at the bottom left 
-   corner of the screen. 
+ - The OpenGL coordinate system has a adjustable coordinate system
  - The input coordinates are relative to the center of the sphere
  
 I will follow the input coordinates to store internal points, and do a basis
 conversion to finally write the output. This will allow me to support various
 file format and display utilities with possibly different coordinate systems.
+To facilitate this process, I set the OpenGL window to had the origin in the 
+center of the viewport.
 
 
 ***Normalization of Vectors***
 
 Vectors in space are represented in our coordinate system as an 
-absolute position from the origin. This is excellent for object
+absolute position from the origin relative to the size of the main
+sphere. This is excellent for object
 representation and contains all the properties needed to fully
 define a vector (those properties being direction and length).
 
 In shading calculations, we need to find angles between vectors, thus
-we normaliza vectors to have a length in the range of [0.0,1.0] while
+we normalize vectors to have a length in the range of [0.0,1.0] while
 keeping their direction the same.
 
 ***Normalization of Illumination***
