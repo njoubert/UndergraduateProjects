@@ -13,7 +13,6 @@ class Position3d {
 public:
 	Position3d() { }
 	virtual ~Position3d() {	}
-	
 	virtual void setPositionValues(float x, float y, float z) { this->x = x; this->y = y; this->z = z; }
 	
 	void debugMe(bool partial) {
@@ -25,16 +24,9 @@ public:
 	}
 	
 	float x,y,z;
-protected:
-	
 };
 
-class AbsPosition3d: public Position3d {
-public:
-	
-private:
-	
-};
+class AbsPosition3d: public Position3d { };
 
 class RelPosition3d: public Position3d {
 public:
@@ -43,10 +35,6 @@ public:
 		ret.setPositionValues(this->x * length, y * length, z * length);
 		return ret;
 	}
-private:
-	
 };
-
-
 
 #endif /*POSITION_C_*/

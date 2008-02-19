@@ -48,12 +48,6 @@ public:
 		x = x/l;
 		y = y/l;
 		z = z/l;
-		/* Vector3d result = *this; //Make a copy of the current class
-		float l = sqrt(x*x + y*y + z*z);
-		result.x = result.x/l;
-		result.y = result.y/l;
-		result.z = result.z/l;
-		return result; */
 	}
 	Vector3d normalize(float length) {
 		Vector3d result = *this; //Make a copy of the current class

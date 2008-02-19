@@ -74,17 +74,10 @@ public:
 		center.y = y;
 	}
 	
-	
 	void render(vector<Light*> & lights, Vector3d & view) {
 		AbsPosition3d point;
-		AbsPosition3d light_pos;
-		Vector3d normal;
-		Vector3d incidence;
-		Vector3d reflectance;
-		Color point_ambient;
-		Color point_diffuse;
-		Color point_specular;
-		Color point_total;
+		Vector3d normal,incidence,reflectance;
+		Color point_ambient,point_diffuse,point_specular,point_total;
 		float x=0,y=0,z=0,width=0;
 		
 		printDebug("Rendering sphere of radius " << radius);
@@ -94,34 +87,37 @@ public:
 		for (y = -radius; y <= radius; y += 1) {
 			width = sqrt(radius*radius - y*y);
 			for (x = -width; x <= width; x += 1) {
-				z = sqrt(radius*radius - x*x - y*y);
-				point.setPositionValues(center.x+x,center.y+y,center.z+z);
-				normal.calculateFromPositions(&center,&point);
-				normal.normalize();
 				
-				point_diffuse.setColor(0,0,0);
-				point_ambient = ambient;
-				point_specular.setColor(0,0,0);
-				for (unsigned int lights_i = 0; lights_i < lights.size(); lights_i++) {
+					z = sqrt(radius*radius - x*x - y*y);
+					point.setPositionValues(center.x+x,center.y+y,center.z+z);
+					normal.calculateFromPositions(&center,&point);
+					normal.normalize();
 					
-					light_pos = lights[lights_i]->getPosition().getAbsolutePosition(radius);
+					point_diffuse.setColor(0,0,0);
+					point_ambient = ambient;
+					point_specular.setColor(0,0,0);
 					
-					incidence.calculateFromPositions(&point,&light_pos);
-					incidence.normalize();
-					reflectance.calculateReflective(incidence,normal);
-					reflectance.normalize();
 					
-					point_diffuse += (diffuse * lights[lights_i]->getColor()) * max(incidence.dot(&normal),0.0f);
-					point_specular += (specular * lights[lights_i]->getColor()) * pow(max(reflectance.dot(&view),0.0f),specularCoeff); 
+					for (unsigned int i = 0; i < lights.size(); i++) {
+						
+							incidence = lights[i]->getIncidence(point,radius);
+							incidence.normalize();
+							reflectance.calculateReflective(incidence,normal);
+							reflectance.normalize();
+							
+							point_diffuse += (diffuse * lights[i]->getColor()) * 
+											max(incidence.dot(&normal),0.0f);
+							point_specular += (specular * lights[i]->getColor()) * 
+											pow(max(reflectance.dot(&view),0.0f),specularCoeff); 
+						
+					}
 					
-				}
-				
-				point_total = point_ambient + point_diffuse + point_specular;			
-				setPixel(point.x,
-						point.y,
-						point_total.getGlR(0,1),
-						point_total.getGlG(0,1),
-						point_total.getGlB(0,1));
+					point_total = point_ambient + point_diffuse + point_specular;			
+					setPixel(point.x,
+							point.y,
+							point_total.getGlR(0,1),
+							point_total.getGlG(0,1),
+							point_total.getGlB(0,1));
 
 			}
 		}
@@ -131,10 +127,6 @@ public:
 	}
 	
 private:
-	
-	void calculateAmbientComponent(Vector3d const &normal, Vector3d const &incidence) const;
-	void calculateDiffuseComponent(Vector3d const &normal, Vector3d const &incidence) const;
-	void calculateSpecularComponent(Vector3d const &normal, Vector3d const &incidence) const;
 	
 	Color ambient;
 	Color diffuse;
@@ -173,8 +165,6 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
-	//gluOrtho2D(-1*viewport.x*100,viewport.x*100, -1*viewport.y*100, viewport.y*100);
-	//gluOrtho2D(0, viewport.w, 0, viewport.h);
 }
 
 /*
@@ -187,7 +177,6 @@ void myDisplay() {
 	glLoadIdentity();
 	
 	Vector3d view(0,0,1);
-
 	sphr.render(lights, view);
 	
 	glFlush();
@@ -330,8 +319,6 @@ int parseCommandLine(int argc, char *argv[], vector<Light*> & lights, Sphere * s
 				printDebug("Malformed input arg in parsing command \"" << argv[i] << "\"");
 				printUsage = true;
 			}
-
-		
 	}
 	if (printUsage)
 		return 1;

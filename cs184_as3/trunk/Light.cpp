@@ -4,6 +4,7 @@
 #include "Debug.cpp"
 #include "Position.cpp"
 #include "Color.cpp"
+#include "Vector3d.cpp"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ public:
 		illumination.setColor(r,g,b);
 		pos.setPositionValues(x,y,z);
 	}
+	
+	virtual Vector3d getIncidence(AbsPosition3d & point, float multiplier) = 0;
 	
 	void setPosition(float x, float y, float z) {
 		pos.setPositionValues(x,y,z);
@@ -50,7 +53,7 @@ public:
 			cout << endl;
 	}
 	virtual void printName()=0;
-private:
+protected:
 	Color illumination;
 	RelPosition3d pos;
 };
@@ -61,6 +64,12 @@ public:
 		printStartDebug("Created new PointLight: ");
 		debugMe(true);
 		cout << endl;
+	}
+	Vector3d getIncidence(AbsPosition3d & point, float multiplier) {
+		Vector3d incidence;
+		AbsPosition3d light_pos = pos.getAbsolutePosition(multiplier);
+		incidence.calculateFromPositions(&point,&light_pos);
+		return incidence;
 	}
 	void printName() {
 		cout << "PointLight";
@@ -75,6 +84,14 @@ public:
 		printStartDebug("Created new DirectionalLight: ");
 		debugMe(true);
 		cout << endl;
+	}
+	Vector3d getIncidence(AbsPosition3d & point, float multiplier) {
+		Vector3d incidence;
+		AbsPosition3d origin;
+		AbsPosition3d light_pos = pos.getAbsolutePosition(multiplier);
+		origin.setPositionValues(0,0,0);
+		incidence.calculateFromPositions(&origin,&light_pos);
+		return incidence;
 	}
 	void printName() {
 		cout << "DirectionalLight";
