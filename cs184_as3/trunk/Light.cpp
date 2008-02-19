@@ -21,6 +21,10 @@ public:
 		pos.setPositionValues(x,y,z);
 	}
 	
+	void setPosition(float x, float y, float z) {
+		pos.setPositionValues(x,y,z);
+	}
+	
 	const RelPosition3d & getPosition() const {
 		return pos;
 	}

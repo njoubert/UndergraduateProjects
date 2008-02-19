@@ -35,6 +35,7 @@
 #define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
 
 const double PI = 3.14159265;
+int ANI = 0;
 
 using namespace std;
 
@@ -57,7 +58,7 @@ class Sphere;
 
 class Sphere {
 public:
-	Sphere() { specularCoeff=1; center.setPositionValues(0,0,0); ambient.setColor(0.04, 0.04, 0.04);}
+	Sphere() { specularCoeff=1; center.setPositionValues(0,0,0);}
 	~Sphere() { }
 	
 	void setAmbientColorValues(float r, float g, float b) { ambient.setColor(r,g,b);}
@@ -90,11 +91,11 @@ public:
 		
 		glBegin(GL_POINTS);
 		
-		for (y = -radius; y <= radius; y += 0.5) {
+		for (y = -radius; y <= radius; y += 1) {
 			width = sqrt(radius*radius - y*y);
-			for (x = -width; x <= width; x += 0.5) {
+			for (x = -width; x <= width; x += 1) {
 				z = sqrt(radius*radius - x*x - y*y);
-				point.setPositionValues(x,y,z);
+				point.setPositionValues(center.x+x,center.y+y,center.z+z);
 				normal.calculateFromPositions(&center,&point);
 				normal.normalize();
 				
@@ -116,8 +117,8 @@ public:
 				}
 				
 				point_total = point_ambient + point_diffuse + point_specular;			
-				setPixel((int)x + center.x,
-						(int)y + center.y,
+				setPixel(point.x,
+						point.y,
 						point_total.getGlR(0,1),
 						point_total.getGlG(0,1),
 						point_total.getGlB(0,1));
@@ -186,7 +187,7 @@ void myDisplay() {
 	glLoadIdentity();
 	
 	Vector3d view(0,0,1);
-	
+
 	sphr.render(lights, view);
 	
 	glFlush();
@@ -207,6 +208,12 @@ void processNormalKeys(unsigned char key, int x, int y) {
 	printDebug("Key pressed: " << key);
 	if (key == 32) 
 		exit(0);
+	if (key == 'f')
+		ANI += 2;
+	if (key == 'b')
+		ANI += -2;
+	if (key == 's')
+		ANI = 0;
 }
 
 //========================================
@@ -313,6 +320,8 @@ int parseCommandLine(int argc, char *argv[], vector<Light*> & lights, Sphere * s
 					malformedArg = true;
 				}
 				
+			} else if (!strcmp(argv[i], "-ani")) {
+				ANI = 1;
 			} else {
 				malformedArg = true;
 			}
@@ -338,6 +347,15 @@ void printUsage() {
 	cout << "      [-bg r g b]" << endl;
 }
 
+void move() {
+	if (ANI) {
+	lights[0]->setPosition(lights[0]->getPosition().x + (float)ANI/100,
+			lights[0]->getPosition().y + (float)ANI/100,
+			lights[0]->getPosition().z + (float)ANI/100);
+	glutPostRedisplay();
+	}
+}
+
 int main(int argc, char *argv[]) {
 	
 	if (parseCommandLine(argc, argv, lights, &sphr)) {
@@ -346,7 +364,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800,600);
 	glutInitWindowPosition(0,0);
 	glutCreateWindow(argv[0]);
@@ -355,9 +373,10 @@ int main(int argc, char *argv[]) {
 
 	glutDisplayFunc(myDisplay);					// function to run when its time to draw something
 	glutReshapeFunc(myReshape);					// function to run when the window gets resized
-	glutKeyboardFunc(processNormalKeys);	
+	glutKeyboardFunc(processNormalKeys);
+	glutIdleFunc(move);
 	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
-
+	
 	//cleanUp();
 	
 	return 0;
