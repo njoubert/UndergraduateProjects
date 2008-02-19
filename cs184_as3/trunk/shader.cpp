@@ -17,7 +17,6 @@
 #include "Vector3d.cpp"
 #include "Position.cpp"
 #include "Light.cpp"
-#include "Sphere.cpp"
 
 #ifdef _WIN32
 #	include <windows.h>
