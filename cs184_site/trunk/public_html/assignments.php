@@ -9,19 +9,19 @@
 	</td>
         <td class="body_content">
 
-<h2>Class Assignments</h2> <br />
-          <br />
+<h1>Class Assignments</h1>
 
 <p>
-<h3>Assignment 1</h3>
+<h2>Assignment 1</h2>
 <br>This is purely some example code, here to help us get our system set up for OpenGL work. I used simple OpenGL polygon drawing routines to draw a little mohawked robot. Here's the result:
 <br><img src="images/as1.jpg" />
 <br><a href="http://www.wetherobots.com">We The Robots</a> inspired this creation.
 </p>
 
 <p>
-	<h3>Assignment 2</h3>
-	<br>This assignment examines simple shading models - specifically, the Phone Illuminiation Model
+	<h2>Assignment 2</h2>
+	This assignment examines simple shading models - specifically, the Phone Illuminiation Model.
+	Source Codde will be posted after the due date. For now, enjoy the pretty pictures!
 	
 	<p><b>Diffuse Material with Single Light Source</b>
 	<br><img src="images/as3_DiffuseOnly.png" width=400 height=300/>
