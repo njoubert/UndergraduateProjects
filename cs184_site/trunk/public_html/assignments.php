@@ -22,6 +22,36 @@
 <p>
 	<b>Assignment 2</b>
 	<br>This assignment examines simple shading models - specifically, the Phone Illuminiation Model
+	
+	<p><b>Diffuse Material with Single Light Source</b>
+	<br><img src="images/as3_DiffuseOnly.png" />
+	<br>./shader -kd 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9
+	</p>
+	
+	<p><b>Specular Material with Single Directional Light Source</b>
+	<br><img src="as3_SpecularDirectional.png" />
+	<br>./shader -ks 0.4 0.8 0.5 -dl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+	</p>
+	
+	<p><b>Specular Material with Single Point Light Source</b>
+	<br><img src="as3_specularPoint.png" />
+	<br>./shader -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+	</p>
+	
+	<p><b>Specular and Diffuse Material with Single Light Source</b>
+	<br><img src="as3_spec+diffuse.png" />
+	<br>./shader -kd 0.4 0.8 0.5 -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 
+	</p>
+	
+	<p><b>Multiple Light Sources</b>
+	<br><img src="as3_multipleLights.png" />
+	<br>./shader -kd 0.7 0.7 0.7 -ks 0.7 0.2 0.2 \
+		-pl 4.0 0.0 2.0 0.7 0.1 0.1 \
+		-pl 0.0 4.0 2.0 0.4 0.5 0.9 \
+		-pl -4.0 -4.0 1.0 0.4 0.8 0.5 \
+		-pl 0.0 0.0 1.0 0.4 0.5 0.9 \
+		-sp 20.0
+	</p>
 
 </p>
 
