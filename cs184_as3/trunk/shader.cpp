@@ -84,9 +84,9 @@ public:
 		
 		glBegin(GL_POINTS);
 		
-		for (y = -radius; y <= radius; y += 1) {
+		for (y = -radius; y <= radius; y += 0.25) {
 			width = sqrt(radius*radius - y*y);
-			for (x = -width; x <= width; x += 1) {
+			for (x = -width; x <= width; x += 0.25) {
 				
 					z = sqrt(radius*radius - x*x - y*y);
 					point.setPositionValues(center.x+x,center.y+y,center.z+z);
