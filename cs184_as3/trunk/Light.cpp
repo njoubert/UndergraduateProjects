@@ -21,7 +21,17 @@ public:
 		pos.setPositionValues(x,y,z);
 	}
 	
+	const RelPosition3d & getPosition() const {
+		return pos;
+	}
+	
+	const Color & getColor() const {
+		return illumination;
+	}
+	
 	void debugMe(bool partial) {
+		if (!DEBUG)
+			return;
 		if (partial) {
 			printPartialDebug(" Light ");
 		} else {

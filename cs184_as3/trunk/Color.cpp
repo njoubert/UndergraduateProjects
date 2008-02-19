@@ -57,12 +57,12 @@ public:
 		result *= other;
 		return result;
 	}
-	Color operator *(const Color * other) const {
+	Color operator *(float v) const {
 		Color result = *this; //Make a copy of the current class
-		result *= other;
+		result *= v;
 		return result;
 	}
-	Color operator +=(const Color& other) {
+	Color operator +=(const Color & other) {
 		r += other.r;
 		g += other.g;
 		b += other.b;

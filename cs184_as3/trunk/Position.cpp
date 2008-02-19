@@ -29,18 +29,24 @@ protected:
 	
 };
 
-class RelPosition3d: public Position3d {
-public:
-	
-private:
-	
-};
-
 class AbsPosition3d: public Position3d {
 public:
 	
 private:
 	
 };
+
+class RelPosition3d: public Position3d {
+public:
+	AbsPosition3d getAbsolutePosition(float length) const {
+		AbsPosition3d ret; //Make a copy of the current class
+		ret.setPositionValues(this->x * length, y * length, z * length);
+		return ret;
+	}
+private:
+	
+};
+
+
 
 #endif /*POSITION_C_*/

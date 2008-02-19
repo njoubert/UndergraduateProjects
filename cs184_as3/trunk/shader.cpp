@@ -68,46 +68,58 @@ public:
 		printDebug("Sphere radius set to " << f << " absolute."); 
 		this->radius = f;
 	}
+	void setCenter(float x, float y) {
+		center.x = x;
+		center.y = y;
+	}
 	
 	
 	void render(vector<Light*> & lights, Vector3d & view) {
 		AbsPosition3d point;
-		AbsPosition3d light;
+		AbsPosition3d light_pos;
 		Vector3d normal;
 		Vector3d incidence;
 		Color point_ambient;
 		Color point_diffuse;
 		Color point_specular;
+		Color point_total;
 		float x=0,y=0,z=0,width=0;
 		
 		printDebug("Rendering sphere of radius " << radius);
 		
-		//glBegin(GL_POINTS);
+		glBegin(GL_POINTS);
 		
-		for (y = -radius; y <= radius; y += 1) {
+		for (y = -radius; y <= radius; y += 0.5) {
 			width = sqrt(radius*radius - y*y);
-			for (x = -width; x <= width; x += 1) {
+			for (x = -width; x <= width; x += 0.5) {
 				z = sqrt(radius*radius - x*x - y*y);
-				
-				
-				
-				
 				point.setPositionValues(x,y,z);
-				
 				normal.calculateFromPositions(&center,&point);
 				normal.normalize();
-
-
+				
+				point_diffuse.setColor(0,0,0);
+				point_ambient = ambient;
+				point_specular.setColor(0,0,0);
 				for (unsigned int lights_i = 0; lights_i < lights.size(); lights_i++) {
-							
+					light_pos = lights[lights_i]->getPosition().getAbsolutePosition(radius);		
+					incidence.calculateFromPositions(&point,&light_pos);
+					incidence.normalize();
+					
+					point_diffuse += (diffuse * lights[lights_i]->getColor()) * max(incidence.dot(&normal),0.0f);
+					
+					
+					
 				}
 				
-
-				glBegin(GL_POINTS);
-				setPixel((int)x,(int)y,ambient.getGlR(0,255),ambient.getGlG(0,255),ambient.getGlB(0,255));
-				glEnd();
-						
+				point_total = point_ambient + point_diffuse + point_specular;
 				
+				setPixel((int)x + center.x,(int)y + center.y,point_total.getGlR(0,1),point_total.getGlG(0,1),point_total.getGlB(0,1));
+				
+				
+
+				
+						
+				/*
 				if (DEBUG) {
 					//This prints out all the normal vectors on the sphere!
 						if (((int)y)%4 == 0 && ((int)x)%4 == 0) {
@@ -127,12 +139,12 @@ public:
 							glEnd();
 							
 						}
-				}
+				} */
 				
 			}
 		}
 
-		//glEnd();
+		glEnd();
 		
 	}
 	
@@ -157,7 +169,6 @@ Color 		bgColor(0,0,0);
 Viewport	viewport;
 vector<Light*> lights(0);
 Sphere		sphr;
-
 
 //========================================
 //
@@ -195,7 +206,7 @@ void myDisplay() {
 	
 	Vector3d view(0,0,1);
 	sphr.render(lights, view);
-
+	
 	glFlush();
 	glutSwapBuffers();
 }

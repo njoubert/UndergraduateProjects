@@ -15,7 +15,7 @@ public:
 	Vector3d() {}
 	Vector3d(float x, float y, float z) {setX(x); setY(y); setZ(z); }
 	
-	void calculateFromPositions(Position3d * start, Position3d * end) {
+	void calculateFromPositions(const Position3d * const start, const Position3d * const end) {
 		setX(end->x - start->x);
 		setY(end->y - start->y);
 		setZ(end->z - start->z);
