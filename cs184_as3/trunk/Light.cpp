@@ -61,6 +61,8 @@ protected:
 class PointLight: public Light {
 public:
 	PointLight(float x,float y,float z,float r,float g,float b): Light(x,y,z,r,g,b) {
+		if (!DEBUG)
+			return;
 		printStartDebug("Created new PointLight: ");
 		debugMe(true);
 		cout << endl;
@@ -81,6 +83,8 @@ private:
 class DirectionalLight: public Light {
 public:
 	DirectionalLight(float x,float y,float z,float r,float g,float b): Light(x,y,z,r,g,b) {
+		if (!DEBUG)
+			return;
 		printStartDebug("Created new DirectionalLight: ");
 		debugMe(true);
 		cout << endl;

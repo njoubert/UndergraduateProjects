@@ -36,6 +36,27 @@ Usage:
 		lights can be arbitrary. If a point is illuminated to have a value more than 1, this
 		point will saturate the channel in which it has a value higher than 1. 
 		
+Example Usage:
+
+• An image showing diffuse only shading from a single light source
+	./shader -kd 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9
+
+• An image showing specular only shading from a single directional light source
+	./shader -ks 0.4 0.8 0.5 -dl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image showing specular only shading from a single point light source
+	./shader -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image showing combined specular and diffuse shading
+	./shader -kd 0.4 0.8 0.5 -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image with multiple light sources
+	./shader -kd 0.7 0.7 0.7 -ks 0.7 0.2 0.2 \
+		-pl 4.0 0.0 2.0 0.7 0.1 0.1 \
+		-pl 0.0 4.0 2.0 0.4 0.5 0.9 \
+		-pl -4.0 -4.0 1.0 0.4 0.8 0.5 \
+		-pl 0.0 0.0 1.0 0.4 0.5 0.9 \
+		-sp 20.0
 
 // Design Questions
 

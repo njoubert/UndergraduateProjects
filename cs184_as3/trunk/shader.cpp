@@ -11,6 +11,7 @@
 #include <iostream>
 #include <math.h>
 #include <cmath>
+#include <cstdlib> 
 
 #include "Debug.cpp"
 #include "Color.cpp"
@@ -36,6 +37,7 @@
 
 const double PI = 3.14159265;
 int ANI = 0;
+int BM = 0;
 
 using namespace std;
 
@@ -92,6 +94,12 @@ public:
 					point.setPositionValues(center.x+x,center.y+y,center.z+z);
 					normal.calculateFromPositions(&center,&point);
 					normal.normalize();
+					
+					if (BM) {
+						int random_integer = (rand()%BM);
+						normal.setX(normal.getX() + ((float)random_integer)/100);
+					}
+						
 					
 					point_diffuse.setColor(0,0,0);
 					point_ambient = ambient;
@@ -310,7 +318,17 @@ int parseCommandLine(int argc, char *argv[], vector<Light*> & lights, Sphere * s
 				}
 				
 			} else if (!strcmp(argv[i], "-ani")) {
+				
 				ANI = 1;
+				
+			} else if (!strcmp(argv[i], "-bumpmap")) {
+				
+				if (isThereMore(i, argc, 1)) {
+					BM = atoi(argv[++i]);
+				} else {
+					malformedArg = true;
+				}
+				
 			} else {
 				malformedArg = true;
 			}
@@ -332,6 +350,8 @@ void printUsage() {
 	cout << "      [[-pl x y z r g b] ... [-pl x y z r g b]] \\" << endl;
 	cout << "      [[-dl x y z r g b] ... [-dl x y z r g b] \\" << endl;
 	cout << "      [-bg r g b]" << endl;
+	cout << "      [-ani]" << endl;
+	cout << "      [-bumpmap extremity]" << endl;
 }
 
 void move() {
