@@ -21,18 +21,28 @@ public:
 		setZ(end->z - start->z);
 	}
 	
-//	void calculateReflective(Vector3d * in, Vector3d * normal) {
-//		Vector3d temp = *normal;
-//		float scale = 2.0f*(in->dot(normal));
-//		*this = *in; //Copy this
-//		temp = temp*scale;
-//		*this += temp;
-//	}
-	
-	float dot(Vector3d * other) {
-		return x*other->x + y*other->y + z*other->z;
+	void calculateReflective(const Vector3d & in, const Vector3d & normal) {
+		float scale = 2.0f*(in.dot(&normal));
+		this->x = -in.x + scale*normal.x;
+		this->y = -in.y + scale*normal.y;
+		this->z = -in.z + scale*normal.z;
 	}
 	
+	float dot(const Vector3d * other) const {
+		return x*other->x + y*other->y + z*other->z;
+	}
+	Vector3d & operator*=(float v) {
+		x *= v;
+		y *= v;
+		z *= v;
+		return *this;
+	}
+	Vector3d & operator+=(const Vector3d &v) {
+		x += v.x;
+		y += v.y;
+		z += v.z;
+		return *this;
+	}
 	void normalize() {
 		float l = sqrt(x*x + y*y + z*z);
 		x = x/l;
@@ -60,7 +70,7 @@ public:
 	void setX(float x) { this->x = x; }
 	void setY(float y) { this->y = y; }
 	void setZ(float z) { this->z = z; }		
-private:	
+protected:	
 	float x, y, z; // width and height
 };
 

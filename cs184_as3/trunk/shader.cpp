@@ -57,7 +57,7 @@ class Sphere;
 
 class Sphere {
 public:
-	Sphere() { specularCoeff=1; center.setPositionValues(0,0,0); }
+	Sphere() { specularCoeff=1; center.setPositionValues(0,0,0); ambient.setColor(0.04, 0.04, 0.04);}
 	~Sphere() { }
 	
 	void setAmbientColorValues(float r, float g, float b) { ambient.setColor(r,g,b);}
@@ -79,6 +79,7 @@ public:
 		AbsPosition3d light_pos;
 		Vector3d normal;
 		Vector3d incidence;
+		Vector3d reflectance;
 		Color point_ambient;
 		Color point_diffuse;
 		Color point_specular;
@@ -101,46 +102,26 @@ public:
 				point_ambient = ambient;
 				point_specular.setColor(0,0,0);
 				for (unsigned int lights_i = 0; lights_i < lights.size(); lights_i++) {
-					light_pos = lights[lights_i]->getPosition().getAbsolutePosition(radius);		
+					
+					light_pos = lights[lights_i]->getPosition().getAbsolutePosition(radius);
+					
 					incidence.calculateFromPositions(&point,&light_pos);
 					incidence.normalize();
+					reflectance.calculateReflective(incidence,normal);
+					reflectance.normalize();
 					
 					point_diffuse += (diffuse * lights[lights_i]->getColor()) * max(incidence.dot(&normal),0.0f);
-					
-					
+					point_specular += (specular * lights[lights_i]->getColor()) * pow(max(reflectance.dot(&view),0.0f),specularCoeff); 
 					
 				}
 				
-				point_total = point_ambient + point_diffuse + point_specular;
-				
-				setPixel((int)x + center.x,(int)y + center.y,point_total.getGlR(0,1),point_total.getGlG(0,1),point_total.getGlB(0,1));
-				
-				
+				point_total = point_ambient + point_diffuse + point_specular;			
+				setPixel((int)x + center.x,
+						(int)y + center.y,
+						point_total.getGlR(0,1),
+						point_total.getGlG(0,1),
+						point_total.getGlB(0,1));
 
-				
-						
-				/*
-				if (DEBUG) {
-					//This prints out all the normal vectors on the sphere!
-						if (((int)y)%4 == 0 && ((int)x)%4 == 0) {
-						
-							if (x > -10 && x < 10 && y > -10 && y < 10) {
-								cout << "(" << x << "," << y << "," << z << ")";
-								cout << "  -> ("<< normal.getX() << "," << normal.getY() << "," << normal.getZ() << ")" << endl;
-							}
-							
-							glBegin(GL_LINES);
-							glColor3f(1.0f, 1.0f, 1.0f);
-							
-							glVertex3f(x,y,z/radius);
-							
-							glVertex3d(x+normal.getX()*8,y+normal.getY()*8,z/radius+normal.getZ()*2);
-							
-							glEnd();
-							
-						}
-				} */
-				
 			}
 		}
 
@@ -205,6 +186,7 @@ void myDisplay() {
 	glLoadIdentity();
 	
 	Vector3d view(0,0,1);
+	
 	sphr.render(lights, view);
 	
 	glFlush();
