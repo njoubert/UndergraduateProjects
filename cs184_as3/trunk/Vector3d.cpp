@@ -33,13 +33,17 @@ public:
 		return x*other->x + y*other->y + z*other->z;
 	}
 	
-	Vector3d normalize() {
-		Vector3d result = *this; //Make a copy of the current class
+	void normalize() {
+		float l = sqrt(x*x + y*y + z*z);
+		x = x/l;
+		y = y/l;
+		z = z/l;
+		/* Vector3d result = *this; //Make a copy of the current class
 		float l = sqrt(x*x + y*y + z*z);
 		result.x = result.x/l;
 		result.y = result.y/l;
 		result.z = result.z/l;
-		return result;
+		return result; */
 	}
 	Vector3d normalize(float length) {
 		Vector3d result = *this; //Make a copy of the current class
@@ -50,9 +54,9 @@ public:
 	}
 	void debugMe() { printDebug("(" << x << "," << y << "," << z << ")"); }
 
-	float getX() { return (int) x; }
-	float getY() { return (int) y; }
-	float getZ() { return (int) z; }
+	float getX() { return x; }
+	float getY() { return y; }
+	float getZ() { return z; }
 	void setX(float x) { this->x = x; }
 	void setY(float y) { this->y = y; }
 	void setZ(float z) { this->z = z; }		

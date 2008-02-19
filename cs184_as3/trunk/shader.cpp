@@ -82,29 +82,57 @@ public:
 		
 		printDebug("Rendering sphere of radius " << radius);
 		
-		glBegin(GL_POINTS);
+		//glBegin(GL_POINTS);
 		
-		for (y = -radius; y <= radius; y += 10) {
+		for (y = -radius; y <= radius; y += 1) {
 			width = sqrt(radius*radius - y*y);
-			for (x = -width; x <= width; x += 10) {
+			for (x = -width; x <= width; x += 1) {
 				z = sqrt(radius*radius - x*x - y*y);
+				
+				
+				
+				
 				point.setPositionValues(x,y,z);
 				
 				normal.calculateFromPositions(&center,&point);
 				normal.normalize();
-				
+
+
 				for (unsigned int lights_i = 0; lights_i < lights.size(); lights_i++) {
 							
 				}
 				
+
+				glBegin(GL_POINTS);
+				setPixel((int)x,(int)y,ambient.getGlR(0,255),ambient.getGlG(0,255),ambient.getGlB(0,255));
+				glEnd();
+						
 				
-				
-				setPixel((int)x,(int)y,ambient.getGlR(0,255),ambient.getGlR(0,255),ambient.getGlR(0,255));
+				if (DEBUG) {
+					//This prints out all the normal vectors on the sphere!
+						if (((int)y)%4 == 0 && ((int)x)%4 == 0) {
+						
+							if (x > -10 && x < 10 && y > -10 && y < 10) {
+								cout << "(" << x << "," << y << "," << z << ")";
+								cout << "  -> ("<< normal.getX() << "," << normal.getY() << "," << normal.getZ() << ")" << endl;
+							}
+							
+							glBegin(GL_LINES);
+							glColor3f(1.0f, 1.0f, 1.0f);
+							
+							glVertex3f(x,y,z/radius);
+							
+							glVertex3d(x+normal.getX()*8,y+normal.getY()*8,z/radius+normal.getZ()*2);
+							
+							glEnd();
+							
+						}
+				}
 				
 			}
 		}
 
-		glEnd();
+		//glEnd();
 		
 	}
 	
