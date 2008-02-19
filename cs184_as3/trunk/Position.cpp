@@ -24,8 +24,9 @@ public:
 		}
 	}
 	
-protected:
 	float x,y,z;
+protected:
+	
 };
 
 class RelPosition3d: public Position3d {

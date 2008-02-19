@@ -42,6 +42,11 @@ using namespace std;
 // Some Classes
 //****************************************************
 
+void setPixel(float x, float y, GLfloat r, GLfloat g, GLfloat b) {
+	glColor3f(r, g, b);
+	glVertex2f(x, y);
+}
+
 class Viewport;
 class Viewport {
 public:
@@ -52,7 +57,7 @@ class Sphere;
 
 class Sphere {
 public:
-	Sphere() { specularCoeff=1; }
+	Sphere() { specularCoeff=1; center.setPositionValues(0,0,0); }
 	~Sphere() { }
 	
 	void setAmbientColorValues(float r, float g, float b) { ambient.setColor(r,g,b);}
@@ -66,19 +71,55 @@ public:
 	
 	
 	void render(vector<Light*> & lights, Vector3d & view) {
-		for (unsigned int i = 0; i < lights.size(); i++) {
-			lights[i]->debugMe(false);
+		AbsPosition3d point;
+		AbsPosition3d light;
+		Vector3d normal;
+		Vector3d incidence;
+		Color point_ambient;
+		Color point_diffuse;
+		Color point_specular;
+		float x=0,y=0,z=0,width=0;
+		
+		printDebug("Rendering sphere of radius " << radius);
+		
+		glBegin(GL_POINTS);
+		
+		for (y = -radius; y <= radius; y += 10) {
+			width = sqrt(radius*radius - y*y);
+			for (x = -width; x <= width; x += 10) {
+				z = sqrt(radius*radius - x*x - y*y);
+				point.setPositionValues(x,y,z);
+				
+				normal.calculateFromPositions(&center,&point);
+				normal.normalize();
+				
+				for (unsigned int lights_i = 0; lights_i < lights.size(); lights_i++) {
+							
+				}
+				
+				
+				
+				setPixel((int)x,(int)y,ambient.getGlR(0,255),ambient.getGlR(0,255),ambient.getGlR(0,255));
+				
+			}
 		}
-			
+
+		glEnd();
 		
 	}
 	
 private:
+	
+	void calculateAmbientComponent(Vector3d const &normal, Vector3d const &incidence) const;
+	void calculateDiffuseComponent(Vector3d const &normal, Vector3d const &incidence) const;
+	void calculateSpecularComponent(Vector3d const &normal, Vector3d const &incidence) const;
+	
 	Color ambient;
 	Color diffuse;
 	Color specular;
 	float specularCoeff;
 	float radius;
+	AbsPosition3d center;
 };
 
 //****************************************************
@@ -105,16 +146,15 @@ void myReshape(int w, int h) {
 	viewport.w = w;
 	viewport.h = h;
 	printDebug("Reshaping viewport to " << w << "x" << h);
-	sphr.setAbsRadiusValue(min(w,h)/2);
+	sphr.setAbsRadiusValue(min(w,h)/2 - min(w,h)/10);
 	
 	glViewport (0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
 	//gluOrtho2D(-1*viewport.x*100,viewport.x*100, -1*viewport.y*100, viewport.y*100);
-
+	//gluOrtho2D(0, viewport.w, 0, viewport.h);
 }
-
 
 /*
  * Callback function to draw scene 
@@ -130,7 +170,6 @@ void myDisplay() {
 
 	glFlush();
 	glutSwapBuffers();
-	
 }
 
 /*

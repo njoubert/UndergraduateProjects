@@ -15,12 +15,12 @@ public:
 	Vector3d() {}
 	Vector3d(float x, float y, float z) {setX(x); setY(y); setZ(z); }
 	
-//	void calculateFromPositions(Position3d * start, Position3d * end) {
-//		setX(end->getX() - start->getX());
-//		setY(end->getY() - start->getY());
-//		setZ(end->getZ() - start->getZ());
-//	}
-//	
+	void calculateFromPositions(Position3d * start, Position3d * end) {
+		setX(end->x - start->x);
+		setY(end->y - start->y);
+		setZ(end->z - start->z);
+	}
+	
 //	void calculateReflective(Vector3d * in, Vector3d * normal) {
 //		Vector3d temp = *normal;
 //		float scale = 2.0f*(in->dot(normal));
