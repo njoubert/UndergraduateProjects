@@ -17,7 +17,9 @@ Usage:
 		[[-dl x y z r g b] ... [-dl x y z r g b]] \
 		[-bg r g b]	
 		
-		-bg sets the background (viewport) color.
+		-ka -kd and -ks sets ambient, diffuse and specular colors from the range [0.0,1.0]
+		
+		-bg sets the background (viewport) color in rgb values from the range [0,255]
 
 // Design Questions
 

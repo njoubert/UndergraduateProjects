@@ -48,8 +48,8 @@ clean:
 shader: shader.o
 	$(CC) shader.o $(LDOPTS) -o shader
 
-shader.o: shader.cpp
-	$(CC) shader.cpp -c $(CCOPTS)
+shader.o: Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp shader.cpp
+	$(CC) Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp shader.cpp -c $(CCOPTS)
 
 
 #export LD_LIBRARY_PATH="/usr/sww/pkg/Mesa/lib:/usr/lib:/usr/sww/lib"
