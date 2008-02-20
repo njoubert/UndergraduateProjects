@@ -17,6 +17,7 @@ Usage:
 		[[-dl x y z r g b] ... [-dl x y z r g b]] \
 		[-bg r g b]	
 		[-ani]
+		[-bumpmap v]
 		
 		-ka -kd and -ks sets ambient, diffuse and specular colors from the range [0.0,1.0]
 		
@@ -24,6 +25,10 @@ Usage:
 		
 		-ani enables simple animation of light 1. use the keys f, b, s to move animation 
 		forward,backwards or stop
+		
+		-bumpmap uses the input value as coefficient in randomly perturbing the normals
+		of spheres. This is the basic start of bumpmapping a surface, and for now gives
+		rough surfaces with a v value of about 5 to 10.
 		
 	Coordinate Inputs:
 		Coordinate inputs are all relative to the sphere! Thus, a light at (1,0,0) is on 
