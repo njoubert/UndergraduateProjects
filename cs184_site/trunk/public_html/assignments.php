@@ -40,19 +40,23 @@
 	
 	<p><b>Specular and Diffuse Material with Single Light Source</b>
 	<br><img src="images/as3_spec+diffuse.png" width=400 height=300/>
-	<br>./shader -kd 0.4 0.8 0.5 -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 
+	<br>./shader -kd 0.4 0.8 0.5 -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
 	</p>
 	
 	<p><b>Multiple Light Sources</b>
 	<br><img src="images/as3_multipleLights.png" width=400 height=300/>
-	<br>./shader -kd 0.7 0.7 0.7 -ks 0.7 0.2 0.2 \
-		-pl 4.0 0.0 2.0 0.7 0.1 0.1 \
-		-pl 0.0 4.0 2.0 0.4 0.5 0.9 \
-		-pl -4.0 -4.0 1.0 0.4 0.8 0.5 \
-		-pl 0.0 0.0 1.0 0.4 0.5 0.9 \
-		-sp 20.0
+	<br>./shader -kd 0.7 0.7 0.7 -ks 0.7 0.2 0.2 -pl 4.0 0.0 2.0 0.7 0.1 0.1 -pl 0.0 4.0 2.0 0.4 0.5 0.9 -pl -4.0 -4.0 1.0 0.4 0.8 0.5 -pl 0.0 0.0 1.0 0.4 0.5 0.9	-sp 20.0
 	</p>
 
+	<h2>Assignment 2 Extra</h2>
+	I also implemented a simple animation of lights - moving the primary light source by either
+	increading or decreasing its (x,y) position through keyboard interaction. Unfortunately I do not
+	have a nice animated GIF of this up yet...
+	<br><b>Bump Mapping</b>
+	<br>I hoped to implement actual bump mapping. I did not finish the bump map implementation itself, but wrote
+	the hooks for preturbing normals to create a rough surface. A comparison between non-bumpmapped and bumpmapped:
+	<br><img src="images/as3_non_bumpmap.png" width=400 height=300/>
+	<br><img src="images/as3_with_bumpmap.png" width=400 height=300/>
 </p>
 
 	 </td>
