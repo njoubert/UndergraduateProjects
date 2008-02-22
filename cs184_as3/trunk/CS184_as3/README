@@ -1,0 +1,101 @@
+//============================================================================
+// Name        : README for Shader
+// Author      : Niels Joubert CS184-dv
+// Platform    : *nix (freeglut3), Solaris
+// Version     : 1.0
+// Copyright   : 2008
+// Description : A shader using the Phong Illumination Model
+//============================================================================
+
+
+This program implements a shader using the Phong Illumination Model. 
+For output purposes, it uses the OpenGL engine.
+
+Usage:
+	shader [-d] -ka r g b -kd r g b -ks r g b -sp v \
+		[[-pl x y z r g b] ... [-pl x y z r g b]] \
+		[[-dl x y z r g b] ... [-dl x y z r g b]] \
+		[-bg r g b]	
+		[-ani]
+		[-bumpmap v]
+		
+		-ka -kd and -ks sets ambient, diffuse and specular colors from the range [0.0,1.0]
+		
+		-bg sets the background (viewport) color in rgb values from the range [0,255]
+		
+		-ani enables simple animation of light 1. use the keys f, b, s to move animation 
+		forward,backwards or stop
+		
+		-bumpmap uses the input value as coefficient in randomly perturbing the normals
+		of spheres. This is the basic start of bumpmapping a surface, and for now gives
+		rough surfaces with a v value of about 5 to 10.
+		
+	Coordinate Inputs:
+		Coordinate inputs are all relative to the sphere! Thus, a light at (1,0,0) is on 
+		the rightmost edge of the visible sphere. Anything inside the sphere logically will
+		not be displayed. Thus, a light at (0.5,0,0) will have no effect on the scene.
+		
+	Color Inputs:
+		Colors are clipped to the range [0.0,1.0], although input is technically arbitrary.
+		As a guideline, reflectance values for the sphere must be in the range [0,1] while
+		lights can be arbitrary. If a point is illuminated to have a value more than 1, this
+		point will saturate the channel in which it has a value higher than 1. 
+		
+Example Usage:
+
+• An image showing diffuse only shading from a single light source
+	./shader -kd 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9
+
+• An image showing specular only shading from a single directional light source
+	./shader -ks 0.4 0.8 0.5 -dl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image showing specular only shading from a single point light source
+	./shader -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image showing combined specular and diffuse shading
+	./shader -kd 0.4 0.8 0.5 -ks 0.4 0.8 0.5 -pl 2.0 2.0 1.5 0.1 0.4 0.9 -sp 20
+
+• An image with multiple light sources
+	./shader -kd 0.7 0.7 0.7 -ks 0.7 0.2 0.2 \
+		-pl 4.0 0.0 2.0 0.7 0.1 0.1 \
+		-pl 0.0 4.0 2.0 0.4 0.5 0.9 \
+		-pl -4.0 -4.0 1.0 0.4 0.8 0.5 \
+		-pl 0.0 0.0 1.0 0.4 0.5 0.9 \
+		-sp 20.0
+
+// Design Questions
+
+***Coordinate System***
+
+Since we represent points in space, we need to pick a coordinate system
+in which these points have meaning. 
+ - The OpenGL coordinate system has a adjustable coordinate system
+ - The input coordinates are relative to the center of the sphere
+ 
+I will follow the input coordinates to store internal points, and do a basis
+conversion to finally write the output. This will allow me to support various
+file format and display utilities with possibly different coordinate systems.
+To facilitate this process, I set the OpenGL window to have its origin in the 
+center of the viewport.
+
+
+***Normalization of Vectors***
+
+Vectors in space are represented in our coordinate system as an 
+absolute position from the origin relative to the size of the main
+sphere. This is excellent for object
+representation and contains all the properties needed to fully
+define a vector (those properties being direction and length).
+
+In shading calculations, we need to find angles between vectors, thus
+we normalize vectors to have a length in the range of [0.0,1.0] while
+keeping their direction the same.
+
+***Normalization of Illumination***
+
+I define my illumination figures to be an absolute value in the range
+[0.0, 1.0]. Thus, anywhere where illumination figures occurs, we
+assume it is in this range. This works fine, since this range is closed
+under multiplication, which is the operation we use on illumination values.
+
+Upon output, we clip values to this range.
