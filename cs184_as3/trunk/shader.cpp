@@ -18,6 +18,7 @@
 #include "Vector3d.cpp"
 #include "Position.cpp"
 #include "Light.cpp"
+#include "BumpMap.cpp"
 
 #ifdef _WIN32
 #	include <windows.h>
@@ -36,6 +37,7 @@
 #define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
 
 const double PI = 3.14159265;
+
 int ANI = 0;
 int BM = 0;
 
@@ -44,6 +46,8 @@ using namespace std;
 //****************************************************
 // Some Classes
 //****************************************************
+
+BumpMap bmap;
 
 void setPixel(float x, float y, GLfloat r, GLfloat g, GLfloat b) {
 	glColor3f(r, g, b);
@@ -96,8 +100,17 @@ public:
 					normal.normalize();
 					
 					if (BM) {
-						int random_integer = (rand()%BM);
-						normal.setX(normal.getX() + ((float)random_integer)/100);
+						//normal = normal + U*horiz + V*vert
+						
+						//We need to find the two vectors that are tangent to
+						//the sphere at this point, and multiply them by
+						//the gradients to positon the texture correctly
+						normal.setX(normal.getX() + 
+								bmap.getHorizontalGradient((int)point.x, (int)point.y) + 
+								bmap.getVerticalGradient((int)point.x, (int)point.y));
+						normal.setY(normal.getY() + 
+								bmap.getHorizontalGradient((int)point.x, (int)point.y) + 
+								bmap.getVerticalGradient((int)point.x, (int)point.y));					
 					}
 						
 					
@@ -369,6 +382,8 @@ int main(int argc, char *argv[]) {
 		printUsage();
 		return 1;
 	}
+	
+	bmap.loadTextFile();
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
