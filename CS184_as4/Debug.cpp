@@ -9,6 +9,6 @@ using namespace std;
 #define printStartDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A; }
 #define printPartialDebug(A)	if (DEBUG) { cout << A; }
 
-int DEBUG = 0;
+int DEBUG = 1;
 
 #endif /*DEBUG_C_*/

@@ -9,16 +9,16 @@ using namespace std;
 
 /**
  * This class represents the basic pixels of an image.
- * Pixels are addressed in the range [1, 1] to [w, h] inclusive,
+ * Pixels are addressed in the range [0, 0] to [w-1, h-1] inclusive,
  * for bottom left to top right.
  * 
  */
 class Image {
 public:
 	typedef struct pixel {
-		char r;
-		char g;
 		char b;
+		char g;
+		char r;
 	} pixel;
 	int w;
 	int h;
@@ -38,11 +38,14 @@ public:
 	virtual ~Image() {
 		delete [] pixels;
 	}
+	/**
+	 * Return the place in the array where the specific x,y pixel lives
+	 */
 	inline int absolutePosition(int x, int y) {
-		if (x < 1 || x > (w+1) || y < 1 || y > (h+1)) {
+		if (x < 0 || x > (w) || y < 0 || y > (h)) {
 			printDebug("Tried to get a pixel outside of valid range!")
 		}
-		return x + ((y-1) * h);
+		return x + (y * w);
 	}
 	void setPixel(int x, int y, char r, char g, char b) {
 		int pos = absolutePosition(x, y);
@@ -81,15 +84,71 @@ public:
 		fp_out.open(filename.c_str(), ios::out | ios::binary);
 		fp_out.write((char*)&bmpfileheader, 14);
 		fp_out.write((char*)&bmpinfoheader, 40);
-		for (int row = 1; row <= h; row++) {
-			for (int col = 1; col <= w; col++) {
-				fp_out.write(&(pixels[absolutePosition(col, row)].r), 1);
-				fp_out.write(&(pixels[absolutePosition(col, row)].g), 1);
-				fp_out.write(&(pixels[absolutePosition(col, row)].b), 1);
+		for (int row = 0; row < h; row++) {
+			for (int col = 0; col < w; col++) {
+				fp_out.write((char*)&(pixels[absolutePosition(col, row)]), 3);
 			}
 			fp_out.write(bmppad, (4-(w*3)%4)%4); //pads it like hellz!
 		}
 		fp_out.close();
+	}
+	
+	static void selfTest() {
+		Image img1(1, 1);
+		    img1.setPixel(0,0,255,0,0);
+		    img1.saveAsBMP("tests/Test1.bmp");
+		    
+		    Image img2(20, 32);
+		    img2.setPixel(0,0,255,0,0);
+		    img2.setPixel(19,0,255,0,0);
+		    img2.setPixel(0,31,255,0,0);
+		    img2.setPixel(19,31,255,0,0);
+		    img2.saveAsBMP("tests/Test2.bmp");
+		    
+		    Image img3(100,100);
+		    img3.setPixel(0,0,255,0,0);
+		    img3.setPixel(1,0,255,0,0);
+		    img3.setPixel(2,0,255,0,0);
+		    img3.saveAsBMP("tests/Test3.bmp");
+		    
+		    Image img4(255, 255);
+		    for (int x = 0; x < 255; x++) {
+		    	for (int y = 0; y < 255; y++) {
+		    		img4.setPixel(x, y, x, y, 0);
+		    	}
+		    }
+		    img4.saveAsBMP("tests/Test4-redgreen.bmp");
+		    Image img5(255, 255);
+		    for (int x = 0; x < 255; x++) {
+		    	for (int y = 0; y < 255; y++) {
+		    		img5.setPixel(x, y, 0, y, x);
+		    	}
+		    }
+		    img5.saveAsBMP("tests/Test5-bluegreen.bmp");
+		    Image img6(255, 255);
+		    for (int x = 0; x < 255; x++) {
+		    	for (int y = 0; y < 255; y++) {
+		    		img6.setPixel(x, y, x, 0, y);
+		    	}
+		    }
+		    img6.saveAsBMP("tests/Test5-bluered.bmp");
+		    Image img7(255, 255);
+		    for (int x = 0; x < 255; x++) {
+		    	for (int y = 0; y < 255; y++) {
+		    		img7.setPixel(x, y, (255 - (x+y)/2), x, y);
+		    	}
+		    }
+		    img7.saveAsBMP("tests/Test5-redgreenblue.bmp");
+		    
+		    int i = 255;
+		    Image img8(1680, 1050);
+		    for (int x = 0; x < 1680; x++) {
+		    	for (int y = 0; y < 1050; y++) {
+		    		i++;
+		    		img8.setPixel(x, y, i,(i>>8),(i>>16));
+		    	}
+		    }
+		    img8.saveAsBMP("tests/Test6-fullscreen.bmp");
 	}
 
 };
