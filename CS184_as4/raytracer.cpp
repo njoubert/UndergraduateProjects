@@ -6,10 +6,7 @@
 // Description : Hello World in C, Ansi-style
 //============================================================================
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <string>
+#include "Debug.h"
 #include "Image.cpp"
 
 using namespace std;
