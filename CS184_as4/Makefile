@@ -1,4 +1,4 @@
-CXXFLAGS =	-O2 -g -Wall -fmessage-length=0 `GraphicsMagick++-config --cppflags --cxxflags --ldflags --libs`
+CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
 OBJS =		raytracer.o Image.o
 

@@ -9,18 +9,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "Image.h"
+#include <string>
+#include "Image.cpp"
 
 using namespace std;
 
-
-int savebmp(string filename, Image & img) {
-	
-}
-
-
 int main(int argc,char **argv)
 {
-
+    Image img(200, 320);
+    img.saveAsBMP("Test");
     return 0;
 }
