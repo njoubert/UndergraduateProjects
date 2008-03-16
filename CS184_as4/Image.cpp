@@ -3,10 +3,16 @@
 
 #include <string>
 #include <fstream>
-#include "Debug.h"
+#include "Debug.cpp"
 
 using namespace std;
 
+/**
+ * This class represents the basic pixels of an image.
+ * Pixels are addressed in the range [1, 1] to [w, h] inclusive,
+ * for bottom left to top right.
+ * 
+ */
 class Image {
 public:
 	typedef struct pixel {
@@ -22,12 +28,21 @@ public:
 		this->w = w;
 		this->h = h;
 		pixels = new pixel[w*h];
+		for (int i = 0; i < w*h; i++) {
+			pixels[i].r = 0;
+			pixels[i].g = 0;
+			pixels[i].b = 0;
+		}
 	}
+	
 	virtual ~Image() {
 		delete [] pixels;
 	}
 	inline int absolutePosition(int x, int y) {
-		return 1;
+		if (x < 1 || x > (w+1) || y < 1 || y > (h+1)) {
+			printDebug("Tried to get a pixel outside of valid range!")
+		}
+		return x + ((y-1) * h);
 	}
 	void setPixel(int x, int y, char r, char g, char b) {
 		int pos = absolutePosition(x, y);
@@ -44,12 +59,9 @@ public:
 	void saveAsBMP(string filename) {
 		fstream fp_out;
 		
-		int filesize = 54 + 3*w*h;
-		//short type, int size, short res1, short res2, int off
-		unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0}; 
-		//unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 0,0,0,54}; 
+		int filesize = 54 + 3*w*h;// + h*((4-(w*3)%4)%4); //Account for padding
+		unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};  
 		unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
-		//unsigned char bmpinfoheader[40] = {0,0,0,40, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
 		char bmppad[3] = {0,0,0};
 
 		bmpfileheader[ 2] = (unsigned char)(filesize    );
@@ -66,14 +78,14 @@ public:
 		bmpinfoheader[10] = (unsigned char)(       h>>16);
 		bmpinfoheader[11] = (unsigned char)(       h>>24);
 
-		fp_out.open("myfile.bmp", ios::out | ios::binary);
+		fp_out.open(filename.c_str(), ios::out | ios::binary);
 		fp_out.write((char*)&bmpfileheader, 14);
 		fp_out.write((char*)&bmpinfoheader, 40);
-		for (int row = 0; row < h; row++) {
-			for (int col = 0; col < w; col++) {
-				fp_out.write(&(pixels[row*col].r), 1);
-				fp_out.write(&(pixels[row*col].g), 1);
-				fp_out.write(&(pixels[row*col].b), 1);
+		for (int row = 1; row <= h; row++) {
+			for (int col = 1; col <= w; col++) {
+				fp_out.write(&(pixels[absolutePosition(col, row)].r), 1);
+				fp_out.write(&(pixels[absolutePosition(col, row)].g), 1);
+				fp_out.write(&(pixels[absolutePosition(col, row)].b), 1);
 			}
 			fp_out.write(bmppad, (4-(w*3)%4)%4); //pads it like hellz!
 		}
