@@ -12,12 +12,13 @@ Usage
 
 ** Command Line Arguments:
 
-  [-d]			Turns on debug information
+  [-d [n]]			Turns on debug information. 
+  					n is debug level, 0 to 5. 1 if not specified
   
-  [-q]			Quiet - don't output information
+  [-q]				Quiet - don't output information
   
-  [-selftest]	Runs all self tests. This ignores all flags after it, 
-  				and quits when done.
+  [-selftest]		Runs all self tests. This ignores all flags after it, 
+  					and quits when done.
 
 ============================================================================
 Licensing and Libraries

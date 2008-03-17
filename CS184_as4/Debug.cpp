@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define printDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl; }
+#define printDebug(A, B)	if (DEBUG >= A) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << B << endl; }
 #define printStartDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A; }
 #define printPartialDebug(A)	if (DEBUG) { cout << A; }
 

@@ -6,8 +6,10 @@
 
 class Vector3d;
 class Color;
+class Ray;
 
 class Vector3d {
+public:
 	Vector3d() {}
 	Vector3d(float x, float y, float z) {setX(x); setY(y); setZ(z); }
 	
@@ -32,7 +34,9 @@ class Vector3d {
 	inline void setX(float x) { this->x = x; }
 	inline void setY(float y) { this->y = y; }
 	inline void setZ(float z) { this->z = z; }
-protected:
+	inline void debugMe() {
+		printDebug(5, "Vector3dr=(" << x << "," << y << "," << z << ")");
+	}
 	float x, y, z;
 };
 
@@ -47,7 +51,7 @@ public:
 	inline char getBMPB(int min, int max) { return (char) linearScale(min, max, 0, 255, b); }
 	
 	inline void debugMe() {
-			printDebug("Color=(" << r << "," << g << "," << b << ")");
+		printDebug(5, "Color=(" << r << "," << g << "," << b << ")");
 	}
 	
 protected:
@@ -56,6 +60,21 @@ protected:
 		return (x - in_low)/(in_high-in_low)*(out_high-out_low) + out_low;
 	}
 	
+};
+
+class Ray {
+public:
+	Ray() {
+	}
+	
+	static Ray getRay(Vector3d & start, Vector3d & end) {
+		Ray r;
+		r.zero = start;
+		r.one = end;
+		return r;
+	}
+	Vector3d zero;
+	Vector3d one;
 };
 
 

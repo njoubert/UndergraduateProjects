@@ -43,7 +43,7 @@ public:
 	 */
 	inline int absolutePosition(int x, int y) {
 		if (x < 0 || x > (w) || y < 0 || y > (h)) {
-			printDebug("Tried to get a pixel outside of valid range!")
+			printDebug(5, "Tried to get a pixel outside of valid range!");
 		}
 		return x + (y * w);
 	}
@@ -94,10 +94,12 @@ public:
 	}
 
 	static int selfTest() {
+		printInfo("Image::selfTest Test 1");
 		Image img1(1, 1);
 		img1.setPixel(0,0,255,0,0);
 		img1.saveAsBMP("tests/Img-Test1.bmp");
 
+		printInfo("Image::selfTest Test 2");
 		Image img2(20, 32);
 		img2.setPixel(0,0,255,0,0);
 		img2.setPixel(19,0,255,0,0);
@@ -105,12 +107,14 @@ public:
 		img2.setPixel(19,31,255,0,0);
 		img2.saveAsBMP("tests/Img-Test2.bmp");
 
+		printInfo("Image::selfTest Test 3");
 		Image img3(100,100);
 		img3.setPixel(0,0,255,0,0);
 		img3.setPixel(1,0,255,0,0);
 		img3.setPixel(2,0,255,0,0);
 		img3.saveAsBMP("tests/Img-Test3.bmp");
 
+		printInfo("Image::selfTest Test 4rg");
 		Image img4(255, 255);
 		for (int x = 0; x < 255; x++) {
 			for (int y = 0; y < 255; y++) {
@@ -118,6 +122,8 @@ public:
 			}
 		}
 		img4.saveAsBMP("tests/Img-Test4-redgreen.bmp");
+		
+		printInfo("Image::selfTest Test 5bg");
 		Image img5(255, 255);
 		for (int x = 0; x < 255; x++) {
 			for (int y = 0; y < 255; y++) {
@@ -125,6 +131,8 @@ public:
 			}
 		}
 		img5.saveAsBMP("tests/Img-Test5-bluegreen.bmp");
+		
+		printInfo("Image::selfTest Test 5br");
 		Image img6(255, 255);
 		for (int x = 0; x < 255; x++) {
 			for (int y = 0; y < 255; y++) {
@@ -132,6 +140,8 @@ public:
 			}
 		}
 		img6.saveAsBMP("tests/Img-Test5-bluered.bmp");
+		
+		printInfo("Image::selfTest Test 5rgb");
 		Image img7(255, 255);
 		for (int x = 0; x < 255; x++) {
 			for (int y = 0; y < 255; y++) {
@@ -140,6 +150,7 @@ public:
 		}
 		img7.saveAsBMP("tests/Img-Test5-redgreenblue.bmp");
 
+		printInfo("Image::selfTest Test 6fullscreen");
 		int i = 255;
 		Image img8(1680, 1050);
 		for (int x = 0; x < 1680; x++) {
