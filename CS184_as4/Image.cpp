@@ -96,20 +96,20 @@ public:
 	static void selfTest() {
 		Image img1(1, 1);
 		    img1.setPixel(0,0,255,0,0);
-		    img1.saveAsBMP("tests/Test1.bmp");
+		    img1.saveAsBMP("tests/Img-Test1.bmp");
 		    
 		    Image img2(20, 32);
 		    img2.setPixel(0,0,255,0,0);
 		    img2.setPixel(19,0,255,0,0);
 		    img2.setPixel(0,31,255,0,0);
 		    img2.setPixel(19,31,255,0,0);
-		    img2.saveAsBMP("tests/Test2.bmp");
+		    img2.saveAsBMP("tests/Img-Test2.bmp");
 		    
 		    Image img3(100,100);
 		    img3.setPixel(0,0,255,0,0);
 		    img3.setPixel(1,0,255,0,0);
 		    img3.setPixel(2,0,255,0,0);
-		    img3.saveAsBMP("tests/Test3.bmp");
+		    img3.saveAsBMP("tests/Img-Test3.bmp");
 		    
 		    Image img4(255, 255);
 		    for (int x = 0; x < 255; x++) {
@@ -117,28 +117,28 @@ public:
 		    		img4.setPixel(x, y, x, y, 0);
 		    	}
 		    }
-		    img4.saveAsBMP("tests/Test4-redgreen.bmp");
+		    img4.saveAsBMP("tests/Img-Test4-redgreen.bmp");
 		    Image img5(255, 255);
 		    for (int x = 0; x < 255; x++) {
 		    	for (int y = 0; y < 255; y++) {
 		    		img5.setPixel(x, y, 0, y, x);
 		    	}
 		    }
-		    img5.saveAsBMP("tests/Test5-bluegreen.bmp");
+		    img5.saveAsBMP("tests/Img-Test5-bluegreen.bmp");
 		    Image img6(255, 255);
 		    for (int x = 0; x < 255; x++) {
 		    	for (int y = 0; y < 255; y++) {
 		    		img6.setPixel(x, y, x, 0, y);
 		    	}
 		    }
-		    img6.saveAsBMP("tests/Test5-bluered.bmp");
+		    img6.saveAsBMP("tests/Img-Test5-bluered.bmp");
 		    Image img7(255, 255);
 		    for (int x = 0; x < 255; x++) {
 		    	for (int y = 0; y < 255; y++) {
 		    		img7.setPixel(x, y, (255 - (x+y)/2), x, y);
 		    	}
 		    }
-		    img7.saveAsBMP("tests/Test5-redgreenblue.bmp");
+		    img7.saveAsBMP("tests/Img-Test5-redgreenblue.bmp");
 		    
 		    int i = 255;
 		    Image img8(1680, 1050);
@@ -148,7 +148,7 @@ public:
 		    		img8.setPixel(x, y, i,(i>>8),(i>>16));
 		    	}
 		    }
-		    img8.saveAsBMP("tests/Test6-fullscreen.bmp");
+		    img8.saveAsBMP("tests/Img-Test6-fullscreen.bmp");
 	}
 
 };
