@@ -34,7 +34,7 @@ public:
 			pixels[i].b = 0;
 		}
 	}
-	
+
 	virtual ~Image() {
 		delete [] pixels;
 	}
@@ -61,7 +61,7 @@ public:
 	 */
 	void saveAsBMP(string filename) {
 		fstream fp_out;
-		
+
 		int filesize = 54 + 3*w*h;// + h*((4-(w*3)%4)%4); //Account for padding
 		unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};  
 		unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
@@ -92,63 +92,64 @@ public:
 		}
 		fp_out.close();
 	}
-	
-	static void selfTest() {
+
+	static int selfTest() {
 		Image img1(1, 1);
-		    img1.setPixel(0,0,255,0,0);
-		    img1.saveAsBMP("tests/Img-Test1.bmp");
-		    
-		    Image img2(20, 32);
-		    img2.setPixel(0,0,255,0,0);
-		    img2.setPixel(19,0,255,0,0);
-		    img2.setPixel(0,31,255,0,0);
-		    img2.setPixel(19,31,255,0,0);
-		    img2.saveAsBMP("tests/Img-Test2.bmp");
-		    
-		    Image img3(100,100);
-		    img3.setPixel(0,0,255,0,0);
-		    img3.setPixel(1,0,255,0,0);
-		    img3.setPixel(2,0,255,0,0);
-		    img3.saveAsBMP("tests/Img-Test3.bmp");
-		    
-		    Image img4(255, 255);
-		    for (int x = 0; x < 255; x++) {
-		    	for (int y = 0; y < 255; y++) {
-		    		img4.setPixel(x, y, x, y, 0);
-		    	}
-		    }
-		    img4.saveAsBMP("tests/Img-Test4-redgreen.bmp");
-		    Image img5(255, 255);
-		    for (int x = 0; x < 255; x++) {
-		    	for (int y = 0; y < 255; y++) {
-		    		img5.setPixel(x, y, 0, y, x);
-		    	}
-		    }
-		    img5.saveAsBMP("tests/Img-Test5-bluegreen.bmp");
-		    Image img6(255, 255);
-		    for (int x = 0; x < 255; x++) {
-		    	for (int y = 0; y < 255; y++) {
-		    		img6.setPixel(x, y, x, 0, y);
-		    	}
-		    }
-		    img6.saveAsBMP("tests/Img-Test5-bluered.bmp");
-		    Image img7(255, 255);
-		    for (int x = 0; x < 255; x++) {
-		    	for (int y = 0; y < 255; y++) {
-		    		img7.setPixel(x, y, (255 - (x+y)/2), x, y);
-		    	}
-		    }
-		    img7.saveAsBMP("tests/Img-Test5-redgreenblue.bmp");
-		    
-		    int i = 255;
-		    Image img8(1680, 1050);
-		    for (int x = 0; x < 1680; x++) {
-		    	for (int y = 0; y < 1050; y++) {
-		    		i++;
-		    		img8.setPixel(x, y, i,(i>>8),(i>>16));
-		    	}
-		    }
-		    img8.saveAsBMP("tests/Img-Test6-fullscreen.bmp");
+		img1.setPixel(0,0,255,0,0);
+		img1.saveAsBMP("tests/Img-Test1.bmp");
+
+		Image img2(20, 32);
+		img2.setPixel(0,0,255,0,0);
+		img2.setPixel(19,0,255,0,0);
+		img2.setPixel(0,31,255,0,0);
+		img2.setPixel(19,31,255,0,0);
+		img2.saveAsBMP("tests/Img-Test2.bmp");
+
+		Image img3(100,100);
+		img3.setPixel(0,0,255,0,0);
+		img3.setPixel(1,0,255,0,0);
+		img3.setPixel(2,0,255,0,0);
+		img3.saveAsBMP("tests/Img-Test3.bmp");
+
+		Image img4(255, 255);
+		for (int x = 0; x < 255; x++) {
+			for (int y = 0; y < 255; y++) {
+				img4.setPixel(x, y, x, y, 0);
+			}
+		}
+		img4.saveAsBMP("tests/Img-Test4-redgreen.bmp");
+		Image img5(255, 255);
+		for (int x = 0; x < 255; x++) {
+			for (int y = 0; y < 255; y++) {
+				img5.setPixel(x, y, 0, y, x);
+			}
+		}
+		img5.saveAsBMP("tests/Img-Test5-bluegreen.bmp");
+		Image img6(255, 255);
+		for (int x = 0; x < 255; x++) {
+			for (int y = 0; y < 255; y++) {
+				img6.setPixel(x, y, x, 0, y);
+			}
+		}
+		img6.saveAsBMP("tests/Img-Test5-bluered.bmp");
+		Image img7(255, 255);
+		for (int x = 0; x < 255; x++) {
+			for (int y = 0; y < 255; y++) {
+				img7.setPixel(x, y, (255 - (x+y)/2), x, y);
+			}
+		}
+		img7.saveAsBMP("tests/Img-Test5-redgreenblue.bmp");
+
+		int i = 255;
+		Image img8(1680, 1050);
+		for (int x = 0; x < 1680; x++) {
+			for (int y = 0; y < 1050; y++) {
+				i++;
+				img8.setPixel(x, y, i,(i>>8),(i>>13));
+			}
+		}
+		img8.saveAsBMP("tests/Img-Test6-fullscreen.bmp");
+		return 0;
 	}
 
 };

@@ -1,12 +1,10 @@
 //============================================================================
-// Name        : raytracer.cpp
+// Name        : RayTracer
 // Author      : Niels Joubert
-// Version     :
+// Platform    : Linux Kernel 2.6 with GCC v4.1.3
 // Copyright   : 2008
 // Description : A Raytracer implementation for CS184 at UC Berkeley
 //============================================================================
-
-
 
 
 ============================================================================
