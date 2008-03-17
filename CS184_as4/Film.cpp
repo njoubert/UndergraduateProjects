@@ -26,9 +26,17 @@ public:
 		width = w; height = h;
 		img = new Image(w,h);
 	}
-	void expose(Color color, Vector3d & point, Viewport & vp) {
+	void expose(Color color, Vector3d & p, Viewport & vp) {
 		//Transform between coordinates!!! 
-		img->setPixel(   ,
+		
+		//This only works for a square or rectangle!
+		
+		//for space [l,r]x[b,t] for corners (l,b) to (u,r)
+		//x = floor((u - l)/(r - l) * width);
+		//y = floor((v - b)/(t - b) * height);
+		
+		//Be sure to round down!
+		img->setPixel(,
 				,
 				color.getBMPR(0,1),
 				color.getBMPG(0,1),
