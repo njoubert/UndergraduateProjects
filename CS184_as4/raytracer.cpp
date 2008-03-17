@@ -8,8 +8,38 @@
 
 #include "Debug.cpp"
 #include "Image.cpp"
+#include "Algebra.cpp"
+
 
 using namespace std;
+
+class Eye {
+	
+};
+
+class Viewport {
+	
+};
+
+/** Creates samples across the viewport in world space */
+class Sampler {
+	
+};
+
+/** Collects samples across the viewport in world space
+ * into buckets for each pixel 
+ * WORLD COORDINATES ===> IMAGE COORDINATES */
+class Film {
+	
+};
+
+class Scene {
+	
+};
+
+//========================================
+// Setup and Teardown Follows
+//========================================
 
 void selftest() {
 	int ret=0;
@@ -21,13 +51,6 @@ void selftest() {
     } else
     	printInfo("Selftest Failed!");
 }
-
-//========================================
-//
-// Setup and Teardown Follows
-//
-//========================================
-
 int parseCommandLine(int argc, char *argv[]) {
 	
 	bool malformedArg;
@@ -41,16 +64,16 @@ int parseCommandLine(int argc, char *argv[]) {
 				
 				DEBUG = 1;
 				
+			}  else if (!strcmp(argv[i], "-q")) {
+				
+				
+				INFO = 0;
+				
 			} else if (!strcmp(argv[i], "-selftest")) {
 				
 				
 				selftest();
 				exit(0);
-				
-			} else if (!strcmp(argv[i], "-q")) {
-				
-				
-				INFO = 0;
 				
 			} else {
 				malformedArg = true;
@@ -68,7 +91,7 @@ int parseCommandLine(int argc, char *argv[]) {
 }
 void printUsage() {
 	cout << "Usage: "<< endl;
-	cout << "  raytracer [-d] [-selftest] \\" << endl;
+	cout << "  raytracer [-d] [-q] [-selftest] \\" << endl;
 }
 
 int main(int argc,char **argv) {
@@ -78,6 +101,8 @@ int main(int argc,char **argv) {
 		exit(1);
 	}
 	printInfo("Raytraycer Initialized");
+	
+	
 	
 	
     return 0;

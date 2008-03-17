@@ -6,6 +6,18 @@
 // Description : A Raytracer implementation for CS184 at UC Berkeley
 //============================================================================
 
+============================================================================
+Usage
+============================================================================
+
+** Command Line Arguments:
+
+  [-d]			Turns on debug information
+  
+  [-q]			Quiet - don't output information
+  
+  [-selftest]	Runs all self tests. This ignores all flags after it, 
+  				and quits when done.
 
 ============================================================================
 Licensing and Libraries
