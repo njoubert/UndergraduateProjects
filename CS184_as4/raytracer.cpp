@@ -9,59 +9,15 @@
 #include "Debug.cpp"
 #include "Image.cpp"
 #include "Algebra.cpp"
+#include "Film.cpp"
 #include "assert.h"
 
 #define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
 
 using namespace std;
 
-class Viewport;
 class Sampler;
-class Film;
 class Scene;
-
-/** Collects samples across the viewport in world space
- * into buckets for each pixel 
- * WORLD COORDINATES ===> IMAGE COORDINATES */
-class Film {
-public:
-	int width;
-	int height;
-	Image * img;
-	Film() {
-		height = width = -1;
-		img = NULL;
-	}
-	~Film() {
-		if (img != NULL)
-			delete img;
-	}
-	void setDimensions(int w, int h) {
-		assert(width == -1); assert(height == -1);
-		width = w; height = h;
-		img = new Image(w,h);
-	}
-	void expose(Color color, Vector3d & point, Viewport & vp) {
-		
-	}
-};
-
-class Viewport {
-public:
-	Vector3d LL; //lower left world coordinates
-	Vector3d LR; //lower right world coordinates
-	Vector3d UL; //lower left world coordinates
-	Vector3d UR; //lower right world coordinates
-	Viewport() {
-		
-	};
-	void setBoundaries(float llx, float lly, float llz, float lrx, float lry, float lrz, float urx, float ury, float urz, float ulx, float uly, float ulz) {
-		LL.setX(llx); LL.setY(lly); LL.setZ(llz);
-		LR.setX(lrx); LR.setY(lry); LR.setZ(lrz);
-		UL.setX(ulx); UL.setY(uly); UL.setZ(ulz);
-		UR.setX(urx); UR.setY(ury); UR.setZ(urz);
-	}
-};
 
 /** Creates samples across the viewport in world space */
 class Sampler {
@@ -110,7 +66,7 @@ Viewport viewport;
 Scene scene;
 
 Color raytrace(Ray ray) {
-	Color c(1, 0, 0);
+	Color c(1.0f, 0.0f, 0.0f);
 	return c;
 }
 	
@@ -121,6 +77,7 @@ void render() {
 		point.debugMe();
 		film.expose(raytrace(Ray::getRay(eye, point)), point, viewport); //Functional == Beautiful
 	}
+	film.img->saveAsBMP("HELLOOOO.bmp");
 }
 
 //========================================
@@ -195,8 +152,7 @@ int main(int argc,char **argv) {
 	printInfo("Raytracer Initialized");
 	
 	//Testing for Now
-	film.width = 5;
-	film.height = 5;
+	film.setDimensions(8, 8);
 	eye.setX(0.0f);
 	eye.setY(0.0f);
 	eye.setZ(0.0f);
