@@ -11,6 +11,8 @@ using namespace std;
 #define printStartDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A; }
 #define printPartialDebug(A)	if (DEBUG) { cout << A; }
 
+#define printError(A) 	cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A;
+
 #define printInfo(A)	if (INFO) {cout << clock()/(CLOCKS_PER_SEC*1000); cout << "ms: " << A << endl; }
 
 int DEBUG = 0;

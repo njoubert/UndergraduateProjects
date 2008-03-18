@@ -33,11 +33,11 @@ public:
 		
 		//for space [l,r]x[b,t] for corners (l,b) to (u,r)
 		//x = floor((u - l)/(r - l) * width);
-		//y = floor((v - b)/(t - b) * height);
+		//y = floor((u - l)/(r - l) * width);
 		
 		//Be sure to round down!
-		img->setPixel(,
-				,
+		img->setPixel((int) floor((p.x - vp.LL.x)/(vp.LR.x - vp.LL.x) * width),
+				(int) floor((p.y - vp.LL.y)/(vp.UL.y - vp.LL.y) * height),
 				color.getBMPR(0,1),
 				color.getBMPG(0,1),
 				color.getBMPB(0,1));

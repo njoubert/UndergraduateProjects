@@ -43,7 +43,8 @@ public:
 	 */
 	inline int absolutePosition(int x, int y) {
 		if (x < 0 || x > (w) || y < 0 || y > (h)) {
-			printDebug(5, "Tried to get a pixel outside of valid range!");
+			printError("Tried to get a pixel outside of valid range!");
+			exit(1);
 		}
 		return x + (y * w);
 	}
