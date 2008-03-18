@@ -2,10 +2,10 @@
 #define PARSER_C_
 
 /**
- * The aim of this file is to parse input files
- * describing objects in a scene. Three main categories
- * are in a scene:
- * -- Camera (eye and viewport)
+ * The aim of this file is to parse input files into Scene objects.
+ * Three main categories of objects appear
+ * in a scene:
+ * -- Camera (Eye and Viewport)
  * -- Lights
  * -- Primitives
  * 
@@ -24,7 +24,6 @@
  * operative        operands
  *  eye             x y z
  *  viewport        llx lly llz lrx lry lrz urx ury urz ulx uly ulz
- *  boundingbox     llx lly llz lrx lry lrz urx ury urz ulx uly ulz
  *  sphere          center radius ksr ksg ksb kar kag kab kdr kdg kdb
  *  ellipse         [...]
  *  triangle        [vertex1] [vertex2] [vertex3] ksr ksg ksb kar kag kab kdr kdg kdb
@@ -59,7 +58,7 @@ public:
     }
 private:
     static bool parseLine(string line, Scene * scene) {
-        printDebug(5, "Parsing Line: " << line);
+        printDebug(4, "Parsing Line: " << line);
         return true;
     }
 };

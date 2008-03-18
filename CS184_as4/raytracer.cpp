@@ -12,6 +12,8 @@
 #include "Primitives.cpp"
 #include "Image.cpp"
 #include "Algebra.cpp"
+#include "Film.cpp"
+#include "Sampler.cpp"
 #include "Parser.cpp"
 #include "Scene.cpp"
 #include "assert.h"
@@ -20,48 +22,12 @@
 
 using namespace std;
 
-class Sampler;
-
-/** Creates samples across the viewport in world space */
-class Sampler {
-public:
-	Sampler(Viewport & viewport, Film & f):view(viewport), film(f) {
-		incrementu = 1 / (double) film.width;
-		incrementv = 1 / (double) film.height;
-		v = incrementv/2;
-		u = -incrementu/2; //hack to start off correctly
-	}
-
-	bool getPoint(Vector3d & p) {
-		u += incrementu;
-		if (u > 1) {
-			u = incrementu / 2;
-			v += incrementv;
-		}
-		if (v > 1)
-			return false;
-		p.setX((1-u)*((1-v)*view.LL.x + v*view.UL.x) + u*((1-v)*view.LR.x + v*view.UR.x));
-		p.setY((1-u)*((1-v)*view.LL.y + v*view.UL.y) + u*((1-v)*view.LR.y + v*view.UR.y));
-		p.setZ((1-u)*((1-v)*view.LL.z + v*view.UL.z) + u*((1-v)*view.LR.z + v*view.UR.z));
-		return true;
-	}
-
-private:
-	Viewport & view;
-	Film & film;
-	double u, v;
-	double incrementu;
-	double incrementv;
-};
-
-
-
 //========================================
 // Rendering and Raytracing
 //========================================
 
-Scene* scene;
-string output;
+Film film;
+Scene* scene = NULL;
 
 //Trace this ray into the scene, returning its color.
 Color raytrace(Ray ray) {
@@ -70,12 +36,17 @@ Color raytrace(Ray ray) {
 }
 
 void render() {
-	Vector3d point;
-	//Sampler sampler(viewport, film);
-	//while (sampler.getPoint(point)) {
-	//	point.debugMe();
-	//	film.expose(raytrace(Ray::getRay(eye, point)), point, viewport); //Functional == Beautiful
-	//}
+    printInfo("Rendering...");
+	Point point;
+	Sampler sampler(scene, film);
+	while (sampler.getPoint(point)) {
+		//point.debugMe();
+		printInfoChar("#");
+		film.expose(raytrace(Ray::getRay(scene->eye.pos, point)), point, scene); //Functional == Beautiful
+	}
+	printInfoChar("\n");
+	printInfo("Saving output file " << film.name);
+	film.img->saveAsBMP(film.name);
 	
 }
 
@@ -132,7 +103,20 @@ int parseCommandLine(int argc, char *argv[]) {
 	                malformedArg = true;
 	            }
 
-        } else {
+        } else if (!strcmp(argv[i], "-output")) {
+            if (isThereMore(i, argc, 3)) {
+                
+                //FILL IN!
+                film.name = string(argv[++i]);
+                int w = atoi(argv[++i]);
+                int h = atoi(argv[++i]);
+                film.setDimensions(w,h);
+                
+              } else {
+                  malformedArg = true;
+              }
+
+      }  else {
 			malformedArg = true;
 		}
 
@@ -148,25 +132,24 @@ int parseCommandLine(int argc, char *argv[]) {
 }
 void printUsage() {
 	cout << "Usage: "<< endl;
-	cout << "  raytracer -scene path/to/file.scene\n   -output /path/to/out.bmp\n   [-d n]\n   [-q]\n   [-selftest]" << endl;
+	cout << "  raytracer -scene /path/to/file.scene\n   -output /path/to/out.bmp width height\n   [-d n]\n   [-q]\n   [-selftest]" << endl;
 }
 
 int main(int argc,char **argv) {
     printInfo("Raytracer Initialized"); 
     scene = NULL;
     
-	if (parseCommandLine(argc, argv) || scene == NULL || output.empty()) {
+	if (parseCommandLine(argc, argv) || scene == NULL || film.name.empty()) {
 		printUsage();
 		exit(1);
 	}
 	
 
 	//Testing for Now
-	//film.setDimensions(8, 8);
-	//eye.setX(0.0f);
-	//eye.setY(0.0f);
-	//eye.setZ(0.0f);
-	//viewport.setBoundaries(-1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f);
+	scene->eye.pos.setX(0.0f);
+	scene->eye.pos.setY(0.0f);
+	scene->eye.pos.setZ(0.0f);
+	scene->viewport.setBoundaries(-1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f);
 
 	render();
 

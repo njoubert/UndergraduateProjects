@@ -40,6 +40,12 @@ public:
 	float x, y, z;
 };
 
+class Point : public Vector3d {
+public:
+    double u;
+    double v;
+};
+
 class Color {
 public:
 	Color() {r=0;g=0;b=0;}

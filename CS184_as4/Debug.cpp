@@ -16,6 +16,8 @@ using namespace std;
 
 #define printInfo(A)	if (INFO) {cout << clock()/(CLOCKS_PER_SEC*1000); cout << "ms: " << A << endl; }
 
+#define printInfoChar(a)    if (INFO) { cout << a; }
+
 int DEBUG = 0;
 
 int INFO = 1;

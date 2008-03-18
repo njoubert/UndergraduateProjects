@@ -13,7 +13,7 @@ raytracer: raytracer.o
 	$(CC) raytracer.o $(LDOPTS) -o raytracer
 	
 raytracer.o: 
-	$(CC) Debug.cpp Image.cpp Algebra.cpp Primitives.cpp Scene.cpp Parser.cpp raytracer.cpp -c $(CCOPTS)
+	$(CC) Debug.cpp Image.cpp Algebra.cpp Primitives.cpp Scene.cpp Film.cpp Sampler.cpp Parser.cpp raytracer.cpp -c $(CCOPTS)
 	
 default: $(TARGETS)
 	rm -rf *.o
