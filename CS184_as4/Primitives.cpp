@@ -1,7 +1,7 @@
 #ifndef PRIMITIVES_C_
 #define PRIMITIVES_C_
 
-#include "Algebra.h"
+#include "Algebra.cpp"
 
 class Primitive {
 public:

@@ -12,8 +12,8 @@
 #include "Primitives.cpp"
 #include "Image.cpp"
 #include "Algebra.cpp"
-#include "Film.cpp"
-#include "Light.cpp"
+#include "Parser.cpp"
+#include "Scene.cpp"
 #include "assert.h"
 
 #define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
@@ -21,7 +21,6 @@
 using namespace std;
 
 class Sampler;
-class Scene;
 
 /** Creates samples across the viewport in world space */
 class Sampler {
@@ -55,21 +54,14 @@ private:
 	double incrementv;
 };
 
-class Scene {
-public:
-    vector<Light*> lights(0);
-    vector<Primitive*> objects(0);
-};
 
 
 //========================================
 // Rendering and Raytracing
 //========================================
 
-Film film;
-Vector3d eye;
-Viewport viewport;
-Scene scene;
+Scene* scene;
+string output;
 
 //Trace this ray into the scene, returning its color.
 Color raytrace(Ray ray) {
@@ -79,12 +71,12 @@ Color raytrace(Ray ray) {
 
 void render() {
 	Vector3d point;
-	Sampler sampler(viewport, film);
-	while (sampler.getPoint(point)) {
-		point.debugMe();
-		film.expose(raytrace(Ray::getRay(eye, point)), point, viewport); //Functional == Beautiful
-	}
-	film.img->saveAsBMP("HELLOOOO.bmp");
+	//Sampler sampler(viewport, film);
+	//while (sampler.getPoint(point)) {
+	//	point.debugMe();
+	//	film.expose(raytrace(Ray::getRay(eye, point)), point, viewport); //Functional == Beautiful
+	//}
+	
 }
 
 //========================================
@@ -131,7 +123,16 @@ int parseCommandLine(int argc, char *argv[]) {
 			selftest();
 			exit(0);
 
-		} else {
+		} else if (!strcmp(argv[i], "-scene")) {
+	          if (isThereMore(i, argc, 1)) {
+	                scene = Parser::parseScene(string(argv[++i]));
+	                if (scene == NULL)
+	                    malformedArg = true;
+	            } else {
+	                malformedArg = true;
+	            }
+
+        } else {
 			malformedArg = true;
 		}
 
@@ -147,26 +148,28 @@ int parseCommandLine(int argc, char *argv[]) {
 }
 void printUsage() {
 	cout << "Usage: "<< endl;
-	cout << "  raytracer [-d] [-q] [-selftest] \\" << endl;
+	cout << "  raytracer -scene path/to/file.scene\n   -output /path/to/out.bmp\n   [-d n]\n   [-q]\n   [-selftest]" << endl;
 }
 
 int main(int argc,char **argv) {
-
-	if (parseCommandLine(argc, argv)) {
+    printInfo("Raytracer Initialized"); 
+    scene = NULL;
+    
+	if (parseCommandLine(argc, argv) || scene == NULL || output.empty()) {
 		printUsage();
 		exit(1);
 	}
-	printInfo("Raytracer Initialized");
+	
 
 	//Testing for Now
-	film.setDimensions(80, 80);
-	eye.setX(0.0f);
-	eye.setY(0.0f);
-	eye.setZ(0.0f);
-	viewport.setBoundaries(-1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f);
+	//film.setDimensions(8, 8);
+	//eye.setX(0.0f);
+	//eye.setY(0.0f);
+	//eye.setZ(0.0f);
+	//viewport.setBoundaries(-1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f);
 
 	render();
 
-	printInfo("Raytraycer Done");
+	printInfo("Raytracer Done");
 	return 0;
 }
