@@ -67,9 +67,10 @@
 <p>
 <h2>First Steps - Writing images!</h2>
 <br>Since we need to output pretty things, we need o be able to write pixels to disk somehow. I'm going to go with writing BMP files, since the format is very straightforward. I opted to roll my own code to do this, rather than mess with libraries. This keeps my executable size small, makes linking easy, teaches me more about image format, and frankly only takes about 20 lines. I coded up the basic procedure to write out the headers and pixel data, which i'm storing internally in a dynamically allocated array. Here is my first Blank Screen of Death:
-<br><img src="images/rt-BSOD.bmp"/> Yes, it is a little blank box. Wee!
+<br><center><img src="images/rt-BSOD.bmp"/> </center>
+<br>Yes, it is a little blank box. Wee!
 <br>This is a crucial piece of code to get right, so i generated a couple of test images to make sure it works nicely. I iterated over all the pixels in the image, alternatively moving from 0 to 255 color values along the x and y values, alternating between red, green and blue. The output was exactly what I expected it to be, so at least this part works!
-<br><img src="images/rt-redgreen.bmp"/><img src="images/rt-bluegreen.bmp"/>
+<br><img src="images/rt-redgreen.bmp"/>&nbsp<img src="images/rt-bluegreen.bmp"/>
 </p>
 
 

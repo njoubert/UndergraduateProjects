@@ -11,6 +11,11 @@
 
 <strong>Examples</strong> <br />
           <br />
+          
+<p>
+	<b>Sample OBJ files</b>
+	<br/>Here's an <a href="examples/teapot.obj">OBJ</a> of the famous Teapot, using only vertices and triangle faces.
+</p>
 
 <p>
 	<b>Developing C++ OpenGL applications with Eclipse and Linux</b>
