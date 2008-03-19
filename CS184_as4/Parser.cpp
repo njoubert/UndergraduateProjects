@@ -68,6 +68,10 @@ public:
         // - a viewport
         
         inFile.close();
+        
+        if (!isDone())
+            printError("File was compeletely read but did not contain all the necessary elements!");
+        
         return sc;
     }
 private:
@@ -165,6 +169,24 @@ private:
             success = scene->addPointLight(x,y,z,r,g,b);
             printDebug(3, "Parsed PointLight input to ("<<x<<","<<y<<","<<z<<") color ("<<r<<","<<g<<","<<b<<")");
 
+            
+            
+        } else if (operand.compare("v") == 0) {
+
+            float x, y, z;
+            ss >>x >>y >>z;
+            success = scene->insertVertice(x,y,z);
+            printDebug(3, "Parsed Vertice input to ("<<x<<","<<y<<","<<z<<")");
+
+        } else if (operand.compare("f") == 0) {
+
+            int v1, v2, v3;
+            ss >>v1 >>v2 >>v3;
+            success = scene->addFaceFromVertices(v1,v2,v3);
+            printDebug(3, "Parsed Face input to vettice "<<v1<<", "<<v2<<" and "<<v3);
+
+            
+            
         } else {
             printError("Unknown operand in scene file, skipping line: " << operand);
         }

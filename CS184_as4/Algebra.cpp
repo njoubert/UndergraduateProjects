@@ -52,9 +52,9 @@ public:
 	Color(float r, float g, float b) { setColor(r,g,b); }
 	
 	inline void setColor(float r, float g, float b) { this->r = r; this->g = g; this->b = b; }
-	inline char getBMPR(int min, int max) { return (char) linearScale(min, max, 0, 255, r); }
-	inline char getBMPG(int min, int max) { return (char) linearScale(min, max, 0, 255, g); }
-	inline char getBMPB(int min, int max) { return (char) linearScale(min, max, 0, 255, b); }
+	inline unsigned char getBMPR(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, r); }
+	inline unsigned char getBMPG(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, g); }
+	inline unsigned char getBMPB(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, b); }
 	
 	inline void debugMe() {
 		printDebug(5, "Color=(" << r << "," << g << "," << b << ")");

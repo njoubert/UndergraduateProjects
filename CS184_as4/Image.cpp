@@ -16,9 +16,9 @@ using namespace std;
 class Image {
 public:
 	typedef struct pixel {
-		char b;
-		char g;
-		char r;
+		unsigned char b;
+		unsigned char g;
+		unsigned char r;
 	} pixel;
 	int w;
 	int h;
@@ -48,11 +48,19 @@ public:
 		}
 		return x + (y * w);
 	}
-	void setPixel(int x, int y, char r, char g, char b) {
+	void setPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
 		int pos = absolutePosition(x, y);
 		pixels[pos].r = r;
 		pixels[pos].g = g;
 		pixels[pos].b = b;
+	}
+	
+	bool getPixel(int x, int y, unsigned char* r, unsigned char* g, unsigned char* b) {
+	    int pos = absolutePosition(x, y);
+	    *r = pixels[pos].r;
+	    *g = pixels[pos].g;
+	    *b = pixels[pos].b;
+	    return true;
 	}
 
 	/* This routine is an adaptation of the saveBMP routine written by

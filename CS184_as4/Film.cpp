@@ -32,18 +32,11 @@ public:
             printError("Attempted to expose a film before image was initialized! call setDimensions first!");
             exit(1);
         }
-            
-        //Transform between coordinates!!! 
-        
-        //This only works for a square or rectangle!
-        
-        //for space [l,r]x[b,t] for corners (l,b) to (u,r)
-        //x = floor((u - l)/(r - l) * width);
-        //y = floor((u - l)/(r - l) * width);
-        
+        int x = (int) floor(p.u * width);
+        int y = (int) floor(p.v * height);
+        printDebug(5, "Saving to pixel ("<<x<<","<<y<<") color ("<<(int)color.getBMPR(0,1)<<","<<(int)color.getBMPG(0,1)<<","<<(int)color.getBMPB(0,1)<<")");
         //Be sure to round down!
-        img->setPixel((int) floor(p.u * width),
-                (int) floor(p.v * height),
+        img->setPixel(x,y,
                 color.getBMPR(0,1),
                 color.getBMPG(0,1),
                 color.getBMPB(0,1));

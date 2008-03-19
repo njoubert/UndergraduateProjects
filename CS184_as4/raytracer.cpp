@@ -59,7 +59,6 @@ void selftest() {
     printInfo("Selftest Started!");
     ret += Image::selfTest();
 
-
     if (ret == 0) {
         printInfo("Selftest Completed!");
     } else
@@ -99,6 +98,7 @@ int parseCommandLine(int argc, char *argv[]) {
                     scene = p.parseScene(string(argv[++i]));
                     if (scene == NULL || !p.isDone())
                         malformedArg = true;
+                    
                 } else {
                     malformedArg = true;
                 }
@@ -119,7 +119,7 @@ int parseCommandLine(int argc, char *argv[]) {
         }
 
         if (malformedArg) {
-            printDebug(0, "Malformed input arg in parsing command \"" << argv[i] << "\"");
+            printError("Malformed input arg in parsing command \"" << argv[i] << "\"");
             printUsage = true;
         }
     }

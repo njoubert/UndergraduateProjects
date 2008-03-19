@@ -64,7 +64,7 @@ private:
 
 class Scene {
     vector<Light*> lights;
-    vector<Primitive*> objects;
+    vector<Primitive*> primitives;
 
 public:
     
@@ -73,7 +73,7 @@ public:
             float kar, float kag, float kab,
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
-        
+        primitives.push_back(new Sphere(radius,x,y,z,ksr,ksg,ksb,ksp,kar,kag,kab,kdr,kdg,kdb,rr,rg,rb));
         return true;
     }
     
@@ -93,6 +93,16 @@ public:
         return true;
     }
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
+        
+        return true;
+    }
+    
+    bool insertVertice(float x, float y, float z) {
+        
+        return true;
+    }
+    
+    bool addFaceFromVertices(int v1, int v2, int v3) {
         
         return true;
     }
