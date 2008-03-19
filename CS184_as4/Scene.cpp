@@ -69,7 +69,7 @@ class Scene {
 public:
     
     bool addSphere(float radius, float x, float y, float z, 
-            float ksr, float ksg, float ksb, 
+            float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
@@ -80,7 +80,7 @@ public:
     bool addTriangle(float x1, float y1, float z1, 
             float x2, float y2, float z2, 
             float x3, float y3, float z3, 
-            float ksr, float ksg, float ksb, 
+            float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab, 
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
@@ -89,6 +89,10 @@ public:
     }
     
     bool addDirectionLight(float x, float y, float z, float r, float g, float b) {
+        
+        return true;
+    }
+    bool addPointLight(float x, float y, float z, float r, float g, float b) {
         
         return true;
     }
