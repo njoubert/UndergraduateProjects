@@ -50,10 +50,13 @@ public:
         if (desc < 0)
             return numeric_limits<float>::infinity(); //no hit!
         desc = sqrt(desc);
-        
-
+        double minde_c = -1*(ray.d.dot(&e_c));
+        double t1 = (minde_c - desc)/(double)dd;
+        double t2 = (minde_c + desc)/(double)dd;
         printDebug(3, "Hit a sphere!");
-        return desc;
+        if (t1 < t2)
+        	return t1;
+        return t2;
     }
     
     static int selfTest() {
