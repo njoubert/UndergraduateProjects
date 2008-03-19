@@ -68,8 +68,11 @@ class Scene {
 
 public:
     
-    void addSphere(float radius, float x, float y, float z) {
-        
+    bool addSphere(float radius, float x, float y, float z, 
+            float ksr, float ksg, float ksb, 
+            float kar, float kag, float kab,
+            float kdr, float kdg, float kdb) {
+        return true;
     }
     
     void addTriangle() {
