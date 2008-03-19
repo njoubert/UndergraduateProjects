@@ -67,10 +67,18 @@
 <p>
 <h2>First Steps - Writing images!</h2>
 <br>Since we need to output pretty things, we need o be able to write pixels to disk somehow. I'm going to go with writing BMP files, since the format is very straightforward. I opted to roll my own code to do this, rather than mess with libraries. This keeps my executable size small, makes linking easy, teaches me more about image format, and frankly only takes about 20 lines. I coded up the basic procedure to write out the headers and pixel data, which i'm storing internally in a dynamically allocated array. Here is my first Blank Screen of Death:
-<br><center><img src="images/rt-BSOD.bmp"/> </center>
+<br><center><img src="images/rt-BSOD.jpg"/> </center>
 <br>Yes, it is a little blank box. Wee!
 <br>This is a crucial piece of code to get right, so i generated a couple of test images to make sure it works nicely. I iterated over all the pixels in the image, alternatively moving from 0 to 255 color values along the x and y values, alternating between red, green and blue. The output was exactly what I expected it to be, so at least this part works!
-<br><img src="images/rt-redgreen.bmp"/>&nbsp<img src="images/rt-bluegreen.bmp"/>
+<br><img src="images/rt-redgreen.jpg"/>&nbsp<img src="images/rt-bluegreen.jpg"/>
+
+<p>
+I decided to implement many of the less "glamorous" features before moving on to outputting fancy graphics. I designed my raytracer as a whole (documented in the README file I will post further down) and implemented .OBJ file parsing (which I slightly extended to support my definition of spheres and lights), argument parsing, Scene generation (which consists of an eye, viewport, lights and primitives), Sampling the viewport and aggregating these samples into a film, which sets output to my image library.
+This took quite a while, as you can imagine, and I wrote unit tests and significant debugging hooks. I implemented 5 levels of debugging printout, as well as error and info output, which logs a timestamp, function, file and line number. I tested as I implemented to ensure my code works as I expect it to. Finally I could parse full OBJ files (see the teapot.obj posted under examples), create all the necessary memory structures, and set it up ready for raytracing. So far, I had no cool output to show yet, thus I started working on ray intersection code around 2am today. It didn't take long to get basic sphere intersection going, and here's the fruits of my labors. As you can see, I can already instantiate multiple copies of a sphere, and move my camera perspective around in all kinds of cool ways:
+<br><img src="images/rt-1firstsphere.jpg"/>
+<br><img src="images/rt-2multispheres.jpg"/>
+<br><img src="images/rt-3cameraperspective.jpg"/>
+</p>
 </p>
 
 
