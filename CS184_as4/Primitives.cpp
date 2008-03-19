@@ -5,9 +5,16 @@
 
 class Primitive {
 public:
+    virtual ~Primitive();
+    virtual bool intersect(Ray & ray)=0;
+};
+
+class Sphere : public Primitive {
+public:
     bool intersect(Ray & ray) {
         return false;
     }
+    
 };
 
 #endif /*PRIMITIVES_C_*/

@@ -24,9 +24,9 @@
  * operative        operands
  *  eye             x y z
  *  viewport        llx lly llz lrx lry lrz urx ury urz ulx uly ulz
- *  sphere          x y z radius ksr ksg ksb kar kag kab kdr kdg kdb
+ *  sphere          x y z radius ksr ksg ksb kar kag kab kdr kdg kdb rr rg rb
  *  ellipse         [...]
- *  triangle        [vertex1] [vertex2] [vertex3] ksr ksg ksb kar kag kab kdr kdg kdb
+ *  triangle        x1 y1 z1 x2 y2 z2 x3 y3 z3 ksr ksg ksb kar kag kab kdr kdg kdb rr rg rb
  *  directionlight  x y z r g b
  *  pointlight      x y z r g b
  * 
@@ -134,9 +134,9 @@ private:
                 
         } else if (operand.compare("sphere") == 0) {
             
-            float x, y, z, r, ksr, ksg, ksb, kar, kag, kab, kdr, kdg, kdb;
-            ss >> x >> y >> z >> r >> ksr>> ksg>> ksb>> kar>> kag>> kab>> kdr>> kdg>> kdb;
-            success = scene->addSphere(r,x,y,z,ksr,ksg,ksb,kar,kag,kab,kdr,kdg,kdb);
+            float x, y, z, r, ksr, ksg, ksb, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
+            ss >>x >>y >>z >>r >> ksr>> ksg>> ksb>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
+            success = scene->addSphere(r,x,y,z,ksr,ksg,ksb,kar,kag,kab,kdr,kdg,kdb,rr,rg,rb);
             printDebug(3, "Parsed Sphere Input to (" << x << "," << y << "," << z << ") r=" << r);
             
         } else if (operand.compare("ellipse") == 0) {
@@ -145,11 +145,17 @@ private:
             
         } else if (operand.compare("triangle") == 0) {
             
-            printDebug(3, "  ");
+            float x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
+            ss >>x1>> y1>> z1>> x2>> y2>> z2>> x3>> y3>> z3>> ksr>> ksg>> ksb>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
+            success = scene->addTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, kar, kag, kab, kdr, kdg, kdb,rr,rg,rb);
+            printDebug(3, "Parsed Triangle Input to ("<<x1<<","<<y1<<","<<z1<<") ("<<x2<<","<<y2<<","<<z2<<") ("<<x3<<","<<y3<<","<<z3<<")");
             
         } else if (operand.compare("directionlight") == 0) {
             
-            printDebug(3, "  ");
+            float x, y, z, r, g, b;
+            ss >>x >>y >>z >>r >>g >>b;
+            success = scene->addDirectionLight(x,y,z,r,g,b);
+            printDebug(3, "Parsed DirectionLight input to ("<<x<<","<<y<<","<<z<<") color ("<<r<<","<<g<<","<<b<<")");
             
         } else if (operand.compare("pointlight") == 0) {
             
