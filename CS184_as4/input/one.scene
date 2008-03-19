@@ -12,4 +12,4 @@ directionlight 10 0 10 0.0 0.0 0.5
 #Object Definitions Follow:
 
 #sphere 	x y z   r ksr ksg ksb ksp kar kag kab kdr kdg kdb
-sphere 		0 0 -15 5 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
+sphere 		0 0 -15 8 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0

@@ -104,14 +104,16 @@ public:
     }
     
     Primitive* intersect(Ray & ray, float* t_ptr) {
-        float t;
+        float t = numeric_limits<float>::infinity();
+        *t_ptr = numeric_limits<float>::infinity();
+        Primitive* p = NULL;
         for (unsigned int i = 0; i < primitives.size(); i++) {
-            if ((t = primitives[i]->intersect(ray)) != numeric_limits<float>::infinity()) {
+            if ((t = primitives[i]->intersect(ray)) < *t_ptr) {
                 *t_ptr = t;
-                return primitives[i];
+                p = primitives[i];
             }
         }
-        return NULL;
+        return p;
         
     }
     

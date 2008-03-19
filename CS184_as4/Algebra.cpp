@@ -116,7 +116,8 @@ public:
 	Ray() {}
 	
 	Vector3d getPos(float t) {
-		return (e + t*d);
+	    Vector3d dt = d*t;
+		return (e + dt);
 	}
 	
 	static Ray getRay(Vector3d & start, Vector3d & end) {

@@ -16,7 +16,7 @@ raytracer.o:
 	$(CC) Debug.cpp Image.cpp Algebra.cpp Primitives.cpp Scene.cpp Film.cpp Sampler.cpp Parser.cpp raytracer.cpp -c $(CCOPTS)
 	
 default: $(TARGETS)
-	
+	rm -rf *.o
 
 clean:
 	/bin/rm -f *.o $(TARGETS)

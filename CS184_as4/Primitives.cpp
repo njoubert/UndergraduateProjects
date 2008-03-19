@@ -64,21 +64,21 @@ public:
         Sphere sp(5, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0);
         Ray r;
         r.e.setPos(-10, 0, 0);
-        r.d.setPos(2,0.2,0.2);
+        r.d.setPos(2,0,0);
         float t = sp.intersect(r);
         Vector3d i = r.getPos(t);
         printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");
-        return t;
+        return (int) t;
     }
 };
 
 class Vertex {
 public:
-	Vertex() {hasVN = false;};
+	Vertex() {hasVN = false;}
 	Vector3d v;  //vertex position
 	Vector3d vn; //vertex normal
 	bool hasVN;
-}
+};
 
 class Triangle : public Primitive {
 public:

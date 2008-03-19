@@ -86,7 +86,7 @@ public:
 private:
     bool parsedEye;
     bool parsedViewport;
-    vector<Vertex*> vertexBuffer;
+    vector<Vector3d*> vertexBuffer;
     Color ka, kd, ks, kr;
     float ksp;
     
