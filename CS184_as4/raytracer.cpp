@@ -17,6 +17,7 @@
 #include "Parser.cpp"
 #include "Scene.cpp"
 #include "assert.h"
+#include <limits>
 
 #define isThereMore(CURR, MAX, WANT)	((MAX - CURR) > WANT)
 
@@ -40,11 +41,8 @@ void render() {
     Point point;
     Sampler sampler(scene, film);
     while (sampler.getPoint(point)) {
-        //point.debugMe();
-        printInfoChar("#");
         film.expose(raytrace(Ray::getRay(scene->eye.pos, point)), point, scene); //Functional == Beautiful
     }
-    printInfoChar("\n");
     printInfo("Saving output file " << film.name);
     film.img->saveAsBMP(film.name);
 

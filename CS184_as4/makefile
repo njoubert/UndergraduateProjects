@@ -21,4 +21,4 @@ default: $(TARGETS)
 clean:
 	/bin/rm -f *.o $(TARGETS)
 	
-all: clean default
+all: default

@@ -2,6 +2,7 @@
 #define PRIMITIVES_C_
 
 #include "Algebra.cpp"
+#include <limits>
 
 class Primitive {
 public:
@@ -10,7 +11,12 @@ public:
     virtual ~Primitive() {
         ;
     }
-    virtual bool intersect(Ray & ray, Vector3d & intersection)=0;
+    /** 
+     * Returns the point along the ray parameter t 
+     * where the ray intersects this primitive.
+     * returns numeric_limits<float>::infinity();
+     * if no intersection occurs. */
+    virtual float intersect(Ray & ray)=0;
 };
 
 class Sphere : public Primitive {
@@ -35,8 +41,8 @@ public:
         printDebug(4, "Created Sphere!");
     }
     
-    bool intersect(Ray & ray, Vector3d & intersection) {
-        return false;
+    float intersect(Ray & ray) {
+        return numeric_limits<float>::infinity();
     }
 };
 
@@ -74,8 +80,8 @@ public:
         this->kr = kr;
         
     }
-    bool intersect(Ray & ray, Vector3d & intersection) {
-        return false;
+    float intersect(Ray & ray) {
+        return numeric_limits<float>::infinity();
     }
 };
 

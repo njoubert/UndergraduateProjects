@@ -8,13 +8,13 @@
 
 using namespace std;
 
-#define printDebug(A, B)	if (DEBUG >= A) { cout << " " << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << B << endl; }
+#define printDebug(A, B)	if (DEBUG >= A) { cout << "  "; cout << clock()*1000/CLOCKS_PER_SEC; cout <<"ms: " << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << B << endl; }
 #define printStartDebug(A)	if (DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A; }
 #define printPartialDebug(A)	if (DEBUG) { cout << A; }
 
-#define printError(A) 	cerr << "!!! " << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl;
+#define printError(A) 	cerr << "!!!  " << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl;
 
-#define printInfo(A)	if (INFO) {cout << clock()/(CLOCKS_PER_SEC*1000); cout << "ms: " << A << endl; }
+#define printInfo(A)	if (INFO) {cout << clock()*1000/CLOCKS_PER_SEC; cout << "ms: " << A << endl; }
 
 #define printInfoChar(a)    if (INFO) { cout << a; }
 
