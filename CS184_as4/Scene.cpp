@@ -85,6 +85,7 @@ public:
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
         
+        primitives.push_back(new Triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb,rr,rg,rb));
         return true;
     }
     

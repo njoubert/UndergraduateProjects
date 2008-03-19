@@ -28,6 +28,11 @@ public:
 		y = y/l;
 		z = z/l;
 	}
+	inline void setPos(float x, float y, float z) {
+	    this->x = x;
+	    this->y = y;
+	    this->z = z;
+	}
 	inline float getX() { return x; }
 	inline float getY() { return y; }
 	inline float getZ() { return z; }
