@@ -30,6 +30,10 @@
  *  directionlight  x y z r g b
  *  pointlight      x y z r g b
  * 
+ *  #These are subsets of the actual .obj file implementation. This allows you to draw triangles:
+ *  v               x y z           
+ *  f               v1 v2 v3
+ * 
  */
 #include <string>
 #include <sstream>
@@ -42,6 +46,11 @@ class Parser {
 public:
     Parser() {
         parsedEye = false; parsedViewport = false;
+        ka.setColor(0.5, 0.5, 0.5);
+        kd.setColor(0.5, 0.5, 0.5);
+        ks.setColor(0.5, 0.5, 0.5);
+        kr.setColor(0.5, 0.5, 0.5);
+        ksp = 2.0;
     }
     
     bool isDone() {
@@ -77,6 +86,9 @@ public:
 private:
     bool parsedEye;
     bool parsedViewport;
+    vector<Vector3d*> vertexBuffer;
+    Color ka, kd, ks, kr;
+    float ksp;
     
     bool parseLine(string line, Scene * scene) {
         string operand;
@@ -175,15 +187,19 @@ private:
 
             float x, y, z;
             ss >>x >>y >>z;
-            success = scene->insertVertice(x,y,z);
-            printDebug(3, "Parsed Vertice input to ("<<x<<","<<y<<","<<z<<")");
+            vertexBuffer.push_back(new Vector3d(x,y,z));
+            printDebug(3, "Parsed Vertex input to ("<<x<<","<<y<<","<<z<<") into vertice buffer.");
 
         } else if (operand.compare("f") == 0) {
 
             int v1, v2, v3;
             ss >>v1 >>v2 >>v3;
-            success = scene->addFaceFromVertices(v1,v2,v3);
-            printDebug(3, "Parsed Face input to vettice "<<v1<<", "<<v2<<" and "<<v3);
+            Vector3d* ver1 = vertexBuffer[v1-1];
+            Vector3d* ver2 = vertexBuffer[v2-1];
+            Vector3d* ver3 = vertexBuffer[v3-1];
+            
+            success = scene->addTriangle(ver1, ver2, ver3, ks, ka, kd, kr, ksp);
+            printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
 
             
             

@@ -68,6 +68,8 @@ class Scene {
 
 public:
     
+    
+    
     bool addSphere(float radius, float x, float y, float z, 
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
@@ -89,21 +91,16 @@ public:
         return true;
     }
     
+    bool addTriangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
+        primitives.push_back(new Triangle(v1,v2,v2,ks,ka,kd,kr,ksp));
+        return true;
+    }
+    
     bool addDirectionLight(float x, float y, float z, float r, float g, float b) {
         
         return true;
     }
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
-        
-        return true;
-    }
-    
-    bool insertVertice(float x, float y, float z) {
-        
-        return true;
-    }
-    
-    bool addFaceFromVertices(int v1, int v2, int v3) {
         
         return true;
     }

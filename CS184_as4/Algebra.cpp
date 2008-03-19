@@ -11,7 +11,7 @@ class Ray;
 class Vector3d {
 public:
 	Vector3d() {}
-	Vector3d(float x, float y, float z) {setX(x); setY(y); setZ(z); }
+	Vector3d(float x, float y, float z) { setPos(x,y,z); }
 	
 	inline void calculateReflective(const Vector3d & in, const Vector3d & normal) {
 		float scale = 2.0f*(in.dot(&normal));

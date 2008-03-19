@@ -10,7 +10,7 @@ public:
     virtual ~Primitive() {
         ;
     }
-    virtual bool intersect(Ray & ray)=0;
+    virtual bool intersect(Ray & ray, Vector3d & intersection)=0;
 };
 
 class Sphere : public Primitive {
@@ -35,7 +35,7 @@ public:
         printDebug(4, "Created Sphere!");
     }
     
-    bool intersect(Ray & ray) {
+    bool intersect(Ray & ray, Vector3d & intersection) {
         return false;
     }
 };
@@ -63,7 +63,18 @@ public:
         kr.setColor(rr, rg, rb);
     }
     
-    bool intersect(Ray & ray) {
+    Triangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
+        this->v1 = *v1;
+        this->v2 = *v2;
+        this->v3 = *v3;
+        sp = ksp;
+        this->ks = ks;
+        this->ka = ka;
+        this->kd = kd;
+        this->kr = kr;
+        
+    }
+    bool intersect(Ray & ray, Vector3d & intersection) {
         return false;
     }
 };
