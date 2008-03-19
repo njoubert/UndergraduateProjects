@@ -45,6 +45,28 @@ public:
         result -= v;
         return result;
     }
+    inline Vector3d & operator+=(Vector3d & v) {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+        return *this;
+    }
+    inline Vector3d operator+(Vector3d & v) {
+        Vector3d result = *this;
+        result += v;
+        return result;
+    }
+    inline Vector3d & operator*=(float t) {
+        x *= t;
+        y *= t;
+        z *= t;
+        return *this;
+    }
+    inline Vector3d operator*(float t) {
+        Vector3d result = *this;
+        result *= t;
+        return result;
+    }
 	inline float getX() { return x; }
 	inline float getY() { return y; }
 	inline float getZ() { return z; }
@@ -91,7 +113,10 @@ public:
     Vector3d e;
     Vector3d d;
         
-	Ray() {
+	Ray() {}
+	
+	Vector3d getPos(float t) {
+		return (e + t*d);
 	}
 	
 	static Ray getRay(Vector3d & start, Vector3d & end) {

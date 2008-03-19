@@ -60,22 +60,31 @@ public:
     }
     
     static int selfTest() {
+   		printInfo("Testing Sphere Intersection...");
         Sphere sp(5, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0);
         Ray r;
         r.e.setPos(-10, 0, 0);
-        r.d.setPos(2,0,0);
+        r.d.setPos(2,0.2,0.2);
         float t = sp.intersect(r);
-        cout << "Intersect at t=" << t <<endl;;
-        
-        return (t != numeric_limits<float>::infinity());
+        Vector3d i = r.getPos(t);
+        printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");
+        return t;
     }
 };
 
+class Vertex {
+public:
+	Vertex() {hasVN = false;};
+	Vector3d v;  //vertex position
+	Vector3d vn; //vertex normal
+	bool hasVN;
+}
+
 class Triangle : public Primitive {
 public:
-    Vector3d v1;
-    Vector3d v2;
-    Vector3d v3;
+    Vertex v1;
+    Vertex v2;
+    Vertex v3;
     Triangle(float x1, float y1, float z1, 
             float x2, float y2, float z2, 
             float x3, float y3, float z3, 
@@ -84,9 +93,9 @@ public:
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
         
-        v1.setPos(x1, y1, z1);
-        v2.setPos(x2, y2, z2);
-        v3.setPos(x3, y3, z3);
+        v1.v.setPos(x1, y1, z1);
+        v2.v.setPos(x2, y2, z2);
+        v3.v.setPos(x3, y3, z3);
         sp = ksp;
         ks.setColor(ksr, ksg, ksb);
         ka.setColor(kar, kag, kab);
@@ -95,16 +104,16 @@ public:
     }
     
     Triangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
-        this->v1 = *v1;
-        this->v2 = *v2;
-        this->v3 = *v3;
+        this->v1.v = *v1;
+        this->v2.v = *v2;
+        this->v3.v = *v3;
         sp = ksp;
         this->ks = ks;
         this->ka = ka;
         this->kd = kd;
         this->kr = kr;
-        
     }
+    
     float intersect(Ray & ray) {
         return numeric_limits<float>::infinity();
     }
