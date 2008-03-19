@@ -5,6 +5,7 @@
 #include "Debug.cpp"
 
 class Vector3d;
+class Point;
 class Color;
 class Ray;
 
@@ -33,6 +34,17 @@ public:
 	    this->y = y;
 	    this->z = z;
 	}
+    inline Vector3d & operator-=(Vector3d & v) {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
+        return *this;
+    }
+    inline Vector3d operator-(Vector3d & v) {
+        Vector3d result = *this;
+        result -= v;
+        return result;
+    }
 	inline float getX() { return x; }
 	inline float getY() { return y; }
 	inline float getZ() { return z; }
@@ -75,17 +87,19 @@ protected:
 
 class Ray {
 public:
+    //p(t) = e + td
+    Vector3d e;
+    Vector3d d;
+        
 	Ray() {
 	}
 	
 	static Ray getRay(Vector3d & start, Vector3d & end) {
 		Ray r;
-		r.zero = start;
-		r.one = end;
+		r.e = start;
+		r.d = (end - start);
 		return r;
 	}
-	Vector3d zero;
-	Vector3d one;
 };
 
 #endif /*ALGEBRA_C_*/

@@ -29,19 +29,42 @@ using namespace std;
 
 Film film;
 Scene* scene = NULL;
+int maxDepth = 5;
 
 //Trace this ray into the scene, returning its color.
-Color raytrace(Ray ray) {
-    Color c(1.0f, 0.0f, 0.0f);
-    return c;
+Color raytrace(Ray & ray, int depth) {
+    if (depth == 0)
+        return Color();
+    float t = 0;
+    Primitive* prim = NULL;
+    prim = scene->intersect(ray, &t);
+    if (prim == NULL)
+        return Color();
+    Color retColor;
+    retColor.setColor(0.5f,0.5f,0.5f);
+    //compute ambient
+        //retColor += ambient term
+    //for each light in scene
+        //create ray to that light
+        //check that it does not intersect anything, if it does, skip it.
+        //retColor += compute diffuse term
+        //retColor += compute speculat term
+    //if reflective
+        //compute reflection ray
+        //retColor += reytrace(reflective ray, depth - 1)
+    
+    return retColor;
+    
 }
 
 void render() {
     printInfo("Rendering...");
     Point point;
+    Ray ray;
     Sampler sampler(scene, film);
     while (sampler.getPoint(point)) {
-        film.expose(raytrace(Ray::getRay(scene->eye.pos, point)), point, scene); //Functional == Beautiful
+        ray = Ray::getRay(scene->eye.pos, point);
+        film.expose(raytrace(ray, maxDepth), point, scene); //Functional == Beautiful
     }
     printInfo("Saving output file " << film.name);
     film.img->saveAsBMP(film.name);
@@ -56,6 +79,7 @@ void selftest() {
     int ret=0;
     printInfo("Selftest Started!");
     ret += Image::selfTest();
+    ret += Sphere::selfTest();
 
     if (ret == 0) {
         printInfo("Selftest Completed!");
@@ -139,13 +163,6 @@ int main(int argc,char **argv) {
         printUsage();
         exit(1);
     }
-
-
-    //Testing for Now
-    scene->eye.pos.setX(0.0f);
-    scene->eye.pos.setY(0.0f);
-    scene->eye.pos.setZ(0.0f);
-    scene->viewport.setBoundaries(-1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f);
 
     render();
 

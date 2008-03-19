@@ -67,9 +67,7 @@ class Scene {
     vector<Primitive*> primitives;
 
 public:
-    
-    
-    
+
     bool addSphere(float radius, float x, float y, float z, 
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
@@ -103,6 +101,18 @@ public:
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
         
         return true;
+    }
+    
+    Primitive* intersect(Ray & ray, float* t_ptr) {
+        float t;
+        for (unsigned int i = 0; i < primitives.size(); i++) {
+            if ((t = primitives[i]->intersect(ray)) != numeric_limits<float>::infinity()) {
+                *t_ptr = t;
+                return primitives[i];
+            }
+        }
+        return NULL;
+        
     }
     
     Eye eye;

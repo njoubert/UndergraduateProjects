@@ -112,7 +112,7 @@ private:
                 ss >> scene->eye.pos.x;
                 ss >> scene->eye.pos.y;
                 ss >> scene->eye.pos.z;
-                printDebug(3, "Parsed Eye Input to (" << scene->eye.pos.x << "," << scene->eye.pos.y << "," << scene->eye.pos.x << ")");
+                printDebug(3, "Parsed Eye Input to (" << scene->eye.pos.x << "," << scene->eye.pos.y << "," << scene->eye.pos.z << ")");
                 parsedEye = true;
                 
         } else if (operand.compare("viewport") == 0) {

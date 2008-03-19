@@ -22,7 +22,7 @@ public:
 class Sphere : public Primitive {
 public:
     float r;
-    Vector3d pos;
+    Vector3d c;
     Sphere(float radius, float x, float y, float z, 
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
@@ -30,9 +30,9 @@ public:
             float rr, float rg, float rb) {
         
         r = radius;
-        pos.setX(x);
-        pos.setY(y);
-        pos.setZ(z);
+        c.setX(x);
+        c.setY(y);
+        c.setZ(z);
         sp = ksp;
         ks.setColor(ksr, ksg, ksb);
         ka.setColor(kar, kag, kab);
@@ -42,7 +42,29 @@ public:
     }
     
     float intersect(Ray & ray) {
-        return numeric_limits<float>::infinity();
+        float dd = ray.d.dot(&ray.d);
+        Vector3d e_c = ray.e - c;
+        double desc = ray.d.dot(&e_c);
+        desc = desc*desc;
+        desc = desc - dd*(e_c.dot(&e_c) - r*r);
+        if (desc < 0)
+            return numeric_limits<float>::infinity(); //no hit!
+        desc = sqrt(desc);
+        
+
+        printDebug(3, "Hit a sphere!");
+        return desc;
+    }
+    
+    static int selfTest() {
+        Sphere sp(5, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0);
+        Ray r;
+        r.e.setPos(-10, 0, 0);
+        r.d.setPos(2,0,0);
+        float t = sp.intersect(r);
+        cout << "Intersect at t=" << t <<endl;;
+        
+        return (t != numeric_limits<float>::infinity());
     }
 };
 

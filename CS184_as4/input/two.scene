@@ -1,5 +1,5 @@
 # First Test to input shit
-eye         0 0 0 
+eye         0.0 0.0 0.0 
 #viewport   llx  lly  llz  lrx lry  lrz  urx ury urz  ulx  uly ulz
 viewport	-1.0 -1.0 -1.0 1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 1.0 -1.0
 
@@ -12,5 +12,8 @@ directionlight 10 0 10 0.0 0.0 0.5
 #Object Definitions Follow:
 
 #sphere 	x y z   r ksr ksg ksb ksp kar kag kab kdr kdg kdb
-sphere 		0 0 -10 5 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
+sphere 		4 4 -15 3 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
+sphere 		-4 4 -15 3 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
+sphere 		-4 -4 -15 3 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
+sphere 		4 -4 -15 3 0.5 0.5 0.5 1.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
 triangle	10 10 -15 10 0 -15 0 10 -15 0 0 0.5 1.0 0 0 0.5 0.3 0.4 0.5 0.0 0.0 0.0
