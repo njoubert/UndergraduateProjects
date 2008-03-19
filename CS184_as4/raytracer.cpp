@@ -40,8 +40,8 @@ Color raytrace(Ray & ray, int depth) {
     prim = scene->intersect(ray, &t);
     if (prim == NULL)
         return Color();
-    Color retColor;
-    retColor.setColor(0.5f,0.5f,0.5f);
+    Color retColor = prim->ka;
+    
     //compute ambient
         //retColor += ambient term
     //for each light in scene
