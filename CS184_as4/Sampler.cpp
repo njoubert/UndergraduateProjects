@@ -9,8 +9,8 @@
 class Sampler {
 public:
     Sampler(Scene * s, Film & f):scene(s), film(f) {
-        incrementu = 1 / (double) film.width;
-        incrementv = 1 / (double) film.height;
+        incrementu = (1 / (double) film.width);
+        incrementv = (1 / (double) film.height);
         v = incrementv/2;
         u = -incrementu/2; //hack to start off correctly
     }
