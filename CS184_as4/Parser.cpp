@@ -46,11 +46,11 @@ class Parser {
 public:
     Parser() {
         parsedEye = false; parsedViewport = false;
-        ka.setColor(0.5, 0.5, 0.5);
-        kd.setColor(0.5, 0.5, 0.5);
-        ks.setColor(0.5, 0.5, 0.5);
-        kr.setColor(0.5, 0.5, 0.5);
-        ksp = 2.0;
+        ka.setColor(0.4, 0.4, 0.4);
+        kd.setColor(0.4, 0.4, 0.4);
+        ks.setColor(0.4, 0.4, 0.4);
+        kr.setColor(0.2, 0.2, 0.2);
+        ksp = 20.0;
     }
     
     bool isDone() {

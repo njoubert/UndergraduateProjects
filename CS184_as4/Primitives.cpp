@@ -173,8 +173,8 @@ public:
         else if (c.hasVN)
             normal = c.vn;
         
-        Vector3d a_b = a.v - b.v;
-        Vector3d a_c = a.v - c.v;
+        Vector3d a_b = b.v - a.v;
+        Vector3d a_c = c.v - a.v;
 //        Vector3d vn1(-1*(a_b.y*a_c.z - a_b.z*a_c.y),
 //                -1*(a_b.z*a_c.x - a_b.x*a_c.z),
 //                -1*(a_b.x*a_c.y - a_b.y*a_c.x));
