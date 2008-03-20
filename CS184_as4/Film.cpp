@@ -42,7 +42,7 @@ public:
             oldpercent = newpercent;
             printDebug(1, "Exposing " << newpercent << "%");
         }
-
+        
         img->setPixel(x,y,
                 color.getBMPR(0,1),
                 color.getBMPG(0,1),

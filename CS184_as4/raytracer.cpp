@@ -53,14 +53,14 @@ Color raytrace(Ray & ray, int depth) {
             Primitive* occluder;
             if ((occluder = scene->intersect(shadow, &tl)) != NULL) {
                 if (tl > 0.001) {
-                    printDebug(1, "Shadow ray hit an object at t="<<tl);
-                    occluder->debugMe(1);               
+                    printDebug(5, "Shadow ray hit an object at t="<<tl);
+                    occluder->debugMe(5);               
                     continue;
                 }
                 
             }
             
-            printDebug(2, "Calculating lighting on object for light " << li);
+            printDebug(5, "Calculating lighting on object for light " << li);
             
             scene->lights[li]->getIncidenceNormal(p, incidence);    //INCIDENCE
             reflectance.calculateReflective(incidence, normal);     //REFLECTIVE
