@@ -20,6 +20,8 @@ public:
     
     /** Returns a normalized normal for the given point on the object. */
     virtual void calculateNormal(Vector3d & point, Vector3d & normal)=0;
+    
+    virtual void debugMe(int level)=0;
 };
 
 class Sphere : public Primitive {
@@ -65,6 +67,11 @@ public:
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
         normal.calculateFromPositions(&c, &point);
         normal.normalize();
+    }
+    
+    void debugMe(int level) {
+        if (DEBUG >= level)
+            cout << "Sphere at position ("<<c.x<<","<<c.y<<","<<c.z<<") radius="<<r << endl;
     }
     
     static int selfTest() {
@@ -130,6 +137,11 @@ public:
     
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
         
+    }
+    
+    void debugMe(int level) {
+        if (DEBUG >= level)
+            cout << "Triangle";
     }
 };
 

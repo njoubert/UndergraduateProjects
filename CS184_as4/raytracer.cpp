@@ -29,7 +29,7 @@ using namespace std;
 
 Film film;
 Scene* scene = NULL;
-int maxDepth = 5;
+int maxDepth = 2;
 
 //Trace this ray into the scene, returning its color.
 Color raytrace(Ray & ray, int depth) {
@@ -42,19 +42,26 @@ Color raytrace(Ray & ray, int depth) {
     if (prim == NULL)
         return retColor;
     Vector3d p = ray.getPos(t);
-    //retColor += prim->ka;
-    
-    Ray shadow; 
+    retColor += prim->ka;
     Vector3d normal, incidence, reflectance, view;
     view.calculateFromPositions(&p,&(scene->eye.pos));
-    view.normalize();
+    view.normalize();                                       //VIEW VECTOR
+    prim->calculateNormal(p, normal);                       //SURFACE NORMAL 
     for (unsigned int li = 0; li < scene->lights.size(); li++) {
-            shadow = Ray::getRay(p, scene->lights[li]->pos);
-            //if (scene->intersect(shadow, &tl) != NULL)
-            //    continue;
+        
+            Ray shadow = Ray::getRay(p, scene->lights[li]->pos);
+            Primitive* occluder;
+            if ((occluder = scene->intersect(shadow, &tl)) != NULL) {
+                if (tl > 0.001) {
+                    printDebug(1, "Shadow ray hit an object at t="<<tl);
+                    occluder->debugMe(1);               
+                    continue;
+                }
+                
+            }
+            
             printDebug(2, "Calculating lighting on object for light " << li);
             
-            prim->calculateNormal(p, normal);                       //NORMAL
             scene->lights[li]->getIncidenceNormal(p, incidence);    //INCIDENCE
             reflectance.calculateReflective(incidence, normal);     //REFLECTIVE
             reflectance.normalize();
@@ -69,9 +76,15 @@ Color raytrace(Ray & ray, int depth) {
     if (prim->kr.r > 0.0 || prim->kr.b > 0.0 || prim->kr.g > 0.0) {
         
             Ray refl;
-            //retColor += reytrace(reflective ray, depth - 1)
-        
+            Vector3d reflp;
+            reflp.calculateReflective(view, normal);
+            reflp.normalize();
+            refl.e = p;
+            refl.d = reflp;
+            retColor += prim->kr * raytrace(refl, depth - 1);
+       
     }
+    
     return retColor;
     
 }
@@ -131,6 +144,14 @@ int parseCommandLine(int argc, char *argv[]) {
     
                 selftest();
                 exit(0);
+
+        } else if (!strcmp(argv[i], "-maxdepth")) {
+            
+            if (isThereMore(i, argc, 1)) {
+                maxDepth = atoi(argv[++i]);
+            } else {
+                malformedArg = true;
+            }
 
         } else if (!strcmp(argv[i], "-scene")) {
             

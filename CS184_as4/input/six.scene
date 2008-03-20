@@ -1,19 +1,17 @@
 # First Test to input shit
 eye         0.0 0.0 0.0 
-#viewport   llx  lly  llz  lrx lry  lrz  urx ury urz  ulx  uly ulz
+#viewport   	llx  lly  llz  lrx lry  lrz  urx ury urz  ulx  uly ulz
 viewport	-1.0 -1.0 -2.0 1.0 -1.0 -2.0 1.0 1.0 -2.0 -1.0 1.0 -2.0
 
 #Lights Definitions Follow:
 
-pointlight 20 20 20 0.8 0.0 0.0
-pointlight -20 -20 20 0.0 0.8 0.0
-#pointlight 20 0 20 0.0 0.0 0.8
+pointlight 10 10 -10 0.8 0.8 0.8
+pointlight -10 -10 0 0.8 0.8 0.8
 
 #Object Definitions Follow:
 
 #sphere 	x y z   r ksr ksg ksb ksp kar kag kab kdr kdg kdb
-sphere 		2 2 -13 3 0.5 0.0 0.0 10.0 0.5 0.0 0.0 0.5 0.5 0.5 0.0 0.0 0.0
-sphere 		-2 2 -15 3 0.5 0.5 0.0 10.0 0.5 0.5 0.0 0.5 0.5 0.5 0.0 0.0 0.0
-sphere 		-2 -2 -17 3 0.0 0.5 0.5 10.0 0.0 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
-sphere 		2 -2 -20 3 0.0 0.0 0.5 10.0 0.0 0.0 0.5 0.5 0.5 0.5 0.0 0.0 0.0
-triangle	10 10 -15 10 0 -15 0 10 -15 0 0 0.5 1.0 0 0 0.5 0.3 0.4 0.5 0.0 0.0 0.0
+sphere 		4 4 -13 3 0.5 0.0 0.0 20.0 0.5 0.0 0.0 0.5 0.5 0.5 0.0 0.4 0.4
+sphere 		-3 3 -15 3 0.5 0.5 0.0 20.0 0.5 0.5 0.0 0.5 0.5 0.5 0.5 0.4 0.4
+sphere 		-4 -4 -17 3 0.0 0.5 0.5 20.0 0.0 0.5 0.5 0.5 0.5 0.5 0.4 0.4 0.4
+sphere 		4 -4 -20 3 0.0 0.0 0.5 20.0 0.0 0.0 0.5 0.5 0.5 0.5 0.4 0.4 0.5

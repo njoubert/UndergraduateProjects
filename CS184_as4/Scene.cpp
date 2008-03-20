@@ -55,7 +55,7 @@ public:
         printDebug(3, "Created new PointLight!");
     }
     inline void getIncidenceNormal(Vector3d & point, Vector3d & incidence) {
-        incidence.calculateFromPositions(&point, &pos);
+        incidence.calculateFromPositions(&point,&pos);
         incidence.normalize();
     }
 };
@@ -106,13 +106,14 @@ public:
         return true;
     }
     
-    /** Returns the closest object that the given ray intersects. */
+    /** Returns the closest object that the given ray intersects, or null */
     Primitive* intersect(Ray & ray, double* t_ptr) {
         double t;
         *t_ptr = numeric_limits<double>::infinity();
         Primitive* p = NULL;
         for (unsigned int i = 0; i < primitives.size(); i++) {
-            if ((t = primitives[i]->intersect(ray)) < *t_ptr) {
+            t = primitives[i]->intersect(ray);
+            if ((t < *t_ptr) && (t > 0)) {
                 *t_ptr = t;
                 p = primitives[i];
             }
