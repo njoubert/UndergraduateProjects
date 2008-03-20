@@ -78,6 +78,16 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-1firstsphere.jpg" width=400 height=200/>
 <br><img src="images/rt-2multispheres.jpg" width=400 height=400/>
 <br><img src="images/rt-3cameraperspective.jpg" width=400 height=400/>
+<br>
+<br>After getting a good framework in place, I was ready to hammer out the core part of the raytracer itself - intersection testing and ray casting. My ray casting procedure itself was fairly easy, since I could recycle all my shading code from the previous assignment, and I already had routines to calculate vector reflections and sphere normals. I used this to create shadow rays by casting a ray to each light, and have that affect the shading calculation. Reflections is done by calculating a reflection vector around the normal of the surface, and recursively calling my raytracing procedure on this new ray.
+<br>Ambient Shading was the first to be implemented and thoroughly tested, since this proved that my raytracing and intersection tests were working just fine:
+<br><img src="images/rt-4ambientcolors.jpg" width=400 height=400/>
+<br>I realized that I had a bug in finding the intersection point that did not guarantee the correct order along the ray, so after a slight modification I could draw overlapping spheres:
+<br><img src="images/rt-5overlapping.jpg" width=400 height=400/>
+<br>I made the necessary modifications for my shading code from the previous assignment to work with the rays I have available:
+<br><img src="images/rt-6shading.jpg" width=400 height=400/>
+<br>Two more modifications - one to cast rays to the light and check for an occluder, and one to recursively shade reflection rays. I'm extremely excited at this point:
+<br><img src="images/rt-7reflectionsshadows.jpg" width=400 height=400/>
 </p>
 </p>
 
