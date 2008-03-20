@@ -17,10 +17,10 @@ public:
      * returns numeric_limits<float>::infinity();
      * if no intersection occurs. */
     virtual double intersect(Ray & ray)=0;
-    
+
     /** Returns a normalized normal for the given point on the object. */
     virtual void calculateNormal(Vector3d & point, Vector3d & normal)=0;
-    
+
     virtual void debugMe(int level)=0;
 };
 
@@ -33,7 +33,7 @@ public:
             float kar, float kag, float kab,
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
-        
+
         r = radius;
         c.setX(x);
         c.setY(y);
@@ -45,7 +45,7 @@ public:
         kr.setColor(rr, rg, rb);
         printDebug(4, "Created Sphere!");
     }
-    
+
     double intersect(Ray & ray) {
         double dd = ray.d.dot(&ray.d);
         Vector3d e_c = ray.e - c;
@@ -54,28 +54,28 @@ public:
         desc = desc - dd*(e_c.dot(&e_c) - r*r);
         if (desc < 0)
             return numeric_limits<double>::infinity(); //no hit!
-        desc = sqrt(desc);
-        double minde_c = -1*(ray.d.dot(&e_c));
-        double t1 = (minde_c - desc)/dd;
-        double t2 = (minde_c + desc)/dd;
-        printDebug(4, "Hit a sphere!");
-        if (t1 < t2)
-        	return t1;
-        return t2;
+            desc = sqrt(desc);
+            double minde_c = -1*(ray.d.dot(&e_c));
+            double t1 = (minde_c - desc)/dd;
+            double t2 = (minde_c + desc)/dd;
+            printDebug(4, "Hit a sphere!");
+            if (t1 < t2)
+                return t1;
+            return t2;
     }
-    
+
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
         normal.calculateFromPositions(&c, &point);
         normal.normalize();
     }
-    
+
     void debugMe(int level) {
         if (DEBUG >= level)
             cout << "Sphere at position ("<<c.x<<","<<c.y<<","<<c.z<<") radius="<<r << endl;
     }
-    
+
     static int selfTest() {
-   		printInfo("Testing Sphere Intersection...");
+        printInfo("Testing Sphere Intersection...");
         Sphere sp(5, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0);
         Ray r;
         r.e.setPos(-10, 0, 0);
@@ -91,17 +91,17 @@ public:
 
 class Vertex {
 public:
-	Vertex() {hasVN = false;}
-	Vector3d v;  //vertex position
-	Vector3d vn; //vertex normal
-	bool hasVN;
+    Vertex() {hasVN = false;}
+    Vector3d v;  //vertex position
+    Vector3d vn; //vertex normal
+    bool hasVN;
 };
 
 class Triangle : public Primitive {
 public:
-    Vertex v1;
-    Vertex v2;
-    Vertex v3;
+    Vertex a;
+    Vertex b;
+    Vertex c;
     Triangle(float x1, float y1, float z1, 
             float x2, float y2, float z2, 
             float x3, float y3, float z3, 
@@ -109,40 +109,103 @@ public:
             float kar, float kag, float kab, 
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
-        
-        v1.v.setPos(x1, y1, z1);
-        v2.v.setPos(x2, y2, z2);
-        v3.v.setPos(x3, y3, z3);
+
+        a.v.setPos(x1, y1, z1);
+        b.v.setPos(x2, y2, z2);
+        c.v.setPos(x3, y3, z3);
         sp = ksp;
         ks.setColor(ksr, ksg, ksb);
         ka.setColor(kar, kag, kab);
         kd.setColor(kdr, kdg, kdb);
         kr.setColor(rr, rg, rb);
     }
-    
+
     Triangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
-        this->v1.v = *v1;
-        this->v2.v = *v2;
-        this->v3.v = *v3;
+        this->a.v = *v1;
+        this->b.v = *v2;
+        this->c.v = *v3;
         sp = ksp;
         this->ks = ks;
         this->ka = ka;
         this->kd = kd;
         this->kr = kr;
     }
-    
+
     double intersect(Ray & ray) {
-        return numeric_limits<double>::infinity();
+        double t = numeric_limits<double>::infinity();
+        Vector3d a_b = a.v - b.v;
+        Vector3d a_c = a.v - c.v;
+        Vector3d a_e = a.v - ray.e;
+        double ei_min_hf = (a_c.y)*(ray.d.z) - (ray.d.y)*(a_c.z); 
+        double gf_min_di = (ray.d.x)*(a_c.z) - (a_c.x)*(ray.d.z);
+        double dh_min_eg = (a_c.x)*(ray.d.y) - (a_c.y)*(ray.d.x);
+        double ak_min_jb = (a_b.x)*(a_e.y) - (a_e.x)*(a_b.y);
+        double jc_min_al = (a_e.x)*(a_b.z) - (a_b.x)*(a_e.z);
+        double bl_min_kc = (a_b.y)*(a_e.z) - (a_e.y)*(a_b.z);
+
+        double M = a_b.x*(ei_min_hf) + a_b.y*(gf_min_di) + a_b.z*(dh_min_eg);
+        if (M < 0.001 && M > -0.001) {
+            //printError("M is within [-0.001, 0.001] range!");
+            return numeric_limits<double>::infinity();
+        }   
+        t = -1*(a_c.z*(ak_min_jb) + a_c.y*(jc_min_al) + a_c.z*(bl_min_kc))/M;
+        if (t <= 0)
+            return numeric_limits<double>::infinity();
+         
+        printDebug(5,"Intersecting Triangle with M="<<M<<" and t="<<t);
+
+        double gamma = (ray.d.z*(ak_min_jb) + ray.d.y*(jc_min_al) + ray.d.x*(bl_min_kc))/M;
+        if (gamma < 0 || gamma > 1)
+            return numeric_limits<double>::infinity();
+        double beta = (a_e.x*(ei_min_hf) + a_e.y*(gf_min_di) + a_e.z*(dh_min_eg))/M;
+        if (beta < 0 || beta > 1)
+            return numeric_limits<double>::infinity();    
+        if ((gamma + beta) > 1)
+            return numeric_limits<double>::infinity();
+        return t;
     }
-    
+
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
+        if (a.hasVN)
+            normal = a.vn;
+        else if (b.hasVN)
+            normal = b.vn;
+        else if (c.hasVN)
+            normal = c.vn;
         
+        Vector3d a_b = a.v - b.v;
+        Vector3d a_c = a.v - c.v;
+//        Vector3d vn1(-1*(a_b.y*a_c.z - a_b.z*a_c.y),
+//                -1*(a_b.z*a_c.x - a_b.x*a_c.z),
+//                -1*(a_b.x*a_c.y - a_b.y*a_c.x));
+        Vector3d vn1(a_b.y*a_c.z - a_b.z*a_c.y,
+                a_b.z*a_c.x - a_b.x*a_c.z,
+                a_b.x*a_c.y - a_b.y*a_c.x);
+        vn1.normalize();
+        a.hasVN = true;
+        a.vn = vn1;
+        normal = vn1;
     }
-    
+
     void debugMe(int level) {
         if (DEBUG >= level)
             cout << "Triangle";
     }
+
+    static int selfTest() {
+        printInfo("Testing Triangle Intersection...");
+        Triangle tr(10, 0, -10,-10, 0, -10, 0, 10 ,-10 , 0,0,0,0,0,0,0,0,0,0,0,0,0);
+        Vector3d start(0,5,0);
+        Vector3d end(0,5,-2);
+        Ray r = Ray::getRay(start,end);
+        double t = tr.intersect(r);
+        Vector3d i = r.getPos(t);
+        printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");
+        if (t != 0)
+            return 0;
+        return 1;
+    }
+
 };
 
 #endif /*PRIMITIVES_C_*/

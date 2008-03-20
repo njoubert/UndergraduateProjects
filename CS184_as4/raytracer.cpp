@@ -66,7 +66,6 @@ Color raytrace(Ray & ray, int depth) {
             reflectance.calculateReflective(incidence, normal);     //REFLECTIVE
             reflectance.normalize();
             
-            
             //difuse term
             retColor += (prim->kd * scene->lights[li]->illumination) * max(incidence.dot(&normal), 0.0);
             //specular term
@@ -112,6 +111,7 @@ void selftest() {
     printInfo("Selftest Started!");
     ret += Image::selfTest();
     ret += Sphere::selfTest();
+    ret += Triangle::selfTest();
 
     if (ret == 0) {
         printInfo("Selftest Completed!");
