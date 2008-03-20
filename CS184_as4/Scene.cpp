@@ -43,31 +43,34 @@ public:
         illumination.setColor(r,g,b);
         pos.setX(x); pos.setY(y); pos.setZ(z);
     }
+    virtual void getIncidenceNormal(Vector3d & point, Vector3d & incidence) = 0;
     
-protected:
     Color illumination;
     Vector3d pos;
 };
 
 class PointLight: public Light {
 public:
-    
+    PointLight(float x,float y,float z,float r,float g,float b): Light(x,y,z,r,g,b) {
+        printDebug(3, "Created new PointLight!");
+    }
+    inline void getIncidenceNormal(Vector3d & point, Vector3d & incidence) {
+        incidence.calculateFromPositions(&point, &pos);
+        incidence.normalize();
+    }
 };
 
 class DirectionalLight: public Light {
 public:
-
-private:
-    
+    inline void getIncidenceNormal(Vector3d & point, Vector3d & incidence) {
+        
+    }
 };
 
 
 class Scene {
-    vector<Light*> lights;
     vector<Primitive*> primitives;
-
 public:
-
     bool addSphere(float radius, float x, float y, float z, 
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
@@ -99,13 +102,14 @@ public:
         return true;
     }
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
-        
+        lights.push_back(new PointLight(x,y,z,r,g,b));
         return true;
     }
     
-    Primitive* intersect(Ray & ray, float* t_ptr) {
-        float t = numeric_limits<float>::infinity();
-        *t_ptr = numeric_limits<float>::infinity();
+    /** Returns the closest object that the given ray intersects. */
+    Primitive* intersect(Ray & ray, double* t_ptr) {
+        double t;
+        *t_ptr = numeric_limits<double>::infinity();
         Primitive* p = NULL;
         for (unsigned int i = 0; i < primitives.size(); i++) {
             if ((t = primitives[i]->intersect(ray)) < *t_ptr) {
@@ -119,6 +123,7 @@ public:
     
     Eye eye;
     Viewport viewport;
+    vector<Light*> lights;
 };
 
 #endif /*SCENE_C_*/

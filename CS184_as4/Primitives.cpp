@@ -16,7 +16,10 @@ public:
      * where the ray intersects this primitive.
      * returns numeric_limits<float>::infinity();
      * if no intersection occurs. */
-    virtual float intersect(Ray & ray)=0;
+    virtual double intersect(Ray & ray)=0;
+    
+    /** Returns a normalized normal for the given point on the object. */
+    virtual void calculateNormal(Vector3d & point, Vector3d & normal)=0;
 };
 
 class Sphere : public Primitive {
@@ -41,22 +44,27 @@ public:
         printDebug(4, "Created Sphere!");
     }
     
-    float intersect(Ray & ray) {
-        float dd = ray.d.dot(&ray.d);
+    double intersect(Ray & ray) {
+        double dd = ray.d.dot(&ray.d);
         Vector3d e_c = ray.e - c;
         double desc = ray.d.dot(&e_c);
         desc = desc*desc;
         desc = desc - dd*(e_c.dot(&e_c) - r*r);
         if (desc < 0)
-            return numeric_limits<float>::infinity(); //no hit!
+            return numeric_limits<double>::infinity(); //no hit!
         desc = sqrt(desc);
         double minde_c = -1*(ray.d.dot(&e_c));
-        double t1 = (minde_c - desc)/(double)dd;
-        double t2 = (minde_c + desc)/(double)dd;
-        printDebug(3, "Hit a sphere!");
+        double t1 = (minde_c - desc)/dd;
+        double t2 = (minde_c + desc)/dd;
+        printDebug(4, "Hit a sphere!");
         if (t1 < t2)
         	return t1;
         return t2;
+    }
+    
+    inline void calculateNormal(Vector3d & point, Vector3d & normal) {
+        normal.calculateFromPositions(&c, &point);
+        normal.normalize();
     }
     
     static int selfTest() {
@@ -68,7 +76,9 @@ public:
         float t = sp.intersect(r);
         Vector3d i = r.getPos(t);
         printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");
-        return (int) t;
+        if (t != 0)
+            return 0;
+        return 1;
     }
 };
 
@@ -114,8 +124,12 @@ public:
         this->kr = kr;
     }
     
-    float intersect(Ray & ray) {
-        return numeric_limits<float>::infinity();
+    double intersect(Ray & ray) {
+        return numeric_limits<double>::infinity();
+    }
+    
+    inline void calculateNormal(Vector3d & point, Vector3d & normal) {
+        
     }
 };
 

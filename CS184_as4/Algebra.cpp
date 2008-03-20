@@ -12,7 +12,13 @@ class Ray;
 class Vector3d {
 public:
 	Vector3d() {}
-	Vector3d(float x, float y, float z) { setPos(x,y,z); }
+	Vector3d(double x, double y, double z) { setPos(x,y,z); }
+	
+	inline void calculateFromPositions(const Vector3d * const start, const Vector3d * const end) {
+	    setX(end->x - start->x);
+	    setY(end->y - start->y);
+	    setZ(end->z - start->z);
+	}
 	
 	inline void calculateReflective(const Vector3d & in, const Vector3d & normal) {
 		float scale = 2.0f*(in.dot(&normal));
@@ -20,16 +26,16 @@ public:
 		this->y = -in.y + scale*normal.y;
 		this->z = -in.z + scale*normal.z;
 	}
-	inline float dot(const Vector3d * other) const {
+	inline double dot(const Vector3d * other) const {
 		return x*other->x + y*other->y + z*other->z;
 	}
 	inline void normalize() {
-		float l = sqrt(x*x + y*y + z*z);
+	    double l = sqrt(x*x + y*y + z*z);
 		x = x/l;
 		y = y/l;
 		z = z/l;
 	}
-	inline void setPos(float x, float y, float z) {
+	inline void setPos(double x, double y, double z) {
 	    this->x = x;
 	    this->y = y;
 	    this->z = z;
@@ -56,27 +62,27 @@ public:
         result += v;
         return result;
     }
-    inline Vector3d & operator*=(float t) {
+    inline Vector3d & operator*=(double t) {
         x *= t;
         y *= t;
         z *= t;
         return *this;
     }
-    inline Vector3d operator*(float t) {
+    inline Vector3d operator*(double t) {
         Vector3d result = *this;
         result *= t;
         return result;
     }
-	inline float getX() { return x; }
-	inline float getY() { return y; }
-	inline float getZ() { return z; }
-	inline void setX(float x) { this->x = x; }
-	inline void setY(float y) { this->y = y; }
-	inline void setZ(float z) { this->z = z; }
+	inline double getX() { return x; }
+	inline double getY() { return y; }
+	inline double getZ() { return z; }
+	inline void setX(double x) { this->x = x; }
+	inline void setY(double y) { this->y = y; }
+	inline void setZ(double z) { this->z = z; }
 	inline void debugMe() {
 		printDebug(5, "Vector3d=(" << x << "," << y << "," << z << ")");
 	}
-	float x, y, z;
+	double x, y, z;
 };
 
 class Point : public Vector3d {
@@ -95,11 +101,51 @@ public:
 	inline unsigned char getBMPG(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, g); }
 	inline unsigned char getBMPB(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, b); }
 	
+	
 	inline void debugMe() {
 		printDebug(5, "Color=(" << r << "," << g << "," << b << ")");
 	}
-	
-protected:
+
+    Color & operator*=(const Color& other) {
+        r *= other.r;
+        g *= other.g;
+        b *= other.b;
+        return *this;
+    }
+    Color & operator*=(const Color* other) {
+        r *= other->r;
+        g *= other->g;
+        b *= other->b;
+        return *this;
+    }
+    Color & operator *=(float v) {
+        r *= v;
+        g *= v;
+        b *= v;
+        return *this;
+    }   
+    Color operator *(const Color & other) const {
+        Color result = *this; //Make a copy of the current class
+        result *= other;
+        return result;
+    }
+    Color operator *(float v) const {
+        Color result = *this; //Make a copy of the current class
+        result *= v;
+        return result;
+    }
+    Color operator +=(const Color & other) {
+        r += other.r;
+        g += other.g;
+        b += other.b;
+        return *this;
+    }
+    
+    Color operator +(const Color& other) const {
+        Color result = *this;
+        result += other;
+        return result;
+    }
 	float r, g, b;
 	inline float linearScale(float in_low, float in_high, float out_low, float out_high, float x) {
 		return (x - in_low)/(in_high-in_low)*(out_high-out_low) + out_low;

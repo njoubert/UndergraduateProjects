@@ -33,26 +33,45 @@ int maxDepth = 5;
 
 //Trace this ray into the scene, returning its color.
 Color raytrace(Ray & ray, int depth) {
+    printDebug(5, "Tracing Ray!");
+    Color retColor;
+    double t = 0, tl=0;
     if (depth == 0)
-        return Color();
-    float t = 0;
-    Primitive* prim = NULL;
-    prim = scene->intersect(ray, &t);
+        return retColor;
+    Primitive* prim = scene->intersect(ray, &t);
     if (prim == NULL)
-        return Color();
-    Color retColor = prim->ka;
+        return retColor;
+    Vector3d p = ray.getPos(t);
+    //retColor += prim->ka;
     
-    //compute ambient
-        //retColor += ambient term
-    //for each light in scene
-        //create ray to that light
-        //check that it does not intersect anything, if it does, skip it.
-        //retColor += compute diffuse term
-        //retColor += compute speculat term
-    //if reflective
-        //compute reflection ray
-        //retColor += reytrace(reflective ray, depth - 1)
-    
+    Ray shadow; 
+    Vector3d normal, incidence, reflectance, view;
+    view.calculateFromPositions(&p,&(scene->eye.pos));
+    view.normalize();
+    for (unsigned int li = 0; li < scene->lights.size(); li++) {
+            shadow = Ray::getRay(p, scene->lights[li]->pos);
+            //if (scene->intersect(shadow, &tl) != NULL)
+            //    continue;
+            printDebug(2, "Calculating lighting on object for light " << li);
+            
+            prim->calculateNormal(p, normal);                       //NORMAL
+            scene->lights[li]->getIncidenceNormal(p, incidence);    //INCIDENCE
+            reflectance.calculateReflective(incidence, normal);     //REFLECTIVE
+            reflectance.normalize();
+            
+            
+            //difuse term
+            retColor += (prim->kd * scene->lights[li]->illumination) * max(incidence.dot(&normal), 0.0);
+            //specular term
+            retColor += (prim->ks * scene->lights[li]->illumination) * pow(max(reflectance.dot(&view), 0.0), (double) prim->sp);
+    }
+        
+    if (prim->kr.r > 0.0 || prim->kr.b > 0.0 || prim->kr.g > 0.0) {
+        
+            Ray refl;
+            //retColor += reytrace(reflective ray, depth - 1)
+        
+    }
     return retColor;
     
 }

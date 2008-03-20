@@ -3,12 +3,6 @@ eye         0.0 0.0 0.0
 #viewport   llx  lly  llz  lrx lry  lrz  urx ury urz  ulx  uly ulz
 viewport	-3.0 -1.0 -2.0 3.0 -1.0 -2.0 1.0 1.0 -1.0 -1.0 1.0 -1.0
 
-#Lights Definitions Follow:
-
-directionlight 10 10 10 0.5 0.0 0.0
-directionlight -10 -10 10 0.0 0.5 0.0
-directionlight 10 0 10 0.0 0.0 0.5
-
 #Object Definitions Follow:
 
 #sphere 	x y z   r ksr ksg ksb ksp kar kag kab kdr kdg kdb

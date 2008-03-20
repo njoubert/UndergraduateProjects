@@ -9,7 +9,7 @@
  * into buckets for each pixel 
  * WORLD COORDINATES ===> IMAGE COORDINATES */
 class Film {
-    int oldpercent;
+    long oldpercent;
 public:
     int width;
     int height;
@@ -37,10 +37,10 @@ public:
         int y = (int) floor(p.v * height);
         printDebug(5, "Saving to pixel ("<<x<<","<<y<<") color ("<<(int)color.getBMPR(0,1)<<","<<(int)color.getBMPG(0,1)<<","<<(int)color.getBMPB(0,1)<<")");
         //Be sure to round down!
-        int newpercent = ((x + (y * width) + 1)*100)/(width*height);
+        long newpercent = ((long)((x + (y * (long)width) + 1))*100)/(long)(width*height);
         if (oldpercent != newpercent) {
             oldpercent = newpercent;
-            printDebug(2, "Exposing " << newpercent << "%");
+            printDebug(1, "Exposing " << newpercent << "%");
         }
 
         img->setPixel(x,y,
