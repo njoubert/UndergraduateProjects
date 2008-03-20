@@ -79,7 +79,7 @@ public:
         Sphere sp(5, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0);
         Ray r;
         r.e.setPos(-10, 0, 0);
-        r.d.setPos(2,0,0);
+        r.d.setPos(2,0.2,0.2);
         float t = sp.intersect(r);
         Vector3d i = r.getPos(t);
         printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");
@@ -113,22 +113,32 @@ public:
         a.v.setPos(x1, y1, z1);
         b.v.setPos(x2, y2, z2);
         c.v.setPos(x3, y3, z3);
+
+      printDebug(2, "New triangle with vertices a=("<<a.v.x<<","<<a.v.y<<","<<a.v.z<<") b=("<<b.v.x<<","<<b.v.y<<","<<b.v.z<<") c=("<<c.v.x<<","<<c.v.y<<","<<c.v.z<<")");
+
         sp = ksp;
         ks.setColor(ksr, ksg, ksb);
         ka.setColor(kar, kag, kab);
         kd.setColor(kdr, kdg, kdb);
         kr.setColor(rr, rg, rb);
     }
-
+ 
     Triangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
-        this->a.v = *v1;
-        this->b.v = *v2;
-        this->c.v = *v3;
+      a.v.setPos(v1->x,v1->y,v1->z);
+      b.v.setPos(v2->x,v2->y,v2->z);
+      c.v.setPos(v3->x,v3->y,v3->z);
+
+      printDebug(2, "New triangle with vertices a=("<<a.v.x<<","<<a.v.y<<","<<a.v.z<<") b=("<<b.v.x<<","<<b.v.y<<","<<b.v.z<<") c=("<<c.v.x<<","<<c.v.y<<","<<c.v.z<<")");
+
+      //this->b.v = v2;
+      //this->c.v = v3;
         sp = ksp;
         this->ks = ks;
         this->ka = ka;
         this->kd = kd;
         this->kr = kr;
+
+	ka.setColor(0.5,0.5,0.5);
     }
 
     double intersect(Ray & ray) {
@@ -144,10 +154,10 @@ public:
         double bl_min_kc = (a_b.y)*(a_e.z) - (a_e.y)*(a_b.z);
 
         double M = a_b.x*(ei_min_hf) + a_b.y*(gf_min_di) + a_b.z*(dh_min_eg);
-        if (M < 0.001 && M > -0.001) {
-            //printError("M is within [-0.001, 0.001] range!");
-            return numeric_limits<double>::infinity();
-        }   
+	//        if (M < 0.001 && M > -0.001) {
+	//  //printError("M is within [-0.001, 0.001] range!");
+	//  return numeric_limits<double>::infinity();
+        //}   
         t = -1*(a_c.z*(ak_min_jb) + a_c.y*(jc_min_al) + a_c.z*(bl_min_kc))/M;
         if (t <= 0)
             return numeric_limits<double>::infinity();

@@ -185,7 +185,7 @@ private:
             
         } else if (operand.compare("v") == 0) {
 
-            float x, y, z;
+            double x, y, z;
             ss >>x >>y >>z;
             vertexBuffer.push_back(new Vector3d(x,y,z));
             printDebug(3, "Parsed Vertex input to ("<<x<<","<<y<<","<<z<<") into vertice buffer.");
@@ -200,9 +200,8 @@ private:
             
             success = scene->addTriangle(ver1, ver2, ver3, ks, ka, kd, kr, ksp);
             printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
-
-            
-            
+        
+           
         } else {
             printError("Unknown operand in scene file, skipping line: " << operand);
         }
