@@ -90,6 +90,8 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-7reflectionsshadows.jpg" width=400 height=400/>
 <br>I wrote a little ruby script to generate environments for me, and here's a nice image with 6x6x6 cube of spheres, all reflecting off each other:
 <br><img src="images/rt-8many.jpg" width=400 height=400/>
+<br>I also managed to get my first triangle intersection code working. The normals aren't calculated correctly yet, thus you only see the ambient color term, but the intersection tests work!
+<br><img src="images/rt-9triangle.jpg" width=400 height=400/>
 </p>
 </p>
 
