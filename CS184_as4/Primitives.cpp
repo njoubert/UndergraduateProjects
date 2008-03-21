@@ -154,10 +154,10 @@ public:
         double bl_min_kc = (a_b.y)*(a_e.z) - (a_e.y)*(a_b.z);
 
         double M = a_b.x*(ei_min_hf) + a_b.y*(gf_min_di) + a_b.z*(dh_min_eg);
-	//        if (M < 0.001 && M > -0.001) {
-	//  //printError("M is within [-0.001, 0.001] range!");
-	//  return numeric_limits<double>::infinity();
-        //}   
+//        if (M < 0.001 && M > -0.001) {
+//            printError("M is within [-0.001, 0.001] range!");
+//            return numeric_limits<double>::infinity();
+//        }   
         t = -1*(a_c.z*(ak_min_jb) + a_c.y*(jc_min_al) + a_c.z*(bl_min_kc))/M;
         if (t <= 0)
             return numeric_limits<double>::infinity();

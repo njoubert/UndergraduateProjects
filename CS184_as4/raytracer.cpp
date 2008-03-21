@@ -47,9 +47,11 @@ Color raytrace(Ray & ray, int depth) {
     view.calculateFromPositions(&p,&(scene->eye.pos));
     view.normalize();                                       //VIEW VECTOR
     prim->calculateNormal(p, normal);                       //SURFACE NORMAL 
+    
     for (unsigned int li = 0; li < scene->lights.size(); li++) {
         
-            Ray shadow = Ray::getRay(p, scene->lights[li]->pos);
+            Ray shadow;
+            scene->lights[li]->getShadowRay(p, shadow);
             Primitive* occluder;
             if ((occluder = scene->intersect(shadow, &tl)) != NULL) {
                 if (tl > 0.001) {
@@ -72,6 +74,14 @@ Color raytrace(Ray & ray, int depth) {
             retColor += (prim->ks * scene->lights[li]->illumination) * pow(max(reflectance.dot(&view), 0.0), (double) prim->sp);
     }
         
+    if (retColor.r > 1)
+        retColor.r = 1;
+    if (retColor.g > 1)
+        retColor.g = 1;
+    if (retColor.b > 1)
+        retColor.b = 1;
+        
+    
     if (prim->kr.r > 0.0 || prim->kr.b > 0.0 || prim->kr.g > 0.0) {
         
             Ray refl;
@@ -83,6 +93,13 @@ Color raytrace(Ray & ray, int depth) {
             retColor += prim->kr * raytrace(refl, depth - 1);
        
     }
+    
+    if (retColor.r > 1)
+        retColor.r = 1;
+    if (retColor.g > 1)
+        retColor.g = 1;
+    if (retColor.b > 1)
+        retColor.b = 1;
     
     return retColor;
     

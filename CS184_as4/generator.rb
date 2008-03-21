@@ -5,7 +5,7 @@ stepsize = 5
 File.open("out.scene", "w") do |f|
 
 	f.puts "eye 0.0 0.0 5.0" 
-	f.puts "viewport -4.0 -4.0 -1.0 4.0 -4.0 -1.0 4.0 4.0 -1.0 -4.0 4.0 -1.0"
+	f.puts "viewport -5.0 -5.0 -1.0 5.0 -5.0 -1.0 5.0 5.0 -1.0 -5.0 5.0 -1.0"
 	
 	f.puts "pointlight 0 0 20 0.8 0.8 0.8"
 	

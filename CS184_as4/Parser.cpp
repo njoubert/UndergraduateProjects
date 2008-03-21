@@ -59,7 +59,7 @@ public:
     
     Scene* parseScene(string filename) {
         printInfo("Parsing Scene File " << filename);
-        char line[256];
+        char line[1024];
         Scene* sc = new Scene();
         ifstream inFile(filename.c_str(), ifstream::in);
         if (!inFile) {
@@ -67,7 +67,7 @@ public:
             exit(1);
         }
         while (inFile.good()) {
-            inFile.getline(line, 255);
+            inFile.getline(line, 1023);
             if (!parseLine(string(line), sc))
                 exit(1);
         }
@@ -167,7 +167,7 @@ private:
             success = scene->addTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb,rr,rg,rb);
             printDebug(3, "Parsed Triangle Input to ("<<x1<<","<<y1<<","<<z1<<") ("<<x2<<","<<y2<<","<<z2<<") ("<<x3<<","<<y3<<","<<z3<<")");
             
-        } else if (operand.compare("directionlight") == 0) {
+        } else if (operand.compare("directionallight") == 0) {
             
             float x, y, z, r, g, b;
             ss >>x >>y >>z >>r >>g >>b;

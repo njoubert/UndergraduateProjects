@@ -45,6 +45,8 @@ public:
     }
     virtual void getIncidenceNormal(Vector3d & point, Vector3d & incidence) = 0;
     
+    virtual void getShadowRay(Vector3d & point, Ray & shadow) = 0;
+    
     Color illumination;
     Vector3d pos;
 };
@@ -58,12 +60,24 @@ public:
         incidence.calculateFromPositions(&point,&pos);
         incidence.normalize();
     }
+    inline void getShadowRay(Vector3d & point, Ray & shadow) {
+        shadow = Ray::getRay(point, pos);
+    }
 };
 
 class DirectionalLight: public Light {
 public:
+    DirectionalLight(float x,float y,float z,float r,float g,float b): Light(x,y,z,r,g,b) {
+        printDebug(3, "Created new DirectionalLight!");
+    }
     inline void getIncidenceNormal(Vector3d & point, Vector3d & incidence) {
-        
+        Vector3d zero(0,0,0);
+        incidence.calculateFromPositions(&pos,&zero);
+        incidence.normalize();
+    }
+    inline void getShadowRay(Vector3d & point, Ray & shadow) {
+        shadow.e = point;
+        shadow.d = (pos)*(-1);
     }
 };
 
@@ -98,7 +112,7 @@ public:
     }
     
    bool addDirectionLight(float x, float y, float z, float r, float g, float b) {
-        
+       lights.push_back(new DirectionalLight(x,y,z,r,g,b));
         return true;
     }
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
