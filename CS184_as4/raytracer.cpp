@@ -84,7 +84,7 @@ Color raytrace(Ray & ray, int depth) {
             reflp.normalize();
             refl.e = p;
             refl.d = reflp;
-            refl.min_t = 0.1;
+            refl.min_t = 0.01;
             retColor += prim->kr * raytrace(refl, depth - 1);
        
     }
