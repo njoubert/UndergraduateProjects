@@ -73,6 +73,8 @@ Color raytrace(Ray & ray, int depth) {
             //specular term
             retColor += (prim->ks * scene->lights[li]->illumination) * pow(max(reflectance.dot(&view), 0.0), (double) prim->sp);
     }
+    
+    retColor.clip();
         
     if (prim->kr.r > 0.0 || prim->kr.b > 0.0 || prim->kr.g > 0.0) {
         
@@ -89,12 +91,7 @@ Color raytrace(Ray & ray, int depth) {
        
     }
     
-    if (retColor.r > 1)
-        retColor.r = 1;
-    if (retColor.g > 1)
-        retColor.g = 1;
-    if (retColor.b > 1)
-        retColor.b = 1;
+    retColor.clip();
     
     return retColor;
     

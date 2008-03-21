@@ -102,6 +102,14 @@ public:
 	inline unsigned char getBMPG(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, g); }
 	inline unsigned char getBMPB(int min, int max) { return (unsigned char) linearScale(min, max, 0, 255, b); }
 	
+	inline void clip() {
+	    if (r > 1)
+	        r = 1;
+	    if (g > 1)
+	        g = 1;
+	    if (b > 1)
+	        b = 1;
+	}
 	
 	inline void debugMe() {
 		printDebug(5, "Color=(" << r << "," << g << "," << b << ")");

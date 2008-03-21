@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-stepsize = 12
+stepsize = 8
 r = 2
 limithigh = 20
 limitlow = -20
