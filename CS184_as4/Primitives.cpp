@@ -203,7 +203,7 @@ public:
         Triangle tr(10, 0, -10,-10, 0, -10, 0, 10 ,-10 , 0,0,0,0,0,0,0,0,0,0,0,0,0);
         Vector3d start(0,5,0);
         Vector3d end(0,5,-2);
-        Ray r = Ray::getRay(start,end);
+        Ray r = Ray::getRay(start,end,0);
         double t = tr.intersect(r);
         Vector3d i = r.getPos(t);
         printInfo("Intersect at t="<<t<<" pos=("<<i.x<<","<<i.y<<","<<i.z<<")");

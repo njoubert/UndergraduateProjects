@@ -52,14 +52,14 @@ Color raytrace(Ray & ray, int depth) {
         
             Ray shadow;
             scene->lights[li]->getShadowRay(p, shadow);
+            
             Primitive* occluder;
             if ((occluder = scene->intersect(shadow, &tl)) != NULL) {
-                if (tl > 0.001) {
+                if (tl > 0) {
                     printDebug(5, "Shadow ray hit an object at t="<<tl);
                     occluder->debugMe(5);               
-                    continue;
+                    continue;  
                 }
-                
             }
             
             printDebug(5, "Calculating lighting on object for light " << li);
@@ -84,6 +84,7 @@ Color raytrace(Ray & ray, int depth) {
             reflp.normalize();
             refl.e = p;
             refl.d = reflp;
+            refl.min_t = 0.1;
             retColor += prim->kr * raytrace(refl, depth - 1);
        
     }
@@ -105,7 +106,7 @@ void render() {
     Ray ray;
     Sampler sampler(scene, film);
     while (sampler.getPoint(point)) {
-        ray = Ray::getRay(scene->eye.pos, point);
+        ray = Ray::getRay(scene->eye.pos, point,0);
         film.expose(raytrace(ray, maxDepth), point, scene); //Functional == Beautiful
     }
     printInfo("Saving output file " << film.name);

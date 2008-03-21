@@ -159,18 +159,22 @@ public:
     //p(t) = e + td
     Vector3d e;
     Vector3d d;
+    float min_t;
         
-	Ray() {}
+	Ray() {min_t = 0;}
 	
 	Vector3d getPos(float t) {
+	    if (t < min_t)
+	        printError("Request for a ray position with t < t_min: "<<t<<"<"<<min_t);
 	    Vector3d dt = d*t;
 		return (e + dt);
 	}
 	
-	static Ray getRay(Vector3d & start, Vector3d & end) {
+	static Ray getRay(Vector3d & start, Vector3d & end, float min_t) {
 		Ray r;
 		r.e = start;
 		r.d = (end - start);
+		r.min_t = min_t;
 		return r;
 	}
 };

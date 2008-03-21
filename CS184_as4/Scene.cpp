@@ -9,6 +9,7 @@
 #include "Primitives.cpp"
 #include "Image.cpp"
 
+#define SHADOWBIAS 0.1
 
 class Light;
 class PointLight;
@@ -61,7 +62,7 @@ public:
         incidence.normalize();
     }
     inline void getShadowRay(Vector3d & point, Ray & shadow) {
-        shadow = Ray::getRay(point, pos);
+        shadow = Ray::getRay(point, pos, SHADOWBIAS);
     }
 };
 
@@ -78,6 +79,7 @@ public:
     inline void getShadowRay(Vector3d & point, Ray & shadow) {
         shadow.e = point;
         shadow.d = (pos)*(-1);
+        shadow.min_t = SHADOWBIAS;
     }
 };
 
@@ -126,8 +128,8 @@ public:
         *t_ptr = numeric_limits<double>::infinity();
         Primitive* p = NULL;
         for (unsigned int i = 0; i < primitives.size(); i++) {
-            t = primitives[i]->intersect(ray);
-            if ((t < *t_ptr) && (t > 0)) {
+            t = primitives[i]->intersect(ray);  
+            if ((t < *t_ptr) && (t > ray.min_t)) {          //checking here works...
                 *t_ptr = t;
                 p = primitives[i];
             }
