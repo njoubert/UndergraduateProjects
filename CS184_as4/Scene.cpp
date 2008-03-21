@@ -9,7 +9,7 @@
 #include "Primitives.cpp"
 #include "Image.cpp"
 
-#define SHADOWBIAS 0.1
+#define SHADOWBIAS 0.0001
 
 class Light;
 class PointLight;

@@ -138,38 +138,72 @@ public:
     }
 
     double intersect(Ray & ray) {
-        double t = numeric_limits<double>::infinity();
-        Vector3d a_b = a.v - b.v;
-        Vector3d a_c = a.v - c.v;
-        Vector3d a_e = a.v - ray.e;
-        double ei_min_hf = (a_c.y)*(ray.d.z) - (ray.d.y)*(a_c.z); 
-        double gf_min_di = (ray.d.x)*(a_c.z) - (a_c.x)*(ray.d.z);
-        double dh_min_eg = (a_c.x)*(ray.d.y) - (a_c.y)*(ray.d.x);
-        double ak_min_jb = (a_b.x)*(a_e.y) - (a_e.x)*(a_b.y);
-        double jc_min_al = (a_e.x)*(a_b.z) - (a_b.x)*(a_e.z);
-        double bl_min_kc = (a_b.y)*(a_e.z) - (a_e.y)*(a_b.z);
+        double a, b, c, d, e, f, g, h, i, j, k, l;
+        a = this->a.v.x - this->b.v.x;
+        b = this->a.v.y - this->b.v.y;
+        c = this->a.v.z - this->b.v.z;
+        d = this->a.v.x - this->c.v.x;
+        e = this->a.v.y - this->c.v.y;
+        f = this->a.v.z - this->c.v.z;
+        g = ray.d.x;
+        h = ray.d.y;
+        i = ray.d.z;
+        j = this->a.v.x - ray.e.x;
+        k = this->a.v.y - ray.e.y;
+        l = this->a.v.z - ray.e.z;    
 
-        double M = a_b.x*(ei_min_hf) + a_b.y*(gf_min_di) + a_b.z*(dh_min_eg);
+        double M = a*(e*i-h*f)+b*(g*f-d*i)+c*(d*h-e*g);
+        
+        double t = -(f*(a*k-j*b)+e*(j*c-a*l)+d*(b*l-k*c))/M;
+        if (t < ray.min_t)
+          return numeric_limits<double>::infinity();
+          
+        double gamma = (i*(a*k-j*b)+h*(j*c-a*l)+g*(b*l-k*c))/M;
+        if (gamma < 0 || gamma > 1)
+            return numeric_limits<double>::infinity();
+
+        double beta = (j*(e*i-h*f)+k*(g*f-d*i)+l*(d*h-e*g))/M;
+        if (beta < 0 || beta > 1-gamma)
+            return numeric_limits<double>::infinity();
+
+        return t;
+
+    }
+    
+    
+//    double intersect(Ray & ray) {
+//        double t = numeric_limits<double>::infinity();
+//        Vector3d a_b = a.v - b.v;
+//        Vector3d a_c = a.v - c.v;
+//        Vector3d a_e = a.v - ray.e;
+//        double ei_min_hf = (a_c.y)*(ray.d.z) - (ray.d.y)*(a_c.z); 
+//        double gf_min_di = (ray.d.x)*(a_c.z) - (a_c.x)*(ray.d.z);
+//        double dh_min_eg = (a_c.x)*(ray.d.y) - (a_c.y)*(ray.d.x);
+//        double ak_min_jb = (a_b.x)*(a_e.y) - (a_e.x)*(a_b.y);
+//        double jc_min_al = (a_e.x)*(a_b.z) - (a_b.x)*(a_e.z);
+//        double bl_min_kc = (a_b.y)*(a_e.z) - (a_e.y)*(a_b.z);
+//
+//        double M = a_b.x*(ei_min_hf) + a_b.y*(gf_min_di) + a_b.z*(dh_min_eg);
 //        if (M < 0.001 && M > -0.001) {
 //            printError("M is within [-0.001, 0.001] range!");
 //            return numeric_limits<double>::infinity();
 //        }   
-        t = -1*(a_c.z*(ak_min_jb) + a_c.y*(jc_min_al) + a_c.z*(bl_min_kc))/M;
-        if (t <= 0)
-            return numeric_limits<double>::infinity();
-         
-        printDebug(5,"Intersecting Triangle with M="<<M<<" and t="<<t);
-
-        double gamma = (ray.d.z*(ak_min_jb) + ray.d.y*(jc_min_al) + ray.d.x*(bl_min_kc))/M;
-        if (gamma < 0 || gamma > 1)
-            return numeric_limits<double>::infinity();
-        double beta = (a_e.x*(ei_min_hf) + a_e.y*(gf_min_di) + a_e.z*(dh_min_eg))/M;
-        if (beta < 0 || beta > 1)
-            return numeric_limits<double>::infinity();    
-        if ((gamma + beta) > 1)
-            return numeric_limits<double>::infinity();
-        return t;
-    }
+//        t = -1*(a_c.z*(ak_min_jb) + a_c.y*(jc_min_al) + a_c.z*(bl_min_kc))/M;
+//        if (t <= 0)
+//            return numeric_limits<double>::infinity();
+//         
+//        printDebug(5,"Intersecting Triangle with M="<<M<<" and t="<<t);
+//
+//        double gamma = (ray.d.z*(ak_min_jb) + ray.d.y*(jc_min_al) + ray.d.x*(bl_min_kc))/M;
+//        if (gamma < 0 || gamma > 1)
+//            return numeric_limits<double>::infinity();
+//        double beta = (a_e.x*(ei_min_hf) + a_e.y*(gf_min_di) + a_e.z*(dh_min_eg))/M;
+//        if (beta < 0 || beta > 1)
+//            return numeric_limits<double>::infinity();    
+//        if ((gamma + beta) > 1)
+//            return numeric_limits<double>::infinity();
+//        return t;
+//    }
 
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
 //        if (a.hasVN)
