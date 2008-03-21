@@ -88,10 +88,18 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-6shading.jpg" width=400 height=400/>
 <br>Two more modifications - one to cast rays to the light and check for an occluder, and one to recursively shade reflection rays. I'm extremely excited at this point:
 <br><img src="images/rt-7reflectionsshadows.jpg" width=400 height=400/>
-<br>I wrote a little ruby script to generate environments for me, and here's a nice image with 6x6x6 cube of spheres, all reflecting off each other (click to enlarge):
+<br>I wrote a little ruby script to generate environments for me, and here's a nice image with 6x6x3 cube of spheres, all reflecting off each other (click to enlarge):
 <br><a href="images/rt-8many.jpg"><img src="images/rt-8many.jpg" width=400 height=400/></a>
 <br>I also managed to get my first triangle intersection code working. The normals aren't calculated correctly yet, thus you only see the ambient color term, but the intersection tests work!
 <br><img src="images/rt-9triangle.jpg" width=400 height=400/>
+<br>I started having a lot of strange images when I tried doing more than 1 reflection, and after a long night of struggling my buddy <a href="http://inst.cs.berkeley.edu/~cs184-ak/">Navin</a> finally pointed out that my rays are intersecting with the object they are reflecting off, since I didn't add a reflection bias to the ray. This ended up being an easy fix, and I started doing some pretty cool reflections. Here's some more eye candy:
+<br><img src="images/rt-10colorcube.jpg" width=400 height=400/>
+<br>Let's add some reflections! It gets crazy since I'm clipping colors:
+<br><img src="images/rt-11colorcubewithref.jpg" width=400 height=400/>
+<br>My triangle code doesn't seem to play too nicely yet... what's going on?!
+<br><img src="images/rt-12shadows.jpg" width=400 height=400/>
+<br>But my spheres make pretty reflections!
+<br><img src="images/rt-13spherereflections.jpg" width=400 height=400/>
 </p>
 </p>
 
