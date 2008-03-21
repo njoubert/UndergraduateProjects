@@ -100,6 +100,11 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-12shadows.jpg" width=400 height=400/>
 <br>But my spheres make pretty reflections!
 <br><img src="images/rt-13spherereflections.jpg" width=400 height=400/>
+<br>I've been having a lot of issues with triangles, and finally found that I was not calculating the ray parameter correctly. After fixing the numerical issues, I could finally draw some pretty pictures!
+<br><img src="images/rt-15reflectionswork.jpg" width=400 height=400/>
+<br><img src="images/rt-16firstscene.jpg" width=400 height=400/>
+<br>And I could finally render that damn teapot!!!!! Notice how I only do flat shading at the moment. I'll attempt to interpolate normals soon enough...
+<br><img src="images/rt-17teapot1.jpg" width=400 height=400/>
 </p>
 </p>
 
