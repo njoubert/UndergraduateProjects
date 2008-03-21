@@ -3,7 +3,7 @@ CC          = g++ -g -Wall -fmessage-length=0
 cc          = gcc -g -Wall -fmessage-length=0
 #-----------------------------------------
 #Optimization ----------------------------
-OPT   = -O3
+OPT   = -O2
 #-----------------------------------------
 TARGETS = raytracer
 OBJECTS = raytracer.o
