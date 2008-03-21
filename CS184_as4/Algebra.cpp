@@ -26,6 +26,7 @@ public:
 		this->y = -in.y + scale*normal.y;
 		this->z = -in.z + scale*normal.z;
 	}
+
 	inline double dot(const Vector3d * other) const {
 		return x*other->x + y*other->y + z*other->z;
 	}

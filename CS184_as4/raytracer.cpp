@@ -74,15 +74,9 @@ Color raytrace(Ray & ray, int depth) {
             retColor += (prim->ks * scene->lights[li]->illumination) * pow(max(reflectance.dot(&view), 0.0), (double) prim->sp);
     }
         
-    if (retColor.r > 1)
-        retColor.r = 1;
-    if (retColor.g > 1)
-        retColor.g = 1;
-    if (retColor.b > 1)
-        retColor.b = 1;
-        
-    
     if (prim->kr.r > 0.0 || prim->kr.b > 0.0 || prim->kr.g > 0.0) {
+        
+            printDebug(2, "Calculating Reflective!");
         
             Ray refl;
             Vector3d reflp;

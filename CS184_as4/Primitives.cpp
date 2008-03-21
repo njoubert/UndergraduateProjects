@@ -130,15 +130,11 @@ public:
 
       printDebug(2, "New triangle with vertices a=("<<a.v.x<<","<<a.v.y<<","<<a.v.z<<") b=("<<b.v.x<<","<<b.v.y<<","<<b.v.z<<") c=("<<c.v.x<<","<<c.v.y<<","<<c.v.z<<")");
 
-      //this->b.v = v2;
-      //this->c.v = v3;
-        sp = ksp;
-        this->ks = ks;
-        this->ka = ka;
-        this->kd = kd;
-        this->kr = kr;
-
-	ka.setColor(0.5,0.5,0.5);
+      sp = ksp;
+      this->ks = ks;
+      this->ka = ka;
+      this->kd = kd;
+      this->kr = kr;
     }
 
     double intersect(Ray & ray) {
@@ -176,12 +172,12 @@ public:
     }
 
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
-        if (a.hasVN)
-            normal = a.vn;
-        else if (b.hasVN)
-            normal = b.vn;
-        else if (c.hasVN)
-            normal = c.vn;
+//        if (a.hasVN)
+//            normal = a.vn;
+//        else if (b.hasVN)
+//            normal = b.vn;
+//        else if (c.hasVN)
+//            normal = c.vn;
         
         Vector3d a_b = b.v - a.v;
         Vector3d a_c = c.v - a.v;
