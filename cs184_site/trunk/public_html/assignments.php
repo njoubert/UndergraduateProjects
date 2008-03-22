@@ -105,8 +105,8 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-16firstscene.jpg" width=400 height=400/>
 <br>And I could finally render that damn teapot!!!!! Notice how I only do flat shading at the moment. I'll attempt to interpolate normals soon enough...
 <br><img src="images/rt-17teapot1.jpg" width=400 height=400/>
-<br>I'm getting better with scene layouts, but I'm hitting a snag with shadows. Apparently something doesn't work quite right, because I definitely don't except the two dark regions on the top of the box below:
-<br><img src="images/rt-18shadowissues.jpg" width=400 height=400/>
+<br>Things are looking SWEEEET!!!!! Click for a 1600x1600 rendering.
+<br><a href="images/rt-19CoolSceneHR.png"><img src="images/rt-19CoolScene.png" width=800 height=800/></a>
 </p>
 </p>
 
