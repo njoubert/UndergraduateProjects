@@ -1,3 +1,8 @@
+
+Reflections work with shadows - the two can overlap and interact correctly.
+
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-08.scene
 0ms: Rendering...

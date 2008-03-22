@@ -1,3 +1,6 @@
+First test of directional light, works as expected!
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-10.scene
 0ms: Rendering...

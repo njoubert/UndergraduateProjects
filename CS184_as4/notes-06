@@ -1,3 +1,8 @@
+Phong shading works, basic reflections works 
+(originally this image looked buggy, 
+but naturally with the latest codebase it looks awesome)
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-06.scene
 0ms: Rendering...

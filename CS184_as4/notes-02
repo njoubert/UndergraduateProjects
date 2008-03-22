@@ -1,3 +1,6 @@
+I can instantiate multiple spheres, and give them ambient colors.
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-02.scene
 0ms: Rendering...

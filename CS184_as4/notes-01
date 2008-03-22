@@ -1,3 +1,6 @@
+This proves that a sphere intersection test works!
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-01.scene
 0ms: Rendering...

@@ -1,3 +1,8 @@
+Test of moving the viewport up and to the left of the scene, 
+with two triangles lying along the axes.
+
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-16.scene
 0ms: Rendering...

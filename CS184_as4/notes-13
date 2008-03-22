@@ -1,3 +1,9 @@
+Same as image-07 except it is all directiona lights! 
+Differences is visible and looks as expected - some of the
+shadows in the previous image are gone since the objects no
+ longer occlude the light
+
+
 0ms: Raytracer Initialized
 0ms: Parsing Scene File input-13.scene
 0ms: Rendering...
