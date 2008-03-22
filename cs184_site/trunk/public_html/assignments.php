@@ -105,8 +105,10 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-16firstscene.jpg" width=400 height=400/>
 <br>And I could finally render that damn teapot!!!!! Notice how I only do flat shading at the moment. I'll attempt to interpolate normals soon enough...
 <br><img src="images/rt-17teapot1.jpg" width=400 height=400/>
-<br>Things are looking SWEEEET!!!!! Click for a 1400x1400 rendering. This scene includes a pointlight shining in from the left and a directional light from up top. I use multiple spheres, triangles, 5 levels of reflection and a variety of color and shading settings.
+<br>Things are looking SWEEEET!!!!! Click for a 1600x1600 rendering. This scene includes a pointlight shining in from the left and a directional light from up top. I use multiple spheres, triangles, 5 levels of reflection and a variety of color and shading settings.
 <br><a href="images/rt-19CoolSceneHR.png"><img src="images/rt-19CoolScene.png" width=400 height=400/></a>
+<br>It was actually very simple to implement ellipsoids from here. Ellipsoids are just unit spheres with a scale and/or rotation applied to them. I opted that the user supply us with scale and rotation parameters, and I built two matrices for each ellipsoid to store these two values. You can multiply them together, but its actually easier and faster to apply them if you don't use all that linear algebra routines you wrote and just keep them separate! For the intersection test, you inversely transform the given ray to enter the ellipsoid's object space. This allows us to test for an intersection using the good old sphere intersection code I wrote, what, 4 days ago? To calculate the normals you simply transform the given intersection point from world to object coordinates and run the sphere's normal calculation code once more! Pretty neat'o. Here's the same scene as above, but with a highly reflective ellipsoid now in the center:
+<br><img src="images/rt-20withellipsoids.jpg" width=400 height=400/>
 </p>
 </p>
 
