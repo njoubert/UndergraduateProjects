@@ -25,7 +25,7 @@
  *  eye             x y z
  *  viewport        llx lly llz lrx lry lrz urx ury urz ulx uly ulz
  *  sphere          x y z radius ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
- *  ellipse         [...]
+ *  ellipse         x y z sx sy sz rx ry rz ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
  *  triangle        x1 y1 z1 x2 y2 z2 x3 y3 z3 ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
  *  directionlight  x y z r g b
  *  pointlight      x y z r g b
@@ -155,10 +155,19 @@ private:
             success = scene->addSphere(r,x,y,z,ksr,ksg,ksb,ksp,kar,kag,kab,kdr,kdg,kdb,rr,rg,rb);
             printDebug(3, "Parsed Sphere Input to (" << x << "," << y << "," << z << ") r=" << r);
             
-        } else if (operand.compare("ellipse") == 0) {
+        } else if (operand.compare("ellipsoid") == 0) {
             
-            printError("UNIMPLEMENTED!!!!")
-            printDebug(3, "  ");
+            
+            //ellipse         x y z sx sy sz rx ry rz ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
+            float x, y, z, sx, sy, sz, rx, ry, rz, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
+            ss >>x >>y >>z >>sx >>sy >>sz >>rx >>ry >>rz >> ksr>> ksg>> ksb>> ksp>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
+            Vector3d pos(x,y,z);
+            Color ks(ksr, ksg, ksb), ka(kar, kag, kab), kd(kdr, kdg, kdb), kr(rr, rg, rb);
+            Matrix sc,rot;
+            sc.makeScale(sx,sy,sz);
+            rot.makeRotate(rx,ry,rz);
+            success = scene->addEllipsoid(pos,sc,rot,ks,ka,kd,kr,ksp);
+            printDebug(1, "Parsed Ellipsoid Input!");
             
         } else if (operand.compare("triangle") == 0) {
             

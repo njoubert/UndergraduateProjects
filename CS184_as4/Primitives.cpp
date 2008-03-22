@@ -28,6 +28,9 @@ class Sphere : public Primitive {
 public:
     float r;
     Vector3d c;
+    
+    Sphere() { }
+    
     Sphere(float radius, float x, float y, float z, 
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
@@ -87,6 +90,41 @@ public:
             return 0;
         return 1;
     }
+};
+
+class Ellipsoid : public Sphere {
+public:
+    Matrix sc;
+    Matrix rot;
+    
+    Ellipsoid(Vector3d pos, Matrix scale, Matrix rotate, Color ks, Color ka, Color kd, Color kr, float ksp) {
+        this->c = pos;
+        this->sp = ksp;
+        this->ka = ka;
+        this->kd = kd;
+        this->ks = ks;
+        this->kr = kr;
+        this->sc = scale;
+        this->rot = rotate;
+        this->r = 1.0;
+        sc.applyAsInverseScale(c);
+        printDebug(1, "Created ellipsoid!");
+        
+    }
+    double intersect(Ray & ray) {
+        Ray tRay = ray;
+        sc.applyAsInverseScale(tRay);
+        rot.applyAsInverseRot(tRay);
+        return Sphere::intersect(tRay);
+    }
+    inline void calculateNormal(Vector3d & point, Vector3d & normal) {
+        Vector3d tP = point;
+        sc.applyAsInverseScale(tP);
+        rot.applyAsInverseRot(tP);
+        normal.calculateFromPositions(&c, &tP);;
+        //normal.normalize();
+    }
+    
 };
 
 class Vertex {
@@ -206,25 +244,29 @@ public:
 //    }
 
     inline void calculateNormal(Vector3d & point, Vector3d & normal) {
-//        if (a.hasVN)
-//            normal = a.vn;
-//        else if (b.hasVN)
-//            normal = b.vn;
-//        else if (c.hasVN)
-//            normal = c.vn;
+        if (a.hasVN) {
+            normal = a.vn;
+        } else if (b.hasVN) {
+            normal = b.vn;
+        } else if (c.hasVN) {
+            normal = c.vn;
+        } else {
+
+            Vector3d a_b = b.v - a.v;
+            Vector3d a_c = c.v - a.v;
+            //Cross em!
+            Vector3d vn1(a_b.y*a_c.z - a_b.z*a_c.y,
+                    a_b.z*a_c.x - a_b.x*a_c.z,
+                    a_b.x*a_c.y - a_b.y*a_c.x);
+            vn1.normalize();
+            a.hasVN = true;
+            a.vn = vn1;
+            normal = vn1;
+        }
         
-        Vector3d a_b = b.v - a.v;
-        Vector3d a_c = c.v - a.v;
-//        Vector3d vn1(-1*(a_b.y*a_c.z - a_b.z*a_c.y),
-//                -1*(a_b.z*a_c.x - a_b.x*a_c.z),
-//                -1*(a_b.x*a_c.y - a_b.y*a_c.x));
-        Vector3d vn1(a_b.y*a_c.z - a_b.z*a_c.y,
-                a_b.z*a_c.x - a_b.x*a_c.z,
-                a_b.x*a_c.y - a_b.y*a_c.x);
-        vn1.normalize();
-        a.hasVN = true;
-        a.vn = vn1;
-        normal = vn1;
+        //cout << "Triangle Normal: ("<<vn1.x<<","<<vn1.y<<","<<vn1.z<<")"<<endl;
+        
+        
     }
 
     void debugMe(int level) {

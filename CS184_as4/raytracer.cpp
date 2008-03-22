@@ -33,20 +33,27 @@ int maxDepth = 2;
 
 //Trace this ray into the scene, returning its color.
 Color raytrace(Ray & ray, int depth) {
-    printDebug(5, "Tracing Ray!");
+    Vector3d normal, incidence, reflectance, view;
     Color retColor;
-    double t = 0, tl=0;
+       double t = 0, tl=0; 
+    printDebug(5, "Tracing Ray!");
+    
     if (depth == 0)
         return retColor;
+    
     Primitive* prim = scene->intersect(ray, &t);
     if (prim == NULL)
         return retColor;
+    
     Vector3d p = ray.getPos(t);
     retColor += prim->ka;
-    Vector3d normal, incidence, reflectance, view;
-    view.calculateFromPositions(&p,&(scene->eye.pos));
-    view.normalize();                                       //VIEW VECTOR
-    prim->calculateNormal(p, normal);                       //SURFACE NORMAL 
+    view.calculateFromPositions(&p,&(ray.e));
+    //view.calculateFromPositions(&p,&(scene->eye.pos));
+    view.normalize();                                               //VIEW VECTOR
+    prim->calculateNormal(p, normal);                         //SURFACE NORMAL 
+    
+    //chck normal
+    normal.makeSameDirection(view);
     
     for (unsigned int li = 0; li < scene->lights.size(); li++) {
         
@@ -86,7 +93,7 @@ Color raytrace(Ray & ray, int depth) {
             reflp.normalize();
             refl.e = p;
             refl.d = reflp;
-            refl.min_t = 0.01;
+            refl.min_t = 0.0001;
             retColor += prim->kr * raytrace(refl, depth - 1);
        
     }

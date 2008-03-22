@@ -30,8 +30,16 @@ public:
 	inline double dot(const Vector3d * other) const {
 		return x*other->x + y*other->y + z*other->z;
 	}
+	inline void flip() {
+	    x *= -1.0;
+	    y *= -1.0;
+	    z *= -1.0;
+	}
+	inline double length() {
+	    return sqrt(x*x + y*y + z*z);
+	}
 	inline void normalize() {
-	    double l = sqrt(x*x + y*y + z*z);
+	    double l = length();
 		x = x/l;
 		y = y/l;
 		z = z/l;
@@ -74,6 +82,11 @@ public:
         result *= t;
         return result;
     }
+    inline void makeSameDirection(Vector3d & other) {
+        if (this->dot(&other) < 0)
+            flip();
+    }
+    
 	inline double getX() { return x; }
 	inline double getY() { return y; }
 	inline double getZ() { return z; }
@@ -185,6 +198,51 @@ public:
 		r.min_t = min_t;
 		return r;
 	}
+};
+
+
+class Matrix {
+public:
+    float a,b,c,d,e,f,g,h,i;
+    Matrix() {b=c=d=f=g=h=0; a=e=i=1.0;}
+    void makeScale(float sx, float sy, float sz) {
+        a = sx;
+        e = sy;
+        i = sz;
+    }
+    void makeRotate(float rx, float ry, float rz) {
+        
+    }
+    
+    void applyAsInverseScale(Ray & ray) {
+        ray.e.x /= a;
+        ray.e.y /= e;
+        ray.e.z /= i;
+        ray.d.x /= a;
+        ray.d.y /= e;
+        ray.d.z /= i;
+    }
+    void applyAsInverseRot(Ray & ray) {
+        
+    }
+    void applyAsInverseScale(Vector3d & v) {
+        v.x /= a;
+        v.y /= e;
+        v.z /= i;
+    }
+    void applyAsInverseRot(Vector3d & v) {
+        
+    }
+    void applyAsScale(Vector3d & v) {
+        v.x *= a;
+        v.y *= e;
+        v.z *= i;
+    }
+    void applyAsRot(Vector3d & v) {
+        
+    }
+    
+    
 };
 
 #endif /*ALGEBRA_C_*/
