@@ -81,19 +81,19 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br>
 <br>After getting a good framework in place, I was ready to hammer out the core part of the raytracer itself - intersection testing and ray casting. My ray casting procedure itself was fairly easy, since I could recycle all my shading code from the previous assignment, and I already had routines to calculate vector reflections and sphere normals. I used this to create shadow rays by casting a ray to each light, and have that affect the shading calculation. Reflections is done by calculating a reflection vector around the normal of the surface, and recursively calling my raytracing procedure on this new ray.
 <br>Ambient Shading was the first to be implemented and thoroughly tested, since this proved that my raytracing and intersection tests were working just fine:
-<br><img src="images/rt-4ambientcolors.jpg" width=600 height=600/>
+<br><img src="images/rt-4ambientcolors.jpg" width=400 height=400/>
 <br>I realized that I had a bug in finding the intersection point that did not guarantee the correct order along the ray, so after a slight modification I could draw overlapping spheres:
-<br><img src="images/rt-5overlapping.jpg" width=600 height=600/>
+<br><img src="images/rt-5overlapping.jpg" width=400 height=400/>
 <br>I made the necessary modifications for my shading code from the previous assignment to work with the rays I have available:
-<br><img src="images/rt-6shading.jpg" width=600 height=600/>
+<br><img src="images/rt-6shading.jpg" width=400 height=400/>
 <br>Two more modifications - one to cast rays to the light and check for an occluder, and one to recursively shade reflection rays. I'm extremely excited at this point:
-<br><img src="images/rt-7reflectionsshadows.jpg" width=600 height=600/>
+<br><img src="images/rt-7reflectionsshadows.jpg" width=400 height=400/>
 <br>I wrote a little ruby script to generate environments for me, and here's a nice image with 6x6x3 cube of spheres, all reflecting off each other (click to enlarge):
-<br><a href="images/rt-8many.jpg"><img src="images/rt-8many.jpg" width=600 height=600/></a>
+<br><a href="images/rt-8many.jpg"><img src="images/rt-8many.jpg" width=400 height=400/></a>
 <br>I also managed to get my first triangle intersection code working. The normals aren't calculated correctly yet, thus you only see the ambient color term, but the intersection tests work!
-<br><img src="images/rt-9triangle.jpg" width=600 height=600/>
+<br><img src="images/rt-9triangle.jpg" width=400 height=400/>
 <br>I started having a lot of strange images when I tried doing more than 1 reflection, and after a long night of struggling my buddy <a href="http://inst.cs.berkeley.edu/~cs184-ak/">Navin</a> finally pointed out that my rays are intersecting with the object they are reflecting off, since I didn't add a reflection bias to the ray. This ended up being an easy fix, and I started doing some pretty cool reflections. Here's some more eye candy:
-<br><img src="images/rt-10colorcube.jpg" width=600 height=600/>
+<br><img src="images/rt-10colorcube.jpg" width=400 height=400/>
 <br>Let's add some reflections! It gets crazy since I'm clipping colors:
 <br><img src="images/rt-11colorcubewithref.jpg" width=400 height=400/>
 <br>My triangle code doesn't seem to play too nicely yet... what's going on?!
@@ -105,7 +105,7 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br><img src="images/rt-16firstscene.jpg" width=400 height=400/>
 <br>And I could finally render that damn teapot!!!!! Notice how I only do flat shading at the moment. I'll attempt to interpolate normals soon enough...
 <br><img src="images/rt-17teapot1.jpg" width=400 height=400/>
-<br>Things are looking SWEEEET!!!!! Click for a 1400x1400 rendering.
+<br>Things are looking SWEEEET!!!!! Click for a 1400x1400 rendering. This scene includes a pointlight shining in from the left and a directional light from up top. I use multiple spheres, triangles, 5 levels of reflection and a variety of color and shading settings.
 <br><a href="images/rt-19CoolSceneHR.png"><img src="images/rt-19CoolScene.png" width=400 height=400/></a>
 </p>
 </p>
