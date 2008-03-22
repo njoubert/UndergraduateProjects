@@ -95,18 +95,18 @@ This took quite a while, as you can imagine, and I wrote unit tests and signific
 <br>I started having a lot of strange images when I tried doing more than 1 reflection, and after a long night of struggling my buddy <a href="http://inst.cs.berkeley.edu/~cs184-ak/">Navin</a> finally pointed out that my rays are intersecting with the object they are reflecting off, since I didn't add a reflection bias to the ray. This ended up being an easy fix, and I started doing some pretty cool reflections. Here's some more eye candy:
 <br><img src="images/rt-10colorcube.jpg" width=600 height=600/>
 <br>Let's add some reflections! It gets crazy since I'm clipping colors:
-<br><img src="images/rt-11colorcubewithref.jpg" width=600 height=600/>
+<br><img src="images/rt-11colorcubewithref.jpg" width=400 height=400/>
 <br>My triangle code doesn't seem to play too nicely yet... what's going on?!
-<br><img src="images/rt-12shadows.jpg" width=600 height=600/>
+<br><img src="images/rt-12shadows.jpg" width=400 height=400/>
 <br>But my spheres make pretty reflections!
-<br><img src="images/rt-13spherereflections.jpg" width=600 height=600/>
+<br><img src="images/rt-13spherereflections.jpg" width=400 height=400/>
 <br>I've been having a lot of issues with triangles, and finally found that I was not calculating the ray parameter correctly. After fixing the numerical issues, I could finally draw some pretty pictures!
-<br><img src="images/rt-15reflectionswork.jpg" width=600 height=600/>
-<br><img src="images/rt-16firstscene.jpg" width=600 height=600/>
+<br><img src="images/rt-15reflectionswork.jpg" width=400 height=400/>
+<br><img src="images/rt-16firstscene.jpg" width=400 height=400/>
 <br>And I could finally render that damn teapot!!!!! Notice how I only do flat shading at the moment. I'll attempt to interpolate normals soon enough...
-<br><img src="images/rt-17teapot1.jpg" width=600 height=600/>
-<br>Things are looking SWEEEET!!!!! Click for a 1600x1600 rendering.
-<br><a href="images/rt-19CoolSceneHR.png"><img src="images/rt-19CoolScene.png" width=600 height=600/></a>
+<br><img src="images/rt-17teapot1.jpg" width=400 height=400/>
+<br>Things are looking SWEEEET!!!!! Click for a 1400x1400 rendering.
+<br><a href="images/rt-19CoolSceneHR.png"><img src="images/rt-19CoolScene.png" width=400 height=400/></a>
 </p>
 </p>
 
