@@ -9,10 +9,9 @@
 	</td>
         <td class="body_content">
 
-<h2>Class Assignments</h2>
+<h2>Assignment 3</h2>
 
 <p>
-	<h3>Assignment 3</h3>
 	This assignment examines simple shading models - specifically, the Phone Illuminiation Model.
 	Source Codde will be posted after the due date. For now, enjoy the pretty pictures!
 	

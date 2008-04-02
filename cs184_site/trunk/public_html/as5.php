@@ -9,10 +9,9 @@
 	</td>
         <td class="body_content">
 
-<h2>Class Assignments</h2>
+<h2>Assignment 5</h2>
 
 <p>
-<h3>Assignment 5</h3>
 <br>Still working on it...
 </p>
 

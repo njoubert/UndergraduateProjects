@@ -9,15 +9,12 @@
 	</td>
         <td class="body_content">
 
-<h2>Class Assignments</h2>
-
-<p>
 <h2>Assignment 4</h2>
-<br>This assignment builds a fully functional ray tracer. Pretty sweet? yea, i know.
-</p>
+
+This assignment builds a fully functional ray tracer. Pretty sweet? yea, i know.
 
 <p>
-<h2>First Steps - Writing images!</h2>
+<h3>First Steps - Writing images!</h3>
 <br>Since we need to output pretty things, we need o be able to write pixels to disk somehow. I'm going to go with writing BMP files, since the format is very straightforward. I opted to roll my own code to do this, rather than mess with libraries. This keeps my executable size small, makes linking easy, teaches me more about image format, and frankly only takes about 20 lines. I coded up the basic procedure to write out the headers and pixel data, which i'm storing internally in a dynamically allocated array. Here is my first Blank Screen of Death:
 <br><center><img src="images/rt-BSOD.jpg"/> </center>
 <br>Yes, it is a little blank box. Wee!

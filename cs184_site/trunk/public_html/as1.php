@@ -9,10 +9,9 @@
 	</td>
         <td class="body_content">
 
-<h2>Class Assignments</h2>
+<h2>Assignment 1</h2>
 
 <p>
-<h3>Assignment 1</h3>
 <br>This is purely some example code, here to help us get our system set up for OpenGL work. I used simple OpenGL polygon drawing routines to draw a little mohawked robot. Here's the result:
 <br><img src="images/as1.jpg" />
 <br><a href="http://www.wetherobots.com">We The Robots</a> inspired this creation.
