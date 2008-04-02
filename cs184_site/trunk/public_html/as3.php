@@ -13,7 +13,7 @@
 
 <p>
 	This assignment examines simple shading models - specifically, the Phone Illuminiation Model.
-	Source Codde will be posted after the due date. For now, enjoy the pretty pictures!
+	Source Code will be posted after the due date. For now, enjoy the pretty pictures!
 	
 	<p><b>Diffuse Material with Single Light Source</b>
 	<br><img src="images/as3_DiffuseOnly.png" width=400 height=300/>
