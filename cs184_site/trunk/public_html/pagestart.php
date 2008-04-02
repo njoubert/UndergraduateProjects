@@ -28,7 +28,14 @@
     <td class="horizontal_center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="linkcontainer">
       <tr>
         <td><div class="navigation"><a href="index.php" class="main_link">Homepage</a></div></td>
-        <td><div class="navigation"><a href="index.php?page=assignments" class="main_link">Assignments</a></div></td>
+<!--        <td><div class="navigation"><a href="index.php?page=assignments" class="main_link">Assignments</a></div></td> -->
+
+        <td><div class="navigation"><a href="index.php?page=as1" class="main_link">AS1</a></div></td>
+		<td><div class="navigation"><a href="index.php?page=as3" class="main_link">AS3</a></div></td>
+		<td><div class="navigation"><a href="index.php?page=as4" class="main_link">AS4</a></div></td>
+		<td><div class="navigation"><a href="index.php?page=as5" class="main_link">AS5</a></div></td>
+
+		
         <td><div class="navigation"><a href="index.php?page=examples" class="main_link">Examples</a></div></td>
         <td><div class="navigation"><a href="resume.pdf" class="main_link">Resume</a></div></td>
         <td><div class="navigation"><a href="index.php?page=links" class="main_link">Links</a></div></td>
