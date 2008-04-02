@@ -12,6 +12,7 @@
 <h2>Assignment 4</h2>
 
 This assignment builds a fully functional ray tracer. Pretty sweet? yea, i know.
+<br>Go to the <a href="#bottom">bottom of the doc</a> to see what I turned in.
 
 <p>
 <h3>First Steps - Writing images!</h3>
@@ -75,10 +76,11 @@ It was actually very simple to implement ellipsoids from here. Ellipsoids are ju
 </p>
 </p>
 
-<h3>What I turned in</h3>
+<h3><a name="bottom">What I turned in</a></h3>
 Since a cool site isn't all we get for grades, here's my submission package:
 
 <table border="0" cellspacing="5" cellpadding="5">
+
 	<tr>
 		<th><a href="as4/image-01.jpg"><img src="as4/image-01s.jpg"/></a></th>
 		<th><a href="as4/input-01.scene">Input 01</a></th>
