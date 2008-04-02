@@ -1,4 +1,4 @@
-    <td class="main_content_box">
+<td class="main_content_box">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
@@ -74,6 +74,128 @@ It was actually very simple to implement ellipsoids from here. Ellipsoids are ju
 <br><img src="images/rt-20withellipsoids.jpg" width=400 height=400/>
 </p>
 </p>
+
+<h3>What I turned in</h3>
+Since a cool site isn't all we get for grades, here's my submission package:
+
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr>
+		<th><a href="as4/image-01.jpg"><img src="as4/image-01s.jpg"/></a></th>
+		<th><a href="as4/input-01.scene">Input 01</a></th>
+		<th>590ms</th>
+		<th><a href="as4/notes-01">First Sphere Intersections</a></th>
+	</tr>
+	
+	<tr>
+		<th><a href="as4/image-02.jpg"><img src="as4/image-02s.jpg"/></a></th>
+		<th><a href="as4/input-02.scene">Input 02</a></th>
+		<th>900ms</th>
+		<th><a href="as4/notes-02">Multiple spheres, ambient colors</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-03.jpg"><img src="as4/image-03s.jpg"/></a></th>
+		<th><a href="as4/input-03.scene">Input 03</a></th>
+		<th>810ms</th>
+		<th><a href="as4/notes-03">Camera perspective</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-04.jpg"><img src="as4/image-04s.jpg"/></a></th>
+		<th><a href="as4/input-04.scene">Input 04</a></th>
+		<th>820ms</th>
+		<th><a href="as4/notes-04">Z-ordering</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-05.jpg"><img src="as4/image-05s.jpg"/></a></th>
+		<th><a href="as4/input-05.scene">Input 05</a></th>
+		<th>1110ms</th>
+		<th><a href="as4/notes-05">Phong Shading</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-06.jpg"><img src="as4/image-06s.jpg"/></a></th>
+		<th><a href="as4/input-06.scene">Input 06</a></th>
+		<th>2510ms</th>
+		<th><a href="as4/notes-06">Basic reflections</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-07.jpg"><img src="as4/image-07s.jpg"/></a></th>
+		<th><a href="as4/input-07.scene">Input 07</a></th>
+		<th>2090ms</th>
+		<th><a href="as4/notes-07">Multiple reflections</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-08.jpg"><img src="as4/image-08s.jpg"/></a></th>
+		<th><a href="as4/input-08.scene">Input 08</a></th>
+		<th>1830ms</th>
+		<th><a href="as4/notes-08">Reflections with Shadows</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-09.jpg"><img src="as4/image-09s.jpg"/></a></th>
+		<th><a href="as4/input-09.scene">Input 09</a></th>
+		<th>570ms</th>
+		<th><a href="as4/notes-09">First Triangle!</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-10.jpg"><img src="as4/image-10s.jpg"/></a></th>
+		<th><a href="as4/input-10.scene">Input 10</a></th>
+		<th>1310ms</th>
+		<th><a href="as4/notes-10">First Directional Light</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-11.jpg"><img src="as4/image-11s.jpg"/></a></th>
+		<th><a href="as4/input-11.scene">Input 11</a></th>
+		<th>13800ms?</th>
+		<th><a href="as4/notes-11">Stress-test Triangle Code</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-12.jpg"><img src="as4/image-12s.jpg"/></a></th>
+		<th><a href="as4/input-12.scene">Input 12</a></th>
+		<th>1960ms</th>
+		<th><a href="as4/notes-12">Triangle Reflections!</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-13.jpg"><img src="as4/image-13s.jpg"/></a></th>
+		<th><a href="as4/input-13.scene">Input 13</a></th>
+		<th>2210ms</th>
+		<th><a href="as4/notes-13">Input 7 with Directional Lights!</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-14.jpg"><img src="as4/image-14s.jpg"/></a></th>
+		<th><a href="as4/input-14.scene">Input 14</a></th>
+		<th>2340ms</th>
+		<th><a href="as4/notes-14">Like Previous!</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-15.jpg"><img src="as4/image-15s.jpg"/></a></th>
+		<th><a href="as4/input-15.scene">Input 15</a></th>
+		<th>11940ms</th>
+		<th><a href="as4/notes-15">First full scene</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-16.jpg"><img src="as4/image-16s.jpg"/></a></th>
+		<th><a href="as4/input-16.scene">Input 16</a></th>
+		<th>970ms</th>
+		<th><a href="as4/notes-16">Moving viewport around</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-17.jpg"><img src="as4/image-17s.jpg"/></a></th>
+		<th><a href="as4/input-17.scene">Input 17</a></th>
+		<th>560ms</th>
+		<th><a href="as4/notes-17">Basic ellipsoid test</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-18.jpg"><img src="as4/image-18s.jpg"/></a></th>
+		<th><a href="as4/input-18.scene">Input 18</a></th>
+		<th>11960ms</th>
+		<th><a href="as4/notes-18">Full ellipsoid in scene</a></th>
+	</tr>
+		<tr>
+		<th><a href="as4/image-19.jpg"><img src="as4/image-19s.jpg"/></a></th>
+		<th><a href="as4/input-19.scene">Input 01</a></th>
+		<th>61540ms</th>
+		<th><a href="as4/notes-19">Tons of reflections & spheres</a></th>
+	</tr>
+	
+</table>
 
 
 

@@ -1,0 +1,14 @@
+# First Test to input shit
+eye         0.0 0.0 0.0 
+#viewport   llx  lly  llz  lrx lry  lrz  urx ury urz  ulx  uly ulz
+viewport	-1.0 -1.0 -1.0 1.0 -1.0 -1.0 1.0 1.0 -1.0 -1.0 1.0 -1.0
+
+#Lights Definitions Follow:
+
+pointlight 20 20 20 0.8 0.8 0.8
+#pointlight -20 -20 20 0.4 0.4 0.4
+
+#Object Definitions Follow:
+
+#sphere 		x y z   sx  sy  sz 	rx  ry  rz 	ksr ksg ksb ksp kar kag kab kdr kdg kdb
+ellipsoid 		0 0 -15 5.0 2.0 1.0 1.0 1.0 1.0	0.5 0.5 0.5 20.0 0.5 0.5 0.5 0.5 0.5 0.5 0.0 0.0 0.0
