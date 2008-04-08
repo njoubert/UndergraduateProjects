@@ -13,7 +13,7 @@
 
 <p>
 <br>To get a feel for Bezier curves, I put together a little Processing app that draws Bezier curves. Drag the red control points around to change the shape of the curve. Feel free to check out the source code.
-<br><iframe src="as5/index.html" width=450 height=450></iframe>
+<br><iframe src="as5/index.html" width=400 height=450 frameborder=0></iframe>
 
 
 </p>
