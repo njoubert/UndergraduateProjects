@@ -12,7 +12,10 @@
 <h2>Assignment 5</h2>
 
 <p>
-<br>Still working on it...
+<br>To get a feel for Bezier curves, I put together a little Processing app that draws Bezier curves. Drag the red control points around to change the shape of the curve. Feel free to check out the source code.
+<br>
+
+
 </p>
 
 
