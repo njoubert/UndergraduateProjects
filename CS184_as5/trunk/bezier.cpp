@@ -1,6 +1,6 @@
 #include "bezier.h"
 
-static Bezier* bezcurveinterp(Point[4] curve, double u) {
+static Bezier* bezcurveinterp(Curve curve, double u) {
 	Bezier* b;
 	Point[curve.length-1] subcurve;
 	while (subcurve.length > 1) {
@@ -15,7 +15,7 @@ static Bezier* bezcurveinterp(Point[4] curve, double u) {
 	return b;
 }
 
-static Bezier* bezsurfaceinterp(Point[4][4] patch, double u, double v) {
+static Bezier* bezsurfaceinterp(Patch patch, double u, double v) {
 	Bezier* temp;
 	Point[4] ucurve, vcurve;
 	for (int i = 0; i<patch.length; i++) {
@@ -30,4 +30,16 @@ static Bezier* bezsurfaceinterp(Point[4][4] patch, double u, double v) {
 	temp->p = vBez->point;
 	temp->n = n;
 	return temp;
+}
+
+static void subdividepatch(Patch patch, double step) {
+	int numberDivs = (1+epsilon / step);
+	for (int i= 0; i<numberDivs; i++) {
+		u = i*step;
+		for (int j=0; j<numberDivs; j++) {
+			v= i*step;
+			Bezier* bez = bezsurfaceinterp(patch, u, v);
+			save bez somewhere; //:P need to write point storage
+		}
+	}
 }
