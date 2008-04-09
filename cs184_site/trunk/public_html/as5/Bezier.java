@@ -1,6 +1,7 @@
 import processing.core.*; import java.lang.StringBuffer; import java.applet.*; import java.awt.*; import java.awt.image.*; import java.awt.event.*; import java.io.*; import java.net.*; import java.text.*; import java.util.*; import java.util.zip.*; import javax.sound.midi.*; import javax.sound.midi.spi.*; import javax.sound.sampled.*; import javax.sound.sampled.spi.*; import java.util.regex.*; import javax.xml.parsers.*; import javax.xml.transform.*; import javax.xml.transform.dom.*; import javax.xml.transform.sax.*; import javax.xml.transform.stream.*; import org.xml.sax.*; import org.xml.sax.ext.*; import org.xml.sax.helpers.*; public class Bezier extends PApplet {/** 
  			<p>
-				<u>Keyboard Commands:</u>
+                                 <b>Drag the control points to change the curves.</b>
+				<br><u>Keyboard Commands:</u>
 				<br><b>v</b> - toggle control points
 				<br><b>b</b> - toggle line weight
 				<br><b>n</b> - add a new curve to the scene

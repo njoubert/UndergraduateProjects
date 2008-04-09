@@ -12,8 +12,8 @@
 <h2>Assignment 5</h2>
 
 <p><h3>Drawing Bezier Curves</h3>
-<br>To get a feel for Bezier curves, I put together a little Processing app that draws Bezier curves. Drag the red control points around to change the shape of the curve. Feel free to check out the source code.
-<br><iframe src="as5/index.html" width=420 height=550 frameborder=0></iframe>
+<br>To get a feel for Bezier curves, I put together a little Processing app that draws Bezier curves. Drag the control points around to change the shape of the curve. Feel free to check out the source code.
+<br><iframe src="as5/index.html" width=420 height=550 frameborder=0 scrolling="no"></iframe>
 
 
 </p>

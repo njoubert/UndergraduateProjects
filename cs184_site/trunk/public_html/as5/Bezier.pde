@@ -1,6 +1,7 @@
 /** 
  			<p>
-				<u>Keyboard Commands:</u>
+                                 <b>Drag the control points to change the curves.</b>
+				<br><u>Keyboard Commands:</u>
 				<br><b>v</b> - toggle control points
 				<br><b>b</b> - toggle line weight
 				<br><b>n</b> - add a new curve to the scene
