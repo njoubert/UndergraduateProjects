@@ -16,6 +16,7 @@ I have the pleasure of taking CS184 this semester, and as part of our setup assi
 <p>
 <strong>About Me</strong>
 <br>I was born in South Africa, where I grew up during the last trembling echoes of the totalitarian Apartheids regime. I never fought lions with my bare hands, but I had to access the internet through dial-up until I moved to the USA. I believe the world, and all that is in it, is my subject of study.</p>
+<br><script type="text/javascript" src="http://www.ubuntu.com/files/countdown/display.js"></script>
 	 </td>
       </tr>
     </table>
