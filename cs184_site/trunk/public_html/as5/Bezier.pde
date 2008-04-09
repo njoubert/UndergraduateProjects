@@ -1,11 +1,16 @@
 /** 
-* Drawing Bezier curves! 
-* Author: Niels Joubert 
-*         njoubert@gmail.com
-* Distributed under the Creative Commons Attribution-Share Alike 3.0
-* http://creativecommons.org/licenses/by-sa/3.0/us/
-* 
-***/
+ 			<p>
+				<u>Keyboard Commands:</u>
+				<br><b>v</b> - toggle control points
+				<br><b>b</b> - toggle line weight
+				<br><b>n</b> - add a new curve to the scene
+				<br><b>r</b> - reset the scene
+				<br><b>1</b> - load example 1
+			</p>
+  <p>
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png"/></a><br/>This work is licensed under a Creative Commons <br><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Attribution-Share Alike 3.0 United States License</a>.
+  </p>
+*/
 
 import java.lang.StringBuffer;
 
@@ -100,7 +105,7 @@ void draw() {
   }
 }
 
-/** Moving the control points: */
+// Moving the control points:
 
 boolean moving = false;
 MyPoint movingP;
@@ -128,7 +133,7 @@ void mouseReleased() {
   moving = false;  
 }
 
-/** Handling Keyboard Input */
+// Handling Keyboard Input
 
 void keyTyped() {
   switch (key) {
@@ -158,7 +163,7 @@ void keyTyped() {
   }
 }
 
-/** Adding new curves. */
+// Adding new curves.
 
 void resetCurves() {
   curves = new MyBezier[0];
@@ -183,7 +188,7 @@ void addCurve(String data) {
   curves[curves.length-1].P[3] = new MyPoint(el[3]); 
 }
 
-/** I/O */
+// I/O
 
 String getData() {
   StringBuffer data = new StringBuffer();
