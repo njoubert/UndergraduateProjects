@@ -1,5 +1,17 @@
-import processing.core.*; import java.applet.*; import java.awt.*; import java.awt.image.*; import java.awt.event.*; import java.io.*; import java.net.*; import java.text.*; import java.util.*; import java.util.zip.*; import javax.sound.midi.*; import javax.sound.midi.spi.*; import javax.sound.sampled.*; import javax.sound.sampled.spi.*; import java.util.regex.*; import javax.xml.parsers.*; import javax.xml.transform.*; import javax.xml.transform.dom.*; import javax.xml.transform.sax.*; import javax.xml.transform.stream.*; import org.xml.sax.*; import org.xml.sax.ext.*; import org.xml.sax.helpers.*; public class Bezier extends PApplet {//Drawing Bezier curves!
- 
+import processing.core.*; import java.lang.StringBuffer; import java.applet.*; import java.awt.*; import java.awt.image.*; import java.awt.event.*; import java.io.*; import java.net.*; import java.text.*; import java.util.*; import java.util.zip.*; import javax.sound.midi.*; import javax.sound.midi.spi.*; import javax.sound.sampled.*; import javax.sound.sampled.spi.*; import java.util.regex.*; import javax.xml.parsers.*; import javax.xml.transform.*; import javax.xml.transform.dom.*; import javax.xml.transform.sax.*; import javax.xml.transform.stream.*; import org.xml.sax.*; import org.xml.sax.ext.*; import org.xml.sax.helpers.*; public class Bezier extends PApplet {/** 
+* Drawing Bezier curves! 
+* Author: Niels Joubert 
+*         njoubert@gmail.com
+* Distributed under the Creative Commons Attribution-Share Alike 3.0
+* http://creativecommons.org/licenses/by-sa/3.0/us/
+* 
+***/
+
+
+
+String ex1 = "(69,93) (10,290) (197,291) (249,94)\n(69,92) (133,51) (263,56) (250,95)\n(69,92) (86,136) (223,127) (248,95)\n(69,93) (116,-7) (269,-11) (250,96)\n(86,136) (78,175) (168,140) (87,137)\n(153,146) (152,182) (240,133) (154,146)\n(84,191) (87,219) (146,218) (156,199)";
+
+MyBezier[] curves;     
 float bezierStep = 0.001f;
 boolean showContP = true;
 boolean boldL = true;
@@ -10,6 +22,11 @@ class MyPoint {
   
   MyPoint() {}
   MyPoint(int x, int y) {this.x=x; this.y=y;}
+  MyPoint(String d) {
+     String[] p = split(d, ",");
+     x = PApplet.parseInt(p[0].substring(1));
+     y = PApplet.parseInt(p[1].substring(0,p[1].length()-1));
+  }
   public void draw(boolean bold) {
     if (!bold)
       point(x,y);
@@ -19,6 +36,10 @@ class MyPoint {
   //Returns true if the given x,y is within dist of point
   public boolean within(int x, int y, int dist) {
     return (abs(this.x-x) < dist && abs(this.y-y) < dist);
+  }
+  
+  public String toString() {
+    return "(" + x + "," + y + ")"; 
   }
 }  
      
@@ -60,14 +81,16 @@ class MyBezier {
     p.y = (int) y;
     return p;
   }
+  
+  public String toString() {
+    return P[0].toString() + " " +P[1].toString() + " " +P[2].toString() + " " +P[3].toString() + "\n"; 
+  }
 }  
-     
-MyBezier[] curves = new MyBezier[0];     
      
 public void setup() {
   size(300, 300); 
   background(255);  
-  addCurve();
+  setUpCurvesFromData(ex1);
 }
 
 public void draw() {
@@ -77,7 +100,7 @@ public void draw() {
   }
 }
 
-//Moving the control points:
+/** Moving the control points: */
 
 boolean moving = false;
 MyPoint movingP;
@@ -105,20 +128,40 @@ public void mouseReleased() {
   moving = false;  
 }
 
-//Adding new curves.
+/** Handling Keyboard Input */
 
 public void keyTyped() {
   switch (key) {
-   case 'n':
+   case 'n':               //Add a curve
      addCurve();
      break;
-   case 'v':
+   case 'v':               //Toggle handles
      showContP = !showContP;
      break;
-   case 'b':
+   case 'b':               //Toggle Bold
      boldL = !boldL;
      break;
+   case 'r':               //Reset curves
+     resetCurves();
+     addCurve();
+     break;
+   case 'o':               //Output Curves
+     getData();
+     break;
+   case 'i':               //Input curves
+   
+    break;   
+   case '1':               //example 1
+     setUpCurvesFromData(ex1);
+     break;
+   
   }
+}
+
+/** Adding new curves. */
+
+public void resetCurves() {
+  curves = new MyBezier[0];
 }
 
 public void addCurve() {
@@ -128,6 +171,38 @@ public void addCurve() {
   curves[curves.length-1].P[1] = new MyPoint(10,290);
   curves[curves.length-1].P[2] = new MyPoint(290,290);
   curves[curves.length-1].P[3] = new MyPoint(290,10); 
+}
+
+public void addCurve(String data) {
+  curves = (MyBezier[]) expand(curves, curves.length+1);
+  String el[] = split(data, " ");
+  curves[curves.length-1] = new MyBezier();
+  curves[curves.length-1].P[0] = new MyPoint(el[0]);
+  curves[curves.length-1].P[1] = new MyPoint(el[1]);
+  curves[curves.length-1].P[2] = new MyPoint(el[2]);
+  curves[curves.length-1].P[3] = new MyPoint(el[3]); 
+}
+
+/** I/O */
+
+public String getData() {
+  StringBuffer data = new StringBuffer();
+  for (int i = 0; i < curves.length; i++) {
+   data.append(curves[i].toString());
+  }
+  print(data.toString());
+  return data.toString();
+}
+
+public void setUpCurvesFromData(String data) {
+   String el[] = split(data, "\n");
+   print("Data contains # curves: ");
+   println(el.length);
+   resetCurves();
+   for (int i = 0; i < el.length; i++) {
+     addCurve(el[i]); 
+   }
+   
 }
 
   static public void main(String args[]) {     PApplet.main(new String[] { "Bezier" });  }}
