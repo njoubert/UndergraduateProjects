@@ -55,13 +55,13 @@ class MyPatch {
     
     pushMatrix();
 
-    translate(150, 250, -150);
+    translate(120, 200, -150);
     scale(50, 50, 50);
-    //rotateX(PI/2);
-    
-    rotateX(map(mouseX, 0, width, 0, PI));
-    rotateY(map(mouseX, 0, width, 0, PI));
-    //rotateZ(map(mouseY, 0, height, 0, -PI));
+    rotateX(PI/4);
+    rotateY(PI/8);
+    //rotateX(map(mouseX, 0, width, 0, PI));
+    //rotateY(map(mouseX, 0, width, 0, PI));
+    rotateZ(map(mouseX, 0, height, 0, -2*PI));
     
     beginShape(POINTS);
     MyPoint p;
