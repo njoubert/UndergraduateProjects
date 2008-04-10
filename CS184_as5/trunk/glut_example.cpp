@@ -4,6 +4,9 @@
 #include <fstream>
 #include <cmath>
 
+//****** Add our headers ******
+#include "bezier.h"
+
 #ifdef _WIN32
 #	include <windows.h>
 #else
@@ -44,6 +47,9 @@ public:
 // Global Variables
 //****************************************************
 Viewport	viewport;
+vector<Patch> bunchOPatches;
+int numOfPatches;
+ifstream file;
 
 //****************************************************
 // reshape viewport if the window is resized
@@ -128,6 +134,32 @@ void myFrameMove() {
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 
+
+//****************************************************
+// the file parser. Gets a patch file and stores the data
+// into the vector of patches and number of patches.
+//****************************************************
+
+void getPatches(string filename) {
+	file.open(filename.c_str(), ios::in);
+	if (!file.is_open())
+		return;
+	// Get the number of patches
+	file >> numOfPatches;
+	// Set up variables for coordinates
+	double x, y, z;
+	// All right, start reading in patch data
+	for (int i = 0; i<numOfPatches; i++) {
+		Patch newPatch;
+		for (int u = 0; u<4; u++) {
+			for (int v = 0; v<4; v++) {
+				file >> x >> y >> z;
+				newPatch[u][v] = new Point(x, y, z);
+			}
+		}
+		bunchOPatches.push_back(newPatch);
+	}
+}
 
 //****************************************************
 // the usual stuff, nothing exciting here
