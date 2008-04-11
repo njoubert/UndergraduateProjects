@@ -6,17 +6,11 @@
 typedef glVertex3d Point;
 typedef glNormal3d Normal;
 typedef glVertex3d Deriv;
-typedef Point Patch [4][4];
-typedef Point Curve [4];
 
 struct Bezier {
 	Point p;
 	Normal n;
 	Deriv d;
 };
-
-static Bezier* bezcurveinterp(Curve, double);
-static Bezier* bezsurfaceinterp(Patch, double, double);
-static void subdividepatch(Patch, double);
 
 #endif /*BEZIER_H_*/
