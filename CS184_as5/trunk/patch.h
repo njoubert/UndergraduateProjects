@@ -4,7 +4,8 @@
 #include "bezier.h"
 typedef Point Curve [4];
 
-struct Patch {
+class Patch {
+public:
 	Point[4][4] controlpoints;
 	vector<vector<Bezier*>> bezpoints;
 	Bezier* bezcurveinterp(Curve, double);
