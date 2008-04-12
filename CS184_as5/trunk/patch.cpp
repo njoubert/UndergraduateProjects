@@ -32,14 +32,24 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	return temp;
 }
 
+// You'll notice that I placed 1+step as the terminating condition.
+// Uniform subdivision, in this case, isn't quite so uniform. E.g.,
+// a subdivision factor of 0.3 will yield 0.3, 0.6, 0.9 and 1.0 - 
+// the last chunk is smaller than the other chunks. That's why I 
+// used 1+step instead of simply 1.
 void Patch::subdividepatch(double step) {
-	int numberDivs = (1+epsilon / step);
-	for (int i= 0; i<numberDivs; i++) {
-		u = i*step;
-		for (int j=0; j<numberDivs; j++) {
-			v= i*step;
+	int i = 0;
+	for (double u= 0; u<1+step; u+step) {
+		if (u>1)
+			u=1;
+		int j= 0;
+		for (double v=0; v<1+step; v+step) {
+			if (v>1)
+				v=1;
 			Bezier* bez = bezsurfaceinterp(u, v);
-			save bez somewhere; //:P need to write point storage
+			bezpoints[i][j] = bez //:P need to write point storage
+			j++
 		}
+		i++;
 	}
 }

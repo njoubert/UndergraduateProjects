@@ -6,6 +6,7 @@ typedef Point Curve [4];
 
 struct Patch {
 	Point[4][4] controlpoints;
+	vector<vector<Bezier*>> bezpoints;
 	Bezier* bezcurveinterp(Curve, double);
 	Bezier* bezsurfaceinterp(double, double);
 	void subdividepatch(double);

@@ -5,7 +5,7 @@
 #include "cml/cml.h
 typedef glVertex3d Point;
 typedef glNormal3d Normal;
-typedef glVertex3d Deriv;
+typedef vector3d Deriv;
 
 struct Bezier {
 	Point p;

@@ -49,6 +49,8 @@ public:
 Viewport	viewport;
 vector<Patch> bunchOPatches;
 int numOfPatches;
+double stepSize;
+char divideType;
 ifstream file;
 
 //****************************************************
@@ -180,6 +182,12 @@ int main(int argc, char *argv[]) {
   	glutInitWindowSize(viewport.w, viewport.h);
   	glutInitWindowPosition(0, 0);
   	glutCreateWindow("CS184!");
+  	
+  	//Read in the cmd args and store them
+  	string filename = argv[1];
+  	getPatches(filename);
+  	stepSize = atof(argv[2]);
+  	divideType = argv[3][1];
 
   	initScene();							// quick function to set up scene
   
