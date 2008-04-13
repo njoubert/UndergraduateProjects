@@ -15,7 +15,7 @@ public:
 // Global Variables
 //****************************************************
 Viewport	viewport;
-vector<Patch> bunchOPatches;
+vector<Patch*> bunchOPatches;
 int numOfPatches;
 double stepSize;
 char divideType;
@@ -120,15 +120,16 @@ void getPatches(string filename) {
 		return;
 	// Get the number of patches
 	file >> numOfPatches;
-	// Set up variables for coordinates
-	double x, y, z;
+	printDebug(1, "Reading in " << numOfPatches << " patches...");
+	
+	double x, y, z; // Set up variables for coordinates
 	// All right, start reading in patch data
 	for (int i = 0; i<numOfPatches; i++) {
-		Patch newPatch;
+		Patch *newPatch;
 		for (int u = 0; u<4; u++) {
 			for (int v = 0; v<4; v++) {
 				file >> x >> y >> z;
-				newPatch.controlpoints[u][v] = new Point(x, y, z);
+				newPatch->cP[u][v] = new Point(x, y, z);
 			}
 		}
 		bunchOPatches.push_back(newPatch);
@@ -139,10 +140,7 @@ void getPatches(string filename) {
 //****************************************************
 // the usual stuff, nothing exciting here
 //****************************************************
-int main(int argc, char *argv[]) {
-  	//This initializes glut
-  	glutInit(&argc, argv);
-  
+void render() {
   	//This tells glut to use a double-buffered window with red, green, and blue channels 
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
@@ -154,12 +152,6 @@ int main(int argc, char *argv[]) {
   	glutInitWindowSize(viewport.w, viewport.h);
   	glutInitWindowPosition(0, 0);
   	glutCreateWindow("CS184!");
-  	
-  	//Read in the cmd args and store them
-  	string filename = argv[1];
-  	getPatches(filename);
-  	stepSize = atof(argv[2]);
-  	divideType = argv[3][1];
 
   	initScene();							// quick function to set up scene
   
@@ -168,6 +160,25 @@ int main(int argc, char *argv[]) {
   	glutIdleFunc(myFrameMove);				// function to run when not handling any other task
   	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
   
+}
+
+int main(int argc, char *argv[]) {
+
+	printInfo("Bezier Curve Renderer loading...");
+
+  	//Read in the cmd args and store them
+  	string filename = argv[1];
+  	getPatches(filename);
+  	stepSize = atof(argv[2]);
+  	divideType = argv[3][1];
+  	
+  	printInfo("Initialized data!");
+  	
+  	//This initializes glut
+  	glutInit(&argc, argv);
+  	
+  	render();
+  	
   	return 0;
 }
 

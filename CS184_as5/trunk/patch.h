@@ -3,15 +3,14 @@
 
 #include "types.h"
 #include "bezier.h"
-#include <vector>
-typedef vector<Point> Curve;
+
 using namespace std;
 
 class Patch {
 public:
-	vector<Point> controlpoints;
+	Point * cP[4][4];
 	vector<vector<Bezier*> > bezpoints;
-	Bezier* bezcurveinterp(Curve, double);
+	Bezier* bezcurveinterp(Point * p0, Point * p1, Point * p2, Point * p3, double u) {
 	Bezier* bezsurfaceinterp(double, double);
 	void subdividepatch(double);
 };

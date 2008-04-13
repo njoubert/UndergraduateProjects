@@ -7,28 +7,22 @@
 #include <fstream>
 #include <cmath>
 
-#ifdef _WIN32
-#	include <windows.h>
-#else
-#	include <sys/time.h>
-#endif
+//#ifdef _WIN32
+//#	include <windows.h>
+//#else
+//#	include <sys/time.h>
+//#endif
 
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
+//#ifdef OSX
+//#include <GLUT/glut.h>
+//#include <OpenGL/glu.h>
+//#else
 #include <GL/glut.h>
 #include <GL/glu.h>
-#endif
+//#endif
 
 #include <time.h>
 #include <math.h>
-
-#ifdef _WIN32
-static DWORD lastTime;
-#else
-static struct timeval lastTime;
-#endif
 
 #define PI 3.14159265
 
@@ -39,5 +33,7 @@ static struct timeval lastTime;
 #include "types.h"
 #include "bezier.h"
 #include "patch.h"
+
+#include "Debug.cpp"
 
 #endif /*AS5_H_*/
