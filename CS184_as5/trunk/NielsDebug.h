@@ -4,10 +4,6 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <assert.h>
-
-#define NIELSDEBUG 2
-#define NIELSINFO 1
 
 using namespace std;
 

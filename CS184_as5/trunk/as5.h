@@ -34,6 +34,8 @@
 #include "bezier.h"
 #include "patch.h"
 
-#include "NielsDebug.cpp"
+#include "NielsDebug.h"
+
+#define isThereMore(CURR, MAX, WANT)	((MAX - CURR) >= WANT)
 
 #endif /*AS5_H_*/

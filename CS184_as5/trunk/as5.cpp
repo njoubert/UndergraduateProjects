@@ -18,10 +18,16 @@ Viewport	viewport;
 vector<Patch*> bunchOPatches;
 Point* furthestPoint;
 int numOfPatches;
+
+//Display Settings:
 double stepSize;
-char divideType;
-bool wireframe=false;
-bool adaptive=false;
+bool wireframe;
+bool adaptive;
+bool smoothShading;
+
+int NIELSDEBUG=0;
+int NIELSINFO=1;
+
 static double anglelr=0.0,angleud=0.0,ratio=0.0;
 static double x=0.0,y=0.0,z=0.0;
 static double lx=0.0,ly=0.0,lz=0.0;
@@ -192,16 +198,19 @@ void shiftUDLR(double x, double y) {
 
 //***********Toggle functions***********
 void toggleFlatSmooth() {
-	
+	printDebug(1, "Toggling smooth shading.");
+	smoothShading = !smoothShading;
 }
 
 void toggleWireframe() {
+	printDebug(1, "Toggling wireframe display.");
 	wireframe = !wireframe;
 	glutPostRedisplay();
 }
 
 //******Keyboard Input Processing*********
 void processSpecialKeys(int key, int x, int y) {
+	printDebug(2, "Processing special key "<<key);
 	switch(key) {
 	case GLUT_KEY_UP: 
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
@@ -241,6 +250,7 @@ void processSpecialKeys(int key, int x, int y) {
 }
 
 void processKeys(unsigned char key, int x, int y) {
+	printDebug(2, "Processing normal key "<<key);
 	switch (key) {
 	case '=':
 		zoomInOut(1);
@@ -281,12 +291,10 @@ bool getPatches(char* filename) {
 	ifstream file(filename, ifstream::in);
 	if (!file) {
 		printError("Could not open file!");
-		exit(1);
 		return false;
 	}
 	// Get the number of patches
 	file >> numOfPatches;
-	printInfo("Reading in " << numOfPatches << " patches...");
 	
 	double x, y, z; // Set up variables for coordinates
 	Patch * newPatch;
@@ -362,15 +370,100 @@ void process() {
 	
 }
 
+//Set up default settings
+void setDefaults() {
+	printDebug(1, "Setting up defaults:");
+	printDebug(1, "Uniform Subdivision, Filled Polygons, Flat Shading");
+    adaptive=false;
+    wireframe=false;
+    smoothShading=false;
+}
+
+//Return 0 if no error
+int parseCommandLine(int argc, char *argv[]) {
+
+    bool malformedArg;
+    bool printUsage = false;
+    int i = 1;
+    
+    setDefaults();
+    
+    printDebug(1, "Reading in "<<argc<<" arguments.");
+    
+    //Read in filename and parse patches
+    if (isThereMore(i, argc, 1)) {
+    	if (!getPatches(argv[i]))
+    		printUsage = true;
+    } else {
+    	printError("No filename given!");
+    	printUsage = true;
+    }
+    
+    i++;
+    
+    //Read in stepsize
+	if (isThereMore(i, argc, 1)) {
+		stepSize = atof(argv[i]);		
+	} else {
+    	printError("No stepSize!");
+    	printUsage = true;			
+	}
+	
+	i++;
+	
+	//Read the rest of the arguments
+    for (; i < argc; i++) {
+
+        malformedArg = false;
+
+        if (strcmp(argv[i],"-d") == 0) {
+
+                if (isThereMore(i, argc, 1)) {
+                    if (atoi(argv[i + 1]) < 6 && atoi(argv[i + 1]) > 0)
+                        NIELSDEBUG = atoi(argv[++i]);
+                } else {
+                    NIELSDEBUG = 1;
+                }
+
+        }  else if (!strcmp(argv[i], "-q")) {
+    
+                NIELSINFO = 0;
+
+        } else if (!strcmp(argv[i], "-a")) {
+            
+            adaptive=true;
+
+        }  else {
+            malformedArg = true;
+        }
+
+        if (malformedArg) {
+            printError("Malformed input arg in parsing command \"" << argv[i] << "\"");
+            printUsage = true;
+        }
+    }
+    
+    printInfo("Read " << numOfPatches << " patches from file.");
+    
+    if (printUsage)
+        return 1;
+    return 0;
+
+}
+
+void printUsage() {
+    cout << "Usage: "<< endl;
+    cout << "  cs184_as5 inputfile.bez stepSize\n   [-a]\n   [-d n]\n   [-q]" << endl;
+}
+
 int main(int argc, char *argv[]) {
-
-	printInfo("Curve Renderer Started");
-
-  	//Read in the cmd args and store them
-  	char* filename = argv[1];
-  	getPatches(filename);
-  	stepSize = atof(argv[2]);
-  	divideType = argv[3][1];
+	
+	if (parseCommandLine(argc, argv) != 0) {
+        printUsage();
+        exit(1);
+    }
+    
+    printInfo("Curve Renderer Started");
   	
   	//This initializes glut
   	glutInit(&argc, argv);
