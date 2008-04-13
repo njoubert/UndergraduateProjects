@@ -2,13 +2,13 @@
 
 Bezier* Patch::bezcurveinterp(Curve curve, double u) {
 	Bezier* b;
-	Point[curve.length-1] subcurve;
-	while (subcurve.length > 1) {
+	vector<Point> subcurve(curve.size-1);
+	while (subcurve.size > 1) {
 		for (int i=0; i<subcurve.size(); i++) {
 			subcurve[i] = curve[i] * (1.0-u) + curve[i+1] * u;
 		}
 		curve = subcurve;
-		subcurve = new Point[curve.length-1];
+		subcurve = new Point[curve.size-1];
 	}
 	b->p = subcurve[0];
 	b->d = 3 * (curve[1]-curve[0]);
@@ -39,15 +39,15 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 // used 1+step instead of simply 1.
 void Patch::subdividepatch(double step) {
 	int i = 0;
-	for (double u= 0; u<1+step; u+step) {
+	for (double u= 0; u<1+step; u=u+step) {
 		if (u>1)
 			u=1;
 		int j= 0;
-		for (double v=0; v<1+step; v+step) {
+		for (double v=0; v<1+step; v=v+step) {
 			if (v>1)
 				v=1;
 			Bezier* bez = bezsurfaceinterp(u, v);
-			bezpoints[i][j] = bez //Store the Bezier point
+			bezpoints[i][j] = bez; //Store the Bezier point
 			j++;
 		}
 		i++;

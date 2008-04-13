@@ -89,14 +89,7 @@ void myDisplay() {
 	//-----------------------------------------------------------------------
 	*/
 	glBegin(GL_POINTS);
-	for (int i = 0; i<numOfPatches; i++) {
-		Patch patch = bunchOPatches[i];
-		for (int u = 0; u<patch.bezpoints.length(); u++) {
-				for (int v = 0; v<patch.bezpoints[u].length(); v++) {
-						patch.bezpoints[u][v]->p;
-					}
-				}
-	}
+	
 	glEnd();
 	
 	glFlush();
