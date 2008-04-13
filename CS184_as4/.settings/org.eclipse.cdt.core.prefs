@@ -1,0 +1,4 @@
+#Sun Apr 13 13:51:27 PDT 2008
+eclipse.preferences.version=1
+indexer/indexerId=org.eclipse.cdt.core.fastIndexer
+indexerId=org.eclipse.cdt.core.domsourceindexer
