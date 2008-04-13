@@ -16,9 +16,12 @@ public:
 //****************************************************
 Viewport	viewport;
 vector<Patch*> bunchOPatches;
+Point* furthestPoint;
 int numOfPatches;
 double stepSize;
 char divideType;
+bool wireframe=false;
+bool adaptive=false;
 static double anglelr=0.0,angleud=0.0,ratio=0.0;
 static double x=0.0,y=0.0,z=0.0;
 static double lx=0.0,ly=0.0,lz=0.0;
@@ -33,7 +36,7 @@ void myReshape(int w, int h) {
 	glViewport(0,0,viewport.w,viewport.h);// sets the rectangle that will be the window
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();				// loading the identity matrix for the screen
-
+	//glTranslated(0.0, 0.0, -4.0);
 	//----------- setting the projection -------------------------
 	// glOrtho sets left, right, bottom, top, zNear, zFar of the chord system
 
@@ -41,7 +44,11 @@ void myReshape(int w, int h) {
 	// glOrtho(-1, 1 + (w-400)/200.0 , -1 -(h-400)/200.0, 1, 1, -1); // resize type = add
 	// glOrtho(-w/400.0, w/400.0, -h/400.0, h/400.0, 1, -1); // resize type = center
 
-	glOrtho(-1, 1, -1, 1, 1, -1);	// resize type = stretch
+	float maxv = (*furthestPoint)[0];
+	if ((*furthestPoint)[1] > maxv)
+		maxv = (*furthestPoint)[1]; 
+
+	glOrtho(-1*maxv, maxv, -1*maxv, maxv, maxv, -1*maxv);	// resize type = stretch
 
 	//------------------------------------------------------------
 }
@@ -51,7 +58,7 @@ void myReshape(int w, int h) {
 // sets the window up
 //****************************************************
 void initScene(){
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Clear to black, fully transparent
 	
 	myReshape(viewport.w,viewport.h);
 }
@@ -95,22 +102,44 @@ void myDisplay() {
 	//glTranslatef(0.0f, 0.0f, -3.7f);
 	//glRotatef(1.0f, 0.0f, 0.0f, 0.0f);
 	//Drawing Points:
-	glBegin(GL_POINTS);
 	
 	
-	for (int p = 0; p < numOfPatches; p++) {
-		
-		for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size(); u++) {
-			for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size(); v++) {
-				glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-			}	
+	if (wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
+	if (!adaptive)	{
+
+		for (int p = 0; p < numOfPatches; p++) {
+			
+			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
+				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
+					glBegin(GL_QUADS);
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());					
+					glEnd();
+//					glBegin(GL_TRIANGLES);
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+//					glEnd();
+//					glBegin(GL_TRIANGLES);
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+//					glEnd();
+				}	
+			}
+			
 		}
 		
 	}
 	
 	
-	
-	glEnd();
 	
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
@@ -167,7 +196,8 @@ void toggleFlatSmooth() {
 }
 
 void toggleWireframe() {
-	
+	wireframe = !wireframe;
+	glutPostRedisplay();
 }
 
 //******Keyboard Input Processing*********
@@ -285,8 +315,8 @@ void render() {
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
   	// Initalize theviewport size
-  	viewport.w = 400;
-  	viewport.h = 400;
+  	viewport.w = 800;
+  	viewport.h = 800;
 
   	//The size and position of the window
   	glutInitWindowSize(viewport.w, viewport.h);
@@ -307,16 +337,28 @@ void render() {
 
 void process() {
 	printInfo("Processing Data!");
-	Point* bigp;
 	Point* point;
+	furthestPoint = new Point(0,0,0);
 	for (int p = 0; p < numOfPatches; p++) {
 		point = bunchOPatches[p]->subdividepatch(stepSize);
-		if (point > bigp)
-			bigp = point;
-		else
-			delete point;
+		
+		printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
+		
+		if (abs((*point)[0]) > (*furthestPoint)[0])
+			(*furthestPoint)[0] = abs((*point)[0]);
+		if (abs((*point)[1]) > (*furthestPoint)[1])
+			(*furthestPoint)[1] = abs((*point)[1]);
+		if (abs((*point)[2]) > (*furthestPoint)[2])
+			(*furthestPoint)[2] = abs((*point)[2]);	
+		delete point;
 	}
-	printInfo("Largest point found ("<<point[0]<<","<<point[1]<<","<<point[2]<<")");
+	printDebug(2,"Largest point found ("<<(*furthestPoint)[0]<<","<<(*furthestPoint)[1]<<","<<(*furthestPoint)[2]<<")");
+	
+	//run adaptive tessellation algorithm here
+	if (adaptive) {
+		
+		
+	}
 	
 }
 
