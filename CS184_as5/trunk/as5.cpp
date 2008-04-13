@@ -140,7 +140,7 @@ void getPatches(string filename) {
 		}
 		bunchOPatches.push_back(newPatch);
 	}
-	file.close;
+	file.close();
 }
 
 //****************************************************
