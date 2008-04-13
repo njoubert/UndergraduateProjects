@@ -19,6 +19,9 @@ vector<Patch*> bunchOPatches;
 int numOfPatches;
 double stepSize;
 char divideType;
+static double angle=0.0,ratio;
+static double x=0.0,y=1.75,z=5.0;
+static double lx=0.0,ly=0.0,lz=-1.0;
 
 //****************************************************
 // reshape viewport if the window is resized
@@ -111,6 +114,94 @@ void myDisplay() {
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
 }
+
+
+//**********Transformation functions***********
+void rotateLeftRight(float ang) {
+	lx = sin(ang);
+	lz = -cos(ang);
+	glLoadIdentity();
+	gluLookAt(x, y, z, 
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
+}
+
+void rotateUpDown(float ang) {
+	ly = sin(ang);
+	lz = -cos(ang);
+	glLoadIdentity();
+	gluLookAt(x, y, z, 
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
+}
+
+void zoomInOut(int direction) {
+	x = x + direction*(lx)*0.1;
+	z = z + direction*(lz)*0.1;
+	glLoadIdentity();
+	gluLookAt(x, y, z, 
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
+}
+
+void shiftUDLR(double x, double y) {
+	glLoadIdentity();
+	glTranslated(x,y,0.0);
+	gluLookAt(x,y,z,
+				x+lx, y+ly, z+lz,
+				0.0f, 1.0f, 0.0f);
+}
+
+//******Keyboard Input Processing*********
+void processKeys(unsigned char key, int x, int y) {
+	switch(key) {
+	case GLUT_KEY_UP: 
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			shiftUDLR(0.0, 0.1);
+		} else {
+			angle -=0.01;
+									rotateUpDown(angle);
+									break;
+		}
+	case GLUT_KEY_DOWN:
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			shiftUDLR(0.0, -0.1);
+		} else {
+			angle +=0.01;
+						rotateUpDown(angle);
+						break;
+		}
+	case GLUT_KEY_RIGHT:
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			shiftUDLR(0.1, 0.0);
+		} else {
+			angle +=0.01;
+			rotateLeftRight(angle);
+			break;
+		}
+	case GLUT_KEY_LEFT:
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			shiftUDLR(-0.1, 0.0);
+		} else {
+			angle -= 0.01;
+			rotateLeftRight(angle);
+			break;
+		}
+	case '+':
+		zoomInOut(1);
+		break;
+	case '-':
+		zoomInOut(-1);
+		break;
+	case 's':
+		return; //toggle flat and smooth shading
+	case 'w':
+		return; //toggle filled and wireframe
+	case 'h':
+		return; //optional: filled and hidden-line
+	}
+}
+
 
 
 //****************************************************
