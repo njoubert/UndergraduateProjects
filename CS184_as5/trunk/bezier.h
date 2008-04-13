@@ -4,10 +4,6 @@
 #include "types.h"
 #include "as5.h"
 
-struct Bezier {
-	Point p;
-	Normal n;
-	Deriv d;
-};
+
 
 #endif /*BEZIER_H_*/

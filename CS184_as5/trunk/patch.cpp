@@ -51,11 +51,12 @@ void Patch::subdividepatch(double step) {
 		if (u>1)
 			u=1;
 		int j= 0;
+		bezpoints.push_back(vector<Bezier*>());
 		for (double v=0; v<1+step; v=v+step) {
 			if (v>1)
 				v=1;
 			Bezier* bez = bezsurfaceinterp(u, v);
-			bezpoints[i][j] = bez; //Store the Bezier point
+			bezpoints[i].push_back(bez); //Store the Bezier point
 			j++;
 		}
 		i++;

@@ -11,4 +11,10 @@ typedef cml::vector3d Normal;
 typedef cml::vector3d Deriv;
 typedef Point* Curve[4];
 
+struct Bezier {
+	Point p;
+	Normal n;
+	Deriv d;
+};
+
 #endif /*TYPES_H_*/

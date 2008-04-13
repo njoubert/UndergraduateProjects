@@ -87,7 +87,24 @@ void myDisplay() {
 	glEnd();
 	//-----------------------------------------------------------------------
 	*/
+	
+	//Drawing Points:
 	glBegin(GL_POINTS);
+	
+	
+	for (int p = 0; p < numOfPatches; p++) {
+		
+		for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size(); u++) {
+			for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size(); v++) {
+				glVertex3f(bunchOPatches[p]->bezpoints[u][v]->p[0],
+					bunchOPatches[p]->bezpoints[u][v]->p[1],
+					bunchOPatches[p]->bezpoints[u][v]->p[2]);
+			}	
+		}
+		
+	}
+	
+	
 	
 	glEnd();
 	
@@ -113,18 +130,22 @@ void myFrameMove() {
 // into the vector of patches and number of patches.
 //****************************************************
 
-void getPatches(char* filename) {
+bool getPatches(char* filename) {
 	ifstream file(filename, ifstream::in);
-	if (!file)
-		return;
+	if (!file) {
+		printError("Could not open file!");
+		exit(1);
+		return false;
+	}
 	// Get the number of patches
 	file >> numOfPatches;
-	//printDebug(1, "Reading in " << numOfPatches << " patches...");
+	printInfo("Reading in " << numOfPatches << " patches...");
 	
 	double x, y, z; // Set up variables for coordinates
+	Patch * newPatch;
 	// All right, start reading in patch data
 	for (int i = 0; i<numOfPatches; i++) {
-		Patch *newPatch;
+		newPatch = new Patch();
 		for (int u = 0; u<4; u++) {
 			for (int v = 0; v<4; v++) {
 				file >> x >> y >> z;
@@ -134,12 +155,15 @@ void getPatches(char* filename) {
 		bunchOPatches.push_back(newPatch);
 	}
 	file.close();
+	return true;
 }
 
 //****************************************************
 // the usual stuff, nothing exciting here
 //****************************************************
 void render() {
+	printInfo("Rendering Scene!");
+	
   	//This tells glut to use a double-buffered window with red, green, and blue channels 
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
@@ -161,9 +185,18 @@ void render() {
   
 }
 
+void process() {
+	printInfo("Processing Data!");
+	
+	for (int p = 0; p < numOfPatches; p++) {
+		bunchOPatches[p]->subdividepatch(stepSize);
+	}
+	
+}
+
 int main(int argc, char *argv[]) {
 
-	cout << "Bezier Curve Renderer loading..." << endl;
+	printInfo("Curve Renderer Started");
 
   	//Read in the cmd args and store them
   	char* filename = argv[1];
@@ -171,11 +204,9 @@ int main(int argc, char *argv[]) {
   	stepSize = atof(argv[2]);
   	divideType = argv[3][1];
   	
-  	cout << "Initialized data!" << endl;
-  	
   	//This initializes glut
   	glutInit(&argc, argv);
-  	
+  	process();
   	render();
   	
   	return 0;

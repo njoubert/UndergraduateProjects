@@ -7,7 +7,7 @@ using namespace std;
 
 class Patch {
 public:
-	Point * cP[4][4];
+	Point* (cP[4][4]);
 	vector<vector<Bezier*> > bezpoints;
 	Bezier bezcurveinterp(Point*, Point*, Point*, Point*, double);
 	Bezier* bezsurfaceinterp(double, double);
