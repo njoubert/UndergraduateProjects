@@ -19,7 +19,6 @@ vector<Patch*> bunchOPatches;
 int numOfPatches;
 double stepSize;
 char divideType;
-ifstream file;
 
 //****************************************************
 // reshape viewport if the window is resized
@@ -114,9 +113,9 @@ void myFrameMove() {
 // into the vector of patches and number of patches.
 //****************************************************
 
-void getPatches(string filename) {
-	file.open(filename.c_str(), ios::in);
-	if (!file.is_open())
+void getPatches(char* filename) {
+	ifstream file(filename, ifstream::in);
+	if (!file)
 		return;
 	// Get the number of patches
 	file >> numOfPatches;
@@ -164,15 +163,15 @@ void render() {
 
 int main(int argc, char *argv[]) {
 
-	//("Bezier Curve Renderer loading...");
+	cout << "Bezier Curve Renderer loading..." << endl;
 
   	//Read in the cmd args and store them
-  	string filename = argv[1];
+  	char* filename = argv[1];
   	getPatches(filename);
   	stepSize = atof(argv[2]);
   	divideType = argv[3][1];
   	
-  	//printInfo("Initialized data!");
+  	cout << "Initialized data!" << endl;
   	
   	//This initializes glut
   	glutInit(&argc, argv);
