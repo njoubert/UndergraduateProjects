@@ -271,6 +271,7 @@ void render() {
   
   	glutDisplayFunc(myDisplay);				// function to run when its time to draw something
   	glutReshapeFunc(myReshape);				// function to run when the window gets resized
+  	glutKeyboardFunc(processKeys);
   	glutIdleFunc(myFrameMove);				// function to run when not handling any other task
   	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
   
