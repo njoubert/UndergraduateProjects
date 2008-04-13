@@ -19,9 +19,9 @@ vector<Patch*> bunchOPatches;
 int numOfPatches;
 double stepSize;
 char divideType;
-static double angle=0.0,ratio;
-static double x=0.0,y=1.75,z=5.0;
-static double lx=0.0,ly=0.0,lz=-1.0;
+static double anglelr=0.0,angleud=0.0,ratio=0.0;
+static double x=0.0,y=0.0,z=0.0;
+static double lx=0.0,ly=0.0,lz=0.0;
 
 //****************************************************
 // reshape viewport if the window is resized
@@ -52,7 +52,7 @@ void myReshape(int w, int h) {
 //****************************************************
 void initScene(){
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
-
+	
 	myReshape(viewport.w,viewport.h);
 }
 
@@ -61,17 +61,17 @@ void initScene(){
 // function that does the actual drawing
 //***************************************************
 void myDisplay() {
-
+	
 	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer (sets everything to black)
-
+	
 	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
-	glLoadIdentity();							// make sure transformation is "zero'd"
-
+	//glLoadIdentity();							// make sure transformation is "zero'd"
+	
 	//----------------------- code to draw objects --------------------------
-	// Rectangle Code
+							// Rectangle Code
 	//glColor3f(red component, green component, blue component);
 	glColor3f(1.0f,0.0f,0.0f);					// setting the color to pure red 90% for the rect
-	/*	
+/*	
 	glBegin(GL_POLYGON);						// draw rectangle 
 		//glVertex3f(x val, y val, z val (won't change the point because of the projection type));
 		glVertex3f(-0.8f, 0.0f, 0.0f);			// bottom left corner of rectangle
@@ -81,7 +81,7 @@ void myDisplay() {
 	glEnd();
 							// Triangle Code
 	glColor3f(1.0f,0.5f,0.0f);					// setting the color to orange for the triangle
-
+	
 	float basey = -sqrt(0.48f);					// height of triangle = sqrt(.8^2-.4^2)
 	glBegin(GL_POLYGON);
 		glVertex3f(0.5f,  0.0f, 0.0f);			// top tip of triangle
@@ -89,28 +89,29 @@ void myDisplay() {
 		glVertex3f(0.9f, basey, 0.0f);			// lower right corner of triangle
 	glEnd();
 	//-----------------------------------------------------------------------
-	 */
-
+	*/
+	
+	//glLoadIdentity();
+	//glTranslatef(0.0f, 0.0f, -3.7f);
+	//glRotatef(1.0f, 0.0f, 0.0f, 0.0f);
 	//Drawing Points:
 	glBegin(GL_POINTS);
-
-
+	
+	
 	for (int p = 0; p < numOfPatches; p++) {
-
+		
 		for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size(); u++) {
 			for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size(); v++) {
-				glVertex3f(bunchOPatches[p]->bezpoints[u][v]->p[0],
-						bunchOPatches[p]->bezpoints[u][v]->p[1],
-						bunchOPatches[p]->bezpoints[u][v]->p[2]);
+				glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
 			}	
 		}
-
+		
 	}
-
-
-
+	
+	
+	
 	glEnd();
-
+	
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
 }
@@ -120,36 +121,41 @@ void myDisplay() {
 void rotateLeftRight(float ang) {
 	lx = sin(ang);
 	lz = -cos(ang);
+	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	gluLookAt(x, y, z, 
-			x + lx,y + ly,z + lz,
-			0.0f,1.0f,0.0f);
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
+	
 }
 
 void rotateUpDown(float ang) {
 	ly = sin(ang);
 	lz = -cos(ang);
+	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	gluLookAt(x, y, z, 
-			x + lx,y + ly,z + lz,
-			0.0f,1.0f,0.0f);
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
 }
 
 void zoomInOut(int direction) {
 	x = x + direction*(lx)*0.1;
 	z = z + direction*(lz)*0.1;
+	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	gluLookAt(x, y, z, 
-			x + lx,y + ly,z + lz,
-			0.0f,1.0f,0.0f);
+		      x + lx,y + ly,z + lz,
+			  0.0f,1.0f,0.0f);
 }
 
 void shiftUDLR(double x, double y) {
+	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	glTranslated(x,y,0.0);
 	gluLookAt(x,y,z,
-			x+lx, y+ly, z+lz,
-			0.0f, 1.0f, 0.0f);
+				x+lx, y+ly, z+lz,
+				0.0f, 1.0f, 0.0f);
 }
 
 //***********Toggle functions***********
@@ -168,24 +174,24 @@ void processSpecialKeys(int key, int x, int y) {
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			shiftUDLR(0.0, 0.1);
 		} else {
-			angle -=0.01;
-			rotateUpDown(angle);
+			angleud -=0.01;
+			rotateUpDown(angleud);
 			break;
 		}
 	case GLUT_KEY_DOWN:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			shiftUDLR(0.0, -0.1);
 		} else {
-			angle +=0.01;
-			rotateUpDown(angle);
+			angleud +=0.01;
+			rotateUpDown(angleud);
 
 		}break;
 	case GLUT_KEY_RIGHT:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			shiftUDLR(0.1, 0.0);
 		} else {
-			angle +=0.01;
-			rotateLeftRight(angle);
+			anglelr +=0.01;
+			rotateLeftRight(anglelr);
 		}
 		break;
 
@@ -193,8 +199,8 @@ void processSpecialKeys(int key, int x, int y) {
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			shiftUDLR(-0.1, 0.0);
 		} else {
-			angle -= 0.01;
-			rotateLeftRight(angle);
+			anglelr -= 0.01;
+			rotateLeftRight(anglelr);
 
 		}break;
 
@@ -248,7 +254,7 @@ bool getPatches(char* filename) {
 	// Get the number of patches
 	file >> numOfPatches;
 	printInfo("Reading in " << numOfPatches << " patches...");
-
+	
 	double x, y, z; // Set up variables for coordinates
 	Patch * newPatch;
 	// All right, start reading in patch data
@@ -271,53 +277,68 @@ bool getPatches(char* filename) {
 //****************************************************
 void render() {
 	printInfo("Rendering Scene!");
+	
+  	//This tells glut to use a double-buffered window with red, green, and blue channels 
+  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
-	//This tells glut to use a double-buffered window with red, green, and blue channels 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  	// Initalize theviewport size
+  	viewport.w = 400;
+  	viewport.h = 400;
 
-	// Initalize theviewport size
-	viewport.w = 400;
-	viewport.h = 400;
+  	//The size and position of the window
+  	glutInitWindowSize(viewport.w, viewport.h);
+  	glutInitWindowPosition(0, 0);
+  	glutCreateWindow("CS184!");
 
-	//The size and position of the window
-	glutInitWindowSize(viewport.w, viewport.h);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("CS184!");
-
-	initScene();							// quick function to set up scene
-
+  	initScene();							// quick function to set up scene
+  
+  
 	glutDisplayFunc(myDisplay);				// function to run when its time to draw something
 	glutReshapeFunc(myReshape);				// function to run when the window gets resized
 	glutKeyboardFunc(processKeys);
 	glutSpecialFunc(processSpecialKeys);
 	glutIdleFunc(myFrameMove);				// function to run when not handling any other task
 	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
-
+  
 }
 
 void process() {
 	printInfo("Processing Data!");
-
+	Point* bigp;
+	Point* point;
 	for (int p = 0; p < numOfPatches; p++) {
-		bunchOPatches[p]->subdividepatch(stepSize);
+		point = bunchOPatches[p]->subdividepatch(stepSize);
+		if (point > bigp)
+			bigp = point;
+		else
+			delete point;
 	}
-
+	printInfo("Largest point found ("<<point[0]<<","<<point[1]<<","<<point[2]<<")");
+	
 }
 
 int main(int argc, char *argv[]) {
 
 	printInfo("Curve Renderer Started");
 
-	//Read in the cmd args and store them
-	char* filename = argv[1];
-	getPatches(filename);
-	stepSize = atof(argv[2]);
-	divideType = argv[3][1];
-
-	//This initializes glut
-	glutInit(&argc, argv);
-	process();
-	render();
-
-	return 0;
+  	//Read in the cmd args and store them
+  	char* filename = argv[1];
+  	getPatches(filename);
+  	stepSize = atof(argv[2]);
+  	divideType = argv[3][1];
+  	
+  	//This initializes glut
+  	glutInit(&argc, argv);
+  	process();
+  	render();
+  	
+  	return 0;
 }
+
+
+
+
+
+
+
+

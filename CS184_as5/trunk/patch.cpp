@@ -45,20 +45,28 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 // a subdivision factor of 0.3 will yield 0.3, 0.6, 0.9 and 1.0 - 
 // the last chunk is smaller than the other chunks. That's why I 
 // used 1+step instead of simply 1.
-void Patch::subdividepatch(double step) {
+// We return the BIGGEST point we found.
+Point* Patch::subdividepatch(double step) {
+	float x,y,z;
 	int i = 0;
 	for (double u= 0; u<1+step; u=u+step) {
 		if (u>1)
 			u=1;
-		int j= 0;
 		bezpoints.push_back(vector<Bezier*>());
 		for (double v=0; v<1+step; v=v+step) {
 			if (v>1)
 				v=1;
 			Bezier* bez = bezsurfaceinterp(u, v);
 			bezpoints[i].push_back(bez); //Store the Bezier point
-			j++;
+			if (bez->p[0] > x)
+				x = bez->p[0];
+			if (bez->p[1] > y)
+				y = bez->p[1];
+			if (bez->p[2] > y)
+				y = bez->p[2];
 		}
 		i++;
 	}
+	Point* ret = new Point(x,y,z);
+	return ret;
 }

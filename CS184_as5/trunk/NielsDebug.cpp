@@ -17,7 +17,7 @@ using namespace std;
 
 #define printError(A) 	cerr << "!!!  " << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl;
 
-#define printInfo(A)	if (NIELSINFO) {cout << clock()*1000/CLOCKS_PER_SEC; cout << "ms: " << A << endl; }
+#define printInfo(A)	if (NIELSINFO) {cout << ((long)clock())*((double)1000/CLOCKS_PER_SEC); cout << "ms: " << A << endl; }
 
 #define printInfoChar(a)    if (NIELSINFO) { cout << a; }
 

@@ -11,7 +11,7 @@ public:
 	vector<vector<Bezier*> > bezpoints;
 	Bezier bezcurveinterp(Point*, Point*, Point*, Point*, double);
 	Bezier* bezsurfaceinterp(double, double);
-	void subdividepatch(double);
+	Point* subdividepatch(double);
 };
 
 
