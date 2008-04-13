@@ -120,7 +120,7 @@ void getPatches(string filename) {
 		return;
 	// Get the number of patches
 	file >> numOfPatches;
-	printDebug(1, "Reading in " << numOfPatches << " patches...");
+	//printDebug(1, "Reading in " << numOfPatches << " patches...");
 	
 	double x, y, z; // Set up variables for coordinates
 	// All right, start reading in patch data
@@ -164,7 +164,7 @@ void render() {
 
 int main(int argc, char *argv[]) {
 
-	printInfo("Bezier Curve Renderer loading...");
+	//("Bezier Curve Renderer loading...");
 
   	//Read in the cmd args and store them
   	string filename = argv[1];
@@ -172,7 +172,7 @@ int main(int argc, char *argv[]) {
   	stepSize = atof(argv[2]);
   	divideType = argv[3][1];
   	
-  	printInfo("Initialized data!");
+  	//printInfo("Initialized data!");
   	
   	//This initializes glut
   	glutInit(&argc, argv);

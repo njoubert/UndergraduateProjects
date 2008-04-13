@@ -34,6 +34,6 @@
 #include "bezier.h"
 #include "patch.h"
 
-#include "Debug.cpp"
+//#include "NielsDebug.cpp"
 
 #endif /*AS5_H_*/
