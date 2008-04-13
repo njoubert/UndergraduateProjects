@@ -48,7 +48,7 @@ void Patch::subdividepatch(double step) {
 				v=1;
 			Bezier* bez = bezsurfaceinterp(u, v);
 			bezpoints[i][j] = bez //Store the Bezier point
-			j++
+			j++;
 		}
 		i++;
 	}
