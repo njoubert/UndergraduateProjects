@@ -140,8 +140,11 @@ void rotateUpDown(float ang) {
 }
 
 void zoomInOut(int direction) {
-	x = x + direction*(lx)*0.1;
-	z = z + direction*(lz)*0.1;
+//	x = x + direction*(lx)*0.1;
+//	z = z + direction*(lz)*0.1;
+	x = x + direction*0.1;
+	z = z + direction*0.1;
+
 	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	gluLookAt(x, y, z, 
