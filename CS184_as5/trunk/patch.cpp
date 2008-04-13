@@ -1,33 +1,42 @@
 #include "patch.h"
 
-Bezier* Patch::bezcurveinterp(Curve curve, double u) {
-	Bezier* b;
-	vector<Point> subcurve(curve.size-1);
-	while (subcurve.size > 1) {
-		for (int i=0; i<subcurve.size(); i++) {
-			subcurve[i] = curve[i] * (1.0-u) + curve[i+1] * u;
-		}
-		curve = subcurve;
-		subcurve = new Point[curve.size-1];
-	}
-	b->p = subcurve[0];
-	b->d = 3 * (curve[1]-curve[0]);
-	return b;
+Bezier Patch::bezcurveinterp(Point* p0, Point* p1, Point* p2, Point* p3, double u) {
+	Bezier bez;
+	
+	Point a = (*p0)*(1-u) + (*p1)*u;
+	Point b = (*p1)*(1-u) + (*p2)*u;
+	Point c = (*p2)*(1-u) + (*p3)*u;
+	
+	Point d = a*(1-u) + b*u;
+	Point e = b*(1-u) + c*u;
+	
+	bez.p = d*(1-u) + e*u;
+
+	bez.d = 3 * d-e;
+	return bez;
 }
 
 Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	Bezier* temp;
 	Curve ucurve, vcurve;
-	for (int i = 0; i<controlpoints.length; i++) {
-		ucurve[i] = (temp=bezcurveinterp(controlpoints[i][0:3], u))->p;
-		vcurve[i] = (temp=bezcurveinterp(controlpoints[0:3][i], v))->p;
+	for (int i = 0; i<4; i++) {
+		for (int j=0; j<4; j++) {
+		Curve temp[4];
+		ucurve[i] = (temp=bezcurveinterp(controlpoints[i], u))->p;
+		temp[0] = &(controlpoints[0][i]);
+		temp[1] = &(controlpoints[1][i]);
+		temp[2] = controlpoints[2][i]);
+		temp[3] = controlpoints[3][i]);
+
+		vcurve[i] = (temp=bezcurveinterp(temp, v))->p;
+		}
 	}
 	Bezier* vBez = bezcurveinterp(vcurve, v);
 	Bezier* uBez = bezcurveinterp(ucurve, u);
 	
-	n = cross(vBez->d, uBez->d);
+	Normal n = cross(vBez->d, uBez->d);
 	n = n / length(n);
-	temp->p = vBez->point;
+	temp->p = vBez->p;
 	temp->n = n;
 	return temp;
 }
