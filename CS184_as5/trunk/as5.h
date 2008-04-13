@@ -34,5 +34,7 @@ static struct timeval lastTime;
 
 //****** Add our headers ******
 #include "bezier.h"
+#include "patch.h"
+
 
 #endif /*AS5_H_*/

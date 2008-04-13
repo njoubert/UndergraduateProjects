@@ -69,7 +69,7 @@ void myDisplay() {
 							// Rectangle Code
 	//glColor3f(red component, green component, blue component);
 	glColor3f(1.0f,0.0f,0.0f);					// setting the color to pure red 90% for the rect
-	
+/*	
 	glBegin(GL_POLYGON);						// draw rectangle 
 		//glVertex3f(x val, y val, z val (won't change the point because of the projection type));
 		glVertex3f(-0.8f, 0.0f, 0.0f);			// bottom left corner of rectangle
@@ -87,6 +87,17 @@ void myDisplay() {
 		glVertex3f(0.9f, basey, 0.0f);			// lower right corner of triangle
 	glEnd();
 	//-----------------------------------------------------------------------
+	*/
+	glBegin(GL_POINTS);
+	for (int i = 0; i<numOfPatches; i++) {
+		Patch patch = bunchOPatches[i];
+		for (int u = 0; u<patch.bezpoints.length(); u++) {
+				for (int v = 0; v<patch.bezpoints[u].length(); v++) {
+						patch.bezpoints[u][v]->p;
+					}
+				}
+	}
+	glEnd();
 	
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
@@ -124,7 +135,7 @@ void getPatches(string filename) {
 		for (int u = 0; u<4; u++) {
 			for (int v = 0; v<4; v++) {
 				file >> x >> y >> z;
-				newPatch[u][v] = new Point(x, y, z);
+				newPatch.controlpoints[u][v] = new Point(x, y, z);
 			}
 		}
 		bunchOPatches.push_back(newPatch);
