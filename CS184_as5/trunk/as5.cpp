@@ -34,7 +34,7 @@ int NIELSINFO=1;
 static double moveStep=0.1;
 double anglelr=0.0,angleud=0.0,anglesp=0.0;
 double anglelrd=0.0,angleudd=0.0,anglespd=0.0;
-double px=0.0,py=0.0,pz=0.0;
+double objPosX=0.0,objPosY=0.0,eyePosZ=0.0;
 double lx=0.0,ly=0.0,lz=0.0;
 
 //****************************************************
@@ -44,24 +44,20 @@ void myReshape(int w, int h) {
 	viewport.w = w;
 	viewport.h = h;
 
-	glViewport(0,0,viewport.w,viewport.h);// sets the rectangle that will be the window
+	glViewport(0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();				// loading the identity matrix for the screen
-	//glTranslated(0.0, 0.0, -4.0);
-	//----------- setting the projection -------------------------
-	// glOrtho sets left, right, bottom, top, zNear, zFar of the chord system
+	glLoadIdentity();
 
+	float maxv = abs((*furthestPoint)[0]);
+	if (abs((*furthestPoint)[1]) > maxv)
+		maxv = abs((*furthestPoint)[1]); 
+		
+	//This should be slightly bigger than -1*sqrt(3)*maxv offset 
+	//from the largest point to fit the whole thing.
+	//Its trig: straight distance = orthogonal distance / tan(angle) 
+	eyePosZ = maxv + 1.5*maxv; 
+	gluPerspective(60.0, 1.0, 0.0, 2*maxv); //We set up our perspective for a natural feel (60 degrees) and a far clipping plane.
 
-	// glOrtho(-1, 1 + (w-400)/200.0 , -1 -(h-400)/200.0, 1, 1, -1); // resize type = add
-	// glOrtho(-w/400.0, w/400.0, -h/400.0, h/400.0, 1, -1); // resize type = center
-
-	float maxv = (*furthestPoint)[0];
-	if ((*furthestPoint)[1] > maxv)
-		maxv = (*furthestPoint)[1]; 
-	//Total hack to get everything displayed.
-	glOrtho(-1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv, 1.5*maxv, -1.5*maxv);	// resize type = stretch
-
-	//------------------------------------------------------------
 }
 
 
@@ -69,7 +65,13 @@ void myReshape(int w, int h) {
 // sets the window up
 //****************************************************
 void initScene(){
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Clear to black, fully transparent
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
+	
+  	glDepthFunc(GL_LESS);
+  	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	
 	myReshape(viewport.w,viewport.h);
 }
@@ -80,77 +82,48 @@ void initScene(){
 //***************************************************
 void myDisplay() {
 	
-	//----------------------- code to draw objects --------------------------
-							// Rectangle Code
-	//glColor3f(red component, green component, blue component);
-	//glColor3f(1.0f,0.0f,0.0f);					// setting the color to pure red 90% for the rect
-/*	
-	glBegin(GL_POLYGON);						// draw rectangle 
-		//glVertex3f(x val, y val, z val (won't change the point because of the projection type));
-		glVertex3f(-0.8f, 0.0f, 0.0f);			// bottom left corner of rectangle
-		glVertex3f(-0.8f, 0.5f, 0.0f);			// top left corner of rectangle
-		glVertex3f( 0.0f, 0.5f, 0.0f);			// top right corner of rectangle
-		glVertex3f( 0.0f, 0.0f, 0.0f);			// bottom right corner of rectangle
-	glEnd();
-							// Triangle Code
-	glColor3f(1.0f,0.5f,0.0f);					// setting the color to orange for the triangle
-	
-	float basey = -sqrt(0.48f);					// height of triangle = sqrt(.8^2-.4^2)
-	glBegin(GL_POLYGON);
-		glVertex3f(0.5f,  0.0f, 0.0f);			// top tip of triangle
-		glVertex3f(0.1f, basey, 0.0f);			// lower left corner of triangle
-		glVertex3f(0.9f, basey, 0.0f);			// lower right corner of triangle
-	glEnd();
-	//-----------------------------------------------------------------------
-	*/
-	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer (sets everything to black)
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// clear the color buffer (sets everything to black)
 	
 	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
 	glLoadIdentity();							// make sure transformation is "zero'd"
-	//glTranslatef(0.0f, 0.0f, +3.7f);
-	//glRotatef(1.0f, 0.0f, 0.0f, 0.0f);
-	//Drawing Points:
-	
-	glTranslated(px,py,0);
-	glScalef(pz+1,pz+1,pz+1);
-	//glRotated(lx, 1.0f, 0.0f, 0.0f);
-	//glRotated(ly, 0.0f, 1.0f, 0.0f);
-	//glRotated(lz, 0.0f, 0.0f, 1.0f);
-	glRotated(angleud, 1.0f, 0.0f, 0.0f);
-	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
-	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
 	
 	if (wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+//	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
+//	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
 
-	glEnable(GL_LIGHTING);
-	GLfloat al[] = {0.2, 0.2, 0.2, 0.0};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
-
-	glEnable(GL_LIGHT0);
-	GLfloat light_ambient[] = {0.2, 0.2, 0.2, 0.0};
-	GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 0.0};
-	GLfloat light_specular[] = {1.0, 1.0, 1.0, 0.0};
-	GLfloat light_position[] = {-1.0, 1.0, -1.0, 0.0};
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	
+//	GLfloat light_ambient[] = {0.2, 0.2, 0.2, 0.0};
+//	GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 0.0};
+//	GLfloat light_specular[] = {1.0, 1.0, 1.0, 0.0};
+	GLfloat light_position[] = {-5.0, 5.0, 5.0, 1.0};
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+//	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 
-	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+//	glEnable(GL_COLOR_MATERIAL);
+//	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
 	
-	GLfloat mat_d[] = {0.1, 0.5, 0.8, 0.0};
-	GLfloat mat_s[] = {1.0, 1.0, 1.0, 0.0};
-	GLfloat low_sh[] = {5.0};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+//	GLfloat mat_d[] = {0.1, 0.5, 0.8, 0.0};
+//	GLfloat mat_s[] = {1.0, 1.0, 1.0, 0.0};
+//	GLfloat low_sh[] = {5.0};
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+	
+	glTranslated(objPosX,objPosY,0);
+	gluLookAt(0,0,eyePosZ,
+		0,0,0,
+		0,1,0);
+	glRotated(angleud, 1.0f, 0.0f, 0.0f);
+	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
+	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
 	
 	if (!adaptive)	{
 
@@ -165,19 +138,19 @@ void myDisplay() {
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());					
 //					glEnd();
 					glBegin(GL_TRIANGLES);
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glEnd();
 					glBegin(GL_TRIANGLES);
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
 
 					glEnd();
@@ -199,18 +172,7 @@ void myDisplay() {
 //**********Transformation functions***********
 
 void zoomInOut(int direction) {
-//	x = x + direction*(lx)*0.1;
-//	z = z + direction*(lz)*0.1;
-//	x = x + direction*0.1;
-//	z = z + direction*0.1;
-
-//	pz += direction*moveStep;
-
-//	glMatrixMode(GL_MODELVIEW);	
-//	glLoadIdentity();
-//	gluLookAt(x, y, z, 
-//		      x + lx,y + ly,z + lz,
-//			  0.0f,1.0f,0.0f);
+	eyePosZ += direction*moveStep;
 }
 
 //***********Toggle functions***********
@@ -232,9 +194,9 @@ void processSpecialKeys(int key, int x, int y) {
 	case GLUT_KEY_UP: 
 		
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			printDebug(2, "Up key! " <<py);
-			py += moveStep;
-			printDebug(2, "Up key! " <<py);
+			printDebug(2, "Up key! " <<objPosY);
+			objPosY += moveStep;
+			printDebug(2, "Up key! " <<objPosY);
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
 			angleudd -= moveStep;
 		} else {
@@ -244,7 +206,7 @@ void processSpecialKeys(int key, int x, int y) {
 		break;
 	case GLUT_KEY_DOWN:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			py -= moveStep;
+			objPosY -= moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
 			angleudd += moveStep;
 		} else {
@@ -254,7 +216,7 @@ void processSpecialKeys(int key, int x, int y) {
 		break;
 	case GLUT_KEY_RIGHT:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			px += moveStep;
+			objPosX += moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
 			anglelrd += moveStep;
 		} else {
@@ -265,7 +227,7 @@ void processSpecialKeys(int key, int x, int y) {
 
 	case GLUT_KEY_LEFT:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			px -= moveStep;
+			objPosX -= moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
 			anglelrd -= moveStep;
 		} else {
@@ -281,10 +243,10 @@ void processKeys(unsigned char key, int x, int y) {
 	printDebug(2, "Processing normal key "<<key);
 	switch (key) {
 	case '=':
-		zoomInOut(1);
+		zoomInOut(-1);
 		break;
 	case '-':
-		zoomInOut(-1);
+		zoomInOut(1);
 		break;
 	case 's':
 		toggleFlatSmooth();
