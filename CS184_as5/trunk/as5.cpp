@@ -222,38 +222,30 @@ void processSpecialKeys(int key, int x, int y) {
 	printDebug(2, "Processing special key "<<key);
 	switch(key) {
 	case GLUT_KEY_UP: 
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			shiftUDLR(0.0, 0.1);
-		} else {
-			angleud -=0.01;
-			rotateUpDown(angleud);
-			break;
-		}
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
+			glTranslated(0,0.5,0);
+		 else 
+			glRotated(15.0, -1.0, 0.0, 0.0);
+		glutPostRedisplay();
+
 	case GLUT_KEY_DOWN:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			shiftUDLR(0.0, -0.1);
-		} else {
-			angleud +=0.01;
-			rotateUpDown(angleud);
-
-		}break;
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
+			glTranslated(0,-0.5,0);
+		else 
+			glRotated(15.0, 1.0, 0.0, 0.0);
+		glutPostRedisplay();
 	case GLUT_KEY_RIGHT:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			shiftUDLR(0.1, 0.0);
-		} else {
-			anglelr +=0.01;
-			rotateLeftRight(anglelr);
-		}
-		break;
-
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
+			glTranslated(0.5, 0,0);
+		else 
+			glRotated(15.0, 0.0, 1.0, 0.0);
+		glutPostRedisplay();
 	case GLUT_KEY_LEFT:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
-			shiftUDLR(-0.1, 0.0);
-		} else {
-			anglelr -= 0.01;
-			rotateLeftRight(anglelr);
-
-		}break;
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
+					glTranslated(-0.5, 0, 0);
+				else 
+					glRotated(15.0, 0.0, -1.0, 0.0);
+				glutPostRedisplay();
 
 	}
 }
@@ -262,11 +254,11 @@ void processKeys(unsigned char key, int x, int y) {
 	printDebug(2, "Processing normal key "<<key);
 	switch (key) {
 	case '=':
-		zoomInOut(1);
-		break;
+		glTranslated(0,0,0.5);
+		glutPostRedisplay();
 	case '-':
-		zoomInOut(-1);
-		break;
+		glTranslated(0,0,-0.5);
+		glutPostRedisplay();
 	case 's':
 		toggleFlatSmooth();
 		break;
