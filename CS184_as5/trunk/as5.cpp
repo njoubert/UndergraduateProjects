@@ -65,14 +65,13 @@ void myReshape(int w, int h) {
 // sets the window up
 //****************************************************
 void initScene(){
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Clear to black, fully transparent
 	
-  	glDepthFunc(GL_LESS);
-  	glEnable(GL_DEPTH_TEST);
+	//glShadeModel(GL_SMOOTH);
+  	
+  	//glDepthFunc(GL_LESS);
+  	//glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	
 	myReshape(viewport.w,viewport.h);
 }
 
@@ -92,30 +91,32 @@ void myDisplay() {
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-//	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
-//	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
 
+//	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+//	glEnable(GL_COLOR_MATERIAL);
 	
-//	GLfloat light_ambient[] = {0.2, 0.2, 0.2, 0.0};
-//	GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 0.0};
-//	GLfloat light_specular[] = {1.0, 1.0, 1.0, 0.0};
-	GLfloat light_position[] = {-5.0, 5.0, 5.0, 1.0};
-//	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-//	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-//	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
+	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 0.0};
+	GLfloat light_specular[] = {0.3, 0.3, 0.3, 0.0};
+	GLfloat light_position[] = {5.0, 5.0, 0.0, 0.0};
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
+	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
 
-//	glEnable(GL_COLOR_MATERIAL);
-//	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 
-	
-//	GLfloat mat_d[] = {0.1, 0.5, 0.8, 0.0};
-//	GLfloat mat_s[] = {1.0, 1.0, 1.0, 0.0};
-//	GLfloat low_sh[] = {5.0};
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
+	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat low_sh[] = {0.0f};
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
 	
 	glTranslated(objPosX,objPosY,0);
 	gluLookAt(0,0,eyePosZ,
@@ -131,6 +132,7 @@ void myDisplay() {
 			
 			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
 				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
+					glColor4f(1.0, 0.0, 0.0, 1.0);
 //					glBegin(GL_QUADS);
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
@@ -144,6 +146,7 @@ void myDisplay() {
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					
 					glEnd();
 					glBegin(GL_TRIANGLES);
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
@@ -152,7 +155,8 @@ void myDisplay() {
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
-
+					
+					
 					glEnd();
 				}	
 			}
@@ -336,15 +340,12 @@ void render() {
   	viewport.w = 800;
   	viewport.h = 800;
 
-
-
   	//The size and position of the window
   	glutInitWindowSize(viewport.w, viewport.h);
   	glutInitWindowPosition(0, 0);
   	glutCreateWindow("CS184!");
 
   	initScene();							// quick function to set up scene
-  
   
 	glutDisplayFunc(myDisplay);				// function to run when its time to draw something
 	glutReshapeFunc(myReshape);				// function to run when the window gets resized
