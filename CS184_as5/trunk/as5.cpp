@@ -16,6 +16,9 @@ public:
 //****************************************************
 Viewport	viewport;
 vector<Patch*> bunchOPatches;
+
+//vector<Triangle*> bunchOTriangles;
+
 Point* furthestPoint;
 int numOfPatches;
 
@@ -53,8 +56,8 @@ void myReshape(int w, int h) {
 	float maxv = (*furthestPoint)[0];
 	if ((*furthestPoint)[1] > maxv)
 		maxv = (*furthestPoint)[1]; 
-
-	glOrtho(-1*maxv, maxv, -1*maxv, maxv, maxv, -1*maxv);	// resize type = stretch
+	//Total hack to get everything displayed.
+	glOrtho(-1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv);	// resize type = stretch
 
 	//------------------------------------------------------------
 }
@@ -122,22 +125,28 @@ void myDisplay() {
 			
 			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
 				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
-					glBegin(GL_QUADS);
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());					
-					glEnd();
-//					glBegin(GL_TRIANGLES);
+//					glBegin(GL_QUADS);
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());					
 //					glEnd();
-//					glBegin(GL_TRIANGLES);
-//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-//					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
-//					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-//					glEnd();
+					glBegin(GL_TRIANGLES);
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					glEnd();
+					glBegin(GL_TRIANGLES);
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					glEnd();
 				}	
 			}
 			
@@ -348,6 +357,8 @@ void process() {
 	Point* point;
 	furthestPoint = new Point(0,0,0);
 	for (int p = 0; p < numOfPatches; p++) {
+		
+		printDebug(2, "Subdividing patch "<<p);
 		point = bunchOPatches[p]->subdividepatch(stepSize);
 		
 		printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
@@ -462,8 +473,6 @@ int main(int argc, char *argv[]) {
         printUsage();
         exit(1);
     }
-    
-    printInfo("Curve Renderer Started");
   	
   	//This initializes glut
   	glutInit(&argc, argv);
