@@ -31,9 +31,11 @@ bool smoothShading;
 int NIELSDEBUG=0;
 int NIELSINFO=1;
 
-static double anglelr=0.0,angleud=0.0,ratio=0.0;
-static double x=0.0,y=0.0,z=0.0;
-static double lx=0.0,ly=0.0,lz=0.0;
+static double moveStep=0.1;
+double anglelr=0.0,angleud=0.0,anglesp=0.0;
+double anglelrd=0.0,angleudd=0.0,anglespd=0.0;
+double px=0.0,py=0.0,pz=0.0;
+double lx=0.0,ly=0.0,lz=0.0;
 
 //****************************************************
 // reshape viewport if the window is resized
@@ -57,7 +59,7 @@ void myReshape(int w, int h) {
 	if ((*furthestPoint)[1] > maxv)
 		maxv = (*furthestPoint)[1]; 
 	//Total hack to get everything displayed.
-	glOrtho(-1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv);	// resize type = stretch
+	glOrtho(-1.5*maxv, 1.5*maxv, -1.5*maxv, 1.5*maxv, 1.5*maxv, -1.5*maxv);	// resize type = stretch
 
 	//------------------------------------------------------------
 }
@@ -78,15 +80,10 @@ void initScene(){
 //***************************************************
 void myDisplay() {
 	
-	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer (sets everything to black)
-	
-	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
-	//glLoadIdentity();							// make sure transformation is "zero'd"
-	
 	//----------------------- code to draw objects --------------------------
 							// Rectangle Code
 	//glColor3f(red component, green component, blue component);
-	glColor3f(1.0f,0.0f,0.0f);					// setting the color to pure red 90% for the rect
+	//glColor3f(1.0f,0.0f,0.0f);					// setting the color to pure red 90% for the rect
 /*	
 	glBegin(GL_POLYGON);						// draw rectangle 
 		//glVertex3f(x val, y val, z val (won't change the point because of the projection type));
@@ -106,12 +103,22 @@ void myDisplay() {
 	glEnd();
 	//-----------------------------------------------------------------------
 	*/
+	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer (sets everything to black)
 	
-	//glLoadIdentity();
-	//glTranslatef(0.0f, 0.0f, -3.7f);
+	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
+	glLoadIdentity();							// make sure transformation is "zero'd"
+	//glTranslatef(0.0f, 0.0f, +3.7f);
 	//glRotatef(1.0f, 0.0f, 0.0f, 0.0f);
 	//Drawing Points:
 	
+	glTranslated(px,py,0);
+	glScalef(pz+1,pz+1,pz+1);
+	//glRotated(lx, 1.0f, 0.0f, 0.0f);
+	//glRotated(ly, 0.0f, 1.0f, 0.0f);
+	//glRotated(lz, 0.0f, 0.0f, 1.0f);
+	glRotated(angleud, 1.0f, 0.0f, 0.0f);
+	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
+	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
 	
 	if (wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -119,6 +126,32 @@ void myDisplay() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
+	glEnable(GL_LIGHTING);
+	GLfloat al[] = {0.2, 0.2, 0.2, 0.0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
+
+	glEnable(GL_LIGHT0);
+	GLfloat light_ambient[] = {0.2, 0.2, 0.2, 0.0};
+	GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 0.0};
+	GLfloat light_specular[] = {1.0, 1.0, 1.0, 0.0};
+	GLfloat light_position[] = {-1.0, 1.0, -1.0, 0.0};
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+	
+	GLfloat mat_d[] = {0.1, 0.5, 0.8, 0.0};
+	GLfloat mat_s[] = {1.0, 1.0, 1.0, 0.0};
+	GLfloat low_sh[] = {5.0};
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+	
 	if (!adaptive)	{
 
 		for (int p = 0; p < numOfPatches; p++) {
@@ -132,20 +165,21 @@ void myDisplay() {
 //					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());					
 //					glEnd();
 					glBegin(GL_TRIANGLES);
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glEnd();
 					glBegin(GL_TRIANGLES);
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					//glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
+
 					glEnd();
 				}	
 			}
@@ -154,6 +188,7 @@ void myDisplay() {
 		
 	}
 	
+	glDisable(GL_COLOR_MATERIAL);
 	
 	
 	glFlush();
@@ -162,47 +197,20 @@ void myDisplay() {
 
 
 //**********Transformation functions***********
-void rotateLeftRight(float ang) {
-	lx = sin(ang);
-	lz = -cos(ang);
-	glMatrixMode(GL_MODELVIEW);	
-	glLoadIdentity();
-	gluLookAt(x, y, z, 
-		      x + lx,y + ly,z + lz,
-			  0.0f,1.0f,0.0f);
-	
-}
-
-void rotateUpDown(float ang) {
-	ly = sin(ang);
-	lz = -cos(ang);
-	glMatrixMode(GL_MODELVIEW);	
-	glLoadIdentity();
-	gluLookAt(x, y, z, 
-		      x + lx,y + ly,z + lz,
-			  0.0f,1.0f,0.0f);
-}
 
 void zoomInOut(int direction) {
 //	x = x + direction*(lx)*0.1;
 //	z = z + direction*(lz)*0.1;
-	x = x + direction*0.1;
-	z = z + direction*0.1;
+//	x = x + direction*0.1;
+//	z = z + direction*0.1;
 
-	glMatrixMode(GL_MODELVIEW);	
-	glLoadIdentity();
-	gluLookAt(x, y, z, 
-		      x + lx,y + ly,z + lz,
-			  0.0f,1.0f,0.0f);
-}
+//	pz += direction*moveStep;
 
-void shiftUDLR(double x, double y) {
-	glMatrixMode(GL_MODELVIEW);	
-	glLoadIdentity();
-	glTranslated(x,y,0.0);
-	gluLookAt(x,y,z,
-				x+lx, y+ly, z+lz,
-				0.0f, 1.0f, 0.0f);
+//	glMatrixMode(GL_MODELVIEW);	
+//	glLoadIdentity();
+//	gluLookAt(x, y, z, 
+//		      x + lx,y + ly,z + lz,
+//			  0.0f,1.0f,0.0f);
 }
 
 //***********Toggle functions***********
@@ -222,30 +230,49 @@ void processSpecialKeys(int key, int x, int y) {
 	printDebug(2, "Processing special key "<<key);
 	switch(key) {
 	case GLUT_KEY_UP: 
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
-			glTranslated(0,0.5,0);
-		 else 
-			glRotated(15.0, -1.0, 0.0, 0.0);
-		glutPostRedisplay();
-
+		
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			printDebug(2, "Up key! " <<py);
+			py += moveStep;
+			printDebug(2, "Up key! " <<py);
+		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			angleudd -= moveStep;
+		} else {
+			angleudd = 0.0;
+			angleud -= 10*moveStep;
+		}
+		break;
 	case GLUT_KEY_DOWN:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
-			glTranslated(0,-0.5,0);
-		else 
-			glRotated(15.0, 1.0, 0.0, 0.0);
-		glutPostRedisplay();
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			py -= moveStep;
+		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			angleudd += moveStep;
+		} else {
+			angleudd = 0.0;
+			angleud += 10*moveStep;
+		}
+		break;
 	case GLUT_KEY_RIGHT:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
-			glTranslated(0.5, 0,0);
-		else 
-			glRotated(15.0, 0.0, 1.0, 0.0);
-		glutPostRedisplay();
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			px += moveStep;
+		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			anglelrd += moveStep;
+		} else {
+			anglelrd = 0.0;
+			anglelr += 10*moveStep;
+		}
+		break;
+
 	case GLUT_KEY_LEFT:
-		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) 
-					glTranslated(-0.5, 0, 0);
-				else 
-					glRotated(15.0, 0.0, -1.0, 0.0);
-				glutPostRedisplay();
+		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+			px -= moveStep;
+		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			anglelrd -= moveStep;
+		} else {
+			anglelrd = 0.0;
+			anglelr -= 10*moveStep;
+		}
+		break;
 
 	}
 }
@@ -254,13 +281,29 @@ void processKeys(unsigned char key, int x, int y) {
 	printDebug(2, "Processing normal key "<<key);
 	switch (key) {
 	case '=':
-		glTranslated(0,0,0.5);
-		glutPostRedisplay();
+		zoomInOut(1);
+		break;
 	case '-':
-		glTranslated(0,0,-0.5);
-		glutPostRedisplay();
+		zoomInOut(-1);
+		break;
 	case 's':
 		toggleFlatSmooth();
+		break;
+	case ',':
+		if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			anglespd += moveStep;
+		} else {
+			anglespd = 0.0;
+			anglesp += 10*moveStep;
+		}
+		break;
+	case '.':
+		if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+			anglespd -= moveStep;
+		} else {
+			anglespd = 0.0;
+			anglesp -= 10*moveStep;
+		}
 		break;
 	case 'w':
 		toggleWireframe(); //toggle filled and wireframe
@@ -275,10 +318,14 @@ void processKeys(unsigned char key, int x, int y) {
 // called by glut when there are no messages to handle
 //****************************************************
 void myFrameMove() {
-	//nothing here for now
 #ifdef _WIN32
 	Sleep(10);						//give ~10ms back to OS (so as not to waste the CPU)
 #endif
+	
+		anglesp += anglespd;
+		anglelr += anglelrd;
+		angleud += angleudd;
+	
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 
@@ -326,6 +373,8 @@ void render() {
   	// Initalize theviewport size
   	viewport.w = 800;
   	viewport.h = 800;
+
+
 
   	//The size and position of the window
   	glutInitWindowSize(viewport.w, viewport.h);
