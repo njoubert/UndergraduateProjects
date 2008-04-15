@@ -47,7 +47,9 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 // used 1+step instead of simply 1.
 // We return the BIGGEST point we found.
 Point* Patch::subdividepatch(double step) {
-	float x,y,z;
+	double x = -99999.999;
+	double y = -99999.999; 
+	double z = -99999.999;
 	int i = 0;
 	for (double u= 0; u<1+step; u=u+step) {
 		if (u>1)
@@ -62,8 +64,8 @@ Point* Patch::subdividepatch(double step) {
 				x = bez->p[0];
 			if (bez->p[1] > y)
 				y = bez->p[1];
-			if (bez->p[2] > y)
-				y = bez->p[2];
+			if (bez->p[2] > z)
+				z = bez->p[2];
 		}
 		i++;
 	}
