@@ -63,7 +63,7 @@ class MyBezier {
   }
   public void draw(boolean showControlPoints) {
     stroke(myc);
-    for (float t=0; t<1; t+= bezierStep) {
+    for (float t=0; t<1-bezierStep; t+= bezierStep) {
        MyPoint t1 = calcPoint(t);
        MyPoint t2 = calcPoint(t+bezierStep);
        if (boldL) {
