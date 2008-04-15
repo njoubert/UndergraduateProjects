@@ -18,7 +18,7 @@ import processing.core.*; import java.lang.StringBuffer; import java.applet.*; i
 String ex1 = "(69,93) (10,290) (197,291) (249,94)\n(69,92) (133,51) (263,56) (250,95)\n(69,92) (86,136) (223,127) (248,95)\n(69,93) (116,-7) (269,-11) (250,96)\n(86,136) (78,175) (168,140) (87,137)\n(153,146) (152,182) (240,133) (154,146)\n(84,191) (87,219) (146,218) (156,199)";
 
 MyBezier[] curves;     
-float bezierStep = 0.001f;
+float bezierStep = 0.01f;
 boolean showContP = true;
 boolean boldL = true;
 
@@ -33,15 +33,17 @@ class MyPoint {
      x = PApplet.parseInt(p[0].substring(1));
      y = PApplet.parseInt(p[1].substring(0,p[1].length()-1));
   }
-  public void draw(boolean bold) {
-    if (!bold)
-      point(x,y);
-    else
-      rect(x-2,y-2,4,4);
-  }
   //Returns true if the given x,y is within dist of point
   public boolean within(int x, int y, int dist) {
     return (abs(this.x-x) < dist && abs(this.y-y) < dist);
+  }
+  
+  public void draw(boolean bold) {
+     if (bold) {
+        rect(x-2, y-2, 4, 4);
+     } else {
+        point(x, y);
+     } 
   }
   
   public String toString() {
@@ -58,12 +60,20 @@ class MyBezier {
    P[2] = new MyPoint();
    P[3] = new MyPoint();
    myc = color(random(200),random(200),random(200));
-  }  
+  }
   public void draw(boolean showControlPoints) {
     stroke(myc);
-    for (float t=0; t<1; t+= bezierStep) {
-       calcPoint(t).draw(boldL);    
+    for (float t=0; t<1-bezierStep; t+= bezierStep) {
+       MyPoint t1 = calcPoint(t);
+       MyPoint t2 = calcPoint(t+bezierStep);
+       if (boldL) {
+         strokeWeight(4);
+       } else {
+         strokeWeight(1);
+       }
+       line(t1.x, t1.y, t2.x, t2.y);
     }
+    strokeWeight(1);
     if (showControlPoints) {
       P[0].draw(true);
       P[1].draw(true);
@@ -73,15 +83,20 @@ class MyBezier {
   }
   
   private MyPoint calcPoint(float t) {
+    float t3 = t*t*t;
+    float t2 = t*t;
+    float tm3 = (1-t)*(1-t)*(1-t);
+    float tm2 = (1-t)*(1-t);
+    float tm1 = (1-t);
     MyPoint p = new MyPoint();
-    float x = P[0].x*pow((1-t),3) + 
-          P[1].x*3*t*pow((1-t),2) +
-          P[2].x*3*pow(t,2)*(1-t) +
-          P[3].x*pow(t,3);
-    float y = P[0].y*pow((1-t),3) + 
-          P[1].y*3*t*pow((1-t),2) +
-          P[2].y*3*pow(t,2)*(1-t) +
-          P[3].y*pow(t,3);
+    float x = P[0].x*tm3 + 
+          P[1].x*3*t*tm2 +
+          P[2].x*3*t2*tm1 +
+          P[3].x*t3;
+    float y = P[0].y*tm3 + 
+          P[1].y*3*t*tm2 +
+          P[2].y*3*t2*tm1 +
+          P[3].y*t3;
     
     p.x = (int) x;
     p.y = (int) y;
