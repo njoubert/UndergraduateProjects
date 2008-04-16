@@ -20,17 +20,17 @@ Bezier Patch::bezcurveinterp(Point* p0, Point* p1, Point* p2, Point* p3, double 
 Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	Bezier* temp = new Bezier;
 	Curve ucurve, vcurve;
-	ucurve[0] = &(bezcurveinterp(cP[0][0], cP[0][1], cP[0][2], cP[0][3], u).p);
-	ucurve[1] = &(bezcurveinterp(cP[1][0], cP[1][1], cP[1][2], cP[1][3], u).p);
-	ucurve[2] = &(bezcurveinterp(cP[2][0], cP[2][1], cP[2][2], cP[2][3], u).p);
-	ucurve[3] = &(bezcurveinterp(cP[3][0], cP[3][1], cP[3][2], cP[3][3], u).p);
+	ucurve[0] = &(bezcurveinterp(cP[0][0], cP[0][1], cP[0][2], cP[0][3], v).p);
+	ucurve[1] = &(bezcurveinterp(cP[1][0], cP[1][1], cP[1][2], cP[1][3], v).p);
+	ucurve[2] = &(bezcurveinterp(cP[2][0], cP[2][1], cP[2][2], cP[2][3], v).p);
+	ucurve[3] = &(bezcurveinterp(cP[3][0], cP[3][1], cP[3][2], cP[3][3], v).p);
 	
 	vcurve[0] = &(bezcurveinterp(cP[0][0], cP[1][0], cP[2][0], cP[3][0], u).p);
 	vcurve[1] = &(bezcurveinterp(cP[0][1], cP[1][1], cP[2][1], cP[3][1], u).p);
 	vcurve[2] = &(bezcurveinterp(cP[0][2], cP[1][2], cP[2][2], cP[3][2], u).p);
 	vcurve[3] = &(bezcurveinterp(cP[0][3], cP[1][3], cP[2][3], cP[3][3], u).p);
 	
-	Bezier vBez = bezcurveinterp(vcurve[0], vcurve[1],vcurve[2], vcurve[3], v);
+	Bezier vBez = bezcurveinterp(vcurve[0], vcurve[1], vcurve[2], vcurve[3], v);
 	Bezier uBez = bezcurveinterp(ucurve[0], ucurve[1], ucurve[2], ucurve[3], u);
 	
 	Normal n = cross(vBez.d, uBez.d);
