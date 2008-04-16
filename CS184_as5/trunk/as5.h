@@ -17,6 +17,7 @@
 #include <GLUT/glut.h>
 #include <OpenGL/glu.h>
 #else
+#define GLUT_DISABLE_ATEXIT_HACK
 #include <GL/glut.h>
 #include <GL/glu.h>
 #endif
@@ -27,11 +28,9 @@
 #define PI 3.14159265
 
 //****** Add libraries ******
-#include "cml/cml.h"
+//#include "cml/cml.h"
 
 //****** Add our headers ******
-#include "types.h"
-#include "bezier.h"
 #include "patch.h"
 
 #include "NielsDebug.h"

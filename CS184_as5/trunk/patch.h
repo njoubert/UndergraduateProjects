@@ -1,9 +1,7 @@
 #ifndef PATCH_H_
 #define PATCH_H_
 
-#include "as5.h"
-
-using namespace std;
+#include "types.h"
 
 class Patch {
 public:

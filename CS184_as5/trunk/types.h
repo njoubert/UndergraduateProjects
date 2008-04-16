@@ -4,6 +4,7 @@
 //****** Add libraries ******
 #include "cml/cml.h"
 #include <vector>
+using namespace std;
 
 //****** Add Types ******
 typedef cml::vector3d Point;
@@ -16,5 +17,6 @@ struct Bezier {
 	Normal n;
 	Deriv d;
 };
+
 
 #endif /*TYPES_H_*/
