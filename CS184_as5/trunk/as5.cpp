@@ -65,13 +65,17 @@ void myReshape(int w, int h) {
 // sets the window up
 //****************************************************
 void initScene(){
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Clear to black, fully transparent
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
 	
-	//glShadeModel(GL_SMOOTH);
-  	
+	glShadeModel(GL_FLAT);
+  	//glEnable(GL_CULL_FACE);
+  	glEnable(GL_DEPTH_TEST);
+  	glDepthMask(GL_TRUE);
   	//glDepthFunc(GL_LESS);
   	//glEnable(GL_DEPTH_TEST);
 
+	
+	
 	myReshape(viewport.w,viewport.h);
 }
 
@@ -81,51 +85,74 @@ void initScene(){
 //***************************************************
 void myDisplay() {
 	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// clear the color buffer (sets everything to black)
+	glClear(GL_COLOR_BUFFER_BIT);			// clear the color buffer (sets everything to black)
+	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations	
 	
-	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
+//	glShadeModel(GL_FLAT);
+// 	glEnable(GL_CULL_FACE);
+// 	glEnable(GL_DEPTH_TEST);
+// 	glDepthMask(GL_TRUE);
+	
 	glLoadIdentity();							// make sure transformation is "zero'd"
+
+ 	GLfloat mat_diffuse[4] = {0.75, 0.75, 0.75, 1.0};
+	GLfloat mat_specular[4] = {0.55, 0.55, 0.55, 1.0};
+	GLfloat mat_shininess[1] = {80};
+
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,mat_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,mat_specular);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,mat_shininess);
+
+	GLfloat light0_ambient[4] = { 0.0, 0.0, 0.0, 1.0};
+	GLfloat light0_color[4] = { 0.4, 0.4, 0.4, 1.0 };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_color);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_color);
+
+//	glEnable(GL_LIGHT0);
+//	glEnable(GL_LIGHTING);
+
+////	
+////	glEnable(GL_COLOR_MATERIAL);
+//	
+//	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
+//	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
+//	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
+//	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
+//	//glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+//	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+//	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+//
+////	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
+////	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
+//
+//	glEnable(GL_LIGHT0);
+//	glEnable(GL_LIGHTING);
+//	
+//
+////	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
+////	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
+////	GLfloat low_sh[] = {0.0f};
+////	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
+////	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
+////	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+////	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+	
+	glTranslated(objPosX,objPosY,0);
+	gluLookAt(0,0,eyePosZ, 0,0,0, 0,1,0);
+	glRotated(angleud, 1.0f, 0.0f, 0.0f);
+	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
+	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
 	
 	if (wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
-//	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-//	glEnable(GL_COLOR_MATERIAL);
 	
-	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
-	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
-	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
-	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
-	//glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-//	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
-//	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
-
-	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHTING);
-	
-
-//	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
-//	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
-//	GLfloat low_sh[] = {0.0f};
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
-	
-	glTranslated(objPosX,objPosY,0);
-	gluLookAt(0,0,eyePosZ,
-		0,0,0,
-		0,1,0);
-	glRotated(angleud, 1.0f, 0.0f, 0.0f);
-	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
-	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
+	glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );
 	
 	if (!adaptive)	{
 
@@ -133,36 +160,34 @@ void myDisplay() {
 			
 			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
 				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
-					glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+					
 
-					glBegin(GL_TRIANGLES);
+					glBegin(GL_TRIANGLE_STRIP);
+					glColor3f(1.0f, 0.0f, 0.0f);
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-					
 					glEnd();
-					glBegin(GL_TRIANGLES);
+					
+					glBegin(GL_TRIANGLE_STRIP);
+					glColor3f(1.0f, 0.0f, 0.0f);
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
-					
-					
 					glEnd();
+					
 				}	
 			}
 			
 		}
 		
 	}
-	
-	glDisable(GL_COLOR_MATERIAL);
-	
 	
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)

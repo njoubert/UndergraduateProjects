@@ -36,7 +36,9 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	Normal n = cross(vBez->d, uBez->d);
 	n = n / length(n);
 	temp->p = vBez->p;
-	temp->n = n;
+	temp->n[0] = n[0];
+	temp->n[1] = n[1];
+	temp->n[2] = n[2];
 	return temp;
 }
 
