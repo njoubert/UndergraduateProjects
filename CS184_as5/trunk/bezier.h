@@ -5,5 +5,4 @@
 #include "as5.h"
 
 
-
 #endif /*BEZIER_H_*/

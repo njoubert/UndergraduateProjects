@@ -28,9 +28,6 @@ bool wireframe;
 bool adaptive;
 bool smoothShading;
 
-int NIELSDEBUG=0;
-int NIELSINFO=1;
-
 static double moveStep=0.1;
 double anglelr=0.0,angleud=0.0,anglesp=0.0;
 double anglelrd=0.0,angleudd=0.0,anglespd=0.0;
