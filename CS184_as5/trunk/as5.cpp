@@ -66,11 +66,11 @@ void myReshape(int w, int h) {
 void initScene(){
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
 	
-  	glEnable(GL_CULL_FACE);
-  	glEnable(GL_DEPTH_TEST);
-  	glDepthMask(GL_TRUE);
-  	glDepthFunc(GL_LESS);
-  	glEnable(GL_DEPTH_TEST);
+  	//glEnable(GL_CULL_FACE); //enable backface-culling
+  	//glEnable(GL_DEPTH_TEST);
+  	//glDepthMask(GL_TRUE);
+  	//glDepthFunc(GL_LESS);
+  	
 	glEnable(GL_COLOR_MATERIAL);
 
 	myReshape(viewport.w,viewport.h);
@@ -99,31 +99,21 @@ void myDisplay() {
 
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
+	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
+
 //	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,mat_diffuse);
 //	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,mat_specular);
 //	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,mat_shininess);
-
-	GLfloat light0_ambient[4] = { 0.0, 0.0, 0.0, 1.0};
-	GLfloat light0_color[4] = { 0.4, 0.4, 0.4, 1.0 };
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_color);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_color);
-
 	
-//	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
-//	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
-//	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
-//	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
-//	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-//	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-//	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-//	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-//	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
-//	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
-
-	
-	
+	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
+	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
+	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
+	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 //	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
 //	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -163,8 +153,10 @@ void myDisplay() {
 					glColor3f(1.0f, 0.0f, 0.0f);
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+					
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
+					
 					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glEnd();
@@ -408,7 +400,7 @@ void render() {
 	printInfo("Rendering Scene!");
 	
   	//This tells glut to use a double-buffered window with red, green, and blue channels 
-  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
   	// Initalize theviewport size
   	viewport.w = 800;

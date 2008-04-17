@@ -62,8 +62,6 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	n.setZ(uBez->d[0]*vBez->d[1] - uBez->d[1]*vBez->d[0]);
 	n.normalize();
 	
-	//n.makeSameDirection(vBez->p); //This makes all the normals point "outward"...
-	
 	vBez->d.normalize();
 	uBez->d.normalize();
 	

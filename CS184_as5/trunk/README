@@ -7,3 +7,10 @@ Makefile concerns:
 Be sure to include the GLUT libraries in the makefile:
 
 	LIBS := -lglut -lGLU -lGL -lX11
+	
+	
+	
+Resources
+------------------
+
+http://www.videotutorialsrock.com/opengl_tutorial/reference.php	

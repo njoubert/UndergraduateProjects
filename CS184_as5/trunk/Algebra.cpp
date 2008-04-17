@@ -91,6 +91,8 @@ public:
     }
     
     inline double operator[](int t) {
+    	if (t>2)
+    		printError("Tried to access vector data outside boundaries!");
     	return nrs[t];
     }
     
