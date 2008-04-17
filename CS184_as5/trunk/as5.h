@@ -28,9 +28,11 @@
 #define PI 3.14159265
 
 //****** Add libraries ******
-//#include "cml/cml.h"
+#include "cml/cml.h"
 
 //****** Add our headers ******
+#include "types.h"
+#include "bezier.h"
 #include "patch.h"
 
 #include "NielsDebug.h"
