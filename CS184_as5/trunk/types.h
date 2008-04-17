@@ -2,20 +2,22 @@
 #define TYPES_H_
 
 //****** Add libraries ******
-#include "cml/cml.h"
+//#include "cml/cml.h"
+#include "as5.h"
 #include <vector>
 using namespace std;
 
 //****** Add Types ******
-typedef cml::vector3d Point;
-typedef cml::vector3d Normal;
-typedef cml::vector3d Deriv;
+typedef Vector3d Point;
+typedef Vector3d Normal;
+typedef Vector3d Deriv;
 typedef Point* Curve[4];
 
 struct Bezier {
 	Point p;
 	Normal n;
 	Deriv d;
+	Deriv d2;
 };
 
 

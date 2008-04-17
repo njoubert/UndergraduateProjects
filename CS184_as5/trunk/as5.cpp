@@ -27,6 +27,8 @@ double stepSize;
 bool wireframe;
 bool adaptive;
 bool smoothShading;
+bool showNormals;
+bool showDerivates;
 
 static double moveStep=0.1;
 double anglelr=0.0,angleud=0.0,anglesp=0.0;
@@ -64,15 +66,13 @@ void myReshape(int w, int h) {
 void initScene(){
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
 	
-	glShadeModel(GL_FLAT);
-  	//glEnable(GL_CULL_FACE);
+  	glEnable(GL_CULL_FACE);
   	glEnable(GL_DEPTH_TEST);
   	glDepthMask(GL_TRUE);
-  	//glDepthFunc(GL_LESS);
-  	//glEnable(GL_DEPTH_TEST);
+  	glDepthFunc(GL_LESS);
+  	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_COLOR_MATERIAL);
 
-	
-	
 	myReshape(viewport.w,viewport.h);
 }
 
@@ -82,13 +82,14 @@ void initScene(){
 //***************************************************
 void myDisplay() {
 	
-	glClear(GL_COLOR_BUFFER_BIT);			// clear the color buffer (sets everything to black)
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// clear the color buffer (sets everything to black)
 	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations	
 	
-//	glShadeModel(GL_FLAT);
-// 	glEnable(GL_CULL_FACE);
-// 	glEnable(GL_DEPTH_TEST);
-// 	glDepthMask(GL_TRUE);
+	if (smoothShading) {
+		glShadeModel(GL_FLAT);
+	} else {
+		glShadeModel(GL_SMOOTH);
+	}
 	
 	glLoadIdentity();							// make sure transformation is "zero'd"
 
@@ -98,9 +99,9 @@ void myDisplay() {
 
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,mat_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,mat_specular);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,mat_shininess);
+//	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,mat_diffuse);
+//	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,mat_specular);
+//	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,mat_shininess);
 
 	GLfloat light0_ambient[4] = { 0.0, 0.0, 0.0, 1.0};
 	GLfloat light0_color[4] = { 0.4, 0.4, 0.4, 1.0 };
@@ -108,35 +109,30 @@ void myDisplay() {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_color);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_color);
 
-//	glEnable(GL_LIGHT0);
-//	glEnable(GL_LIGHTING);
-
-////	
-////	glEnable(GL_COLOR_MATERIAL);
-//	
+	
 //	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
 //	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
 //	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
 //	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
-//	//glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 //	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 //	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 //	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-//
-////	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
-////	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
-//
-//	glEnable(GL_LIGHT0);
-//	glEnable(GL_LIGHTING);
-//	
-//
-////	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
-////	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
-////	GLfloat low_sh[] = {0.0f};
-////	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
-////	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
-////	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
-////	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+
+//	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
+//	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
+
+	
+	
+
+//	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
+//	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
+//	GLfloat low_sh[] = {0.0f};
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+
 	
 	glTranslated(objPosX,objPosY,0);
 	gluLookAt(0,0,eyePosZ, 0,0,0, 0,1,0);
@@ -144,10 +140,15 @@ void myDisplay() {
 	glRotated(anglelr, 0.0f, 1.0f, 0.0f);	
 	glRotated(anglesp, 0.0f, 0.0f, 1.0f);
 	
-	if (wireframe)
+	if (wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
+	} else {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHTING);
+	}
 	
 	glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );
 	
@@ -157,9 +158,8 @@ void myDisplay() {
 			
 			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
 				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
-					
 
-					glBegin(GL_TRIANGLE_STRIP);
+					glBegin(GL_TRIANGLES);
 					glColor3f(1.0f, 0.0f, 0.0f);
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
@@ -169,20 +169,70 @@ void myDisplay() {
 					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glEnd();
 					
-					glBegin(GL_TRIANGLE_STRIP);
+					glBegin(GL_TRIANGLES);
 					glColor3f(1.0f, 0.0f, 0.0f);
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
 					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
 					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
+					
+					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
+					
+					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
+					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
+					
 					glEnd();
 					
 				}	
 			}
 			
+			if (showNormals || showDerivates) {
+			
+				for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size(); u++) {
+					for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size(); v++) {
+	
+	
+						Vector3d v1 = bunchOPatches[p]->bezpoints[u][v]->p;
+						Vector3d v2 =  bunchOPatches[p]->bezpoints[u][v]->n;
+						Vector3d v3 =  bunchOPatches[p]->bezpoints[u][v]->d;
+						Vector3d v4 =  bunchOPatches[p]->bezpoints[u][v]->d2;
+						Vector3d nn = v1 + v2;
+						Vector3d dd1 = v1 + v3;
+						Vector3d dd2 = v1 + v4;
+						
+						if (showNormals) {
+						
+							glBegin(GL_LINES);
+							glColor3f(0.0f, 0.0f, 0.0f);
+							glVertex3d(v1[0], v1[1], v1[2]);
+							glVertex3d(nn[0], nn[1], nn[2]);					
+							glEnd();
+							
+						}
+						
+						if (showDerivates) {
+							
+							glBegin(GL_LINES);
+							glColor3f(0.0f, 1.0f, 0.0f);
+							glVertex3d(v1[0], v1[1], v1[2]);
+							glVertex3d(dd1[0], dd1[1], dd1[2]);					
+							glEnd();
+							glBegin(GL_LINES);
+							glColor3f(0.0f, 1.0f, 0.0f);
+							glVertex3d(v1[0], v1[1], v1[2]);
+							glVertex3d(dd2[0], dd2[1], dd2[2]);					
+							glEnd();
+								
+						}
+						
+					}	
+				}
+			
+			}
+			
 		}
+		
+		
+		
 		
 	}
 	
@@ -291,6 +341,12 @@ void processKeys(unsigned char key, int x, int y) {
 		break;
 	case 'w':
 		toggleWireframe(); //toggle filled and wireframe
+		break;
+	case 'n':
+		showNormals = !showNormals;
+		break;
+	case 'd':
+		showDerivates = !showDerivates;
 	case 'h':
 		break; //optional: filled and hidden-line
 	}
@@ -386,11 +442,11 @@ void process() {
 		printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
 		
 		if (abs((*point)[0]) > (*furthestPoint)[0])
-			(*furthestPoint)[0] = abs((*point)[0]);
+			furthestPoint->setX(abs(point->getX()));
 		if (abs((*point)[1]) > (*furthestPoint)[1])
-			(*furthestPoint)[1] = abs((*point)[1]);
+			furthestPoint->setY(abs(point->getY()));
 		if (abs((*point)[2]) > (*furthestPoint)[2])
-			(*furthestPoint)[2] = abs((*point)[2]);	
+			furthestPoint->setZ(abs(point->getZ()));	
 		delete point;
 	}
 	printDebug(2,"Largest point found ("<<(*furthestPoint)[0]<<","<<(*furthestPoint)[1]<<","<<(*furthestPoint)[2]<<")");
@@ -410,6 +466,7 @@ void setDefaults() {
     adaptive=false;
     wireframe=false;
     smoothShading=false;
+    showNormals=false;
 }
 
 //Return 0 if no error
