@@ -13,6 +13,7 @@ Bezier* Patch::bezcurveinterp(Point* p0, Point* p1, Point* p2, Point* p3, double
 	bez->p = d*(1-u) + e*u;
 
 	bez->d = 3 * d-e;
+	printDebug(5, "Address of returned bezier - p:" << (int) &(bez->p) << " d:" << (int) &(bez->d)); 
 	return bez;
 }
 
@@ -36,9 +37,10 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	Normal n = cross(vBez->d, uBez->d);
 	n = n / length(n);
 	temp->p = vBez->p;
-	temp->n[0] = n[0];
-	temp->n[1] = n[1];
-	temp->n[2] = n[2];
+	temp->n = n;
+	
+	printDebug(5, "Address of returned bezier - p:" << (int) &(temp->p) << " n:" << (int) &(temp->n));
+	
 	return temp;
 }
 
@@ -49,7 +51,7 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 // used 1+step instead of simply 1.
 // We return the BIGGEST point we found.
 Point* Patch::subdividepatch(double step) {
-	float x,y,z;
+	float x=0.0f,y=0.0f,z=0.0f;
 	int i = 0;
 	for (double u= 0; u<1+step; u=u+step) {
 		if (u>1)
