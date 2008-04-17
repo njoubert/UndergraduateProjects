@@ -17,4 +17,7 @@ using namespace std;
 
 #define printInfoChar(a)    if (NIELSINFO) { cout << a; }
 
+extern int NIELSDEBUG;
+extern int NIELSINFO;
+
 #endif /*NIELSDEBUG_C_*/
