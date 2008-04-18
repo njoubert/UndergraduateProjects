@@ -37,6 +37,10 @@
 	<li>We added animation, as can be seen in the first video (also recorded before the deadline)</li>	
 </ul>
 
+<p><h3>Video showing off animation and rendering (Flash)</h3>
+<br/><object type="application/x-shockwave-flash" width="400" height="300" data="http://www.vimeo.com/moogaloop.swf?clip_id=912909&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=">	<param name="quality" value="best" />	<param name="allowfullscreen" value="true" />	<param name="scale" value="showAll" />	<param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=912909&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=" /></object><br /><a href="http://www.vimeo.com/912909/l:embed_912909">Parametric Surfaces - Uniform Subdivision</a> from <a href="http://www.vimeo.com/user434263/l:embed_912909">njoubert</a> on <a href="http://vimeo.com/l:embed_912909">Vimeo</a>.	
+</p>
+
 <p><h3>Teapot! Uniform Subdivision</h3>
 <br/><code>./cs184_as5 ../teapot.bez 0.1</code>
 
