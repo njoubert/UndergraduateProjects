@@ -9,7 +9,19 @@ public:
 	vector<vector<Bezier*> > bezpoints;
 	Bezier* bezcurveinterp(Point*, Point*, Point*, Point*, double);
 	Bezier* bezsurfaceinterp(double, double);
-	Point* subdividepatch(double);
+	Point* uniformSubdividePatch(double);
+	void adaptivelyGetTriangle(double, double, double, double, double, double, vector<Triangle*>);
+	Point* adaptiveSubdividePatch(double, vector<Triangle*>);
+	
+//	class BezierTriangles {
+//		public:
+//		BezierTriangles();
+//		BezierTriangles(double,double,double,double,double,double);
+//		double a[2]; //(u,v)
+//		double b[2]; //(u,v)
+//		double c[2]; //(u,v)
+//			
+//	};
 };
 
 

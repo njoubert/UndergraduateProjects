@@ -15,7 +15,8 @@ public:
 // Global Variables
 //****************************************************
 Viewport	viewport;
-vector<Patch*> bunchOPatches;
+vector<Patch*> patchesInFile;
+vector<Triangle*> trianglesToDraw;
 
 //vector<Triangle*> bunchOTriangles;
 
@@ -55,8 +56,9 @@ void myReshape(int w, int h) {
 	//from the largest point to fit the whole thing.
 	//Its trig: straight distance = orthogonal distance / tan(angle) 
 	eyePosZ = maxv + 1.5*maxv; 
-	gluPerspective(60.0, 1.0, 0.0, 2*maxv); //We set up our perspective for a natural feel (60 degrees) and a far clipping plane.
+	gluPerspective(60.0, 1.0, 0.1, 200); //We set up our perspective for a natural feel (60 degrees) and a far clipping plane.
 
+	//glOrtho(-3.4f, 3.4f, -3.4f, 3.4f, 5, -5);
 }
 
 
@@ -67,9 +69,6 @@ void initScene(){
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Clear to black, fully transparent
 	
   	//glEnable(GL_CULL_FACE); //enable backface-culling
-  	//glEnable(GL_DEPTH_TEST);
-  	//glDepthMask(GL_TRUE);
-  	//glDepthFunc(GL_LESS);
   	
 	glEnable(GL_COLOR_MATERIAL);
 
@@ -91,20 +90,16 @@ void myDisplay() {
 		glShadeModel(GL_SMOOTH);
 	}
 	
+	glEnable(GL_DEPTH_TEST);
+  	glDepthMask(GL_TRUE);
+  	glDepthFunc(GL_LESS);
+	
 	glLoadIdentity();							// make sure transformation is "zero'd"
-
- 	GLfloat mat_diffuse[4] = {0.75, 0.75, 0.75, 1.0};
-	GLfloat mat_specular[4] = {0.55, 0.55, 0.55, 1.0};
-	GLfloat mat_shininess[1] = {80};
 
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
 	GLfloat al[] = {0.2, 0.2, 0.2, 1.0};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, al);
-
-//	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,mat_diffuse);
-//	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,mat_specular);
-//	glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,mat_shininess);
 	
 	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
 	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
@@ -142,91 +137,50 @@ void myDisplay() {
 	
 	glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );
 	
-	if (!adaptive)	{
-
-		for (int p = 0; p < numOfPatches; p++) {
+	for (unsigned int t = 0; t < trianglesToDraw.size(); t++) {
+		
+			glBegin(GL_TRIANGLES);
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glNormal3dv(trianglesToDraw[t]->n1.data());
+			glVertex3dv(trianglesToDraw[t]->v1.data());
 			
-			for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size()-1; u++) {
-				for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size()-1; v++) {
-
-					glBegin(GL_TRIANGLES);
-					glColor3f(1.0f, 0.0f, 0.0f);
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v]->p.data());
-					
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-					glEnd();
-					
-					glBegin(GL_TRIANGLES);
-					glColor3f(1.0f, 0.0f, 0.0f);
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v+1]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v+1]->p.data());
-					
-					glNormal3dv(bunchOPatches[p]->bezpoints[u][v]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u][v]->p.data());
-					
-					glNormal3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->n.data());
-					glVertex3dv(bunchOPatches[p]->bezpoints[u+1][v+1]->p.data());
-					
-					glEnd();
-					
-				}	
+			glNormal3dv(trianglesToDraw[t]->n2.data());
+			glVertex3dv(trianglesToDraw[t]->v2.data());
+			
+			glNormal3dv(trianglesToDraw[t]->n3.data());
+			glVertex3dv(trianglesToDraw[t]->v3.data());
+			glEnd();
+			
+			if (showNormals) {
+				Vector3d nn = trianglesToDraw[t]->v1 + trianglesToDraw[t]->n1;
+				
+				glBegin(GL_LINES);
+				glColor3f(0.0f, 0.0f, 0.0f);
+				glVertex3dv(trianglesToDraw[t]->v1.data());
+				glVertex3d(nn[0], nn[1], nn[2]);					
+				glEnd();	
+				
 			}
 			
-			if (showNormals || showDerivates) {
-			
-				for (unsigned int u = 0; u < bunchOPatches[p]->bezpoints.size(); u++) {
-					for (unsigned int v = 0; v < bunchOPatches[p]->bezpoints[u].size(); v++) {
-	
-	
-						Vector3d v1 = bunchOPatches[p]->bezpoints[u][v]->p;
-						Vector3d v2 =  bunchOPatches[p]->bezpoints[u][v]->n;
-						Vector3d v3 =  bunchOPatches[p]->bezpoints[u][v]->d;
-						Vector3d v4 =  bunchOPatches[p]->bezpoints[u][v]->d2;
-						Vector3d nn = v1 + v2;
-						Vector3d dd1 = v1 + v3;
-						Vector3d dd2 = v1 + v4;
-						
-						if (showNormals) {
-						
-							glBegin(GL_LINES);
-							glColor3f(0.0f, 0.0f, 0.0f);
-							glVertex3d(v1[0], v1[1], v1[2]);
-							glVertex3d(nn[0], nn[1], nn[2]);					
-							glEnd();
-							
-						}
-						
-						if (showDerivates) {
-							
-							glBegin(GL_LINES);
-							glColor3f(0.0f, 1.0f, 0.0f);
-							glVertex3d(v1[0], v1[1], v1[2]);
-							glVertex3d(dd1[0], dd1[1], dd1[2]);					
-							glEnd();
-							glBegin(GL_LINES);
-							glColor3f(0.0f, 1.0f, 0.0f);
-							glVertex3d(v1[0], v1[1], v1[2]);
-							glVertex3d(dd2[0], dd2[1], dd2[2]);					
-							glEnd();
-								
-						}
-						
-					}	
-				}
-			
+			if (showDerivates) {
+				Vector3d dd1 = trianglesToDraw[t]->v1 + trianglesToDraw[t]->d1;
+				Vector3d dd2 = trianglesToDraw[t]->v1 + trianglesToDraw[t]->d2;
+				
+				glBegin(GL_LINES);
+				glColor3f(0.0f, 1.0f, 0.0f);
+				glVertex3dv(trianglesToDraw[t]->v1.data());
+				glVertex3dv(dd1.data());					
+				glEnd();
+				
+				glBegin(GL_LINES);
+				glColor3f(0.0f, 1.0f, 0.0f);
+				glVertex3dv(trianglesToDraw[t]->v1.data());
+				glVertex3dv(dd2.data());					
+				glEnd();
+					
 			}
-			
-		}
 		
-		
-		
-		
-	}
+	}			
 	
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
@@ -368,6 +322,9 @@ void myFrameMove() {
 //****************************************************
 
 bool getPatches(char* filename) {
+	
+	printInfo("Reading patches from file.");
+	
 	ifstream file(filename, ifstream::in);
 	if (!file) {
 		printError("Could not open file!");
@@ -387,9 +344,10 @@ bool getPatches(char* filename) {
 				newPatch->cP[u][v] = new Point(x, y, z);
 			}
 		}
-		bunchOPatches.push_back(newPatch);
+		patchesInFile.push_back(newPatch);
 	}
 	file.close();
+	
 	return true;
 }
 
@@ -422,14 +380,77 @@ void render() {
   
 }
 
-void process() {
-	printInfo("Processing Data!");
+void processUniform() {
+		Point* point;
+		furthestPoint = new Point(0,0,0);
+	
+		for (int p = 0; p < numOfPatches; p++) {
+			
+			printDebug(2, "Subdividing patch "<<p);
+			point = patchesInFile[p]->uniformSubdividePatch(stepSize);
+			
+			printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
+			
+			if (abs((*point)[0]) > (*furthestPoint)[0])
+				furthestPoint->setX(abs(point->getX()));
+			if (abs((*point)[1]) > (*furthestPoint)[1])
+				furthestPoint->setY(abs(point->getY()));
+			if (abs((*point)[2]) > (*furthestPoint)[2])
+				furthestPoint->setZ(abs(point->getZ()));	
+			delete point;
+		}
+		
+		
+		//Making Triangles:
+		Triangle *temp1, *temp2;
+		for (unsigned int p = 0; p < patchesInFile.size(); p++) {
+			for (unsigned int u = 0; u < patchesInFile[p]->bezpoints.size()-1; u++) {
+				for (unsigned int v = 0; v < patchesInFile[p]->bezpoints[u].size()-1; v++) {
+					temp1 = new Triangle;
+					
+					temp1->n1 = patchesInFile[p]->bezpoints[u][v]->n;
+					temp1->v1 = patchesInFile[p]->bezpoints[u][v]->p;	
+					
+					temp1->n2 = patchesInFile[p]->bezpoints[u+1][v]->n;
+					temp1->v2 = patchesInFile[p]->bezpoints[u+1][v]->p;	
+					
+					temp1->n3 = patchesInFile[p]->bezpoints[u+1][v+1]->n;
+					temp1->v3 = patchesInFile[p]->bezpoints[u+1][v+1]->p;	
+					
+					temp1->d1 = patchesInFile[p]->bezpoints[u][v]->d;
+					temp1->d2 = patchesInFile[p]->bezpoints[u][v]->d2;
+					
+					temp2 = new Triangle;
+
+					temp2->n1 = patchesInFile[p]->bezpoints[u][v+1]->n;
+					temp2->v1 = patchesInFile[p]->bezpoints[u][v+1]->p;	
+					
+					temp2->n2 = patchesInFile[p]->bezpoints[u][v]->n;
+					temp2->v2 = patchesInFile[p]->bezpoints[u][v]->p;	
+					
+					temp2->n3 = patchesInFile[p]->bezpoints[u+1][v+1]->n;
+					temp2->v3 = patchesInFile[p]->bezpoints[u+1][v+1]->p;		
+					
+					temp2->d1 = patchesInFile[p]->bezpoints[u][v]->d;
+					temp2->d2 = patchesInFile[p]->bezpoints[u][v]->d2;				
+					
+					trianglesToDraw.push_back(temp1);
+					trianglesToDraw.push_back(temp2);
+					
+				}	
+			}
+		}
+	
+}
+
+void processAdaptive() {
 	Point* point;
 	furthestPoint = new Point(0,0,0);
+	
 	for (int p = 0; p < numOfPatches; p++) {
 		
 		printDebug(2, "Subdividing patch "<<p);
-		point = bunchOPatches[p]->subdividepatch(stepSize);
+		point = patchesInFile[p]->uniformSubdividePatch(stepSize);
 		
 		printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
 		
@@ -440,14 +461,28 @@ void process() {
 		if (abs((*point)[2]) > (*furthestPoint)[2])
 			furthestPoint->setZ(abs(point->getZ()));	
 		delete point;
+		
 	}
+	
+}
+
+void process() {
+	
+	if (!adaptive) { 
+		
+		printInfo("Generating Triangles - Running uniform subdivision algorithm.");
+		processUniform();
+	
+	} else {
+		
+		printInfo("Generating Triangles - Running adaptive subdivision algorithm.");
+		processAdaptive();
+		
+	}
+	
+	printDebug(1, "Created " << trianglesToDraw.size() << " triangles.");
 	printDebug(2,"Largest point found ("<<(*furthestPoint)[0]<<","<<(*furthestPoint)[1]<<","<<(*furthestPoint)[2]<<")");
 	
-	//run adaptive tessellation algorithm here
-	if (adaptive) {
-		
-		
-	}
 	
 }
 
@@ -525,8 +560,8 @@ int parseCommandLine(int argc, char *argv[]) {
         }
     }
     
-    printInfo("Read " << numOfPatches << " patches from file.");
-    
+    printDebug(1, "Read " << numOfPatches << " patches from file.");
+    	
     if (printUsage)
         return 1;
     return 0;

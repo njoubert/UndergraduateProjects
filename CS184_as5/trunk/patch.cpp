@@ -81,7 +81,7 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 // the last chunk is smaller than the other chunks. That's why I 
 // used 1+step instead of simply 1.
 // We return the BIGGEST point we found.
-Point* Patch::subdividepatch(double step) {
+Point* Patch::uniformSubdividePatch(double step) {
 	double x=0.0f,y=0.0f,z=0.0f;
 	int i = 0;
 	for (double u= 0; u<1+step; u=u+step) {
@@ -105,3 +105,40 @@ Point* Patch::subdividepatch(double step) {
 	Point* ret = new Point(x,y,z);
 	return ret;
 }
+
+void Patch::adaptivelyGetTriangle(double u1, double v1, double u2, double v2, double u3, double v3, vector<Triangle*> output) {
+	Bezier *a, *b, *c;
+	
+	//if triangle is flat
+		//create a new Triangle object
+		//set its vertices and normals to the evaluates u,v points passed as arguments
+		//save in output
+	//else
+		//decide on subdivision
+			//for each new triangle, call adaptivelyGetTriangle
+	
+}
+
+//Subdivides the patch adaptively, storing completed triangles in output vector.
+Point* Patch::adaptiveSubdividePatch(double epsilon, vector<Triangle*> output) {
+	double x=0.0f,y=0.0f,z=0.0f;
+	
+	adaptivelyGetTriangle(0,0, 1,0, 1,1, output);
+	adaptivelyGetTriangle(0,0, 0,1, 1,1, output);
+				
+	Point* ret = new Point(x,y,z);
+	return ret;
+}
+
+//Patch::BezierTriangles::BezierTriangles() { }
+//
+//
+//Patch::BezierTriangles::BezierTriangles(double u1,double v1,double u2,double v2,double u3,double v3) {
+//	a[0] = u1;
+//	a[1] = v1;
+//	b[0] = u2;
+//	b[1] = v2;
+//	c[0] = u3;
+//	c[1] = v3;
+//	
+//}

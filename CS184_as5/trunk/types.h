@@ -20,5 +20,15 @@ struct Bezier {
 	Deriv d2;
 };
 
+struct Triangle {
+	Point v1;
+	Point v2;
+	Point v3;
+	Normal n1;
+	Normal n2;
+	Normal n3;	
+	Deriv d1;
+	Deriv d2;
+};
 
 #endif /*TYPES_H_*/
