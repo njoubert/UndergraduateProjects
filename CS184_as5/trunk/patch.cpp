@@ -221,7 +221,66 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 	
 	} else {
 	
-		
+		if ((deltaA >= epsilon) && (deltaB >= epsilon) && (deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvAB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvCentr, uvAB, output);
+			adaptivelyGetTriangle(uvB, uvBC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCentr, uvBC, output);
+			adaptivelyGetTriangle(uvC, uvCA, uvCentr, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvCA, output);
+			
+		} else if ((deltaA >= epsilon) && (deltaB >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvAB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvCentr, uvAB, output);
+			adaptivelyGetTriangle(uvB, uvBC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCentr, uvBC, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvC, output);
+			
+		} else if ((deltaA >= epsilon) && (deltaC >= epsilon)) {
+
+			adaptivelyGetTriangle(uvA, uvAB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvCentr, uvAB, output);
+			adaptivelyGetTriangle(uvB, uvC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCA, uvCentr, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvCA, output);
+			
+		} else if ((deltaB >= epsilon) && (deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvBC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCentr, uvBC, output);
+			adaptivelyGetTriangle(uvC, uvCA, uvCentr, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvCA, output);
+			
+		} else if ((deltaA >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvAB, uvCentr, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvC, output);
+			adaptivelyGetTriangle(uvB, uvCentr, uvAB, output);
+			adaptivelyGetTriangle(uvB, uvC, uvCentr, output);
+			
+		} else if ((deltaB >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvCentr, uvC, output);
+			adaptivelyGetTriangle(uvA, uvB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvBC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCentr, uvBC, output);
+			
+		} else if ((deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvCA, uvCentr, output);
+			adaptivelyGetTriangle(uvA, uvCentr, uvCA, output);
+			
+		} else {
+			
+			adaptivelyGetTriangle(uvA, uvB, uvCentr, output);
+			adaptivelyGetTriangle(uvB, uvC, uvCentr, output);
+			adaptivelyGetTriangle(uvC, uvA, uvCentr, output);
+		}
 		
 	}
 
@@ -231,6 +290,8 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 		flat->v1 = wA->p;
 		flat->v2 = wB->p;
 		flat->v3 = wC->p;
+		Normal nonZero;
+			
 		flat->n1 = wA->n;
 		flat->n2 = wB->n;
 		flat->n3 = wC->n;
@@ -266,7 +327,7 @@ Point* Patch::adaptiveSubdividePatch(double epsilon, vector<Triangle*> * output)
 
 	
 	//Find the biggest point in the world.
-	printDebug(1, "Finding largest point in the world.");
+	printDebug(3, "Finding largest point in the world.");
 	
 	for (unsigned int t=0; t < output->size(); t++) {
 		

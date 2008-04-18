@@ -91,8 +91,8 @@ void myDisplay() {
 	}
 	
 	glEnable(GL_DEPTH_TEST);
-  	glDepthMask(GL_TRUE);
-  	glDepthFunc(GL_LESS);
+  	//glDepthMask(GL_TRUE);
+  	//glDepthFunc(GL_LESS);
 	
 	glLoadIdentity();							// make sure transformation is "zero'd"
 
@@ -103,7 +103,7 @@ void myDisplay() {
 	
 	GLfloat light_ambient[] = {0.0, 0.0, 0.0, 0.0};
 	GLfloat light_diffuse[] = {0.3, 0.3, 0.3, 1.0};
-	GLfloat light_specular[] = {0.3, 0.3, 0.3, 1.0};
+	GLfloat light_specular[] = {0.7, 0.7, 0.7, 1.0};
 	GLfloat light_position[] = {5.0, 5.0, 0.0, 1.0};
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
@@ -111,12 +111,12 @@ void myDisplay() {
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 //	GLfloat mat_d[] = {0.1f, 0.5f, 0.8f, 1.0f};
-//	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
-//	GLfloat low_sh[] = {0.0f};
+	GLfloat mat_s[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat low_sh[] = {60.0f};
 //	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_d);
 //	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_d);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_s);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, low_sh);
 
 	
 	glTranslated(objPosX,objPosY,0);
