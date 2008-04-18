@@ -29,6 +29,10 @@ left, right, up, down, <, >		- rotate object around 3 axis
 	
 -, +							- zoom camera in, out
 
+n								- show normals
+
+d								- show derivates
+
 
 PLATFORM:
 ------------------

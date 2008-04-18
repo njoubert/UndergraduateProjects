@@ -86,13 +86,18 @@ Bezier* Patch::bezsurfaceinterp(double u, double v) {
 Point* Patch::uniformSubdividePatch(double step) {
 	double x=0.0f,y=0.0f,z=0.0f;
 	int i = 0;
+	bool doneA=false, doneB=false;
 	for (double u= 0; u<1+step; u=u+step) {
-		if (u>1)
+		if (u>1) {
 			u=1;
+			doneA = true;
+		}
 		bezpoints.push_back(vector<Bezier*>());
 		for (double v=0; v<1+step; v=v+step) {
-			if (v>1)
+			if (v>1) {
 				v=1;
+				doneB = true;
+			}
 			Bezier* bez = bezsurfaceinterp(u, v);
 			bezpoints[i].push_back(bez); //Store the Bezier point
 			if (abs(bez->p[0]) > x)
@@ -101,7 +106,13 @@ Point* Patch::uniformSubdividePatch(double step) {
 				y = abs(bez->p[1]);
 			if (abs(bez->p[2]) > z)
 				z = abs(bez->p[2]);
+		
+			if (doneB)
+				break;		
 		}
+		doneB = false;
+		if (doneA)
+			break;
 		i++;
 	}
 	Point* ret = new Point(x,y,z);
@@ -155,7 +166,7 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 	
 	bool isFlat = false;
 	//Here we check each case
-//	if (deltaCentr < epsilon) {
+	if (deltaCentr < epsilon) {
 	
 		if ((deltaA < epsilon) && (deltaB < epsilon) && (deltaC < epsilon)) {
 			
@@ -203,16 +214,16 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 			
 		} else {
 			isFlat = true;
-//			printError("Something went TERRIBLY WRONG in calculating sides to subdivide!");
+			printError("Something went TERRIBLY WRONG in calculating sides to subdivide!");
 		}
 		
 		
 	
-//	} else {
+	} else {
 	
 		
 		
-//	}
+	}
 
 	if (isFlat) {
 		//Make a new triangle in world space.
