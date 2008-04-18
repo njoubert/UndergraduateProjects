@@ -27,6 +27,7 @@
 
 <p><h3>Test Patch! Uniform Subdivision</h3>
 <br/><code>./cs184_as5 ../test.bez 0.5</code>
+<br/>
 
 <table>
 <tr>
@@ -48,13 +49,31 @@
 </table>
 
 <br/>
-<br/>
 
 </p>
 
 <p><h3>Test Patch! Adaptive Subdivision</h3>
 <br/><code>./cs184_as5 ../test.bez 0.005</code>
+<br/>
 
+<table>
+<tr>
+	<td>Smooth Shading</td>
+	<td>Flat Shading</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/test_adaptive_smooth.png"></td>
+	<td><img src="as5/Images/test_adaptive_flat.png"></td>
+</tr>
+<tr>
+	<td>Wireframe</td>
+	<td>Black normals, Green derivatives - Palm Tree Style!</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/test_adaptive_wireframe.png"></td>
+	<td><img src="as5/Images/test_adaptive_n.png"></td>
+</tr>
+</table>
 
 </p>
 
