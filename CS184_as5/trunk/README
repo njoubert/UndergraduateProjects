@@ -1,23 +1,43 @@
 CS184 Assignment 5
 
-BUILDING:
------------------
-cd Debug
-make 
-
-PLATFORM:
-------------------
-GNU/Linux - Should run on Solaris just fine.
-
 PARTNERS:
 ------------------
 cs184-dv  Niels Joubert
 cs184-ah  Hannah Hu
 
+BUILDING:
+-----------------
+gmake 
+
+
+RUNNING:
+-----------------
+./cs184_as5 inputfile.bez stepSize [-a] [-q] [-d n]
+
+	-a		adaptive tessellation
+	-q		no output (quiet)
+	-d n	debug printout (n = level, 1 through 5)
+
+KEYBOARD INPUTS:
+----------------
+
+left, right, up, down, <, >		- rotate object around 3 axis
+	
+[CTRL] + above					- give object momentum in direction
+
+[SHIRT] + left,right,up,down	- translate object
+	
+-, +							- zoom camera in, out
+
+
+PLATFORM:
+------------------
+GNU/Linux - Should run on Solaris just fine.
+
 
 Makefile concerns:
 -------------------
-
+This should be taken care of, but...
 Be sure to include the GLUT libraries in the makefile:
 
 	LIBS := -lglut -lGLU -lGL -lX11
