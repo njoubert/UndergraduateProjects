@@ -1,3 +1,5 @@
+import processing.opengl.*;
+
 /**
   <p>
   
@@ -33,12 +35,16 @@ class MyPoint {
 class MyPatch {
   MyPoint[][] P = new MyPoint[4][4];
   color myColor;
+  
+  MyPoint[][] bezPoints;
+  
   MyPatch() {
    for (int i=0; i<4; i++) {
     for (int j=0; j<4; j++) {
      P[i][j] = new MyPoint(); 
     }
    }
+   myColor = color(random(200),random(200),random(200));
   }
   MyPatch(String data) {
     String[] el = splitTokens(data);
@@ -49,29 +55,42 @@ class MyPatch {
         dCount = dCount + 3;
       }
     }
+    
+    myColor = color(random(200),random(200),random(200));
   }
   
   public void draw() {
     
     pushMatrix();
 
-    translate(120, 200, -150);
-    scale(50, 50, 50);
+    translate(170, 230, -150);
+    int sc = (int) map(mouseY, 0, height, 30, 100);
+    scale(sc, sc, sc);
     rotateX(PI/4);
     rotateY(PI/8);
     //rotateX(map(mouseX, 0, width, 0, PI));
-    //rotateY(map(mouseX, 0, width, 0, PI));
+    //rotateY(map(mouseY, 0, width, 0, PI));
     rotateZ(map(mouseX, 0, height, 0, -2*PI));
     
-    beginShape(POINTS);
+    
     MyPoint p;
-    for (float u = 0; u < 1; u += 0.1) {
-     for (float v = 0; v < 1; v += 0.1) {
-       p = interpolatePatch(u,v);
-       vertex(p.x, p.y, p.z);
+    for (int i = 0; i < bezPoints.length-1; i++) {
+     for (int j = 0; j < bezPoints[i].length-1; j++) {
+       stroke(myColor);
+       fill(myColor);
+       beginShape(TRIANGLES);
+       vertex(bezPoints[i][j].x, bezPoints[i][j].y, bezPoints[i][j].z);
+       vertex(bezPoints[i+1][j].x, bezPoints[i+1][j].y, bezPoints[i+1][j].z);
+       vertex(bezPoints[i+1][j+1].x, bezPoints[i+1][j+1].y, bezPoints[i+1][j+1].z);
+       endShape();
+       beginShape(TRIANGLES);
+       vertex(bezPoints[i][j].x, bezPoints[i][j].y, bezPoints[i][j].z);
+       vertex(bezPoints[i][j+1].x, bezPoints[i][j+1].y, bezPoints[i][j+1].z);
+       vertex(bezPoints[i+1][j+1].x, bezPoints[i+1][j+1].y, bezPoints[i+1][j+1].z);
+       endShape();      
+       
      } 
     }
-    endShape();
     
     popMatrix();
   }
@@ -97,30 +116,58 @@ class MyPatch {
   
   private MyPoint interpolateCurve(MyPoint p0, MyPoint p1, MyPoint p2, MyPoint p3, float t) {
     MyPoint p = new MyPoint();
-    p.x = p0.x*pow((1-t),3) + 
-          p1.x*3*t*pow((1-t),2) +
-          p2.x*3*pow(t,2)*(1-t) +
-          p3.x*pow(t,3);
-    p.y = p0.y*pow((1-t),3) + 
-          p1.y*3*t*pow((1-t),2) +
-          p2.y*3*pow(t,2)*(1-t) +
-          p3.y*pow(t,3);
-    p.z = p0.z*pow((1-t),3) + 
-          p1.z*3*t*pow((1-t),2) +
-          p2.z*3*pow(t,2)*(1-t) +
-          p3.z*pow(t,3);   
+    float t2 = t*t;
+    float t3 = t2*t;
+    float mint = 1 - t;
+    float mint2 = mint*mint;
+    float mint3 = mint2*mint;
+    p.x = p0.x*mint3 + 
+          p1.x*3*t*mint2 +
+          p2.x*3*t2*mint +
+          p3.x*t3;
+    p.y = p0.y*mint3 + 
+          p1.y*3*t*mint2 +
+          p2.y*3*t2*mint +
+          p3.y*t3;
+    p.z = p0.z*mint3 + 
+          p1.z*3*t*mint2 +
+          p2.z*3*t2*mint +
+          p3.z*t3;   
     return p;
   }
   
+  private void subdividepatch(float step) {
+      bezPoints = new MyPoint[ceil(1.0/step) +1][ceil(1.0/step) +1];
+      
+      int i=0,j;
+      for (float u=0; u<1+step; u+=step) {
+       if (u>1)
+          u=1;
+        j=0;
+        for (float v=0; v<1+step; v+=step) {
+          if (v>1)
+            v=1;
+          bezPoints[i][j] = interpolatePatch(u,v);
+          j++;
+        }
+        i++;
+      }
+      
+  }
   
 }
 
 void setup() {
-  size(300, 300, P3D);
+  size(400, 400, P3D);
+  frameRate(24);
+  background(255);
   //String lines[] = loadStrings("teapot.bez");
   //String data = join(lines, "\n");
   //readPatchesFromString(data);
   readPatchesFromString(ex2);
+  for (int i=0; i < patches.length; i++) {
+   patches[i].subdividepatch(0.1); 
+  } 
 }
 
 void draw() {
