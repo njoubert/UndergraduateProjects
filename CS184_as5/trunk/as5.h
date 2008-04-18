@@ -36,6 +36,7 @@
 #include "types.h"
 #include "bezier.h"
 #include "patch.h"
+#include "Parser.h"
 
 #include "NielsDebug.h"
 

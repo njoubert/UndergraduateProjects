@@ -31,6 +31,8 @@ bool smoothShading;
 bool showNormals;
 bool showDerivates;
 
+bool objFile=false;
+
 static double moveStep=0.1;
 double anglelr=0.0,angleud=0.0,anglesp=0.0;
 double anglelrd=0.0,angleudd=0.0,anglespd=0.0;
@@ -509,8 +511,24 @@ int parseCommandLine(int argc, char *argv[]) {
     
     //Read in filename and parse patches
     if (isThereMore(i, argc, 1)) {
-    	if (!getPatches(argv[i]))
-    		printUsage = true;
+    	
+    	//OBJ or BEZ?
+    	if (strstr(argv[i], ".bez") != NULL) {
+    		objFile = false;
+	    	if (!getPatches(argv[i]))
+	    		printUsage = true;
+    	} else if (strstr(argv[i], ".obj") != NULL) {
+    		objFile = true;
+    		Parser objP;
+    		if (!objP.parseOBJ(string(argv[i]), &trianglesToDraw))
+    			printUsage=true;
+    		
+    	} else {
+    		printError("Unsupported format! Only reads .bez or .obj");
+    		printUsage=true;	
+    	}
+    
+    
     } else {
     	printError("No filename given!");
     	printUsage = true;
@@ -582,7 +600,8 @@ int main(int argc, char *argv[]) {
   	
   	//This initializes glut
   	glutInit(&argc, argv);
-  	process();
+  	if (!objFile)
+  		process();
   	render();
   	
   	return 0;
