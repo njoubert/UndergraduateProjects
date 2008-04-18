@@ -53,7 +53,7 @@
 </p>
 
 <p><h3>Test Patch! Adaptive Subdivision</h3>
-<br/><code>./cs184_as5 ../test.bez 0.005</code>
+<br/><code>./cs184_as5 ../test.bez 0.005 -a </code>
 <br/>
 
 <table>
@@ -71,21 +71,29 @@
 </tr>
 <tr>
 	<td><img src="as5/Images/test_adaptive_wireframe.png"></td>
-	<td><img src="as5/Images/test_adaptive_n.png"></td>
+	<td><img src="as5/Images/test_adaptive_nd.png"></td>
 </tr>
 </table>
 
 </p>
 
 <p><h3>Teapot! Uniform Subdivision</h3>
-<br/><code>./cs184_as5 ../test.bez 0.1</code>
+<br/><code>./cs184_as5 ../teapot.bez 0.1</code>
 
+<br/><img src="as5/Images/teapot_uniform_smooth.png"/>
+<br/><img src="as5/Images/teapot_uniform_flat.png"/>
+<br/><img src="as5/Images/teapot_uniform_wireframe.png"/>
+<br/><img src="as5/Images/teapot_uniform_dn.png"/>
 
 </p>
 
 <p><h3>Teapot! Adaptive Subdivision</h3>
-<br/><code>./cs184_as5 ../test.bez 0.01</code>
+<br/><code>./cs184_as5 ../teapot.bez 0.01 -a</code>
 
+<br/><img src="as5/Images/teapot_adaptive_smooth.png"/>
+<br/><img src="as5/Images/teapot_adaptive_flat.png"/>
+<br/><img src="as5/Images/teapot_adaptive_wireframe.png"/>
+<br/><img src="as5/Images/teapot_adaptive_n.png"/>
 
 </p>
 
