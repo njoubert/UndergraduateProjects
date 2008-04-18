@@ -15,12 +15,12 @@
 	This project was done in partnership with <a href="http://inst.eecs.berkeley.edu/~cs184-ah/" target="_blank">Hannah Hu</a>.
 </p>
 
-<p><h3>Drawing Bezier Curves</h3>
+<p><h3>Drawing Bezier Curves (Requires Java)</h3>
 <br>To get a feel for Bezier curves, I put together a little Processing app that draws Bezier curves. Drag the control points around to change the shape of the curve. Feel free to check out the source code.
 <br><iframe src="as5/Bezier/index.html" width=420 height=550 frameborder=0 scrolling="no"></iframe>
 
 </p>
-<p><h3>Calculating Bezier Surface points</h3>
+<p><h3>Calculating Bezier Surface points (Requires Java)</h3>
 <br>Since I could now calculate points on a curve, it was a logical step to attempt finding points on a surface. This example draws the Teapot example surface in a point-based rendering methodology by finding points on surfaces and plotting them. This is purely to experiment with reading in the bez file, and calculating points (and derivates) across the surface.
 <br><iframe src="as5/BezierSurface/index.html" width=420 height=500 frameborder=0 scrolling="no"></iframe>
 </p>
@@ -37,7 +37,8 @@
 	<li>We added animation, as can be seen in the first video (also recorded before the deadline)</li>	
 </ul>
 
-<p><h3>Video showing off animation and rendering (Flash)</h3>
+<p><h3>Video showing off animation (uniform subdivision)</h3>
+<br/>This video requires Flash. Also, turn up the sound!
 <br/><object type="application/x-shockwave-flash" width="400" height="300" data="http://www.vimeo.com/moogaloop.swf?clip_id=912909&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=">	<param name="quality" value="best" />	<param name="allowfullscreen" value="true" />	<param name="scale" value="showAll" />	<param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=912909&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=" /></object><br /><a href="http://www.vimeo.com/912909/l:embed_912909">Parametric Surfaces - Uniform Subdivision</a> from <a href="http://www.vimeo.com/user434263/l:embed_912909">njoubert</a> on <a href="http://vimeo.com/l:embed_912909">Vimeo</a>.	
 </p>
 
