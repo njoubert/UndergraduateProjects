@@ -25,6 +25,55 @@
 <br/>We hit some snags, like <a href="as5/Images/badassmemoryusage.png">running out of virtual memory</a>, but soon enough the project was working!	
 </p>
 
+<p><h3>Teapot! Uniform Subdivision</h3>
+<br/><code>./cs184_as5 ../teapot.bez 0.1</code>
+
+<table>
+<tr>
+	<td>Smooth Shading</td>
+	<td>Flat Shading</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/teapot_uniform_smooth.png" width=400 height=400/></td>
+	<td><img src="as5/Images/teapot_uniform_flat.png" width=400 height=400/></td>
+</tr>
+<tr>
+	<td>Wireframe</td>
+	<td>Wireframe, Black normals, Green derivatives - Prickly plant</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/teapot_uniform_wireframe.png" width=400 height=400/></td>
+	<td><img src="as5/Images/teapot_uniform_dn.png" width=400 height=400/></td>
+</tr>
+</table>
+
+
+</p>
+
+<p><h3>Teapot! Adaptive Subdivision</h3>
+<br/><code>./cs184_as5 ../teapot.bez 0.01 -a</code>
+
+<table>
+<tr>
+	<td>Smooth Shading</td>
+	<td>Flat Shading</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/teapot_adaptive_smooth.png" width=400 height=400/></td>
+	<td><img src="as5/Images/teapot_adaptive_flat.png" width=400 height=400/></td>
+</tr>
+<tr>
+	<td>Wireframe</td>
+	<td>Wireframe, Black normals, Green derivatives - Prickly plant</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/teapot_adaptive_wireframe.png" width=400 height=400/></td>
+	<td><img src="as5/Images/teapot_adaptive_n.png" width=400 height=400/></td>
+</tr>
+</table>
+
+</p>
+
 <p><h3>Test Patch! Uniform Subdivision</h3>
 <br/><code>./cs184_as5 ../test.bez 0.5</code>
 <br/>
@@ -72,55 +121,6 @@
 <tr>
 	<td><img src="as5/Images/test_adaptive_wireframe.png" width=400 height=400/></td>
 	<td><img src="as5/Images/test_adaptive_nd.png" width=400 height=400/></td>
-</tr>
-</table>
-
-</p>
-
-<p><h3>Teapot! Uniform Subdivision</h3>
-<br/><code>./cs184_as5 ../teapot.bez 0.1</code>
-
-<table>
-<tr>
-	<td>Smooth Shading</td>
-	<td>Flat Shading</td>
-</tr>
-<tr>
-	<td><img src="as5/Images/teapot_uniform_smooth.png" width=400 height=400/></td>
-	<td><img src="as5/Images/teapot_uniform_flat.png" width=400 height=400/></td>
-</tr>
-<tr>
-	<td>Wireframe</td>
-	<td>Wireframe, Black normals, Green derivatives - Prickly plant</td>
-</tr>
-<tr>
-	<td><img src="as5/Images/teapot_uniform_wireframe.png" width=400 height=400/></td>
-	<td><img src="as5/Images/teapot_uniform_dn.png" width=400 height=400/></td>
-</tr>
-</table>
-
-
-</p>
-
-<p><h3>Teapot! Adaptive Subdivision</h3>
-<br/><code>./cs184_as5 ../teapot.bez 0.01 -a</code>
-
-<table>
-<tr>
-	<td>Smooth Shading</td>
-	<td>Flat Shading</td>
-</tr>
-<tr>
-	<td><img src="as5/Images/teapot_adaptive_smooth.png" width=400 height=400/></td>
-	<td><img src="as5/Images/teapot_adaptive_flat.png" width=400 height=400/></td>
-</tr>
-<tr>
-	<td>Wireframe</td>
-	<td>Wireframe, Black normals, Green derivatives - Prickly plant</td>
-</tr>
-<tr>
-	<td><img src="as5/Images/teapot_adaptive_wireframe.png" width=400 height=400/></td>
-	<td><img src="as5/Images/teapot_adaptive_n.png" width=400 height=400/></td>
 </tr>
 </table>
 
