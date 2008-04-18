@@ -1,5 +1,19 @@
 CS184 Assignment 5
 
+BUILDING:
+-----------------
+cd Debug
+make 
+
+PLATFORM:
+------------------
+GNU/Linux - Should run on Solaris just fine.
+
+PARTNERS:
+------------------
+cs184-dv  Niels Joubert
+cs184-ah  Hannah Hu
+
 
 Makefile concerns:
 -------------------
