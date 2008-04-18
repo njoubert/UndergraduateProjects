@@ -21,6 +21,54 @@
 <br><iframe src="as5/BezierSurface/index.html" width=420 height=500 frameborder=0 scrolling="no"></iframe>
 </p>
 
+<p><h3>Now we code...</h3>
+<br/>We hit some snags, like <a href="as5/Images/badassmemoryusage.png">running out of virtual memory</a>, but soon enough the project was working!	
+</p>
+
+<p><h3>Test Patch! Uniform Subdivision</h3>
+<br/><code>./cs184_as5 ../test.bez 0.5</code>
+
+<table>
+<tr>
+	<td>Smooth Shading</td>
+	<td>Flat Shading</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/test_uniform_smooth.png"></td>
+	<td><img src="as5/Images/test_uniform_flat.png"></td>
+</tr>
+<tr>
+	<td>Wireframe</td>
+	<td>Wireframe with black normals, green derivatives</td>
+</tr>
+<tr>
+	<td><img src="as5/Images/test_uniform_wireframe.png"></td>
+	<td><img src="as5/Images/test_uniform_wireframewithdn.png"></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+</p>
+
+<p><h3>Test Patch! Adaptive Subdivision</h3>
+<br/><code>./cs184_as5 ../test.bez 0.005</code>
+
+
+</p>
+
+<p><h3>Teapot! Uniform Subdivision</h3>
+<br/><code>./cs184_as5 ../test.bez 0.1</code>
+
+
+</p>
+
+<p><h3>Teapot! Adaptive Subdivision</h3>
+<br/><code>./cs184_as5 ../test.bez 0.01</code>
+
+
+</p>
 
 
 	 </td>
