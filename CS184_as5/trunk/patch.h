@@ -10,8 +10,14 @@ public:
 	Bezier* bezcurveinterp(Point*, Point*, Point*, Point*, double);
 	Bezier* bezsurfaceinterp(double, double);
 	Point* uniformSubdividePatch(double);
-	void adaptivelyGetTriangle(double, double, double, double, double, double, vector<Triangle*>);
-	Point* adaptiveSubdividePatch(double, vector<Triangle*>);
+	void adaptivelyGetTriangle(UVPoint, UVPoint, UVPoint, vector<Triangle*> * );
+	Point* adaptiveSubdividePatch(double, vector<Triangle*> * );
+	
+	void getMidpoint(UVPoint*, UVPoint*, UVPoint*);  
+	void getCentroid(UVPoint*, UVPoint*, UVPoint*, UVPoint*); 
+	
+	void getMidpoint(Point*, Point*, Point*);  
+	void getCentroid(Point*, Point*, Point*, Point*); 
 	
 //	class BezierTriangles {
 //		public:

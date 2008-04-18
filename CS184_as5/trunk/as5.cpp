@@ -450,7 +450,7 @@ void processAdaptive() {
 	for (int p = 0; p < numOfPatches; p++) {
 		
 		printDebug(2, "Subdividing patch "<<p);
-		point = patchesInFile[p]->uniformSubdividePatch(stepSize);
+		point = patchesInFile[p]->adaptiveSubdividePatch(stepSize, &trianglesToDraw);
 		
 		printDebug(5, "Biggest point in patch " <<p<<": ("<<(*point)[0]<<","<<(*point)[1]<<","<<(*point)[2]<<")");
 		

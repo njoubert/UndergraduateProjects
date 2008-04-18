@@ -31,4 +31,9 @@ struct Triangle {
 	Deriv d2;
 };
 
+struct UVPoint {
+	double u;
+	double v;	
+};
+
 #endif /*TYPES_H_*/

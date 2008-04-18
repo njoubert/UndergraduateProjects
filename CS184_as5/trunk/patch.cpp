@@ -38,7 +38,9 @@ Bezier* Patch::bezcurveinterp(Point* p0, Point* p1, Point* p2, Point* p3, double
 	return bez;
 }
 
-
+/*
+ * Converts a UV point to a World point on this patch.
+ */
 Bezier* Patch::bezsurfaceinterp(double u, double v) {
 	Bezier* temp = new Bezier;
 	Curve ucurve, vcurve;
@@ -106,28 +108,147 @@ Point* Patch::uniformSubdividePatch(double step) {
 	return ret;
 }
 
-void Patch::adaptivelyGetTriangle(double u1, double v1, double u2, double v2, double u3, double v3, vector<Triangle*> output) {
-	Bezier *a, *b, *c;
+//Given three endpoints in UV-space
+void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<Triangle*> * output) {
+	Bezier *wA, *wB, *wC;
 	
-	//if triangle is flat
-		//create a new Triangle object
-		//set its vertices and normals to the evaluates u,v points passed as arguments
-		//save in output
-	//else
-		//decide on subdivision
-			//for each new triangle, call adaptivelyGetTriangle
+	
+	//endpoints in world space:
+	wA = bezsurfaceinterp(uvA.u, uvA.v);
+	wB = bezsurfaceinterp(uvB.u, uvB.v);
+	wC = bezsurfaceinterp(uvC.u, uvC.v);
+	
+	//Midpoints in UV Space
+	UVPoint uvAB, uvBC, uvCA, uvCentr;
+	getMidpoint(&uvA, &uvB, &uvAB);
+	getMidpoint(&uvB, &uvC, &uvBC);
+	getMidpoint(&uvC, &uvA, &uvCA);
+	getCentroid(&uvA, &uvB, &uvC, &uvCentr);
+		
+	//Approximated Midpoints in World Space
+	Point fwAB, fwBC, fwCA, fwCentr;	//flat World Points
+	getMidpoint(&(wA->p), &(wB->p), &fwAB);
+	getMidpoint(&(wB->p), &(wC->p), &fwBC);
+	getMidpoint(&(wC->p), &(wA->p), &fwCA);
+	getCentroid(&(wA->p), &(wB->p), &(wC->p), &fwCentr);
+	
+	//Actual Midpoints in World Space
+	Bezier *wAB, *wBC, *wCA, *wCentr;    //World Points
+	wAB = bezsurfaceinterp(uvAB.u, uvAB.v);
+	wBC = bezsurfaceinterp(uvBC.u, uvBC.v);
+	wCA = bezsurfaceinterp(uvCA.u, uvCA.v);
+	wCentr = bezsurfaceinterp(uvCentr.u, uvCentr.v);
+
+	//Compute distances between approximated midpoints and actual midpoints:
+	Point dA, dB, dC, dCentr;
+	double deltaA, deltaB, deltaC, deltaCentr;
+	
+	dA.calculateFromPositions(&fwAB, &(wAB->p));
+	dB.calculateFromPositions(&fwBC, &(wBC->p));
+	dC.calculateFromPositions(&fwCA, &(wCA->p));
+	dCentr.calculateFromPositions(&fwCentr, &(wCentr->p));
+	deltaA = dA.length();
+	deltaB = dB.length();
+	deltaC = dC.length();
+	deltaCentr = dCentr.length();
+	
+	printDebug(4, "Calculated flatness of triangle edges: a=" << deltaA << ", b=" << deltaB << ", c=" << deltaC << ", centr=" << deltaCentr);
+	
+	//Here we check each case
+	if (false) {
+		
+		
+		
+	} else {
+		//Make a new triangle in world space.
+		Triangle* flat = new Triangle;
+		flat->v1 = wA->p;
+		flat->v2 = wB->p;
+		flat->v3 = wC->p;
+		flat->n1 = wA->n;
+		flat->n2 = wB->n;
+		flat->n3 = wC->n;
+		flat->d1 = wA->d;
+		flat->d2 = wA->d2;
+		
+		//Add it to output.	
+		output->push_back(flat);
+	}
 	
 }
 
 //Subdivides the patch adaptively, storing completed triangles in output vector.
-Point* Patch::adaptiveSubdividePatch(double epsilon, vector<Triangle*> output) {
+Point* Patch::adaptiveSubdividePatch(double epsilon, vector<Triangle*> * output) {
 	double x=0.0f,y=0.0f,z=0.0f;
 	
-	adaptivelyGetTriangle(0,0, 1,0, 1,1, output);
-	adaptivelyGetTriangle(0,0, 0,1, 1,1, output);
+	UVPoint a, b, c, d;
+	a.u = 0; //0,0
+	a.v = 0;
+	b.u = 1; //1, 0
+	b.v = 0;
+	c.u = 0; //0, 1
+	c.v = 1;
+	d.u = 1; //1, 1
+	d.v = 1;
+	
+	adaptivelyGetTriangle(a, b, d, output);
+	adaptivelyGetTriangle(c, a, d, output);
+
+	
+	//Find the biggest point in the world.
+	printDebug(1, "Finding largest point in the world.");
+	
+	for (unsigned int t=0; t < output->size(); t++) {
+		
+		if (abs((*output)[t]->v1[0]) > x)
+			x = abs((*output)[t]->v1[0]);
+		if (abs((*output)[t]->v1[1]) > y)
+			y = abs((*output)[t]->v1[1]);
+		if (abs((*output)[t]->v1[2]) > z)
+			z = abs((*output)[t]->v1[2]);
+			
+		if (abs((*output)[t]->v2[0]) > x)
+			x = abs((*output)[t]->v2[0]);
+		if (abs((*output)[t]->v2[1]) > y)
+			y = abs((*output)[t]->v2[1]);
+		if (abs((*output)[t]->v2[2]) > z)
+			z = abs((*output)[t]->v2[2]);
+			
+		if (abs((*output)[t]->v3[0]) > x)
+			x = abs((*output)[t]->v3[0]);
+		if (abs((*output)[t]->v3[1]) > y)
+			y = abs((*output)[t]->v3[1]);
+		if (abs((*output)[t]->v3[2]) > z)
+			z = abs((*output)[t]->v3[2]);
+		
+	}
 				
 	Point* ret = new Point(x,y,z);
 	return ret;
+}
+
+inline void Patch::getMidpoint(UVPoint* start, UVPoint* end, UVPoint* midpoint) {
+	midpoint->u = 0.5*(start->u + end->u);
+	midpoint->v = 0.5*(start->v + end->v);
+}
+
+inline void Patch::getCentroid(UVPoint* a, UVPoint* b, UVPoint* c, UVPoint* centroid) {
+	centroid->u = (a->u + b->u + c->u)/3.0;	
+	centroid->v = (a->v + b->v + c->v)/3.0;
+}
+
+inline void Patch::getMidpoint(Point* start, Point* end, Point* midpoint) {
+	midpoint->setPos(
+		(start->getX() + end->getX()) / 2.0,
+		(start->getY() + end->getY()) / 2.0,
+		(start->getZ() + end->getZ()) / 2.0);
+}
+
+inline void Patch::getCentroid(Point* a, Point* b, Point* c, Point* centroid) {
+	centroid->setPos(
+		(a->getX() + b->getX() + c->getX()) / 3.0,
+		(a->getY() + b->getY() + c->getY()) / 3.0,
+		(a->getZ() + b->getZ() + c->getZ()) / 3.0);
 }
 
 //Patch::BezierTriangles::BezierTriangles() { }
