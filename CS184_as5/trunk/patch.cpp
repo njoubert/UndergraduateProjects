@@ -112,7 +112,6 @@ Point* Patch::uniformSubdividePatch(double step) {
 void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<Triangle*> * output) {
 	Bezier *wA, *wB, *wC;
 	
-	
 	//endpoints in world space:
 	wA = bezsurfaceinterp(uvA.u, uvA.v);
 	wB = bezsurfaceinterp(uvB.u, uvB.v);
@@ -154,12 +153,68 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 	
 	printDebug(4, "Calculated flatness of triangle edges: a=" << deltaA << ", b=" << deltaB << ", c=" << deltaC << ", centr=" << deltaCentr);
 	
+	bool isFlat = false;
 	//Here we check each case
-	if (false) {
+//	if (deltaCentr < epsilon) {
+	
+		if ((deltaA < epsilon) && (deltaB < epsilon) && (deltaC < epsilon)) {
+			
+			isFlat = true;
+			
+		} else if ((deltaA >= epsilon) && (deltaB >= epsilon) && (deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvAB, uvCA, uvA, output);
+			adaptivelyGetTriangle(uvBC, uvAB, uvB, output);
+			adaptivelyGetTriangle(uvCA, uvBC, uvC, output);
+			adaptivelyGetTriangle(uvBC, uvCA, uvAB, output);
+			
+		} else if ((deltaA >= epsilon) && (deltaB >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvAB, uvC, uvA, output);
+			adaptivelyGetTriangle(uvAB, uvBC, uvC, output);
+			adaptivelyGetTriangle(uvBC, uvAB, uvB, output);
+			
+		} else if ((deltaA >= epsilon) && (deltaC >= epsilon)) {
+
+			adaptivelyGetTriangle(uvAB, uvCA, uvA, output);
+			adaptivelyGetTriangle(uvCA, uvAB, uvB, output);
+			adaptivelyGetTriangle(uvCA, uvB, uvC, output);
+			
+		} else if ((deltaB >= epsilon) && (deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvB, uvBC, uvA, output);
+			adaptivelyGetTriangle(uvBC, uvCA, uvA, output);
+			adaptivelyGetTriangle(uvCA, uvBC, uvC, output);
+			
+		} else if ((deltaA >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvAB, uvC, uvA, output);
+			adaptivelyGetTriangle(uvC, uvAB, uvB, output);
+			
+		} else if ((deltaB >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvA, uvBC, uvC, output);
+			adaptivelyGetTriangle(uvA, uvB, uvBC, output);
+			
+		} else if ((deltaC >= epsilon)) {
+			
+			adaptivelyGetTriangle(uvB, uvCA, uvA, output);
+			adaptivelyGetTriangle(uvB, uvC, uvCA, output);
+			
+		} else {
+			isFlat = true;
+//			printError("Something went TERRIBLY WRONG in calculating sides to subdivide!");
+		}
 		
 		
+	
+//	} else {
+	
 		
-	} else {
+		
+//	}
+
+	if (isFlat) {
 		//Make a new triangle in world space.
 		Triangle* flat = new Triangle;
 		flat->v1 = wA->p;
@@ -171,6 +226,8 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 		flat->d1 = wA->d;
 		flat->d2 = wA->d2;
 		
+		printDebug(4, "Saving Triangle");
+		
 		//Add it to output.	
 		output->push_back(flat);
 	}
@@ -180,6 +237,8 @@ void Patch::adaptivelyGetTriangle(UVPoint uvA, UVPoint uvB, UVPoint uvC, vector<
 //Subdivides the patch adaptively, storing completed triangles in output vector.
 Point* Patch::adaptiveSubdividePatch(double epsilon, vector<Triangle*> * output) {
 	double x=0.0f,y=0.0f,z=0.0f;
+	
+	this->epsilon = epsilon;
 	
 	UVPoint a, b, c, d;
 	a.u = 0; //0,0

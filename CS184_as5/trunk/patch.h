@@ -5,6 +5,7 @@
 
 class Patch {
 public:
+	double epsilon; 
 	Point* (cP[4][4]);
 	vector<vector<Bezier*> > bezpoints;
 	Bezier* bezcurveinterp(Point*, Point*, Point*, Point*, double);
