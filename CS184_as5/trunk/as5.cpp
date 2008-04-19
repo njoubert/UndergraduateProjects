@@ -141,8 +141,9 @@ void myDisplay() {
 	
 	for (unsigned int t = 0; t < trianglesToDraw.size(); t++) {
 		
+		
 			glBegin(GL_TRIANGLES);
-			glColor3f(1.0f, 0.0f, 0.0f);
+			glColor3f(0.4f, 0.4f, 0.4f);
 			glNormal3dv(trianglesToDraw[t]->n1.data());
 			glVertex3dv(trianglesToDraw[t]->v1.data());
 			
