@@ -24,7 +24,8 @@
  * operative        operands
  * 
  *  #These are subsets of the actual .obj file implementation. This allows you to draw triangles:
- *  v               x y z           
+ *  v               x y z     
+ *  vn				x y z      
  *  f               v1 v2 v3
  * 
  */
@@ -50,7 +51,7 @@ bool Parser::parseOBJ(string filename, vector<Triangle*> *output) {
     }
     
     inFile.close();
-
+	
     return true;
 }
 
@@ -75,16 +76,82 @@ bool Parser::parseLine(string line, vector<Triangle*> *output) {
         vertexBuffer.push_back(new Vector3d(x,y,z));
         printDebug(3, "Parsed Vertex input to ("<<x<<","<<y<<","<<z<<") into vertice buffer.");
 
-    } else if (operand.compare("f") == 0) {
+    } else if (operand.compare("vn") == 0) {
 
-        int v1, v2, v3;
-        ss >>v1 >>v2 >>v3;
-        Vector3d* ver1 = vertexBuffer[v1-1];
-        Vector3d* ver2 = vertexBuffer[v2-1];
-        Vector3d* ver3 = vertexBuffer[v3-1];
-        
-        //success = scene->addTriangle(ver1, ver2, ver3, ks, ka, kd, kr, ksp);
-        printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
+        double x, y, z;
+        ss >>x >>y >>z;
+        vertexNormalBuffer.push_back(new Vector3d(x,y,z));
+        printDebug(3, "Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer.");
+
+    } else if (operand.compare("f") == 0) {
+    	
+    	if (line.find("//") == string::npos) {
+
+	        int v1, v2, v3;
+	        ss >>v1 >>v2 >>v3;
+	        Vector3d* ver1 = vertexBuffer[v1-1];
+	        Vector3d* ver2 = vertexBuffer[v2-1];
+	        Vector3d* ver3 = vertexBuffer[v3-1];
+	        Triangle* tr = new Triangle();
+	        tr->v1 = *ver1;
+	        tr->v2 = *ver2;
+	        tr->v3 = *ver3;
+	        
+	        Vector3d uDer, vDer, n;
+	        uDer.calculateFromPositions(ver1, ver2);
+	        vDer.calculateFromPositions(ver1, ver3);
+	        
+	        n.setX(uDer[1]*vDer[2] - uDer[2]*vDer[1]);
+			n.setY(uDer[2]*vDer[0] - uDer[0]*vDer[2]);
+			n.setZ(uDer[0]*vDer[1] - uDer[1]*vDer[0]);
+			n.normalize();
+			
+			tr->n1 = n;
+			tr->n2 = n;
+			tr->n3 = n;
+	        
+	        printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
+	        
+	        output->push_back(tr);
+	        
+    	} else {
+    		
+    		int v1, v2, v3;
+    		int n1, n2, n3;
+    		ss >>v1;
+    		ss.get();
+    		ss.get();
+    		ss >>n1; 
+    	
+    		ss >>v2;
+    		ss.get();
+    		ss.get();
+    		ss >>n2;
+    		
+    		ss >>v3; 
+    		ss.get();
+    		ss.get();
+			ss >>n3;
+    		
+  	        Vector3d* ver1 = vertexBuffer[v1-1];
+	        Vector3d* ver2 = vertexBuffer[v2-1];
+	        Vector3d* ver3 = vertexBuffer[v3-1];
+	       	Vector3d* nor1 = vertexNormalBuffer[n1-1];
+	        Vector3d* nor2 = vertexNormalBuffer[n2-1];
+	        Vector3d* nor3 = vertexNormalBuffer[n3-1];  		
+	        Triangle* tr = new Triangle();
+	        tr->v1 = *ver1;
+	        tr->v2 = *ver2;
+	        tr->v3 = *ver3;
+	        tr->n1 = *nor1;
+	        tr->n2 = *nor2;
+	        tr->n3 = *nor3;
+    		
+    		printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3<<" with normals "<<n1<<", "<<n2<<", "<<n3);	
+    		
+    		output->push_back(tr);
+    		
+    	}
     
        
     } else {

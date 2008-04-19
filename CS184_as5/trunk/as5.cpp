@@ -58,7 +58,7 @@ void myReshape(int w, int h) {
 	//from the largest point to fit the whole thing.
 	//Its trig: straight distance = orthogonal distance / tan(angle) 
 	eyePosZ = maxv + 1.5*maxv; 
-	gluPerspective(60.0, 1.0, 0.1, 200); //We set up our perspective for a natural feel (60 degrees) and a far clipping plane.
+	gluPerspective(60.0, 1.0, 0.1, 20000); //We set up our perspective for a natural feel (60 degrees) and a far clipping plane.
 
 	//glOrtho(-3.4f, 3.4f, -3.4f, 3.4f, 5, -5);
 }
@@ -218,30 +218,30 @@ void processSpecialKeys(int key, int x, int y) {
 			objPosY += moveStep;
 			printDebug(2, "Up key! " <<objPosY);
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			angleudd -= moveStep;
+			angleudd -= 0.1;
 		} else {
 			angleudd = 0.0;
-			angleud -= 10*moveStep;
+			angleud -= 1.0;
 		}
 		break;
 	case GLUT_KEY_DOWN:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			objPosY -= moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			angleudd += moveStep;
+			angleudd += 0.1;
 		} else {
 			angleudd = 0.0;
-			angleud += 10*moveStep;
+			angleud += 1.0;
 		}
 		break;
 	case GLUT_KEY_RIGHT:
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			objPosX += moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			anglelrd += moveStep;
+			anglelrd += 0.1;
 		} else {
 			anglelrd = 0.0;
-			anglelr += 10*moveStep;
+			anglelr += 1.0;
 		}
 		break;
 
@@ -249,10 +249,10 @@ void processSpecialKeys(int key, int x, int y) {
 		if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
 			objPosX -= moveStep;
 		} else if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			anglelrd -= moveStep;
+			anglelrd -= 0.1;
 		} else {
 			anglelrd = 0.0;
-			anglelr -= 10*moveStep;
+			anglelr -= 1.0;
 		}
 		break;
 
@@ -273,18 +273,18 @@ void processKeys(unsigned char key, int x, int y) {
 		break;
 	case ',':
 		if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			anglespd += moveStep;
+			anglespd += 0.1;
 		} else {
 			anglespd = 0.0;
-			anglesp += 10*moveStep;
+			anglesp += 1.0;
 		}
 		break;
 	case '.':
 		if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-			anglespd -= moveStep;
+			anglespd -= 0.1;
 		} else {
 			anglespd = 0.0;
-			anglesp -= 10*moveStep;
+			anglesp -= 1.0;
 		}
 		break;
 	case 'w':
@@ -351,6 +351,40 @@ bool getPatches(char* filename) {
 	file.close();
 	
 	return true;
+}
+
+bool getOBJTriangles(char* filename) {
+	Triangle* temp;
+	Point* point;
+	Parser objP;
+	furthestPoint = new Point(0, 0, 0);
+	if (!objP.parseOBJ(string(filename), &trianglesToDraw))
+		return false;
+	
+	for (unsigned int p = 0; p < trianglesToDraw.size(); p++) {
+		
+		temp = trianglesToDraw[p];
+		point = &(temp->v1);
+		
+		if (abs((*point)[0]) > (*furthestPoint)[0])
+			furthestPoint->setX(abs(point->getX()));
+		if (abs((*point)[1]) > (*furthestPoint)[1])
+			furthestPoint->setY(abs(point->getY()));
+		if (abs((*point)[2]) > (*furthestPoint)[2])
+			furthestPoint->setZ(abs(point->getZ()));	
+		
+		
+	}
+	double tempS = (*furthestPoint)[0];
+	if ((*furthestPoint)[1] > tempS)
+		tempS = (*furthestPoint)[1];
+	if ((*furthestPoint)[2] > tempS);
+		tempS = (*furthestPoint)[2];
+		
+	moveStep = 0.05 * tempS;
+	printInfo("Biggest point in scene ("<<(*furthestPoint)[0]<<","<<(*furthestPoint)[1]<<","<<(*furthestPoint)[2]<<")");
+	return true;
+	
 }
 
 //****************************************************
@@ -519,8 +553,7 @@ int parseCommandLine(int argc, char *argv[]) {
 	    		printUsage = true;
     	} else if (strstr(argv[i], ".obj") != NULL) {
     		objFile = true;
-    		Parser objP;
-    		if (!objP.parseOBJ(string(argv[i]), &trianglesToDraw))
+    		if (!getOBJTriangles(argv[i]))
     			printUsage=true;
     		
     	} else {
@@ -578,7 +611,11 @@ int parseCommandLine(int argc, char *argv[]) {
         }
     }
     
-    printDebug(1, "Read " << numOfPatches << " patches from file.");
+    if (!objFile) {
+    	printDebug(1, "Read " << numOfPatches << " patches from file.");
+    } else {
+    	printDebug(1, "Read in " << trianglesToDraw.size() << " triangles.");
+    }
     	
     if (printUsage)
         return 1;
