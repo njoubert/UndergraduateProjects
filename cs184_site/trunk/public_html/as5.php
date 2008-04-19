@@ -143,6 +143,17 @@
 
 </p>
 
+<p><h2>The following images were generated AFTER the deadline:</h2></p>
+<p><h3>Notes</h3>
+<ul>
+	<li>We reused my raytracer code to import .OBJ files.</li>
+</ul>
+
+<p><h3>OBJ Files</h3>
+<br/><img src="as5/Images/OBJ_face.png"/>
+<br/><img src="as5/Images/OBJ_chameleon.png"/>
+</p>
+
 
 	 </td>
       </tr>
