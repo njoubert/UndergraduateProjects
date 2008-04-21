@@ -48,8 +48,9 @@
 		<br/>Feasibility:
 		<ul>
 			<li>Cost - Negligible.</li>
+			<li>Interfacing with USB - On first sight this is significantly harder than working with parallel/serial ports (with which I have experience). According to this USB FAQ, this will require special hardware to convert between two "Host" devices, since USB relies on a host-device configuration versus our setup of host(xbox) to host(PC). </li>
 			<li>Reverse Engineering - </li>
-			<li>Recreating the Protocol - </li>
+			<li>Recreating the Protocol - Once</li>
 		</ul>
 		
 	</p>
