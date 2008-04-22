@@ -58,9 +58,10 @@ public class Main {
     bc.start();
     Thread ls = new Thread(listener);
     ls.start();
-    /*
+    
     Thread displ = new Thread(GUI.getGUI()); 
-    */
+    displ.start();
+    
     }
     
     public static int getBroadcastPort() {

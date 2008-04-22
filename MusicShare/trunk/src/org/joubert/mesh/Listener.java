@@ -6,16 +6,17 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import org.joubert.UI.GUI;
 import org.joubert.daemon.Main;
 
 public class Listener implements Runnable {
 
     DatagramSocket recvSocket;
-    public ArrayList<Node> nodes;
+    public ArrayList<MSNode> nodes;
     
     public Listener() throws SocketException {
         recvSocket = new DatagramSocket(Main.getBroadcastPort());
-        nodes = new ArrayList<Node>();
+        nodes = new ArrayList<MSNode>();
         
     }
     
@@ -43,7 +44,7 @@ public class Listener implements Runnable {
     private void handleReceivedPacket(BroadcastDatagramPacket p) {
         
         
-        Node newNode = new Node(p);
+        MSNode newNode = new MSNode(p);
         int n;
         if ((n = nodes.indexOf(newNode)) == -1) {
             

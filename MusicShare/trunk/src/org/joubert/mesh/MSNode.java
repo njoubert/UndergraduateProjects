@@ -2,7 +2,7 @@ package org.joubert.mesh;
 
 import java.util.Date;
 
-public class Node {
+public class MSNode {
  
     Date lastSeen;
     Date firstSeen;
@@ -11,7 +11,7 @@ public class Node {
     String userdesc;
     byte[] ipaddr;
  
-    public Node(BroadcastDatagramPacket p) {
+    public MSNode(BroadcastDatagramPacket p) {
         hostname = p.getHostname();
         username = p.getUsername();
         userdesc = p.getUserdesc();
@@ -27,7 +27,7 @@ public class Node {
     
     @Override
     public boolean equals(Object obj) {
-        Node other = (Node) obj;
+        MSNode other = (MSNode) obj;
         return (hostname.equals(other.hostname) &&
             username.equals(other.username) &&
             ipaddr[0] == other.ipaddr[0] &&

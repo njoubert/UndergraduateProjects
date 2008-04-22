@@ -1,6 +1,8 @@
 package org.joubert.UI;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -15,6 +17,7 @@ public class GUI implements Runnable {
     
     Display display;
     Shell shell;
+    List l;
     private GUI() { 
         //empty
     }
@@ -33,6 +36,10 @@ public class GUI implements Runnable {
         while(!shell.isDisposed())
             if (!display.readAndDispatch())
                 display.sleep();
+        
+        
+        
+        
         display.dispose();
     }
 }
