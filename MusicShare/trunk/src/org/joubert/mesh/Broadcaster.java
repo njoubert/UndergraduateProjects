@@ -5,6 +5,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.DatagramSocketImpl;
 import java.net.SocketException;
+import java.util.ArrayList;
+
+import org.joubert.daemon.Main;
 
 /**
  * Broadcasts this computer's presence on the network.
@@ -15,6 +18,9 @@ public class Broadcaster implements Runnable {
 
     boolean doBroadcast;
     boolean pleaseStop;
+    private long lastBroadcast;
+    
+    ArrayList<BroadcastDatagramPacket> queue = new ArrayList<BroadcastDatagramPacket>();
     
     DatagramSocket sendSocket;
     
@@ -23,24 +29,46 @@ public class Broadcaster implements Runnable {
         pleaseStop = false;
         sendSocket = new DatagramSocket();
         sendSocket.setBroadcast(true);
+        lastBroadcast = 0;
     }
     
+    /**
+     * Sends the queue of packets, possibly sending our presence. Then sleeps for a moment, before retrying.
+     */
     public void run() {
-        // TODO Auto-generated method stub
+        
         while (!pleaseStop) {
-            if (doBroadcast) {
-                BroadcastDatagramPacket p = BroadcastDatagramPacket.makeNotify();
-                broadcastPacket(p);
+      
+            broadcastPresence();
+            
+            while (!queue.isEmpty() && doBroadcast) {   
+                broadcastPacket(queue.remove(0));
             }
             
             try {
-                Thread.sleep(5000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }    
         }
+        
+        sendSocket.close();
+        
     }
     
+    /**
+     * Will broadcast out presence if enough time has elapsed since the last broadcast.
+     */
+    private void broadcastPresence() {
+        long now = System.currentTimeMillis();
+        int broadcastGranularity = Integer.parseInt(Main.properties.getProperty("broadcastGranularitySeconds")) * 1000;
+        if (now - lastBroadcast > broadcastGranularity) {
+            BroadcastDatagramPacket p = BroadcastDatagramPacket.makeNotify();
+            queue.add(p);
+            lastBroadcast = now;
+        }
+    }
+
     synchronized public void pause() {
         doBroadcast = false;
     }
@@ -58,7 +86,6 @@ public class Broadcaster implements Runnable {
     }
     
     private void broadcastPacket(BroadcastDatagramPacket p) {
-        //System.out.println("Broadcasting... " + p.hashCode());
         
         DatagramPacket toSend = p.getDatagramPacket();
         try {

@@ -1,8 +1,11 @@
 package org.joubert.daemon;
 
 import java.net.SocketException;
+import java.util.Properties;
 
 import org.joubert.mesh.*;
+import org.joubert.UI.*;
+
 
 /**
  * The main Daemon for the MusicSharing project.
@@ -23,6 +26,7 @@ public class Main {
 
     private static Broadcaster bcaster;
     private static Listener listener;
+    public static Properties properties;
     
     private static String name;
     
@@ -38,6 +42,8 @@ public class Main {
             
        name = args[0]; 
        
+       properties = new Properties(getDefaultProperties());
+       
        try {
         bcaster = new Broadcaster();
         listener = new Listener();
@@ -52,8 +58,9 @@ public class Main {
     bc.start();
     Thread ls = new Thread(listener);
     ls.start();
-    
-       
+    /*
+    Thread displ = new Thread(GUI.getGUI()); 
+    */
     }
     
     public static int getBroadcastPort() {
@@ -62,5 +69,13 @@ public class Main {
 
    public static String getUsername() {
        return name;
+   }
+   
+   private static Properties getDefaultProperties() {
+       Properties p = new Properties();
+       p.setProperty("Username", "New User");
+       p.setProperty("Userdesc", "Not yet configured.");
+       p.setProperty("broadcastGranularitySeconds", "30");
+       return p;
    }
 }

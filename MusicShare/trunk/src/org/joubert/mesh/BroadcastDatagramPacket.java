@@ -9,7 +9,7 @@ import java.util.List;
 import org.joubert.daemon.Main;
 
 public class BroadcastDatagramPacket {
-
+    
     private int port;
     private InetAddress ia;
     private BDPType type;
@@ -97,7 +97,6 @@ public class BroadcastDatagramPacket {
         DatagramPacket ret = new DatagramPacket(buf, buf.length, ia, port);
         return ret;
     }
-    
     
     public String getUsername() {
         return username;
