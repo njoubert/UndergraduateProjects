@@ -70,6 +70,9 @@ public class Main {
    public static String getUsername() {
        return name;
    }
+   public static String getUserdesc() {
+       return "blah";
+   }
    
    private static Properties getDefaultProperties() {
        Properties p = new Properties();

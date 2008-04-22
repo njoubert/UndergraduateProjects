@@ -1,5 +1,11 @@
 package org.joubert.mesh;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -12,13 +18,26 @@ public class BroadcastDatagramPacket {
     
     private int port;
     private InetAddress ia;
-    private BDPType type;
-    private byte version;
-    private String packetdesc;
-    private String username;
-    private String userdesc;
+    
+    
+    /**
+     * Here follows the packet definition:
+     */
+    public static final int packetSize = 256; //256 total bytes
+    public static final int HOSTNAMELEN = 64; //256 total bytes
+    public static final int USERNAMELEN = 64; //256 total bytes
+    public static final int USERDESCLEN = 128; //256 total bytes
+    
+    private byte[] signature;   //3 bytes
+    private byte version;       //1 byte
+    private BDPType type;       //4 bytes
+    
+    private String hostname;    //up to 64 bytes
+    private String username;    //up to 64 bytes
+    private String userdesc;    //up to 128 bytes
     
     public static enum BDPType {
+        nothing(0x00),
         notify(0x01);
         
         private int bit;
@@ -29,81 +48,108 @@ public class BroadcastDatagramPacket {
         public int getBitNumber() {
             return(bit);
         }
+        public void setBitNumber(int i) {
+            bit = i;
+        }
         
     }
     
-    private BroadcastDatagramPacket() {
+    private BroadcastDatagramPacket() throws UnknownHostException {
         // TODO Auto-generated constructor stub
-        port = Main.getBroadcastPort();
-        version = 1;
+        signature = new byte[3];
+        signature[0] = 'm';
+        signature[1] = 's';
+        signature[2] = 'c';
+        version = 1;      
+        type = BDPType.nothing;
+        hostname = InetAddress.getLocalHost().getHostName();
+        username = Main.getUsername();
+        userdesc = Main.getUserdesc();
+        
     }
     
-    public static BroadcastDatagramPacket makeNotify() {
-        
-        //We need to take into account network byte order!
+    public static BroadcastDatagramPacket makeNotify() throws UnknownHostException {
         
         BroadcastDatagramPacket ret = new BroadcastDatagramPacket();
-        try {
-            ret.ia = InetAddress.getByName("255.255.255.255");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        ret.ia = InetAddress.getByName("255.255.255.255");
+        ret.port = Main.getBroadcastPort();
         ret.type = BDPType.notify;
-        ret.packetdesc = "MusicShare Broadcast Notify";
-        ret.username = Main.getUsername();
-        ret.userdesc = "The Main Node";
         return ret;
     }
     
-    public static BroadcastDatagramPacket makeFromDatagramPacket(DatagramPacket in) {
+    public static BroadcastDatagramPacket makeFromDatagramPacket(DatagramPacket inPacket) throws IOException {
         BroadcastDatagramPacket ret = new BroadcastDatagramPacket();
         
-      //We need to take into account network byte order!
+        int start = inPacket.getOffset();
+        int len = inPacket.getLength();
+        byte[] data = inPacket.getData();
         
-        int start = in.getOffset();
-        int len = in.getLength();
-        byte[] data = in.getData();
-        
-        if ((len - start) < 255)
+        if ((len - start) < BroadcastDatagramPacket.packetSize-1)
             System.out.println("Received packet of less than 255 bytes...");
         
-        byte usernameLen = data[61];
-        byte userDescLen = data[62];
+        ret.ia = inPacket.getAddress();
+        ret.port = inPacket.getPort();
         
-        ret.version = data[63];
-        ret.username = new String(data, 64, Math.min(64, usernameLen));
-        ret.userdesc = new String(data, 128, Math.min(128, userDescLen));
+        ByteArrayInputStream inS = new ByteArrayInputStream(data, start, len);
+        DataInputStream in = new DataInputStream(inS);
         
+        in.read(ret.signature, 0, 3);
+        ret.version = in.readByte();
+        ret.type.setBitNumber(in.readInt());
+        byte[] host = new byte[HOSTNAMELEN];
+        byte[] name = new byte[USERNAMELEN];
+        byte[] desc = new byte[USERDESCLEN];
+        
+        in.read(host, 0, HOSTNAMELEN);
+        in.read(name, 0, USERNAMELEN);
+        in.read(desc, 0, USERDESCLEN);
+        
+        ret.username = (new String(name)).trim();
+        ret.userdesc = (new String(desc)).trim();
+        ret.hostname = (new String(host)).trim();
         
         return ret;
     }
+   
     
     /**
      * Creates a datagram packet from the data stored in this object
-     * @return
+     * @return a packet with filled buffer, ready to be sent.
+     * @throws IOException 
      */
-    public DatagramPacket getDatagramPacket() {
-        byte[] buf = new byte[256];
-        byte[] first = packetdesc.getBytes();
-        byte[] second = username.getBytes();
-        byte[] third = userdesc.getBytes();
-        System.arraycopy(first, 0, buf, 0, Math.min(60, first.length));
-        buf[60] = version;
-        buf[61] = (byte) Math.min(64, second.length);
-        buf[62] = (byte) Math.min(128, third.length);
-        System.arraycopy(second, 0, buf, 64, buf[61]);
-        System.arraycopy(third, 0, buf, 128, buf[62]);
+    public DatagramPacket getDatagramPacket() throws IOException {
+        byte[] blanks = new byte[256];
+        ByteArrayOutputStream outS = new ByteArrayOutputStream(BroadcastDatagramPacket.packetSize);
+        DataOutputStream out = new DataOutputStream(outS);
         
-        DatagramPacket ret = new DatagramPacket(buf, buf.length, ia, port);
+        out.write(signature);
+        out.write(version);
+        out.writeInt(type.getBitNumber());
+        out.writeBytes(hostname.substring(0, Math.min(HOSTNAMELEN-1, hostname.length())));
+        out.write(blanks, 0, HOSTNAMELEN - Math.min(hostname.length(), HOSTNAMELEN-1));
+        out.writeBytes(username.substring(0, Math.min(USERNAMELEN-1, username.length())));
+        out.write(blanks, 0, USERNAMELEN - Math.min(USERNAMELEN-1, username.length()));
+        out.writeBytes(userdesc.substring(0, Math.min(USERDESCLEN-1, userdesc.length())));
+        out.write(blanks, 0, USERDESCLEN - Math.min(USERDESCLEN-1, userdesc.length()));
+        
+        byte[] buffer = outS.toByteArray();
+
+        DatagramPacket ret = new DatagramPacket(buffer, buffer.length, ia, port);
         return ret;
     }
-    
+
     public String getUsername() {
-        return username;
+        return username.toString();
     }
     
     public String getUserdesc() {
-        return userdesc;
+        return userdesc.toString();
+    }
+    public String getHostname() {
+        return hostname.toString();
     }
 
+    public InetAddress getInetAddr() {
+        return ia;
+    }
 }

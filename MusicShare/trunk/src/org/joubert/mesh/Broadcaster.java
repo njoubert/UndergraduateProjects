@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.DatagramSocketImpl;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.joubert.daemon.Main;
@@ -37,29 +38,36 @@ public class Broadcaster implements Runnable {
      */
     public void run() {
         
-        while (!pleaseStop) {
-      
-            broadcastPresence();
-            
-            while (!queue.isEmpty() && doBroadcast) {   
-                broadcastPacket(queue.remove(0));
-            }
-            
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }    
-        }
+        try {
         
-        sendSocket.close();
+                while (!pleaseStop) {
+              
+                    broadcastPresence();
+                    
+                    while (!queue.isEmpty() && doBroadcast) {   
+                        broadcastPacket(queue.remove(0));
+                    }
+                    
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }    
+                }
+                
+                sendSocket.close();
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
     }
     
     /**
      * Will broadcast out presence if enough time has elapsed since the last broadcast.
+     * @throws UnknownHostException 
      */
-    private void broadcastPresence() {
+    private void broadcastPresence() throws UnknownHostException {
         long now = System.currentTimeMillis();
         int broadcastGranularity = Integer.parseInt(Main.properties.getProperty("broadcastGranularitySeconds")) * 1000;
         if (now - lastBroadcast > broadcastGranularity) {
@@ -85,7 +93,7 @@ public class Broadcaster implements Runnable {
         pleaseStop = true;
     }
     
-    private void broadcastPacket(BroadcastDatagramPacket p) {
+    private void broadcastPacket(BroadcastDatagramPacket p) throws IOException {
         
         DatagramPacket toSend = p.getDatagramPacket();
         try {
