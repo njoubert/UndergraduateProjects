@@ -24,97 +24,6 @@ static CvMemStorage* storage = 0;
 void draw( IplImage* image );
 void mouseCallback(int event, int x, int y, int flags, void* param);
 
-int main( int argc, char** argv )
-{
-    CvCapture* capture = 0;
-    IplImage *frame, *frame_copy = 0;
-    const char* input_name;
-    
-    input_name = argc > 1 ? argv[1] : 0;
-    
-    storage = cvCreateMemStorage(0);
-    
-    // Set up mouse handler for specifying the perspective points
-    
-    if( !input_name || (isdigit(input_name[0]) && input_name[1] == '\0') )
-        capture = cvCaptureFromCAM( !input_name ? 0 : input_name[0] - '0' );
-    else
-        capture = cvCaptureFromAVI( input_name ); 
-
-    cvNamedWindow( "Source", 1 );
-    cvNamedWindow("Inverse Perspective", 1);
-    cvSetMouseCallback("Source", mouseCallback);
-
-    if( capture )
-    {
-        for(;;)
-        {
-            if( !cvGrabFrame( capture ))
-                break;
-            frame = cvRetrieveFrame( capture );
-            if( !frame )
-                break;
-            if( !frame_copy )
-                frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
-                                            IPL_DEPTH_8U, frame->nChannels );
-            if( frame->origin == IPL_ORIGIN_TL )
-                cvCopy( frame, frame_copy, 0 );
-            else
-                cvFlip( frame, frame_copy, 0 );
-            
-            draw( frame_copy );
-
-            if( cvWaitKey( 10 ) >= 0 )
-                break;
-        }
-
-        cvReleaseImage( &frame_copy );
-        cvReleaseCapture( &capture );
-    }
-    else
-    {
-        const char* filename = input_name ? input_name : (char*)"lena.jpg";
-        IplImage* image = cvLoadImage( filename, 1 );
-
-        if( image )
-        {
-            draw( image );
-            cvWaitKey(0);
-            cvReleaseImage( &image );
-        }
-        else
-        {
-            /* assume it is a text file containing the
-               list of the image filenames to be processed - one per line */
-            FILE* f = fopen( filename, "rt" );
-            if( f )
-            {
-                char buf[1000+1];
-                while( fgets( buf, 1000, f ) )
-                {
-                    int len = (int)strlen(buf);
-                    while( len > 0 && isspace(buf[len-1]) )
-                        len--;
-                    buf[len] = '\0';
-                    image = cvLoadImage( buf, 1 );
-                    if( image )
-                    {
-                        draw( image );
-                        cvWaitKey(0);
-                        cvReleaseImage( &image );
-                    }
-                }
-                fclose(f);
-            }
-        }
-
-    }
-    
-    cvDestroyWindow("result");
-
-    return 0;
-}
-
 bool pointInRect(CvPoint pPoint, CvRect pRect) { // includes the rect boundary
     // cout << "Point: " << pPoint.x << " " << pPoint.y << endl;
     // cout << "Rect: " << pRect.x << " " << pRect.y << " " << pRect.width << " " << pRect.height << endl;
@@ -178,10 +87,16 @@ public:
             _controlPoints[_movingControlPointIndex].x = pX;
             _controlPoints[_movingControlPointIndex].y = pY;
             
-            _perspectiveTransform = NULL;
+            invalidatePerspectiveTransform();
             
             return _movingControlPointIndex;
         }
+    }
+    
+    void clearControlPoints() {
+        endMovingControlPoint();
+        invalidatePerspectiveTransform();
+        _nextControlPointIndex = 0;
     }
     
     void startMovingControlPointWithIndex(int pControlPointIndex) {
@@ -258,6 +173,11 @@ public:
         return _perspectiveTransform;
     }
     
+    void invalidatePerspectiveTransform() {
+        cvReleaseMat(&_perspectiveTransform);
+        _perspectiveTransform = NULL;
+    }
+    
     void sortControlPoints() {
         // Sort the control points to that the order is UL, UR, LR, LL.
         CvPoint swapPoint;
@@ -290,6 +210,105 @@ public:
 
 ControlPointController *ControlPointController::_sharedControlPointController = 0;
 
+int main( int argc, char** argv )
+{
+    CvCapture* capture = 0;
+    IplImage *frame, *frame_copy = 0;
+    const char* input_name;
+    
+    input_name = argc > 1 ? argv[1] : 0;
+    
+    storage = cvCreateMemStorage(0);
+    
+    // Set up mouse handler for specifying the perspective points
+    
+    if( !input_name || (isdigit(input_name[0]) && input_name[1] == '\0') )
+        capture = cvCaptureFromCAM( !input_name ? 0 : input_name[0] - '0' );
+    else
+        capture = cvCaptureFromAVI( input_name ); 
+
+    cvNamedWindow( "Source", 1 );
+    cvNamedWindow("Inverse Perspective", 1);
+    cvSetMouseCallback("Source", mouseCallback);
+
+    if( capture )
+    {
+        for(;;)
+        {
+            if( !cvGrabFrame( capture ))
+                break;
+            frame = cvRetrieveFrame( capture );
+            if( !frame )
+                break;
+            if( !frame_copy )
+                frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
+                                            IPL_DEPTH_8U, frame->nChannels );
+            if( frame->origin == IPL_ORIGIN_TL )
+                cvCopy( frame, frame_copy, 0 );
+            else
+                cvFlip( frame, frame_copy, 0 );
+            
+            draw( frame_copy );
+
+            int lKey = cvWaitKey( 10 );
+            
+            if( 'q' == lKey )
+                break;
+            else if ('x' == lKey)
+                ControlPointController::sharedControlPointController()->clearControlPoints();
+            
+        }
+
+        cvReleaseImage( &frame_copy );
+        cvReleaseCapture( &capture );
+    }
+    else
+    {
+        const char* filename = input_name ? input_name : (char*)"lena.jpg";
+        IplImage* image = cvLoadImage( filename, 1 );
+
+        if( image )
+        {
+            draw( image );
+            cvWaitKey(0);
+            cvReleaseImage( &image );
+        }
+        else
+        {
+            /* assume it is a text file containing the
+               list of the image filenames to be processed - one per line */
+            FILE* f = fopen( filename, "rt" );
+            if( f )
+            {
+                char buf[1000+1];
+                while( fgets( buf, 1000, f ) )
+                {
+                    int len = (int)strlen(buf);
+                    while( len > 0 && isspace(buf[len-1]) )
+                        len--;
+                    buf[len] = '\0';
+                    image = cvLoadImage( buf, 1 );
+                    if( image )
+                    {
+                        draw( image );
+                        cvWaitKey(0);
+                        cvReleaseImage( &image );
+                    }
+                }
+                fclose(f);
+            }
+        }
+
+    }
+    
+    cvDestroyWindow("Source");
+    cvDestroyWindow("Inverse Perspective");
+    
+    cvReleaseMemStorage(&storage);
+
+    return 0;
+}
+
 void mouseCallback(int event, int x, int y, int flags, void *param) {
     if (CV_EVENT_LBUTTONDOWN == event) {
         ControlPointController *lCPController = ControlPointController::sharedControlPointController();
@@ -308,8 +327,6 @@ void mouseCallback(int event, int x, int y, int flags, void *param) {
         }  
     }
 }
-
- 
 
 void draw( IplImage* img )
 {
