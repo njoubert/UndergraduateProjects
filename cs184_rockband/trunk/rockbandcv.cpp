@@ -17,9 +17,10 @@
 #define WIN32
 #endif
 
-using namespace std;
+#define LINE_COLOR CV_RGB(192,192,192)
+#define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
 
-static CvMemStorage* storage = 0;
+using namespace std;
 
 void draw( IplImage* image );
 void mouseCallback(int event, int x, int y, int flags, void* param);
@@ -52,6 +53,8 @@ private:
     bool _controlPointMoving;
     int _movingControlPointIndex;
     
+    CvMemStorage *_storage;
+    
     static ControlPointController *_sharedControlPointController;
     
     ControlPointController() {
@@ -62,6 +65,10 @@ private:
 
         _controlPointMoving = false;
         _movingControlPointIndex = -1;
+        
+        _storage = cvCreateMemStorage(0);
+        
+        readControlPoints();
     }
 public:
     
@@ -73,15 +80,20 @@ public:
         return _sharedControlPointController;
     }
     
+    ~ControlPointController() {
+        cvReleaseMemStorage(&_storage);
+    }
+    
     int addControlPoint(int pX, int pY) { // This function is also called to move a control point. Returns the control point added/moved.
         // cout << "Add control point" << endl;
+        int lIndex = CPC_NO_CONTROL_POINT;
+        
         if (!_controlPointMoving) {
             if (_nextControlPointIndex < CPC_NUM_CONTROL_POINTS) {
                 _controlPoints[_nextControlPointIndex].x = pX;
                 _controlPoints[_nextControlPointIndex].y = pY;
-                int lAddedControlPointIndex = _nextControlPointIndex;
+                lIndex = _nextControlPointIndex;
                 _nextControlPointIndex++;
-                return lAddedControlPointIndex;
             }
         } else {
             _controlPoints[_movingControlPointIndex].x = pX;
@@ -89,14 +101,67 @@ public:
             
             invalidatePerspectiveTransform();
             
-            return _movingControlPointIndex;
+            lIndex = _movingControlPointIndex;
         }
+        
+        writeControlPoints();
+        
+        return lIndex;
     }
     
     void clearControlPoints() {
         endMovingControlPoint();
         invalidatePerspectiveTransform();
         _nextControlPointIndex = 0;
+        writeControlPoints();
+    }
+    
+    void writeControlPoints() {
+        CvFileStorage *lFile = cvOpenFileStorage(CONTROL_POINT_FILE_NAME, _storage, CV_STORAGE_WRITE);
+        if (NULL != lFile) {
+            for (int i = 0; i < _nextControlPointIndex; i++) {
+                char lName[3];
+                
+                sprintf(lName, "x%d", i);
+                cvWriteInt(lFile, lName, _controlPoints[i].x);
+                
+                sprintf(lName, "y%d", i);
+                cvWriteInt(lFile, lName, _controlPoints[i].y);
+            }
+        } else {
+            printf("Could not write control point file: %s. Ignoring.\n", CONTROL_POINT_FILE_NAME);
+        }
+        
+        cvReleaseFileStorage(&lFile); 
+    }
+    
+    void readControlPoints() {
+        CvFileStorage* lFile = cvOpenFileStorage( CONTROL_POINT_FILE_NAME, _storage, CV_STORAGE_READ );
+        if (NULL != lFile) {
+            CvFileNode *lRoot = cvGetRootFileNode(lFile);
+            
+            for (int i = 0; i < CPC_NUM_CONTROL_POINTS; i++ ) {
+                char lName[3];
+
+                sprintf(lName, "x%d", i);
+                int x = cvReadIntByName(lFile, lRoot, lName, -1 /* default value */ );
+                
+                sprintf(lName, "y%d", i);
+                int y = cvReadIntByName(lFile, lRoot, lName, -1 /* default value */ );
+                    
+                if (x >=0 && y >= 0) {
+                    _controlPoints[i].x = x;
+                    _controlPoints[i].y = y;
+                    _nextControlPointIndex = i+1;
+                    
+                    printf("Read saved control point %d: (%d, %d)\n", i, x, y );
+                } else {
+                    break; // no more, or malformatted, control points
+                }
+            }    
+        }
+            
+        cvReleaseFileStorage(&lFile);
     }
     
     void startMovingControlPointWithIndex(int pControlPointIndex) {
@@ -133,11 +198,11 @@ public:
     
     void drawControlPoints(IplImage *pImage) {
         for (int i = 0; i < _nextControlPointIndex - 1; i++) {
-            cvLine(pImage, _controlPoints[i], _controlPoints[i+1], CV_RGB(192,192,192));
+            cvLine(pImage, _controlPoints[i], _controlPoints[i+1], LINE_COLOR);
         }
         
         if (_nextControlPointIndex == CPC_NUM_CONTROL_POINTS) {
-            cvLine(pImage, _controlPoints[_nextControlPointIndex-1], _controlPoints[0], CV_RGB(192,192,192));
+            cvLine(pImage, _controlPoints[_nextControlPointIndex-1], _controlPoints[0], LINE_COLOR);
         }
         
         for (int i = 0; i < _nextControlPointIndex; i++) {
@@ -217,8 +282,6 @@ int main( int argc, char** argv )
     const char* input_name;
     
     input_name = argc > 1 ? argv[1] : 0;
-    
-    storage = cvCreateMemStorage(0);
     
     // Set up mouse handler for specifying the perspective points
     
@@ -303,8 +366,6 @@ int main( int argc, char** argv )
     
     cvDestroyWindow("Source");
     cvDestroyWindow("Inverse Perspective");
-    
-    cvReleaseMemStorage(&storage);
 
     return 0;
 }
@@ -382,12 +443,18 @@ void draw( IplImage* img )
     
     CvMat *lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
     
+    IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, img->nChannels); 
+    
     if (NULL != lPerspectiveTransform) {
-        IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, img->nChannels); 
-        cvWarpPerspective(img, lTransformedImage, lPerspectiveTransform);
-        cvShowImage( "Inverse Perspective", lTransformedImage);
-        cvReleaseImage( &lTransformedImage );
+        cvWarpPerspective(img, lTransformedImage, lPerspectiveTransform);             
+    } else {
+        // draw an X in the window
+        // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
+        // cvLine(lTransformedImage, cvPoint(0.0,lTransformedImageSize.height), cvPoint(lTransformedImageSize.width,0.0), LINE_COLOR);
     }
+    
+    cvShowImage( "Inverse Perspective", lTransformedImage); 
+    cvReleaseImage( &lTransformedImage );
     
     lCPController->drawControlPoints(img);
     cvShowImage( "Source", img );
