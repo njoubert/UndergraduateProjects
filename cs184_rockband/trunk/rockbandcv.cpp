@@ -221,7 +221,7 @@ public:
             cvLine(pImage, _controlPoints[i], _controlPoints[i+1], CV_RGB(192,192,192));
         }
         
-        if (_nextControlPointIndex > 1) {
+        if (_nextControlPointIndex == CPC_NUM_CONTROL_POINTS) {
             cvLine(pImage, _controlPoints[_nextControlPointIndex-1], _controlPoints[0], CV_RGB(192,192,192));
         }
         
