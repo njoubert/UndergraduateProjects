@@ -279,8 +279,8 @@ ControlPointController *ControlPointController::_sharedControlPointController = 
 #define INVERSE_PERSPECTIVE_IMAGE_WIDTH 200
 #define PLOT_WIDTH 100
 
-int gSelectedString = 0;
-int gHighlightedString = 0;
+int gSelectedString = 3;
+int gHighlightedString = 3;
 int gStringWidth = INVERSE_PERSPECTIVE_IMAGE_WIDTH / NUM_STRINGS;
 
 void stringSelectorMouseCallback(int event, int x, int y, int flags, void *param) { 
@@ -513,21 +513,28 @@ void draw( IplImage* img )
         cvMax(lRed, lTemp, lBlueAndGray);
         
         CvMat *lPseudoRowLuminance = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
+        CvMat *lPseudoRowLuminance2 = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
         CvMat *lTempHeader = cvCreateMatHeader(1, lClippedStringImage->width, CV_32FC1);
         
         for (int i = 0; i < lClippedStringImage->height; i++) {
             cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lBlueAndGray, lTempHeader, i)).val[0]));
         }
+
+        CvMat *lKernel = cvCreateMat(5, 5, CV_8UC1);
+        cvSet(lKernel, cvRealScalar(1));
         
         cvNormalize(lPseudoRowLuminance, lPseudoRowLuminance, PLOT_WIDTH, 0, CV_MINMAX);
+        //cvThreshold(lPseudoRowLuminance, lPseudoRowLuminance2, 60.0, 90.0, CV_THRESH_BINARY);
+        cvSmooth(lPseudoRowLuminance, lPseudoRowLuminance2, CV_GAUSSIAN, 7);
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, lClippedStringImage->height), IPL_DEPTH_8U, img->nChannels);
         
-        for (int i = 0; i < cvGetSize(lPseudoRowLuminance).height - 1; i++) {
-            cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance, i+1, 0).val[0], i+1), LINE_COLOR);
+        for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
+            cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
         }
         
         cvReleaseMat(&lPseudoRowLuminance);
+        cvReleaseMat(&lPseudoRowLuminance2);
         cvReleaseMat(&lTempHeader);
         cvReleaseMat(&lRed);
         cvReleaseMat(&lGreen);
