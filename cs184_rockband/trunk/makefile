@@ -13,8 +13,8 @@ OPT   = -O2
 FILES := Guitar.o GuitarTimer.o NoteTracker.o StringAnalyzer.o rockbandcv.o
 TARGET := rockbandvc
 
-clean:
-	/bin/rm -f *.o $(TARGETS)
-
 all: $(FILES)
 	$(CXX) $(LIBS) $(FILES) -o $(TARGET)
+
+clean:
+	/bin/rm -f *.o $(TARGETS)
