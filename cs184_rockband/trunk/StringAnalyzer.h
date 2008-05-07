@@ -6,15 +6,17 @@
 class StringAnalyzer
 {
 public:
-	StringAnalyzer();
+	//Each StringAnalyzer is associated with a specific string through its StringNumber counter.
+	StringAnalyzer(int pStringNumber);
 	virtual ~StringAnalyzer();
 	
 	/**
-	 * Takes a raw frame as parameter - 
+	 * Takes a raw frame as parameter, processes it, and notifies 
+	 * both GuitarTimer and NoteTracker of the results.
 	 * */
 	void analyzeFrame( IplImage* pImage );
-	
-	
+private:
+	int _stringNumber;	
 };
 
 #endif /*STRINGANALYZER_H_*/
