@@ -275,6 +275,40 @@ public:
 
 ControlPointController *ControlPointController::_sharedControlPointController = 0;
 
+#define NUM_STRINGS 5
+#define INVERSE_PERSPECTIVE_IMAGE_WIDTH 200
+#define PLOT_WIDTH 100
+
+int gSelectedString = 3;
+int gHighlightedString = 3;
+int gStringWidth = INVERSE_PERSPECTIVE_IMAGE_WIDTH / NUM_STRINGS;
+
+void stringSelectorMouseCallback(int event, int x, int y, int flags, void *param) { 
+    if (CV_EVENT_LBUTTONDOWN == event) {
+        gSelectedString = x / gStringWidth;
+    } else if (CV_EVENT_MOUSEMOVE == event) {
+        gHighlightedString = x / gStringWidth;
+    }   
+}
+
+CvRect insetRect(CvRect pRect, int pDx, int pDy) {
+    return cvRect(pRect.x + pDx, pRect.y + pDy, pRect.width - 2*pDx, pRect.height - 2*pDy);
+}
+
+CvRect rectForStringAndHeight(int pString, int pHeight) {
+    return cvRect(gStringWidth*pString, 0, gStringWidth-1, pHeight-1);
+}
+
+void drawStringHighlightAndSelection(IplImage *pImage) {
+    // Draw selection rectangle
+    CvRect lSelectedStringRect = rectForStringAndHeight(gSelectedString, pImage->height);
+    cvRectangle(pImage, cvPoint(lSelectedStringRect.x, lSelectedStringRect.y), cvPoint(lSelectedStringRect.x+lSelectedStringRect.width, lSelectedStringRect.y+lSelectedStringRect.height), CV_RGB(255,0,0));
+    if (gHighlightedString != gSelectedString) {
+        CvRect lHighlightedStringRect = rectForStringAndHeight(gHighlightedString, pImage->height);
+        cvRectangle(pImage, cvPoint(lHighlightedStringRect.x, lHighlightedStringRect.y), cvPoint(lHighlightedStringRect.x+lHighlightedStringRect.width, lHighlightedStringRect.y+lHighlightedStringRect.height), LINE_COLOR);
+    }
+}
+
 int main( int argc, char** argv )
 {
     CvCapture* capture = 0;
@@ -292,7 +326,10 @@ int main( int argc, char** argv )
 
     cvNamedWindow( "Source", 1 );
     cvNamedWindow("Inverse Perspective", 1);
+    cvNamedWindow("Single String", 1);
+    cvNamedWindow("Plot", 1);
     cvSetMouseCallback("Source", mouseCallback);
+    cvSetMouseCallback("Inverse Perspective", stringSelectorMouseCallback);
 
     if( capture )
     {
@@ -366,6 +403,8 @@ int main( int argc, char** argv )
     
     cvDestroyWindow("Source");
     cvDestroyWindow("Inverse Perspective");
+    cvDestroyWindow("Single String");
+    cvDestroyWindow("Plot");
 
     return 0;
 }
@@ -438,7 +477,7 @@ void draw( IplImage* img )
     ControlPointController *lCPController = ControlPointController::sharedControlPointController();
     
     CvSize lTransformedImageSize;
-    lTransformedImageSize.width = 200;
+    lTransformedImageSize.width = INVERSE_PERSPECTIVE_IMAGE_WIDTH;
     lTransformedImageSize.height = img->height;
     
     CvMat *lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
@@ -446,7 +485,8 @@ void draw( IplImage* img )
     IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, img->nChannels); 
     
     if (NULL != lPerspectiveTransform) {
-        cvWarpPerspective(img, lTransformedImage, lPerspectiveTransform);             
+        cvWarpPerspective(img, lTransformedImage, lPerspectiveTransform);
+        drawStringHighlightAndSelection(lTransformedImage);      
     } else {
         // draw an X in the window
         // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
@@ -454,10 +494,62 @@ void draw( IplImage* img )
     }
     
     cvShowImage( "Inverse Perspective", lTransformedImage); 
-    cvReleaseImage( &lTransformedImage );
+    
+    if (NULL != lPerspectiveTransform) {
+        CvRect lClippedStringImageRect = insetRect(rectForStringAndHeight(gSelectedString, lTransformedImage->height), 9, 0);
+        IplImage* lClippedStringImage = cvCreateImage(cvSize(lClippedStringImageRect.width, lClippedStringImageRect.height), IPL_DEPTH_8U, img->nChannels);
+        cvSetImageROI(lTransformedImage, lClippedStringImageRect);
+        //cout << "ROI: " << lClippedStringImageRect.x << " " << lClippedStringImageRect.y << " " << lClippedStringImageRect.width << " " << lClippedStringImageRect.height << endl, 
+        cvCopy(lTransformedImage, lClippedStringImage);
+        cvShowImage("Single String", lClippedStringImage);
+        
+        CvMat *lRed = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
+        CvMat *lGreen = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
+        CvMat *lBlueAndGray = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
+        CvMat *lTemp = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
+        
+        cvSplit(lClippedStringImage, lRed, lGreen, lBlueAndGray, NULL);
+        cvMax(lBlueAndGray, lGreen, lTemp);
+        cvMax(lRed, lTemp, lBlueAndGray);
+        
+        CvMat *lPseudoRowLuminance = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
+        CvMat *lPseudoRowLuminance2 = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
+        CvMat *lTempHeader = cvCreateMatHeader(1, lClippedStringImage->width, CV_32FC1);
+        
+        for (int i = 0; i < lClippedStringImage->height; i++) {
+            cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lBlueAndGray, lTempHeader, i)).val[0]));
+        }
+
+        CvMat *lKernel = cvCreateMat(5, 5, CV_8UC1);
+        cvSet(lKernel, cvRealScalar(1));
+        
+        cvNormalize(lPseudoRowLuminance, lPseudoRowLuminance, PLOT_WIDTH, 0, CV_MINMAX);
+        //cvThreshold(lPseudoRowLuminance, lPseudoRowLuminance2, 60.0, 90.0, CV_THRESH_BINARY);
+        cvSmooth(lPseudoRowLuminance, lPseudoRowLuminance2, CV_GAUSSIAN, 7);
+        
+        IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, lClippedStringImage->height), IPL_DEPTH_8U, img->nChannels);
+        
+        for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
+            cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
+        }
+        
+        cvReleaseMat(&lPseudoRowLuminance);
+        cvReleaseMat(&lPseudoRowLuminance2);
+        cvReleaseMat(&lTempHeader);
+        cvReleaseMat(&lRed);
+        cvReleaseMat(&lGreen);
+        cvReleaseMat(&lBlueAndGray);
+        cvReleaseMat(&lTemp);
+        
+        cvShowImage("Plot", lPlot );
+        cvReleaseImage(&lPlot);
+        
+        cvReleaseImage( &lClippedStringImage );
+    }
     
     lCPController->drawControlPoints(img);
     cvShowImage( "Source", img );
     
-    // cvReleaseImage( &small_img );
+    cvReleaseImage( &lTransformedImage );
 }
+
