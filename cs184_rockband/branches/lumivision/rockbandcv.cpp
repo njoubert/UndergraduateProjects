@@ -277,7 +277,6 @@ ControlPointController *ControlPointController::_sharedControlPointController = 
 
 int main( int argc, char** argv )
 {
-	cout << "Launching..." << endl;
     CvCapture* capture = 0;
     IplImage *frame, *frame_copy = 0;
     const char* input_name;
