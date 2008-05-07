@@ -1,12 +1,12 @@
 #include "StringAnalyzer.h"
 
-StringAnalyzer::StringAnalyzer() {
+StringAnalyzer::StringAnalyzer(int pStringNumber) {
 }
 
 StringAnalyzer::~StringAnalyzer() {
 }
 
-StringAnalyzer::analyzeFrame( IplImage* pImage ) {
+void StringAnalyzer::analyzeFrame( IplImage* pImage ) {
 	
 	//GuitarTimer.frameStarted(pStringNumber);
 	
