@@ -29,6 +29,7 @@ private:
 	int size;
 	int cursor;
 	int start;
+	float threshold;
 	float *data;
 	
 	void put(int pos, float val);
@@ -40,13 +41,7 @@ public:
 	virtual ~NoteTracker();
 	
 	bool add_notes(CvMat*);			//add current matrix to the buffer
-	bool NoteTracker::shift(int);
-	bool increment_time(int steps); //moves buffer itself.
-	
-	void increment_cursor();
-	void increment_cursor(int); 	//sweep cursor by given amount
-	void set_cursor_value(float);
-	float get_cursor_value();
+	bool NoteTracker::shift_add_invalidate(int, CvMat*);
 	
 };
 
