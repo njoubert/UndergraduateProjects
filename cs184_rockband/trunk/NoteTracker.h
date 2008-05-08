@@ -23,9 +23,19 @@
  */
 class NoteTracker
 {
+private:
+	int position, size;
+	float *cursor;
+	float *data;
+
 public:
 	NoteTracker();
+	NoteTracker(CvMat* notes);
 	virtual ~NoteTracker();
+
+	void increment_cursor();
+	void set_cursor_value(float val);
+	float get_cursor_value();
 };
 
 #endif /*NOTETRACKER_H_*/
