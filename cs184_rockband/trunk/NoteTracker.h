@@ -1,6 +1,8 @@
 #ifndef NOTETRACKER_H_
 #define NOTETRACKER_H_
 
+#include "rockbandcv.h"
+
 /**
  * NOTETRACKER CLASS
  * 
@@ -24,18 +26,28 @@
 class NoteTracker
 {
 private:
-	int position, size;
-	float *cursor;
+	int size;
+	int cursor;
+	int start;
 	float *data;
+	
+	void put(int pos, float val);
+	float get(int pos);
 
 public:
 	NoteTracker();
-	NoteTracker(CvMat* notes);
+	NoteTracker(int size);
 	virtual ~NoteTracker();
-
+	
+	bool add_notes(CvMat*);			//add current matrix to the buffer
+	bool NoteTracker::shift(int);
+	bool increment_time(int steps); //moves buffer itself.
+	
 	void increment_cursor();
-	void set_cursor_value(float val);
+	void increment_cursor(int); 	//sweep cursor by given amount
+	void set_cursor_value(float);
 	float get_cursor_value();
+	
 };
 
 #endif /*NOTETRACKER_H_*/

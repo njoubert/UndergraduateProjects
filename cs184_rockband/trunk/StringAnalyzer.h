@@ -3,11 +3,10 @@
 
 #include "cv.h"
 
-class StringAnalyzer
-{
+class StringAnalyzer {
 public:
 	//Each StringAnalyzer is associated with a specific string through its StringNumber counter.
-	StringAnalyzer(int pStringNumber);
+	StringAnalyzer(int);
 	virtual ~StringAnalyzer();
 	
 	/**
