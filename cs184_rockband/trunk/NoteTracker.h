@@ -41,7 +41,7 @@ public:
 	virtual ~NoteTracker();
 	
 	bool add_notes(CvMat*);			//add current matrix to the buffer
-	bool NoteTracker::shift_add_invalidate(int, CvMat*);
+	bool shift_add_invalidate(int, CvMat*);
 	
 };
 
