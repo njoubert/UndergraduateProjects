@@ -7,6 +7,7 @@
 
 #define LINE_COLOR CV_RGB(192,192,192)
 #define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
+#define FRAME_LUMINANCE_FILE_NAME "frameLum.yaml"
 
 using namespace std;
 
@@ -315,10 +316,10 @@ int main( int argc, char** argv )
     cvNamedWindow( "Source", 1 );
     cvNamedWindow("Inverse Perspective", 1);
     cvNamedWindow("Single String", 1);
-    cvNamedWindow("Plot", 1);
+    cvNamedWindow("Plot", CV_WINDOW_AUTOSIZE);
     cvSetMouseCallback("Source", mouseCallback);
     cvSetMouseCallback("Inverse Perspective", stringSelectorMouseCallback);
-
+	
     if( capture )
     {
         for(;;)
@@ -337,14 +338,7 @@ int main( int argc, char** argv )
                 cvFlip( frame, frame_copy, 0 );
             
             draw( frame_copy );
-
-            int lKey = cvWaitKey( 10 );
-            
-            if( 'q' == lKey )
-                break;
-            else if ('x' == lKey)
-                ControlPointController::sharedControlPointController()->clearControlPoints();
-            
+            	
         }
 
         cvReleaseImage( &frame_copy );
@@ -491,12 +485,16 @@ void draw( IplImage* img )
         cvCopy(lTransformedImage, lClippedStringImage);
         cvShowImage("Single String", lClippedStringImage);
         
+        //Create the 3 channels of the images
+        
         CvMat *lRed = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
         CvMat *lGreen = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
         CvMat *lBlueAndGray = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
         CvMat *lTemp = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
         
         cvSplit(lClippedStringImage, lRed, lGreen, lBlueAndGray, NULL);
+        
+        //collapse the 3 channels into one matrix of luminance values
         cvMax(lBlueAndGray, lGreen, lTemp);
         cvMax(lRed, lTemp, lBlueAndGray);
         
@@ -508,18 +506,45 @@ void draw( IplImage* img )
             cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lBlueAndGray, lTempHeader, i)).val[0]));
         }
 
-        CvMat *lKernel = cvCreateMat(5, 5, CV_8UC1);
-        cvSet(lKernel, cvRealScalar(1));
+        //CvMat *lKernel = cvCreateMat(5, 5, CV_8UC1);
+        //cvSet(lKernel, cvRealScalar(1));
         
         cvNormalize(lPseudoRowLuminance, lPseudoRowLuminance, PLOT_WIDTH, 0, CV_MINMAX);
         //cvThreshold(lPseudoRowLuminance, lPseudoRowLuminance2, 60.0, 90.0, CV_THRESH_BINARY);
         cvSmooth(lPseudoRowLuminance, lPseudoRowLuminance2, CV_GAUSSIAN, 7);
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, lClippedStringImage->height), IPL_DEPTH_8U, img->nChannels);
-        
+        cvZero(lPlot);
         for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
             cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
         }
+        
+		int lKey = 0;
+        lKey = cvWaitKey( 2 );
+            
+        if( 'q' == lKey )
+            exit(0);
+        else if ('x' == lKey)
+            ControlPointController::sharedControlPointController()->clearControlPoints();
+        else if ('s' == lKey) {
+        	
+        	        CvFileStorage *lFile = cvOpenFileStorage(FRAME_LUMINANCE_FILE_NAME, NULL, CV_STORAGE_WRITE);
+			        if (NULL != lFile) {
+			        	
+			        	for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
+			        		cvWriteReal(lFile, NULL, cvGet2D(lPseudoRowLuminance2, i, 0).val[0]);
+       					}
+ 						printf("Wrote Luminance values to output file.\n");
+			        } else {
+			            printf("Could not write control point file: %s. Ignoring.\n", CONTROL_POINT_FILE_NAME);
+			        }
+			        
+			        cvReleaseFileStorage(&lFile); 
+        	
+        } //Save frame
+
+        cvShowImage("Plot", lPlot );
+        //cvShowImage("Plot", lClippedStringImage );
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);
@@ -528,8 +553,6 @@ void draw( IplImage* img )
         cvReleaseMat(&lGreen);
         cvReleaseMat(&lBlueAndGray);
         cvReleaseMat(&lTemp);
-        
-        cvShowImage("Plot", lPlot );
         cvReleaseImage(&lPlot);
         
         cvReleaseImage( &lClippedStringImage );

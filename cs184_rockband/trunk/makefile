@@ -10,7 +10,12 @@ cc          = gcc -g -Wall -fmessage-length=0
 OPT   = -O2
 #-----------------------------------------
 
-FILES := Guitar.o GuitarTimer.o NoteTracker.o StringAnalyzer.o rockbandcv.o
+FILES := Guitar.o \
+GuitarTimer.o \
+NoteTracker.o \
+StringAnalyzer.o \
+rockbandcv.o
+
 TARGET := rockbandvc
 
 all: $(FILES)
