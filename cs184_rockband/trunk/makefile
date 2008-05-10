@@ -19,7 +19,7 @@ NoteTracker.o \
 StringAnalyzer.o \
 rockbandcv.o
 
-TARGET := rockbandvc
+TARGET := rockbandcv
 
 all: $(FILES)
 	$(CXX) $(LIBS) $(FILES) -o $(TARGET)
