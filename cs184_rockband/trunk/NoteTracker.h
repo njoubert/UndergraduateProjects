@@ -1,7 +1,7 @@
 #ifndef NOTETRACKER_H_
 #define NOTETRACKER_H_
 
-#include "rockbandcv.h"
+#incude "global.h"
 
 /**
  * NOTETRACKER CLASS

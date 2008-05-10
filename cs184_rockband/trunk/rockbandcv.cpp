@@ -1,17 +1,14 @@
-#include "rockbandcv.h"
+#include "global.h"
 
+#include "StringAnalyzer.h"
 
 #ifdef _EiC
 #define WIN32
 #endif
 
-#define LINE_COLOR CV_RGB(192,192,192)
-#define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
-#define FRAME_LUMINANCE_FILE_NAME "frameLum.yaml"
-
 using namespace std;
 
-void draw( IplImage* image );
+void analyzeRawImage( CvCapture* );
 void mouseCallback(int event, int x, int y, int flags, void* param);
 
 bool pointInRect(CvPoint pPoint, CvRect pRect) { // includes the rect boundary
@@ -266,7 +263,7 @@ ControlPointController *ControlPointController::_sharedControlPointController = 
 
 #define NUM_STRINGS 5
 #define INVERSE_PERSPECTIVE_IMAGE_WIDTH 200
-#define PLOT_WIDTH 100
+
 
 int gSelectedString = 3;
 int gHighlightedString = 3;
@@ -298,15 +295,15 @@ void drawStringHighlightAndSelection(IplImage *pImage) {
     }
 }
 
-int main( int argc, char** argv )
-{
+/**
+ * We set up the GUI windows, register event handlers, find the input source,
+ * and pass this to analyzeRawImage to start image processing.
+ */
+int main( int argc, char** argv ) {
     CvCapture* capture = 0;
-    IplImage *frame, *frame_copy = 0;
     const char* input_name;
     
     input_name = argc > 1 ? argv[1] : 0;
-    
-    // Set up mouse handler for specifying the perspective points
     
     if( !input_name || (isdigit(input_name[0]) && input_name[1] == '\0') )
         capture = cvCaptureFromCAM( !input_name ? 0 : input_name[0] - '0' );
@@ -315,78 +312,37 @@ int main( int argc, char** argv )
 
     cvNamedWindow( "Source", 1 );
     cvNamedWindow("Inverse Perspective", 1);
-    cvNamedWindow("Single String", 1);
+    cvNamedWindow("String 1", 1);
+//    cvNamedWindow("String 2", 1);
+//    cvNamedWindow("String 3", 1);
+//    cvNamedWindow("String 4", 1);
+//    cvNamedWindow("String 5", 1);
     cvNamedWindow("Plot", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("DFT", CV_WINDOW_AUTOSIZE);
+    
+    // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
     cvSetMouseCallback("Inverse Perspective", stringSelectorMouseCallback);
 	
-    if( capture )
-    {
-        for(;;)
-        {
-            if( !cvGrabFrame( capture ))
-                break;
-            frame = cvRetrieveFrame( capture );
-            if( !frame )
-                break;
-            if( !frame_copy )
-                frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
-                                            IPL_DEPTH_8U, frame->nChannels );
-            if( frame->origin == IPL_ORIGIN_TL )
-                cvCopy( frame, frame_copy, 0 );
-            else
-                cvFlip( frame, frame_copy, 0 );
-            
-            draw( frame_copy );
-            	
-        }
-
-        cvReleaseImage( &frame_copy );
-        cvReleaseCapture( &capture );
-    }
-    else
-    {
-        const char* filename = input_name ? input_name : (char*)"lena.jpg";
-        IplImage* image = cvLoadImage( filename, 1 );
-
-        if( image )
-        {
-            draw( image );
-            cvWaitKey(0);
-            cvReleaseImage( &image );
-        }
-        else
-        {
-            /* assume it is a text file containing the
-               list of the image filenames to be processed - one per line */
-            FILE* f = fopen( filename, "rt" );
-            if( f )
-            {
-                char buf[1000+1];
-                while( fgets( buf, 1000, f ) )
-                {
-                    int len = (int)strlen(buf);
-                    while( len > 0 && isspace(buf[len-1]) )
-                        len--;
-                    buf[len] = '\0';
-                    image = cvLoadImage( buf, 1 );
-                    if( image )
-                    {
-                        draw( image );
-                        cvWaitKey(0);
-                        cvReleaseImage( &image );
-                    }
-                }
-                fclose(f);
-            }
-        }
-
+    if (capture) {
+        analyzeRawImage(capture);
+    } else {
+    	cout << "Could not start capturing! No capture device found or no input file specified!" << endl;	
     }
     
+    /*
+     * Clean up
+     */
+    cvReleaseCapture( &capture );
     cvDestroyWindow("Source");
     cvDestroyWindow("Inverse Perspective");
-    cvDestroyWindow("Single String");
+    cvDestroyWindow("String 1");
+//    cvDestroyWindow("String 2");
+//    cvDestroyWindow("String 3");
+//    cvDestroyWindow("String 4");
+//    cvDestroyWindow("String 5");
     cvDestroyWindow("Plot");
+    cvDestroyWindow("DFT");
 
     return 0;
 }
@@ -410,156 +366,116 @@ void mouseCallback(int event, int x, int y, int flags, void *param) {
     }
 }
 
-void draw( IplImage* img )
-{
-    // static CvScalar colors[] = 
-    // {
-    //     {{0,0,255}},
-    //     {{0,128,255}},
-    //     {{0,255,255}},
-    //     {{0,255,0}},
-    //     {{255,128,0}},
-    //     {{255,255,0}},
-    //     {{255,0,0}},
-    //     {{255,0,255}}
-    // };
-    // 
-    // double scale = 1.3;
-    // IplImage* gray = cvCreateImage( cvSize(img->width,img->height), 8, 1 );
-    // IplImage* small_img = cvCreateImage( cvSize( cvRound (img->width/scale),
-    //                      cvRound (img->height/scale)),
-    //                  8, 1 );
-    // int i;
-    // 
-    // cvCvtColor( img, gray, CV_BGR2GRAY );
-    // cvResize( gray, small_img, CV_INTER_LINEAR );
-    // cvEqualizeHist( small_img, small_img );
-    // cvClearMemStorage( storage );
-    // 
-    // if( cascade )
-    // {
-    //     double t = (double)cvGetTickCount();
-    //     CvSeq* faces = cvHaarDetectObjects( small_img, cascade, storage,
-    //                                         1.1, 2, 0/*CV_HAAR_DO_CANNY_PRUNING*/,
-    //                                         cvSize(30, 30) );
-    //     t = (double)cvGetTickCount() - t;
-    //     printf( "detection time = %gms\n", t/((double)cvGetTickFrequency()*1000.) );
-    //     for( i = 0; i < (faces ? faces->total : 0); i++ )
-    //     {
-    //         CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
-    //         CvPoint center;
-    //         int radius;
-    //         center.x = cvRound((r->x + r->width*0.5)*scale);
-    //         center.y = cvRound((r->y + r->height*0.5)*scale);
-    //         radius = cvRound((r->width + r->height)*0.25*scale);
-    //         cvCircle( img, center, radius, colors[i%8], 3, 8, 0 );
-    //     }
-    // }
-    
-    ControlPointController *lCPController = ControlPointController::sharedControlPointController();
-    
-    CvSize lTransformedImageSize;
-    lTransformedImageSize.width = INVERSE_PERSPECTIVE_IMAGE_WIDTH;
-    lTransformedImageSize.height = img->height;
-    
-    CvMat *lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
-    
-    IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, img->nChannels); 
-    
-    if (NULL != lPerspectiveTransform) {
-        cvWarpPerspective(img, lTransformedImage, lPerspectiveTransform);
-        drawStringHighlightAndSelection(lTransformedImage);      
-    } else {
-        // draw an X in the window
-        // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
-        // cvLine(lTransformedImage, cvPoint(0.0,lTransformedImageSize.height), cvPoint(lTransformedImageSize.width,0.0), LINE_COLOR);
-    }
-    
-    cvShowImage( "Inverse Perspective", lTransformedImage); 
-    
-    if (NULL != lPerspectiveTransform) {
-        CvRect lClippedStringImageRect = insetRect(rectForStringAndHeight(gSelectedString, lTransformedImage->height), 9, 0);
-        IplImage* lClippedStringImage = cvCreateImage(cvSize(lClippedStringImageRect.width, lClippedStringImageRect.height), IPL_DEPTH_8U, img->nChannels);
-        cvSetImageROI(lTransformedImage, lClippedStringImageRect);
-        //cout << "ROI: " << lClippedStringImageRect.x << " " << lClippedStringImageRect.y << " " << lClippedStringImageRect.width << " " << lClippedStringImageRect.height << endl, 
-        cvCopy(lTransformedImage, lClippedStringImage);
-        cvShowImage("Single String", lClippedStringImage);
+void analyzeRawImage( CvCapture* captureSource ) {
+	
+	IplImage *frame, *frame_copy = 0;
+	
+	StringAnalyzer stringAnalyzer1(1);
+	StringAnalyzer stringAnalyzer2(2);
+	StringAnalyzer stringAnalyzer3(3);
+	StringAnalyzer stringAnalyzer4(4);
+	StringAnalyzer stringAnalyzer5(5);
+	
+	for(;;) {
+		
+        if( !cvGrabFrame( captureSource ))
+            break;
+        frame = cvRetrieveFrame( captureSource );
+        if( !frame )
+            break;
+        if( !frame_copy )
+            frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
+                                        IPL_DEPTH_8U, frame->nChannels );
+        if( frame->origin == IPL_ORIGIN_TL )
+            cvCopy( frame, frame_copy, 0 );
+        else
+            cvFlip( frame, frame_copy, 0 );
         
-        //Create the 3 channels of the images
-        
-        CvMat *lRed = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
-        CvMat *lGreen = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
-        CvMat *lBlueAndGray = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
-        CvMat *lTemp = cvCreateMat(lClippedStringImage->height, lClippedStringImage->width, CV_8UC1);
-        
-        cvSplit(lClippedStringImage, lRed, lGreen, lBlueAndGray, NULL);
-        
-        //collapse the 3 channels into one matrix of luminance values
-        cvMax(lBlueAndGray, lGreen, lTemp);
-        cvMax(lRed, lTemp, lBlueAndGray);
-        
-        CvMat *lPseudoRowLuminance = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
-        CvMat *lPseudoRowLuminance2 = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
-        CvMat *lTempHeader = cvCreateMatHeader(1, lClippedStringImage->width, CV_32FC1);
-        
-        for (int i = 0; i < lClippedStringImage->height; i++) {
-            cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lBlueAndGray, lTempHeader, i)).val[0]));
-        }
+        	ControlPointController *lCPController = ControlPointController::sharedControlPointController();
+    
+		    CvSize lTransformedImageSize;
+		    lTransformedImageSize.width = INVERSE_PERSPECTIVE_IMAGE_WIDTH;
+		    lTransformedImageSize.height = frame_copy->height;
+		    CvMat *lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
+		    IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, frame_copy->nChannels); 
+		    
+		    if (NULL != lPerspectiveTransform) {
+		        cvWarpPerspective(frame_copy, lTransformedImage, lPerspectiveTransform);
+		        drawStringHighlightAndSelection(lTransformedImage);      
+		    } else {
+		        // draw an X in the window
+		        // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
+		        // cvLine(lTransformedImage, cvPoint(0.0,lTransformedImageSize.height), cvPoint(lTransformedImageSize.width,0.0), LINE_COLOR);
+		    }
+		    
+		    cvShowImage( "Inverse Perspective", lTransformedImage); 
+		    
+		    /*
+		     * At this point we want to have a perspective-transformed frame, out of which we can pick the strings one by one.
+		     */
+		    if (NULL != lPerspectiveTransform) {
+		    	
+		        CvRect lClippedStringImageRect = insetRect(rectForStringAndHeight(gSelectedString, lTransformedImage->height), 9, 0);
+		        IplImage* lClippedStringImage1 = cvCreateImage(cvSize(lClippedStringImageRect.width, lClippedStringImageRect.height), IPL_DEPTH_8U, frame_copy->nChannels);
+		        cvSetImageROI(lTransformedImage, lClippedStringImageRect);
+		        //cout << "ROI: " << lClippedStringImageRect.x << " " << lClippedStringImageRect.y << " " << lClippedStringImageRect.width << " " << lClippedStringImageRect.height << endl, 
+		        cvCopy(lTransformedImage, lClippedStringImage1);
+		        cvShowImage("String 1", lClippedStringImage1);
+		        
+		        //Calculate length of note from trapezoid input...
+		        int estimatedNoteLength = 15;
+		        
+		        stringAnalyzer1.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
+//		        stringAnalyzer2.analyzeFrame(lClippedStringImage2);
+//		        stringAnalyzer3.analyzeFrame(lClippedStringImage3);
+//		        stringAnalyzer4.analyzeFrame(lClippedStringImage4);
+//		        stringAnalyzer5.analyzeFrame(lClippedStringImage5);
 
-        //CvMat *lKernel = cvCreateMat(5, 5, CV_8UC1);
-        //cvSet(lKernel, cvRealScalar(1));
-        
-        cvNormalize(lPseudoRowLuminance, lPseudoRowLuminance, PLOT_WIDTH, 0, CV_MINMAX);
-        //cvThreshold(lPseudoRowLuminance, lPseudoRowLuminance2, 60.0, 90.0, CV_THRESH_BINARY);
-        cvSmooth(lPseudoRowLuminance, lPseudoRowLuminance2, CV_GAUSSIAN, 7);
-        
-        IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, lClippedStringImage->height), IPL_DEPTH_8U, img->nChannels);
-        cvZero(lPlot);
-        for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
-            cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
-        }
-        
-		int lKey = 0;
-        lKey = cvWaitKey( 2 );
-            
-        if( 'q' == lKey )
-            exit(0);
-        else if ('x' == lKey)
-            ControlPointController::sharedControlPointController()->clearControlPoints();
-        else if ('s' == lKey) {
-        	
-        	        CvFileStorage *lFile = cvOpenFileStorage(FRAME_LUMINANCE_FILE_NAME, NULL, CV_STORAGE_WRITE);
-			        if (NULL != lFile) {
+				int lKey = 0;
+		        while ('n' != lKey) { 
+			        lKey = cvWaitKey( 2 );  
+			        if( 'q' == lKey ) {
+			            exit(0);
+			        } else if ('x' == lKey) {
+			            ControlPointController::sharedControlPointController()->clearControlPoints();
+			        } 
+			        /** 
+			        else if ('s' == lKey) {
 			        	
-			        	for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
-			        		cvWriteReal(lFile, NULL, cvGet2D(lPseudoRowLuminance2, i, 0).val[0]);
-       					}
- 						printf("Wrote Luminance values to output file.\n");
-			        } else {
-			            printf("Could not write control point file: %s. Ignoring.\n", CONTROL_POINT_FILE_NAME);
-			        }
-			        
-			        cvReleaseFileStorage(&lFile); 
-        	
-        } //Save frame
+			        	        CvFileStorage *lFile = cvOpenFileStorage(FRAME_LUMINANCE_FILE_NAME, NULL, CV_STORAGE_WRITE);
+						        if (NULL != lFile) {
+						        	
+						        	for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
+						        		cvWriteReal(lFile, NULL, cvGet2D(lPseudoRowLuminance2, i, 0).val[0]);
+			       					}
+			 						printf("Wrote Luminance values to output file.\n");
+						        } else {
+						            printf("Could not write control point file: %s. Ignoring.\n", CONTROL_POINT_FILE_NAME);
+						        }
+						        
+						        cvReleaseFileStorage(&lFile); 
+		        	
+		        	} //Save frame
+		        	// */
+		    	}
+		
+		        
+		        cvReleaseImage( &lClippedStringImage1 );
+//		        cvReleaseImage( &lClippedStringImage2 );
+//		        cvReleaseImage( &lClippedStringImage3 );
+//		        cvReleaseImage( &lClippedStringImage4 );
+//		        cvReleaseImage( &lClippedStringImage5 );
+		    
+		    }
+		    
+		    lCPController->drawControlPoints(frame_copy);
+		    cvShowImage( "Source", frame_copy );
+		    
+		    cvReleaseImage( &lTransformedImage );
+            	
+	}
 
-        cvShowImage("Plot", lPlot );
-        //cvShowImage("Plot", lClippedStringImage );
+    cvReleaseImage( &frame_copy );
         
-        cvReleaseMat(&lPseudoRowLuminance);
-        cvReleaseMat(&lPseudoRowLuminance2);
-        cvReleaseMat(&lTempHeader);
-        cvReleaseMat(&lRed);
-        cvReleaseMat(&lGreen);
-        cvReleaseMat(&lBlueAndGray);
-        cvReleaseMat(&lTemp);
-        cvReleaseImage(&lPlot);
-        
-        cvReleaseImage( &lClippedStringImage );
-    }
-    
-    lCPController->drawControlPoints(img);
-    cvShowImage( "Source", img );
-    
-    cvReleaseImage( &lTransformedImage );
+       
 }

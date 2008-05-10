@@ -1,7 +1,8 @@
 #ifndef STRINGANALYZER_H_
 #define STRINGANALYZER_H_
 
-#include "cv.h"
+#include "global.h"
+#include "Convolver.h"
 
 class StringAnalyzer {
 public:
@@ -13,7 +14,7 @@ public:
 	 * Takes a raw frame as parameter, processes it, and notifies 
 	 * both GuitarTimer and NoteTracker of the results.
 	 * */
-	void analyzeFrame( IplImage* pImage );
+	void analyzeFrame( IplImage*, int );
 private:
 	int _stringNumber;	
 };

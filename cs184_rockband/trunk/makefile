@@ -10,7 +10,10 @@ cc          = gcc -g -Wall -fmessage-length=0
 OPT   = -O2
 #-----------------------------------------
 
-FILES := Guitar.o \
+FILES := \
+global.h \
+Guitar.o \
+Convolver.o \
 GuitarTimer.o \
 NoteTracker.o \
 StringAnalyzer.o \

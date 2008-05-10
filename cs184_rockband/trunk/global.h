@@ -10,5 +10,10 @@
 #include <limits.h>
 #include <time.h>
 #include <ctype.h>
-
 #include <iostream>
+
+#define PLOT_WIDTH 300
+#define LINE_COLOR CV_RGB(192,192,192)
+
+#define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
+#define FRAME_LUMINANCE_FILE_NAME "frameLum.yaml"
