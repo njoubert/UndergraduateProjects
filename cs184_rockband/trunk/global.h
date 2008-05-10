@@ -11,6 +11,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <iostream>
+#include <vector>
 
 #define PLOT_WIDTH 300
 #define LINE_COLOR CV_RGB(192,192,192)

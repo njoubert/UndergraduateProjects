@@ -1,18 +1,19 @@
 #include "StringAnalyzer.h"
 
-StringAnalyzer::StringAnalyzer(int pStringNumber) {
-	
+StringAnalyzer::StringAnalyzer(int pStringNumber, NoteTracker* pMyTracker) {
+	_myTracker = pMyTracker;
+	_stringNumber = pStringNumber;
 }
 
-StringAnalyzer::~StringAnalyzer() {
-}
+StringAnalyzer::~StringAnalyzer() { }
 
 /**
  * Expects as input a image containing ONE string.
  */
 void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
 	
-		//GuitarTimer.frameStarted(pStringNumber);
+		GuitarTimer* guitarTimer = GuitarTimer::getInstance();
+		guitarTimer->startString(_stringNumber);
 	
 		//Create the 3 channels of the images
         CvMat *lRed = cvCreateMat(pImage->height, pImage->width, CV_8UC1);
@@ -28,11 +29,17 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         CvMat *lPseudoRowLuminance2 = cvCreateMat(pImage->height, 1, CV_8UC1);
         CvMat *lTempHeader = cvCreateMatHeader(1, pImage->width, CV_32FC1);
         
+        //Calculate the luminance values
         for (int i = 0; i < pImage->height; i++) {
             cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lBlueAndGray, lTempHeader, i)).val[0]));
         }
         
+        //We Fourier Filter the luminance plot to convert note rectangles into triangles
         Convolver::accentuatePeaks(lPseudoRowLuminance, estimatedNoteLength, lPseudoRowLuminance2);
+        
+        //We do a peak detection for timing
+        
+        //We save it to the NoteTrackers
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
@@ -42,7 +49,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         
         cvShowImage("Plot", lPlot );
         
-        
+        guitarTimer->endString(_stringNumber);
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);

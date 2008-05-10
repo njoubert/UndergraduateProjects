@@ -8,14 +8,15 @@
  */
 void Convolver::accentuatePeaks(CvMat* input, int kernelWidth, CvMat* output) {
 
-	
 	//create kernel to same length as input signal.
 	CvMat* kernel = cvCreateMat(kernelWidth, 1, CV_32F);
 	double kernelHeight = 1.0 / (double) kernelWidth;
 	for (int i = 0; i < kernelWidth; i++)
 		cvSet2D(kernel, i, 0, cvScalar(kernelHeight));
 	
+	//By default the kernel is anchored in the middle. Keep this behaviour
 	cvFilter2D(input, output, kernel);
+	
 	
 }
 

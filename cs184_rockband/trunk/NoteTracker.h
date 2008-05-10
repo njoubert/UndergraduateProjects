@@ -1,7 +1,7 @@
 #ifndef NOTETRACKER_H_
 #define NOTETRACKER_H_
 
-#incude "global.h"
+#include "global.h"
 
 /**
  * NOTETRACKER CLASS

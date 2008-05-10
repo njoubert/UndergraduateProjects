@@ -3,11 +3,13 @@
 
 #include "global.h"
 #include "Convolver.h"
+#include "NoteTracker.h"
+#include "GuitarTimer.h"
 
 class StringAnalyzer {
 public:
 	//Each StringAnalyzer is associated with a specific string through its StringNumber counter.
-	StringAnalyzer(int);
+	StringAnalyzer(int, NoteTracker*);
 	virtual ~StringAnalyzer();
 	
 	/**
@@ -17,6 +19,7 @@ public:
 	void analyzeFrame( IplImage*, int );
 private:
 	int _stringNumber;	
+	NoteTracker* _myTracker;
 };
 
 #endif /*STRINGANALYZER_H_*/

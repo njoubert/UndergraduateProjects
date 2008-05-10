@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "StringAnalyzer.h"
+#include "GuitarTimer.h"
 
 #ifdef _EiC
 #define WIN32
@@ -257,6 +258,13 @@ public:
             _controlPoints[3] = swapPoint;
         }
     }
+    
+    double getParallelogramRatio() {
+    	sortControlPoints();
+    	double width = ((double)(_controlPoints[0].x + _controlPoints[3].x))/2 - ((double)(_controlPoints[1].x + _controlPoints[2].x))/2;
+    	double height = ((double)(_controlPoints[0].y + _controlPoints[1].y))/2 - ((double)(_controlPoints[2].y + _controlPoints[3].y))/2;
+    	return width/height;
+    }
 };
 
 ControlPointController *ControlPointController::_sharedControlPointController = 0;
@@ -364,15 +372,31 @@ void mouseCallback(int event, int x, int y, int flags, void *param) {
     }
 }
 
+/**
+ * Capture raw frames from the capture input (set up in main) and
+ * apply the necessary perspective transforms and clipping to hand
+ * images to StringAnalyzers.
+ */
 void analyzeRawImage( CvCapture* captureSource ) {
 	
 	IplImage *frame, *frame_copy = 0;
 	
-	StringAnalyzer stringAnalyzer1(1);
-	StringAnalyzer stringAnalyzer2(2);
-	StringAnalyzer stringAnalyzer3(3);
-	StringAnalyzer stringAnalyzer4(4);
-	StringAnalyzer stringAnalyzer5(5);
+	//This is the global guitar timer:
+	GuitarTimer* guitarTimer = GuitarTimer::getInstance();
+	
+	//These are the circular buffers for each string.
+	NoteTracker noteTracker0;
+	NoteTracker noteTracker1;
+	NoteTracker noteTracker2;
+	NoteTracker noteTracker3;
+	NoteTracker noteTracker4;
+	
+	//These are the stringAnalyzers for each string.
+	StringAnalyzer stringAnalyzer0(0, &noteTracker0);
+	StringAnalyzer stringAnalyzer1(1, &noteTracker1);
+	StringAnalyzer stringAnalyzer2(2, &noteTracker2);
+	StringAnalyzer stringAnalyzer3(3, &noteTracker3);
+	StringAnalyzer stringAnalyzer4(4, &noteTracker4);
 	
 	for(;;) {
 		
@@ -381,6 +405,9 @@ void analyzeRawImage( CvCapture* captureSource ) {
         frame = cvRetrieveFrame( captureSource );
         if( !frame )
             break;
+        
+        guitarTimer->frameArrived();  
+            
         if( !frame_copy )
             frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
                                         IPL_DEPTH_8U, frame->nChannels );
@@ -399,7 +426,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		    
 		    if (NULL != lPerspectiveTransform) {
 		        cvWarpPerspective(frame_copy, lTransformedImage, lPerspectiveTransform);
-		        drawStringHighlightAndSelection(lTransformedImage);      
+		        //drawStringHighlightAndSelection(lTransformedImage);  
 		    } else {
 		        // draw an X in the window
 		        // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
@@ -421,16 +448,19 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        cvShowImage("String 1", lClippedStringImage1);
 		        
 		        //Calculate length of note from trapezoid input...
-		        int estimatedNoteLength = 50;
+		        double ratio = lCPController->getParallelogramRatio();
+		        int estimatedNoteLength = (int) (ratio * 40);
+		        if (estimatedNoteLength > 99) //Ugly hack - it crashes if its bigger... too tired to figure out why right now
+		        	estimatedNoteLength = 99;
 		        
-		        stringAnalyzer1.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
-//		        stringAnalyzer2.analyzeFrame(lClippedStringImage2, estimatedNoteLength);
-//		        stringAnalyzer3.analyzeFrame(lClippedStringImage3, estimatedNoteLength);
-//		        stringAnalyzer4.analyzeFrame(lClippedStringImage4, estimatedNoteLength);
-//		        stringAnalyzer5.analyzeFrame(lClippedStringImage5, estimatedNoteLength);
+		        stringAnalyzer0.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
+		        //stringAnalyzer1.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
+		        //stringAnalyzer2.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
+		        //stringAnalyzer3.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
+		        //stringAnalyzer4.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
 
 				int lKey = 0;
-		        while ('n' != lKey) { 
+		        //while ('n' != lKey) { 
 			        lKey = cvWaitKey( 2 );  
 			        if( 'q' == lKey ) {
 			            exit(0);
@@ -455,7 +485,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        	
 		        	} //Save frame
 		        	// */
-		    	}
+		    	//}
 		
 		        
 		        cvReleaseImage( &lClippedStringImage1 );
@@ -465,6 +495,8 @@ void analyzeRawImage( CvCapture* captureSource ) {
 //		        cvReleaseImage( &lClippedStringImage5 );
 		    
 		    }
+		    
+		    guitarTimer->frameDone();
 		    
 		    lCPController->drawControlPoints(frame_copy);
 		    cvShowImage( "Source", frame_copy );
