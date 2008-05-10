@@ -318,7 +318,6 @@ int main( int argc, char** argv ) {
 //    cvNamedWindow("String 4", 1);
 //    cvNamedWindow("String 5", 1);
     cvNamedWindow("Plot", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("DFT", CV_WINDOW_AUTOSIZE);
     
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
@@ -342,7 +341,6 @@ int main( int argc, char** argv ) {
 //    cvDestroyWindow("String 4");
 //    cvDestroyWindow("String 5");
     cvDestroyWindow("Plot");
-    cvDestroyWindow("DFT");
 
     return 0;
 }
@@ -423,13 +421,13 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        cvShowImage("String 1", lClippedStringImage1);
 		        
 		        //Calculate length of note from trapezoid input...
-		        int estimatedNoteLength = 15;
+		        int estimatedNoteLength = 50;
 		        
 		        stringAnalyzer1.analyzeFrame(lClippedStringImage1, estimatedNoteLength);
-//		        stringAnalyzer2.analyzeFrame(lClippedStringImage2);
-//		        stringAnalyzer3.analyzeFrame(lClippedStringImage3);
-//		        stringAnalyzer4.analyzeFrame(lClippedStringImage4);
-//		        stringAnalyzer5.analyzeFrame(lClippedStringImage5);
+//		        stringAnalyzer2.analyzeFrame(lClippedStringImage2, estimatedNoteLength);
+//		        stringAnalyzer3.analyzeFrame(lClippedStringImage3, estimatedNoteLength);
+//		        stringAnalyzer4.analyzeFrame(lClippedStringImage4, estimatedNoteLength);
+//		        stringAnalyzer5.analyzeFrame(lClippedStringImage5, estimatedNoteLength);
 
 				int lKey = 0;
 		        while ('n' != lKey) { 

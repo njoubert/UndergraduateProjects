@@ -6,8 +6,6 @@
 class Convolver {
 public:
 	static void accentuatePeaks(CvMat* input, int kernelWidth, CvMat* output);
-	static CvMat* convolveWithFFTs(CvMat* input1, CvMat* input2);
-	static CvMat* convolveWithFFTs2(CvMat* input1, CvMat* input2);
 private:
 	Convolver();
 	virtual ~Convolver();
