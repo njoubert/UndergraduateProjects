@@ -16,12 +16,12 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 	GuitarTimer* gTimer = GuitarTimer::getInstance();
 	
 	int peakPos;
-	double peakHeight, temp;
+	double peakHeight, tempHeight;
 	std::vector<int> ret;
 	
-	for (int start = pLum->height-1; start >= 0; start--) {
+	for (int start = pLum->height-1; start >= 1; start--) {
 			peakPos = 0;
-			temp = peakHeight = 0.0;
+			tempHeight = peakHeight = 0.0;
 			
 			if (cvGet2D(pLum, start, 0).val[0] < pThreshold) {
 				if (writeBack)
@@ -30,9 +30,26 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			}
 			
 			
+			//Do it with derivative... but noise fucks you over!
+			double startDerivative = derivative(pLum, start, -1);
+			if (startDerivative < 1.0)
+				continue;
 			
+			int end = start;
+			for (; end >= 1; end--) {
+				double endDerivative = derivative(pLum, end, -1);
+				if (endDerivative <= 0) {
+					peakHeight = cvGet2D(pLum, end, 0).val[0];
+					peakPos = end;	
+					gTimer->peakDetected(peakPos);
+					ret.push_back(peakPos);
+					break;
+				}	
+			}
 			
+			start = end;//n - estLength/2;
 			
+			/**
 			 //This is searching purely by max value...
 			temp = cvGet2D(pLum, start, 0).val[0];
 			int end = start-1;
@@ -44,12 +61,20 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 				} else if (temp < pThreshold) {
 					break;	
 				}	
-			} 
-
+			}
 			gTimer->peakDetected(peakPos);
 			ret.push_back(peakPos);
 			start = end;
+			*/
     
     }
 	return ret;
 }
+
+/**
+ * Simple derivative function. calculates [ f(x+step) - f(x) ] / step
+ */
+inline double PeakDetector::derivative( CvMat* array, int x, int step) {
+	return (cvGet2D(array, x+step, 0).val[0] - cvGet2D(array, x, 0).val[0])/abs(step);
+}
+

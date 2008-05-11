@@ -27,7 +27,6 @@ void StringAnalyzer::debugSetStringToDisplay(int pString) {
 void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
 	
 		GuitarTimer* guitarTimer = GuitarTimer::getInstance();
-		guitarTimer->startString(_stringNumber);
 	
 		CvRect lClippedStringImageRect = insetRect(rectForStringInImageWithWidthAndHeight(_stringNumber, pImage->width, pImage->height), 9, 0);
         IplImage* lClippedStringImage = cvCreateImage(cvSize(lClippedStringImageRect.width, lClippedStringImageRect.height), IPL_DEPTH_8U, pImage->nChannels);
@@ -94,8 +93,6 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
        char name[10];
        sprintf(name, "Plot %d", _stringNumber+1); 
        cvShowImage(name, lPlot);
-        
-        guitarTimer->endString(_stringNumber);
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);

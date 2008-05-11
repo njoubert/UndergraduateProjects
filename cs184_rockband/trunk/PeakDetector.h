@@ -10,6 +10,7 @@ public:
 	PeakDetector();
 	virtual ~PeakDetector();
 	static std::vector<int> detectPeaksForTimer( CvMat *, double, int, bool );
+	static double derivative( CvMat*, int, int);
 };
 
 #endif /*PEAKDETECTOR_H_*/
