@@ -12,6 +12,7 @@ OPT   = -O2
 
 FILES := \
 global.h \
+utils.o \
 Guitar.o \
 Convolver.o \
 GuitarTimer.o \

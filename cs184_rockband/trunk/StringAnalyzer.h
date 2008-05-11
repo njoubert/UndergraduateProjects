@@ -5,6 +5,7 @@
 #include "Convolver.h"
 #include "NoteTracker.h"
 #include "GuitarTimer.h"
+#include "utils.h"
 
 class StringAnalyzer {
 public:
@@ -17,9 +18,13 @@ public:
 	 * both GuitarTimer and NoteTracker of the results.
 	 * */
 	void analyzeFrame( IplImage*, int );
+    
+    static CvRect rectForStringInImageWithWidthAndHeight(int pString, int pWidth, int pHeight);
+    static void debugSetStringToDisplay(int pString);
 private:
 	int _stringNumber;	
 	NoteTracker* _myTracker;
+    static int _debugStringToDisplay;
 };
 
 #endif /*STRINGANALYZER_H_*/
