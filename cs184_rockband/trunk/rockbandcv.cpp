@@ -394,7 +394,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	for(;;) {
 		
         int lKey = 0;
-        //while ('n' != lKey) { 
+        while ('n' != lKey) { 
 	        lKey = cvWaitKey( 2 );  
 	        if( 'q' == lKey ) {
 	            exit(0);
@@ -419,7 +419,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
         	
         	} //Save frame
         	// */
-    	//}
+    	}
         
         if( !cvGrabFrame( captureSource ))
             break;

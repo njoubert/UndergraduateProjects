@@ -12,7 +12,7 @@ PeakDetector::~PeakDetector() {
  * Clips data under threshold.
  * if writeBack == true, clips actual input.
  */
-std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThreshold, int estLength, bool writeBack) {
+std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThreshold, int estLength, bool writeBack, int string) {
 	GuitarTimer* gTimer = GuitarTimer::getInstance();
 	
 	int peakPos;
@@ -29,43 +29,30 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 				continue;
 			}
 			
-			
-			//Do it with derivative... but noise fucks you over!
+			 //This is searching by max value and increasing derivative...
+			 
 			double startDerivative = derivative(pLum, start, -1);
-			if (startDerivative < 1.0)
+			if (startDerivative < 2.0)
 				continue;
-			
-			int end = start;
-			for (; end >= 1; end--) {
-				double endDerivative = derivative(pLum, end, -1);
-				if (endDerivative <= 0) {
-					peakHeight = cvGet2D(pLum, end, 0).val[0];
-					peakPos = end;	
-					gTimer->peakDetected(peakPos);
-					ret.push_back(peakPos);
-					break;
-				}	
-			}
-			
-			start = end;//n - estLength/2;
-			
-			/**
-			 //This is searching purely by max value...
-			temp = cvGet2D(pLum, start, 0).val[0];
+			 
+			tempHeight = cvGet2D(pLum, start, 0).val[0];
 			int end = start-1;
-			for (; end >= 0; end--) {
-				temp = cvGet2D(pLum, end, 0).val[0];
-				if (temp > peakHeight && (end-start) < estLength) {
-					peakHeight = temp;
+			for (; end >= 1 && (end-start) < estLength/2; end--) {
+				tempHeight = cvGet2D(pLum, end, 0).val[0];
+				if (tempHeight > peakHeight) {	//found a possible hit
+					peakHeight = tempHeight;
 					peakPos = end;	
-				} else if (temp < pThreshold) {
+				} else if (derivative(pLum, end, -1) <= 0) {	//derivative decreased - must have a possibly hit by now
 					break;	
-				}	
+				} else if (tempHeight < pThreshold) {
+					break;	
+				} 
 			}
-			gTimer->peakDetected(peakPos);
 			ret.push_back(peakPos);
-			start = end;
-			*/
+			//if (string > -1)
+			//	gTimer->peakDetected(string, peakPos);
+			start = end - (estLength/2.2);
+			
     
     }
 	return ret;

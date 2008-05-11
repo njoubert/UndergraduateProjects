@@ -81,7 +81,7 @@ void GuitarTimer::endString(int string) {
 /*
  *
  */
-void peakDetected(int string, int value) {
+void GuitarTimer::peakDetected(int string, int value) {
 	//Need a counter per string
 	assert(calculate);
 	if(currentString != string){
