@@ -3,6 +3,14 @@
 
 #include "global.h"
 
+/*Stores relevant data if a hit is detected.*/
+struct hit_data
+{
+	bool valid;  //true if data is relevant to current hit
+	int step;	 //point at which hit was detected
+	float peak;  //the value of the peak corresponding to the hit
+};
+
 /**
  * NOTETRACKER CLASS
  * 
@@ -31,6 +39,7 @@ private:
 	int start;
 	float threshold;
 	float *data;
+	hit_data hitData;
 	
 	void put(int pos, float val);
 	float get(int pos);

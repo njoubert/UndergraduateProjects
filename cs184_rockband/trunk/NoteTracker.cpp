@@ -6,7 +6,8 @@ NoteTracker::NoteTracker(int pSize) {
 	size = pSize;
 	cursor = 0;
 	start = 0;
-	threshold = 0;		//Appropriate threshold TBD...
+	threshold = 0;		//appropriate threshold TBD...
+	hitData.valid = false;
 	data = new float[size];
 	for (int i=0; i < size; i++) {
 		data[i] = 0.0f;	
@@ -22,7 +23,7 @@ bool NoteTracker::add_notes(CvMat* notes) {
 		return false;
 	
 	for (int i=0; i < size; i++) {
-		put(i, cvmGet(notes, 1, i) + get(i));
+		put(i, cvmGet(notes, 1, size-i-1) + get(i));	//inverts image
 	}
 	return true;
 }
@@ -32,9 +33,14 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes) {
 	//sweep start + cursor, doing peak detection to find note to hit.
 	//invalidate values (set to zero) as you sweep
 	start = (start+steps)%size;
+	//run peak detection on data
+	//create copy of data with everything but peaks zero'd out where initially copy[0] corresponds to data[cursor]
 	for (int i=0; i < steps; i++) {
-		if (data[cursor] > threshold) {
+		if (data[cursor] > threshold) {	//replace with peak detection (copy[i])
 			hits++;
+			hitData.valid = true;
+			hitData.step = i;
+			hitData.peak = data[cursor];
 		}
 		data[cursor] = 0.0f;
 		cursor = (cursor+1)%size;
@@ -43,9 +49,11 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes) {
 	bool add_OK = add_notes(notes);
 	if (!add_OK)
 		return false;
-	if (hits != 1)
+	if (hits != 1) {
+		hitData.valid = false;
 		return false;
-	return true;		//There was exactly one hit
+	}
+	return true;		//there was exactly one hit
 }
 
 void NoteTracker::put(int pos, float val) {
