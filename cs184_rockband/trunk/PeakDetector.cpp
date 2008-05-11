@@ -51,7 +51,7 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			ret.push_back(peakPos);
 			//if (string > -1)
 			//	gTimer->peakDetected(string, peakPos);
-			start = end - (estLength/2.2);
+			start = end - (estLength/3);
 			
     
     }
