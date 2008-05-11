@@ -10,8 +10,8 @@ bool calculate = false;
 vector<int> temp;
 int pixel_differences;
 int pixeldiffcount;
-int time_differences;
-int timediffcount;
+long time_differences;
+const double THRESHOLD_RATIO = 17.0/18.0;
 
 GuitarTimer* GuitarTimer::getInstance() {
 	if (NULL == sharedGuitarTimer) {
@@ -34,6 +34,14 @@ void GuitarTimer::frameArrived() {
  */
 void GuitarTimer::frameDone() {
 	//printf("end %d\n", endwait-startwait);
+	time_differences = (currentTime - startTime)/2;
+	_deltaT = (1.0 - THRESHOLD_RATIO)*time_differences + (THRESHOLD_RATIO)*_deltaT;
+	
+	int ave_pixel = pixel_differences/pixeldiffcount;
+	
+	_deltaP = (1.0 - THRESHOLD_RATIO)*ave_pixel + (THRESHOLD_RATIO)*_deltaP;
+	
+	startTime = currentTime;
 	calculate = false;
 }
 
