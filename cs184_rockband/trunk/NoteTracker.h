@@ -2,6 +2,7 @@
 #define NOTETRACKER_H_
 
 #include "global.h"
+#include "PeakDetector.h"
 
 /*Stores relevant data if a hit is detected.*/
 struct hit_data
@@ -37,7 +38,8 @@ private:
 	int size;
 	int cursor;
 	int start;
-	float threshold;
+	double threshold;
+	int estLength;
 	float *data;
 	hit_data hitData;
 	
