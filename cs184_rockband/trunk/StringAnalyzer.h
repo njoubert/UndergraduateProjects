@@ -23,6 +23,8 @@ public:
     static void debugSetStringToDisplay(int pString);
 private:
 	int _stringNumber;	
+	double _threshold;
+	
 	NoteTracker* _myTracker;
     static int _debugStringToDisplay;
 };

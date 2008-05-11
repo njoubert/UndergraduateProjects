@@ -3,6 +3,7 @@
 StringAnalyzer::StringAnalyzer(int pStringNumber, NoteTracker* pMyTracker) {
 	_myTracker = pMyTracker;
 	_stringNumber = pStringNumber;
+	_threshold = 0;
 }
 
 StringAnalyzer::~StringAnalyzer() { }
@@ -53,8 +54,21 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         Convolver::accentuatePeaks(lPseudoRowLuminance, estimatedNoteLength, lPseudoRowLuminance2);
         
         //We do a peak detection for timing
+        CvScalar cvMean, cvStddev;
+        cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
+		
+		double k = 1.0;
+		double lThreshold = cvMean.val[0] + k*cvStddev.val[0];
+		_threshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
+			
+		for (int i = 0; i < pImage->height; i++) {
+			if (cvGet2D(lPseudoRowLuminance2, i, 0).val[0] < _threshold) {
+				cvSet2D(lPseudoRowLuminance2, i, 0, cvScalar(0));
+			}
+        }
         
         //We save it to the NoteTrackers
+        
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
@@ -62,7 +76,17 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
             cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
         }
         
-        if (_debugStringToDisplay == _stringNumber)
+        CvFont font;
+        cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
+        char text[500];
+        sprintf(text, "avg: %f", cvMean.val[0]);
+        cvPutText( lPlot, text, cvPoint(5,20), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        sprintf(text, "stdd: %f", cvStddev.val[0]);
+        cvPutText( lPlot, text, cvPoint(5,35), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        sprintf(text, "thresh: %f", _threshold);
+        cvPutText( lPlot, text, cvPoint(5,50), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        
+       if (_debugStringToDisplay == _stringNumber)
             cvShowImage("Plot", lPlot );
         
         guitarTimer->endString(_stringNumber);
