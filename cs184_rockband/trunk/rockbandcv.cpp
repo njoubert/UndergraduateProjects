@@ -310,6 +310,15 @@ int main( int argc, char** argv ) {
     cvNamedWindow("Plot 4", CV_WINDOW_AUTOSIZE);
     cvNamedWindow("Plot 5", CV_WINDOW_AUTOSIZE);
     
+    cvMoveWindow("Source", 0, 600);
+    cvMoveWindow("Inverse Perspective", 650, 600);
+    cvMoveWindow("String", 850, 600);
+    cvMoveWindow("Plot 1", 0, 0);
+    cvMoveWindow("Plot 2", PLOT_WIDTH, 0);
+    cvMoveWindow("Plot 3", 2*PLOT_WIDTH, 0);
+    cvMoveWindow("Plot 4", 3*PLOT_WIDTH, 0);
+    cvMoveWindow("Plot 5", 4*PLOT_WIDTH, 0);
+    
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
     cvSetMouseCallback("Inverse Perspective", stringSelectorMouseCallback);
@@ -386,7 +395,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		
         int lKey = 0;
         //while ('n' != lKey) { 
-	        lKey = cvWaitKey( 200 );  
+	        lKey = cvWaitKey( 400 );  
 	        if( 'q' == lKey ) {
 	            exit(0);
 	        } else if ('x' == lKey) {

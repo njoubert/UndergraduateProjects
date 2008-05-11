@@ -15,6 +15,7 @@ global.h \
 utils.o \
 Guitar.o \
 Convolver.o \
+PeakDetector.o \
 GuitarTimer.o \
 NoteTracker.o \
 StringAnalyzer.o \

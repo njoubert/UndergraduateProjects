@@ -26,7 +26,7 @@ void GuitarTimer::endString(int string) {
 	assert(string < DEFAULT_AMOUNT_OF_STRINGS);
 }
 
-void peakDetected(int string) {
+void GuitarTimer::peakDetected(int string) {
 	//Need a counter per string
 	
 	//Need to store EACH hit per string

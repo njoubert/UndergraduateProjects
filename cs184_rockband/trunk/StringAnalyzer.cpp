@@ -59,22 +59,24 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         CvScalar cvMean, cvStddev;
         cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
 		
-		double k = 0.2;
+		double k = 1.2;
 		double lThreshold = cvMean.val[0] + k*cvStddev.val[0];
 		_threshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 			
-		for (int i = 0; i < lPseudoRowLuminance2->height; i++) {
-			if (cvGet2D(lPseudoRowLuminance2, i, 0).val[0] < _threshold) {
-				cvSet2D(lPseudoRowLuminance2, i, 0, cvScalar(0));
-			}
-        }
-        
+		std::vector<int> peaks = PeakDetector::detectPeaksForTimer(lPseudoRowLuminance2, _threshold, estimatedNoteLength*2, true);
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
         for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
             cvLine(lPlot, cvPoint(cvGet2D(lPseudoRowLuminance2, i, 0).val[0], i), cvPoint(cvGet2D(lPseudoRowLuminance2, i+1, 0).val[0], i+1), LINE_COLOR);
         }
+        
+        for (unsigned int i = 0; i < peaks.size(); i++) {
+        	printf("peak at: %d\n", peaks[i]);
+        	cvLine(lPlot, cvPoint(0, peaks[i]), cvPoint(255, peaks[i]), CV_RGB(192,192,192));
+        }
+        
+        
         
         CvFont font;
         cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
@@ -86,8 +88,8 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         sprintf(text, "thresh: %f", _threshold);
         cvPutText( lPlot, text, cvPoint(5,50), &font, cvScalar(255.0,255.0,255.0,0.0) );
         
-       if (_debugStringToDisplay == _stringNumber)
-            cvShowImage("Plot", lPlot );
+       //if (_debugStringToDisplay == _stringNumber)
+       //     cvShowImage("Plot", lPlot );
        
        char name[10];
        sprintf(name, "Plot %d", _stringNumber+1); 

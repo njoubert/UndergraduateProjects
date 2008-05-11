@@ -5,6 +5,7 @@
 #include "Convolver.h"
 #include "NoteTracker.h"
 #include "GuitarTimer.h"
+#include "PeakDetector.h"
 #include "utils.h"
 
 const double STRING_THRESHOLD_RATIO = 19.0/20.0;
