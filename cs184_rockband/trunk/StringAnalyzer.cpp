@@ -1,5 +1,7 @@
 #include "StringAnalyzer.h"
 
+double StringAnalyzer::_threshold = 0;
+
 StringAnalyzer::StringAnalyzer(int pStringNumber, NoteTracker* pMyTracker) {
 	_myTracker = pMyTracker;
 	_stringNumber = pStringNumber;
@@ -57,17 +59,15 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         CvScalar cvMean, cvStddev;
         cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
 		
-		double k = 1.0;
+		double k = 0.2;
 		double lThreshold = cvMean.val[0] + k*cvStddev.val[0];
 		_threshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 			
-		for (int i = 0; i < pImage->height; i++) {
+		for (int i = 0; i < lPseudoRowLuminance2->height; i++) {
 			if (cvGet2D(lPseudoRowLuminance2, i, 0).val[0] < _threshold) {
 				cvSet2D(lPseudoRowLuminance2, i, 0, cvScalar(0));
 			}
         }
-        
-        //We save it to the NoteTrackers
         
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
@@ -88,6 +88,10 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         
        if (_debugStringToDisplay == _stringNumber)
             cvShowImage("Plot", lPlot );
+       
+       char name[10];
+       sprintf(name, "Plot %d", _stringNumber+1); 
+       cvShowImage(name, lPlot);
         
         guitarTimer->endString(_stringNumber);
         

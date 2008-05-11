@@ -21,5 +21,3 @@
 #define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
 #define FRAME_LUMINANCE_FILE_NAME "frameLum.yaml"
 
-const double STRING_THRESHOLD_RATIO = 19.0/20.0;
-

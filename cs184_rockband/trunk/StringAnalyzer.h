@@ -7,6 +7,8 @@
 #include "GuitarTimer.h"
 #include "utils.h"
 
+const double STRING_THRESHOLD_RATIO = 19.0/20.0;
+
 class StringAnalyzer {
 public:
 	//Each StringAnalyzer is associated with a specific string through its StringNumber counter.
@@ -21,10 +23,11 @@ public:
     
     static CvRect rectForStringInImageWithWidthAndHeight(int pString, int pWidth, int pHeight);
     static void debugSetStringToDisplay(int pString);
+
 private:
 	int _stringNumber;	
-	double _threshold;
-	
+	static double _threshold;
+	 
 	NoteTracker* _myTracker;
     static int _debugStringToDisplay;
 };
