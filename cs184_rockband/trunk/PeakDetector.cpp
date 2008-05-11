@@ -30,9 +30,7 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			}
 			
 			 //This is searching by max value and increasing derivative...
-			 
-			double startDerivative = derivative(pLum, start, -1);
-			if (startDerivative < 2.0)
+			if (derivative(pLum, start, -1) < 2.0)
 				continue;
 			 
 			tempHeight = cvGet2D(pLum, start, 0).val[0];
@@ -53,7 +51,6 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			//	gTimer->peakDetected(string, peakPos);
 			start = end - (estLength/3);
 			
-    
     }
 	return ret;
 }
