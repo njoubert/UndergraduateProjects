@@ -3,7 +3,6 @@
 
 double StringAnalyzer::_threshold = 0;
 double StringAnalyzer::_thresholdMax = 0;
-double StringAnalyzer::_stddevWeight = 2.0;
 
 StringAnalyzer::StringAnalyzer(int pStringNumber, NoteTracker* pMyTracker) {
 	_myTracker = pMyTracker;
@@ -54,11 +53,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         //Calculate the luminance values
         for (int i = 0; i < lClippedStringImage->height; i++) {
             cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lClippedStringImage, lTempHeader, i)).val[0]));
-            if (_stringNumber == 0)
-            	printf("%f ", cvScalar(cvAvg(cvGetRow(lClippedStringImage, lTempHeader, i)).val[0]).val[0]);
         }
-        if (_stringNumber == 0)
-            	printf("\n ");
         
         //We Fourier Filter the luminance plot to convert note rectangles into triangles
         Convolver::accentuatePeaks(lPseudoRowLuminance, estimatedNoteLength, lPseudoRowLuminance2);
@@ -68,7 +63,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         CvScalar cvMean, cvStddev;
         cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
 
-		double lThreshold = cvMean.val[0] + _stddevWeight*cvStddev.val[0];
+		double lThreshold = cvMean.val[0] + STDDEVWEIGHT*cvStddev.val[0];
 		double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;	
 		if (newThreshold > _thresholdMax)
 			_thresholdMax = newThreshold;
@@ -111,7 +106,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         sprintf(text, "thresh: %f", _threshold);
         cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
         pos += 15;
-        sprintf(text, "stddevWeight: %f", _stddevWeight);
+        sprintf(text, "stddevWeight: %f", STDDEVWEIGHT);
         cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
         pos += 15;
         sprintf(text, "deltaP: %f", guitarTimer->getDeltaP());
@@ -123,9 +118,9 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         sprintf(text, "demandedHWF: %f", PeakDetector::demandedHalfWidthFactor);
         cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
        
-       char name[10];
-       sprintf(name, "Plot %d", _stringNumber+1); 
-       cvShowImage(name, lPlot);
+       //char name[10];
+       //sprintf(name, "Plot %d", _stringNumber+1); 
+       //cvShowImage(name, lPlot);
        
         
         cvReleaseMat(&lPseudoRowLuminance);
@@ -134,27 +129,5 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         cvReleaseImage(&lPlot);
 	
 		cvReleaseImage( &lClippedStringImage );
-	/**
-	 * Convolution
-	 */
-	
-	
-	/**
-	 * Peak Detection
-	 */
-	 
-	 
-	 
-	 //for each peak
-	 
-	 //GuitarTimer.peakFound(_stringNumber, position-from-top);
-	
-	
-	
-	
-	/**
-	 * Done
-	 */
-		//GuitarTimer.frameDone();
-	
+
 }

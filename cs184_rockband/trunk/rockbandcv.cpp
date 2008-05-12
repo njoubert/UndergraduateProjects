@@ -1,5 +1,6 @@
 #include "global.h"
 
+#include "Guitar.h"
 #include "StringAnalyzer.h"
 #include "GuitarTimer.h"
 #include "utils.h"
@@ -12,6 +13,8 @@ using namespace std;
 
 void analyzeRawImage( CvCapture* );
 void mouseCallback(int event, int x, int y, int flags, void* param);
+
+Guitar guitar = Guitar();
 
 #define CPC_NUM_CONTROL_POINTS 4
 #define CPC_NO_CONTROL_POINT -1
@@ -294,6 +297,8 @@ int main( int argc, char** argv ) {
     CvCapture* capture = 0;
     const char* input_name;
     
+    guitar.connect("/dev/ttyUSB0");
+    
     input_name = argc > 1 ? argv[1] : 0;
     
     if( !input_name || (isdigit(input_name[0]) && input_name[1] == '\0') )
@@ -339,6 +344,8 @@ int main( int argc, char** argv ) {
     } else {
     	cout << "Could not start capturing! No capture device found or no input file specified!" << endl;	
     }
+    
+    guitar.disconnect();
     
     /*
      * Clean up
@@ -410,14 +417,16 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	for(;;) {
 		
         int lKey = 0;
-        while ('n' != lKey) { 
+        //while ('n' != lKey) { 
 	        lKey = cvWaitKey( 2 );  
 	        if( 'q' == lKey ) {
 	            exit(0);
 	        } else if ('=' == lKey) {
-	        	PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor + 0.1;
+	        	NoteTracker::incCursor();
+	        	//PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor + 0.1;
 	        } else if ('-' == lKey) {
-	        	PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor - 0.1;
+	        	NoteTracker::decCursor();
+	        	//PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor - 0.1;
 	        } else if ('x' == lKey) {
 	            ControlPointController::sharedControlPointController()->clearControlPoints();
 	        } 
@@ -439,7 +448,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
         	
         	} //Save frame
         	// */
-    	}
+    	//}
         
         if( !cvGrabFrame( captureSource ))
             break;
@@ -503,7 +512,19 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        stringAnalyzer2.analyzeFrame(lMaxRGB, estimatedNoteLength);
 		        stringAnalyzer3.analyzeFrame(lMaxRGB, estimatedNoteLength);
 		        stringAnalyzer4.analyzeFrame(lMaxRGB, estimatedNoteLength);
-
+		        
+		        guitar.invalidate();
+		        guitar.keyG = noteTracker0.hit();
+				guitar.keyR = noteTracker1.hit();
+				guitar.keyY = noteTracker2.hit();
+				guitar.keyB = noteTracker3.hit();
+				guitar.keyO = noteTracker4.hit();
+				if (guitar.keyG || guitar.keyR || guitar.keyY || guitar.keyB || guitar.keyO)
+					guitar.keyPickDown = true;
+				else
+					guitar.keyPickDown = false;
+				guitar.writeState();
+				
                 cvReleaseMat(&lRed);
                 cvReleaseMat(&lGreen);
                 cvReleaseMat(&lBlue);
@@ -511,12 +532,12 @@ void analyzeRawImage( CvCapture* captureSource ) {
                 cvReleaseImage(&lMaxRGB);
 		    }
 		    
-		    //drawStringHighlightAndSelection(lTransformedImage);
+		    drawStringHighlightAndSelection(lTransformedImage);
 		    cvShowImage( "Inverse Perspective", lTransformedImage);
 		    
 		    guitarTimer->frameDone();
 		    
-		    //lCPController->drawControlPoints(frame_copy);
+		    lCPController->drawControlPoints(frame_copy);
 		    cvShowImage( "Source", frame_copy );
 		    
 		    cvReleaseImage( &lTransformedImage );

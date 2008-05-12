@@ -21,3 +21,10 @@
 #define CONTROL_POINT_FILE_NAME "tmp_controlPoints.yaml"
 #define FRAME_LUMINANCE_FILE_NAME "frameLum.yaml"
 
+#ifndef GLOBALS_H_
+#define GLOBALS_H_
+
+const double STRING_THRESHOLD_RATIO = 19.0/20.0;
+const double STDDEVWEIGHT = 2.0;
+
+#endif /*GLOBALS_H_*/

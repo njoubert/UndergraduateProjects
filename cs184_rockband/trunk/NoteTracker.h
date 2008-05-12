@@ -36,15 +36,17 @@ class NoteTracker
 {
 private:
 	int size;
-	int cursor;
+	static int cursor;
 	int start;
 	int _string;
-	double threshold;
+	double _threshold;
+	double _thresholdMax;
 	float *data;
 	hit_data hitData;
 	
 	void put(int pos, float val);
 	float get(int pos);
+
 
 public:
 	NoteTracker(int string);
@@ -52,7 +54,10 @@ public:
 	void initialize(int);
 	bool add_notes(CvMat*);			//add current matrix to the buffer
 	bool shift_add_invalidate(int, CvMat*, int);
-	void plotMe();
+	bool hit();
+	void plotMe(vector<int>, int);
+	static void incCursor();
+	static void decCursor();
 };
 
 #endif /*NOTETRACKER_H_*/

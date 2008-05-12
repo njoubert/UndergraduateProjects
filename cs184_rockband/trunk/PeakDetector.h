@@ -12,6 +12,7 @@ public:
 	static std::vector<int> detectPeaksForTimer( CvMat *, double, int, bool, int );
 	static double derivative( CvMat*, int, int);
 	static double demandedHalfWidthFactor;
+	
 };
 
 #endif /*PEAKDETECTOR_H_*/

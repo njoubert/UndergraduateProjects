@@ -8,8 +8,6 @@
 #include "PeakDetector.h"
 #include "utils.h"
 
-const double STRING_THRESHOLD_RATIO = 19.0/20.0;
-
 class StringAnalyzer {
 public:
 	//Each StringAnalyzer is associated with a specific string through its StringNumber counter.
@@ -21,8 +19,7 @@ public:
 	 * both GuitarTimer and NoteTracker of the results.
 	 * */
 	void analyzeFrame( IplImage*, int );
-    
-    static double _stddevWeight;
+
     static CvRect rectForStringInImageWithWidthAndHeight(int pString, int pWidth, int pHeight);
     static void debugSetStringToDisplay(int pString);
 
