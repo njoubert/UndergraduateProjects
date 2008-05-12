@@ -526,6 +526,18 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        bool keyB = noteTracker3.hit();
 		        bool keyO = noteTracker4.hit();
 		        bool changed = false;
+		        
+		        if (keyG || keyR || keyY || keyB || keyO) {
+		        	guitar.keyPickDown = true;
+		        	guitar.keyG = keyG;
+		        	guitar.keyR = keyR;
+		        	guitar.keyY = keyY;
+		        	guitar.keyB = keyB;
+		        	guitar.keyO = keyO;	
+		        } else {
+		        	guitar.keyPickDown = false;			
+		        }
+		        /**
 		        if (keyG != guitar.keyG && keyG == true) {
 		        	changed = true;	
 		        }
@@ -551,7 +563,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        } else {
 		        	guitar.keyPickDown = false;		        	
 		        }
-		       
+		       */
 				guitar.writeState();
 				
                 cvReleaseMat(&lRed);
