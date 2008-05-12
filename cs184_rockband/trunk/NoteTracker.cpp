@@ -82,7 +82,7 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 		put(cursor+i, 0.0f);
 	}
 	
-	plotMe(peaks, hits);
+	//plotMe(peaks, hits);
 	start = (start+steps)%size;
 	//add given notes to current notes
 	
