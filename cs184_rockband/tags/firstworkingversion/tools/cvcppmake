@@ -1,0 +1,5 @@
+if [ $# -lt 1 ]; then
+	echo "Please provide the name of a source file. C compiliation only."
+fi
+
+g++ $1.cpp -I/usr/local/include/opencv -lcv -lcvaux -lcxcore -lhighgui -lml -o $1
