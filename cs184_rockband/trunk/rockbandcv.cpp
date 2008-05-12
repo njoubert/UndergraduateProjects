@@ -524,6 +524,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        bool keyB = noteTracker3.hit();
 		        bool keyO = noteTracker4.hit();
 		        
+		        /*
 		        //Only change state if you get a hit on a note...
 		        if (keyG || keyR || keyY || keyB || keyO) {
 		        	guitar.keyPickDown = true;
@@ -535,6 +536,19 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        } else {
 		        	guitar.keyPickDown = false;			
 		        }
+		        */
+		        
+		        //Just hit it!
+		        guitar.invalidate();
+		        guitar.keyG = keyG;
+				guitar.keyR = keyR;
+				guitar.keyY = keyY;
+				guitar.keyB = keyB;
+				guitar.keyO = keyO;
+				if (guitar.keyG || guitar.keyR || guitar.keyY || guitar.keyB || guitar.keyO)
+					guitar.keyPickDown = true;
+				else
+					guitar.keyPickDown = false;
 
 				guitar.writeState();
 				
