@@ -52,7 +52,7 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 					break;	
 				} 
 			}
-			start = end - (estLength/3);							//Offsets forward for no double-peaking
+			start = end - (estLength/2);							//Offsets forward for no double-peaking
 			
     }
     if (writeBack && cvGet2D(pLum, 0, 0).val[0] < pThreshold)
