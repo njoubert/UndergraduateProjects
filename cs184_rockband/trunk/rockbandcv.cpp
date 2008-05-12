@@ -350,7 +350,8 @@ int main( int argc, char** argv ) {
     } else {
     	cout << "Could not start capturing! No capture device found or no input file specified!" << endl;	
     }
-    
+    guitar.invalidate();
+    guitar.writeState();
     guitar.disconnect();
     
     /*
