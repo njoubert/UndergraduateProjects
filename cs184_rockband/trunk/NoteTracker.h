@@ -58,6 +58,8 @@ public:
 	void plotMe(vector<int>, int);
 	static void incCursor();
 	static void decCursor();
+	static int getCursor();
+	static void setCursor(int);
 };
 
 #endif /*NOTETRACKER_H_*/

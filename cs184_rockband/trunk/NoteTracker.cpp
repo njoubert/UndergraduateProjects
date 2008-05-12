@@ -159,3 +159,9 @@ void NoteTracker::incCursor() {
 void NoteTracker::decCursor() {
 	cursor -= 1;	
 }
+int NoteTracker::getCursor() {
+	return cursor;
+}
+void NoteTracker::setCursor(int pCursor) {
+	cursor = pCursor;	
+}

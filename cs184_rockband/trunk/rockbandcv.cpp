@@ -296,10 +296,17 @@ void drawStringHighlightAndSelection(IplImage *pImage) {
 int main( int argc, char** argv ) {
     CvCapture* capture = 0;
     const char* input_name;
+    const char* guitarPort;
     
-    guitar.connect("/dev/ttyUSB0");
+    if (argc != 3) {
+    	cout << "Loser, specify an input and a guitar port!" << endl;
+    	exit(1);
+    }
     
     input_name = argc > 1 ? argv[1] : 0;
+    guitarPort = argv[2];
+    
+    guitar.connect(guitarPort);
     
     if( !input_name || (isdigit(input_name[0]) && input_name[1] == '\0') )
         capture = cvCaptureFromCAM( !input_name ? 0 : input_name[0] - '0' );
