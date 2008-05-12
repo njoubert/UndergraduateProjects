@@ -12,7 +12,7 @@ void NoteTracker::initialize(int pSize) {
 		return;
 	size = pSize;
 	start = 0;
-	_thresholdMax = _threshold = 20;		//appropriate threshold TBD...
+	_thresholdMax = _threshold = 20.0;		//appropriate threshold TBD...
 	hitData.valid = false;
 	data = new float[size];
 	for (int i=0; i < size; i++) {
@@ -52,13 +52,13 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	
     CvScalar cvMean, cvStddev;
     cvAvgSdv(copy,&cvMean,&cvStddev);
-    double lThreshold = cvMean.val[0] + 1.0*cvStddev.val[0];
+    double lThreshold = cvMean.val[0] + 1.35*cvStddev.val[0];
 	double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 	_threshold = newThreshold;
 	if (newThreshold > _thresholdMax)
 		_thresholdMax = newThreshold;
-	if (newThreshold < 60.0/100.0*_thresholdMax) {
-		_threshold = 60.0/100.0*_thresholdMax;
+	if (newThreshold < 75.0/100.0*_thresholdMax) {
+		_threshold = 75.0/100.0*_thresholdMax;
 	} else {
 		_threshold = newThreshold;
 	}
@@ -81,7 +81,7 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 		put(cursor+i, 0.0f);
 	}
 	
-	//plotMe(peaks, hits);
+	plotMe(peaks, hits);
 	start = (start+steps)%size;
 	//add given notes to current notes
 	

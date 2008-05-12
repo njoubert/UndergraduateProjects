@@ -79,7 +79,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         _myTracker->initialize(lClippedStringImage->height);
         _myTracker->shift_add_invalidate(round(guitarTimer->getDeltaP()),lPseudoRowLuminance2, estimatedNoteLength*2);
         
-        
+        /**
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
         for (int i = 0; i < cvGetSize(lPseudoRowLuminance2).height - 1; i++) {
@@ -118,15 +118,17 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         sprintf(text, "demandedHWF: %f", PeakDetector::demandedHalfWidthFactor);
         cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
        
-       //char name[10];
-       //sprintf(name, "Plot %d", _stringNumber+1); 
-       //cvShowImage(name, lPlot);
+       char name[10];
+       sprintf(name, "Plot %d", _stringNumber+1); 
+       cvShowImage(name, lPlot);
+       cvReleaseImage(&lPlot);
+        * */
        
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);
         cvReleaseMat(&lTempHeader);
-        cvReleaseImage(&lPlot);
+        
 	
 		cvReleaseImage( &lClippedStringImage );
 

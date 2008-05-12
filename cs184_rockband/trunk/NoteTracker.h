@@ -39,16 +39,15 @@ private:
 	static int cursor;
 	int start;
 	int _string;
-	double _threshold;
-	double _thresholdMax;
 	float *data;
 	hit_data hitData;
-	
 	void put(int pos, float val);
 	float get(int pos);
 
 
 public:
+	double _threshold;
+	double _thresholdMax;
 	NoteTracker(int string);
 	virtual ~NoteTracker();
 	void initialize(int);

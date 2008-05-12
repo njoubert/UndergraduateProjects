@@ -316,11 +316,6 @@ int main( int argc, char** argv ) {
     cvNamedWindow( "Source", 1 );
     cvNamedWindow("Inverse Perspective", 1);
     cvNamedWindow("String", 1);
-    cvNamedWindow("Plot 1", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Plot 2", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Plot 3", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Plot 4", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Plot 5", CV_WINDOW_AUTOSIZE);
     
     cvNamedWindow("Buffer 1", CV_WINDOW_AUTOSIZE);
     cvNamedWindow("Buffer 2", CV_WINDOW_AUTOSIZE);
@@ -331,16 +326,11 @@ int main( int argc, char** argv ) {
     cvMoveWindow("Source", 0, 600);
     cvMoveWindow("Inverse Perspective", 650, 600);
     cvMoveWindow("String", 850, 600);
-    cvMoveWindow("Plot 1", 0, 0);
-    cvMoveWindow("Plot 2", PLOT_WIDTH, 0);
-    cvMoveWindow("Plot 3", 2*PLOT_WIDTH, 0);
-    cvMoveWindow("Plot 4", 3*PLOT_WIDTH, 0);
-    cvMoveWindow("Plot 5", 4*PLOT_WIDTH, 0);
-    cvMoveWindow("Buffer 1", 0, 600);
-    cvMoveWindow("Buffer 2", PLOT_WIDTH, 600);
-    cvMoveWindow("Buffer 3", 2*PLOT_WIDTH, 600);
-    cvMoveWindow("Buffer 4", 3*PLOT_WIDTH, 600);
-    cvMoveWindow("Buffer 5", 4*PLOT_WIDTH, 600);
+    cvMoveWindow("Buffer 1", 0, 0);
+    cvMoveWindow("Buffer 2", PLOT_WIDTH, 0);
+    cvMoveWindow("Buffer 3", 2*PLOT_WIDTH, 0);
+    cvMoveWindow("Buffer 4", 3*PLOT_WIDTH, 0);
+    cvMoveWindow("Buffer 5", 4*PLOT_WIDTH, 0);
     
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
@@ -361,11 +351,6 @@ int main( int argc, char** argv ) {
     cvDestroyWindow("Source");
     cvDestroyWindow("Inverse Perspective");
     cvDestroyWindow("String");
-    cvDestroyWindow("Plot 1");
-    cvDestroyWindow("Plot 2");
-    cvDestroyWindow("Plot 3");
-    cvDestroyWindow("Plot 4");
-    cvDestroyWindow("Plot 5");
     cvDestroyWindow("Buffer 1");
     cvDestroyWindow("Buffer 2");
     cvDestroyWindow("Buffer 3");
@@ -525,8 +510,8 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        bool keyY = noteTracker2.hit();
 		        bool keyB = noteTracker3.hit();
 		        bool keyO = noteTracker4.hit();
-		        bool changed = false;
 		        
+		        //Only change state if you get a hit on a note...
 		        if (keyG || keyR || keyY || keyB || keyO) {
 		        	guitar.keyPickDown = true;
 		        	guitar.keyG = keyG;
@@ -537,33 +522,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		        } else {
 		        	guitar.keyPickDown = false;			
 		        }
-		        /**
-		        if (keyG != guitar.keyG && keyG == true) {
-		        	changed = true;	
-		        }
-		        if (keyR != guitar.keyR && keyR == true) {
-		        	changed = true;	
-		        }
-		        if (keyY != guitar.keyY && keyY == true) {
-		        	changed = true;	
-		        }
-		        if (keyB != guitar.keyB && keyB == true) {
-		        	changed = true;	
-		        }
-		        if (keyO != guitar.keyO && keyO == true) {
-		        	changed = true;	
-		        }
-		        if (changed) {
-		        	guitar.keyPickDown = true;
-		        	guitar.keyG = keyG;
-		        	guitar.keyR = keyR;
-		        	guitar.keyY = keyY;
-		        	guitar.keyB = keyB;
-		        	guitar.keyO = keyO;	
-		        } else {
-		        	guitar.keyPickDown = false;		        	
-		        }
-		       */
+
 				guitar.writeState();
 				
                 cvReleaseMat(&lRed);
@@ -578,6 +537,26 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		    
 		    guitarTimer->frameDone();
 		    
+			CvFont font;
+	        cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
+	        char text[500];
+	        int pos = 20;
+	        sprintf(text, "cursor: %d", NoteTracker::getCursor());
+	        cvPutText( frame_copy, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+	        pos += 15;
+			    
+        	sprintf(text, "thresh: %f, %f, %f, %f, %f", noteTracker0._threshold, noteTracker1._threshold, noteTracker2._threshold, noteTracker3._threshold, noteTracker4._threshold);
+        	cvPutText( frame_copy, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        	pos += 15;
+        	
+        	sprintf(text, "threshMax: %f, %f, %f, %f, %f", noteTracker0._thresholdMax, noteTracker1._thresholdMax, noteTracker2._thresholdMax, noteTracker3._thresholdMax, noteTracker4._thresholdMax);
+        	cvPutText( frame_copy, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        	pos += 15;
+        	
+        	sprintf(text, "deltaP: %f", guitarTimer->getDeltaP());
+        	cvPutText( frame_copy, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        	pos += 15;
+			    
 		    lCPController->drawControlPoints(frame_copy);
 		    cvShowImage( "Source", frame_copy );
 		    
