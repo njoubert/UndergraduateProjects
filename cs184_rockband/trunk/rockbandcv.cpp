@@ -528,6 +528,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		       
 		        if (keyG == guitar.keyG &&
 		        	keyR == guitar.keyR &&
+		        	keyY == guitar.keyY &&
 		        	keyB == guitar.keyB &&
 		        	keyO == guitar.keyO) {
 		        	guitar.keyPickDown = false;
