@@ -1,6 +1,9 @@
 #include "StringAnalyzer.h"
 
+
 double StringAnalyzer::_threshold = 0;
+double StringAnalyzer::_thresholdMax = 0;
+double StringAnalyzer::_stddevWeight = 2.0;
 
 StringAnalyzer::StringAnalyzer(int pStringNumber, NoteTracker* pMyTracker) {
 	_myTracker = pMyTracker;
@@ -57,11 +60,17 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         //We do a peak detection for timing
         CvScalar cvMean, cvStddev;
         cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
+
+		double lThreshold = cvMean.val[0] + _stddevWeight*cvStddev.val[0];
+		double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;	
+		if (newThreshold > _thresholdMax)
+			_thresholdMax = newThreshold;
+		if (newThreshold < 70.0/100.0*_thresholdMax) {
+			//_threshold = _threshold;
+		} else {
+			_threshold = newThreshold;
+		}
 		
-		double k = 2.0;
-		double lThreshold = cvMean.val[0] + k*cvStddev.val[0];
-		_threshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;	
-			
 		std::vector<int> peaks = PeakDetector::detectPeaksForTimer(lPseudoRowLuminance2, _threshold, estimatedNoteLength*2, false, _stringNumber);
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
@@ -73,24 +82,34 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         for (unsigned int i = 0; i < peaks.size(); i++) {
         	cvLine(lPlot, cvPoint(0, peaks[i]), cvPoint(255, peaks[i]), CV_RGB(192,192,192));
         }
-        
+        cvLine(lPlot, cvPoint(_threshold, 0), cvPoint(_threshold, cvGetSize(lPseudoRowLuminance2).height-1), CV_RGB(192,192,192));
         
         
         CvFont font;
         cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
         char text[500];
+        int pos = 20;
         sprintf(text, "avg: %f", cvMean.val[0]);
-        cvPutText( lPlot, text, cvPoint(5,20), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
+        
         sprintf(text, "stdd: %f", cvStddev.val[0]);
-        cvPutText( lPlot, text, cvPoint(5,35), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
         sprintf(text, "thresh: %f", _threshold);
-        cvPutText( lPlot, text, cvPoint(5,50), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
+        sprintf(text, "stddevWeight: %f", _stddevWeight);
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
         sprintf(text, "deltaP: %f", guitarTimer->getDeltaP());
-        cvPutText( lPlot, text, cvPoint(5,65), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
         sprintf(text, "deltaT: %f", guitarTimer->getDeltaT()*((double)1000/CLOCKS_PER_SEC));
-        cvPutText( lPlot, text, cvPoint(5,80), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        pos += 15;
         sprintf(text, "demandedHWF: %f", PeakDetector::demandedHalfWidthFactor);
-        cvPutText( lPlot, text, cvPoint(5,95), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
         
        //if (_debugStringToDisplay == _stringNumber)
        //     cvShowImage("Plot", lPlot );

@@ -22,12 +22,14 @@ public:
 	 * */
 	void analyzeFrame( IplImage*, int );
     
+    static double _stddevWeight;
     static CvRect rectForStringInImageWithWidthAndHeight(int pString, int pWidth, int pHeight);
     static void debugSetStringToDisplay(int pString);
 
 private:
 	int _stringNumber;	
 	static double _threshold;
+	static double _thresholdMax;
 	 
 	NoteTracker* _myTracker;
     static int _debugStringToDisplay;
