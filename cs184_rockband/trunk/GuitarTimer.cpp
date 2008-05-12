@@ -11,7 +11,7 @@ vector<int> temp;
 int pixel_differences=0;
 int pixeldiffcount=0;
 long time_differences;
-const double THRESHOLD_RATIO = 19.0/20.0;
+const double THRESHOLD_RATIO = 99.0/100.0;
 
 GuitarTimer* GuitarTimer::getInstance() {
 	if (NULL == sharedGuitarTimer) {

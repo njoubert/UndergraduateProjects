@@ -57,8 +57,8 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	_threshold = newThreshold;
 	if (newThreshold > _thresholdMax)
 		_thresholdMax = newThreshold;
-	if (newThreshold < 50.0/100.0*_thresholdMax) {
-		_thresholdMax = _thresholdMax - 0.2;
+	if (newThreshold < 60.0/100.0*_thresholdMax) {
+		_threshold = 60.0/100.0*_thresholdMax;
 	} else {
 		_threshold = newThreshold;
 	}
@@ -81,7 +81,7 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 		put(cursor+i, 0.0f);
 	}
 	
-	plotMe(peaks, hits);
+	//plotMe(peaks, hits);
 	start = (start+steps)%size;
 	//add given notes to current notes
 	
