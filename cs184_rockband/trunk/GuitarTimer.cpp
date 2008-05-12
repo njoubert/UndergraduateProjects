@@ -25,7 +25,7 @@ GuitarTimer* GuitarTimer::getInstance() {
  */
 void GuitarTimer::frameArrived() {
 	currentTime = clock ();
-	printf("frame has arrived\n");
+	//printf("frame has arrived\n");
 	calculate = true;
 }
 
@@ -47,7 +47,7 @@ void GuitarTimer::frameDone() {
 	
 	startTime = currentTime;
 	calculate = false;
-	printf("frame is done\n");
+	//printf("frame is done\n");
 }
 
 /*
@@ -61,7 +61,7 @@ void GuitarTimer::startString(int string, int value) {
 	vector<int>::iterator it;
 	bool notstored = true;
 	for ( it=peaksList[string]->peaks.begin() ; it < peaksList[string]->peaks.end(); it++ ){
-		printf("from list: %d compare to value %d\n",*it,value);
+		//printf("from list: %d compare to value %d\n",*it,value);
 		if(*it < value){
 			//it has moved and this is it
 			pixel_differences += (value - *it);
@@ -73,7 +73,7 @@ void GuitarTimer::startString(int string, int value) {
 			break;
 		}
 	}
-	printf("end\n");
+	//printf("end\n");
 	if(notstored){
 		//add to new one
 		temp.push_back(value);
