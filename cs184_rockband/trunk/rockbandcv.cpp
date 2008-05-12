@@ -310,6 +310,12 @@ int main( int argc, char** argv ) {
     cvNamedWindow("Plot 4", CV_WINDOW_AUTOSIZE);
     cvNamedWindow("Plot 5", CV_WINDOW_AUTOSIZE);
     
+    cvNamedWindow("Buffer 1", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Buffer 2", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Buffer 3", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Buffer 4", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Buffer 5", CV_WINDOW_AUTOSIZE);
+    
     cvMoveWindow("Source", 0, 600);
     cvMoveWindow("Inverse Perspective", 650, 600);
     cvMoveWindow("String", 850, 600);
@@ -318,6 +324,11 @@ int main( int argc, char** argv ) {
     cvMoveWindow("Plot 3", 2*PLOT_WIDTH, 0);
     cvMoveWindow("Plot 4", 3*PLOT_WIDTH, 0);
     cvMoveWindow("Plot 5", 4*PLOT_WIDTH, 0);
+    cvMoveWindow("Buffer 1", 0, 600);
+    cvMoveWindow("Buffer 2", PLOT_WIDTH, 600);
+    cvMoveWindow("Buffer 3", 2*PLOT_WIDTH, 600);
+    cvMoveWindow("Buffer 4", 3*PLOT_WIDTH, 600);
+    cvMoveWindow("Buffer 5", 4*PLOT_WIDTH, 600);
     
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
@@ -341,6 +352,11 @@ int main( int argc, char** argv ) {
     cvDestroyWindow("Plot 3");
     cvDestroyWindow("Plot 4");
     cvDestroyWindow("Plot 5");
+    cvDestroyWindow("Buffer 1");
+    cvDestroyWindow("Buffer 2");
+    cvDestroyWindow("Buffer 3");
+    cvDestroyWindow("Buffer 4");
+    cvDestroyWindow("Buffer 5");
 
     return 0;
 }
@@ -378,11 +394,11 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	GuitarTimer* guitarTimer = GuitarTimer::getInstance();
 	
 	//These are the circular buffers for each string.
-	NoteTracker noteTracker0;
-	NoteTracker noteTracker1;
-	NoteTracker noteTracker2;
-	NoteTracker noteTracker3;
-	NoteTracker noteTracker4;
+	NoteTracker noteTracker0(0);
+	NoteTracker noteTracker1(1);
+	NoteTracker noteTracker2(2);
+	NoteTracker noteTracker3(3);
+	NoteTracker noteTracker4(4);
 	
 	//These are the stringAnalyzers for each string.
 	StringAnalyzer stringAnalyzer0(0, &noteTracker0);
@@ -394,7 +410,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	for(;;) {
 		
         int lKey = 0;
-        //while ('n' != lKey) { 
+        while ('n' != lKey) { 
 	        lKey = cvWaitKey( 2 );  
 	        if( 'q' == lKey ) {
 	            exit(0);
@@ -423,7 +439,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
         	
         	} //Save frame
         	// */
-    	//}
+    	}
         
         if( !cvGrabFrame( captureSource ))
             break;
@@ -471,7 +487,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
                 cvSplit(lTransformedImage, lRed, lGreen, lBlue, NULL);
                 
                 IplImage *lMaxRGB = cvCreateImage(cvSize(lTransformedImage->width, lTransformedImage->height), IPL_DEPTH_8U, 1);
-
+				
                 // collapse the 3 channels into one matrix of luminance values
                 cvMax(lBlue, lGreen, lTemp);
                 cvMax(lRed, lTemp, lMaxRGB);
@@ -495,12 +511,12 @@ void analyzeRawImage( CvCapture* captureSource ) {
                 cvReleaseImage(&lMaxRGB);
 		    }
 		    
-		    drawStringHighlightAndSelection(lTransformedImage);
+		    //drawStringHighlightAndSelection(lTransformedImage);
 		    cvShowImage( "Inverse Perspective", lTransformedImage);
 		    
 		    guitarTimer->frameDone();
 		    
-		    lCPController->drawControlPoints(frame_copy);
+		    //lCPController->drawControlPoints(frame_copy);
 		    cvShowImage( "Source", frame_copy );
 		    
 		    cvReleaseImage( &lTransformedImage );

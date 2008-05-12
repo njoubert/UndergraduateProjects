@@ -47,15 +47,22 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
 		
         CvMat *lPseudoRowLuminance = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
         CvMat *lPseudoRowLuminance2 = cvCreateMat(lClippedStringImage->height, 1, CV_8UC1);
+        cvZero(lPseudoRowLuminance);
+        cvZero(lPseudoRowLuminance2);
         CvMat *lTempHeader = cvCreateMatHeader(1, lClippedStringImage->width, CV_32FC1);
         
         //Calculate the luminance values
         for (int i = 0; i < lClippedStringImage->height; i++) {
             cvSet2D(lPseudoRowLuminance, i, 0, cvScalar(cvAvg(cvGetRow(lClippedStringImage, lTempHeader, i)).val[0]));
+            if (_stringNumber == 0)
+            	printf("%f ", cvScalar(cvAvg(cvGetRow(lClippedStringImage, lTempHeader, i)).val[0]).val[0]);
         }
+        if (_stringNumber == 0)
+            	printf("\n ");
         
         //We Fourier Filter the luminance plot to convert note rectangles into triangles
         Convolver::accentuatePeaks(lPseudoRowLuminance, estimatedNoteLength, lPseudoRowLuminance2);
+        //cvCopy(lPseudoRowLuminance, lPseudoRowLuminance2);
         
         //We do a peak detection for timing
         CvScalar cvMean, cvStddev;
@@ -65,13 +72,18 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
 		double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;	
 		if (newThreshold > _thresholdMax)
 			_thresholdMax = newThreshold;
-		if (newThreshold < 70.0/100.0*_thresholdMax) {
-			//_threshold = _threshold;
+		if (newThreshold < 60.0/100.0*_thresholdMax) {
+			_thresholdMax = _thresholdMax - 0.2;
 		} else {
 			_threshold = newThreshold;
 		}
 		
-		std::vector<int> peaks = PeakDetector::detectPeaksForTimer(lPseudoRowLuminance2, _threshold, estimatedNoteLength*2, false, _stringNumber);
+		std::vector<int> peaks = PeakDetector::detectPeaksForTimer(lPseudoRowLuminance2, _threshold, estimatedNoteLength*2, true, _stringNumber);
+        
+        //done with string peaks
+        _myTracker->initialize(lClippedStringImage->height);
+        _myTracker->shift_add_invalidate(round(guitarTimer->getDeltaP()),lPseudoRowLuminance2, estimatedNoteLength*2);
+        
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
@@ -110,13 +122,11 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         pos += 15;
         sprintf(text, "demandedHWF: %f", PeakDetector::demandedHalfWidthFactor);
         cvPutText( lPlot, text, cvPoint(5,pos), &font, cvScalar(255.0,255.0,255.0,0.0) );
-        
-       //if (_debugStringToDisplay == _stringNumber)
-       //     cvShowImage("Plot", lPlot );
        
        char name[10];
        sprintf(name, "Plot %d", _stringNumber+1); 
        cvShowImage(name, lPlot);
+       
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);

@@ -38,8 +38,8 @@ private:
 	int size;
 	int cursor;
 	int start;
+	int _string;
 	double threshold;
-	int estLength;
 	float *data;
 	hit_data hitData;
 	
@@ -47,13 +47,12 @@ private:
 	float get(int pos);
 
 public:
-	NoteTracker();
-	NoteTracker(int size);
+	NoteTracker(int string);
 	virtual ~NoteTracker();
-	
+	void initialize(int);
 	bool add_notes(CvMat*);			//add current matrix to the buffer
-	bool shift_add_invalidate(int, CvMat*);
-	
+	bool shift_add_invalidate(int, CvMat*, int);
+	void plotMe();
 };
 
 #endif /*NOTETRACKER_H_*/
