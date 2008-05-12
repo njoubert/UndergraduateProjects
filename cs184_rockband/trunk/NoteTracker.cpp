@@ -52,13 +52,13 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	
     CvScalar cvMean, cvStddev;
     cvAvgSdv(copy,&cvMean,&cvStddev);
-    double lThreshold = cvMean.val[0] + 1.35*cvStddev.val[0];
+    double lThreshold = cvMean.val[0] + 1.3*cvStddev.val[0];
 	double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 	_threshold = newThreshold;
 	if (newThreshold > _thresholdMax)
 		_thresholdMax = newThreshold;
-	if (newThreshold < 75.0/100.0*_thresholdMax) {
-		_threshold = 75.0/100.0*_thresholdMax;
+	if (newThreshold < 65.0/100.0*_thresholdMax) {
+		_threshold = 65.0/100.0*_thresholdMax;
 	} else {
 		_threshold = newThreshold;
 	}
