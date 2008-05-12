@@ -106,6 +106,9 @@ public:
                 sprintf(lName, "y%d", i);
                 cvWriteInt(lFile, lName, _controlPoints[i].y);
             }
+            
+            // Save cursor value. This should be moved to a new location
+            cvWriteInt(lFile, "cursor", NoteTracker::getCursor());
         } else {
             printf("Could not write control point file: %s. Ignoring.\n", CONTROL_POINT_FILE_NAME);
         }
@@ -136,6 +139,12 @@ public:
                 } else {
                     break; // no more, or malformatted, control points
                 }
+                
+                int cursorValue = cvReadIntByName(lFile, lRoot, "cursor",  -1);
+                
+               	if (cursorValue >= 0) {
+               		NoteTracker::setCursor(cursorValue);
+               	}
             }    
         }
             
@@ -415,9 +424,11 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	            exit(0);
 	        } else if ('=' == lKey) {
 	        	NoteTracker::incCursor();
+	        	ControlPointController::sharedControlPointController()->writeControlPoints();
 	        	//PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor + 0.1;
 	        } else if ('-' == lKey) {
 	        	NoteTracker::decCursor();
+	        	ControlPointController::sharedControlPointController()->writeControlPoints();
 	        	//PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor - 0.1;
 	        } else if ('x' == lKey) {
 	            ControlPointController::sharedControlPointController()->clearControlPoints();
