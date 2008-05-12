@@ -332,14 +332,15 @@ int main( int argc, char** argv ) {
     cvNamedWindow("Buffer 4", CV_WINDOW_AUTOSIZE);
     cvNamedWindow("Buffer 5", CV_WINDOW_AUTOSIZE);
     
-    cvMoveWindow("Source", 0, 600);
-    cvMoveWindow("Inverse Perspective", 650, 600);
-    cvMoveWindow("String", 850, 600);
+    
     cvMoveWindow("Buffer 1", 0, 0);
     cvMoveWindow("Buffer 2", PLOT_WIDTH, 0);
     cvMoveWindow("Buffer 3", 2*PLOT_WIDTH, 0);
     cvMoveWindow("Buffer 4", 3*PLOT_WIDTH, 0);
     cvMoveWindow("Buffer 5", 4*PLOT_WIDTH, 0);
+    cvMoveWindow("Source", 0, 400);
+    cvMoveWindow("Inverse Perspective", 650, 400);
+    cvMoveWindow("String", 850, 400);
     
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);

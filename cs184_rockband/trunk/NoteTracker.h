@@ -47,7 +47,7 @@ private:
 
 public:
 	double _threshold;
-	double _thresholdMax;
+	static double _thresholdMax;
 	NoteTracker(int string);
 	virtual ~NoteTracker();
 	void initialize(int);

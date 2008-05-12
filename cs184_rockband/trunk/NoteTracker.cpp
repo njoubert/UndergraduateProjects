@@ -1,6 +1,7 @@
 #include "NoteTracker.h"
 
 int NoteTracker::cursor = 100;
+double NoteTracker::_thresholdMax = 20.0;
 
 NoteTracker::NoteTracker(int string) {
 	_string = string;
@@ -11,8 +12,8 @@ void NoteTracker::initialize(int pSize) {
 	if (size > 0)
 		return;
 	size = pSize;
+	_threshold = 20.0;
 	start = 0;
-	_thresholdMax = _threshold = 20.0;		//appropriate threshold TBD...
 	hitData.valid = false;
 	data = new float[size];
 	for (int i=0; i < size; i++) {
@@ -52,7 +53,7 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	
     CvScalar cvMean, cvStddev;
     cvAvgSdv(copy,&cvMean,&cvStddev);
-    double lThreshold = cvMean.val[0] + 1.35*cvStddev.val[0];
+    double lThreshold = cvMean.val[0] + 1.45*cvStddev.val[0];
 	double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 	_threshold = newThreshold;
 	if (newThreshold > _thresholdMax)
