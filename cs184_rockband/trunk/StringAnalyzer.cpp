@@ -85,6 +85,10 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         cvPutText( lPlot, text, cvPoint(5,35), &font, cvScalar(255.0,255.0,255.0,0.0) );
         sprintf(text, "thresh: %f", _threshold);
         cvPutText( lPlot, text, cvPoint(5,50), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        sprintf(text, "deltaP: %f", guitarTimer->getDeltaP());
+        cvPutText( lPlot, text, cvPoint(5,65), &font, cvScalar(255.0,255.0,255.0,0.0) );
+        sprintf(text, "deltaT: %f", guitarTimer->getDeltaT()*((double)1000/CLOCKS_PER_SEC));
+        cvPutText( lPlot, text, cvPoint(5,80), &font, cvScalar(255.0,255.0,255.0,0.0) );
         
        //if (_debugStringToDisplay == _stringNumber)
        //     cvShowImage("Plot", lPlot );

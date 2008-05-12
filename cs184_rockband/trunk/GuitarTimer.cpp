@@ -9,7 +9,7 @@ int currentString = -1;
 bool calculate = false;
 vector<int> temp;
 int pixel_differences;
-int pixeldiffcount;
+int pixeldiffcount=0;
 long time_differences;
 const double THRESHOLD_RATIO = 17.0/18.0;
 
@@ -24,8 +24,8 @@ GuitarTimer* GuitarTimer::getInstance() {
  *
  */
 void GuitarTimer::frameArrived() {
-	currentTime = clock () +  1* CLOCKS_PER_SEC ;
-	//printf("start %d\n", startwait);
+	currentTime = clock ();
+	printf("frame has arrived\n");
 	calculate = true;
 }
 
@@ -34,15 +34,20 @@ void GuitarTimer::frameArrived() {
  */
 void GuitarTimer::frameDone() {
 	//printf("end %d\n", endwait-startwait);
-	time_differences = (currentTime - startTime)/2;
+	time_differences = (currentTime - startTime);
 	_deltaT = (1.0 - THRESHOLD_RATIO)*time_differences + (THRESHOLD_RATIO)*_deltaT;
-	
-	int ave_pixel = pixel_differences/pixeldiffcount;
+	int ave_pixel;
+	if(pixeldiffcount == 0){
+		ave_pixel = pixel_differences/1;
+	}else{
+		ave_pixel = pixel_differences/pixeldiffcount;
+	}
 	
 	_deltaP = (1.0 - THRESHOLD_RATIO)*ave_pixel + (THRESHOLD_RATIO)*_deltaP;
 	
 	startTime = currentTime;
 	calculate = false;
+	printf("frame is done\n");
 }
 
 /*
@@ -52,20 +57,23 @@ void GuitarTimer::startString(int string, int value) {
 	assert(string < DEFAULT_AMOUNT_OF_STRINGS);
 	peaksList[string]->peakCount += 1;
 	peaksList[string]->absoluteTime += currentTime;
-	peaksList[string]->peaks.push_back(value);
+	//peaksList[string]->peaks.push_back(value);
 	vector<int>::iterator it;
 	bool notstored = true;
 	for ( it=peaksList[string]->peaks.begin() ; it < peaksList[string]->peaks.end(); it++ ){
+		printf("from list: %d compare to value %d\n",*it,value);
 		if(*it < value){
 			//it has moved and this is it
 			pixel_differences += (value - *it);
 			pixeldiffcount += 1;
 			//store in a new peaks
+			peaksList[string]->peaks.erase(it);
 			temp.push_back(value);
 			notstored = false;
 			break;
 		}
 	}
+	printf("end\n");
 	if(notstored){
 		//add to new one
 		temp.push_back(value);
@@ -81,9 +89,9 @@ void GuitarTimer::startString(int string, int value) {
  */
 void GuitarTimer::endString(int string) {
 	assert(string < DEFAULT_AMOUNT_OF_STRINGS);
-	assert(peaksList[string]->peakCount == peaksList[string]->peaks.size());
+	//assert(peaksList[string]->peakCount == peaksList[string]->peaks.size());
 	peaksList[string]->peaks = temp;
-	temp.empty();
+	temp.clear();
 }
 
 /*
@@ -94,12 +102,12 @@ void GuitarTimer::peakDetected(int string, int value) {
 	assert(calculate);
 	if(currentString != string){
 		if(currentString != -1){
-			GuitarTimer::getInstance()->endString(currentString);
+			endString(currentString);
 		}
 		peaksList[string]->peakCount = 0;
 		currentString = string;
 	}
-	GuitarTimer::getInstance()->startString(string,value);
+	startString(string,value);
 	//peaks[string]->peakCount += 1;
 	//Need to store EACH hit per string
 }
@@ -131,7 +139,7 @@ GuitarTimer::GuitarTimer() {
 		peaksList[i]->peakCount = 0;
 		peaksList[i]->absoluteTime = 0;
 	}
-	startTime = clock () +  1* CLOCKS_PER_SEC;
+	startTime = clock ();
 }
 
 GuitarTimer::~GuitarTimer() {

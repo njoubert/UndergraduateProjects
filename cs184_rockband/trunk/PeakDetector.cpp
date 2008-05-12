@@ -37,7 +37,7 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			int end = start-1;
 			for (; end >= 1 && (end-start) < estLength/2; end--) {
 				tempHeight = cvGet2D(pLum, end, 0).val[0];
-				if (tempHeight > peakHeight) {	//found a possible hit
+				if (tempHeight > peakHeight) {					//found a possible hit
 					peakHeight = tempHeight;
 					peakPos = end;	
 				} else if (derivative(pLum, end, -1) <= 0) {	//derivative decreased - must have a possibly hit by now
@@ -47,9 +47,9 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 				} 
 			}
 			ret.push_back(peakPos);
-			//if (string > -1)
-			//	gTimer->peakDetected(string, peakPos);
-			start = end - (estLength/3);
+			if (string > -1)
+				gTimer->peakDetected(string, peakPos);
+			start = end - (estLength/3);							//Offsets forward for no double-peaking
 			
     }
 	return ret;

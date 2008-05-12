@@ -7,7 +7,7 @@ NoteTracker::NoteTracker(int pSize) {
 	cursor = 0;
 	start = 0;
 	threshold = 0;		//appropriate threshold TBD...
-	estLenth = 1; 		//TBD...
+	estLength = 1; 		//TBD...
 	hitData.valid = false;
 	data = new float[size];
 	for (int i=0; i < size; i++) {
@@ -41,7 +41,7 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes) {
 	//run peak detection on data
 	vector<int> peaks = PeakDetector::detectPeaksForTimer(copy, threshold, estLength, false, -1);
 	for (int i=0; i < steps; i++) {
-		for (int j=0; j < peaks.size; j++) {
+		for (int j=0; j < peaks.size(); j++) {
 			if (cursor == peaks[j]) {
 				hits++;
 				hitData.valid = true;
