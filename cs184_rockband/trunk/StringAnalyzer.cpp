@@ -58,7 +58,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         CvScalar cvMean, cvStddev;
         cvAvgSdv(lPseudoRowLuminance2,&cvMean,&cvStddev);
 		
-		double k = 1.2;
+		double k = 2.0;
 		double lThreshold = cvMean.val[0] + k*cvStddev.val[0];
 		_threshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 			
