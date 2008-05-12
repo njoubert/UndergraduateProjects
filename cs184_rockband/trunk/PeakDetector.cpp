@@ -1,5 +1,7 @@
 #include "PeakDetector.h"
 
+double PeakDetector::demandedHalfWidthFactor = 4;
+
 PeakDetector::PeakDetector() {
 }
 
@@ -16,12 +18,12 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 	GuitarTimer* gTimer = GuitarTimer::getInstance();
 	
 	int peakPos;
-	double peakHeight, peakWidth, tempHeight;
+	double peakHeight, halfPeakWidth, tempHeight;
 	std::vector<int> ret;
 	
 	for (int start = pLum->height-1; start >= 1; start--) {
 			peakPos = 0;
-			tempHeight = peakHeight = peakWidth = 0.0;
+			tempHeight = peakHeight = halfPeakWidth = 0.0;
 			
 			if (cvGet2D(pLum, start, 0).val[0] < pThreshold) {
 				if (writeBack)
@@ -36,12 +38,12 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 			tempHeight = cvGet2D(pLum, start, 0).val[0];
 			int end = start-1;
 			for (; end >= 1 && (end-start) < estLength/2; end--) {
-				peakWidth++;
+				halfPeakWidth++;
 				tempHeight = cvGet2D(pLum, end, 0).val[0];
 				if (tempHeight > peakHeight) {					//found a possible hit
 					peakHeight = tempHeight;
 					peakPos = end;	
-				} else if (derivative(pLum, end, -1) <= 0) {	//derivative decreased - must have a possibly hit by now
+				} else if (derivative(pLum, end, -1) <= 0 && halfPeakWidth > estLength/demandedHalfWidthFactor) {	//derivative decreased - must have a possibly hit by now
 					ret.push_back(peakPos);
 					if (string > -1)
 						gTimer->peakDetected(string, peakPos);

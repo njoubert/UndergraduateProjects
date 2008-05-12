@@ -398,6 +398,10 @@ void analyzeRawImage( CvCapture* captureSource ) {
 	        lKey = cvWaitKey( 2 );  
 	        if( 'q' == lKey ) {
 	            exit(0);
+	        } else if ('=' == lKey) {
+	        	PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor + 0.1;
+	        } else if ('-' == lKey) {
+	        	PeakDetector::demandedHalfWidthFactor = PeakDetector::demandedHalfWidthFactor - 0.1;
 	        } else if ('x' == lKey) {
 	            ControlPointController::sharedControlPointController()->clearControlPoints();
 	        } 
