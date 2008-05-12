@@ -58,8 +58,8 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	_threshold = newThreshold;
 	if (newThreshold > _thresholdMax)
 		_thresholdMax = newThreshold;
-	if (newThreshold < 70.0/100.0*_thresholdMax) {
-		_threshold = 70.0/100.0*_thresholdMax;
+	if (newThreshold < 68.0/100.0*_thresholdMax) {
+		_threshold = 68.0/100.0*_thresholdMax;
 	} else {
 		_threshold = newThreshold;
 	}
