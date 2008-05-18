@@ -17,7 +17,7 @@ void Convolver::accentuatePeaks(CvMat* input, int kernelWidth, CvMat* output) {
 	//By default the kernel is anchored in the middle. Keep this behaviour
 	cvFilter2D(input, output, kernel);
 	
-	
+	cvReleaseMat(&kernel);
 }
 
 Convolver::Convolver() {}

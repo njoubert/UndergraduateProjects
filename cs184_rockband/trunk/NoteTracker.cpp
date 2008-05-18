@@ -29,14 +29,18 @@ bool NoteTracker::add_notes(CvMat* notes) {
 	CvMat* notes_normalized = cvCreateMat(notes->rows, notes->cols, notes->type);
 	//cvNormalize(notes, notes_normalized, 0.0, 1.0,CV_C);
 	cvFlip(notes, notes_normalized, 0);
-	if (notes->height != size)
+	if (notes->height != size) {
+		cvReleaseMat(&notes_normalized);
 		return false;
+	}	
 	
 	double newVal;
 	for (int i=0; i < size; i++) {
 		newVal = ((double)cvGet2D(notes_normalized, i, 0).val[0] + (double)get(i))/2.0;
 		put(i, newVal);	//inverts image
 	}
+	
+	cvReleaseMat(&notes_normalized);
 	return true;
 }
 
@@ -89,7 +93,8 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	//add given notes to current notes
 	bool add_OK = add_notes(notes);
 	
-	
+	cvReleaseMat(&copy);
+
 	if (!add_OK)
 		return false;
 	//if (hits != 1) {
@@ -153,8 +158,9 @@ void NoteTracker::plotMe(vector<int> peaks, int numHitsUnderCursor) {
 	   sprintf(name, "Buffer %d", _string+1); 
 	   
 	   cvShowImage(name, lPlot);
+
 	   cvReleaseImage(&lPlot);
-       
+	   cvReleaseMat(&copy);     
 }
 
 void NoteTracker::incCursor() {
