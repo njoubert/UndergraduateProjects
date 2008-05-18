@@ -76,6 +76,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         _myTracker->initialize(lClippedStringImage->height);
         _myTracker->shift_add_invalidate(round(guitarTimer->getDeltaP()),lPseudoRowLuminance2, estimatedNoteLength*2);
         
+        /**
         
         IplImage* lPlot = cvCreateImage(cvSize(PLOT_WIDTH, pImage->height), IPL_DEPTH_8U, pImage->nChannels);
         cvZero(lPlot);
@@ -88,7 +89,7 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
         }
         cvLine(lPlot, cvPoint(_threshold, 0), cvPoint(_threshold, cvGetSize(lPseudoRowLuminance2).height-1), CV_RGB(192,192,192));
         
-		/**
+		
         
         CvFont font;
         cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
@@ -120,14 +121,15 @@ void StringAnalyzer::analyzeFrame( IplImage* pImage, int estimatedNoteLength ) {
        sprintf(name, "Buffer %d", _stringNumber+1); 
        cvShowImage(name, lPlot);
        cvReleaseImage(&lPlot);
-		// */
+       
+       // */
+       
+		
        
         
         cvReleaseMat(&lPseudoRowLuminance);
         cvReleaseMat(&lPseudoRowLuminance2);
         cvReleaseMat(&lTempHeader);
-        
-	
 		cvReleaseImage( &lClippedStringImage );
 
 }

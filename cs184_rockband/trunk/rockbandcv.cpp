@@ -402,6 +402,8 @@ void mouseCallback(int event, int x, int y, int flags, void *param) {
 void analyzeRawImage( CvCapture* captureSource ) {
 	
 	IplImage *frame, *frame_copy = 0;
+	CvMat *lPerspectiveTransform;
+	IplImage* lTransformedImage;
 	
 	//This is the global guitar timer:
 	GuitarTimer* guitarTimer = GuitarTimer::getInstance();
@@ -472,36 +474,26 @@ void analyzeRawImage( CvCapture* captureSource ) {
         
         guitarTimer->frameArrived();  
             
-        if( !frame_copy )
-            frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
-                                        IPL_DEPTH_8U, frame->nChannels );
-        if( frame->origin == IPL_ORIGIN_TL )
-            cvCopy( frame, frame_copy, 0 );
-        else
-            cvFlip( frame, frame_copy, 0 );
+//        if( !frame_copy )
+//            frame_copy = cvCreateImage( cvSize(frame->width,frame->height),
+//                                        IPL_DEPTH_8U, frame->nChannels );
+//        if( frame->origin == IPL_ORIGIN_TL )
+//            cvCopy( frame, frame_copy, 0 );
+//        else
+//            cvFlip( frame, frame_copy, 0 );
+		frame_copy = frame;
         
-        	ControlPointController *lCPController = ControlPointController::sharedControlPointController();
-    
-		    CvSize lTransformedImageSize;
-		    lTransformedImageSize.width = INVERSE_PERSPECTIVE_IMAGE_WIDTH;
-		    lTransformedImageSize.height = frame_copy->height;
-		    CvMat *lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
-		    IplImage* lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, frame_copy->nChannels); 
-		    
+    	ControlPointController *lCPController = ControlPointController::sharedControlPointController();
+
+	    CvSize lTransformedImageSize;
+	    lTransformedImageSize.width = INVERSE_PERSPECTIVE_IMAGE_WIDTH;
+	    lTransformedImageSize.height = frame_copy->height;
+	    lPerspectiveTransform = lCPController->getPerspectiveTransformForSize(lTransformedImageSize);
+	    lTransformedImage = cvCreateImage( lTransformedImageSize, IPL_DEPTH_8U, frame_copy->nChannels); 
+
 		    if (NULL != lPerspectiveTransform) {
-		        cvWarpPerspective(frame_copy, lTransformedImage, lPerspectiveTransform);
-		        //drawStringHighlightAndSelection(lTransformedImage);  
-		    } else {
-		        // draw an X in the window
-		        // cvLine(lTransformedImage, cvPoint(0.0,0.0), cvPoint(lTransformedImageSize.width,lTransformedImageSize.height), LINE_COLOR);
-		        // cvLine(lTransformedImage, cvPoint(0.0,lTransformedImageSize.height), cvPoint(lTransformedImageSize.width,0.0), LINE_COLOR);
-		    }
-		    
-		    /*
-		     * At this point we want to have a perspective-transformed frame, out of which we can pick the strings one by one.
-		     */
-		    if (NULL != lPerspectiveTransform) {
-		    	
+		    	cvWarpPerspective(frame_copy, lTransformedImage, lPerspectiveTransform);
+
 		        // Create the 3 channels of the images
                 CvMat *lRed = cvCreateMat(lTransformedImage->height, lTransformedImage->width, CV_8UC1);
                 CvMat *lGreen = cvCreateMat(lTransformedImage->height, lTransformedImage->width, CV_8UC1);
@@ -565,6 +557,7 @@ void analyzeRawImage( CvCapture* captureSource ) {
                 cvReleaseMat(&lGreen);
                 cvReleaseMat(&lBlue);
                 cvReleaseMat(&lTemp);
+                
                 cvReleaseImage(&lMaxRGB);
 		    }
 		    
@@ -596,8 +589,9 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		    lCPController->drawControlPoints(frame_copy);
 		    cvShowImage( "Source", frame_copy );
 		    
+		    
 		    cvReleaseImage( &lTransformedImage );
-			cvReleaseImage( &frame_copy );
+			//cvReleaseImage( &frame_copy );
 	
 	}
 
