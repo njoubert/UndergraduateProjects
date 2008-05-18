@@ -298,6 +298,22 @@ void drawStringHighlightAndSelection(IplImage *pImage) {
     }
 }
 
+void exitRB(int n) {
+	
+    cvDestroyWindow("Source");
+    cvDestroyWindow("Inverse Perspective");
+    cvDestroyWindow("Buffer 1");
+    cvDestroyWindow("Buffer 2");
+    cvDestroyWindow("Buffer 3");
+    cvDestroyWindow("Buffer 4");
+    cvDestroyWindow("Buffer 5");
+	
+    guitar.invalidate();
+    guitar.writeState();
+    guitar.disconnect();
+	exit(n);
+}
+
 /**
  * We set up the GUI windows, register event handlers, find the input source,
  * and pass this to analyzeRawImage to start image processing.
@@ -324,7 +340,6 @@ int main( int argc, char** argv ) {
 
     cvNamedWindow( "Source", 1 );
     cvNamedWindow("Inverse Perspective", 1);
-    cvNamedWindow("String", 1);
     
     cvNamedWindow("Buffer 1", CV_WINDOW_AUTOSIZE);
     cvNamedWindow("Buffer 2", CV_WINDOW_AUTOSIZE);
@@ -340,7 +355,6 @@ int main( int argc, char** argv ) {
     cvMoveWindow("Buffer 5", 4*PLOT_WIDTH, 0);
     cvMoveWindow("Source", 0, 400);
     cvMoveWindow("Inverse Perspective", 650, 400);
-    cvMoveWindow("String", 850, 400);
     
     // Set up mouse handler for specifying the perspective points
     cvSetMouseCallback("Source", mouseCallback);
@@ -351,23 +365,12 @@ int main( int argc, char** argv ) {
     } else {
     	cout << "Could not start capturing! No capture device found or no input file specified!" << endl;	
     }
-    guitar.invalidate();
-    guitar.writeState();
-    guitar.disconnect();
     
     /*
      * Clean up
      */
     cvReleaseCapture( &capture );
-    cvDestroyWindow("Source");
-    cvDestroyWindow("Inverse Perspective");
-    cvDestroyWindow("String");
-    cvDestroyWindow("Buffer 1");
-    cvDestroyWindow("Buffer 2");
-    cvDestroyWindow("Buffer 3");
-    cvDestroyWindow("Buffer 4");
-    cvDestroyWindow("Buffer 5");
-
+	exitRB(0);
     return 0;
 }
 
@@ -423,7 +426,13 @@ void analyzeRawImage( CvCapture* captureSource ) {
         //while ('n' != lKey) { 
 	        lKey = cvWaitKey( 2 );  
 	        if( 'q' == lKey ) {
-	            exit(0);
+	            return;
+			} else if ('t' == lKey) {
+				GuitarTimer::autoTimer = !GuitarTimer::autoTimer;
+			} else if ('1' == lKey) {
+				//GuitarTimer::autoTimer = !GuitarTimer::autoTimer;				
+			} else if ('2' == lKey) {
+				//GuitarTimer::autoTimer = !GuitarTimer::autoTimer;			
 	        } else if ('=' == lKey) {
 	        	NoteTracker::incCursor();
 	        	ControlPointController::sharedControlPointController()->writeControlPoints();

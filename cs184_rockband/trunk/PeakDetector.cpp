@@ -45,7 +45,7 @@ std::vector<int> PeakDetector::detectPeaksForTimer(CvMat * pLum, double pThresho
 					peakPos = end;	
 				} else if (derivative(pLum, end, -1) <= 0 && halfPeakWidth > estLength/demandedHalfWidthFactor) {	//derivative decreased - must have a possibly hit by now
 					ret.push_back(peakPos);
-					if (string > -1)
+					if (string > -1 && GuitarTimer::autoTimer)
 						gTimer->peakDetected(string, peakPos);
 					break;
 				} else if (tempHeight < pThreshold) {

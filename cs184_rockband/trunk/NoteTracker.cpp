@@ -53,22 +53,32 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 	
     CvScalar cvMean, cvStddev;
     cvAvgSdv(copy,&cvMean,&cvStddev);
-    double lThreshold = cvMean.val[0] + 1.50*cvStddev.val[0];
+    double lThreshold = cvMean.val[0] + 1.35*cvStddev.val[0];
 	double newThreshold = (1.0 - STRING_THRESHOLD_RATIO)*lThreshold + (STRING_THRESHOLD_RATIO)*_threshold;
 	_threshold = newThreshold;
+<<<<<<< .mine
+	//if (newThreshold > _thresholdMax)
+	//	_thresholdMax = newThreshold;
+	//if (newThreshold < 70.0/100.0*_thresholdMax) {
+	//	_threshold = 70.0/100.0*_thresholdMax;
+	//} else {
+=======
 	if (newThreshold > _thresholdMax)
 		_thresholdMax = newThreshold;
 	if (newThreshold < 68.0/100.0*_thresholdMax) {
 		_threshold = 68.0/100.0*_thresholdMax;
 	} else {
+>>>>>>> .r338
 		_threshold = newThreshold;
-	}
+	//}
 	
 	//run peak detection on data
 	vector<int> peaks = PeakDetector::detectPeaksForTimer(copy, _threshold, estLength, false, -1);
 	for (unsigned int i = 0; i < peaks.size(); i++) {
 		peaks[i] = copy->height - peaks[i];
 	}
+	
+	//plotMe(peaks, hits);
 	
 	for (int i=0; i < steps; i++) {
 		for (unsigned int j=0; j < peaks.size(); j++) {
@@ -82,11 +92,10 @@ bool NoteTracker::shift_add_invalidate(int steps, CvMat* notes, int estLength) {
 		put(cursor+i, 0.0f);
 	}
 	
-	//plotMe(peaks, hits);
 	start = (start+steps)%size;
 	//add given notes to current notes
-	
 	bool add_OK = add_notes(notes);
+	
 	
 	if (!add_OK)
 		return false;
@@ -151,6 +160,7 @@ void NoteTracker::plotMe(vector<int> peaks, int numHitsUnderCursor) {
 	   sprintf(name, "Buffer %d", _string+1); 
 	   
 	   cvShowImage(name, lPlot);
+	   cvReleaseImage(&lPlot);
        
 }
 

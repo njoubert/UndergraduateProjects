@@ -24,6 +24,7 @@ private:
 	vector<PeakList*> peaksList; //This should contain a peak per string.
 	
 public:
+	static bool autoTimer;
 	static GuitarTimer* getInstance();
 	virtual ~GuitarTimer();
 	void frameArrived();	//call this when a frame arrives - it sets the internal current frame arrival time.
@@ -33,6 +34,8 @@ public:
 	void peakDetected(int,int);	//This function does ALL the work...
 	double getDeltaT();
 	double getDeltaP();
+	void setDeltaT(double);
+	void setDeltaP(double);
 
 };
 

@@ -25,7 +25,7 @@
 #define GLOBALS_H_
 
 const double STRING_THRESHOLD_RATIO = 29.0/30.0;
-const double STDDEVWEIGHT = 2.0;
+const double STDDEVWEIGHT = 1.50;
 
 #endif /*GLOBALS_H_*/
 

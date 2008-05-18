@@ -3,6 +3,8 @@
 
 
 GuitarTimer* GuitarTimer::sharedGuitarTimer = NULL;
+bool GuitarTimer::autoTimer = true;
+
 vector<PeakList*> peaksList;
 clock_t startTime,currentTime;
 int currentString = -1;
@@ -131,6 +133,11 @@ void peakDetected(int string, vector<int> peakList) {
 double GuitarTimer::getDeltaT() { return _deltaT; }
 
 double GuitarTimer::getDeltaP() { return _deltaP; }
+
+void GuitarTimer::setDeltaT(double t) { _deltaT = t; }
+
+void GuitarTimer::setDeltaP(double p) { _deltaP = p; }
+
 
 GuitarTimer::GuitarTimer() {
 	_deltaT = 0.5; //Seed em!
