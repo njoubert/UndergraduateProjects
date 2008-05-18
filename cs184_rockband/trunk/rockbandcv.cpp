@@ -597,10 +597,11 @@ void analyzeRawImage( CvCapture* captureSource ) {
 		    cvShowImage( "Source", frame_copy );
 		    
 		    cvReleaseImage( &lTransformedImage );
-            	
+			cvReleaseImage( &frame_copy );
+	
 	}
 
-    cvReleaseImage( &frame_copy );
+    
         
        
 }
