@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Niels Joubert's Portfolio</title>
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+    </head>
+    <body>
+        <div id="content">
+            <div id="topbar">
+                <img src="images/TopBar2.png"/><hr/><a href="assets/resume.pdf">RESUME</a>
+                &nbsp|&nbsp<a href="index.html">MAIN</a>
+                <hr/>
+                <div class="vspacer">
+                </div>
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        INTRODUCTION
+                    </div>
+                    <div class="right">
+                        <div class="rightemphasis">
+                            <p>
+                                This is my portfolio, demonstrating my work. My expertise lies in back-end system development, thus a significant part of my work is best demonstrated through applications. This portfolio attempts to serve that purpose by providing a gateway to projects I have worked on. Some projects are embedded into this portfolio, others can best be experienced through visiting their respective online locations, requiring an internet connection.
+                            </p>
+                            <p>
+                                Thank you for taking the time to peruse my work. Please do not hesitate to contact me with any questions regarding my education, work experience or projects.
+                            </p>
+                        </div>
+                    </div>
+                </p>
+            </div>
+            <div class="vspacer">
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        COMPUTER GRAPHICS
+                    </div>
+                    <div class="right">
+                    	<p>
+                    		<div class="rightheading">
+                    			Rockband Vision
+							</div>
+							<a href="assets/cs184/rockband/rockband.pdf">Download paper</a>
+							 | <a href="http://www.vimeo.com/1045326">See Online Video</a>
+							<br/>
+							Rockband Vision is a computer vision system capable of playing the Rockband console game
+							autonomously. Rockband is an interactive band simulator that allows human players to play music
+							according to on-screen musical notation using custom musical instruments. Our system is capable
+							of interpreting the Rockband video feed presented to human players: it is able to read the musical
+							notation in the feed and manipulate the game's guitar input to play the game. This project relied on a
+							breadth of knowledge from the computer graphics, numerical analysis and physical computing
+							areas. We present it as our final project for Berkeley's Computer Graphics course.
+
+						</p>
+						
+                        <p>
+                            <div class="rightheading">
+                                Bezier Surface Renderer&nbsp
+                            </div>(Using custom Bezier interpolation code and OpenGL)
+                            <br/>
+                            This project served as an exploration of curved surface rendering. Input files describing Bezier patches are interpolated using DeCasteljau evaluation into a cloud of points, algebraically grouped into triangles, and optionally adaptively tessellated further until a measure of flatness is satisfied. 
+                            <br/>
+                            <br/>
+                            Further details, as well as examples of output, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as5">Surfaces project</a>
+                            website.
+                            <p>
+                                <div class="rightemphasis">
+                                    Prototype Mock-ups
+                                </div>
+                                were used to aid designing of this project. Through rapid prototyping of the mathematical methods using the Processing language, I shortened my design cycle and expanded my understanding of the implementation challenges presented by a system converting tens of Bezier surface patches into a model containing upwards of 20 000 triangles.
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <a href="assets/cs184/bezier/bezier_applet/index.html"><img src="assets/cs184/bezier/bezcurve_s.jpg"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/cs184/bezier/bezier_applet/index.html">Bezier Curve Prototype (Java applet)</a>: I experimented with Bezier curves by prototyping a Java applet that provides a simple editing interface to create these curves. (Time to implement: approx. 90 minutes)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="assets/cs184/bezier/beziersurface_applet/index.html"><img src="assets/cs184/bezier/bezsurface_s.jpg"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/cs184/bezier/beziersurface_applet/index.html">Bezier Surface Prototype (Java applet)</a>: This applet attempts to subdivide a set of bezier patches into triangles, allowing me to experiment with interpolation methods for this project. (Time to implement: approx. 120 minutes)
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p>
+							
+                            <p>
+                                <div class="rightheading">
+                                    Raytracer&nbsp
+                                </div>
+                                <br/>
+                                I implemented a full-featured Raytracer that renders a description of a scene into an image. The basic premise was to use no external libraries whatsoever - I built each component from the ground up. A full description of this project, including the design methodology, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as4">Raytracer project</a>
+                                website. The Raytracer demonstrates raytracing through the following aspects:
+                                <ul>
+                                    <li>
+                                        .OBJ file parsing as input
+                                    </li>
+                                    <li>
+                                        Defining of custom material properties.
+                                    </li>
+                                    <li>
+                                        Defining of custom directional and point lights
+                                    </li>
+                                    <li>
+                                        Efficient intersection tests for spheres and triangles
+                                    </li>
+                                    <li>
+                                        Phong shading of objects
+                                    </li>
+                                    <li>
+                                        Matrix transforms of objects
+                                    </li>
+                                </ul>
+                                Example outputs:
+                                <table cellborder=0 cellspacing=5 cellpadding=0>
+                                    <tr>
+                                        <td>
+                                            <a href="assets/cs184/raytracer/image-08.jpg"><img src="assets/cs184/raytracer/image-08s.jpg"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/raytracer/image-12.jpg"><img src="assets/cs184/raytracer/image-12s.jpg"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/raytracer/image-06.jpg"><img src="assets/cs184/raytracer/image-06s.jpg"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/raytracer/image-15.jpg"><img src="assets/cs184/raytracer/image-15s.jpg"/></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </p>
+                            <p>
+                                <div class="rightheading">
+                                    Phong Shader&nbsp
+                                </div>
+                                <br/>
+                                I implemented the Phong shading algorithm as a first interaction on a pixel level with OpenGL. The Phong calculation is done over a sphere, and my program calculates the pixel color value over the surface. This served as an excellent entry to using OpenGL as display API and play with implementing shading algorithms that interpret normals, colors and color mixing in various ways. More information can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as3">Shader</a>
+                                project website.
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <a href="assets/cs184/shader/as3_multipleLights.png"><img src="assets/cs184/shader/as3_multipleLights_s.png"/></a>
+                                        </td>
+                                        <td>
+                                            <a href="assets/cs184/shader/as3_with_bumpmap.png"><img src="assets/cs184/shader/as3_with_bumpmap_s.png"/></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </p>
+                            <p>
+                            <div class="rightheading">
+                                Particle Physics Simulator&nbsp
+                            </div>
+                            <br/>
+                            Data structures play a crucial role in Computer Graphics. I implemented a Quadtree structure to store points in 2D space, allowing simulation of collisions in a collection on the order of 10 000 points. A default environment is populated with a random distribution of particles, each with a random velocity vector. The simulation optimizes itself by calculating the next point in time at which two particles will collide, and moving the simulation of the environment to that point. Collisions are fully elastic and calculated using a semi-non-deterministic physics engine.
+                            </div>
+                        </p>
+                        </p>
+                    
+                </p>
+            </div>
+            
+			<div class="vspacer">
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        ONLINE VIDEO INTERACTION
+                    </div>
+                    <div class="right">
+                        <p>
+                            I interned at <a href="http://www.yahooresearchberkeley.com/">Yahoo! Research Berkeley</a>
+                            for the duration of 2007. I was a member of the Media and Community team, responsible for the back-end Flash video server, as well as synchronous video sharing applications built on top of the platform I developed. The video server platform was based around the Red5 video server, and our prototypes, codenamed Zync and Webzync, went on to be intergrated into Yahoo! Messenger and Yahoo! Live.
+                        </p>
+                        <p>
+                            <div class="rightheading">
+                                CHI 2008 Video Interactivity Paper&nbsp
+                            </div>
+                            <br>
+                            <div class="rightemphasis">
+                                <a href="assets/yahoo/chi1279.pdf">"Enhancing online personal connections through the synchronized sharing of online video"</a>
+                                David A. Shamma, Marcello Bastea-Forte, Niels Joubert, Yiming Liu.
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="rightemphasis">
+                                Abstract:
+                            </div>
+                            Going to movies in a group and inviting friends over to watch TV are common social activities. This social engagement both improves the viewing experience and helps us stay close with our friends and family. To bring this feeling of co-presence to the Internet, we developed a set of prototypes that enable people to feel more connected by watching web video together in sync. We present the preliminary results of a quantitative usage study and show initial evidence that simultaneous video sharing online can help people feel closer and more connected to their friends and family.
+                        </p>
+                        <p>
+                            <div class="rightheading">
+                                Zync & Webzync synchronous video sharing&nbsp
+                            </div>
+                            <br/>
+                            <a href="http://timetags.research.yahoo.com/zync/">Zync</a>
+                            is the first incarnation of our video sharing concept. Zync comes in the form of a Yahoo! Messenger plugin that can play online video. By dropping a video into Zync, the two participants in the conversation sees a synchronized stream of video between both parties - in other words, each person received the same frame of video at the same point in time. This mimics the behaviour of having several people watching the same television - if one participant decides to, for example, skip ahead in the video, all participants are involved.
+                            <br/>
+                            <br/>
+                            <div class="rightemphasis">
+                                Webzync
+                            </div>
+                            (non-public) used the platform provided by my modified version of Red5 to recreate the Zync experience as a many-to-many online chat interface. Multiple people can join a room, watch video clips (either through posted content or by streaming video from other online providers) and control the viewing experience. We worked in conjunction with the Yahoo! Live team, and we cross-polinated project ideas. Some of the concepts I mention can now be found implemented on the <a href="http://live.yahoo.com/">Yahoo! Live site</a>.
+                        </p>
+                        <p>
+                            <div class="rightheading">
+                                Red5 Open Source Flash Video Server&nbsp
+                            </div>
+                            <br>
+                            When I joined the research team, they were using a slightly modified HTTP server to progressively download video to the client. I started working on the Red5 Open Source Flash video server as an alternative to the in-house server. Red5 had serious limitations - seeking was slow and used excessive disk space, audio support was minimal, and there was no abstraction between files on disk and video streams. I solved each of these issues and Red5 became the prime platform for the <a href="http://www.yahooresearchberkeley.com/">research lab</a>'s video prototypes.
+                        </p>
+                    </div>
+                </p>
+            </div>
+            <div class="vspacer">
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        WEB APPLICATIONS
+                    </div>
+                    <div class="right">
+                        <p>
+                            <div class="rightheading">
+                                2draw.net&nbsp
+                            </div>
+                            (<a href="http://2draw.net/">link</a>)
+                            <br/>
+                            2draw is an online art space, providing drawing tools and a social hub for amateur and professional artists. I joined the 2draw team (currently 4 in number) during summer 2008. With such a small team we are all involved with the many facets of the site. I have been responsible for server maintenance and overhaul and web framework development. I have also taken the position as <a href="http://2draw.net/blog/">blog</a>
+                            editor, responsible for regular articles on art, design and inspiration.
+                        </p>
+                        <p>
+                            <div class="rightheading">
+                                Yahoo Hackdays&nbsp
+                            </div>
+                            <br/>
+                            I have participated in 4 of Yahoo's hackdays - 24 hour programming events focused on innovation and rapid execution of ideas. My projects include:
+                            <ul>
+                                <li>
+                                    The Schedulator - an AJAX schedule organizer for Berkeley students that plugs into the campus class schedule catalog
+                                </li>
+                                <li>
+                                    MusicHydra - A location-aware cellphone app that build custom playlists of music according to the music preferences of people near you.
+                                </li>
+                                <li>
+                                    KitchenZync - A twist on the original Zync application focused around coopertive cooking! Follow a master chef with your friends in creating edible masterpieces, regardless of whether your friend is next door or on another continent. Think your crepe looks good? Then show it off to the other participants!
+                                </li>
+                            </ul>
+                        </p>
+                    </div>
+                </p>
+            </div>
+            <div class="vspacer">
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        FILM PRODUCTION
+                    </div>
+                    <div class="right">
+                        <p>
+                            <div class="rightemphasis">
+                                "Go Big or Go Home" (<a href="assets/video/GoBig.avi">180Mb AVI video link</a>) - a top 10 entry for the "Gone in 60 seconds" national film competition.&nbsp
+                            </div>
+                            <br>
+                            My first forage into short films focused on my love of extreme sports. I find that the human drive to challenge Nature creates a most facinating scene for exploration through the medium of film.
+                        </p>
+                        <p>
+                            <div class="rightemphasis">
+                                "Eden downhill"&nbsp
+                            </div>
+                            (<a href="assets/video/EdenDownhill.avi">400Mb AVI video link</a>) continued my exploration of extreme sports through film.
+                            <br>
+                        </p>
+                        <p>
+                            <div class="rightemphasis">
+                                Stellenbosch Youth Orchestra&nbsp
+                            </div>
+                            <br/>
+                            The SYO is the premier orchestra for high school students in South Africa. I was one of a 3 member team that filmed and authored 5 DVDs featuring their live performances. This included live audio and video capture, non-linear editing and DVD authoring. The final DVD was used as a successful application the the Vancouver Youth Orchestra's conductor position.
+                        </p>
+                    </div>
+                </p>
+            </div>
+            <div class="vspacer">
+            </div>
+            <div class="section">
+                <p>
+                    <div class="left">
+                        ASTROPHYSICS
+                    </div>
+                    <div class="right">
+                        <p>
+                            <div class="rightemphasis">
+                                Supernova Search and Tracking group&nbsp
+                            </div>
+                            <br/>
+                            I am a member of the research team led Professor Alex Filippenko responsible for the most discoveries of new supernovae in nearby galaxies each year. I am a certified observer, and have used the Nickel 1m telescope at Lick Observatory, on top of Mt. Hamilton extensively for Supernovae photometry follow-ups.
+                            <br/>
+                            <a href="http://astro.berkeley.edu/~bait/kait.html">Official website.</a>
+                            <br/>
+                            <a href="http://www.ucolick.org/public/telescopes/kait.html">Press Release.</a>
+                        </p>
+                        <br/>
+                        <p>
+                            <div class="rightemphasis">
+                                Digital Sampling, Fourier Transforms and Double Sideband Mixers.&nbsp
+                            </div>
+                            <a href="assets/astronomy/lab1.pdf">Download paper</a>
+                            <br>
+                            We present a report on activities concerning radioastronomy bench measurements performed
+                            during the first 3 weeks of enrollment in Astronomy 121 at UC Berkeley. We performed several
+                            experiments to become acquainted with the equipment and signal processing involved in the Radio
+                            Astronomy Lab. This document focuses on four main areas: Fourier transforms, investigating the
+                            Nyquist frequency1, investigating Dual Sideband Mixers, and phase detection using mixers. Each
+                            area depends heavily and contains information on Discreet Fourier Transforms, IDL programming
+                            & organization, and the UNIX operating system. This document strives to be an overview of
+                            each of these sections in context of the main areas.
+                        </p>
+                        <br/>
+                        <p>
+                            <div class="rightemphasis">
+                                Radio Interferometry&nbsp
+                            </div>
+                            <a href="assets/astronomy/lab2.pdf">Download paper</a>
+                            <br>
+                            We present a report on the activities concerning the radioastronomy technique known as interferometry.
+                            We first discuss coordinate systems, coordinate system conversions and precession.
+                            We prelude our technical findings with an exhaustive discussion on radio interferometry theory,
+                            in which we cover interference, point source response, and notes on our technical equipment.
+                            The main body of the report consists of using interferometry to measure accurate declinations
+                            of point sources and accurate angular diameters of extended sources. We cover both the theory
+                            and practice of these two fundamental uses of interferometry. Finally, we present brute force and
+                            non-linear least squares techniques. We studied the sun and moon as our extended sources and
+                            the Crab Nebula as a point source with UC Berkeley's undergraduate interferometer.
+                        </p>
+                        <br/>
+                        <p>
+                            <div class="rightemphasis">
+                                Transmission lines, Single Sideband Mixers and the Hydrogen Line&nbsp
+                            </div>
+                            <a href="assets/astronomy/lab3.pdf">Download paper</a>
+                            <br>
+                            This lab report covers several overlapping topics and concludes with observations of the 21-cm
+                            Hydrogen line. We examine transmission lines and waveguides to further our knowledge of the
+                            electronics we need to do our observations with.
+                        </p>
+                        <p>
+                            <div class="rightemphasis">
+                                Mapping High Velocity Hydrogen Clouds&nbsp
+                            </div>
+                            <a href="assets/astronomy/lab4.pdf">Download paper</a>
+                             | <a href="assets/astronomy/image20.jpg">See Map</a>
+                            <br/>
+                            We attempted to use natural hydrogen emission to map a high velocity cloud falling into our
+                            galaxy at speeds in the region of 120 km/s to 170 km/s. We went to extensive trouble to track
+                            and predict our extended object across the sky, and spent approximately 62 hours on observations
+                            alone. Our object had peak signals of about 2 Kelvin, forcing us to use several procedures to
+                            minimize noise and tease out our signal from the background radiation and equipment noise.
+                            We used Gaussian fitting and Fourier filtering along with the spectrum calibration process to
+                            successfully reduce all our observations to useful velocity and intensity values, which we put
+                            through an interpolation and resizing process to successfully generate color maps of our object.
+                            <br/>
+                            <br/>
+                            See the map we created of the HVC C complex cloud:
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a href="assets/astronomy/image20.jpg"><img src="assets/astronomy/image20.jpg" width=75/></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p>
+                    </div>
+                </p>
+            </div>
+            <div class="vspacer">
+            </div>
+        </div>
+		</div>
+    </body>
+</html>
