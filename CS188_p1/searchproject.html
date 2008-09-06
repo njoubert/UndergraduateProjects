@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Project 1: Search in Pacman</title>
+
+<style type="text/css">
+<!--
+.style1 {
+	font-style: italic;
+	font-weight: bold;
+}
+-->
+</style>
+<link href="projects.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style2 {color: #990000}
+-->
+</style>
+</head>
+
+<body>
+<h2>Project 1: Search in Pacman</h2>
+
+<em>Due 9/12 at 11:59pm</em>
+
+
+<blockquote>
+  <p><cite>Pacman has a chance to learn the lay of the land.</cite></p>
+</blockquote>
+<h3>Introduction</h3>
+
+<p><font color="red">Warning: There may be changes to the assignment if bugs are found. </font>  If you find what you think are bugs or lack of clarity in the assignment, please post in the newsgroup or email cs188-staff.</p>
+
+<p>A Pacman agent needs to efficiently find paths through a maze, either to reach a particular location or collect remaining food quickly.  In this project, you will build general search algorithms and apply them to Pacman scenarios. </p>
+
+<p>The code for this project consists of several Python files, some of which you will need to read and understand in order to complete the assignment, and some of which you can ignore for now. 
+You can download the code and supporting files as a <a href="search.zip">zip archive</a>.
+
+<table border="0" cellpadding="10">
+  <tr><td><b>Key files to read:</b></td></tr>
+
+  <tr><td><a href="search.py">search.py</a></td>
+  <td>Where all of your search algorithms will reside.</td></tr>
+  
+  <tr><td><a href="searchAgents.py">searchAgents.py</a></td>
+  <td>Where all of your search-based agents will reside.</td></tr>
+  
+  <tr><td><a href="pacman.py">pacman.py</a></td>
+  <td>The main file that runs Pacman games.  This file also describes a Pacman GameState type, which you will use extensively for the Pacman projects</td></tr>
+
+  <tr><td><a href="game.py">game.py</a></td>
+  <td>The logic behind how the Pacman world works.  This file describes several supporting types like AgentState, Agent, Direction, and Grid.</td></tr>
+
+  <tr><td><a href="util.py">util.py</a></td>
+  <td>Useful data structures for implementing search algorithms.</td></tr>
+  
+  <tr><td><b>Supporting files:</b></td></tr>
+
+  <tr><td><a href="graphicsDisplay.py">graphicsDisplay.py</a></td>
+  <td>Graphics for Pacman</td></tr>
+    
+    <tr><td><a href="graphicsUtils.py">graphicsUtils.py</a></td>
+  <td>Support for Pacman graphics</td></tr>
+
+  <tr><td><a href="textDisplay.py">textDisplay.py</a></td>
+  <td>ASCII graphics for Pacman</td></tr>  
+
+    <tr><td><a href="ghostAgents.py">ghostAgents.py</a></td>
+  <td>Agents to control ghosts</td></tr>
+
+    <tr><td><a href="keyboardAgents.py">keyboardAgents.py</a></td>
+  <td>Keyboard interfaces to control Pacman</td></tr>
+
+    <tr><td><a href="layout.py">layout.py</a></td>
+  <td>Code for reading layout files and storing their contents</td></tr>
+
+</table>
+<p>
+<p><strong>What to submit:</strong> You will fill in portions of <code>search.py</code> and <code>searchAgents.py</code> during the assignment.  You should submit these two files (only) along with a <code>partners.txt</code> file.  <a href="../../submission_instructions.html">Directions for submitting</a> and setting up your account are on the course website.  </p>
+
+<p><strong>Evaluation:</strong> Your code will be graded for technical correctness with the help of an autograder.  Please <em>do not</em> change the names of any functions within the code, or you will wreak havoc on the autograder.  Your answers to various rhetorical written questions in this document need not be handed in.
+
+<p><strong>Academic Dishonesty:</strong> We will be checking your code against other submissions in the class for logical redundancy.  If you copy someone else's code and submit it with minor changes, we will know.  Our cheat detector is quite hard to fool, so please don't try.  We trust you all to submit your own work only; please don't let us down.   Instead, contact the course staff if you are having trouble.
+
+<h3> Welcome to Pacman </h3>
+First, check to see that your python installation is working.  You should be able to play a game of Pacman by typing the following from the command line:
+
+<pre>python pacman.py</pre>
+
+Pacman lives in a shiny blue world of twisting corridors and tasty round treats.  Navigating this world efficiently will be Pacman's first step in mastering his domain.  
+
+<p> The simplest agent in <a href="searchAgents.py">searchAgents.py</a> is called the <code>GoWestAgent</code>, which always goes West (a trivial reflex agent).  This agent can occasionally win:
+
+<pre>python pacman.py --layout testMaze --pacman GoWestAgent</pre>
+
+But, things get ugly for this agent when turning is required:
+
+<pre>python pacman.py --layout tinyMaze --pacman GoWestAgent</pre>
+
+Note: <code>pacman.py</code> supports a number of options that can each be expressed in a long way (e.g., <code>--layout</code>) or a short way (e.g., <code>-l</code>).  You can see the list of all options and their default values via:
+
+<pre>python pacman.py -h</pre>
+
+<h3> A quick guide to the code </h3>
+
+<p> This section discusses some concepts related to the existing code base and aims to clarify some ideas which may not 
+be directly obvious from the documentation.
+
+<dl>
+  <dt><code>SearchProblem </code></dt>
+  <dd>A SearchProblem is an abstract object that represents the state space, successor function, costs, and goal state of a problem.  You will interact with any SearchProblem only through the methods defined at the top of <code>search.py</code></dd>
+  <dt><code>PositionSearchProblem</code></dt>
+  <dd>A specific type of SearchProblem that you will be working with --- it corresponds to searching for a single pellet in a maze.  </dd>
+  <dt><code>FoodSearchProblem</code></dt>
+  <dd>A specific type of SearchProblem that you will be working with --- it corresponds to searching for a way to eat all the pellets in a maze.  </dd>
+  <dt>Search Function</dt>
+  <dd>A search function is a function which takes an instance of SearchProblem as a parameter, runs some algorithm, and returns a sequence of actions that lead to a goal.  Example of search functions are <code>depthFirstSearch</code> and <code>breadthFirstSearch</code>, which you have to write.  You are provided <code>tinyMazeSearch</code> which is a very bad search function that only works correctly on <code>tinyMaze</code>
+  <dt><code>SearchAgent</code></dt>
+  <dd><code>SearchAgent</code> is is a class which implements an Agent (an object that interacts with the world) and does its planning through a search function.  The <code>SearchAgent</code> first uses the search function provided to make a plan of actions to take to reach the goal state, and then executes the actions one at a time.</dd>
+  <dt><code>DepthFirstSearchAgent, BreadthFirstSearchAgent, TinyMazeSearchAgent, UniformCostSearchAgent</code>, etc </dt>
+  <dd>These classes are simply SearchAgents that automatically use a particular search function.  They contain no real logic, and exist only to make it convenient to call a <code>SearchAgent</code> using a particular search function from the command line.</dd>
+</dl>
+<h3> Implementing an Agent </h3>
+<p><em><strong>Question 0 (not graded) </strong></em> As a prerequisite for the remaining questions, you must fill in the code for <code>SearchAgent</code>.  In particular, you need to fill in <code>registerInitialState</code> and <code>getAction</code>.  <code>registerInitialState</code> must call the provided search function and save the sequence of actions (a plan of what steps to take to reach the goal).  <code>getAction</code> must return the next action to take, based on the saved action sequence.
+
+<p>In order for your search agent to successfully work, it requires a search function.  You are provided with <code>tinyMazeSearch</code> which returns the actions required to solve tinyMaze.  When you have successfully completed this question, you should be able to run
+
+<pre>python pacman.py --layout tinyMaze --pacman TinyMazeSearchAgent</pre>
+ 
+<p> and have it successfully solve the maze.  This exercise is largely to get you familiar with the codebase and the idea behing agents, and should not take a large amount of code.
+
+<h3> Finding a Fixed Food Dot using Search Algorithms </h3>
+
+<p>Now that you've gotten your feet wet, we'll solve the problem of efficiently getting Pacman from one place to another.  The layouts <code><a href="layouts/testMaze.lay">testMaze</a>, <a href="layouts/tinyMaze.lay">tinyMaze</a>, <a href="layouts/mediumMaze.lay">mediumMaze</a></code> and <code><a href="layouts/bigMaze.lay">bigMaze</a></code> all have only one piece of food in the bottom-left corner.  The job of your agents will be to navigate to that dot (and eat it).  The problem of finding a path to some goal position is cast into a general search framework in <code>PositionSearchProblem</code> in <a href="searchAgents.py">searchAgents.py</a>.  Make sure you understand this code.
+
+<p>Now it's time to write full-fledged generic search functions to help Pacman plan routes! Pseudocode for the search algorithms you'll write can be found in the lecture slides and textbook.  Remember that a search node must contain not only a state but also the information necessary to reconstruct the path (plan) to that state.  
+
+<p><em>Important note:</em> All of your search functions (questions 1, 2, 3, 4 & 6) need to return a list of actions that will lead the
+agent from the start to the goal.  These actions all have to be legal moves (valid directions, no moving through walls).
+
+<p><em>Hint:</em> Each algorithm is very similar. Algorithms for DFS, BFS, UCS, and A* differ only in the details of how the fringe is managed.  So, concentrate on getting DFS right and the rest should be relatively straightforward.  Indeed, one possible implementation requires only a single generic search method which is configured with an algorithm-specific queuing strategy.  (Your implementation need <em>not</em> be of this form to receive full credit). 
+
+<p><em>Hint:</em> Make sure to check out the <code>Stack, Queue</code> and <code>PriorityQueue</code> types provided to you in <code>util.py</code>!  </p>
+
+<p><em><strong>Question 1 (2 points) </strong></em> Implement the depth-first search (DFS) algorithm in the
+<code>depthFirstSearch</code> function in <em>search.py</em>. To make your algorithm <em>complete</em>, write the graph search version of DFS, which avoids expanding any already visited states (textbook section 3.5). 
+
+<p>Your code should quickly find a solution for:
+
+<pre>python pacman.py -l tinyMaze -p DepthFirstSearchAgent</pre>
+
+<pre>python pacman.py -l mediumMaze -p DepthFirstSearchAgent</pre>
+
+When you run a search agent using <code>PositionSearchProblem</code>, the Pacman board will show an overlay of the positions explored and the order in which they were explored (brighter red means earlier exploration).  Is the exploration order what you would have expected? 
+
+<p> <em>Hint:</em> If you use a Stack as your data structure, the solution found by your DFS algorithm for <code>mediumMaze</code> should have a length of 162 (provided you push successors onto the fringe in the order provided by getSuccessors; you might get 264 if you push them in the reverse order). Is this a least cost solution? If not, think about what depth-first search is doing wrong?
+
+<p><em><strong>Question 2 (2 point) </strong></em> Implement the breadth-first search (BFS) algorithm in the
+<code>breadthFirstSearch</code> function in <em>search.py</em>. Again, write a graph search algorithm that avoids expanding any already visited states. Test your code the same way you did for depth-first search.
+
+<pre>python pacman.py -l mediumMaze -p BreadthFirstSearchAgent</pre>
+
+<pre>python pacman.py -l bigMaze -p BreadthFirstSearchAgent -z .5</pre>
+
+Does BFS find a least cost solution?   If not, check your implementation.
+
+<h3> Varying the Cost Function </h3>
+
+While BFS will find a fewest-actions path to the goal, we might want to find paths that are "best" in other senses.  Consider <code><a href="layouts/mediumDottedMaze.lay">mediumDottedMaze</a></code> and <code><a href="layouts/mediumScaryMaze.lay">mediumScaryMaze</a></code>.  We can use varying cost functions provided to cause differing paths through these mazes to have least weighted cost.  For example, we can charge more for dangerous steps in ghost-ridden areas or less for steps in food-rich areas, and a rational Pacman agent should adjust its behavior in response.
+
+<p><em><strong>Question 3 (3 points) </strong></em> Implement the uniform-cost graph search algorithm in
+the  <code>uniformCostSearch</code> function in <em>search.py</em>. You should now observe different behavior in all three of these conditions, where the agents below are all UCS agents which differ only in the cost function they (the agents and cost functions are written for you):
+
+<pre>python pacman.py -l mediumMaze -p UniformCostSearchAgent</pre>
+
+<pre>python pacman.py -l mediumDottedMaze -p StayEastSearchAgent</pre>
+
+<pre>python pacman.py -l mediumScaryMaze -p StayWestSearchAgent</pre>
+
+<h3> A* search </h3>
+
+Now, lets go back to the equal cost setting and develop a better search algorithm.  
+
+<p><span class="style1">Question 4 (3 points) </span> Implement A* graph search in the empty function <code>aStarSearch</code> in <em>search.py</em>. You will need to pass a heuristic function into <code>aStarSearch</code> upon construction. The heuristic function should take one argument: a state in the search problem.  See the <code>nullHeuristic</code> heuristic function in <code>search.py</code> for an example. 
+
+<p>You can test your A* implementation on the original problem of finding a path through a maze to a fixed position using the Manhattan distance heuristic.  The appropriate classes are already written for you (and their structure should serve as an example for question 6).  Notice that this particular heuristic must be configured with the goal location, and so our code bundles up a custom heuristic for each problem instance using functional closures.  Run the following to test your A* agent:
+
+<pre>python pacman.py -l bigMaze -p ManhattanAStarSearchAgent -z .5 </pre>
+
+You should see that A* finds the optimal solution slightly faster than uniform cost search (549 vs. 621 search nodes expanded in our implementation).  What happens on <code>openMaze</code> for the various search strategies?
+
+<p> On this simple path-to-point problem, A* doesn't really help much, since the search space is so tiny.  The real power of A* will only be apparent with the more challenging <code>FoodSearchProblem</code> in the next section.  Here, UCS grinds to a halt and well-designed heuristics are king.
+
+
+
+<h3> Eating All The Dots </h3>
+
+Now we'll solve a much harder search problem: eating all the Pacman food in as few steps as possible.  For this, we'll need a new search problem definition which formalizes the food-clearning problem.  This formalization is provided for you in <code>FoodSearchProblem</code> in <code>searchAgents.py</code>.  A solution will now be a series of actions that collects all of the food in the Pacman game.  Such a solution will not change if there are ghosts or power pellets in the game; it only depends on the placement of walls, food and Pacman, though of course ghosts can ruin the execution of a solution!  If you have written your general search methods correctly, the <code>UniformCostFoodSearchAgent</code> should quickly find optimal solutions to <a href="layouts/testSearch.lay">testSearch</a> with no code change on your part.
+
+<pre>python pacman.py -l testSearch -p UniformCostFoodSearchAgent </pre>
+
+While your UCS code may be correct on this problem, it will not scale very well.  You should find that UCS starts to slow down even with the seemingly simple <code><a href="layouts/tinySearch.lay">tinySearch</a></code>.  As a reference, our implementation takes 10 seconds to find a path of length 27 after expanding 4902 search nodes.  Why does such a tiny board give rise to such a large search problem?  We'll turn to A* to help us scale up while keeping our agent optimal.
+
+<p> <span class="style1">Question 5(a) (2 points) </span> Fill in <code>AStarFoodSearchAgent</code> so that is runs A* using an <emph> admissible </emph> heuristic.  You should call <code>getFoodHeuristic(gameState)</code> to get an instance of the heuristic function, which you can then use on states to evaluate the heuristic.  We have provided you with a trivialFoodHeuristic.  The class <code>TrivialAStarFoodAgent</code> creates an <code>AStarFoodSearchAgent</code> using the trivial heuristic provided.  Once you complete <code>AStarFoodSearchAgent</code>, you can test it with
+
+<pre>python pacman.py -l tinySearch -p TrivialAStarFoodSearchAgent</pre>
+
+<p>  It should expand slightly fewer nodes than UCS.  The difference is minor because the heuristic provided is so bad (but admissible).  Now, lets improve it:  
+
+<p><span class="style1">Question 5(b) (5 points) </span> Write an <emph> admissible </emph> heuristic for a <code>FoodSearchProblem</code> in one of two places in <code>searchAgents.py</code>.  You may fill in <code>foodHeuristic</code> or you may fill in <code>getFoodHeuristic</code> (for more flexibility in designing complex heuristics).  
+
+<p>  Try your agent on the <code>trickySearch</code> board:
+
+<pre>python pacman.py -l trickySearch -p AStarFoodSearchAgent</pre>
+
+Our UCS agent finds the optimal solution in about 60 seconds, exploring 16749 nodes.  Details on exactly how few nodes your A* agent should expand for full credit will be provided in a few days, but it's possible to get the number below 1000.  See how well you can do. Can you solve <code><a href="layouts/mediumSearch.lay">mediumSearch</a></code> in a short time?  If so, we're either very, very impressed, or your heuristic is inadmissible.  <em>Note:</em> Question 5 will be graded in part on how fast you can solve search problems, and in part on whether or not your heuristic is admissible.  Think through admissibility carefully as inadmissible heuristics may manage to produce fast searches and optimal paths.
+
+
+<p> Sometimes, even with A*, finding the optimal path through all the dots is just too hard.  In these cases, we'd still like to find a reasonably good path, quickly.  Greedy search is can be a good option here:
+
+<p><span class="style1">Question 6 (2 points)</span> Implement greedy graph search in the empty function <code>greedySearch</code> in <em>search.py</em>.  Again, you will need to pass in a heuristic function.  Then, fill in <code>GreedyFoodSearchAgent</code>.  With a simple heuristic, our implementation solves the following using a path of 350 steps: 
+
+<pre>python pacman.py -l bigSearch -p GreedyFoodSearchAgent -z .5 </pre>
+
+With a better heuristic (closer to the truth), ours finds a solution of less than 300 steps.  Your heuristic for greedy search need not be any different from your A* heuristic.  
+
+<p>Congratulations!  You've finished the first project.  Now Pacman is ready to take on some ghosts for real...
+
+</body>
+</html>
