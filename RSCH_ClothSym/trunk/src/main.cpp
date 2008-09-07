@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <cstdlib>
 
 #ifdef _WIN32
 #	include <windows.h>
@@ -16,9 +17,6 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 #endif
-
-//OpenGL = API to graphics hardware
-//GLUT = OpenGL Utility library Toolkit. A simple window manager
 
 #include <time.h>
 #include <math.h>
@@ -41,41 +39,71 @@ public:
 	int w, h; // width and height
 };
 
+Viewport	viewport;
+
+class Particle {
+public:
+	double x, y, vx, vy;
+public:
+	Particle() { };
+	Particle(double x, double y, double vx, double vy) {
+		this->x = x; this->y = y; this->vx = vx; this->vy = vy;
+	};
+	void draw() {
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(x, y);
+	}
+	void update() {
+		x += vx;
+		y += vy;
+		vy -= ((rand() % 100) + 1000) / (double) 100000;
+		//vx /= 1.004f;
+		//vy /= 1.004f;
+		if (x > viewport.w/2 || x < -viewport.w/2) {
+			vx /= 1.6;
+			//vx = -vx;
+		}
+		if (y > viewport.h/2 || y < -viewport.h/2) {
+			y = -viewport.h/2;
+			vy /= 1.6;
+			vy = -vy;
+		}
+
+	}
+};
+
 
 //****************************************************
 // Global Variables
 //****************************************************
-Viewport	viewport;
 
-//****************************************************
-// reshape viewport if the window is resized
-//****************************************************
+vector<Particle> particles;
+
+void setPixel(float x, float y, GLfloat r, GLfloat g, GLfloat b) {
+	glColor3f(r, g, b);
+	glVertex2f(x, y);
+}
+
 void myReshape(int w, int h) {
 	viewport.w = w;
 	viewport.h = h;
 
-	glViewport(0,0,viewport.w,viewport.h);// sets the rectangle that will be the window
+	glViewport(0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();				// loading the identity matrix for the screen
-
-	//----------- setting the projection -------------------------
-	// glOrtho sets left, right, bottom, top, zNear, zFar of the chord system
-
-
-	// glOrtho(-1, 1 + (w-400)/200.0 , -1 -(h-400)/200.0, 1, 1, -1); // resize type = add
-	// glOrtho(-w/400.0, w/400.0, -h/400.0, h/400.0, 1, -1); // resize type = center
-
-	glOrtho(-1, 1, -1, 1, 1, -1);	// resize type = stretch
-
-	//------------------------------------------------------------
+	glLoadIdentity();
+	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
 }
 
-
-//****************************************************
-// sets the window up
-//****************************************************
 void initScene(){
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			float vx = ((rand() % 200) - 100) / 400.0f;
+			float vy = ((rand() % 200) - 100) / 400.0f;
+			particles.push_back(Particle(0, 0, vx, vy));
+		}
+	}
 
 	myReshape(viewport.w,viewport.h);
 }
@@ -86,39 +114,25 @@ void initScene(){
 //***************************************************
 void myDisplay() {
 
-	glClear(GL_COLOR_BUFFER_BIT);				// clear the color buffer (sets everything to black)
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
-	glLoadIdentity();							// make sure transformation is "zero'd"
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-	//----------------------- code to draw objects --------------------------
-							// Rectangle Code
-	//glColor3f(red component, green component, blue component);
-	glColor3f(1.0f,1.0f,0.0f);					// setting the color to pure red 90% for the rect
+	glColor3f(1.0f,1.0f,0.0f);
 
 	for (int i = 0; i < 5; i++) {
 
-	glBegin(GL_POLYGON);						// draw rectangle
-		//glVertex3f(x val, y val, z val (won't change the point because of the projection type));
-		glVertex3f(-0.8f, 0.0f, 0.0f);			// bottom left corner of rectangle
-		glVertex3f(-0.8f, 0.5f, 0.0f);			// top left corner of rectangle
-		glVertex3f( 0.0f, 0.5f, 0.0f);			// top right corner of rectangle
-		glVertex3f( 0.0f, 0.0f, 0.0f);			// bottom right corner of rectangle
-	glEnd();
-							// Triangle Code
-	glColor3f(1.0f,0.3f,0.0f);					// setting the color to orange for the triangle
-
-	float basey = -sqrt(0.48f);					// height of triangle = sqrt(.8^2-.4^2)
-	glBegin(GL_POLYGON);
-		glVertex3f(0.5f,  0.0f, 0.0f);			// top tip of triangle
-		glVertex3f(0.1f, basey, 0.0f);			// lower left corner of triangle
-		glVertex3f(0.9f, basey, 0.0f);			// lower right corner of triangle
-	glEnd();
-	//-----------------------------------------------------------------------
+		glBegin(GL_POINTS);
+			for (vector<Particle>::iterator it = particles.begin();
+					it!=particles.end(); ++it) {
+				(*it).draw();
+			}
+		glEnd();
 
 	}
 	glFlush();
-	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
+	glutSwapBuffers();
 }
 
 
@@ -126,32 +140,32 @@ void myDisplay() {
 // called by glut when there are no messages to handle
 //****************************************************
 void myFrameMove() {
-	//nothing here for now
-#ifdef _WIN32
-	Sleep(10);						//give ~10ms back to OS (so as not to waste the CPU)
-#endif
+
+	//Check time using lastTime.
+
+	for (vector<Particle>::iterator it = particles.begin();
+						it!=particles.end(); ++it) {
+		(*it).update();
+	}
+
+	#ifdef _WIN32
+		Sleep(10);						//give ~10ms back to OS (so as not to waste the CPU)
+	#endif
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 
-
-//****************************************************
-// the usual stuff, nothing exciting here
-//****************************************************
 int main(int argc, char *argv[]) {
-  	//This initializes glut
   	glutInit(&argc, argv);
-
-  	//This tells glut to use a double-buffered window with red, green, and blue channels
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
-  	// Initalize theviewport size
+  	// Initalize the viewport size
   	viewport.w = 400;
   	viewport.h = 400;
 
   	//The size and position of the window
   	glutInitWindowSize(viewport.w, viewport.h);
   	glutInitWindowPosition(0, 0);
-  	glutCreateWindow("CS184!");
+  	glutCreateWindow("Cloth Sym");
 
   	initScene();							// quick function to set up scene
 
@@ -162,11 +176,3 @@ int main(int argc, char *argv[]) {
 
   	return 0;
 }
-
-
-
-
-
-
-
-
