@@ -95,6 +95,12 @@ void myReshape(int w, int h) {
 }
 
 void initScene(){
+  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  	viewport.w = 400;
+  	viewport.h = 400;
+  	glutInitWindowSize(viewport.w, viewport.h);
+  	glutInitWindowPosition(0, 0);
+  	glutCreateWindow("Cloth Sym");
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 	for (int i = 0; i < 100; i++) {
@@ -156,16 +162,6 @@ void myFrameMove() {
 
 int main(int argc, char *argv[]) {
   	glutInit(&argc, argv);
-  	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-
-  	// Initalize the viewport size
-  	viewport.w = 400;
-  	viewport.h = 400;
-
-  	//The size and position of the window
-  	glutInitWindowSize(viewport.w, viewport.h);
-  	glutInitWindowPosition(0, 0);
-  	glutCreateWindow("Cloth Sym");
 
   	initScene();							// quick function to set up scene
 
