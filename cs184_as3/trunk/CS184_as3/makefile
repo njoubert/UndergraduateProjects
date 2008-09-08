@@ -28,12 +28,22 @@ OBJECTS = shader.o
 
 #-----------------------------------------
 
+FRAMEWORK = -framework GLUT
+FRAMEWORK += -framework OpenGL
+MACLIBS = -lGL -lGLU -lm -lstdc++ 
+MACINCS = -L"/System/Library/Frameworks/OpenGL.framework/Libraries"
+
+CCOPTSMAC = $(MACINCS) -DOSX
+LDOPTSMAC = $(FRAMEWORK) $(MACINCS) $(MACLIBS) -DOSX
+
 LIBS = $(X_LIB) $(GL_LIB)
 INCS = $(X_INC)
 
-CCOPTS = $(OPT) $(INCS)
-LDOPTS = $(OPT) $(INCS) $(LIBS)
+#CCOPTS = $(OPT) $(INCS)
+#LDOPTS = $(OPT) $(INCS) $(LIBS)
 
+CCOPTS = $(CCOPTSMAC)
+LDOPTS = $(LDOPTSMAC)
 #-----------------------------------------
 #-----------------------------------------
 
@@ -48,8 +58,8 @@ clean:
 shader: shader.o
 	$(CC) shader.o $(LDOPTS) -o shader
 
-shader.o: Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp BumpMap.cpp shader.cpp
-	$(CC) Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp BumpMap.cpp shader.cpp -c $(CCOPTS)
+shader.o: Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp shader.cpp
+	$(CC) Debug.cpp Color.cpp Vector3d.cpp Position.cpp Light.cpp shader.cpp -c $(CCOPTS)
 
 
 #export LD_LIBRARY_PATH="/usr/sww/pkg/Mesa/lib:/usr/lib:/usr/sww/lib"
