@@ -1,31 +1,5 @@
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <cstdlib>
+#include "main.h"
 
-#ifdef _WIN32
-#	include <windows.h>
-#else
-#	include <sys/time.h>
-#endif
-
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#endif
-
-#include <time.h>
-#include <math.h>
-
-#ifdef _WIN32
-static DWORD lastTime;
-#else
-static struct timeval lastTime;
-#endif
 
 #define PI 3.14159265
 
@@ -34,6 +8,8 @@ using namespace std;
 //****************************************************
 // Some Classes
 //****************************************************
+System sys;
+
 class Viewport {
 public:
 	int w, h; // width and height
@@ -103,23 +79,43 @@ void initScene(){
   	glutCreateWindow("Cloth Sym");
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
-			float vx = ((rand() % 200) - 100) / 400.0f;
-			float vy = ((rand() % 200) - 100) / 400.0f;
-			particles.push_back(Particle(0, 0, vx, vy));
-		}
-	}
-
 	myReshape(viewport.w,viewport.h);
 }
 
+void initParticles() {
+
+    for (int i = 0; i < 100; i++) {
+        for (int j = 0; j < 100; j++) {
+            float vx = ((rand() % 200) - 100) / 400.0f;
+            float vy = ((rand() % 200) - 100) / 400.0f;
+            particles.push_back(Particle(0, 0, vx, vy));
+        }
+    }
+
+}
+
+void initSystem() {
+    int step = 20;
+    double border = 50;
+    vector< vector < Point> > x(step, vector< Point >(step));
+    vector<int> dim(2,step);
+    for (int i = 0; i < step; i++) {
+        for (int j = 0; j < step; j++) {
+            x[i][j].x = (((double) viewport.w - border*2) / (double) step) * (double) i - ((viewport.w - border*2) / 2.0);
+            x[i][j].y = (((double) viewport.h - border*2) / (double) step) * (double)j - ((viewport.h - border*2) / 2.0);
+            x[i][j].vx = -1.0;
+            x[i][j].vy = 0.0;
+        }
+    }
+    sys.setX(&x, dim);
+}
 
 //***************************************************
 // function that does the actual drawing
 //***************************************************
 void myDisplay() {
 
+    myReshape(viewport.w, viewport.h);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -127,7 +123,6 @@ void myDisplay() {
 
 	glColor3f(1.0f,1.0f,0.0f);
 
-	for (int i = 0; i < 5; i++) {
 
 		glBegin(GL_POINTS);
 			for (vector<Particle>::iterator it = particles.begin();
@@ -136,7 +131,8 @@ void myDisplay() {
 			}
 		glEnd();
 
-	}
+		sys.draw();
+
 	glFlush();
 	glutSwapBuffers();
 }
@@ -163,7 +159,9 @@ void myFrameMove() {
 int main(int argc, char *argv[]) {
   	glutInit(&argc, argv);
 
+//  	initParticles();
   	initScene();							// quick function to set up scene
+    initSystem();
 
   	glutDisplayFunc(myDisplay);				// function to run when its time to draw something
   	glutReshapeFunc(myReshape);				// function to run when the window gets resized

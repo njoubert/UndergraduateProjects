@@ -5,8 +5,17 @@
  *      Author: njoubert
  */
 
+#include "global.h"
+
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
+
+
+class Point {
+public:
+    double x, y, vx, vy;
+
+};
 
 /// \brief Represents the cloth mesh system
 ///
@@ -17,7 +26,7 @@ public:
 	virtual ~System();
 
 	/// \brief Returns the dimensions of the system.
-	int getDim();
+	std::vector<int> getDim();
 
 	/// \brief Gets or Sets the current point in time.
 	double getT();
@@ -25,14 +34,19 @@ public:
 
 	/// \brief Returns the position vector of the system,
 	/// with dimensions as reported by getDim().
-	double* getX();
+	std::vector< std::vector< Point > > * getX();
 
 	/// \brief Sets the position vector of the system.
-	/// x is assumed to have the same dimensions as reported by getDim()
-	void setX(double*);
+	void setX(std::vector< std::vector< Point > > *, std::vector<int> dim);
 
 	/// \brief Evaluates the derivative at the current time.
-	double* evalDeriv();
+	std::vector<Point> * evalDeriv();
+
+	/// \brief Draws the system using OpenGL. Assumes a window exists.
+	void draw();
+
+private:
+    std::vector< std::vector<Point> > x;
 
 };
 
