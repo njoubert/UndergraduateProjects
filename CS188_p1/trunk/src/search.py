@@ -11,7 +11,7 @@ class SearchProblem:
      """
      Returns the start state for the search problem
      """
-     print 'testing'
+     print 'testing 1 2 3s'
      util.raiseNotDefined()
 
   def isGoalState(self, state):
