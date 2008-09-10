@@ -164,7 +164,7 @@ class SearchAgent(Agent):
 
     # If you wrap your solution in the timing code provided, you'll know how long the pathfinding takes.
     starttime = time.time()
-    problem = self.searchType(state);
+    problem = self.searchType(state)
     self.actions = self.searchFunction(problem)
     
     
@@ -177,7 +177,9 @@ class SearchAgent(Agent):
     
     state: a GameState object (pacman.py)
     """
-    return self.actions.pop(0);
+    if (len(self.actions) == 0):
+        return Directions.STOP
+    return self.actions.pop(0)
       
 class TinyMazeSearchAgent(SearchAgent):
   """
