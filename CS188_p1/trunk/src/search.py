@@ -79,23 +79,26 @@ def depthFirstSearch(problem):
   The closed list is a list of nodes.
   
   """
+  import copy
   
   closed = []
   fringe = util.Stack()
-  fringe.push([problem.getStartState])
+  fringe.push([(problem.getStartState(),'',0)])
   while 1:
       if (fringe.isEmpty()):
           return None
-      else:
-          currentPath = fringe.pop()
-          currentNode = currentPath[len(currentPath)-1][0]
-      if(problem.isGoalState(currentState)==True):
-          return #THE LIST
-      if (closed.count(currentState) == 0):
-          closed.append(currentState)
-          successors = problem.getSuccessors(currentState)
-          for one_successor in successors:
-              fringe.push(currentElement+one_successor)
+      currentPath = fringe.pop()
+      currentNode = currentPath[len(currentPath)-1][0]
+      if(problem.isGoalState(currentNode)==True):
+          currentPath.pop(0)
+          return [path[1] for path in currentPath]
+      if (closed.count(currentNode) == 0):
+          closed.append(currentNode)
+          successors = problem.getSuccessors(currentNode)
+          for successor in successors:
+              newPath = copy.copy(currentPath)
+              newPath.append(successor)
+              fringe.push(newPath)
       #print currentState
   #util.raiseNotDefined()
 
