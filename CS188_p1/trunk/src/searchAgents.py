@@ -382,7 +382,7 @@ def foodHeuristic(state):
 
 def foodAStar(problem):
   """
-  A wrapper for A* that uses the Manhattan distance heuristic.
+  A wrapper for A* that uses the Food heuristic.
   """
   return search.aStarSearch(problem, getFoodHeuristic(problem.getStartState()))
 
