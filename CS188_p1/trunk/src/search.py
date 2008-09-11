@@ -169,7 +169,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
           closed.append(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
-              cost = currentPath[3]
+              cost = currentPath[3] + successor[2] + nullHeuristic(successor[0])
               newPath = (successor[0], successor[1], currentPath, cost)
               fringe.push(newPath, newPath[3])
 
