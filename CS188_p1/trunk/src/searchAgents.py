@@ -147,7 +147,6 @@ class SearchAgent(Agent):
   def __init__(self, searchFunction=None, searchType=PositionSearchProblem):
     self.searchFunction = searchFunction
     self.searchType = searchType
-    self.actions = [];
     
   def registerInitialState(self, state):
     """
@@ -166,7 +165,6 @@ class SearchAgent(Agent):
     starttime = time.time()
     problem = self.searchType(state)
     self.actions = self.searchFunction(problem)
-    
     
     print 'Path found with total cost of %d in %.1f seconds' % (problem.getCostOfActions(self.actions), time.time() - starttime)
     
@@ -401,8 +399,8 @@ class TrivialAStarFoodSearchAgent(AStarFoodSearchAgent):
   """
   An AStarFoodSearchAgent that uses the trivial heuristic instead of the one defined by getFoodHeuristic
   """
-  def __init__(self, searchFunction=None, searchType=PositionSearchProblem):
+  def __init__(self, searchFunction=None, searchType=FoodSearchProblem):
     # Redefine getFoodHeuristic to return the trivial one.
     __import__(__name__).getFoodHeuristic = lambda gameState: trivialFoodHeuristic
-    __import__(__name__).FoodHeuristic    = trivialFoodHeuristic
+    __import__(__name__).foodHeuristic    = trivialFoodHeuristic
     AStarFoodSearchAgent.__init__(self, searchFunction, searchType)
