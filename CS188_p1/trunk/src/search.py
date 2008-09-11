@@ -65,7 +65,25 @@ def depthFirstSearch(problem):
   to determine the correctness of your algorithm.
   """
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  closed = []
+  fringe = util.Stack()
+  #while(problem.isGoalState(currentState)== False):
+  fringe.push(problem.getStartState)
+  while 1:
+      if (fringe.isEmpty()):
+          return None
+      else:
+          currentElement = fringe.pop()
+          currentState = currentElement[0]
+      if(problem.isGoalState(currentState)==False):
+          return #THE LIST
+      if (closed.count(currentState) == 0):
+          closed.append(currentState)
+          successors = problem.getSuccessors(currentState)
+          for one_successor in successors:
+              fringe.push(currentElement+one_successor)
+      #print currentState
+  #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 74]"
