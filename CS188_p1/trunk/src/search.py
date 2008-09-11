@@ -108,13 +108,13 @@ def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 74]"
   return simpleSearch(problem, util.Queue)
   
-def uniformCostSearch(problem):
-  "Search the node of least total cost first. "
+def informedSearch(problem, heuristic):  
   import copy 
   closed = []
   fringe = util.PriorityQueue()
   # PATH = (node, action, parent, total cost)
-  fringe.push((problem.getStartState(),'',None,0), 0)
+  startState = problem.getStartState()
+  fringe.push((startState,'',None,0), heuristic(startState))
   while 1:
       if (fringe.isEmpty()):
           return None
@@ -133,45 +133,24 @@ def uniformCostSearch(problem):
           closed.append(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
-              cost = currentPath[3]+successor[2]
+              cost = currentPath[3] + successor[2]
               newPath = (successor[0], successor[1], currentPath, cost)
-              fringe.push(newPath, newPath[3])
-
+              fringe.push(newPath, newPath[3] + heuristic(successor[0]))
+              
 def nullHeuristic(state):
   """
   A heuristic function estimates the cost from the current state to the nearest
   goal in the provided searchProblem.  This one is trivial.
   """
   return 0
+  
+def uniformCostSearch(problem):
+  "Search the node of least total cost first. "
+  return informedSearch(problem, nullHeuristic)
 
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
-  import copy 
-  closed = []
-  fringe = util.PriorityQueue()
-  # PATH = (node, action, parent, total cost)
-  fringe.push((problem.getStartState(),'',None,0), 0)
-  while 1:
-      if (fringe.isEmpty()):
-          return None
-      currentPath = fringe.pop()
-      currentNode = currentPath[0]
-      if(problem.isGoalState(currentNode)==True):
-          actions = []
-          while 1:
-              if (currentPath == None or currentPath[1] == ''):
-                actions.reverse()
-                return actions
-              actions.append(currentPath[1])
-              currentPath = currentPath[2]
-      
-      if (closed.count(currentNode) == 0):
-          closed.append(currentNode)
-          successors = problem.getSuccessors(currentNode)
-          for successor in successors:
-              cost = currentPath[3] + successor[2] + nullHeuristic(successor[0])
-              newPath = (successor[0], successor[1], currentPath, cost)
-              fringe.push(newPath, newPath[3])
+  return informedSearch(problem, heuristic)
 
 def greedySearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest heuristic first."

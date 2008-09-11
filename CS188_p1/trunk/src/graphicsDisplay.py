@@ -13,8 +13,9 @@ FRAME_TIME=.1 # The time that pacman's animation last
 PAUSE_TIME=0   # Pause time between frames
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
-BACKGROUND_COLOR = formatColor(0,0,0)    
-WALL_COLOR = formatColor(0.0/255.0, 51.0/255.0, 255.0/255.0)
+BACKGROUND_COLOR = formatColor(0,0.0/255.0,0.0/255.0)    
+#WALL_COLOR = formatColor(0.0/255.0, 51.0/255.0, 255.0/255.0)
+WALL_COLOR = formatColor(0.0/255.0, 255.0/255.0, 51.0/255.0)
 INFO_PANE_COLOR = formatColor(.4,.4,0)
 SCORE_COLOR = formatColor(.9, .9, .9)
 PACMAN_OUTLINE_WIDTH = 2
@@ -525,7 +526,7 @@ class PacmanGraphics:
     Draws an overlay of expanded grid positions for search agents
     """
     n = float(len(cells))
-    baseColor = [1.0, 0.0, 0.0]
+    baseColor = [0.0, 1.0, 0.0]
     self.clearExpandedCells()
     self.expandedCells = []
     for k, cell in enumerate(cells):
