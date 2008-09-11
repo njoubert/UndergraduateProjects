@@ -331,6 +331,7 @@ def trivialFoodHeuristic(state):
   """
    A trivial heuristic for the all-food problem,  which returns 0 for goal states and 1 otherwise.
   """
+  return state[1].count()
   if(state[1].count() == 0):
     return 0
   else:
@@ -394,17 +395,19 @@ class AStarFoodSearchAgent(SearchAgent):
   """
 
   "*** YOUR CODE HERE ***"
-  def __init__(self, searchFunction, searchType):
+  def __init__(self, searchFunction=None, searchType=FoodSearchProblem):
     SearchAgent.__init__(self, foodAStar, searchType)
+
+def greedy(problem):
+    return search.greedySearch(problem, getFoodHeuristic(problem.getStartState()))
 
 class GreedyFoodSearchAgent(SearchAgent):
   """
   An agent that computes a path to eat all the dots using greedy search.
   """
-  "*** YOUR CODE HERE ***"
-
-
-
+  def __init__(self, searchFunction=None, searchType=FoodSearchProblem):
+    __import__(__name__).foodHeuristic    = trivialFoodHeuristic
+    SearchAgent.__init__(self, greedy, searchType)
 
 class TrivialAStarFoodSearchAgent(AStarFoodSearchAgent):
   """

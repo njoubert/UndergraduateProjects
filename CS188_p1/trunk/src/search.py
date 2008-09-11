@@ -154,7 +154,32 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 def greedySearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest heuristic first."
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  import copy 
+  closed = []
+  fringe = util.FasterPriorityQueue()
+  # PATH = (node, action, parent, total cost)
+  startState = problem.getStartState()
+  fringe.push((startState,'',None,0), heuristic(startState))
+  while 1:
+      if (fringe.isEmpty()):
+          return None
+      currentPath = fringe.pop()
+      currentNode = currentPath[0]
+      if(problem.isGoalState(currentNode)==True):
+          actions = []
+          while 1:
+              if (currentPath == None or currentPath[1] == ''):
+                actions.reverse()
+                return actions
+              actions.append(currentPath[1])
+              currentPath = currentPath[2]
+      
+      if (closed.count(currentNode) == 0):
+          closed.append(currentNode)
+          successors = problem.getSuccessors(currentNode)
+          for successor in successors:
+              cost = currentPath[3] + successor[2]
+              newPath = (successor[0], successor[1], currentPath, cost)
+              fringe.push(newPath, heuristic(successor[0]))
 
 
