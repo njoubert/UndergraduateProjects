@@ -165,7 +165,9 @@ class SearchAgent(Agent):
     starttime = time.time()
     problem = self.searchType(state)
     self.actions = self.searchFunction(problem)
-    
+    if (self.actions == None):
+        print 'No solution found??!??!??!?! WTF!!! HELP!'
+        sys.exit(1)
     print 'Path found with total cost of %d in %.1f seconds' % (problem.getCostOfActions(self.actions), time.time() - starttime)
     
   def getAction(self, state):

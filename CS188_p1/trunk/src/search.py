@@ -56,26 +56,40 @@ def depthFirstSearch(problem):
   """
   Search the deepest nodes in the search tree first. [p 74].
 
-  Your search algorithm needs to return a 3-item tuple (path, actions, totalcost)
-    path: a list of states in the search problem from start to goal
-    actions: the sequence of actions that reaches the goal
-    totalcost: the total cost of the path
-
+  Your search algorithm needs to return a list of actions.
+  
+  A node is a state, and a node is a position of Pacman on the board.
+  
+  a successor is a tuple: ( successor-node, step-action, step-cost ),
+      and returned by problem.getSuccessors
+  
+  a path is a list of successors, and is stored in the fringe,
+  where the last tuple is the current pacman position for each list.
+  
+  The fringe consists of a list of successors:
+  [
+      [(node, action, cost) ... (node, action, cost)],
+      [(node, action, cost) ... (node, action, cost)]
+  ]
+  
   Of course, the actions are the most important by far; we will use these
   to determine the correctness of your algorithm.
+  
+  
+  The closed list is a list of nodes.
+  
   """
-  "*** YOUR CODE HERE ***"
+  
   closed = []
   fringe = util.Stack()
-  #while(problem.isGoalState(currentState)== False):
-  fringe.push(problem.getStartState)
+  fringe.push([problem.getStartState])
   while 1:
       if (fringe.isEmpty()):
           return None
       else:
-          currentElement = fringe.pop()
-          currentState = currentElement[0]
-      if(problem.isGoalState(currentState)==False):
+          currentPath = fringe.pop()
+          currentNode = currentPath[len(currentPath)-1][0]
+      if(problem.isGoalState(currentState)==True):
           return #THE LIST
       if (closed.count(currentState) == 0):
           closed.append(currentState)
