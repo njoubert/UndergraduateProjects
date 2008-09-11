@@ -111,7 +111,7 @@ def breadthFirstSearch(problem):
 def informedSearch(problem, heuristic):  
   import copy 
   closed = []
-  fringe = util.PriorityQueue()
+  fringe = util.FasterPriorityQueue()
   # PATH = (node, action, parent, total cost)
   startState = problem.getStartState()
   fringe.push((startState,'',None,0), heuristic(startState))
