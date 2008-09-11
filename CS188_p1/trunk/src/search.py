@@ -51,11 +51,9 @@ def tinyMazeSearch(problem):
   s = Directions.SOUTH
   w = Directions.WEST
   return  [s,s,w,s,w,w,s,w]
-
-def depthFirstSearch(problem):
+  
+def simpleSearch(problem, datastructure):
   """
-  Search the deepest nodes in the search tree first. [p 74].
-
   Your search algorithm needs to return a list of actions.
   
   A node is a state, and a node is a position of Pacman on the board.
@@ -79,10 +77,9 @@ def depthFirstSearch(problem):
   The closed list is a list of nodes.
   
   """
-  import copy
-  
+  import copy 
   closed = []
-  fringe = util.Stack()
+  fringe = datastructure()
   fringe.push([(problem.getStartState(),'',0)])
   while 1:
       if (fringe.isEmpty()):
@@ -99,18 +96,46 @@ def depthFirstSearch(problem):
               newPath = copy.copy(currentPath)
               newPath.append(successor)
               fringe.push(newPath)
-      #print currentState
-  #util.raiseNotDefined()
+
+def depthFirstSearch(problem):
+  """
+  Search the deepest nodes in the search tree first. [p 74].
+  """
+
+  return simpleSearch(problem, util.Stack)
 
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 74]"
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
-
+  return simpleSearch(problem, util.Queue)
+  
 def uniformCostSearch(problem):
   "Search the node of least total cost first. "
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  import copy 
+  closed = []
+  fringe = util.PriorityQueue()
+  # PATH = (node, action, parent, total cost)
+  fringe.push((problem.getStartState(),'',None,0), 0)
+  while 1:
+      if (fringe.isEmpty()):
+          return None
+      currentPath = fringe.pop()
+      currentNode = currentPath[0]
+      if(problem.isGoalState(currentNode)==True):
+          actions = []
+          while 1:
+              if (currentPath == None or currentPath[1] == ''):
+                actions.reverse()
+                return actions
+              actions.append(currentPath[1])
+              currentPath = currentPath[2]
+      
+      if (closed.count(currentNode) == 0):
+          closed.append(currentNode)
+          successors = problem.getSuccessors(currentNode)
+          for successor in successors:
+              cost = currentPath[3]+successor[2]
+              newPath = (successor[0], successor[1], currentPath, cost)
+              fringe.push(newPath, newPath[3])
 
 def nullHeuristic(state):
   """
@@ -121,8 +146,32 @@ def nullHeuristic(state):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  import copy 
+  closed = []
+  fringe = util.PriorityQueue()
+  # PATH = (node, action, parent, total cost)
+  fringe.push((problem.getStartState(),'',None,0), 0)
+  while 1:
+      if (fringe.isEmpty()):
+          return None
+      currentPath = fringe.pop()
+      currentNode = currentPath[0]
+      if(problem.isGoalState(currentNode)==True):
+          actions = []
+          while 1:
+              if (currentPath == None or currentPath[1] == ''):
+                actions.reverse()
+                return actions
+              actions.append(currentPath[1])
+              currentPath = currentPath[2]
+      
+      if (closed.count(currentNode) == 0):
+          closed.append(currentNode)
+          successors = problem.getSuccessors(currentNode)
+          for successor in successors:
+              cost = currentPath[3]+successor[2]
+              newPath = (successor[0], successor[1], currentPath, cost)
+              fringe.push(newPath, newPath[3])
 
 def greedySearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest heuristic first."
