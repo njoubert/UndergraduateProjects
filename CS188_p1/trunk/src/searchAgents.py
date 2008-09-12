@@ -245,7 +245,7 @@ def stayWestCost(position):
   """
   return 2 ** position[0]
 
-class FoodSearchProblem:
+class FoodSearchProblem(search.SearchProblem):
   """
   A search problem associated with finding the a path that collects all of the
   food (dots) in a Pacman game.
