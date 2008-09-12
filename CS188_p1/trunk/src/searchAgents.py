@@ -403,7 +403,7 @@ def findClosestFoodToPointInList(list, point):
   for el in list:
       d = util.manhattanDistance(el, point)
       if (d < minDistance):
-          minDinstance = d
+          minDistance = d
           closest = el
   return closest
   
@@ -467,13 +467,12 @@ def hDistanceBetweenAll(state):
   if (currentClosest == None):
       return 0
   heuristic += util.manhattanDistance(state[0], currentClosest)
-  
   while 1:
       foodPositions.remove(currentClosest)
       if (len(foodPositions) == 0):
           break
       newClosest = findClosestFoodToPointInList(foodPositions, currentClosest)
-      heuristic += util.manhattanDistance(currentClosest, newClosest) - 1
+      heuristic += util.manhattanDistance(currentClosest, newClosest)
       currentClosest = newClosest
   #return 0
   return heuristic
