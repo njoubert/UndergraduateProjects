@@ -78,7 +78,7 @@ def simpleSearch(problem, datastructure):
   
   """
   import copy 
-  closed = []
+  closed = set([])
   fringe = datastructure()
   fringe.push([(problem.getStartState(),'',0)])
   while 1:
@@ -89,8 +89,8 @@ def simpleSearch(problem, datastructure):
       if(problem.isGoalState(currentNode)==True):
           currentPath.pop(0)
           return [path[1] for path in currentPath]
-      if (closed.count(currentNode) == 0):
-          closed.append(currentNode)
+      if (currentNode not in closed):
+          closed.add(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
               newPath = copy.copy(currentPath)
@@ -110,7 +110,7 @@ def breadthFirstSearch(problem):
   
 def informedSearch(problem, heuristic):  
   import copy 
-  closed = []
+  closed = set([])
   fringe = util.FasterPriorityQueue()
   # PATH = (node, action, parent, total cost)
   startState = problem.getStartState()
@@ -129,8 +129,8 @@ def informedSearch(problem, heuristic):
               actions.append(currentPath[1])
               currentPath = currentPath[2]
       
-      if (closed.count(currentNode) == 0):
-          closed.append(currentNode)
+      if (currentNode not in closed):
+          closed.add(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
               cost = currentPath[3] + successor[2]
@@ -155,7 +155,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 def greedySearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest heuristic first."
   import copy 
-  closed = []
+  closed = set([])
   fringe = util.FasterPriorityQueue()
   # PATH = (node, action, parent, total cost)
   startState = problem.getStartState()
@@ -174,8 +174,8 @@ def greedySearch(problem, heuristic=nullHeuristic):
               actions.append(currentPath[1])
               currentPath = currentPath[2]
       
-      if (closed.count(currentNode) == 0):
-          closed.append(currentNode)
+      if (currentNode not in closed):
+          closed.add(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
               cost = currentPath[3] + successor[2]
