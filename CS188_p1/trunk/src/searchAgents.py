@@ -377,8 +377,19 @@ def foodHeuristic(state):
   function closure (like the manhattanAStar function above).  If you don't know how
   this works, come to office hours.
   """
+  
+  foodPositions = []
+  maxDistance = 0     
+  
+  for i in range (0,state[1].width):
+      for j in range (0,state[1].height):
+          if (state[1][i][j] == True):
+              d = util.manhattanDistance( (i,j), state[0])
+              if (d > maxDistance):
+                  maxDistance = d
+      
   amountOfPelletsOnBoard = state[1].count()
-  distanceToClosestPellet = 0
+  distanceToClosestPellet = maxDistance
   heuristic = amountOfPelletsOnBoard + distanceToClosestPellet
   return heuristic
 
