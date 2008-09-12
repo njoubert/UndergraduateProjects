@@ -51,33 +51,33 @@ def tinyMazeSearch(problem):
   s = Directions.SOUTH
   w = Directions.WEST
   return  [s,s,w,s,w,w,s,w]
-  
+
 def simpleSearch(problem, datastructure):
   """
   Your search algorithm needs to return a list of actions.
-  
+
   A node is a state, and a node is a position of Pacman on the board.
-  
+
   a successor is a tuple: ( successor-node, step-action, step-cost ),
       and returned by problem.getSuccessors
-  
+
   a path is a list of successors, and is stored in the fringe,
   where the last tuple is the current pacman position for each list.
-  
+
   The fringe consists of a list of successors:
   [
       [(node, action, cost) ... (node, action, cost)],
       [(node, action, cost) ... (node, action, cost)]
   ]
-  
+
   Of course, the actions are the most important by far; we will use these
   to determine the correctness of your algorithm.
-  
-  
+
+
   The closed list is a list of nodes.
-  
+
   """
-  import copy 
+  import copy
   closed = set([])
   fringe = datastructure()
   fringe.push([(problem.getStartState(),'',0)])
@@ -107,9 +107,9 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 74]"
   return simpleSearch(problem, util.Queue)
-  
-def informedSearch(problem, heuristic):  
-  import copy 
+
+def informedSearch(problem, heuristic):
+  import copy
   closed = set([])
   fringe = util.FasterPriorityQueue()
   # PATH = (node, action, parent, total cost)
@@ -127,23 +127,25 @@ def informedSearch(problem, heuristic):
                 actions.reverse()
                 return actions
               actions.append(currentPath[1])
+              print currentPath[0][0], ' has backwards cost ', currentPath[3], ' and heurustic ', currentPath[4]
               currentPath = currentPath[2]
-      
+
       if (currentNode not in closed):
           closed.add(currentNode)
           successors = problem.getSuccessors(currentNode)
           for successor in successors:
               cost = currentPath[3] + successor[2]
-              newPath = (successor[0], successor[1], currentPath, cost)
-              fringe.push(newPath, newPath[3] + heuristic(successor[0]))
-              
+              h = heuristic(successor[0])
+              newPath = (successor[0], successor[1], currentPath, cost, h)
+              fringe.push(newPath, newPath[3] + h)
+
 def nullHeuristic(state):
   """
   A heuristic function estimates the cost from the current state to the nearest
   goal in the provided searchProblem.  This one is trivial.
   """
   return 0
-  
+
 def uniformCostSearch(problem):
   "Search the node of least total cost first. "
   return informedSearch(problem, nullHeuristic)
@@ -154,7 +156,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
 def greedySearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest heuristic first."
-  import copy 
+  import copy
   closed = set([])
   fringe = util.FasterPriorityQueue()
   # PATH = (node, action, parent, total cost)
@@ -173,7 +175,7 @@ def greedySearch(problem, heuristic=nullHeuristic):
                 return actions
               actions.append(currentPath[1])
               currentPath = currentPath[2]
-      
+
       if (currentNode not in closed):
           closed.add(currentNode)
           successors = problem.getSuccessors(currentNode)
