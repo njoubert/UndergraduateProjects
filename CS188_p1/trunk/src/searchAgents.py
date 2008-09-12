@@ -378,10 +378,11 @@ def foodHeuristic(state):
   this works, come to office hours.
   """
   
-  #return hMaxDistancePlusPelletAmount(state)
-  #return hDistanceToAll(state)
-  #return hMaxDistance(state)
-  return hDistanceBetweenAll(state)
+  #return hMaxDistancePlusPelletAmount(state) #NA
+  #return hDistanceToAll(state) #NA
+  return hMaxDistance(state)
+  #return hMinDistance(state)
+  #return hDistanceBetweenAll(state) #NA
   
 def findClosestFoodToPointInGrid(grid, point):
   minDistance = 999999
@@ -436,6 +437,21 @@ def hMaxDistance(state):
                   minDistance = d
                 
   heuristic = maxDistance
+  return heuristic
+
+def hMinDistance(state):  
+  maxDistance = 0
+  minDistance = 999999     
+  for i in range (0,state[1].width):
+      for j in range (0,state[1].height):
+          if (state[1][i][j] == True):
+              d = util.manhattanDistance( (i,j), state[0])
+              if (d > maxDistance):
+                  maxDistance = d
+              if (d < minDistance):
+                  minDistance = d
+                
+  heuristic = minDistance
   return heuristic
   
 def hDistanceToAll(state):
