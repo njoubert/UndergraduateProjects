@@ -382,6 +382,7 @@ def foodHeuristic(state):
   #return hDistanceToAll(state) #NA
   return hMaxDistance(state)
   #return hMinDistance(state)
+  #return hMinOrMaxDistance(state)
   #return hDistanceBetweenAll(state) #NA
   
 def findClosestFoodToPointInGrid(grid, point):
@@ -389,13 +390,14 @@ def findClosestFoodToPointInGrid(grid, point):
   closest = None
   for i in range (0,grid.width):
       for j in range (0,grid.height):
-          if (i == point[0] and j == point[j]):
-              continue
           if (grid[i][j] == True):
-              d = util.manhattanDistance( (i,j), state[0])
+              d = util.manhattanDistance( (i,j), point)
               if (d < minDistance):
                   minDistance = d
                   closest = (i,j)
+                  
+  if closest == None:
+      return point
   return closest
 
 def findClosestFoodToPointInList(list, point):
@@ -426,22 +428,35 @@ def hMaxDistancePlusPelletAmount(state):
 
 def hMaxDistance(state):  
   maxDistance = 0
-  minDistance = 999999     
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
               d = util.manhattanDistance( (i,j), state[0])
               if (d > maxDistance):
-                  maxDistance = d
-              if (d < minDistance):
-                  minDistance = d
-                
+                  maxDistance = d             
   heuristic = maxDistance
   return heuristic
 
-def hMinDistance(state):  
+def hMinDistance(state):
+  minDistance = 999999
+  hasSet = False     
+  for i in range (0,state[1].width):
+      for j in range (0,state[1].height):
+          if (state[1][i][j] == True):
+              d = util.manhattanDistance( (i,j), state[0])
+              if (d < minDistance):
+                  hasSet = True
+                  minDistance = d
+  if hasSet == False:
+      print "AAAAAAAAAAAAAA"
+      minDistance = 0
+  heuristic = minDistance
+  return heuristic
+
+def hMinOrMaxDistance(state):  
   maxDistance = 0
-  minDistance = 999999     
+  minDistance = 999999
+  hasSetN = False     
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
@@ -449,11 +464,16 @@ def hMinDistance(state):
               if (d > maxDistance):
                   maxDistance = d
               if (d < minDistance):
+                  hasSetN = True
                   minDistance = d
-                
-  heuristic = minDistance
+  if hasSetN == False:
+      minDistance = 0
+  heuristic = max(maxDistance, minDistance)
+  if heuristic != maxDistance:
+      print "AAAAAAAAAAAAAAAAA maxDistance=", maxDistance, " minDistance=", minDistance
+  #print "max=", maxDistance, " min=", minDistance, " heuristic=", heuristic
   return heuristic
-  
+    
 def hDistanceToAll(state):
   """
   This is a NON-ADMISSABLE HEURISTIC!
@@ -493,6 +513,12 @@ def hDistanceBetweenAll(state):
   #return 0
   return heuristic
 
+def greedyFoodHeuristic(state):
+    boardCount = state[1].count()
+    #closest = findClosestFoodToPointInGrid(state[1], state[0])
+    #distanceToClosest = util.manhattanDistance(closest, state[0])
+    return boardCount
+
 def foodAStar(problem):
   """
   A wrapper for A* that uses the Food heuristic.
@@ -509,7 +535,7 @@ class AStarFoodSearchAgent(SearchAgent):
     SearchAgent.__init__(self, foodAStar, searchType)
 
 def greedy(problem):
-    return search.greedySearch(problem, getFoodHeuristic(problem.getStartState()))
+    return search.greedySearch(problem, greedyFoodHeuristic)
 
 class GreedyFoodSearchAgent(SearchAgent):
   """
