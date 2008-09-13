@@ -451,41 +451,51 @@ def checkOtherNodeInTree(forest,secondNode):
             break
     return list
 
-def primsMinSpanningTreeHeuristic(state, gameState, edges):
-    vNew = []
+def primsMinSpanningTreeHeuristic(state, gameState, edgesOriginal):
+    import copy
+    edges = edgesOriginal
+    vNew = set([])
     totalDist = 0
     
     currentFoodGrid = state[1]
     vertices = foodGridToFoodList(currentFoodGrid)
-    
+           
     if (len(vertices) == 0):
         return 0
     
     #vNew.append(gameState.getPacmanPosition())
     start = state[0]
-    edges[start] = {}
-    for pellet in vertices:
-      problem = CustomPositionSearchProblem(gameState, lambda x: 1, pellet, start)
-      actions = search.breadthFirstSearch(problem)
-      distance = problem.getCostOfActions(actions)
-      edges[start][pellet] = distance
+    delStart = False
+    if (start not in edges.keys()):
+        delStart = True
+        edges[start] = {}
+        for pellet in vertices:
+          problem = CustomPositionSearchProblem(gameState, lambda x: 1, pellet, start)
+          actions = search.breadthFirstSearch(problem)
+          distance = problem.getCostOfActions(actions)
+          edges[start][pellet] = distance
     
-    vNew.append(start)
+    vNew.add(start)
     
-    #vNew.append(vertices[0])      
-    while len(vertices) != len(vNew):
+    #vNew.append(vertices[0])
+    while len(vertices) != 0:
         nearestV = None
         nearestD = 999999 
         for sVertex in vNew:
-            for eVertex in edges[sVertex].keys():
+            for eVertex in vertices:
                 if (edges[sVertex][eVertex] < nearestD):
                     nearestD = edges[sVertex][eVertex]
                     nearestV = eVertex
-        assert nearestV != None            
-        vNew.append(eVertex)
+        assert nearestV != None
+        vNew.add(eVertex)
         totalDist += nearestD
+        vertices.remove(eVertex)# = vertices - set(eVertex)
+        
+    if (delStart):
+        del edges[start]
     
-    #print "Prim says we have a total distance in our minimum spanning tree of ", totalDist    
+    #print "h = ",totalDist,", ",foodCount," food, ", len(edges.keys()), "nodes in edge hash: ", edges.keys()
+    #print "Prim distance=", totalDist, ", pellet count=", len(vertices), " and pacman position=", start    
     return totalDist
                     
 def minSpanningTreeHeuristic(state,gameState, distanceInfo):

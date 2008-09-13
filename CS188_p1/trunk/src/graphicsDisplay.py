@@ -9,7 +9,7 @@ from game import Directions
 # Most code by Dan Klein and John Denero written or rewritten for cs188, UC Berkeley.
 # Some code from a Pacman implementation by LiveWires, and used / modified with permission.
 
-FRAME_TIME=0.1 # The time that pacman's animation last
+FRAME_TIME=1.1 # The time that pacman's animation last
 PAUSE_TIME=0   # Pause time between frames
 DEFAULT_GRID_SIZE = 30.0
 INFO_PANE_HEIGHT = 35
