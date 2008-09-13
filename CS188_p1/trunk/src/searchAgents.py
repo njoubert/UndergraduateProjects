@@ -180,14 +180,10 @@ class CustomPositionSearchProblem(PositionSearchProblem):
     """
 
     successors = []
-    for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-      x,y = state
-      dx, dy = Actions.directionToVector(action)
-      nextx, nexty = int(x + dx), int(y + dy)
+    for action in [(0,1), (0,-1), (1, 0), (-1, 0)]:
+      nextx, nexty = int(state[0] + action[0]), int(state[1] + action[1])
       if not self.walls[nextx][nexty]:
-        nextState = (nextx, nexty)
-        cost = self.costFn(nextState)
-        successors.append( ( nextState, action, cost) )
+        successors.append( ( (nextx,nexty), action, 1) )
 
     return successors
 
@@ -414,6 +410,7 @@ def getFoodHeuristic(gameState):
   # If you don't want to implement this method, you can leave this default implementation
   #return foodHeuristic
 
+  print "Preprocessing started."
   #get positions of all the food pellets on the board
   #edgeInfo = util.FasterPriorityQueue()
   distanceInfo = {}
@@ -428,16 +425,11 @@ def getFoodHeuristic(gameState):
           #    continue
           problem = CustomPositionSearchProblem(gameState, lambda x: 1, endPellet, startPellet)
           actions = search.breadthFirstSearch(problem)
-          distance = problem.getCostOfActions(actions)
+          distance = len(actions) #because costFunction = 1
           distanceInfo[startPellet][endPellet] = distance
           #edgeInfo.push((startPellet,endPellet),distance)
-  #for each food pellet, calculate the distance to all the other food pellets using BFS
-  #    Store this in a hash or adjacency lists
 
-  #Return a function
-  #print len(distanceInfo)
-  #print distanceInfo
-
+  print "Preprocessing done."
   #This is an example of Closures, which does not exist in C.
   #heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo)
   heuristicFn = lambda state: primsMinSpanningTreeHeuristic(state, gameState, distanceInfo)  
@@ -451,10 +443,8 @@ def checkOtherNodeInTree(forest,secondNode):
             break
     return list
 
-def primsMinSpanningTreeHeuristic(state, gameState, edgesOriginal):
-    import copy
-    edges = edgesOriginal
-    vNew = set([])
+def primsMinSpanningTreeHeuristic(state, gameState, edges):
+    vNew = []
     totalDist = 0
     
     currentFoodGrid = state[1]
@@ -463,22 +453,24 @@ def primsMinSpanningTreeHeuristic(state, gameState, edgesOriginal):
     if (len(vertices) == 0):
         return 0
     
-    #vNew.append(gameState.getPacmanPosition())
-    start = state[0]
+    start = state[0] #Pacman's position
+    
     delStart = False
-    if (start not in edges.keys()):
+    if (start not in edges.keys()): #This is only to keep the edge hash from becoming really big.
         delStart = True
         edges[start] = {}
         for pellet in vertices:
           problem = CustomPositionSearchProblem(gameState, lambda x: 1, pellet, start)
           actions = search.breadthFirstSearch(problem)
-          distance = problem.getCostOfActions(actions)
-          edges[start][pellet] = distance
+          distance = len(actions) #we can do this because the cost function is 1
+          edges[start][pellet] = distance 
+          #DO WE NEED TO ADD THE START AS A DESTINATION TO ALL THE OTHER PELLETS TOO? I DONT THINK SO...
     
-    vNew.add(start)
+    vNew.append(start)
     
-    #vNew.append(vertices[0])
-    while len(vertices) != 0:
+    nearestV = None
+    nearestD = 999999
+    while len(vertices) > 0:
         nearestV = None
         nearestD = 999999 
         for sVertex in vNew:
@@ -487,9 +479,9 @@ def primsMinSpanningTreeHeuristic(state, gameState, edgesOriginal):
                     nearestD = edges[sVertex][eVertex]
                     nearestV = eVertex
         assert nearestV != None
-        vNew.add(eVertex)
+        vNew.append(eVertex)
+        vertices.remove(eVertex)
         totalDist += nearestD
-        vertices.remove(eVertex)# = vertices - set(eVertex)
         
     if (delStart):
         del edges[start]
