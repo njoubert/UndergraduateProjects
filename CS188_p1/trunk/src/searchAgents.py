@@ -415,6 +415,7 @@ def getFoodHeuristic(gameState):
   #return foodHeuristic
   
   #get positions of all the food pellets on the board
+  distanceInfo = {}
   foodGrid = gameState.getFood()
   foodList = foodGridToFoodList(foodGrid)
   for startPellet in foodList:
@@ -424,22 +425,20 @@ def getFoodHeuristic(gameState):
           problem = CustomPositionSearchProblem(gameState, lambda x: 1, endPellet, startPellet)
           actions = search.breadthFirstSearch(problem)
           distance = problem.getCostOfActions(actions)
-          print distance
+          distanceInfo[(startPellet,endPellet)] = distance
   #for each food pellet, calculate the distance to all the other food pellets using BFS
   #    Store this in a hash or adjacency lists
   
   #Return a function
   
-  graph = None
+  print distanceInfo
   
-  #This might depend on things that im not sure actually works right.
-  #The point is, somehow, we need to return a heuristic function that takes in a state
-  #but it needs access to the graph we build in this function. 
-  heuristicFn = lambda state: minSpanningTreeHeuristic(state, graph)
+  #This is an example of Closures, which does not exist in C.
+  heuristicFn = lambda state: minSpanningTreeHeuristic(state, distanceInfo)
   return heuristicFn
 
-def minSpanningTreeHeuristic(state, graph):
-    return 1
+def minSpanningTreeHeuristic(state, distanceInfo):
+  return 1
 
 def foodHeuristic(state):
   """
