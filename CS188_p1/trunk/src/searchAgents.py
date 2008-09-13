@@ -162,7 +162,7 @@ class CustomPositionSearchProblem(PositionSearchProblem):
         self.startState = customStart
     self.goal = goal
     self.costFn = costFn
-    
+
   def isGoalState(self, state):
      isGoal = state == self.goal
      return isGoal
@@ -413,8 +413,9 @@ def getFoodHeuristic(gameState):
   """
   # If you don't want to implement this method, you can leave this default implementation
   #return foodHeuristic
-  
+
   #get positions of all the food pellets on the board
+  edgeInfo = util.FasterPriorityQueue()
   distanceInfo = {}
   foodGrid = gameState.getFood()
   foodList = foodGridToFoodList(foodGrid)
@@ -422,23 +423,78 @@ def getFoodHeuristic(gameState):
       for endPellet in foodList:
           if (startPellet == endPellet):
               continue
+          if (distanceInfo.has_key((endPellet,startPellet))):
+              continue
           problem = CustomPositionSearchProblem(gameState, lambda x: 1, endPellet, startPellet)
           actions = search.breadthFirstSearch(problem)
           distance = problem.getCostOfActions(actions)
           distanceInfo[(startPellet,endPellet)] = distance
+          edgeInfo.push((startPellet,endPellet),distance)
   #for each food pellet, calculate the distance to all the other food pellets using BFS
   #    Store this in a hash or adjacency lists
-  
+
   #Return a function
-  
+
   print distanceInfo
-  
+  print len(distanceInfo)
+
   #This is an example of Closures, which does not exist in C.
-  heuristicFn = lambda state: minSpanningTreeHeuristic(state, distanceInfo)
+  heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo)
   return heuristicFn
 
-def minSpanningTreeHeuristic(state, distanceInfo):
-  return 1
+def minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo):
+    totalDistance =0
+    nodeCount=1
+    for i in range (0,state[1].width):
+      for j in range (0,state[1].height):
+          if (state[1][i][j] == True):
+              nodeCount +=1
+              problem = CustomPositionSearchProblem(gameState, lambda x: 1, (i,j), state[0])
+              actions = search.breadthFirstSearch(problem)
+              distance = problem.getCostOfActions(actions)
+              distanceInfo[(state[0],(i,j))] = distance
+              edgeInfo.push((state[0],(i,j)),distance)
+    vertices = []
+    forest = []
+    while(not edgeInfo.isEmpty()):
+        closestNode = edgeInfo.pop()
+        oneNode,secondNode = closestNode
+        closestDistance = distanceInfo[closestNode]
+        """
+        cycling = False
+        appended = False
+        #CHECKING FOR CYCLING
+        for tree in forest:
+            if(tree.count(oneNode)>0 and tree.count(secondNode) > 0):
+                cycling = True
+                break
+        if(cycling == False):
+            for tree in forest:
+                if(tree.count(oneNode)>0):
+                    otherTree = checkOtherNodeInTree(forest,secondNode)
+                    if(otherTree == None):
+                        tree.append(secondNode)
+                        appended = True
+                        break
+                    else:
+                        tree = tree+otherTree
+                        appended = True
+                        break
+        if(appended == False and cycling == False):
+            tree = []
+            tree.append(oneNode)
+            tree.append(secondNode)
+            forest.append(tree)
+
+        """
+        totalDistance += closestDistance
+        if(vertices.count(oneNode)==0):
+            vertices.append(oneNode)
+        if(vertices.count(secondNode)==0):
+            vertices.append(secondNode)
+        if(len(vertices)==nodeCount):
+            break
+    return totalDistance
 
 def foodHeuristic(state):
   """
@@ -458,14 +514,14 @@ def foodHeuristic(state):
   function closure (like the manhattanAStar function above).  If you don't know how
   this works, come to office hours.
   """
-  
+
   #return hMaxDistancePlusPelletAmount(state) #NA
   #return hDistanceToAll(state) #NA
   return hMaxDistance(state)
   #return hMinDistance(state)
   #return hMinOrMaxDistance(state)
   #return hDistanceBetweenAll(state) #NA
-  
+
 def foodGridToFoodList(grid):
   foodList = []
   for i in range (0,grid.width):
@@ -473,7 +529,7 @@ def foodGridToFoodList(grid):
           if (grid[i][j] == True):
               foodList.append((i,j))
   return foodList
-  
+
 def findClosestFoodToPointInGrid(grid, point):
   minDistance = 999999
   closest = None
@@ -484,7 +540,7 @@ def findClosestFoodToPointInGrid(grid, point):
               if (d < minDistance):
                   minDistance = d
                   closest = (i,j)
-                  
+
   if closest == None:
       return point
   return closest
@@ -498,37 +554,37 @@ def findClosestFoodToPointInList(list, point):
           minDistance = d
           closest = el
   return closest
-  
+
 def hMaxDistancePlusPelletAmount(state):
   """
    NOT ADMISSABLE
-  """  
-  maxDistance = 0     
-  for i in range (0,state[1].width):
-      for j in range (0,state[1].height):
-          if (state[1][i][j] == True):
-              d = util.manhattanDistance( (i,j), state[0])
-              if (d > maxDistance):
-                  maxDistance = d
-      
-  amountOfPelletsOnBoard = state[1].count()
-  heuristic = amountOfPelletsOnBoard + maxDistance
-  return heuristic
-
-def hMaxDistance(state):  
+  """
   maxDistance = 0
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
               d = util.manhattanDistance( (i,j), state[0])
               if (d > maxDistance):
-                  maxDistance = d             
+                  maxDistance = d
+
+  amountOfPelletsOnBoard = state[1].count()
+  heuristic = amountOfPelletsOnBoard + maxDistance
+  return heuristic
+
+def hMaxDistance(state):
+  maxDistance = 0
+  for i in range (0,state[1].width):
+      for j in range (0,state[1].height):
+          if (state[1][i][j] == True):
+              d = util.manhattanDistance( (i,j), state[0])
+              if (d > maxDistance):
+                  maxDistance = d
   heuristic = maxDistance
   return heuristic
 
 def hMinDistance(state):
   minDistance = 999999
-  hasSet = False     
+  hasSet = False
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
@@ -542,10 +598,10 @@ def hMinDistance(state):
   heuristic = minDistance
   return heuristic
 
-def hMinOrMaxDistance(state):  
+def hMinOrMaxDistance(state):
   maxDistance = 0
   minDistance = 999999
-  hasSetN = False     
+  hasSetN = False
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
@@ -562,21 +618,21 @@ def hMinOrMaxDistance(state):
       print "AAAAAAAAAAAAAAAAA maxDistance=", maxDistance, " minDistance=", minDistance
   #print "max=", maxDistance, " min=", minDistance, " heuristic=", heuristic
   return heuristic
-    
+
 def hDistanceToAll(state):
   """
   This is a NON-ADMISSABLE HEURISTIC!
   """
-  totDistance = 0     
+  totDistance = 0
   for i in range (0,state[1].width):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
               d = util.manhattanDistance( (i,j), state[0])
               totDistance += d
-      
+
   heuristic = totDistance
   return heuristic
-  
+
 def hDistanceBetweenAll(state):
   """
   NOT ADMISSABLE --- WHY?!?!?!?!
@@ -586,9 +642,9 @@ def hDistanceBetweenAll(state):
       for j in range (0,state[1].height):
           if (state[1][i][j] == True):
               foodPositions.append((i,j))
-  
+
   heuristic = 0
-  currentClosest = findClosestFoodToPointInList(foodPositions, state[0])    
+  currentClosest = findClosestFoodToPointInList(foodPositions, state[0])
   if (currentClosest == None):
       return 0
   heuristic += util.manhattanDistance(state[0], currentClosest)
