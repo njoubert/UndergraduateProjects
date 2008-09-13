@@ -136,7 +136,7 @@ class PositionSearchProblem(search.SearchProblem):
     return cost
 
 
-class CustomPositionSearchProblem(search.PositionSearchProblem):
+class CustomPositionSearchProblem(PositionSearchProblem):
   """
   A search problem defines the state space, start state, goal test,
   successor function and cost function.  This search problem can be
@@ -163,8 +163,33 @@ class CustomPositionSearchProblem(search.PositionSearchProblem):
     self.goal = goal
     self.costFn = costFn
     
-    # For display purposes
-    self._visited, self._visitedlist, self._expanded = {}, [], 0
+  def isGoalState(self, state):
+     isGoal = state == self.goal
+     return isGoal
+
+  def getSuccessors(self, state):
+    """
+    Returns successor states, the actions they require, and a cost of 1.
+
+     As noted in search.py:
+         For a given state, this should return a list of triples,
+     (successor, action, stepCost), where 'successor' is a
+     successor to the current state, 'action' is the action
+     required to get there, and 'stepCost' is the incremental
+     cost of expanding to that successor
+    """
+
+    successors = []
+    for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+      x,y = state
+      dx, dy = Actions.directionToVector(action)
+      nextx, nexty = int(x + dx), int(y + dy)
+      if not self.walls[nextx][nexty]:
+        nextState = (nextx, nexty)
+        cost = self.costFn(nextState)
+        successors.append( ( nextState, action, cost) )
+
+    return successors
 
 class SearchAgent(Agent):
   """
@@ -405,12 +430,16 @@ def getFoodHeuristic(gameState):
   
   #Return a function
   
-  graph = 
+  graph = None
   
+  #This might depend on things that im not sure actually works right.
+  #The point is, somehow, we need to return a heuristic function that takes in a state
+  #but it needs access to the graph we build in this function. 
   heuristicFn = lambda state: minSpanningTreeHeuristic(state, graph)
   return heuristicFn
 
 def minSpanningTreeHeuristic(state, graph):
+    return 1
 
 def foodHeuristic(state):
   """
