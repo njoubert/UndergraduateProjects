@@ -136,6 +136,36 @@ class PositionSearchProblem(search.SearchProblem):
     return cost
 
 
+class CustomPositionSearchProblem(search.PositionSearchProblem):
+  """
+  A search problem defines the state space, start state, goal test,
+  successor function and cost function.  This search problem can be
+  used to find paths to a particular point on the pacman board.
+
+  The state space consists of (x,y) positions in a pacman game.
+
+  This search problem is fully specified and should not require change.
+  """
+
+  def __init__(self, gameState, costFn = lambda x: 1, goal=(1,1), customStart=None):
+    """
+    Stores the start and goal.
+
+    gameState: A GameState object (pacman.py)
+    costFn: A function from a search state (tuple) to a non-negative number
+    goal: A position in the gameState
+    """
+    self.walls = gameState.getWalls()
+    if (customStart == None):
+        self.startState = gameState.getPacmanPosition()
+    else:
+        self.startState = customStart
+    self.goal = goal
+    self.costFn = costFn
+    
+    # For display purposes
+    self._visited, self._visitedlist, self._expanded = {}, [], 0
+
 class SearchAgent(Agent):
   """
   This very general search agent finds a path using a supplied search algorithm for a
@@ -357,7 +387,30 @@ def getFoodHeuristic(gameState):
   True or False.
   """
   # If you don't want to implement this method, you can leave this default implementation
-  return foodHeuristic
+  #return foodHeuristic
+  
+  #get positions of all the food pellets on the board
+  foodGrid = gameState.getFood()
+  foodList = foodGridToFoodList(foodGrid)
+  for startPellet in foodList:
+      for endPellet in foodList:
+          if (startPellet == endPellet):
+              continue
+          problem = CustomPositionSearchProblem(gameState, lambda x: 1, endPellet, startPellet)
+          actions = search.breadthFirstSearch(problem)
+          distance = problem.getCostOfActions(actions)
+          print distance
+  #for each food pellet, calculate the distance to all the other food pellets using BFS
+  #    Store this in a hash or adjacency lists
+  
+  #Return a function
+  
+  graph = 
+  
+  heuristicFn = lambda state: minSpanningTreeHeuristic(state, graph)
+  return heuristicFn
+
+def minSpanningTreeHeuristic(state, graph):
 
 def foodHeuristic(state):
   """
@@ -384,6 +437,14 @@ def foodHeuristic(state):
   #return hMinDistance(state)
   #return hMinOrMaxDistance(state)
   #return hDistanceBetweenAll(state) #NA
+  
+def foodGridToFoodList(grid):
+  foodList = []
+  for i in range (0,grid.width):
+      for j in range (0,grid.height):
+          if (grid[i][j] == True):
+              foodList.append((i,j))
+  return foodList
   
 def findClosestFoodToPointInGrid(grid, point):
   minDistance = 999999
