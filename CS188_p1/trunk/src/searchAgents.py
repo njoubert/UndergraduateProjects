@@ -519,7 +519,7 @@ def greedyFoodHeuristic(state):
     #distanceToClosest = util.manhattanDistance(closest, state[0])
     return boardCount
 
-def foodAStar(problem):
+def foodAStar(state):
   """
   A wrapper for A* that uses the Food heuristic.
   """
@@ -532,7 +532,44 @@ class AStarFoodSearchAgent(SearchAgent):
   You should use either foodHeuristic or getFoodHeuristic in your code here.
   """
   def __init__(self, searchFunction=None, searchType=FoodSearchProblem):
-    SearchAgent.__init__(self, foodAStar, searchType)
+    self.searchFunction = search.aStarSearch
+    self.searchType = searchType
+
+  def registerInitialState(self, state):
+    """
+    This is the first time that the agent sees the layout of the game board. Here, we
+    choose a path to the goal.  In this phase, the agent should compute the path to the
+    goal and store it in a local variable.
+
+    state: a GameState object (pacman.py)
+    """
+    if self.searchFunction == None:
+      import sys
+      print "No search function provided for SearchAgent"
+      sys.exit(1)
+
+    # If you wrap your solution in the timing code provided, you'll know how long the pathfinding takes.
+    starttime = time.time()
+    problem = self.searchType(state)
+    heuristic = getFoodHeuristic(state)
+
+    self.actions = self.searchFunction(problem, heuristic)
+    if (self.actions == None):
+        import sys
+        print 'No solution found??!??!??!?! WTF!!! HELP!'
+        sys.exit(1)
+    print 'Path found with total cost of %d in %.1f seconds' % (problem.getCostOfActions(self.actions), time.time() - starttime)
+
+  def getAction(self, state):
+    """
+    Returns the next action in the path chosen earlier (in registerInitialState).  Return
+    Directions.STOP if there is no further action to take.
+
+    state: a GameState object (pacman.py)
+    """
+    if (len(self.actions) == 0):
+        return Directions.STOP
+    return self.actions.pop(0)
 
 def greedy(problem):
     return search.greedySearch(problem, greedyFoodHeuristic)
