@@ -415,7 +415,7 @@ def getFoodHeuristic(gameState):
   #return foodHeuristic
 
   #get positions of all the food pellets on the board
-  edgeInfo = util.FasterPriorityQueue()
+  #edgeInfo = util.FasterPriorityQueue()
   distanceInfo = {}
   foodGrid = gameState.getFood()
   foodList = foodGridToFoodList(foodGrid)
@@ -429,20 +429,27 @@ def getFoodHeuristic(gameState):
           actions = search.breadthFirstSearch(problem)
           distance = problem.getCostOfActions(actions)
           distanceInfo[(startPellet,endPellet)] = distance
-          edgeInfo.push((startPellet,endPellet),distance)
+          #edgeInfo.push((startPellet,endPellet),distance)
   #for each food pellet, calculate the distance to all the other food pellets using BFS
   #    Store this in a hash or adjacency lists
 
   #Return a function
-
   print distanceInfo
   print len(distanceInfo)
 
   #This is an example of Closures, which does not exist in C.
-  heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo)
+  heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo)
   return heuristicFn
 
-def minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo):
+def checkOtherNodeInTree(forest,secondNode):
+    list = None
+    for tree in forest:
+        if(tree.count(secondNode)>0):
+            list = tree
+            break
+    return list
+
+def minSpanningTreeHeuristic(state,gameState, distanceInfo):
     totalDistance =0
     nodeCount=1
     for i in range (0,state[1].width):
@@ -453,14 +460,16 @@ def minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo):
               actions = search.breadthFirstSearch(problem)
               distance = problem.getCostOfActions(actions)
               distanceInfo[(state[0],(i,j))] = distance
-              edgeInfo.push((state[0],(i,j)),distance)
+    edgeInfo = util.FasterPriorityQueue()
+    for distance in distanceInfo.items():
+        edgeInfo.push(distance[0],distance[1])
     vertices = []
     forest = []
+
     while(not edgeInfo.isEmpty()):
         closestNode = edgeInfo.pop()
         oneNode,secondNode = closestNode
         closestDistance = distanceInfo[closestNode]
-        """
         cycling = False
         appended = False
         #CHECKING FOR CYCLING
@@ -480,20 +489,30 @@ def minSpanningTreeHeuristic(state,gameState, distanceInfo, edgeInfo):
                         tree = tree+otherTree
                         appended = True
                         break
+                if(tree.count(secondNode)>0):
+                    otherTree = checkOtherNodeInTree(forest,oneNode)
+                    if(otherTree == None):
+                        tree.append(oneNode)
+                        appended = True
+                        break
+                    else:
+                        tree = tree+otherTree
+                        appended = True
+                        break
+
         if(appended == False and cycling == False):
             tree = []
             tree.append(oneNode)
             tree.append(secondNode)
             forest.append(tree)
-
-        """
-        totalDistance += closestDistance
-        if(vertices.count(oneNode)==0):
-            vertices.append(oneNode)
-        if(vertices.count(secondNode)==0):
-            vertices.append(secondNode)
-        if(len(vertices)==nodeCount):
-            break
+        if(cycling == False):
+            totalDistance += closestDistance
+            if(vertices.count(oneNode)==0):
+                vertices.append(oneNode)
+            if(vertices.count(secondNode)==0):
+                vertices.append(secondNode)
+            if(len(vertices)==nodeCount):
+                break
     return totalDistance
 
 def foodHeuristic(state):
