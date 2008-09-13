@@ -1,2 +1,2 @@
 cs188-ag,rohitnambiar@berkeley.edu,Rohit Nambiar
-cs188    ,njoubert@gmail.com, Niels Joubert
+cs188-ba,niels@berkeley.edu,Niels Joubert
