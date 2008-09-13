@@ -420,25 +420,27 @@ def getFoodHeuristic(gameState):
   foodGrid = gameState.getFood()
   foodList = foodGridToFoodList(foodGrid)
   for startPellet in foodList:
+      distanceInfo[startPellet] = {}
       for endPellet in foodList:
           if (startPellet == endPellet):
               continue
-          if (distanceInfo.has_key((endPellet,startPellet))):
-              continue
+          #if (distanceInfo.has_key((endPellet,startPellet))):
+          #    continue
           problem = CustomPositionSearchProblem(gameState, lambda x: 1, endPellet, startPellet)
           actions = search.breadthFirstSearch(problem)
           distance = problem.getCostOfActions(actions)
-          distanceInfo[(startPellet,endPellet)] = distance
+          distanceInfo[startPellet][endPellet] = distance
           #edgeInfo.push((startPellet,endPellet),distance)
   #for each food pellet, calculate the distance to all the other food pellets using BFS
   #    Store this in a hash or adjacency lists
 
   #Return a function
-  print distanceInfo
-  print len(distanceInfo)
+  #print len(distanceInfo)
+  #print distanceInfo
 
   #This is an example of Closures, which does not exist in C.
-  heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo)
+  #heuristicFn = lambda state: minSpanningTreeHeuristic(state,gameState, distanceInfo)
+  heuristicFn = lambda state: primsMinSpanningTreeHeuristic(state, gameState, distanceInfo)  
   return heuristicFn
 
 def checkOtherNodeInTree(forest,secondNode):
@@ -449,6 +451,43 @@ def checkOtherNodeInTree(forest,secondNode):
             break
     return list
 
+def primsMinSpanningTreeHeuristic(state, gameState, edges):
+    vNew = []
+    totalDist = 0
+    
+    currentFoodGrid = state[1]
+    vertices = foodGridToFoodList(currentFoodGrid)
+    
+    if (len(vertices) == 0):
+        return 0
+    
+    #vNew.append(gameState.getPacmanPosition())
+    start = state[0]
+    edges[start] = {}
+    for pellet in vertices:
+      problem = CustomPositionSearchProblem(gameState, lambda x: 1, pellet, start)
+      actions = search.breadthFirstSearch(problem)
+      distance = problem.getCostOfActions(actions)
+      edges[start][pellet] = distance
+    
+    vNew.append(start)
+    
+    #vNew.append(vertices[0])      
+    while len(vertices) != len(vNew):
+        nearestV = None
+        nearestD = 999999 
+        for sVertex in vNew:
+            for eVertex in edges[sVertex].keys():
+                if (edges[sVertex][eVertex] < nearestD):
+                    nearestD = edges[sVertex][eVertex]
+                    nearestV = eVertex
+        assert nearestV != None            
+        vNew.append(eVertex)
+        totalDist += nearestD
+    
+    #print "Prim says we have a total distance in our minimum spanning tree of ", totalDist    
+    return totalDist
+                    
 def minSpanningTreeHeuristic(state,gameState, distanceInfo):
     totalDistance =0
     nodeCount=1
@@ -547,6 +586,14 @@ def foodGridToFoodList(grid):
       for j in range (0,grid.height):
           if (grid[i][j] == True):
               foodList.append((i,j))
+  return foodList
+
+def foodGridToFoodSet(grid):
+  foodList = set([])
+  for i in range (0,grid.width):
+      for j in range (0,grid.height):
+          if (grid[i][j] == True):
+              foodList.add((i,j))
   return foodList
 
 def findClosestFoodToPointInGrid(grid, point):
