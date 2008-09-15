@@ -31,5 +31,4 @@
 #include <time.h>
 #include <math.h>
 
-
 #endif /* UTIL_H_ */
