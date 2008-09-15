@@ -34,7 +34,8 @@ void myReshape(int w, int h) {
 	glViewport(0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
+	//glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
+	glOrtho(0,viewport.w,0,viewport.h, 1, -1);
 }
 
 void initScene(){
@@ -51,7 +52,7 @@ void initScene(){
 
 void initSystem() {
     int step = 20;
-    double border = 0;
+    double border = 100;
     int gridWidth = 10;
     vector< vector < Particle> > x(step, vector< Particle >(step));
     for (int i = 0; i < step; i++) {
@@ -59,13 +60,13 @@ void initSystem() {
             //x[i][j].x = (((double) viewport.w - border*2) / (double) step) * (double) i - ((viewport.w - border*2) / 2.0);
             //x[i][j].y = (((double) viewport.h - border*2) / (double) step) * (double) j - ((viewport.h - border*2) / 2.0);
             //x[i][j].m = (rand() % 200) + 100;
-            x[i][j].x = border + j*gridWidth;
-            x[i][j].y = border + i*gridWidth;
-            x[i][j].m = 10;
+            x[i][j].x = border + i*gridWidth;
+            x[i][j].y = border + j*gridWidth;
+            x[i][j].m = 10; //Make this 2 to see it blow up.
         }
     }
-    x[step-2][step-1].pinned = true;
-    x[step-2][0].pinned = true;
+    x[step-1][step-1].pinned = true;
+    x[0][step-1].pinned = true;
     /**
     for (int i = 0; i < step; i++) {
         x[i][step-1].pinned = true;
@@ -82,6 +83,10 @@ void initSystem() {
             sys.addForce(f);
         }
     }
+
+    double ks = 0.01;
+    double kd = 0.82;
+    //VERTICAL SPRINGS
     SpringForce * f2;
     for (int i = 0; i < step-1; i++) {
         for (int j = 0; j < step; j++) {
@@ -90,22 +95,23 @@ void initSystem() {
             f2->v1 = j;
             f2->u2 = i+1;
             f2->v2 = j;
-            f2->ks = 0.01;
-            f2->kd = 0.82;
+            f2->ks = ks;
+            f2->kd = kd;
             f2->r = gridWidth;
             sys.addForce(f2);
         }
     }
+    //HORIZONTAL SPRINGS
     //**
-    for (int i = 0; i < step-1; i++) {
+    for (int i = 0; i < step; i++) {
         for (int j = 0; j < step-1; j++) {
             f2 = new SpringForce();
             f2->u1 = i;
             f2->v1 = j;
             f2->u2 = i;
             f2->v2 = j+1;
-            f2->ks = 0.11;
-            f2->kd = 2.82;
+            f2->ks = ks;
+            f2->kd = kd;
             f2->r = gridWidth;
             sys.addForce(f2);
         }
