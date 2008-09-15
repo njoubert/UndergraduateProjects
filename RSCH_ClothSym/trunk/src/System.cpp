@@ -15,7 +15,7 @@ GravityForce::GravityForce() {
     type = GRAVITY;
 }
 void GravityForce::apply(std::vector< std::vector < Particle > > * x) {
-    (*x)[u1][v1].fy += -1*(*x)[u1][v1].m*((double)0.00000667428);
+    (*x)[u1][v1].fy += -1*(*x)[u1][v1].m*((double)0.0000667428);
     //std::cout << "mass of particle = " << (*x)[u1][v1].m << ", force = " << (*x)[u1][v1].fy << std::endl;
 
 };

@@ -51,20 +51,26 @@ void initScene(){
 
 void initSystem() {
     int step = 20;
-    double border = 50;
+    double border = 0;
+    int gridWidth = 10;
     vector< vector < Particle> > x(step, vector< Particle >(step));
     for (int i = 0; i < step; i++) {
         for (int j = 0; j < step; j++) {
-            x[i][j].x = (((double) viewport.w - border*2) / (double) step) * (double) i - ((viewport.w - border*2) / 2.0);
-            x[i][j].y = (((double) viewport.h - border*2) / (double) step) * (double) j - ((viewport.h - border*2) / 2.0);
+            //x[i][j].x = (((double) viewport.w - border*2) / (double) step) * (double) i - ((viewport.w - border*2) / 2.0);
+            //x[i][j].y = (((double) viewport.h - border*2) / (double) step) * (double) j - ((viewport.h - border*2) / 2.0);
             //x[i][j].m = (rand() % 200) + 100;
-            x[i][j].m = 100;
+            x[i][j].x = border + j*gridWidth;
+            x[i][j].y = border + i*gridWidth;
+            x[i][j].m = 10;
         }
     }
+    x[step-2][step-1].pinned = true;
+    x[step-2][0].pinned = true;
+    /**
     for (int i = 0; i < step; i++) {
         x[i][step-1].pinned = true;
-
     }
+    */
     sys.setDim(step, step);
     sys.setX(&x);
     Force * f;
@@ -78,7 +84,7 @@ void initSystem() {
     }
     SpringForce * f2;
     for (int i = 0; i < step-1; i++) {
-        for (int j = 0; j < step-1; j++) {
+        for (int j = 0; j < step; j++) {
             f2 = new SpringForce();
             f2->u1 = i;
             f2->v1 = j;
@@ -86,10 +92,11 @@ void initSystem() {
             f2->v2 = j;
             f2->ks = 0.01;
             f2->kd = 0.82;
-            f2->r = 10;
+            f2->r = gridWidth;
             sys.addForce(f2);
         }
     }
+    //**
     for (int i = 0; i < step-1; i++) {
         for (int j = 0; j < step-1; j++) {
             f2 = new SpringForce();
@@ -97,9 +104,9 @@ void initSystem() {
             f2->v1 = j;
             f2->u2 = i;
             f2->v2 = j+1;
-            f2->ks = 0.01;
-            f2->kd = 0.12;
-            f2->r = 20;
+            f2->ks = 0.11;
+            f2->kd = 2.82;
+            f2->r = gridWidth;
             sys.addForce(f2);
         }
     }
