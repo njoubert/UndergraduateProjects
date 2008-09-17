@@ -28,7 +28,8 @@ enum ForceType {
     DEFAULT,
     GRAVITY,
     DRAG,
-    SPRING
+    SPRING,
+    INPUT
 };
 
 class Force {
@@ -58,6 +59,16 @@ public:
     int u2, v2;
     double ks, kd, r;
 };
+
+class InputForce: public Force {
+public:
+    InputForce();
+    void apply(std::vector< std::vector < Particle > > *);
+    int xi, yi, zi;
+    double ks, kd, r;
+    bool enabled;
+};
+
 /// \brief Represents the cloth mesh system
 ///
 /// Contains all the data needed to store a cloth mesh.
@@ -91,6 +102,8 @@ public:
 	void draw();
 
 	void addForce(Force*);
+
+	Particle* getClosestParticle(double, double, int*, int*);
 
 private:
     void copyX(std::vector< std::vector< Particle > > *, std::vector< std::vector< Particle > > *);

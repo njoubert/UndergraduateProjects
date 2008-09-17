@@ -50,6 +50,34 @@ void SpringForce::apply(std::vector< std::vector < Particle > > * x) {
     (*x)[u2][v2].fy += -1*fy;
 };
 
+InputForce::InputForce() {
+    type = INPUT;
+    enabled = false;
+    ks = 0.01;
+    kd = 0.82;
+    r = 2;
+}
+
+void InputForce::apply(std::vector< std::vector < Particle > > * x) {
+    if (!enabled)
+        return;
+    double lx = (*x)[u1][v1].x - xi;
+    double ly = (*x)[u1][v1].y - yi;
+    double ll = sqrt(lx*lx + ly*ly);
+    double vlx = (*x)[u1][v1].vx;
+    double vly = (*x)[u1][v1].vy;
+    //double vll = sqrt(vlx*vlx + vly*vly);
+
+    double fk = -1*(ks*(ll - r) + kd*(lx*vlx + ly*vly)/ll);
+    double fx = fk*(lx/ll);
+    double fy = fk*(ly/ll);
+
+    //std::cout << "spring force fx=" << fx << " fy=" << fy << std::endl;
+
+    (*x)[u1][v1].fx += fx;
+    (*x)[u1][v1].fy += fy;
+};
+
 System::System() {
     t = 0;
 
@@ -136,6 +164,8 @@ std::vector< std::vector< Particle > > * System::evalDeriv() {
 void System::draw() {
 
     glColor3f(1.0f,0.0f,0.0f);
+
+        //**
     SpringForce * f;
     for (int i = 0; i < _forces.size(); i++) {
         if (_forces[i]->type == SPRING) {
@@ -147,7 +177,8 @@ void System::draw() {
 
         }
     }
-
+        // */
+        //**
         for (int i = 0; i < x.size(); i++) {
             for (int j = 0; j < x[i].size(); j++) {
                 glColor3f(0.0f, 0.0f, 0.0f);
@@ -164,12 +195,35 @@ void System::draw() {
             }
         }
 
+        // */
 }
 
 
 void System::addForce(Force* f) {
     _forces.push_back(f);
-    std::cout << "Added force to particle (" << f->u1 << "," << f->v1 << ")" << std::endl;
+    //printDebug("Added force to particle (" << f->u1 << "," << f->v1 << ")");
+}
+
+
+Particle* System::getClosestParticle(double xp, double yp, int* u1, int* v1) {
+    Particle* closest;
+    double dist = 999999;
+    for (int i = 0; i < x.size(); i++) {
+        for (int j = 0; j < x[i].size(); j++) {
+            double yd = (yp - x[i][j].y);
+            double xd = (xp - x[i][j].x);
+            double ndist = sqrt(xd*xd + yd*yd);
+            if (ndist < dist) {
+                *(u1) = i;
+                *(v1) = j;
+                dist = ndist;
+                closest = &(x[i][j]);
+            }
+
+        }
+    }
+    std::cout << xp << "," << yp << " selected dist = " << dist << std::endl;
+    return closest;
 }
 
 void System::copyX(std::vector< std::vector< Particle > > * original,
