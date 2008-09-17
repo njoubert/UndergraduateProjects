@@ -142,14 +142,13 @@ void myDisplay() {
 
 void myFrameMove() {
 	//Check time using lastTime?
-	solver.takeStep(sys, 2.0);
+	solver.takeStep(sys, 4.0); //you get weird behavior on 4, crazy explosion on 12.
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 
 void myMousePress(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON) {
         if (state == GLUT_DOWN) {
-            std::cout << "Button Pressed! " << std::endl << x << "," << y << std::endl;
             //Find the point
             mouseSelectedItem = true;
             float z = 0.5;
@@ -163,7 +162,6 @@ void myMousePress(int button, int state, int x, int y) {
             glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
 
             if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
-                std::cout << ox << "," << oy << std::endl;
                 int u1, v1;
                 sys.getClosestParticle(ox,oy, &u1, &v1);
                 std::vector< std::vector< Particle > > * particles = sys.getX();
@@ -181,7 +179,6 @@ void myMousePress(int button, int state, int x, int y) {
                 }
             }
         } else {
-            std::cout << "Button Released!" << std::endl;
             mouseSelectedItem = false;
             mouseForce->enabled = false;
         }
