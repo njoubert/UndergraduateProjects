@@ -1,0 +1,251 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module game</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>game</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/dave/Desktop/cs188/p2/multiagent/game.py">/home/dave/Desktop/cs188/p2/multiagent/game.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="heapq.html">heapq</a><br>
+<a href="inspect.html">inspect</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="game.html#Actions">Actions</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#Agent">Agent</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#AgentState">AgentState</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#Configuration">Configuration</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#Directions">Directions</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#Game">Game</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#GameStateData">GameStateData</a>
+</font></dt><dt><font face="helvetica, arial"><a href="game.html#Grid">Grid</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Actions">class <strong>Actions</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;collection&nbsp;of&nbsp;static&nbsp;methods&nbsp;for&nbsp;manipulating&nbsp;move&nbsp;actions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Static methods defined here:<br>
+<dl><dt><a name="Actions-directionToVector"><strong>directionToVector</strong></a>(direction, speed<font color="#909090">=1.0</font>)</dt></dl>
+
+<dl><dt><a name="Actions-getLegalNeighbors"><strong>getLegalNeighbors</strong></a>(position, walls)</dt></dl>
+
+<dl><dt><a name="Actions-getPossibleActions"><strong>getPossibleActions</strong></a>(config, walls)</dt></dl>
+
+<dl><dt><a name="Actions-reverseDirection"><strong>reverseDirection</strong></a>(action)</dt></dl>
+
+<dl><dt><a name="Actions-vectorToDirection"><strong>vectorToDirection</strong></a>(vector)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>TOLERANCE</strong> = 0.001</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Agent">class <strong>Agent</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>An&nbsp;agent&nbsp;must&nbsp;define&nbsp;a&nbsp;getAction&nbsp;method,&nbsp;but&nbsp;may&nbsp;also&nbsp;define&nbsp;the<br>
+following&nbsp;methods&nbsp;which&nbsp;will&nbsp;be&nbsp;called&nbsp;if&nbsp;they&nbsp;exist:<br>
+&nbsp;<br>
+def&nbsp;registerInitialState(self,&nbsp;state):&nbsp;#&nbsp;inspects&nbsp;the&nbsp;starting&nbsp;state<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Agent-__init__"><strong>__init__</strong></a>(self, index<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="Agent-getAction"><strong>getAction</strong></a>(self, state)</dt><dd><tt>The&nbsp;<a href="#Agent">Agent</a>&nbsp;will&nbsp;receive&nbsp;a&nbsp;GameState&nbsp;(from&nbsp;either&nbsp;{pacman,&nbsp;capture,&nbsp;sonar}.py)&nbsp;and<br>
+must&nbsp;return&nbsp;an&nbsp;action&nbsp;from&nbsp;<a href="#Directions">Directions</a>.{North,&nbsp;South,&nbsp;East,&nbsp;West,&nbsp;Stop}</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="AgentState">class <strong>AgentState</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>AgentStates&nbsp;hold&nbsp;the&nbsp;state&nbsp;of&nbsp;an&nbsp;agent&nbsp;(configuration,&nbsp;speed,&nbsp;scared,&nbsp;etc).<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="AgentState-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="AgentState-__hash__"><strong>__hash__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="AgentState-__init__"><strong>__init__</strong></a>(self, startConfiguration, isPacman)</dt></dl>
+
+<dl><dt><a name="AgentState-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="AgentState-copy"><strong>copy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="AgentState-getDirection"><strong>getDirection</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="AgentState-getPosition"><strong>getPosition</strong></a>(self)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Configuration">class <strong>Configuration</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;<a href="#Configuration">Configuration</a>&nbsp;holds&nbsp;the&nbsp;(x,y)&nbsp;coordinate&nbsp;of&nbsp;a&nbsp;character,&nbsp;along&nbsp;with&nbsp;its&nbsp;<br>
+traveling&nbsp;direction.<br>
+&nbsp;<br>
+The&nbsp;convention&nbsp;for&nbsp;positions,&nbsp;like&nbsp;a&nbsp;graph,&nbsp;is&nbsp;that&nbsp;(0,0)&nbsp;is&nbsp;the&nbsp;lower&nbsp;left&nbsp;corner,&nbsp;x&nbsp;increases&nbsp;<br>
+horizontally&nbsp;and&nbsp;y&nbsp;increases&nbsp;vertically.&nbsp;&nbsp;Therefore,&nbsp;north&nbsp;is&nbsp;the&nbsp;direction&nbsp;of&nbsp;increasing&nbsp;y,&nbsp;or&nbsp;(0,1).<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Configuration-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="Configuration-__hash__"><strong>__hash__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Configuration-__init__"><strong>__init__</strong></a>(self, pos, direction)</dt></dl>
+
+<dl><dt><a name="Configuration-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Configuration-generateSuccessor"><strong>generateSuccessor</strong></a>(self, vector)</dt><dd><tt>Generates&nbsp;a&nbsp;new&nbsp;configuration&nbsp;reached&nbsp;by&nbsp;translating&nbsp;the&nbsp;current<br>
+configuration&nbsp;by&nbsp;the&nbsp;action&nbsp;vector.&nbsp;&nbsp;This&nbsp;is&nbsp;a&nbsp;low-level&nbsp;call&nbsp;and&nbsp;does<br>
+not&nbsp;attempt&nbsp;to&nbsp;respect&nbsp;the&nbsp;legality&nbsp;of&nbsp;the&nbsp;movement.<br>
+&nbsp;<br>
+<a href="#Actions">Actions</a>&nbsp;are&nbsp;movement&nbsp;vectors.</tt></dd></dl>
+
+<dl><dt><a name="Configuration-getDirection"><strong>getDirection</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Configuration-getPosition"><strong>getPosition</strong></a>(self)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Directions">class <strong>Directions</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>EAST</strong> = 'East'</dl>
+
+<dl><dt><strong>LEFT</strong> = {'East': 'North', 'North': 'West', 'South': 'East', 'Stop': 'Stop', 'West': 'South'}</dl>
+
+<dl><dt><strong>NORTH</strong> = 'North'</dl>
+
+<dl><dt><strong>RIGHT</strong> = {'East': 'South', 'North': 'East', 'South': 'West', 'Stop': 'Stop', 'West': 'North'}</dl>
+
+<dl><dt><strong>SOUTH</strong> = 'South'</dl>
+
+<dl><dt><strong>STOP</strong> = 'Stop'</dl>
+
+<dl><dt><strong>WEST</strong> = 'West'</dl>
+
+<dl><dt><strong>x</strong> = 'South'</dl>
+
+<dl><dt><strong>y</strong> = 'East'</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Game">class <strong>Game</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>The&nbsp;<a href="#Game">Game</a>&nbsp;manages&nbsp;the&nbsp;control&nbsp;flow,&nbsp;soliciting&nbsp;actions&nbsp;from&nbsp;agents.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Game-__init__"><strong>__init__</strong></a>(self, agents, display, rules)</dt></dl>
+
+<dl><dt><a name="Game-run"><strong>run</strong></a>(self)</dt><dd><tt>Main&nbsp;control&nbsp;loop&nbsp;for&nbsp;game&nbsp;play.</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GameStateData">class <strong>GameStateData</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="GameStateData-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><tt>Allows&nbsp;two&nbsp;states&nbsp;to&nbsp;be&nbsp;compared.</tt></dd></dl>
+
+<dl><dt><a name="GameStateData-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><tt>Allows&nbsp;states&nbsp;to&nbsp;be&nbsp;keys&nbsp;of&nbsp;dictionaries.</tt></dd></dl>
+
+<dl><dt><a name="GameStateData-__init__"><strong>__init__</strong></a>(self, prevState<font color="#909090">=None</font>)</dt><dd><tt>Generates&nbsp;a&nbsp;new&nbsp;data&nbsp;packet&nbsp;by&nbsp;copying&nbsp;information&nbsp;from&nbsp;its&nbsp;predecessor.</tt></dd></dl>
+
+<dl><dt><a name="GameStateData-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameStateData-copyAgentStates"><strong>copyAgentStates</strong></a>(self, agentStates)</dt></dl>
+
+<dl><dt><a name="GameStateData-deepCopy"><strong>deepCopy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameStateData-initialize"><strong>initialize</strong></a>(self, layout, numGhostAgents)</dt><dd><tt>Creates&nbsp;an&nbsp;initial&nbsp;game&nbsp;state&nbsp;from&nbsp;a&nbsp;layout&nbsp;array&nbsp;(see&nbsp;layout.py).</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Grid">class <strong>Grid</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;2-dimensional&nbsp;array&nbsp;of&nbsp;objects&nbsp;backed&nbsp;by&nbsp;a&nbsp;list&nbsp;of&nbsp;lists.&nbsp;&nbsp;Data&nbsp;is&nbsp;accessed<br>
+via&nbsp;grid[x][y]&nbsp;where&nbsp;(x,y)&nbsp;are&nbsp;positions&nbsp;on&nbsp;a&nbsp;Pacman&nbsp;map&nbsp;with&nbsp;x&nbsp;horizontal,<br>
+y&nbsp;vertical&nbsp;and&nbsp;the&nbsp;origin&nbsp;(0,0)&nbsp;in&nbsp;the&nbsp;bottom&nbsp;left&nbsp;corner.&nbsp;&nbsp;<br>
+&nbsp;<br>
+The&nbsp;__str__&nbsp;method&nbsp;constructs&nbsp;an&nbsp;output&nbsp;that&nbsp;is&nbsp;oriented&nbsp;like&nbsp;a&nbsp;pacman&nbsp;board.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Grid-__eq__"><strong>__eq__</strong></a>(self, other)</dt></dl>
+
+<dl><dt><a name="Grid-__getitem__"><strong>__getitem__</strong></a>(self, i)</dt></dl>
+
+<dl><dt><a name="Grid-__hash__"><strong>__hash__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Grid-__init__"><strong>__init__</strong></a>(self, width, height, initialValue<font color="#909090">=False</font>, bitRepresentation<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="Grid-__setitem__"><strong>__setitem__</strong></a>(self, key, item)</dt></dl>
+
+<dl><dt><a name="Grid-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Grid-asList"><strong>asList</strong></a>(self, key<font color="#909090">=True</font>)</dt></dl>
+
+<dl><dt><a name="Grid-copy"><strong>copy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Grid-count"><strong>count</strong></a>(self, item<font color="#909090">=True</font>)</dt></dl>
+
+<dl><dt><a name="Grid-deepCopy"><strong>deepCopy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Grid-packBits"><strong>packBits</strong></a>(self)</dt><dd><tt>Returns&nbsp;an&nbsp;efficient&nbsp;int&nbsp;list&nbsp;representation<br>
+&nbsp;<br>
+(width,&nbsp;height,&nbsp;bitPackedInts...)</tt></dd></dl>
+
+<dl><dt><a name="Grid-shallowCopy"><strong>shallowCopy</strong></a>(self)</dt></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-reconstituteGrid"><strong>reconstituteGrid</strong></a>(bitRep)</dt></dl>
+</td></tr></table>
+</body></html>

@@ -1,0 +1,238 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module pacman</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pacman</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/dave/Desktop/cs188/p2/multiagent/pacman.py">/home/dave/Desktop/cs188/p2/multiagent/pacman.py</a></font></td></tr></table>
+    <p><tt>Pacman.py&nbsp;holds&nbsp;the&nbsp;logic&nbsp;for&nbsp;the&nbsp;classic&nbsp;pacman&nbsp;game&nbsp;along&nbsp;with&nbsp;the&nbsp;main&nbsp;<br>
+code&nbsp;to&nbsp;run&nbsp;a&nbsp;game.&nbsp;&nbsp;This&nbsp;file&nbsp;is&nbsp;divided&nbsp;into&nbsp;three&nbsp;sections:<br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;(i)&nbsp;&nbsp;Your&nbsp;interface&nbsp;to&nbsp;the&nbsp;pacman&nbsp;world:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pacman&nbsp;is&nbsp;a&nbsp;complex&nbsp;environment.&nbsp;&nbsp;You&nbsp;probably&nbsp;don't&nbsp;want&nbsp;to&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read&nbsp;through&nbsp;all&nbsp;of&nbsp;the&nbsp;code&nbsp;we&nbsp;wrote&nbsp;to&nbsp;make&nbsp;the&nbsp;game&nbsp;runs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correctly.&nbsp;&nbsp;This&nbsp;section&nbsp;contains&nbsp;the&nbsp;parts&nbsp;of&nbsp;the&nbsp;code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;you&nbsp;will&nbsp;need&nbsp;to&nbsp;understand&nbsp;in&nbsp;order&nbsp;to&nbsp;complete&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;project.&nbsp;&nbsp;There&nbsp;is&nbsp;also&nbsp;some&nbsp;code&nbsp;in&nbsp;game.py&nbsp;that&nbsp;you&nbsp;should&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;understand.<br>
+&nbsp;<br>
+&nbsp;&nbsp;(ii)&nbsp;&nbsp;The&nbsp;hidden&nbsp;secrets&nbsp;of&nbsp;pacman:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;section&nbsp;contains&nbsp;all&nbsp;of&nbsp;the&nbsp;logic&nbsp;code&nbsp;that&nbsp;the&nbsp;pacman<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;environment&nbsp;uses&nbsp;to&nbsp;decide&nbsp;who&nbsp;can&nbsp;move&nbsp;where,&nbsp;who&nbsp;dies&nbsp;when<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;things&nbsp;collide,&nbsp;etc.&nbsp;&nbsp;You&nbsp;shouldn't&nbsp;need&nbsp;to&nbsp;read&nbsp;this&nbsp;section<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;code,&nbsp;but&nbsp;you&nbsp;can&nbsp;if&nbsp;you&nbsp;want.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;(iii)&nbsp;Framework&nbsp;to&nbsp;start&nbsp;a&nbsp;game:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;final&nbsp;section&nbsp;contains&nbsp;the&nbsp;code&nbsp;for&nbsp;reading&nbsp;the&nbsp;command<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you&nbsp;use&nbsp;to&nbsp;set&nbsp;up&nbsp;the&nbsp;game,&nbsp;then&nbsp;starting&nbsp;up&nbsp;a&nbsp;new&nbsp;game,&nbsp;along&nbsp;with&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linking&nbsp;in&nbsp;all&nbsp;the&nbsp;external&nbsp;parts&nbsp;(agent&nbsp;functions,&nbsp;graphics).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;this&nbsp;section&nbsp;out&nbsp;to&nbsp;see&nbsp;all&nbsp;the&nbsp;options&nbsp;available&nbsp;to&nbsp;you.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+To&nbsp;play&nbsp;your&nbsp;first&nbsp;game,&nbsp;type&nbsp;'python&nbsp;pacman.py'&nbsp;from&nbsp;the&nbsp;command&nbsp;line.<br>
+The&nbsp;keys&nbsp;are&nbsp;'a',&nbsp;'s',&nbsp;'d',&nbsp;and&nbsp;'w'&nbsp;to&nbsp;move&nbsp;(or&nbsp;arrow&nbsp;keys).&nbsp;&nbsp;Have&nbsp;fun!</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+<a href="types.html">types</a><br>
+</td><td width="25%" valign=top><a href="util.html">util</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="pacman.html#ClassicGameRules">ClassicGameRules</a>
+</font></dt><dt><font face="helvetica, arial"><a href="pacman.html#GameState">GameState</a>
+</font></dt><dt><font face="helvetica, arial"><a href="pacman.html#GhostRules">GhostRules</a>
+</font></dt><dt><font face="helvetica, arial"><a href="pacman.html#PacmanRules">PacmanRules</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ClassicGameRules">class <strong>ClassicGameRules</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>These&nbsp;game&nbsp;rules&nbsp;manage&nbsp;the&nbsp;control&nbsp;flow&nbsp;of&nbsp;a&nbsp;game,&nbsp;deciding&nbsp;when<br>
+and&nbsp;how&nbsp;the&nbsp;game&nbsp;starts&nbsp;and&nbsp;ends.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="ClassicGameRules-lose"><strong>lose</strong></a>(self, state, game)</dt></dl>
+
+<dl><dt><a name="ClassicGameRules-newGame"><strong>newGame</strong></a>(self, layout, pacmanAgent, ghostAgents, display)</dt></dl>
+
+<dl><dt><a name="ClassicGameRules-process"><strong>process</strong></a>(self, state, game)</dt><dd><tt>Checks&nbsp;to&nbsp;see&nbsp;whether&nbsp;it&nbsp;is&nbsp;time&nbsp;to&nbsp;end&nbsp;the&nbsp;game.</tt></dd></dl>
+
+<dl><dt><a name="ClassicGameRules-win"><strong>win</strong></a>(self, state, game)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GameState">class <strong>GameState</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;<a href="#GameState">GameState</a>&nbsp;specifies&nbsp;the&nbsp;full&nbsp;game&nbsp;state,&nbsp;including&nbsp;the&nbsp;food,&nbsp;capsules,&nbsp;<br>
+agent&nbsp;configurations&nbsp;and&nbsp;score&nbsp;changes.<br>
+&nbsp;<br>
+GameStates&nbsp;are&nbsp;used&nbsp;by&nbsp;the&nbsp;Game&nbsp;object&nbsp;to&nbsp;capture&nbsp;the&nbsp;actual&nbsp;state&nbsp;of&nbsp;the&nbsp;game&nbsp;and<br>
+can&nbsp;be&nbsp;used&nbsp;by&nbsp;agents&nbsp;to&nbsp;reason&nbsp;about&nbsp;the&nbsp;game.<br>
+&nbsp;<br>
+Much&nbsp;of&nbsp;the&nbsp;information&nbsp;in&nbsp;a&nbsp;<a href="#GameState">GameState</a>&nbsp;is&nbsp;stored&nbsp;in&nbsp;a&nbsp;GameStateData&nbsp;object.&nbsp;&nbsp;We&nbsp;<br>
+strongly&nbsp;suggest&nbsp;that&nbsp;you&nbsp;access&nbsp;that&nbsp;data&nbsp;via&nbsp;the&nbsp;accessor&nbsp;methods&nbsp;below&nbsp;rather<br>
+than&nbsp;referring&nbsp;to&nbsp;the&nbsp;GameStateData&nbsp;object&nbsp;directly.<br>
+&nbsp;<br>
+Note&nbsp;that&nbsp;in&nbsp;classic&nbsp;Pacman,&nbsp;Pacman&nbsp;is&nbsp;always&nbsp;agent&nbsp;0.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="GameState-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><tt>Allows&nbsp;two&nbsp;states&nbsp;to&nbsp;be&nbsp;compared.</tt></dd></dl>
+
+<dl><dt><a name="GameState-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><tt>Allows&nbsp;states&nbsp;to&nbsp;be&nbsp;keys&nbsp;of&nbsp;dictionaries.</tt></dd></dl>
+
+<dl><dt><a name="GameState-__init__"><strong>__init__</strong></a>(self, prevState<font color="#909090">=None</font>)</dt><dd><tt>Generates&nbsp;a&nbsp;new&nbsp;state&nbsp;by&nbsp;copying&nbsp;information&nbsp;from&nbsp;its&nbsp;predecessor.</tt></dd></dl>
+
+<dl><dt><a name="GameState-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-deepCopy"><strong>deepCopy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-generatePacmanSuccessor"><strong>generatePacmanSuccessor</strong></a>(self, action)</dt><dd><tt>Generates&nbsp;the&nbsp;successor&nbsp;state&nbsp;after&nbsp;the&nbsp;specified&nbsp;pacman&nbsp;move</tt></dd></dl>
+
+<dl><dt><a name="GameState-generateSuccessor"><strong>generateSuccessor</strong></a>(self, agentIndex, action)</dt><dd><tt>Returns&nbsp;the&nbsp;successor&nbsp;state&nbsp;after&nbsp;the&nbsp;specified&nbsp;agent&nbsp;takes&nbsp;the&nbsp;action.</tt></dd></dl>
+
+<dl><dt><a name="GameState-getCapsules"><strong>getCapsules</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;positions&nbsp;(x,y)&nbsp;of&nbsp;the&nbsp;remaining&nbsp;capsules.</tt></dd></dl>
+
+<dl><dt><a name="GameState-getFood"><strong>getFood</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;Grid&nbsp;of&nbsp;boolean&nbsp;food&nbsp;indicator&nbsp;variables.<br>
+&nbsp;<br>
+Grids&nbsp;can&nbsp;be&nbsp;accessed&nbsp;via&nbsp;list&nbsp;notation,&nbsp;so&nbsp;to&nbsp;check<br>
+if&nbsp;there&nbsp;is&nbsp;food&nbsp;at&nbsp;(x,y),&nbsp;just&nbsp;call<br>
+&nbsp;<br>
+currentFood&nbsp;=&nbsp;state.<a href="#GameState-getFood">getFood</a>()<br>
+if&nbsp;currentFood[x][y]&nbsp;==&nbsp;True:&nbsp;...</tt></dd></dl>
+
+<dl><dt><a name="GameState-getGhostPosition"><strong>getGhostPosition</strong></a>(self, agentIndex)</dt></dl>
+
+<dl><dt><a name="GameState-getGhostState"><strong>getGhostState</strong></a>(self, agentIndex)</dt></dl>
+
+<dl><dt><a name="GameState-getGhostStates"><strong>getGhostStates</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getLegalActions"><strong>getLegalActions</strong></a>(self, agentIndex<font color="#909090">=0</font>)</dt><dd><tt>Returns&nbsp;the&nbsp;legal&nbsp;actions&nbsp;for&nbsp;the&nbsp;agent&nbsp;specified.</tt></dd></dl>
+
+<dl><dt><a name="GameState-getLegalPacmanActions"><strong>getLegalPacmanActions</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getNumAgents"><strong>getNumAgents</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getNumFood"><strong>getNumFood</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getPacmanPosition"><strong>getPacmanPosition</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getPacmanState"><strong>getPacmanState</strong></a>(self)</dt><dd><tt>Returns&nbsp;an&nbsp;AgentState&nbsp;object&nbsp;for&nbsp;pacman&nbsp;(in&nbsp;game.py)<br>
+&nbsp;<br>
+state.pos&nbsp;gives&nbsp;the&nbsp;current&nbsp;position<br>
+state.direction&nbsp;gives&nbsp;the&nbsp;travel&nbsp;vector</tt></dd></dl>
+
+<dl><dt><a name="GameState-getScore"><strong>getScore</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-getWalls"><strong>getWalls</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;Grid&nbsp;of&nbsp;boolean&nbsp;wall&nbsp;indicator&nbsp;variables.<br>
+&nbsp;<br>
+Grids&nbsp;can&nbsp;be&nbsp;accessed&nbsp;via&nbsp;list&nbsp;notation,&nbsp;so&nbsp;to&nbsp;check<br>
+if&nbsp;there&nbsp;is&nbsp;food&nbsp;at&nbsp;(x,y),&nbsp;just&nbsp;call<br>
+&nbsp;<br>
+walls&nbsp;=&nbsp;state.<a href="#GameState-getWalls">getWalls</a>()<br>
+if&nbsp;walls[x][y]&nbsp;==&nbsp;True:&nbsp;...</tt></dd></dl>
+
+<dl><dt><a name="GameState-hasFood"><strong>hasFood</strong></a>(self, x, y)</dt></dl>
+
+<dl><dt><a name="GameState-hasWall"><strong>hasWall</strong></a>(self, x, y)</dt></dl>
+
+<dl><dt><a name="GameState-initialize"><strong>initialize</strong></a>(self, layout, numGhostAgents<font color="#909090">=1000</font>)</dt><dd><tt>Creates&nbsp;an&nbsp;initial&nbsp;game&nbsp;state&nbsp;from&nbsp;a&nbsp;layout&nbsp;array&nbsp;(see&nbsp;layout.py).</tt></dd></dl>
+
+<dl><dt><a name="GameState-isLose"><strong>isLose</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GameState-isWin"><strong>isWin</strong></a>(self)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GhostRules">class <strong>GhostRules</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>These&nbsp;functions&nbsp;dictate&nbsp;how&nbsp;ghosts&nbsp;interact&nbsp;with&nbsp;their&nbsp;environment.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Static methods defined here:<br>
+<dl><dt><a name="GhostRules-applyAction"><strong>applyAction</strong></a>(state, action, ghostIndex)</dt></dl>
+
+<dl><dt><a name="GhostRules-canKill"><strong>canKill</strong></a>(pacmanPosition, ghostPosition)</dt></dl>
+
+<dl><dt><a name="GhostRules-checkDeath"><strong>checkDeath</strong></a>(state, agentIndex)</dt></dl>
+
+<dl><dt><a name="GhostRules-collide"><strong>collide</strong></a>(state, ghostState, agentIndex)</dt></dl>
+
+<dl><dt><a name="GhostRules-decrementTimer"><strong>decrementTimer</strong></a>(ghostState)</dt></dl>
+
+<dl><dt><a name="GhostRules-getLegalActions"><strong>getLegalActions</strong></a>(state, ghostIndex)</dt><dd><tt>Ghosts&nbsp;cannot&nbsp;stop,&nbsp;and&nbsp;cannot&nbsp;turn&nbsp;around&nbsp;unless&nbsp;they&nbsp;<br>
+reach&nbsp;a&nbsp;dead&nbsp;end,&nbsp;but&nbsp;can&nbsp;turn&nbsp;90&nbsp;degrees&nbsp;at&nbsp;intersections.</tt></dd></dl>
+
+<dl><dt><a name="GhostRules-placeGhost"><strong>placeGhost</strong></a>(state, ghostState)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>GHOST_SPEED</strong> = 1.0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacmanRules">class <strong>PacmanRules</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>These&nbsp;functions&nbsp;govern&nbsp;how&nbsp;pacman&nbsp;interacts&nbsp;with&nbsp;his&nbsp;environment&nbsp;under<br>
+the&nbsp;classic&nbsp;game&nbsp;rules.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Static methods defined here:<br>
+<dl><dt><a name="PacmanRules-applyAction"><strong>applyAction</strong></a>(state, action)</dt><dd><tt>Edits&nbsp;the&nbsp;state&nbsp;to&nbsp;reflect&nbsp;the&nbsp;results&nbsp;of&nbsp;the&nbsp;action.</tt></dd></dl>
+
+<dl><dt><a name="PacmanRules-consume"><strong>consume</strong></a>(position, state)</dt></dl>
+
+<dl><dt><a name="PacmanRules-getLegalActions"><strong>getLegalActions</strong></a>(state)</dt><dd><tt>Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;possible&nbsp;actions.</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>PACMAN_SPEED</strong> = 1</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-default"><strong>default</strong></a>(str)</dt></dl>
+ <dl><dt><a name="-loadAgent"><strong>loadAgent</strong></a>(pacman, nographics)</dt></dl>
+ <dl><dt><a name="-readCommand"><strong>readCommand</strong></a>(argv)</dt><dd><tt>Processes&nbsp;the&nbsp;command&nbsp;used&nbsp;to&nbsp;run&nbsp;pacman&nbsp;from&nbsp;the&nbsp;command&nbsp;line.</tt></dd></dl>
+ <dl><dt><a name="-replayGame"><strong>replayGame</strong></a>(layout, agents, actions, display)</dt></dl>
+ <dl><dt><a name="-runGames"><strong>runGames</strong></a>(layout, pacman, ghosts, display, numGames, record)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>COLLISION_TOLERANCE</strong> = 0.69999999999999996<br>
+<strong>SCARED_TIME</strong> = 40<br>
+<strong>TIME_PENALTY</strong> = 1</td></tr></table>
+</body></html>

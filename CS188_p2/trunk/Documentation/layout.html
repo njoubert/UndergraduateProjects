@@ -1,0 +1,92 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module layout</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>layout</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/dave/Desktop/cs188/p2/multiagent/layout.py">/home/dave/Desktop/cs188/p2/multiagent/layout.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="layout.html#Layout">Layout</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Layout">class <strong>Layout</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;<a href="#Layout">Layout</a>&nbsp;manages&nbsp;the&nbsp;static&nbsp;information&nbsp;about&nbsp;the&nbsp;game&nbsp;board.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Layout-__init__"><strong>__init__</strong></a>(self, layoutText)</dt></dl>
+
+<dl><dt><a name="Layout-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-deepCopy"><strong>deepCopy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-getFurthestCorner"><strong>getFurthestCorner</strong></a>(self, pacPos)</dt></dl>
+
+<dl><dt><a name="Layout-getNumGhosts"><strong>getNumGhosts</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-getRandomCorner"><strong>getRandomCorner</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-getRandomLegalPosition"><strong>getRandomLegalPosition</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-initializeVisibilityMatrix"><strong>initializeVisibilityMatrix</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Layout-isVisibleFrom"><strong>isVisibleFrom</strong></a>(self, ghostPos, pacPos, pacDirection)</dt></dl>
+
+<dl><dt><a name="Layout-isWall"><strong>isWall</strong></a>(self, pos)</dt></dl>
+
+<dl><dt><a name="Layout-processLayoutChar"><strong>processLayoutChar</strong></a>(self, x, y, layoutChar)</dt></dl>
+
+<dl><dt><a name="Layout-processLayoutText"><strong>processLayoutText</strong></a>(self, layoutText)</dt><dd><tt>Coordinates&nbsp;are&nbsp;flipped&nbsp;from&nbsp;the&nbsp;input&nbsp;format&nbsp;to&nbsp;the&nbsp;(x,y)&nbsp;convention&nbsp;here<br>
+&nbsp;<br>
+The&nbsp;shape&nbsp;of&nbsp;the&nbsp;maze.&nbsp;&nbsp;Each&nbsp;character&nbsp;&nbsp;<br>
+represents&nbsp;a&nbsp;different&nbsp;type&nbsp;of&nbsp;object.&nbsp;&nbsp;&nbsp;<br>
+&nbsp;%&nbsp;-&nbsp;Wall&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;.&nbsp;-&nbsp;Food<br>
+&nbsp;o&nbsp;-&nbsp;Capsule<br>
+&nbsp;G&nbsp;-&nbsp;Ghost<br>
+&nbsp;P&nbsp;-&nbsp;Pacman<br>
+Other&nbsp;characters&nbsp;are&nbsp;ignored.</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-getLayout"><strong>getLayout</strong></a>(name, back<font color="#909090">=2</font>)</dt></dl>
+ <dl><dt><a name="-tryToLoad"><strong>tryToLoad</strong></a>(fullname)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>VISIBILITY_MATRIX_CACHE</strong> = {}</td></tr></table>
+</body></html>

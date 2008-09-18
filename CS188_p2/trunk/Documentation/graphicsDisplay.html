@@ -1,0 +1,256 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module graphicsDisplay</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>graphicsDisplay</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/dave/Desktop/cs188/p2/multiagent/graphicsDisplay.py">/home/dave/Desktop/cs188/p2/multiagent/graphicsDisplay.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="Tkinter.html">Tkinter</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+<a href="string.html">string</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top><a href="types.html">types</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="graphicsDisplay.html#InfoPane">InfoPane</a>
+</font></dt><dt><font face="helvetica, arial"><a href="graphicsDisplay.html#PacmanGraphics">PacmanGraphics</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="graphicsDisplay.html#FirstPersonPacmanGraphics">FirstPersonPacmanGraphics</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FirstPersonPacmanGraphics">class <strong>FirstPersonPacmanGraphics</strong></a>(<a href="graphicsDisplay.html#PacmanGraphics">PacmanGraphics</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="FirstPersonPacmanGraphics-__init__"><strong>__init__</strong></a>(self, zoom<font color="#909090">=1.0</font>, showGhosts<font color="#909090">=True</font>, capture<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-getGhostColor"><strong>getGhostColor</strong></a>(self, ghost, ghostIndex)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-getPosition"><strong>getPosition</strong></a>(self, ghostState)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-initialize"><strong>initialize</strong></a>(self, state, isBlue<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-lookAhead"><strong>lookAhead</strong></a>(self, config, state)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-updateDistributions"><strong>updateDistributions</strong></a>(self, distributions)</dt></dl>
+
+<hr>
+Methods inherited from <a href="graphicsDisplay.html#PacmanGraphics">PacmanGraphics</a>:<br>
+<dl><dt><a name="FirstPersonPacmanGraphics-animatePacman"><strong>animatePacman</strong></a>(self, pacman, prevPacman, image)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-clearExpandedCells"><strong>clearExpandedCells</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawAgentObjects"><strong>drawAgentObjects</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawCapsules"><strong>drawCapsules</strong></a>(self, capsules)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawExpandedCells"><strong>drawExpandedCells</strong></a>(self, cells)</dt><dd><tt>Draws&nbsp;an&nbsp;overlay&nbsp;of&nbsp;expanded&nbsp;grid&nbsp;positions&nbsp;for&nbsp;search&nbsp;agents</tt></dd></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawFood"><strong>drawFood</strong></a>(self, foodMatrix)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawGhost"><strong>drawGhost</strong></a>(self, ghost, agentIndex)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawPacman"><strong>drawPacman</strong></a>(self, pacman, index)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawStaticObjects"><strong>drawStaticObjects</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-drawWalls"><strong>drawWalls</strong></a>(self, wallMatrix)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-finish"><strong>finish</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-getDirection"><strong>getDirection</strong></a>(self, agentState)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-getEndpoints"><strong>getEndpoints</strong></a>(self, direction, position<font color="#909090">=(0, 0)</font>)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-isWall"><strong>isWall</strong></a>(self, x, y, walls)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-make_window"><strong>make_window</strong></a>(self, width, height)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-moveEyes"><strong>moveEyes</strong></a>(self, pos, dir, eyes)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-moveGhost"><strong>moveGhost</strong></a>(self, ghost, ghostIndex, prevGhost, ghostImageParts)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-movePacman"><strong>movePacman</strong></a>(self, position, direction, image)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-removeCapsule"><strong>removeCapsule</strong></a>(self, cell, capsuleImages)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-removeFood"><strong>removeFood</strong></a>(self, cell, foodImages)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-startGraphics"><strong>startGraphics</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-swapImages"><strong>swapImages</strong></a>(self, agentIndex, newState)</dt><dd><tt>Changes&nbsp;an&nbsp;image&nbsp;from&nbsp;a&nbsp;ghost&nbsp;to&nbsp;a&nbsp;pacman&nbsp;or&nbsp;vis&nbsp;versa&nbsp;(for&nbsp;capture)</tt></dd></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-to_screen"><strong>to_screen</strong></a>(self, point)</dt></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-to_screen2"><strong>to_screen2</strong></a>(self, point)</dt><dd><tt>#&nbsp;Fixes&nbsp;some&nbsp;TK&nbsp;issue&nbsp;with&nbsp;off-center&nbsp;circles</tt></dd></dl>
+
+<dl><dt><a name="FirstPersonPacmanGraphics-update"><strong>update</strong></a>(self, newState)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="InfoPane">class <strong>InfoPane</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="InfoPane-__init__"><strong>__init__</strong></a>(self, layout, gridSize)</dt></dl>
+
+<dl><dt><a name="InfoPane-clearIcon"><strong>clearIcon</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-clearMessage"><strong>clearMessage</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-drawGhost"><strong>drawGhost</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-drawPacman"><strong>drawPacman</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-drawPane"><strong>drawPane</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-drawWarning"><strong>drawWarning</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="InfoPane-initializeGhostDistances"><strong>initializeGhostDistances</strong></a>(self, distances)</dt></dl>
+
+<dl><dt><a name="InfoPane-setTeam"><strong>setTeam</strong></a>(self, isBlue)</dt></dl>
+
+<dl><dt><a name="InfoPane-toScreen"><strong>toScreen</strong></a>(self, pos, y<font color="#909090">=None</font>)</dt><dd><tt>Translates&nbsp;a&nbsp;point&nbsp;relative&nbsp;from&nbsp;the&nbsp;bottom&nbsp;left&nbsp;of&nbsp;the&nbsp;info&nbsp;pane.</tt></dd></dl>
+
+<dl><dt><a name="InfoPane-updateGhostDistances"><strong>updateGhostDistances</strong></a>(self, distances)</dt></dl>
+
+<dl><dt><a name="InfoPane-updateMessage"><strong>updateMessage</strong></a>(self, message)</dt></dl>
+
+<dl><dt><a name="InfoPane-updateScore"><strong>updateScore</strong></a>(self, score)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacmanGraphics">class <strong>PacmanGraphics</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacmanGraphics-__init__"><strong>__init__</strong></a>(self, zoom<font color="#909090">=1.0</font>, capture<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-animatePacman"><strong>animatePacman</strong></a>(self, pacman, prevPacman, image)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-clearExpandedCells"><strong>clearExpandedCells</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawAgentObjects"><strong>drawAgentObjects</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawCapsules"><strong>drawCapsules</strong></a>(self, capsules)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawExpandedCells"><strong>drawExpandedCells</strong></a>(self, cells)</dt><dd><tt>Draws&nbsp;an&nbsp;overlay&nbsp;of&nbsp;expanded&nbsp;grid&nbsp;positions&nbsp;for&nbsp;search&nbsp;agents</tt></dd></dl>
+
+<dl><dt><a name="PacmanGraphics-drawFood"><strong>drawFood</strong></a>(self, foodMatrix)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawGhost"><strong>drawGhost</strong></a>(self, ghost, agentIndex)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawPacman"><strong>drawPacman</strong></a>(self, pacman, index)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawStaticObjects"><strong>drawStaticObjects</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-drawWalls"><strong>drawWalls</strong></a>(self, wallMatrix)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-finish"><strong>finish</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-getDirection"><strong>getDirection</strong></a>(self, agentState)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-getEndpoints"><strong>getEndpoints</strong></a>(self, direction, position<font color="#909090">=(0, 0)</font>)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-getGhostColor"><strong>getGhostColor</strong></a>(self, ghost, ghostIndex)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-getPosition"><strong>getPosition</strong></a>(self, agentState)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-initialize"><strong>initialize</strong></a>(self, state, isBlue<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-isWall"><strong>isWall</strong></a>(self, x, y, walls)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-make_window"><strong>make_window</strong></a>(self, width, height)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-moveEyes"><strong>moveEyes</strong></a>(self, pos, dir, eyes)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-moveGhost"><strong>moveGhost</strong></a>(self, ghost, ghostIndex, prevGhost, ghostImageParts)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-movePacman"><strong>movePacman</strong></a>(self, position, direction, image)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-removeCapsule"><strong>removeCapsule</strong></a>(self, cell, capsuleImages)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-removeFood"><strong>removeFood</strong></a>(self, cell, foodImages)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-startGraphics"><strong>startGraphics</strong></a>(self, state)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-swapImages"><strong>swapImages</strong></a>(self, agentIndex, newState)</dt><dd><tt>Changes&nbsp;an&nbsp;image&nbsp;from&nbsp;a&nbsp;ghost&nbsp;to&nbsp;a&nbsp;pacman&nbsp;or&nbsp;vis&nbsp;versa&nbsp;(for&nbsp;capture)</tt></dd></dl>
+
+<dl><dt><a name="PacmanGraphics-to_screen"><strong>to_screen</strong></a>(self, point)</dt></dl>
+
+<dl><dt><a name="PacmanGraphics-to_screen2"><strong>to_screen2</strong></a>(self, point)</dt><dd><tt>#&nbsp;Fixes&nbsp;some&nbsp;TK&nbsp;issue&nbsp;with&nbsp;off-center&nbsp;circles</tt></dd></dl>
+
+<dl><dt><a name="PacmanGraphics-update"><strong>update</strong></a>(self, newState)</dt></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-add"><strong>add</strong></a>(x, y)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>BACKGROUND_COLOR</strong> = '#000000'<br>
+<strong>CAPSULE_COLOR</strong> = '#ffffff'<br>
+<strong>CAPSULE_SIZE</strong> = 0.25<br>
+<strong>DEFAULT_GRID_SIZE</strong> = 30.0<br>
+<strong>FOOD_COLOR</strong> = '#ffffff'<br>
+<strong>FOOD_SIZE</strong> = 0.10000000000000001<br>
+<strong>FRAME_TIME</strong> = 0.10000000000000001<br>
+<strong>GHOST_COLORS</strong> = ['#e50000', '#004ce5', '#f96811', '#19bfb2', '#ff9900', '#6621e8']<br>
+<strong>GHOST_SHAPE</strong> = [(0, 0.29999999999999999), (0.25, 0.75), (0.5, 0.29999999999999999), (0.75, 0.75), (0.75, -0.5), (0.5, -0.75), (-0.5, -0.75), (-0.75, -0.5), (-0.75, 0.75), (-0.5, 0.29999999999999999), (-0.25, 0.75)]<br>
+<strong>GHOST_SIZE</strong> = 0.65000000000000002<br>
+<strong>GHOST_VEC_COLORS</strong> = [[0.89453125, 0.0, 0.0], [0.0, 0.296875, 0.89453125], [0.97265625, 0.40625, 0.06640625], [0.09765625, 0.74609375, 0.6953125], [0.99609375, 0.59765625, 0.0], [0.3984375, 0.12890625, 0.90625]]<br>
+<strong>INFO_PANE_COLOR</strong> = '#666600'<br>
+<strong>INFO_PANE_HEIGHT</strong> = 35<br>
+<strong>LASER_COLOR</strong> = '#ff0000'<br>
+<strong>LASER_SIZE</strong> = 0.02<br>
+<strong>PACMAN_CAPTURE_OUTLINE_WIDTH</strong> = 4<br>
+<strong>PACMAN_COLOR</strong> = '#ffff3d'<br>
+<strong>PACMAN_OUTLINE_WIDTH</strong> = 2<br>
+<strong>PACMAN_SCALE</strong> = 0.5<br>
+<strong>PAUSE_TIME</strong> = 0<br>
+<strong>SCARED_COLOR</strong> = '#ffffff'<br>
+<strong>SCORE_COLOR</strong> = '#e5e5e5'<br>
+<strong>TEAM_COLORS</strong> = ['#e50000', '#004ce5']<br>
+<strong>WALL_COLOR</strong> = '#0033ff'<br>
+<strong>WALL_RADIUS</strong> = 0.14999999999999999<br>
+<strong>ghost_shape</strong> = [(0, -0.5), (0.25, -0.75), (0.5, -0.5), (0.75, -0.75), (0.75, 0.5), (0.5, 0.75), (-0.5, 0.75), (-0.75, 0.5), (-0.75, -0.75), (-0.5, -0.5), (-0.25, -0.75)]</td></tr></table>
+</body></html>
