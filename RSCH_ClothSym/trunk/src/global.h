@@ -31,4 +31,6 @@
 #include <time.h>
 #include <math.h>
 
+#include "algebra3.h"
+
 #endif /* UTIL_H_ */

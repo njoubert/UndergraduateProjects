@@ -8,3 +8,12 @@ Allow us to create fixed points.
 Implement Energy-based calculation
 
 Implement better solver
+
+
+Mesh -> vertices (points) with edges to each other! encode as vertices with edges ptrs and edges array.
+	- Support iterating over all vertices
+	- Support iterating over all edges
+	- Support getting edges for vertex
+	- Support arbitrary edges per vertex
+	- Support calculating edge length
+	

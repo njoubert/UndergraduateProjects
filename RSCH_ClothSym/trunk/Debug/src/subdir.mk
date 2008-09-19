@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Debug.cpp \
+../src/Mesh.cpp \
 ../src/Solver.cpp \
 ../src/System.cpp \
 ../src/main.cpp 
 
 OBJS += \
 ./src/Debug.o \
+./src/Mesh.o \
 ./src/Solver.o \
 ./src/System.o \
 ./src/main.o 
 
 CPP_DEPS += \
 ./src/Debug.d \
+./src/Mesh.d \
 ./src/Solver.d \
 ./src/System.d \
 ./src/main.d 

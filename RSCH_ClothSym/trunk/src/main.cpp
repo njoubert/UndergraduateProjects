@@ -142,7 +142,7 @@ void myDisplay() {
 
 void myFrameMove() {
 	//Check time using lastTime?
-	solver.takeStep(sys, 4.0); //you get weird behavior on 4, crazy explosion on 12.
+	solver.takeStep(sys, 2.0); //you get weird behavior on 4, crazy explosion on 12.
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 

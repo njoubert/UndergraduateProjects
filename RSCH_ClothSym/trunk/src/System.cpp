@@ -154,7 +154,7 @@ std::vector< std::vector< Particle > > * System::evalDeriv() {
         }
     }
 
-    for (int i = 0; i < _forces.size(); i++) {
+    for (unsigned int i = 0; i < _forces.size(); i++) {
         _forces[i]->apply(r);
     }
 
@@ -167,7 +167,7 @@ void System::draw() {
 
         //**
     SpringForce * f;
-    for (int i = 0; i < _forces.size(); i++) {
+    for (unsigned int i = 0; i < _forces.size(); i++) {
         if (_forces[i]->type == SPRING) {
             glBegin(GL_LINES);
                 glVertex2f(x[_forces[i]->u1][_forces[i]->v1].x, x[_forces[i]->u1][_forces[i]->v1].y);
@@ -179,8 +179,8 @@ void System::draw() {
     }
         // */
         //**
-        for (int i = 0; i < x.size(); i++) {
-            for (int j = 0; j < x[i].size(); j++) {
+        for (unsigned int i = 0; i < x.size(); i++) {
+            for (unsigned int j = 0; j < x[i].size(); j++) {
                 glColor3f(0.0f, 0.0f, 0.0f);
                 double px = x[i][j].x;
                 double py = x[i][j].y;
@@ -208,8 +208,8 @@ void System::addForce(Force* f) {
 Particle* System::getClosestParticle(double xp, double yp, int* u1, int* v1) {
     Particle* closest;
     double dist = 999999;
-    for (int i = 0; i < x.size(); i++) {
-        for (int j = 0; j < x[i].size(); j++) {
+    for (unsigned int i = 0; i < x.size(); i++) {
+        for (unsigned int j = 0; j < x[i].size(); j++) {
             double yd = (yp - x[i][j].y);
             double xd = (xp - x[i][j].x);
             double ndist = sqrt(xd*xd + yd*yd);
@@ -222,7 +222,7 @@ Particle* System::getClosestParticle(double xp, double yp, int* u1, int* v1) {
 
         }
     }
-    std::cout << xp << "," << yp << " selected dist = " << dist << std::endl;
+    //std::cout << xp << "," << yp << " selected dist = " << dist << std::endl;
     return closest;
 }
 
