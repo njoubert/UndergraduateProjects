@@ -2,8 +2,8 @@ TODO
 ---------
 
 Move Mouse-Movement code into System. 
-Allow us to drag fixed points.
-Allow us to create fixed points.
+	Allow us to drag fixed points.
+	Allow us to create fixed points.
 
 Implement Energy-based calculation
 
