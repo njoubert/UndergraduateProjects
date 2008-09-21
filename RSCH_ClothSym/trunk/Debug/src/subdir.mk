@@ -6,17 +6,16 @@
 CPP_SRCS += \
 ../src/Debug.cpp \
 ../src/Mesh.cpp \
+../src/Parser.cpp \
 ../src/Solver.cpp \
 ../src/System.cpp \
 ../src/main.cpp \
 ../src/testMesh.cpp 
 
-O_SRCS += \
-../src/Mesh.o 
-
 OBJS += \
 ./src/Debug.o \
 ./src/Mesh.o \
+./src/Parser.o \
 ./src/Solver.o \
 ./src/System.o \
 ./src/main.o \
@@ -25,6 +24,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/Debug.d \
 ./src/Mesh.d \
+./src/Parser.d \
 ./src/Solver.d \
 ./src/System.d \
 ./src/main.d \

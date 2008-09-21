@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Mesh.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -251,4 +252,12 @@ int main() {
         }
     }
 
+    cout << "Reading in file..." << endl;
+    Parser parser;
+    TriangleMesh* mesh2 = parser.parseOBJ("data/face1.obj");
+    if (mesh2 == NULL)
+        return 0;
+    cout << "Done reading file..." << endl;
+
+    printStateOfMesh(*mesh2);
 }
