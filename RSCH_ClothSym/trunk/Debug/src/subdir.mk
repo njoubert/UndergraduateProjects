@@ -8,21 +8,27 @@ CPP_SRCS += \
 ../src/Mesh.cpp \
 ../src/Solver.cpp \
 ../src/System.cpp \
-../src/main.cpp 
+../src/main.cpp \
+../src/testMesh.cpp 
+
+O_SRCS += \
+../src/Mesh.o 
 
 OBJS += \
 ./src/Debug.o \
 ./src/Mesh.o \
 ./src/Solver.o \
 ./src/System.o \
-./src/main.o 
+./src/main.o \
+./src/testMesh.o 
 
 CPP_DEPS += \
 ./src/Debug.d \
 ./src/Mesh.d \
 ./src/Solver.d \
 ./src/System.d \
-./src/main.d 
+./src/main.d \
+./src/testMesh.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
