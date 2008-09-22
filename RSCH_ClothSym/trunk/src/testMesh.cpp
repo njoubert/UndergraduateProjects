@@ -34,16 +34,16 @@ void printStateOfMesh(TriangleMesh &myMesh) {
     /*************************************
      *  EDGES
      * ***********************************/
-
+/*
     map< edgeKey, edgeValue >::const_iterator map_it =
             myMesh.edgesMap.begin();
-    cout << "Edges size=" << myMesh.edgesMap.size();
-    cout << " contains:" << endl;
+*/    cout << "Edges size=" << myMesh.edgesMap.size();
+ /*   cout << " contains:" << endl;
     while (map_it != myMesh.edgesMap.end()) {
         cout << "  " << map_it->first << " maps to " << map_it->second << endl;
         map_it++;
     }
-
+*/
     /*************************************
      *  TRIANGLES
      * ***********************************/
@@ -73,14 +73,14 @@ bool testKeys() {
     int v3 = myMesh.createVertex(0,10,0);
     int v6 = myMesh.createVertex(0,10,0);
 
-    edgeKey e1 = edgeKey(myMesh.vertices[v1], myMesh.vertices[v2]);
-    edgeKey e1p = edgeKey(myMesh.vertices[v2], myMesh.vertices[v1]);
+    edgeKey e1(myMesh.vertices[v1], myMesh.vertices[v2]);
+    edgeKey e1p(myMesh.vertices[v2], myMesh.vertices[v1]);
 
-    edgeKey e2 = edgeKey(myMesh.vertices[v1], myMesh.vertices[v3]);
-    edgeKey e2p = edgeKey(myMesh.vertices[v3], myMesh.vertices[v1]);
+    edgeKey e2(myMesh.vertices[v1], myMesh.vertices[v3]);
+    edgeKey e2p(myMesh.vertices[v3], myMesh.vertices[v1]);
 
-    edgeKey e3 = edgeKey(myMesh.vertices[v2], myMesh.vertices[v3]);
-    edgeKey e3p = edgeKey(myMesh.vertices[v3], myMesh.vertices[v2]);
+    edgeKey e3(myMesh.vertices[v2], myMesh.vertices[v3]);
+    edgeKey e3p(myMesh.vertices[v3], myMesh.vertices[v2]);
 
     if ((myMesh.vertices[v1] < myMesh.vertices[v2])) {
         cout << __LINE__ << ": a < a" << endl;
@@ -105,7 +105,7 @@ bool testKeys() {
             retval = false;
         }
     }
-
+/*
     if (!(e1 == e1p)) {
         cout << __LINE__ << ": (a,b) != (b,a)" << endl;
         retval = false;
@@ -120,11 +120,11 @@ bool testKeys() {
         cout << __LINE__ << ": (b,c) != (c,b)" << endl;
         retval = false;
     }
-
+*/
     /*******************************
      * Testing e1 e2 comparisons...
      *******************************/
-
+/*
     if (!(e1 != e2)) {
         cout << __LINE__ << ": (a,b) == (b,c)" << endl;
         retval = false;
@@ -137,11 +137,11 @@ bool testKeys() {
         cout << __LINE__ << ": LESS THAT COMPARISON IS WRONG!" << endl;
         retval = false;
     }
-
+*/
     /*******************************
      * Testing e2 e3 comparisons...
      *******************************/
-
+/*
     if (!(e2 != e3)) {
        cout << __LINE__ << ": (a,c) == (b,c)" << endl;
        retval = false;
@@ -154,10 +154,11 @@ bool testKeys() {
         cout << __LINE__ << ": LESS THAT COMPARISON IS WRONG!" << endl;
         retval = false;
     }
-
+*/
     /*******************************
      * Testing e1 e3 comparisons
      *******************************/
+/*
     if (!(e1 != e3)) {
        cout << __LINE__ << ": (a,b) == (b,c)" << endl;;
        retval = false;
@@ -170,9 +171,10 @@ bool testKeys() {
         cout << __LINE__ << ": LESS THAT COMPARISON IS WRONG!" << endl;
         retval = false;
     }
-
+*/
     return retval;
 }
+
 
 int main() {
     cout << "Testing Mesh Methods:" << endl;
@@ -180,10 +182,11 @@ int main() {
     /*******************************
      * Testing Map - keys!
      *******************************/
+    /*
     if (!testKeys()) {
         cout << "\x1b[31m Error error! \x1b[0m" << endl;
     }
-
+     */
 
     TriangleMesh myMesh;
     int v1 = myMesh.createVertex(0,0,0);
@@ -252,12 +255,64 @@ int main() {
         }
     }
 
+    /*
+     * We wanna test the following:
+     *
+     * Created edge v1--v2: [(3.9,-32.3,124),(4.2,-32,124.4)]
+     * getEdgeFromMap called with v1=(3.9,-32.3,124) and v2=(4.2,-32,124.4)
+     *        edge NOT FOUND!
+     *
+     */
+
+    TriangleMeshVertex* problemV1 = new TriangleMeshVertex(3.9,-32.3,124);
+    TriangleMeshVertex* problemV2 = new TriangleMeshVertex(4.2,-32,124.4);
+    TriangleMeshEdge* problemEdge = new TriangleMeshEdge(problemV1, problemV2);
+    edgeKey k1(problemV1, problemV2);
+    edgeKey k2(problemV2, problemV1);
+
+    /*
+    if (k1 < k2 || k2 < k1) {
+        cout << "k1 < k2 or k2 < k1, BAD!" << endl;
+    } else {
+        cout << "k1 !< k2 AND k1 !< k2, GOOD!" << endl;
+    }
+
+
+    if (k1 == k2 && k2 == k1) {
+        cout << "k1 == k2 and k2 == k1, GOOD!" << endl;
+    } else {
+        cout << "!(k1 == k2) and !(k2 == k1), BAD!" << endl;
+    }
+    */
+    hashmap edgesMap;
+
+    edgesMap[edgeKey(problemV1, problemV2)] = problemEdge;
+
+    if (edgesMap.count(k1)) {
+        cout << "edgesMap contains k1. good!" << endl;
+    } else {
+        cout << "edgesMap does NOT contain K2. BAD!" << endl;
+    }
+    if (edgesMap.count(k2)) {
+        cout << "edgesMap contains k2. good!" << endl;
+    } else {
+        cout << "edgesmap does NOT contains K2. BAD!" << endl;
+    }
+    if (edgesMap.count(edgeKey(problemV1, problemV2))) {
+        cout << "edgesMap cointains edgesKey(v1,v2), GOOD!" << endl;
+    } else{
+        cout << "edgesMap DOES NOT contain edgesKey(v1,v2), BAD!" << endl;
+    }
+
+    //*
     cout << "Reading in file..." << endl;
     Parser parser;
-    TriangleMesh* mesh2 = parser.parseOBJ("data/face1.obj");
+    TriangleMesh* mesh2 = parser.parseOBJ("/Users/njoubert/Code/workspace1/ClothSym/data/face1.obj");
     if (mesh2 == NULL)
         return 0;
     cout << "Done reading file..." << endl;
 
     printStateOfMesh(*mesh2);
+
+    // */
 }

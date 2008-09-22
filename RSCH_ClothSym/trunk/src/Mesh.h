@@ -41,26 +41,29 @@
 #define MESH_H_
 
 #include <utility>
-#include <map>
+#include <ext/hash_map>
 #include <vector>
 #include <iostream>
 #include "algebra3.h"
-
-#define meshDebug(A) std::cout << A << std::endl;
+#include "assert.h"
 
 using namespace std;
+
+#define meshDebug(A) std::cout << A << std::endl;
 
 class TriangleMesh;
 class TriangleMeshTriangle;
 class TriangleMeshEdge;
 class TriangleMeshVertex;
-class edgeKey;
+class TriangleEdgeKey;
+typedef TriangleMeshEdge* edgeValue;
+typedef TriangleEdgeKey edgeKey;
+//typedef pair<TriangleMeshVertex*, TriangleMeshVertex*> edgeKey;
 
 ostream& operator <<(ostream& s, const edgeKey &obj);
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v);
 ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
 ostream& operator <<(ostream& s, const TriangleMeshTriangle* t);
-
 /**
  * Represents a point on the mesh.
  * Contains only information for that point in space.
@@ -75,6 +78,7 @@ public:
     TriangleMeshVertex(double x, double y, double z);
     void addToEdge(TriangleMeshEdge* edge);
     vec3 & getX();
+    vec3 & getU();
     vec3 & getvX();
     vec3 & getf();
 
@@ -84,7 +88,7 @@ private:
     vec3 U;     //Original Position
     vec3 vX;    //Velocity
     vec3 f;     //Force
-    vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
+    std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 
 
@@ -155,38 +159,50 @@ private:
 };
 
 
+
 /**
  * For lookup in the edge map.
  */
-class edgeKey {
+//*
+class TriangleEdgeKey {
 public:
-    edgeKey(TriangleMeshVertex* a, TriangleMeshVertex* b):
-        first(a), second(b) { /* nothing more */ }
-    bool operator==(edgeKey other) const {
-        return ((other.first == first && other.second == second) ||
-                (other.first == second && other.second == first));
-    }
-    bool operator!=(edgeKey other) const {
-        return !((*this) == other);
-    }
-    bool operator<(const edgeKey other) const {
-        if ((*this) == other)
-            return false;
-        if (first < other.first)
-            return true;
-        else
-            if (second < other.second)
-                return true;
-        return false;
-    }
-
+    TriangleEdgeKey(TriangleMeshVertex* a, TriangleMeshVertex* b):
+        first(a), second(b) { }
 public:
     TriangleMeshVertex* first;
     TriangleMeshVertex* second;
 };
 
-//typedef pair< TriangleMeshVertex*, TriangleMeshVertex* > edgeKey;
-typedef TriangleMeshEdge* edgeValue;
+/*********************************
+ * Hashing Operations
+ *********************************/
+namespace __gnu_cxx {  // Import string operator.
+  template<>
+  struct hash<std::string> {
+  public:
+    size_t operator()(std::string str) const {
+      __gnu_cxx::hash<char const*> H;
+      return H(str.c_str() );
+    }
+  };
+
+  template<>
+  struct hash<TriangleEdgeKey> {
+      size_t operator()( const TriangleEdgeKey& key) const {
+          vec3 distsq = key.first->getU() - key.second->getU();
+          return distsq.length();
+      }
+  };
+
+  struct eqedge {
+      bool operator()(const TriangleEdgeKey & e1, const TriangleEdgeKey & e2) const {
+          return ((e1.first == e2.first && e1.second == e2.second) ||
+                  (e1.first == e2.second && e1.second == e2.first));
+      }
+  };
+};
+
+typedef __gnu_cxx::hash_map< edgeKey, edgeValue, __gnu_cxx::hash<TriangleEdgeKey>, __gnu_cxx::eqedge > hashmap;
 
 /**
  * Represents an arbitrary mesh.
@@ -216,9 +232,9 @@ public:
     TriangleMeshTriangle* getTriangle(int i);
 
 public:
-    vector< TriangleMeshVertex* > vertices;
-    map< edgeKey, edgeValue > edgesMap; //TODO: Possibly use a more efficient map?
-    vector< TriangleMeshTriangle* > triangles;
+    std::vector< TriangleMeshVertex* > vertices;
+    hashmap edgesMap; //TODO: Possibly use a more efficient map?
+    std::vector< TriangleMeshTriangle* > triangles;
 
 };
 

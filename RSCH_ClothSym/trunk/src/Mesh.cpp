@@ -19,6 +19,8 @@ TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
 
 vec3 & TriangleMeshVertex::getX() { return X; }
 
+vec3 & TriangleMeshVertex::getU() { return U; }
+
 vec3 & TriangleMeshVertex::getvX() { return vX; }
 
 vec3 & TriangleMeshVertex::getf() { return f; }
@@ -94,12 +96,24 @@ TriangleMeshTriangle::TriangleMeshTriangle(TriangleMesh* callingMesh,
         TriangleMeshVertex* b,
         TriangleMeshVertex* c) {
     myParent = callingMesh;
+
+    assert(myParent != NULL);
+
     vertices[0] = a;
     vertices[1] = b;
     vertices[2] = c;
+
+    assert(vertices[0] != NULL);
+    assert(vertices[1] != NULL);
+    assert(vertices[2] != NULL);
+
     edges[0] = callingMesh->getEdgeFromMap(a,b);
     edges[1] = callingMesh->getEdgeFromMap(a,c);
     edges[2] = callingMesh->getEdgeFromMap(b,c);
+
+    assert(edges[0] != NULL);
+    assert(edges[1] != NULL);
+    assert(edges[2] != NULL);
 
     meshDebug("Found edge 0: " << edges[0]);
     meshDebug("Found edge 1: " << edges[1]);
@@ -166,6 +180,12 @@ ostream& operator <<(ostream& s, const TriangleMeshTriangle* t) {
     return s;
 }
 
+/*
+bool operator <(TriangleEdgeKey& first, TriangleEdgeKey& second) {
+    cout << "WEEEEEEEEEEEEEEEEEEEEEEEE" << endl;
+    return false;
+}
+*/
 /****************************************************************
 *                                                               *
 *               TriangleMesh                                    *
@@ -223,15 +243,18 @@ int TriangleMesh::createTriangle(int A, int B, int C) {
     vp2 = vertices[B];
     vp3 = vertices[C];
 
-    if (edgesMap.count(edgeKey(vp1,vp2))) {
-        ep1 = edgesMap[edgeKey(vp1,vp2)];
-        meshDebug("Found edge v1--v2: " << ep1);
+    edgeKey e1(vp1,vp2);
+
+    if (edgesMap.count(e1)) {
+       ep1 = edgesMap[e1];
+       meshDebug("Found edge v1--v2: " << ep1);
     } else {
         ep1 = new TriangleMeshEdge(vp1, vp2);
-        edgesMap[edgeKey(vp1,vp2)] = ep1;
+        edgesMap[e1] = ep1;
         meshDebug("Created edge v1--v2: " << ep1);
     }
 
+    cout << "YOOO!" << endl;
 
     if (edgesMap.count(edgeKey(vp1,vp3))) {
         ep2 = edgesMap[edgeKey(vp1,vp3)];
@@ -258,6 +281,11 @@ int TriangleMesh::createTriangle(int A, int B, int C) {
 
     meshDebug("All three edges have a side thats open.");
 
+    assert(edgesMap.count(e1) > 0);
+    assert(edgesMap.count(edgeKey(vp1,vp2)) > 0);
+    assert(edgesMap.count(edgeKey(vp1,vp3)) > 0);
+    assert(edgesMap.count(edgeKey(vp2,vp3)) > 0);
+
     TriangleMeshTriangle *t = new TriangleMeshTriangle(this,
             vp1, vp2, vp3);
     triangles.push_back(t);
@@ -272,9 +300,13 @@ TriangleMeshVertex* TriangleMesh::getVertex(int i) {
 }
 
 TriangleMeshEdge* TriangleMesh::getEdgeFromMap(TriangleMeshVertex* v1, TriangleMeshVertex* v2) {
+    meshDebug("getEdgeFromMap called with v1=" << v1 <<" and v2=" << v2);
     edgeKey key(v1,v2);
-    if (edgesMap.count(key))
+    if (edgesMap.count(key)) {
+        meshDebug("   edge Found!");
         return edgesMap[key];
+    }
+    meshDebug("   edge NOT FOUND!");
     return NULL;
 }
 
