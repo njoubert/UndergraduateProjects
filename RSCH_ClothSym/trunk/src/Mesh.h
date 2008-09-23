@@ -49,18 +49,14 @@
 
 using namespace std;
 
-#define meshDebug(A) std::cout << A << std::endl;
+#define meshDebug(A) std::cout << __FILE__ << "::" << __LINE__ << "::" << __FUNCTION__ << ":: " << A << std::endl;
 
 class TriangleMesh;
 class TriangleMeshTriangle;
 class TriangleMeshEdge;
 class TriangleMeshVertex;
 class TriangleEdgeKey;
-typedef TriangleMeshEdge* edgeValue;
-typedef TriangleEdgeKey edgeKey;
-//typedef pair<TriangleMeshVertex*, TriangleMeshVertex*> edgeKey;
 
-ostream& operator <<(ostream& s, const edgeKey &obj);
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v);
 ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
 ostream& operator <<(ostream& s, const TriangleMeshTriangle* t);
@@ -81,8 +77,8 @@ public:
     vec3 & getU();
     vec3 & getvX();
     vec3 & getf();
-
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
+
 private:
     vec3 X;     //Position
     vec3 U;     //Original Position
@@ -99,9 +95,7 @@ private:
  */
 class TriangleMeshEdge {
 public:
-    TriangleMeshEdge(
-            TriangleMeshVertex* v1,
-            TriangleMeshVertex* v2);
+    TriangleMeshEdge(TriangleMesh*, int, int);
     /**
      * @return true if it has two legal vertices and at least one non-null parent.
      */
@@ -116,8 +110,8 @@ public:
     bool setParentTriangle(int, TriangleMeshTriangle*);
     TriangleMeshTriangle* getParentTriangle(int);
     TriangleMeshTriangle* getOtherTriangle(TriangleMeshTriangle*);
-
     friend ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
+
 private:
     TriangleMeshTriangle* triangles[2];   //PARENTS
     TriangleMeshVertex* vertices[2];    //CHILDREN
@@ -140,9 +134,7 @@ public:
      *
      */
     TriangleMeshTriangle(TriangleMesh* callingMesh,
-            TriangleMeshVertex* a,
-            TriangleMeshVertex* b,
-            TriangleMeshVertex* c);
+            int, int, int);
    /**
     * @return true if it has three legal edges.
     */
@@ -158,52 +150,6 @@ private:
     TriangleMeshVertex* vertices[3]; //order dictates normal
 };
 
-
-
-/**
- * For lookup in the edge map.
- */
-//*
-class TriangleEdgeKey {
-public:
-    TriangleEdgeKey(TriangleMeshVertex* a, TriangleMeshVertex* b):
-        first(a), second(b) { }
-public:
-    TriangleMeshVertex* first;
-    TriangleMeshVertex* second;
-};
-
-/*********************************
- * Hashing Operations
- *********************************/
-namespace __gnu_cxx {  // Import string operator.
-  template<>
-  struct hash<std::string> {
-  public:
-    size_t operator()(std::string str) const {
-      __gnu_cxx::hash<char const*> H;
-      return H(str.c_str() );
-    }
-  };
-
-  template<>
-  struct hash<TriangleEdgeKey> {
-      size_t operator()( const TriangleEdgeKey& key) const {
-          vec3 distsq = key.first->getU() - key.second->getU();
-          return distsq.length();
-      }
-  };
-
-  struct eqedge {
-      bool operator()(const TriangleEdgeKey & e1, const TriangleEdgeKey & e2) const {
-          return ((e1.first == e2.first && e1.second == e2.second) ||
-                  (e1.first == e2.second && e1.second == e2.first));
-      }
-  };
-};
-
-typedef __gnu_cxx::hash_map< edgeKey, edgeValue, __gnu_cxx::hash<TriangleEdgeKey>, __gnu_cxx::eqedge > hashmap;
-
 /**
  * Represents an arbitrary mesh.
  */
@@ -212,12 +158,12 @@ public:
     TriangleMesh();
     virtual ~TriangleMesh();
 
-
     /**
      * Creates a new vertex with the given position.
      * @return an index for the new vertex.
      */
     int createVertex(double, double, double);
+
     /**
      * Creates a new triangle with the given vertex indices.
      * @return an index for the triangle in the mesh' triangles vector,
@@ -225,16 +171,26 @@ public:
      */
     int createTriangle(int A, int B, int C);
 
-    TriangleMeshVertex* getVertex(int i);
-
-    TriangleMeshEdge* getEdgeFromMap(TriangleMeshVertex* v1, TriangleMeshVertex* v2);
-
     TriangleMeshTriangle* getTriangle(int i);
 
+    TriangleMeshVertex* getVertex(int i);
+
+    /**
+     * @return NULL if none exists, else pointer to edge object.
+     */
+    TriangleMeshEdge* getEdgeBetweenVertices(int,int);
+
+    bool insertEdgeForVertices(int,
+            int,
+            TriangleMeshEdge* e);
+
 public:
-    std::vector< TriangleMeshVertex* > vertices;
-    hashmap edgesMap; //TODO: Possibly use a more efficient map?
+    void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
+
+public:
+    //std::vector< TriangleMeshVertex* > vertices;
     std::vector< TriangleMeshTriangle* > triangles;
+    std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 
 };
 

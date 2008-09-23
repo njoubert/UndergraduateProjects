@@ -35,13 +35,14 @@ void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
 *                                                               *
 ****************************************************************/
 
-TriangleMeshEdge::TriangleMeshEdge(
-        TriangleMeshVertex* v1,
-        TriangleMeshVertex* v2) {
-    v1->addToEdge(this);
-    v2->addToEdge(this);
-    vertices[0] = v1;
-    vertices[1] = v2;
+TriangleMeshEdge::TriangleMeshEdge(TriangleMesh* callingMesh, int v1,int v2) {
+    TriangleMeshVertex *vt1, *vt2;
+    vt1 = callingMesh->getVertex(v1);
+    vt2 = callingMesh->getVertex(v2);
+    vt1->addToEdge(this);
+    vt2->addToEdge(this);
+    vertices[0] = vt1;
+    vertices[1] = vt2;
     triangles[0] = triangles[1] = NULL;
 }
 
@@ -62,6 +63,7 @@ int TriangleMeshEdge::addParentTriangle(TriangleMeshTriangle* parent) {
 }
 
 bool TriangleMeshEdge::isPartOfTwoTriangles() {
+    meshDebug("checking for triangles...")
     return (triangles[0] != NULL && triangles[1] != NULL);
 }
 
@@ -92,24 +94,24 @@ bool TriangleMeshEdge::setParentTriangle(int i,
 ****************************************************************/
 
 TriangleMeshTriangle::TriangleMeshTriangle(TriangleMesh* callingMesh,
-        TriangleMeshVertex* a,
-        TriangleMeshVertex* b,
-        TriangleMeshVertex* c) {
+        int v1,
+        int v2,
+        int v3) {
     myParent = callingMesh;
 
     assert(myParent != NULL);
 
-    vertices[0] = a;
-    vertices[1] = b;
-    vertices[2] = c;
+    vertices[0] = callingMesh->getVertex(v1);
+    vertices[1] = callingMesh->getVertex(v2);
+    vertices[2] = callingMesh->getVertex(v3);
 
     assert(vertices[0] != NULL);
     assert(vertices[1] != NULL);
     assert(vertices[2] != NULL);
 
-    edges[0] = callingMesh->getEdgeFromMap(a,b);
-    edges[1] = callingMesh->getEdgeFromMap(a,c);
-    edges[2] = callingMesh->getEdgeFromMap(b,c);
+    edges[0] = callingMesh->getEdgeBetweenVertices(v1,v2);
+    edges[1] = callingMesh->getEdgeBetweenVertices(v1,v3);
+    edges[2] = callingMesh->getEdgeBetweenVertices(v2,v3);
 
     assert(edges[0] != NULL);
     assert(edges[1] != NULL);
@@ -145,22 +147,13 @@ TriangleMeshVertex** TriangleMeshTriangle::getVertices() {
     return vertices;
 }
 
-ostream& operator <<(ostream& s, const edgeKey &obj) {
-    s << "(" ;
-    s << obj.first;
-    s << ",";
-    s << obj.second;
-    s << ")";
-    return s;
-}
-
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v) {
     s << "(";
-    s << v->X[0];
+    s << v->U[0];
     s << ",";
-    s << v->X[1];
+    s << v->U[1];
     s << ",";
-    s << v->X[2];
+    s << v->U[2];
     s << ")";
     return s;
 }
@@ -203,7 +196,8 @@ TriangleMesh::~TriangleMesh() {
 
 int TriangleMesh::createVertex(double x, double y, double z) {
     TriangleMeshVertex* newV = new TriangleMeshVertex(x,y,z);
-    vertices.push_back(newV);
+    vertices.push_back(make_pair(newV,
+            new vector<std::pair< int, TriangleMeshEdge*> >()));
     return vertices.size() - 1;
 }
 
@@ -235,83 +229,169 @@ int TriangleMesh::createTriangle(int A, int B, int C) {
             C > (int) vertices.size())
         return -1;
 
-    meshDebug("Starting to create triangle.")
-
     TriangleMeshVertex *vp1, *vp2, *vp3;
     TriangleMeshEdge *ep1, *ep2, *ep3;
-    vp1 = vertices[A];
-    vp2 = vertices[B];
-    vp3 = vertices[C];
+    vp1 = vertices[A].first;
+    vp2 = vertices[B].first;
+    vp3 = vertices[C].first;
 
-    edgeKey e1(vp1,vp2);
+    meshDebug("Vertices are okay. Starting Edge 1.");
 
-    if (edgesMap.count(e1)) {
-       ep1 = edgesMap[e1];
-       meshDebug("Found edge v1--v2: " << ep1);
-    } else {
-        ep1 = new TriangleMeshEdge(vp1, vp2);
-        edgesMap[e1] = ep1;
-        meshDebug("Created edge v1--v2: " << ep1);
+    if (NULL == (ep1 = getEdgeBetweenVertices(A,B))) {
+        ep1 = new TriangleMeshEdge(this, A,B);
+        assert(insertEdgeForVertices(A,B,ep1));
     }
 
-    cout << "YOOO!" << endl;
+    meshDebug("Edge 1 is okay: "<< (int) ep1<<". Starting Edge 2.");
 
-    if (edgesMap.count(edgeKey(vp1,vp3))) {
-        ep2 = edgesMap[edgeKey(vp1,vp3)];
-        meshDebug("Found edge v1--v3: " << ep2);
-    } else {
-        ep2 = new TriangleMeshEdge(vp1, vp3);
-        edgesMap[edgeKey(vp1,vp3)] = ep2;
-        meshDebug("Created edge v1--v3: " << ep2);
+    if (NULL == (ep2 = getEdgeBetweenVertices(A,C))) {
+        ep2 = new TriangleMeshEdge(this, A,C);
+        assert(insertEdgeForVertices(A,C,ep2));
     }
 
-    if (edgesMap.count(edgeKey(vp2,vp3))) {
-        ep3 = edgesMap[edgeKey(vp2,vp3)];
-        meshDebug("Found edge v2--v3: " << ep3);
-    } else {
-        ep3 = new TriangleMeshEdge(vp2, vp3);
-        edgesMap[edgeKey(vp2,vp3)] = ep3;
-        meshDebug("Created edge v2--v3: " << ep3);
+    meshDebug("Edge 2 is okay. Starting Edge 3.");
+
+    if (NULL == (ep3 = getEdgeBetweenVertices(B,C))) {
+        ep3 = new TriangleMeshEdge(this, B,C);
+        assert(insertEdgeForVertices(B,C,ep3));
     }
+
+    meshDebug("Edge 3 is okay. Checking edge triangles...");
 
     if (ep1->isPartOfTwoTriangles() ||
             ep2->isPartOfTwoTriangles() ||
             ep3->isPartOfTwoTriangles())
         return -1;  //Cannot add a triangle if an edge already has 2 triangles.
 
-    meshDebug("All three edges have a side thats open.");
-
-    assert(edgesMap.count(e1) > 0);
-    assert(edgesMap.count(edgeKey(vp1,vp2)) > 0);
-    assert(edgesMap.count(edgeKey(vp1,vp3)) > 0);
-    assert(edgesMap.count(edgeKey(vp2,vp3)) > 0);
+    meshDebug("Edges are good!");
 
     TriangleMeshTriangle *t = new TriangleMeshTriangle(this,
-            vp1, vp2, vp3);
+            A, B, C);
     triangles.push_back(t);
     return triangles.size() - 1;
-
-}
-
-TriangleMeshVertex* TriangleMesh::getVertex(int i) {
-    if (i < 0 || i > (int) vertices.size()-1)
-        return NULL;
-    return vertices[i];
-}
-
-TriangleMeshEdge* TriangleMesh::getEdgeFromMap(TriangleMeshVertex* v1, TriangleMeshVertex* v2) {
-    meshDebug("getEdgeFromMap called with v1=" << v1 <<" and v2=" << v2);
-    edgeKey key(v1,v2);
-    if (edgesMap.count(key)) {
-        meshDebug("   edge Found!");
-        return edgesMap[key];
-    }
-    meshDebug("   edge NOT FOUND!");
-    return NULL;
 }
 
 TriangleMeshTriangle* TriangleMesh::getTriangle(int i) {
     if (i < 0 || i > (int) triangles.size()-1)
         return NULL;
     return triangles[i];
+}
+
+TriangleMeshVertex* TriangleMesh::getVertex(int i) {
+    if (i < 0 || i > (int) vertices.size()-1)
+        return NULL;
+    return vertices[i].first;
+}
+
+TriangleMeshEdge* TriangleMesh::getEdgeBetweenVertices(
+        int v1,
+        int v2) {
+    assert(v1 >= 0 && v1 < vertices.size());
+    assert(v2 >= 0 && v2 < vertices.size());
+    TriangleMeshVertex *vt1, *vt2;
+    vt1 = vertices[v1].first;
+    vt2 = vertices[v2].first;
+    applyNaturalOrdering(&vt1,&vt2,&v1,&v2);
+
+    TriangleMeshEdge *ret = NULL;
+
+    std::vector< std::pair <int, TriangleMeshEdge* > >::const_iterator it =
+        vertices[v1].second->begin();
+    while (it != vertices[v1].second->end()) {
+        if ((*it).first == v2) {
+            ret = (*it).second;
+            meshDebug("Found edge!");
+            break;
+        }
+        it++;
+    }
+    return ret;
+}
+
+bool TriangleMesh::insertEdgeForVertices(int v1,
+        int v2,
+        TriangleMeshEdge* e) {
+    assert(v1 >= 0 && v1 < vertices.size());
+    assert(v2 >= 0 && v2 < vertices.size());
+    TriangleMeshVertex* vt1 = vertices[v1].first;
+    TriangleMeshVertex* vt2 = vertices[v2].first;
+    applyNaturalOrdering(&vt1,&vt2, &v1,&v2);
+
+    meshDebug("Natural ordering applied...");
+
+    //DEBUG PURPOSES:
+    std::vector< std::pair <int, TriangleMeshEdge* > >::const_iterator it =
+        vertices[v1].second->begin();
+    while (it != vertices[v1].second->end()) {
+        if ((*it).first == v2) {
+            meshDebug("Edge already defined!!! WTF!!!");
+            assert((*it).first != v2);
+            return false;
+        }
+        it++;
+    }
+    //END DEBUG
+
+    vertices[v1].second->push_back(make_pair(v2, e));
+    meshDebug("Inserted edge into vertices-edges datastructure");
+    //if insert fails
+    return true;
+}
+
+/**
+ * Enforces a natural ordering:
+ * x[0] < y[0]
+ *  or x[0] == y[0] and x[1] < y[1]
+ *  or x[0] == y[0] and x[1] == y[1] and x[2] < y[2]
+ * @param v1
+ * @param v2
+ */
+void TriangleMesh::applyNaturalOrdering(TriangleMeshVertex** vt1,
+        TriangleMeshVertex** vt2, int* v1, int* v2) {
+    bool swap = false;
+
+    //First Coordinate:
+    if ((*vt1)->getU()[0] < (*vt2)->getU()[0]) {
+        return;
+    } else {
+        if ((*vt1)->getU()[0] == (*vt2)->getU()[0]) {
+
+            //Second Coordinate:
+            if ((*vt1)->getU()[1] < (*vt2)->getU()[1]) {
+                return;
+            } else {
+                if ((*vt1)->getU()[1] == (*vt2)->getU()[1]) {
+
+                    //Third Coordinate:
+                    if ((*vt1)->getU()[2] < (*vt2)->getU()[2]) {
+                        return;
+                    } else {
+
+                        if ((*vt1)->getU()[2] == (*vt2)->getU()[2]) {
+                            return; //Two of the same vectors...
+                        } else {
+                            swap = true;
+                        }
+                    }
+
+                } else {
+                    swap = true;
+                }
+            }
+
+        } else {
+            swap = true;
+        }
+    }
+    if (swap) {
+        TriangleMeshVertex* tempP;
+        tempP = *vt1;
+        *vt1 = *vt2;
+        *vt2 = tempP;
+
+        int tempI;
+        tempI = *v1;
+        *v1 = *v2;
+        *v2 = tempI;
+    }
 }

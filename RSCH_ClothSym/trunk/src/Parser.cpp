@@ -82,7 +82,7 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
 
 	        int v1, v2, v3;
 	        ss >>v1 >>v2 >>v3;
-	        myMesh->createTriangle(v1, v2, v3);
+	        myMesh->createTriangle(v1-1, v2-1, v3-1);
 
 	        //printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
 
