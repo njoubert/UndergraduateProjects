@@ -12,8 +12,7 @@ class ReflexAgent(Agent):
     The code below is provided as a guide.  You are welcome to change it
     in any way you see fit.
   """
-  
-    
+
   def getAction(self, gameState):
     """
     You do not need to change this method, but you're welcome to.
@@ -31,7 +30,8 @@ class ReflexAgent(Agent):
     bestScore = max(scores)
     bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
     chosenIndex = random.choice(bestIndices)
-    
+    scoreList = [(scores[index], legalMoves[index]) for index in range(len(scores))]
+    print scoreList
     "Add more of your code here if you want to"
     
     return legalMoves[chosenIndex]
@@ -42,16 +42,72 @@ class ReflexAgent(Agent):
     
     The evaluation function takes in the current and proposed successor
     GameStates (pacman.py) and returns a number, where higher numbers are better.
+    
+    Features we want to use:
+    > Score of the game                  bigger == better
+    DOTS:    
+    > Amount of dots left                smaller == better
+    > Total distance to all dots         smaller == better
+    > Distance to closest dot            smaller == batter
+    GHOSTS:
+    > Distance to closest ghost          bigger == better
+    > Direction of closest ghost         our direction = BAD, other direction = GOOD
+    
     """
     # Useful information you can extract from a GameState (pacman.py)
     successorGameState = currentGameState.generatePacmanSuccessor(action)
     newPos = successorGameState.getPacmanState().getPosition()
+    newDir = successorGameState.getPacmanState().getDirection()
     oldFood = currentGameState.getFood()
+    newFood = successorGameState.getFood()
     newGhostStates = successorGameState.getGhostStates() 
     newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
     
-    "*** YOUR CODE HERE ***"
-    return successorGameState.getScore()
+    newFoodPositions = newFood.asList()
+    oldFoodPositions = oldFood.asList()
+    newFoodDistances = [util.manhattanDistance(x, newPos) for x in newFoodPositions]
+    oldFoodDistances = [util.manhattanDistance(x, newPos) for x in oldFoodPositions]
+    
+    #closestFoodDistance = min(newFoodDistances)
+    #totalFoodDistance = sum(newFoodDistances)
+    closestFoodDistance = min(oldFoodDistances)
+    totalFoodDistance = sum(oldFoodDistances)
+    
+    newGhostDistances = [util.manhattanDistance(g.getPosition(), newPos) for g in newGhostStates]
+    newGhostDirections = [g.getDirection() for g in newGhostStates]
+    closestGhostDistance = min(newGhostDistances)
+    closestGhostIndices = [index for index in range(len(newGhostDistances)) if newGhostDistances[index] == closestGhostDistance]
+    closestGhostDirection = newGhostDirections[random.choice(closestGhostIndices)]
+    from game import Directions
+    OPPOSITEDIRECTIONS = {Directions.NORTH: Directions.SOUTH,
+                 Directions.SOUTH: Directions.NORTH,
+                 Directions.EAST:  Directions.WEST,
+                 Directions.WEST:  Directions.EAST,
+                 Directions.STOP:  Directions.STOP}
+    
+    
+    #CALCULATION OF FEATURES:
+    featScore = successorGameState.getScore()
+    featTotalDots = 1.0 / oldFood.count()
+    featClosestDots = 1.0 / (closestFoodDistance+1)
+    featTotalDotsDistance = 1.0 / (totalFoodDistance+1)
+    featClosestGhostDistance = (closestGhostDistance+1)
+    featClosestGhostDirection = 0
+    if (newDir == OPPOSITEDIRECTIONS[closestGhostDirection]):
+        featClosestGhostDirection = -1
+    elif newDir == closestGhostDirection:
+        featClosestGhostDirection = 1
+     
+#    evaluation = #100 * featScore + \
+        #15 * featTotalDots + \
+ #       100 * featClosestDots + \
+        #10 * featTotalDotsDistance + \
+  #      15 * featClosestGhostDistance + \
+   #     0 * featClosestGhostDirection
+     
+    evaluation = 1000 * featClosestDots + 1 * featClosestGhostDistance
+      
+    return evaluation
 
 def scoreEvaluationFunction(currentGameState):
   """
