@@ -13,6 +13,10 @@
 
 #include "System.h"
 #include "Solver.h"
+#include "Mesh.h"
+#include "Parser.h"
+
+#define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)
 
 #ifdef _WIN32
 static DWORD lastTime;

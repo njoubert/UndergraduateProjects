@@ -40,8 +40,6 @@
 #ifndef MESH_H_
 #define MESH_H_
 
-#include <utility>
-#include <ext/hash_map>
 #include <vector>
 #include <iostream>
 #include "algebra3.h"
@@ -49,13 +47,13 @@
 
 using namespace std;
 
-#define meshDebug(A) std::cout << __FILE__ << "::" << __LINE__ << "::" << __FUNCTION__ << ":: " << A << std::endl;
+//#define meshDebug(A) std::cout << __FILE__ << "::" << __LINE__ << "::" << __FUNCTION__ << ":: " << A << std::endl;
+#define meshDebug(A) ;
 
 class TriangleMesh;
 class TriangleMeshTriangle;
 class TriangleMeshEdge;
 class TriangleMeshVertex;
-class TriangleEdgeKey;
 
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v);
 ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
@@ -133,8 +131,7 @@ public:
      *  b---c
      *
      */
-    TriangleMeshTriangle(TriangleMesh* callingMesh,
-            int, int, int);
+    TriangleMeshTriangle(TriangleMesh* callingMesh, int, int, int);
    /**
     * @return true if it has three legal edges.
     */
@@ -180,15 +177,12 @@ public:
      */
     TriangleMeshEdge* getEdgeBetweenVertices(int,int);
 
-    bool insertEdgeForVertices(int,
-            int,
-            TriangleMeshEdge* e);
+    bool insertEdgeForVertices(int, int, TriangleMeshEdge* e);
 
 public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 
 public:
-    //std::vector< TriangleMeshVertex* > vertices;
     std::vector< TriangleMeshTriangle* > triangles;
     std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 

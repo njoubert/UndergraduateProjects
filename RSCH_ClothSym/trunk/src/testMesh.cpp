@@ -59,12 +59,9 @@ void printStateOfMesh(TriangleMesh &myMesh) {
 
 }
 
+/*
 int main() {
     cout << "Testing Mesh Methods:" << endl;
-
-    /*******************************
-     * Testing Map - keys!
-     *******************************/
 
     TriangleMesh myMesh;
     int v1 = myMesh.createVertex(0,0,0);
@@ -89,6 +86,11 @@ int main() {
 
     TriangleMeshEdge* v2v3 =
         myMesh.getEdgeBetweenVertices(v2,v3);
+
+    TriangleMeshEdge* v3v2 =
+        myMesh.getEdgeBetweenVertices(v3,v2);
+
+    assert( v2v3 == v3v2 );
 
     if (v2v3->isPartOfTwoTriangles())
         cout << "v2v3 is a part of two triangles AS EXPECTED." << endl;
@@ -164,7 +166,7 @@ int main() {
     cout << "(" << wee2 << "," << wee3 << "):" << vert3 << " | " << vert2 << endl;
 
 
-    //*
+
     cout << "Reading in file..." << endl;
     Parser parser;
     TriangleMesh* mesh2 = parser.parseOBJ("/Users/njoubert/Code/workspace1/ClothSym/data/face1.obj");
@@ -174,5 +176,7 @@ int main() {
 
     printStateOfMesh(*mesh2);
 
-    // */
+
 }
+
+// */

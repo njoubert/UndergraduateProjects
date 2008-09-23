@@ -7,8 +7,7 @@ using namespace std;
 //****************************************************
 // Some Classes
 //****************************************************
-System sys;
-Solver solver;
+TriangleMesh* myMesh;
 
 class Viewport {
 public:
@@ -38,7 +37,9 @@ void myReshape(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
-	glOrtho(0,viewport.w,0,viewport.h, 1, -1);
+	//glOrtho(0,viewport.w,0,viewport.h, 1, -1);
+	glOrtho(-1*viewport.w/4,viewport.w/4,-1*viewport.h/4,viewport.h/4, 150, -150);
+
 }
 
 void initScene(){
@@ -53,78 +54,10 @@ void initScene(){
 	myReshape(viewport.w,viewport.h);
 }
 
-void initSystem() {
-    int step = 20;
-    double border = 100;
-    int gridWidth = 10;
-    vector< vector < Particle> > x(step, vector< Particle >(step));
-    for (int i = 0; i < step; i++) {
-        for (int j = 0; j < step; j++) {
-            //x[i][j].x = (((double) viewport.w - border*2) / (double) step) * (double) i - ((viewport.w - border*2) / 2.0);
-            //x[i][j].y = (((double) viewport.h - border*2) / (double) step) * (double) j - ((viewport.h - border*2) / 2.0);
-            //x[i][j].m = (rand() % 200) + 100;
-            x[i][j].x = border + i*gridWidth;
-            x[i][j].y = border + j*gridWidth;
-            x[i][j].z = 0;
-            x[i][j].m = 10; //Make this 2 to see it blow up.
-        }
-    }
-    x[step-1][step-1].pinned = true;
-    x[0][step-1].pinned = true;
-    /**
-    for (int i = 0; i < step; i++) {
-        x[i][step-1].pinned = true;
-    }
-    */
-    sys.setDim(step, step);
-    sys.setX(&x);
-    Force * f;
-    for (int i = 0; i < step; i++) {
-        for (int j = 0; j < step-1; j++) {
-            f = new GravityForce();
-            f->u1 = i;
-            f->v1 = j;
-            sys.addForce(f);
-        }
-    }
-
-    double ks = 0.01;
-    double kd = 0.82;
-    //VERTICAL SPRINGS
-    SpringForce * f2;
-    for (int i = 0; i < step-1; i++) {
-        for (int j = 0; j < step; j++) {
-            f2 = new SpringForce();
-            f2->u1 = i;
-            f2->v1 = j;
-            f2->u2 = i+1;
-            f2->v2 = j;
-            f2->ks = ks;
-            f2->kd = kd;
-            f2->r = gridWidth;
-            sys.addForce(f2);
-        }
-    }
-    //HORIZONTAL SPRINGS
-    //**
-    for (int i = 0; i < step; i++) {
-        for (int j = 0; j < step-1; j++) {
-            f2 = new SpringForce();
-            f2->u1 = i;
-            f2->v1 = j;
-            f2->u2 = i;
-            f2->v2 = j+1;
-            f2->ks = ks;
-            f2->kd = kd;
-            f2->r = gridWidth;
-            sys.addForce(f2);
-        }
-    }
-    // */
-
-    //MOUSE
-    mouseForce = new InputForce();
-    sys.addForce(mouseForce);
+void initSystem(string filename) {
+    Parser parser;
+    myMesh = parser.parseOBJ(filename);
+    cout << "Done Parsing .OBJ" << endl;
 }
 
 void myDisplay() {
@@ -132,9 +65,28 @@ void myDisplay() {
     glClear( GL_COLOR_BUFFER_BIT );
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glColor3f(1.0f,1.0f,0.0f);
+	glColor3f(1.0f,0.0f,0.0f);
 
-	sys.draw();
+	vec3 a, b, c;
+
+	TriangleMeshVertex** vertices;
+    std::vector< TriangleMeshTriangle* >::const_iterator it =
+        myMesh->triangles.begin();
+    while (it != myMesh->triangles.end()) {
+        vertices = (*it)->getVertices();
+        a = vertices[0]->getX();
+        b = vertices[1]->getX();
+        c = vertices[2]->getX();
+        glBegin(GL_POLYGON);
+            //cout << "Drawing poly: " << a[0] << "," << b[0] << "," << c[0] << endl;
+            glVertex3f(a[0],a[1],a[2]);
+            glVertex3f(b[0],b[1],b[2]);
+            glVertex3f(c[0],c[1],c[2]);
+        glEnd();
+        it++;
+    }
+
+	//sys.draw();
 
 	glFlush();
 	glutSwapBuffers();
@@ -142,11 +94,12 @@ void myDisplay() {
 
 void myFrameMove() {
 	//Check time using lastTime?
-	solver.takeStep(sys, 2.0); //you get weird behavior on 4, crazy explosion on 12.
+	//solver.takeStep(sys, 2.0); //you get weird behavior on 4, crazy explosion on 12.
 	glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 
 void myMousePress(int button, int state, int x, int y) {
+/*
     if (button == GLUT_LEFT_BUTTON) {
         if (state == GLUT_DOWN) {
             //Find the point
@@ -183,9 +136,11 @@ void myMousePress(int button, int state, int x, int y) {
             mouseForce->enabled = false;
         }
     }
+// */
 }
 
 void myMouseMove(int x, int y) {
+/*
     if (mouseSelectedItem) {
         float z;
         double ox, oy, oz;
@@ -203,15 +158,66 @@ void myMouseMove(int x, int y) {
         mouseForce->zi = oz;
 
     }
+// */
+}
+
+int parseCommandLine(int argc, char *argv[]) {
+
+    bool malformedArg;
+    bool printUsage = false;
+    bool hasOBJ = false;
+    int i;
+    for (i = 1; i < argc; i++) {
+        malformedArg = false;
+
+        if (strcmp(argv[i],"-d") == 0) {
+
+            //TODO: Set up debug flags...
+            if (isThereMore(i, argc, 1)) {
+                ++i;
+            } else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-obj")) {
+
+            if (isThereMore(i, argc, 1)) {
+                std::string filename = std::string(argv[++i]);
+                initSystem(filename);
+                hasOBJ = true;
+            } else {
+                malformedArg = true;
+            }
+
+        } else {
+            malformedArg = true;
+        }
+
+        if (malformedArg) {
+            cout << "Malformed input arg in parsing command \"" << argv[i] << "\"";
+            printUsage = true;
+        }
+    }
+    if (printUsage || !hasOBJ)
+        return 1;
+    return 0;
 
 }
 
-/**
+void printUsage() {
+    cout << "Usage: "<< endl;
+    cout << "  ClothSym -obj filename [-d i]\\" << endl;
+}
+
 int main(int argc, char *argv[]) {
-  	glutInit(&argc, argv);
+    glutInit(&argc, argv);
+
+    if (parseCommandLine(argc, argv)) {
+        printUsage();
+        exit(1);
+    }
 
   	initScene();							// quick function to set up scene
-    initSystem();
     glutDisplayFunc(myDisplay);				// function to run when its time to draw something
   	glutReshapeFunc(myReshape);				// function to run when the window gets resized
   	glutIdleFunc(myFrameMove);				// function to run when not handling any other task
@@ -221,4 +227,3 @@ int main(int argc, char *argv[]) {
 
   	return 0;
 }
-// */

@@ -40,7 +40,7 @@ TriangleMesh* Parser::parseOBJ(string filename) {
     }
 
     inFile.close();
-
+    parseDebug("Parser exiting...");
     return myMesh;
 }
 
@@ -49,9 +49,11 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
     string operand;
     bool success = true;
 
-    std::cout << "Parsing Line: " << line << endl;
-    if (line.empty())
+    parseDebug("Parsing Line: " << line);
+    if (line.empty()) {
+        parseDebug("Done parsing!");
         return true;
+    }
     stringstream ss(stringstream::in | stringstream::out);
     ss.str(line);
     ss >> operand;

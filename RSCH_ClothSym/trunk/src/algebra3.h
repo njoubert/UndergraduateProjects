@@ -8,7 +8,7 @@
 //
 //	From "Graphics Gems IV / Edited by Paul S. Heckbert
 //	Academic Press, 1994, ISBN 0-12-336156-9
-//	"You are free to use and modify this code in any way 
+//	"You are free to use and modify this code in any way
 //	you like." (p. xv)
 //
 //	Modified by J. Nagle, March 1997
@@ -17,7 +17,7 @@
 //	-	All checking is via the standard "assert" macro.
 //	-	Stream I/O is disabled for portability, but can be
 //		re-enabled by defining ALGEBRA3IOSTREAMS.
-//	
+//
 #ifndef ALGEBRA3H
 #define ALGEBRA3H
 
@@ -520,7 +520,7 @@ inline vec2 operator * (const mat3& a, const vec2& v) {
     return av;
 }
 
-inline vec2 operator * (const vec2& v, const mat3& a) 
+inline vec2 operator * (const vec2& v, const mat3& a)
 { return a.transpose() * v; }
 
 inline double operator * (const vec2& a, const vec2& b)
