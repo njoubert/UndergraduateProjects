@@ -1,0 +1,166 @@
+// !$*UTF8*$!
+{
+	20286C28FDCF999611CA2CEA /* Project object */ = {
+		activeArchitecture = i386;
+		activeBuildConfigurationName = Release;
+		activeExecutable = 756F281A0E80C56E00E5BE97 /* PatchBend */;
+		activeTarget = 8D0C4E890486CD37000505A6 /* PatchBend */;
+		addToTargets = (
+			8D0C4E890486CD37000505A6 /* PatchBend */,
+		);
+		codeSenseManager = 756F28300E80C57E00E5BE97 /* Code sense */;
+		executables = (
+			756F281A0E80C56E00E5BE97 /* PatchBend */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					557,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 243835443;
+			PBXWorkspaceStateSaveDate = 243835443;
+		};
+		perUserProjectItems = {
+			7518CEC00E88A23B00E0B69B /* PBXTextBookmark */ = 7518CEC00E88A23B00E0B69B /* PBXTextBookmark */;
+			756F28FC0E80D18600E5BE97 /* PBXTextBookmark */ = 756F28FC0E80D18600E5BE97 /* PBXTextBookmark */;
+			756F28FF0E80D18600E5BE97 /* PBXTextBookmark */ = 756F28FF0E80D18600E5BE97 /* PBXTextBookmark */;
+			756F29000E80D18600E5BE97 /* PBXTextBookmark */ = 756F29000E80D18600E5BE97 /* PBXTextBookmark */;
+			75A117ED0E8732C100A8519F /* PBXTextBookmark */ = 75A117ED0E8732C100A8519F /* PBXTextBookmark */;
+		};
+		sourceControlManager = 756F282F0E80C57E00E5BE97 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	20286C2BFDCF999611CA2CEA /* main.cp */ = {
+		uiCtxt = {
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{7195, 1818}\";\n        }\n    );\n    r = \"{0, 18138}\";\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {735, 9268}}";
+			sepNavSelRange = "{8178, 161}";
+			sepNavVisRange = "{9153, 857}";
+			sepNavWindowFrame = "{{15, -1}, {911, 874}}";
+		};
+	};
+	7518CEC00E88A23B00E0B69B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 20286C2BFDCF999611CA2CEA /* main.cp */;
+		name = "main.cp: 362";
+		rLen = 161;
+		rLoc = 9995;
+		rType = 0;
+		vrLen = 857;
+		vrLoc = 10970;
+	};
+	756F281A0E80C56E00E5BE97 /* PatchBend */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = PatchBend;
+		sourceDirectories = (
+		);
+	};
+	756F282F0E80C57E00E5BE97 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	756F28300E80C57E00E5BE97 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	756F28FC0E80D18600E5BE97 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 756F28FD0E80D18600E5BE97 /* glut_example.cpp */;
+		name = "glut_example.cpp: 1";
+		rLen = 19044;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 956;
+		vrLoc = 0;
+	};
+	756F28FD0E80D18600E5BE97 /* glut_example.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = glut_example.cpp;
+		path = /Users/silversatin/Documents/Fall_2008/Sims/PatchBend/glut_example.cpp;
+		sourceTree = "<absolute>";
+	};
+	756F28FF0E80D18600E5BE97 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 20286C2BFDCF999611CA2CEA /* main.cp */;
+		name = "main.cp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1194;
+		vrLoc = 0;
+	};
+	756F29000E80D18600E5BE97 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 756F29010E80D18600E5BE97 /* glut_example.cpp */;
+		name = "glut_example.cpp: 1";
+		rLen = 19044;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 956;
+		vrLoc = 0;
+	};
+	756F29010E80D18600E5BE97 /* glut_example.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = glut_example.cpp;
+		path = /Users/silversatin/Documents/Fall_2008/Sims/PatchBend/glut_example.cpp;
+		sourceTree = "<absolute>";
+	};
+	75A117ED0E8732C100A8519F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 20286C2BFDCF999611CA2CEA /* main.cp */;
+		name = "main.cp: 362";
+		rLen = 161;
+		rLoc = 9995;
+		rType = 0;
+		vrLen = 857;
+		vrLoc = 10970;
+	};
+	8D0C4E890486CD37000505A6 /* PatchBend */ = {
+		activeExec = 0;
+		executables = (
+			756F281A0E80C56E00E5BE97 /* PatchBend */,
+		);
+	};
+}
