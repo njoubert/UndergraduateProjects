@@ -117,6 +117,12 @@ void processKeys(unsigned char key, int x, int y) {
     case 'd':
         viewport.rotateZ += 1.5f;
         break;
+    case 'q':
+        viewport.rotateX -= 1.5f;
+        break;
+    case 'e':
+        viewport.rotateX += 1.5f;
+        break;
     case '-':
         viewport.translateZ -= 2.5f;
         break;

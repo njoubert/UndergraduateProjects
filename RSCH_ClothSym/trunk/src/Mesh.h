@@ -75,6 +75,7 @@ public:
     vec3 & getU();
     vec3 & getvX();
     vec3 & getf();
+    double getm();
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
 private:
@@ -178,6 +179,12 @@ public:
     TriangleMeshEdge* getEdgeBetweenVertices(int,int);
 
     bool insertEdgeForVertices(int, int, TriangleMeshEdge* e);
+
+    //Iterater over all vertices
+
+    //Iterator over all edges
+
+    //Iterator over all triangles
 
 public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);

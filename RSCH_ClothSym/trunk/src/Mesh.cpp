@@ -25,6 +25,8 @@ vec3 & TriangleMeshVertex::getvX() { return vX; }
 
 vec3 & TriangleMeshVertex::getf() { return f; }
 
+double TriangleMeshVertex::getm() { return 1; }
+
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
 }
