@@ -188,6 +188,10 @@ public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 
 public:
+    //TODO: Write a comment on how the hell this datastructure actually looks...
+    /**
+     *
+     */
     std::vector< TriangleMeshTriangle* > triangles;
     std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 

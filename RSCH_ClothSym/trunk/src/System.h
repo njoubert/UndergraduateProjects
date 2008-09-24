@@ -11,6 +11,8 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#define GRAVITY 0.98
+
 class System;
 class Solver;
 class ImplicitSolver;
