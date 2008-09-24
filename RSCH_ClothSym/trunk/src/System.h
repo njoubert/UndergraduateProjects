@@ -26,6 +26,8 @@ class System {
 public:
 	System(TriangleMesh* m);
 
+	mat3 outerProduct(vec3 a, vec3 b);
+
 	double getT();
 
 	vec3 calculateForces(int pointIndex);
@@ -47,17 +49,17 @@ private:
 class Solver {
 public:
     virtual ~Solver();
-    virtual void solve(System* sys, int pointIndex) = 0;
+    virtual std::pair<vec3,vec3> solve(System* sys, int pointIndex) = 0;
 };
 
 class ImplicitSolver: public Solver {
     virtual ~ImplicitSolver();
-    void solve(System* sys, int pointIndex);
+    std::pair<vec3,vec3> solve(System* sys, int pointIndex);
 };
 
 class ExplicitSolver: public Solver {
     virtual ~ExplicitSolver();
-    void solve(System* sys, int pointIndex);
+    std::pair<vec3,vec3> solve(System* sys, int pointIndex);
 };
 
 
