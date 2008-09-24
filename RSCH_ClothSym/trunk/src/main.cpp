@@ -15,9 +15,19 @@ public:
 };
 
 Viewport	viewport;
-
+float rotateX = 0.0f;
+float rotateY = 0.0f;
+float rotateZ = 0.0f;
+float translateX = 0.0f;
+float translateY = 0.0f;
+float translateZ = 0.0f;
 bool mouseSelectedItem = false;
 InputForce* mouseForce;
+
+GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };                 // Ambient Light Values ( NEW )
+GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };              // Diffuse Light Values ( NEW )
+GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f };                 // Light Position ( NEW )
+
 
 
 //****************************************************
@@ -38,18 +48,27 @@ void myReshape(int w, int h) {
 	glLoadIdentity();
 	//glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 1, -1);
 	//glOrtho(0,viewport.w,0,viewport.h, 1, -1);
-	glOrtho(-1*viewport.w/4,viewport.w/4,-1*viewport.h/4,viewport.h/4, 150, -150);
+	glOrtho(-1*viewport.w/2,viewport.w/2,-1*viewport.h/2,viewport.h/2, 150, -150);
 
 }
 
 void initScene(){
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  	viewport.w = 400;
-  	viewport.h = 400;
+  	viewport.w = 600;
+  	viewport.h = 600;
   	glutInitWindowSize(viewport.w, viewport.h);
   	glutInitWindowPosition(0, 0);
   	glutCreateWindow("Cloth Sym");
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	glShadeModel(GL_SMOOTH);                       // Enable Smooth Shading
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);                   // Black Background
+    glClearDepth(1.0f);                         // Depth Buffer Setup
+    glEnable(GL_DEPTH_TEST);                        // Enables Depth Testing
+    glDepthFunc(GL_LEQUAL);                         // The Type Of Depth Testing To Do
+
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);             // Setup The Diffuse Light
+    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);            // Position The Light
+    glEnable(GL_LIGHT1);                            // Enable Light One
+    glEnable(GL_LIGHTING);
 
 	myReshape(viewport.w,viewport.h);
 }
@@ -65,7 +84,14 @@ void myDisplay() {
     glClear( GL_COLOR_BUFFER_BIT );
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	glRotatef(rotateX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotateY, 0.0f, 1.0f, 0.0f);
+    glRotatef(rotateZ, 0.0f, 0.0f, 1.0f);
+
+    glTranslatef(translateX, translateY, translateZ);
 	glColor3f(1.0f,0.0f,0.0f);
+
 
 	vec3 a, b, c;
 
@@ -77,8 +103,7 @@ void myDisplay() {
         a = vertices[0]->getX();
         b = vertices[1]->getX();
         c = vertices[2]->getX();
-        glBegin(GL_POLYGON);
-            //cout << "Drawing poly: " << a[0] << "," << b[0] << "," << c[0] << endl;
+        glBegin(GL_TRIANGLES);
             glVertex3f(a[0],a[1],a[2]);
             glVertex3f(b[0],b[1],b[2]);
             glVertex3f(c[0],c[1],c[2]);
@@ -204,6 +229,47 @@ int parseCommandLine(int argc, char *argv[]) {
 
 }
 
+void processSpecialKeys(int key, int x, int y) {
+    switch(key) {
+    case GLUT_KEY_UP:
+        translateZ += 2.5f;
+        break;
+    case GLUT_KEY_DOWN:
+        translateZ -= 2.5f;
+        break;
+    case GLUT_KEY_RIGHT:
+        translateX += 2.5f;
+        break;
+    case GLUT_KEY_LEFT:
+        translateX -= 2.5f;
+        break;
+
+    }
+}
+
+void processKeys(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'w':
+        rotateX -= 1.5f;
+        break;
+    case 's':
+        rotateX += 1.5f;
+        break;
+    case 'a':
+        rotateZ -= 1.5f;
+        break;
+    case 'd':
+        rotateZ += 1.5f;
+        break;
+    case '-':
+        translateY -= 2.5f;
+        break;
+    case '=':
+        translateY += 2.5f;
+        break;
+    }
+}
+
 void printUsage() {
     cout << "Usage: "<< endl;
     cout << "  ClothSym -obj filename [-d i]\\" << endl;
@@ -221,7 +287,9 @@ int main(int argc, char *argv[]) {
     glutDisplayFunc(myDisplay);				// function to run when its time to draw something
   	glutReshapeFunc(myReshape);				// function to run when the window gets resized
   	glutIdleFunc(myFrameMove);				// function to run when not handling any other task
-    glutMouseFunc(myMousePress);
+  	glutKeyboardFunc(processKeys);
+    glutSpecialFunc(processSpecialKeys);
+  	glutMouseFunc(myMousePress);
     glutMotionFunc(myMouseMove);
   	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
 
