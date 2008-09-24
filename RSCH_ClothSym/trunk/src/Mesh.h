@@ -102,6 +102,7 @@ public:
      * ONLY IF there arent already two parents. In that case, return -1
      * @return -1 if fail, else the indice of the given parent in this edge.
      */
+    double getRestLength();
     int addParentTriangle(TriangleMeshTriangle*);
     bool isPartOfTwoTriangles();
     bool setParentTriangle(int, TriangleMeshTriangle*);

@@ -45,6 +45,11 @@ TriangleMeshEdge::TriangleMeshEdge(TriangleMesh* callingMesh, int v1,int v2) {
     triangles[0] = triangles[1] = NULL;
 }
 
+double TriangleMeshEdge::getRestLength() {
+    double rl = (vertices[0]->getU() - vertices[1]->getU()).length();
+    return rl;
+}
+
 bool TriangleMeshEdge::isValid() {
     return ((triangles[0] != NULL) || (triangles[1] != NULL)) &&
         ((vertices[0] != NULL) && (vertices[1] != NULL));
