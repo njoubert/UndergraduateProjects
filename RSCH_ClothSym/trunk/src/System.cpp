@@ -131,20 +131,57 @@ mat3 System::calculateContraints(int pointIndex) {
     return S;
 }
 
+/**
+ * This is the entry point for simulation. The algorithm is as follows:
+ * FOR EACH POINT:
+ *      FOR EACH EDGE OF THIS POINT:
+ *          calculate forces
+ *          calculate partials of forces
+ *          accumulate forces
+ *      calculate external forces
+ *      calculate external partials
+ *      accumulate
+ *      calculate constraints
+ *
+ *      use solver to find delV, delX
+ *
+ *      save delV, delX
+ *
+ * FOR EACH POINT:
+ *    update x with delX and v with delV
+ */
 void System::takeStep(Solver* solver, double timeStep) {
-	
+    std::vector<std::pair<vec3,vec3> > changes(mesh->vertices.size(),
+            make_pair(vec3(0,0,0), vec3(0,0,0)));
+
+    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+        std::pair<vec3,vec3> deltas =
+            solver->solve(this, timeStep, i, mesh->getVertex(i));
+        changes[i] = deltas;
+    }
+
+    TriangleMeshVertex* v;
+    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+        v = mesh->getVertex(i);
+        v->getX() += changes[i].first;
+        v->getvX() += changes[i].second;
+    }
 
     time += timeStep;
 }
 
-void System::draw() {
+Solver::~Solver() {
 
 }
 
-std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, int pointIndex) {
+ImplicitSolver::~ImplicitSolver() {
+
+}
+
+std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
 	std::pair<vec3,vec3> newState;
 	
-	TriangleMeshVertex* a = mesh->getVertex(pointIndex);
+	TriangleMeshVertex* a = point;
 	
 	double m = a->getm(); 
 	mat3 S = sys->calculateContraints(pointIndex);
@@ -162,10 +199,16 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, int pointIndex) {
 	vec3 deltaV = A.inverse()*b;
 	vec3 deltaX = h*(v0 + deltaV);
 	
-return(newState);
+	return(newState);
+
+
 }
 
-std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, int pointIndex) {
+ExplicitSolver::~ExplicitSolver() {
+
+}
+
+std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
 
 
 }

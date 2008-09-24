@@ -6,6 +6,8 @@ using namespace std;
 // Some Classes
 //****************************************************
 TriangleMesh* myMesh;
+System* sys;
+Solver* implSolver = new ImplicitSolver();
 
 class Viewport {
 public:
@@ -39,6 +41,7 @@ Viewport	viewport;
 void initSystem(string filename) {
     Parser parser;
     myMesh = parser.parseOBJ(filename);
+    sys = new System(myMesh);
     cout << "Done Parsing .OBJ" << endl;
 }
 
@@ -237,6 +240,7 @@ void reshape (int w, int h)
 }
 
 void myframemove() {
+    sys->takeStep(implSolver, 0.1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 

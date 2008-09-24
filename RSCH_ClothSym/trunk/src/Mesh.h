@@ -113,6 +113,7 @@ public:
 private:
     TriangleMeshTriangle* triangles[2];   //PARENTS
     TriangleMeshVertex* vertices[2];    //CHILDREN
+    float rl;
 };
 
 /**

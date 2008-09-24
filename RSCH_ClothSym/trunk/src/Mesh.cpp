@@ -43,10 +43,10 @@ TriangleMeshEdge::TriangleMeshEdge(TriangleMesh* callingMesh, int v1,int v2) {
     vertices[0] = vt1;
     vertices[1] = vt2;
     triangles[0] = triangles[1] = NULL;
+    rl = (vertices[0]->getU() - vertices[1]->getU()).length();
 }
 
 double TriangleMeshEdge::getRestLength() {
-    double rl = (vertices[0]->getU() - vertices[1]->getU()).length();
     return rl;
 }
 

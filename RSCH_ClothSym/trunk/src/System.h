@@ -28,17 +28,35 @@ public:
 
 	mat3 outerProduct(vec3 a, vec3 b);
 
+	/**
+	 * Gets the current absolute time this system is at.
+	 * @return
+	 */
 	double getT();
 
+    /**
+     *
+     * @param pointIndex
+     * @return
+     */
 	vec3 calculateForces(int pointIndex);
 
+	/**
+	 * @return pair with first=dFx and second=dFv
+	 */
 	std::pair<mat3,mat3> calculateForcePartials(int pointIndex);
 
+	/*
+	 *
+	 */
 	mat3 calculateContraints(int pointIndex);
 
+	/**
+	 *
+	 * @param solver
+	 * @param timeStep
+	 */
 	void takeStep(Solver* solver, double timeStep);
-
-	void draw();
 
 private:
     TriangleMesh* mesh;
@@ -49,17 +67,17 @@ private:
 class Solver {
 public:
     virtual ~Solver();
-    virtual std::pair<vec3,vec3> solve(System* sys, int pointIndex) = 0;
+    virtual std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) = 0;
 };
 
 class ImplicitSolver: public Solver {
-    virtual ~ImplicitSolver();
-    std::pair<vec3,vec3> solve(System* sys, int pointIndex);
+    ~ImplicitSolver();
+    std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point);
 };
 
 class ExplicitSolver: public Solver {
-    virtual ~ExplicitSolver();
-    std::pair<vec3,vec3> solve(System* sys, int pointIndex);
+    ~ExplicitSolver();
+    std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point);
 };
 
 
