@@ -86,50 +86,35 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
 	        ss >>v1 >>v2 >>v3;
 	        myMesh->createTriangle(v1-1, v2-1, v3-1);
 
-	        //printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
-
     	} else {
-    		/*
+
     		int v1, v2, v3;
-    		int n1, n2, n3;
+    		int n1 = -1, n2 = -1, n3 = -1;
     		ss >>v1;
     		ss.get();
     		ss.get();
-    		ss >>n1;
+    		//if next is not space
+                ss >>n1;
 
     		ss >>v2;
     		ss.get();
     		ss.get();
-    		ss >>n2;
+    		//if next is not space
+                    ss >>n2;
 
     		ss >>v3;
     		ss.get();
     		ss.get();
-			ss >>n3;
+    		//if next is not space
+                ss >>n3;
 
-  	        Vector3d* ver1 = vertexBuffer[v1-1];
-	        Vector3d* ver2 = vertexBuffer[v2-1];
-	        Vector3d* ver3 = vertexBuffer[v3-1];
-	       	Vector3d* nor1 = vertexNormalBuffer[n1-1];
-	        Vector3d* nor2 = vertexNormalBuffer[n2-1];
-	        Vector3d* nor3 = vertexNormalBuffer[n3-1];
-	        Triangle* tr = new Triangle();
-	        tr->v1 = *ver1;
-	        tr->v2 = *ver2;
-	        tr->v3 = *ver3;
-	        tr->n1 = *nor1;
-	        tr->n2 = *nor2;
-	        tr->n3 = *nor3;
+  	        myMesh->createTriangle(v1-1,v2-1,v3-1);
 
-    		printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3<<" with normals "<<n1<<", "<<n2<<", "<<n3);
-
-    		output->push_back(tr);
-    	    */
     	}
 
 
     } else {
-        //printError("Unknown operand in scene file, skipping line: " << operand);
+        cout << "Unknown operand in scene file, skipping line: " << operand << endl;
     }
 
     if (ss.fail()) {

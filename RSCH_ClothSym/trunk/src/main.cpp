@@ -11,7 +11,7 @@ class Viewport {
 public:
     Viewport() {
         rotateX = rotateY = rotateZ = translateX = translateY = translateZ = 0.0f;
-        rotateX = -90;
+        rotateX = 0;
         rotateY = 0;
         rotateZ = 0;
         translateX = 0;
