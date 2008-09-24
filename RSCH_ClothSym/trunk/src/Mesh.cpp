@@ -135,8 +135,10 @@ bool TriangleMeshTriangle::isValid() {
 }
 
 vec3 TriangleMeshTriangle::getNormal() {
-    //FILL THIS IN!
-    return vec3(0,0,0);
+    vec3 ab = vertices[1]->getX() - vertices[0]->getX();
+    vec3 ac = vertices[2]->getX() - vertices[0]->getX();
+    vec3 cross = (ab^ac).normalize();
+    return cross;
 }
 
 TriangleMeshEdge** TriangleMeshTriangle::getEdges() {
