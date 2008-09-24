@@ -9,6 +9,7 @@ OBJ_SRCS += \
 ../data/grid1.obj \
 ../data/grid2.obj \
 ../data/grid20.obj \
+../data/gridTest.obj \
 ../data/isosahedron.obj 
 
 

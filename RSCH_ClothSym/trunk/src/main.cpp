@@ -148,16 +148,20 @@ void printUsage() {
 
 void init(void)
 {
-   GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
+    GLfloat mat_specular[] = { 1.0, 0.0, 1.0, 1.0 };
    GLfloat mat_shininess[] = { 50.0 };
-   GLfloat light_position[] = { 10.0, 10.0, 10.0, 0.0 };
+   GLfloat light_position[] = { 0.0, 0.0, 150.0, 0.0 };
 
    glClearColor (0.0, 0.0, 0.0, 0.0);
    glShadeModel (GL_SMOOTH);
 
    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
    glEnable(GL_LIGHTING);
    glEnable(GL_LIGHT0);
@@ -180,6 +184,12 @@ void display(void)
 
    vec3 a, b, c;
 
+   if (viewport.wireFrame) {
+       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   } else {
+       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+   }
+
    TriangleMeshVertex** vertices;
    std::vector< TriangleMeshTriangle* >::const_iterator it =
        myMesh->triangles.begin();
@@ -190,22 +200,12 @@ void display(void)
        b = vertices[1]->getX();
        c = vertices[2]->getX();
 
-       if (!viewport.wireFrame) {
-           glBegin(GL_TRIANGLES);
-               glNormal3f( normal[0], normal[1], normal[2]);
-               glVertex3f(a[0],a[1],a[2]);
-               glVertex3f(b[0],b[1],b[2]);
-               glVertex3f(c[0],c[1],c[2]);
-           glEnd();
-       } else {
-           glBegin(GL_LINES);
-               glNormal3f( normal[0], normal[1], normal[2]);
-               glVertex3f(a[0],a[1],a[2]);
-               glVertex3f(b[0],b[1],b[2]);
-               glVertex3f(c[0],c[1],c[2]);
-               glVertex3f(a[0],a[1],a[2]);
-           glEnd();
-       }
+       glBegin(GL_TRIANGLES);
+           glNormal3f( normal[0], normal[1], normal[2]);
+           glVertex3f(a[0],a[1],a[2]);
+           glVertex3f(b[0],b[1],b[2]);
+           glVertex3f(c[0],c[1],c[2]);
+       glEnd();
 
        it++;
    }
