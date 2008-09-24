@@ -14,16 +14,13 @@
 ****************************************************************/
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
-        X(x,y,z), U(x,y,z), vX(0,0,0), f(0,0,0), edges() { /* Done */ }
-
+        X(x,y,z), U(x,y,z), vX(0,0,0), edges() { /* Done */ }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
 
 vec3 & TriangleMeshVertex::getU() { return U; }
 
 vec3 & TriangleMeshVertex::getvX() { return vX; }
-
-vec3 & TriangleMeshVertex::getf() { return f; }
 
 double TriangleMeshVertex::getm() { return 1; }
 

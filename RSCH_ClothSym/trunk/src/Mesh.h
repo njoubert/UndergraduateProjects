@@ -74,7 +74,6 @@ public:
     vec3 & getX();
     vec3 & getU();
     vec3 & getvX();
-    vec3 & getf();
     double getm();
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
@@ -82,7 +81,6 @@ private:
     vec3 X;     //Position
     vec3 U;     //Original Position
     vec3 vX;    //Velocity
-    vec3 f;     //Force
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 

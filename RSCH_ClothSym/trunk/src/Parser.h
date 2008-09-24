@@ -11,9 +11,7 @@
 //#define parseDebug(A) std::cout << __FILE__ << "::" << __LINE__ << "::" << __FUNCTION__ << ":: " << A << std::endl;
 #define parseDebug(A) ;
 
-
 using namespace std;
-
 
 /**
  * Parser that reads in files and creates Mesh objects.
