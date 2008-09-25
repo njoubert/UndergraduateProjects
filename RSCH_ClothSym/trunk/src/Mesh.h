@@ -75,7 +75,12 @@ public:
     vec3 & getU();
     vec3 & getvX();
     double getm();
+
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
+
+    int edgesSize();
+    std::vector<TriangleMeshEdge*>::const_iterator getEdgesBeginIterator();
+    std::vector<TriangleMeshEdge*>::const_iterator getEdgesEndIterator();
 
 private:
     vec3 X;     //Position
@@ -108,6 +113,7 @@ public:
     bool setParentTriangle(int, TriangleMeshTriangle*);
     TriangleMeshTriangle* getParentTriangle(int);
     TriangleMeshTriangle* getOtherTriangle(TriangleMeshTriangle*);
+    TriangleMeshVertex* getOtherVertex(TriangleMeshVertex*);
     friend ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
 
 private:
@@ -180,11 +186,11 @@ public:
 
     bool insertEdgeForVertices(int, int, TriangleMeshEdge* e);
 
-    //Iterater over all vertices
+    //TODO: Iterater over all vertices
 
-    //Iterator over all edges
+    //TODO: Iterator over all edges
 
-    //Iterator over all triangles
+    //TODO: Iterator over all triangles
 
 public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
@@ -198,5 +204,7 @@ public:
     std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 
 };
+
+void printVertex(TriangleMesh*, int);
 
 #endif /* MESH_H_ */

@@ -7,7 +7,8 @@ using namespace std;
 //****************************************************
 TriangleMesh* myMesh;
 System* sys;
-Solver* implSolver = new ImplicitSolver();
+Solver* solver = new ImplicitSolver();
+double timeStep = 0.01;
 
 class Viewport {
 public:
@@ -19,7 +20,7 @@ public:
         translateX = 0;
         translateY = 0;
         translateZ = 0;
-        wireFrame = false;
+        wireFrame = true;
     }
 	int w, h; // width and height
 	float rotateX;
@@ -69,6 +70,14 @@ int parseCommandLine(int argc, char *argv[]) {
                 std::string filename = std::string(argv[++i]);
                 initSystem(filename);
                 hasOBJ = true;
+            } else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-timestep")) {
+
+            if (isThereMore(i, argc, 1)) {
+                timeStep = atof(argv[++i]);
             } else {
                 malformedArg = true;
             }
@@ -143,7 +152,7 @@ void processKeys(unsigned char key, int x, int y) {
 
 void printUsage() {
     cout << "Usage: "<< endl;
-    cout << "  ClothSym -obj filename [-d i]\\" << endl;
+    cout << "  ClothSym -obj filename [-d i] [-timestep i]\\" << endl;
 }
 
 
@@ -240,8 +249,9 @@ void reshape (int w, int h)
 }
 
 void myframemove() {
-    sys->takeStep(implSolver, 0.001);
+    sys->takeStep(solver, timeStep);
     //cout << "We're at time " << sys->getT() << endl;
+    exit(1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 

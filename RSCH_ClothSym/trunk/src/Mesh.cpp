@@ -28,6 +28,16 @@ void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
 }
 
+int TriangleMeshVertex::edgesSize() {
+    return edges.size();
+}
+
+std::vector<TriangleMeshEdge*>::const_iterator TriangleMeshVertex::getEdgesBeginIterator() {
+    return edges.begin();
+}
+std::vector<TriangleMeshEdge*>::const_iterator TriangleMeshVertex::getEdgesEndIterator() {
+    return edges.end();
+}
 /****************************************************************
 *                                                               *
 *               TriangleMeshEdge                                *
@@ -83,6 +93,12 @@ TriangleMeshTriangle* TriangleMeshEdge::getOtherTriangle(TriangleMeshTriangle* o
     return triangles[0];
 }
 
+TriangleMeshVertex* TriangleMeshEdge::getOtherVertex(TriangleMeshVertex* one) {
+    if (vertices[0] == one)
+        return vertices[1];
+    return vertices[0];
+}
+
 bool TriangleMeshEdge::setParentTriangle(int i,
         TriangleMeshTriangle* parent) {
     if (i < 2 && i >= 0) {
@@ -91,6 +107,8 @@ bool TriangleMeshEdge::setParentTriangle(int i,
     }
     return false;
 }
+
+
 /****************************************************************
 *                                                               *
 *               TriangleMeshTriangle                            *
@@ -177,6 +195,10 @@ ostream& operator <<(ostream& s, const TriangleMeshTriangle* t) {
     s << " V=" << t->vertices[0] << t->vertices[1] << t->vertices[2];
     s << "}";
     return s;
+}
+
+ostream& operator << (ostream& s, const vec3& v) {
+    s << "(" << v[0] << "," << v[1] << "," << v[2] << ")";
 }
 
 /*
@@ -401,3 +423,22 @@ void TriangleMesh::applyNaturalOrdering(TriangleMeshVertex** vt1,
         *v2 = tempI;
     }
 }
+
+
+void printVertex(TriangleMesh * m, int i) {
+    TriangleMeshVertex* t = m->getVertex(i);
+    std::cout << "Point " << i;
+    cout << " at " << t->getX();
+    cout << " with " << t->edgesSize() << " edges locally and ";
+/*        << m->vertices[i].second->size() << " edges globally.";
+       std::vector< std::pair <int, TriangleMeshEdge* > >::const_iterator it =
+                    m->vertices[i].second->begin();
+        while (it != m->vertices[i].second->end()) {
+            cout << (*it).second;
+            it++;
+        }
+        */
+    cout << endl;
+
+}
+

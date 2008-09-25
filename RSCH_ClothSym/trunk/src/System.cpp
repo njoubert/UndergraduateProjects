@@ -34,19 +34,18 @@ vec3 System::calculateForces(int pointIndex) {
 
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
     TriangleMeshVertex* b;
-    TriangleMeshEdge* edge;
-    std::vector< std::pair <int, TriangleMeshEdge* > >::const_iterator it =
-            mesh->vertices[pointIndex].second->begin();
-    while (it != mesh->vertices[pointIndex].second->end()) {
-        b = mesh->getVertex((*it).first);
-        edge = (*it).second;
+    std::vector< TriangleMeshEdge* >::const_iterator it = a->getEdgesBeginIterator();
+    while (it != a->getEdgesEndIterator()) {
+        b = (*it)->getOtherVertex(a);
 
         /* Calculate internal forces here.
          * a = first point, b = second point. */
 
+        printVertex(mesh,pointIndex);
+
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
 		 vec3 pb = b->getX(); vec3 vb = a->getvX();
-		 double rl  = edge->getRestLength();
+		 double rl  = (*it)->getRestLength();
 		 double Ks = 100; double Kd = 4;
 
 		//----------Finternal_i--------------------------------------------------------
@@ -79,19 +78,16 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
 
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
 	TriangleMeshVertex* b;
-    TriangleMeshEdge* edge;
-    std::vector< std::pair <int, TriangleMeshEdge* > >::const_iterator it =
-            mesh->vertices[pointIndex].second->begin();
-    while (it != mesh->vertices[pointIndex].second->end()) {
-        b = mesh->getVertex((*it).first);
-        edge = (*it).second;
+    std::vector< TriangleMeshEdge* >::const_iterator it = a->getEdgesBeginIterator();
+    while (it != a->getEdgesEndIterator()) {
+        b = (*it)->getOtherVertex(a);
 
         /* Calculate internal forces here.
          * a = first point, b = second point. */
 
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
 		 vec3 pb = b->getX(); vec3 vb = a->getvX();
-		 double rl  = edge->getRestLength();
+		 double rl  = (*it)->getRestLength();
 		 double Ks = 100; double Kd = 4;
 
 		 //----------DFsDx_i-----------------------------------------------------
@@ -203,7 +199,7 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep, int poi
 	vec3 deltaV = A.inverse()*b;
 	vec3 deltaX = h*(v0 + deltaV);
 
-	cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
+	//cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
 
 	return make_pair(deltaX, deltaV);
 
@@ -216,6 +212,12 @@ ExplicitSolver::~ExplicitSolver() {
 
 std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
 
+    vec3 F = sys->calculateForces(pointIndex);
+    vec3 deltaV = (timeStep / point->getm()) * F;
+    vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
+    //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
+
+    return make_pair(deltaX, deltaV);
 }
 
