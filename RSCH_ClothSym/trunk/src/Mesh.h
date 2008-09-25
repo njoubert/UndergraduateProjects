@@ -75,6 +75,7 @@ public:
     vec3 & getU();
     vec3 & getvX();
     double getm();
+    vec3 getNormal();
     mat3 & getConstaint();
     void setConstraint(mat3);
 

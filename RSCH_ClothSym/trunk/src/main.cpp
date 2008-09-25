@@ -8,6 +8,8 @@ using namespace std;
 TriangleMesh* myMesh;
 System* sys;
 Solver* solver = new ImplicitSolver();
+//Solver* solver = new ExplicitSolver();
+
 double timeStep = 0.01;
 
 class Viewport {
@@ -157,7 +159,7 @@ void printUsage() {
 void init(void)
 {
     GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
-    GLfloat mat_specular[] = { 1.0, 0.0, 1.0, 1.0 };
+    GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
    GLfloat mat_shininess[] = { 50.0 };
    GLfloat light_position[] = { 0.0, 0.0, 150.0, 0.0 };
 
@@ -190,7 +192,7 @@ void display(void)
    glRotatef(viewport.rotateY, 0.0f, 1.0f, 0.0f);
    glRotatef(viewport.rotateZ, 0.0f, 0.0f, 1.0f);
 
-   vec3 a, b, c;
+   vec3 a, b, c, na, nb, nc;
 
    if (viewport.wireFrame) {
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -203,15 +205,20 @@ void display(void)
        myMesh->triangles.begin();
    while (it != myMesh->triangles.end()) {
        vertices = (*it)->getVertices();
-       vec3 normal = (*it)->getNormal();
+
        a = vertices[0]->getX();
+       na = vertices[0]->getNormal();
        b = vertices[1]->getX();
+       nb = vertices[1]->getNormal();
        c = vertices[2]->getX();
+       nc = vertices[2]->getNormal();
 
        glBegin(GL_TRIANGLES);
-           glNormal3f( normal[0], normal[1], normal[2]);
+           glNormal3f( na[0], na[1], na[2]);
            glVertex3f(a[0],a[1],a[2]);
+           glNormal3f( nb[0], nb[1], nb[2]);
            glVertex3f(b[0],b[1],b[2]);
+           glNormal3f( nc[0], nc[1], nc[2]);
            glVertex3f(c[0],c[1],c[2]);
        glEnd();
 

@@ -10,6 +10,11 @@
 vec3 System::f_spring( vec3 pa, vec3 pb, double rl, double Ks){
     vec3 l = pa - pb;
     double L = l.length();
+
+    double e = .0000001;
+    if (L < rl + e && L > rl - e)
+        L = rl;
+
     //cout<<"Spring"<<endl<<"L "<<L<<endl<<"RL "<<rl<<endl<<"L-rl: "<<L-rl<<endl<<endl;
     vec3 f = -Ks * (l/L) * (L - rl);
     //cout<<"f ";Print(f);
@@ -57,6 +62,8 @@ mat3 System::dfdv_damp(vec3 pa, vec3 pb, double rl, double Kd){
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
+    ks = 20;
+    kd = 15;
 }
 
 double System::getT() {
@@ -65,7 +72,6 @@ double System::getT() {
 
 mat3 System::outerProduct(vec3 a, vec3 b){
 	mat3 C;
-	int counter = 0;
 	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < 3; j++) {
 			C[i][j] = a[i]*b[j];
@@ -87,15 +93,14 @@ vec3 System::calculateForces(int pointIndex) {
          * a = first point, b = second point. */
 
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
-		 vec3 pb = b->getX(); vec3 vb = a->getvX();
+		 vec3 pb = b->getX(); vec3 vb = b->getvX();
 		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
 		 vec3 RL = Ua - Ub;
 		 double rl = RL.length();
 		 //double rl  = (*it)->getRestLength();
-		 double Ks = 100; double Kd = 100;
 
 		//----------Finternal_i--------------------------------------------------------
-        vec3 F0i =  f_spring(pa, pb, rl, Ks) + f_damp(pa, pb, va, vb, rl, Kd);
+        vec3 F0i =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
          F0 += F0i;
 
@@ -125,12 +130,12 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
          * a = first point, b = second point. */
 
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
-		 vec3 pb = b->getX(); vec3 vb = a->getvX();
+		 vec3 pb = b->getX(); vec3 vb = b->getvX();
 		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
          vec3 RL = Ua - Ub;
          double rl = RL.length();
 		 //double rl  = (*it)->getRestLength();
-		 double Ks = 100; double Kd = 100;
+		 double Ks = getKs(); double Kd = getKd();
 		 //CALCULATE FORCES FOR EACH SPRING CONNECTED TO PARTICLE
          mat3 dFsdxi = dfdx_spring(pa, pb, rl, Ks);  //W.R.T. u[i]
          mat3 dFddxi = dfdx_damp(pa, pb, va, vb, rl, Kd);
@@ -199,6 +204,14 @@ void System::takeStep(Solver* solver, double timeStep) {
     time += timeStep;
 }
 
+float System::getKs() {
+    return ks;
+}
+
+float System::getKd() {
+    return kd;
+}
+
 Solver::~Solver() {
 
 }
@@ -244,6 +257,9 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int poi
     vec3 F = sys->calculateForces(pointIndex);
     vec3 deltaV = (timeStep / point->getm()) * F;
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
+
+    if (pointIndex == 0 || pointIndex == 73)
+        return make_pair(vec3(0,0,0), vec3(0,0,0));
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
 

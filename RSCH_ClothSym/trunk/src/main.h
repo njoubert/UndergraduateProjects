@@ -20,7 +20,7 @@
 #ifdef _WIN32
 static DWORD lastTime;
 #else
-static struct timeval lastTime;
+//static struct timeval lastTime;
 #endif
 
 

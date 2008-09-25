@@ -26,6 +26,19 @@ vec3 & TriangleMeshVertex::getvX() { return vX; }
 
 double TriangleMeshVertex::getm() { return 1; }
 
+vec3 TriangleMeshVertex::getNormal() {
+    std::vector<TriangleMeshEdge*>::const_iterator it =
+        getEdgesBeginIterator();
+    vec3 n(0,0,0);
+    while (it != getEdgesEndIterator()) {
+        n += (*it)->getParentTriangle(0)->getNormal();
+        if ((*it)->isPartOfTwoTriangles())
+            n += (*it)->getParentTriangle(1)->getNormal();
+        it++;
+    }
+    return n.normalize();
+}
+
 mat3 & TriangleMeshVertex::getConstaint() { return S; }
 
 void TriangleMeshVertex::setConstraint(mat3 s) { this->S = s; }
@@ -203,10 +216,6 @@ ostream& operator <<(ostream& s, const TriangleMeshTriangle* t) {
     return s;
 }
 
-ostream& operator << (ostream& s, const vec3& v) {
-    s << "(" << v[0] << "," << v[1] << "," << v[2] << ")";
-}
-
 /*
 bool operator <(TriangleEdgeKey& first, TriangleEdgeKey& second) {
     cout << "WEEEEEEEEEEEEEEEEEEEEEEEE" << endl;
@@ -320,8 +329,8 @@ TriangleMeshVertex* TriangleMesh::getVertex(int i) {
 TriangleMeshEdge* TriangleMesh::getEdgeBetweenVertices(
         int v1,
         int v2) {
-    assert(v1 >= 0 && v1 < vertices.size());
-    assert(v2 >= 0 && v2 < vertices.size());
+    assert(v1 >= 0 && v1 < (int)vertices.size());
+    assert(v2 >= 0 && v2 < (int)vertices.size());
     TriangleMeshVertex *vt1, *vt2;
     vt1 = vertices[v1].first;
     vt2 = vertices[v2].first;
@@ -345,8 +354,8 @@ TriangleMeshEdge* TriangleMesh::getEdgeBetweenVertices(
 bool TriangleMesh::insertEdgeForVertices(int v1,
         int v2,
         TriangleMeshEdge* e) {
-    assert(v1 >= 0 && v1 < vertices.size());
-    assert(v2 >= 0 && v2 < vertices.size());
+    assert(v1 >= 0 && v1 < (int)vertices.size());
+    assert(v2 >= 0 && v2 < (int)vertices.size());
     TriangleMeshVertex* vt1 = vertices[v1].first;
     TriangleMeshVertex* vt2 = vertices[v2].first;
     applyNaturalOrdering(&vt1,&vt2, &v1,&v2);
@@ -429,7 +438,6 @@ void TriangleMesh::applyNaturalOrdering(TriangleMeshVertex** vt1,
         *v2 = tempI;
     }
 }
-
 
 void printVertex(TriangleMesh * m, int i) {
     TriangleMeshVertex* t = m->getVertex(i);

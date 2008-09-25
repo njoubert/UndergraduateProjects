@@ -66,6 +66,9 @@ public:
 
 
 private:
+    float getKs();
+    float getKd();
+    float ks, kd;
     TriangleMesh* mesh;
     double time;
 };
