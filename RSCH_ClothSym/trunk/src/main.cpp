@@ -111,7 +111,6 @@ void processSpecialKeys(int key, int x, int y) {
     case GLUT_KEY_LEFT:
         viewport.translateX += 2.5f;
         break;
-
     }
 }
 
@@ -154,15 +153,6 @@ void printUsage() {
     cout << "Usage: "<< endl;
     cout << "  ClothSym -obj filename [-d i] [-timestep i]\\" << endl;
 }
-
-
-/*******************************************************************************
- *
- *
- * REDBOOK EXAMPLE
- *
- *
- *******************************************************************************/
 
 void init(void)
 {
