@@ -41,12 +41,15 @@ vec3 System::calculateForces(int pointIndex) {
         /* Calculate internal forces here.
          * a = first point, b = second point. */
 
-        printVertex(mesh,pointIndex);
+        //printVertex(mesh,pointIndex);
 
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
 		 vec3 pb = b->getX(); vec3 vb = a->getvX();
-		 double rl  = (*it)->getRestLength();
-		 double Ks = 100; double Kd = 4;
+		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
+		 vec3 RL = Ua - Ub;
+		 double rl = RL.length();
+		 //double rl  = (*it)->getRestLength();
+		 double Ks = 100; double Kd = 100;
 
 		//----------Finternal_i--------------------------------------------------------
 			vec3 l = pa - pb;
@@ -87,8 +90,11 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
 
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
 		 vec3 pb = b->getX(); vec3 vb = a->getvX();
-		 double rl  = (*it)->getRestLength();
-		 double Ks = 100; double Kd = 4;
+		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
+         vec3 RL = Ua - Ub;
+         double rl = RL.length();
+		 //double rl  = (*it)->getRestLength();
+		 double Ks = 100; double Kd = 100;
 
 		 //----------DFsDx_i-----------------------------------------------------
 		 	mat3 I = identity2D();
@@ -125,9 +131,11 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
 
 mat3 System::calculateContraints(int pointIndex) {
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
-	mat3 I = identity2D();
-	mat3 S = I;
+	mat3 S = a->getConstaint();
 
+	mat3 zero(0);
+	if (pointIndex == 0 || pointIndex == 73)
+	    S = zero;
     return S;
 }
 

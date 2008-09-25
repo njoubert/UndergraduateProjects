@@ -75,6 +75,8 @@ public:
     vec3 & getU();
     vec3 & getvX();
     double getm();
+    mat3 & getConstaint();
+    void setConstraint(mat3);
 
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
@@ -83,6 +85,7 @@ public:
     std::vector<TriangleMeshEdge*>::const_iterator getEdgesEndIterator();
 
 private:
+    mat3 S;
     vec3 X;     //Position
     vec3 U;     //Original Position
     vec3 vX;    //Velocity

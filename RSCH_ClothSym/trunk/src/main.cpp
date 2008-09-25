@@ -251,7 +251,7 @@ void reshape (int w, int h)
 void myframemove() {
     sys->takeStep(solver, timeStep);
     //cout << "We're at time " << sys->getT() << endl;
-    exit(1);
+    //exit(1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
 }
 

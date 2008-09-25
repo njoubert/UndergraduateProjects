@@ -14,7 +14,9 @@
 ****************************************************************/
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
-        X(x,y,z), U(x,y,z), vX(0,0,0), edges() { /* Done */ }
+        X(x,y,z), U(x,y,z), vX(0,0,0), edges() {
+    S = identity2D();
+}
 
 vec3 & TriangleMeshVertex::getX() { return X; }
 
@@ -23,6 +25,10 @@ vec3 & TriangleMeshVertex::getU() { return U; }
 vec3 & TriangleMeshVertex::getvX() { return vX; }
 
 double TriangleMeshVertex::getm() { return 1; }
+
+mat3 & TriangleMeshVertex::getConstaint() { return S; }
+
+void TriangleMeshVertex::setConstraint(mat3 s) { this->S = s; }
 
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
