@@ -7,6 +7,54 @@
 
 #include "System.h"
 
+vec3 System::f_spring( vec3 pa, vec3 pb, double rl, double Ks){
+    vec3 l = pa - pb;
+    double L = l.length();
+    //cout<<"Spring"<<endl<<"L "<<L<<endl<<"RL "<<rl<<endl<<"L-rl: "<<L-rl<<endl<<endl;
+    vec3 f = -Ks * (l/L) * (L - rl);
+    //cout<<"f ";Print(f);
+    return(f);
+}
+vec3 System::f_damp( vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, double Kd){
+    //PrintVec3("pa: ", pa);
+    //PrintVec3("pb: ", pb);
+
+    vec3 l = pa - pb;
+    //PrintVec3("pa - pb: ", l);
+    vec3 w = va - vb;
+    //PrintVec3("va - vb: ", w);
+    double L = l.length();
+    //cout<<"Damping"<<endl<<"L "<<L<<endl<<"RL "<<rl<<endl<<endl;
+    //cout<<"Norm[pa-pb]: "<<L<<endl<<endl;
+    vec3 f = -Kd * ((l*w)/(L*L)) * l;
+    //PrintVec3("Fd: ", f);
+    return(f);
+}
+
+inline mat3 System::dfdx_spring(vec3 pa, vec3 pb, double rl, double Ks){
+    mat3 I = identity2D();
+    vec3 l = pa - pb;
+    double L = l.length();
+    mat3 oProd = outerProduct(l,l);
+    double lDOT = l*l;
+    return -Ks * ((1 - (rl/L)) * (I - (oProd/lDOT)) + (oProd/lDOT));
+}
+inline mat3 System::dfdx_damp(vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, float Kd){
+    mat3 I = identity2D();
+    vec3 P = pa - pb;
+    vec3 V = va - vb;
+    return -Kd * ( (outerProduct(P, V)/(P*P)) + (2*((-P*V)/((P*P)*(P*P)))*outerProduct(P, P)) + (((P*V)/(P*P))*I) );
+}
+mat3 System::dfdv_damp(vec3 pa, vec3 pb, double rl, double Kd){
+    mat3 I = identity2D();
+    vec3 l = pa - pb;
+    mat3 oProd = outerProduct(l,l);
+    double lDOT = l*l;
+    mat3 RETURN = -Kd * (oProd/lDOT);
+    return RETURN;
+}
+
+
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
 }
@@ -27,10 +75,7 @@ return C;
 }
 
 vec3 System::calculateForces(int pointIndex) {
-    vec3 F; //Output net force.
-
-	vec3 zero(0,0,0);
-	vec3 Finternal(zero);
+    vec3 F0(0,0,0); //Output net force.
 
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
     TriangleMeshVertex* b;
@@ -41,8 +86,6 @@ vec3 System::calculateForces(int pointIndex) {
         /* Calculate internal forces here.
          * a = first point, b = second point. */
 
-        //printVertex(mesh,pointIndex);
-
 		 vec3 pa = a->getX(); vec3 va = a->getvX();
 		 vec3 pb = b->getX(); vec3 vb = a->getvX();
 		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
@@ -52,32 +95,25 @@ vec3 System::calculateForces(int pointIndex) {
 		 double Ks = 100; double Kd = 100;
 
 		//----------Finternal_i--------------------------------------------------------
-			vec3 l = pa - pb;
-			double L = l.length();
-			vec3 F_spring_i = -Ks * (l/L) * (L - rl);
-			vec3 w = va - vb;
-			vec3 F_damp_i = -Kd * ((l*w)/(L*L)) * l;
-			vec3 Finternal_i = F_spring_i + F_damp_i;
+        vec3 F0i =  f_spring(pa, pb, rl, Ks) + f_damp(pa, pb, va, vb, rl, Kd);
+        // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
+         F0 += F0i;
 
 		//----------Finternal Accumulation----------------------------------------------
-			Finternal = Finternal + Finternal_i;
 
-        it++;
+         it++;
     }
 
-    /* Calculate external forces here... */
-	vec3 Fexternal(0, -9.8, 0);
+    vec3 Fexternal(0, -9.8, 0);
 
-	F = Finternal + Fexternal;
+    F0 = F0 + Fexternal;
 
-    return F;
+    return F0;
 }
 
 std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
     vec3 zero(0,0,0);
 	mat3 dFx(zero, zero, zero), dFv(zero, zero, zero);
-
-	//mat3 DFDx(zero, zero, zero); mat3 DFDv(zero, zero, zero);
 
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
 	TriangleMeshVertex* b;
@@ -95,31 +131,16 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
          double rl = RL.length();
 		 //double rl  = (*it)->getRestLength();
 		 double Ks = 100; double Kd = 100;
+		 //CALCULATE FORCES FOR EACH SPRING CONNECTED TO PARTICLE
+         mat3 dFsdxi = dfdx_spring(pa, pb, rl, Ks);  //W.R.T. u[i]
+         mat3 dFddxi = dfdx_damp(pa, pb, va, vb, rl, Kd);
+         mat3 dFddvi = dfdv_damp(pa, pb, rl, Kd);
+         mat3 dFdxi = dFsdxi + dFddxi;
 
-		 //----------DFsDx_i-----------------------------------------------------
-		 	mat3 I = identity2D();
-			vec3 l = pa - pb;
-			double L = l.length();
-			mat3 oProd = outerProduct(l,l);
-			double lDOT = l*l;
-			mat3 DFsDx_i =  -Ks * ((1 - (rl/L)) * (I - (oProd/lDOT)) + (oProd/lDOT));
+         //ADD FORCES FOR EACH SPRING CONNECTED TO PARTICLE
+         dFx = dFx * dFddvi;
+         dFv = dFv * dFdxi;
 
-		//----------DFdDx_i--------------------------------------------------------
-			//mat3 I = identity2D();
-			vec3 P = pa - pb;
-			vec3 V = va - vb;
-			mat3 DFdDx_i = -Kd * ( (outerProduct(P, V)/(P*P)) + (2*((-P*V)/((P*P)*(P*P)))*outerProduct(P, P)) + (((P*V)/(P*P))*I) );
-
-		//----------DFdDv_i--------------------------------------------------------
-			//mat3 I = identity2D();
-			//vec3 l = pa - pb;
-			//mat3 oProd = outerProduct(l,l);
-			//double lDOT = l*l;
-			mat3 DFdDv_i = -Kd * (oProd/lDOT);
-
-		//----------DfDx, DfDv------------------------------------------------------
-			dFx = dFx * (DFsDx_i + DFdDx_i);
-			dFv = dFv * DFdDv_i;
 
         it++;
     }

@@ -58,6 +58,13 @@ public:
 	 */
 	void takeStep(Solver* solver, double timeStep);
 
+	vec3 f_spring( vec3 pa, vec3 pb, double rl, double Ks);
+    vec3 f_damp( vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, double Kd);
+    inline mat3 dfdx_spring(vec3 pa, vec3 pb, double rl, double Ks);
+    inline mat3 dfdx_damp(vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, float Kd);
+    mat3 dfdv_damp(vec3 pa, vec3 pb, double rl, double Kd);
+
+
 private:
     TriangleMesh* mesh;
     double time;
