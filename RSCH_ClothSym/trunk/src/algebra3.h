@@ -36,6 +36,10 @@ typedef double (*V_FCT_PTR)(double);
 #undef min					// allow as function names
 #undef max
 
+#define ALGEBRA3IOSTREAMS
+#include <iostream>
+using namespace std;
+
 // error handling macro
 #define ALGEBRA_ERROR(E) { assert(false); }
 
@@ -552,7 +556,7 @@ inline istream& operator >> (istream& s, vec2& v) {
 	s >> v_tmp[VX] >> v_tmp[VY];
 	while (s >> c && isspace(c)) ;
 	if (c != '|')
-	    s.set(_bad);
+	    s.setstate(ios::badbit);
 	}
     else {
 	s.putback(c);
@@ -725,7 +729,7 @@ inline istream& operator >> (istream& s, vec3& v) {
 	s >> v_tmp[VX] >> v_tmp[VY] >> v_tmp[VZ];
 	while (s >> c && isspace(c)) ;
 	if (c != '|')
-	    s.set(_bad);
+	    s.setstate(ios::badbit);
 	}
     else {
 	s.putback(c);
@@ -874,7 +878,7 @@ inline ostream& operator << (ostream& s, const vec4& v)
 { return s << "| " << v.n[VX] << ' ' << v.n[VY] << ' ' << v.n[VZ] << ' '
   << v.n[VW] << " |"; }
 
-inline stream& operator >> (istream& s, vec4& v) {
+inline istream& operator >> (istream& s, vec4& v) {
     vec4	v_tmp;
     char	c = ' ';
 
@@ -885,7 +889,7 @@ inline stream& operator >> (istream& s, vec4& v) {
 	s >> v_tmp[VX] >> v_tmp[VY] >> v_tmp[VZ] >> v_tmp[VW];
 	while (s >> c && isspace(c)) ;
 	if (c != '|')
-	    s.set(_bad);
+	    s.setstate(ios::badbit);
 	}
     else {
 	s.putback(c);
@@ -1048,7 +1052,7 @@ inline int operator != (const mat3& a, const mat3& b)
 inline ostream& operator << (ostream& s, const mat3& m)
 { return s << m.v[VX] << '\n' << m.v[VY] << '\n' << m.v[VZ]; }
 
-inline stream& operator >> (istream& s, mat3& m) {
+inline istream& operator >> (istream& s, mat3& m) {
     mat3    m_tmp;
 
     s >> m_tmp[VX] >> m_tmp[VY] >> m_tmp[VZ];
