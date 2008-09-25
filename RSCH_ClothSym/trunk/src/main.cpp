@@ -7,8 +7,8 @@ using namespace std;
 //****************************************************
 TriangleMesh* myMesh;
 System* sys;
-Solver* solver = new ImplicitSolver();
-//Solver* solver = new ExplicitSolver();
+//Solver* solver = new ImplicitSolver();
+Solver* solver = new ExplicitSolver();
 
 double timeStep = 0.01;
 
@@ -22,7 +22,7 @@ public:
         translateX = 0;
         translateY = 0;
         translateZ = 0;
-        wireFrame = true;
+        wireFrame = false;
     }
 	int w, h; // width and height
 	float rotateX;
@@ -237,10 +237,10 @@ void reshape (int w, int h)
    double x = 300;
    if (w <= h)
       glOrtho (-1*x, x, -1*x*(GLfloat)h/(GLfloat)w,
-         x*(GLfloat)h/(GLfloat)w, -1000.0, 1000.0);
+         x*(GLfloat)h/(GLfloat)w, -400.0, 400.0);
    else
       glOrtho (-1*x*(GLfloat)w/(GLfloat)h,
-         x*(GLfloat)w/(GLfloat)h, -1*x, x, -1000.0, 1000.0);
+         x*(GLfloat)w/(GLfloat)h, -1*x, x, -400.0, 400.0);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 }
@@ -250,6 +250,49 @@ void myframemove() {
     //cout << "We're at time " << sys->getT() << endl;
     //exit(1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
+}
+
+void myMousePress(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_DOWN) {
+            //Find the point
+            float z = 0.5;
+            double ox, oy, oz;
+            GLdouble modelview[16];
+            GLdouble proj[16];
+            GLint view[4];
+            glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+            glGetDoublev(GL_PROJECTION_MATRIX, proj);
+            glGetIntegerv(GL_VIEWPORT, view);
+            glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+
+            if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
+
+                sys->enableMouseForce(vec3(ox,oy,oz));
+
+            }
+        } else {
+            sys->disableMouseForce();
+        }
+    }
+}
+
+void myMouseMove(int x, int y) {
+    if (sys->isMouseEnabled()) {
+        float z;
+        double ox, oy, oz;
+        GLdouble modelview[16];
+        GLdouble proj[16];
+        GLint view[4];
+        glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+        glGetDoublev(GL_PROJECTION_MATRIX, proj);
+        glGetIntegerv(GL_VIEWPORT, view);
+        glReadPixels( x, view[3]-y, 1, 1,
+                 GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+        gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
+        sys->enableMouseForce(vec3(ox,oy,oz));
+    }
+
 }
 
 int main(int argc, char *argv[]) {
@@ -269,6 +312,8 @@ int main(int argc, char *argv[]) {
     glutReshapeFunc(reshape);
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
+    glutMouseFunc(myMousePress);
+    glutMotionFunc(myMouseMove);
     glutMainLoop();
     return 0;
 }

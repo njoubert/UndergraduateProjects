@@ -58,11 +58,18 @@ public:
 	 */
 	void takeStep(Solver* solver, double timeStep);
 
-	vec3 f_spring( vec3 pa, vec3 pb, double rl, double Ks);
-    vec3 f_damp( vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, double Kd);
-    inline mat3 dfdx_spring(vec3 pa, vec3 pb, double rl, double Ks);
-    inline mat3 dfdx_damp(vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, float Kd);
-    mat3 dfdv_damp(vec3 pa, vec3 pb, double rl, double Kd);
+	void enableMouseForce(vec3 mousePosition);
+
+	void disableMouseForce();
+
+	bool isMouseEnabled();
+
+	vec3 f_mouse( TriangleMeshVertex* selected );
+	vec3 f_spring( vec3 & pa, vec3 & pb, double rl, double Ks);
+    vec3 f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd);
+    inline mat3 dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks);
+    inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
+    mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
 
 private:
@@ -71,6 +78,8 @@ private:
     float ks, kd;
     TriangleMesh* mesh;
     double time;
+    TriangleMeshVertex* mouseSelected;
+    vec3 mouseP;
 };
 
 

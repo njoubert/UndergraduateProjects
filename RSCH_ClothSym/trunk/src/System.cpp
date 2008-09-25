@@ -7,7 +7,28 @@
 
 #include "System.h"
 
-vec3 System::f_spring( vec3 pa, vec3 pb, double rl, double Ks){
+System::System(TriangleMesh* m): mesh(m) {
+    time = 0;
+    ks = 10;
+    kd = 15;
+    mouseSelected = NULL;
+}
+
+double System::getT() {
+    return time;
+}
+
+mat3 System::outerProduct(vec3 a, vec3 b){
+	mat3 C;
+	for(int i = 0; i < 3; i++) {
+		for(int j = 0; j < 3; j++) {
+			C[i][j] = a[i]*b[j];
+		}
+	}
+return C;
+}
+
+vec3 System::f_spring( vec3 & pa, vec3 & pb, double rl, double Ks){
     vec3 l = pa - pb;
     double L = l.length();
 
@@ -20,7 +41,7 @@ vec3 System::f_spring( vec3 pa, vec3 pb, double rl, double Ks){
     //cout<<"f ";Print(f);
     return(f);
 }
-vec3 System::f_damp( vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, double Kd){
+vec3 System::f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd){
     //PrintVec3("pa: ", pa);
     //PrintVec3("pb: ", pb);
 
@@ -36,7 +57,7 @@ vec3 System::f_damp( vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, double Kd){
     return(f);
 }
 
-inline mat3 System::dfdx_spring(vec3 pa, vec3 pb, double rl, double Ks){
+inline mat3 System::dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks){
     mat3 I = identity2D();
     vec3 l = pa - pb;
     double L = l.length();
@@ -44,40 +65,19 @@ inline mat3 System::dfdx_spring(vec3 pa, vec3 pb, double rl, double Ks){
     double lDOT = l*l;
     return -Ks * ((1 - (rl/L)) * (I - (oProd/lDOT)) + (oProd/lDOT));
 }
-inline mat3 System::dfdx_damp(vec3 pa, vec3 pb, vec3 va, vec3 vb, double rl, float Kd){
+inline mat3 System::dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd){
     mat3 I = identity2D();
     vec3 P = pa - pb;
     vec3 V = va - vb;
     return -Kd * ( (outerProduct(P, V)/(P*P)) + (2*((-P*V)/((P*P)*(P*P)))*outerProduct(P, P)) + (((P*V)/(P*P))*I) );
 }
-mat3 System::dfdv_damp(vec3 pa, vec3 pb, double rl, double Kd){
+mat3 System::dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd){
     mat3 I = identity2D();
     vec3 l = pa - pb;
     mat3 oProd = outerProduct(l,l);
     double lDOT = l*l;
     mat3 RETURN = -Kd * (oProd/lDOT);
     return RETURN;
-}
-
-
-System::System(TriangleMesh* m): mesh(m) {
-    time = 0;
-    ks = 20;
-    kd = 15;
-}
-
-double System::getT() {
-    return time;
-}
-
-mat3 System::outerProduct(vec3 a, vec3 b){
-	mat3 C;
-	for(int i = 0; i < 3; i++) {
-		for(int j = 0; j < 3; j++) {
-			C[i][j] = a[i]*b[j];
-		}
-	}
-return C;
 }
 
 vec3 System::calculateForces(int pointIndex) {
@@ -111,14 +111,54 @@ vec3 System::calculateForces(int pointIndex) {
 
     vec3 Fexternal(0, -9.8, 0);
 
+    Fexternal += f_mouse( a );
+
     F0 = F0 + Fexternal;
 
     return F0;
 }
 
+void System::enableMouseForce(vec3 mousePosition) {
+    //Find closest vertex
+    cout << "Mouse is at: " << mousePosition << endl;
+    double currentDistance = 900000.0, d;
+    TriangleMeshVertex* currentClosest;
+    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+        d = (mousePosition - mesh->getVertex(i)->getX()).length();
+        if (d < currentDistance) {
+            currentDistance = d;
+            currentClosest = mesh->getVertex(i);
+            mouseP = mousePosition;
+        }
+    }
+
+    //sets mouseSelected to this vertex.
+    mouseSelected = currentClosest;
+}
+
+void System::disableMouseForce() {
+    mouseSelected = NULL;
+}
+
+bool System::isMouseEnabled() {
+    return (mouseSelected != NULL);
+}
+
+vec3 System::f_mouse( TriangleMeshVertex* selected ) {
+    if (selected != mouseSelected)
+        return vec3(0,0,0);
+
+    double rl = 1;
+    vec3 l = selected->getX() - mouseP;
+    double L = l.length();
+    vec3 f = -getKs() * (l/L) * (L - rl);
+    return(f);
+}
+
 std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
-    vec3 zero(0,0,0);
-	mat3 dFx(zero, zero, zero), dFv(zero, zero, zero);
+	mat3 dFx(0), dFv(0);
+	dFx = identity2D();
+	dFv = identity2D();
 
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
 	TriangleMeshVertex* b;
