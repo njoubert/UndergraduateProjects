@@ -189,7 +189,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
   def minvalue(self, gameState, depth, ghostCount):
     if (self.terminalnode(gameState,depth) ):
       return self.evaluationFunction(gameState)
-    #print "GHOST MOVE, depth=", depth
     value = float('inf')
     actions = gameState.getLegalActions(ghostCount)
     successors = [(action, gameState.generateSuccessor(ghostCount, action)) for action in actions]
@@ -199,6 +198,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         value = min(value, self.maxvalue(s, depth-1) )
       else:
         value = min(value, self.minvalue(s, depth, ghostCount))
+    #print "GHOST MOVE, value=", value
     return value
     
     
@@ -210,11 +210,12 @@ class MinimaxAgent(MultiAgentSearchAgent):
     #print "INITIAL PACMAN MOVE!"
     nextActions = gameState.getLegalActions(0);
     nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
+    stateValues = [self.evaluationFunction(state) for state in nextStates]
     utilityValues = [self.minvalue(state, self.depth, 1) for state in nextStates]
     bestUtility = max(utilityValues)
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
     chosenIndex = bestIndices[0]
-    #print "Best utility is", bestUtility
+    print "Utilities: ", utilityValues, " statevalues", stateValues, " best utility ", bestUtility, " action", nextActions[chosenIndex], " from ", nextActions
     return nextActions[chosenIndex]
     
     
@@ -314,8 +315,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     #print "PACMAN MOVE, depth=", depth
     value = float("-infinity")
     actions = gameState.getLegalActions(0)
-    successors = [(action, gameState.generateSuccessor(0,action)) for action in actions]
-    for a, s in successors:
+    successors = [gameState.generateSuccessor(0,action) for action in actions]
+    for s in successors:
       value = max(value,self.expectivalue(s,depth,1) )
     return value
     
@@ -364,6 +365,14 @@ def betterEvaluationFunction(currentGameState):
     DESCRIPTION: <write something here so we know what you did>
   """
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  val = currentGameState.getScore()
+  pacmanPosition = currentGameState.getPacmanPosition()
+  capsules = currentGameState.getCapsules()
+  food = currentGameState.getFood().asList()
+  #distances = [util.manhattanDistance(pacmanPosition, capsulePosition) for capsulePosition in capsules]
+  val += 1.0/len(capsules)
+  val += 10000.0/len(food)**2.0
+  print 10000.0/len(food)**2.0
+  return val
 
 DISTANCE_CALCULATORS = {}
