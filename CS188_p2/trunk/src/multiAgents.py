@@ -327,16 +327,18 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     if (self.terminalnode(gameState,depth) ):
       return self.evaluationFunction(gameState)
     #print "GHOST MOVE, depth=", depth
-    value = []
+    
     actions = gameState.getLegalActions(ghostCount)
     successors = [(action, gameState.generateSuccessor(ghostCount, action)) for action in actions]
+    value = 0
+    valueAmount = 1.0 * len(successors) #I can do this since I know how many successors I will expand
     ghostCount += 1
     for a, s in successors:
       if ghostCount > gameState.getNumAgents()-1:
-        value.append(self.maxvalue(s, depth-1) )
+        value += (1.0/valueAmount)*(self.maxvalue(s, depth-1) )
       else:
-        value.append(self.expectivalue(s, depth, ghostCount))
-    return sum(value)/len(value)
+        value += (1.0/valueAmount)*(self.expectivalue(s, depth, ghostCount))
+    return value
     
     
   def getAction(self, gameState):
