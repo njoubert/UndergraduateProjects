@@ -182,7 +182,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
       value = max(value,self.minvalue(s,depth,1) )
     return value
     
-  """
+  """s
     ghostCount starts at 1 for the first ghost, and counts up to the total amount of ghosts,
     upon which we decrease the depth and call maxvalue.
   """  
@@ -223,13 +223,81 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     Your minimax agent with alpha-beta pruning (question 3)
   """
     
+  def terminalnode(self, gameState, depth):
+    if(gameState.isWin() or gameState.isLose() or depth == 0):
+        return True
+    else:
+        return False
+  
+  def maxvalue(self, gameState, depth, alpha, beta):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    #print "PACMAN MOVE, depth=", depth
+    value = float("-infinity")
+    actions = gameState.getLegalActions(0)
+    successors = [(action, gameState.generateSuccessor(0,action)) for action in actions]
+    for a, s in successors:
+      value = max(value,self.minvalue(s,depth,1, alpha, beta) )
+      if value > beta:
+        #print "VALUE > BETA"
+        return value
+      else:
+        alpha = max(alpha,value)
+    return value
+    
+  """s
+    ghostCount starts at 1 for the first ghost, and counts up to the total amount of ghosts,
+    upon which we decrease the depth and call maxvalue.
+  """  
+  def minvalue(self, gameState, depth, ghostCount, alpha, beta):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    #print "GHOST MOVE, depth=", depth
+    value = float('inf')
+    actions = gameState.getLegalActions(ghostCount)
+    successors = [gameState.generateSuccessor(ghostCount, action) for action in actions]
+    ghostCount += 1
+    if ghostCount > gameState.getNumAgents()-1:
+      # GO TO PACMAN
+      for s in successors:
+        value = min(value, self.maxvalue(s, depth-1, alpha, beta) )
+        if value < alpha:
+          #print "VALUE < ALPHA!"
+          return value
+        beta = min(beta, value)  
+    else:
+      # DO ANOTHER GHOST
+      for s in successors:  
+        value = min(value, self.minvalue(s, depth, ghostCount, alpha, beta))
+        beta = min(beta, value)
+        if value < alpha:
+          #We can still prune here, since finding a smaller value means WE will choose it, but Max will ignore it!
+          #print "VALUE < ALPHA!"
+          #assert value >= beta
+          return value
+    return value
+    
   def getAction(self, gameState):
     """
-      Returns the minimax action using self.depth and self.evaluationFunction
+      Returns the minimax action from the current gameState using self.depth 
+      and self.evaluationFunction.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    #print "INITIAL PACMAN MOVE ALPHA BETA!"
+    nextActions = gameState.getLegalActions(0);
+    nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
+    utilityValues = []
+    alpha = float('-infinity')
+    beta = float('infinity')
+    for state in nextStates:
+      value = self.minvalue(state, self.depth, 1, alpha, beta) 
+      utilityValues.append(value)
+      alpha = max(value, alpha)
+    bestUtility = max(utilityValues)
+    bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
+    chosenIndex = bestIndices[0]
+    #print "Best utility is", bestUtility
+    return nextActions[chosenIndex]
+    
 class ExpectimaxAgent(MultiAgentSearchAgent):
   """
     Your expectimax agent (question 4)
