@@ -120,7 +120,7 @@ vec3 System::calculateForces(int pointIndex) {
 
 void System::enableMouseForce(vec3 mousePosition) {
     //Find closest vertex
-    cout << "Mouse is at: " << mousePosition << endl;
+    //cout << "Mouse is at: " << mousePosition << endl;
     double currentDistance = 900000.0, d;
     TriangleMeshVertex* currentClosest;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
@@ -134,6 +134,10 @@ void System::enableMouseForce(vec3 mousePosition) {
 
     //sets mouseSelected to this vertex.
     mouseSelected = currentClosest;
+}
+
+void System::updateMouseForce(vec3 mousePosition) {
+    mouseP = mousePosition;
 }
 
 void System::disableMouseForce() {

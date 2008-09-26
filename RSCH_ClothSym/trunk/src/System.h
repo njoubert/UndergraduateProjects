@@ -60,6 +60,8 @@ public:
 
 	void enableMouseForce(vec3 mousePosition);
 
+	void updateMouseForce(vec3 mousePosition);
+
 	void disableMouseForce();
 
 	bool isMouseEnabled();
