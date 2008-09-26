@@ -151,18 +151,71 @@ class MultiAgentSearchAgent(Agent):
     self.evaluationFunction = betterEvaluationFunction
     
 
-class MinimaxAgent(MultiAgentSearchAgent):
+class MinimaxAgent(MultiAgentSearchAgent):  
   """
-    Your minimax agent (question 2)
+    WEEEEEE.... ^_^ a live picture of Niels Joubert in Python
+    /------\ 
+    | O   O|    -------------------------------\
+    |   |  |   /                               |
+    \  --  | ---  I'M A HARD CORE MUTHER FUCKER.|
+     \----/     \    ... BITCHES...             |
+        |        \ -----------------------------/     
+      /---\ 
+        |
+      /   \  
+  """ 
+  
+  def terminalnode(self, gameState, depth):
+    if(gameState.isWin() or gameState.isLose() or depth == 0):
+        return True
+    else:
+        return False
+  
+  def maxvalue(self, gameState, depth):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    value = float("-infinity")
+    actions = gameState.getLegalActions(0)
+    successors = [(action, gameState.generateSuccessor(0,action)) for action in actions]
+    for a, s in successors:
+      value = max(value,self.minvalue(s,depth,1) )
+    return value
+    
   """
+    ghostCount starts at 1 for the first ghost, and counts up to the total amount of ghosts,
+    upon which we decrease the depth and call maxvalue.
+  """  
+  def minvalue(self, gameState, depth, ghostCount):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    value = float('inf')
+    actions = gameState.getLegalActions(ghostCount)
+    successors = [(action, gameState.generateSuccessor(ghostCount, action)) for action in actions]
+    ghostCount += 1
+    for a, s in successors:
+      if ghostCount > gameState.getNumAgents()-1:
+        value = min(value, self.maxvalue(s, depth-1) )
+      else:
+        value = min(value, self.minvalue(s, depth, ghostCount))
+    return value
+    
     
   def getAction(self, gameState):
     """
       Returns the minimax action from the current gameState using self.depth 
       and self.evaluationFunction.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    nextActions = gameState.getLegalActions(0);
+    nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
+    utilityValues = [self.maxvalue(state, self.depth-1) for state in nextStates]
+    bestUtility = max(utilityValues)
+    bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
+    chosenIndex = random.choice(bestIndices)
+    
+    print "Best utility is", bestUtility
+    return nextActions[chosenIndex]
+    
     
 class AlphaBetaAgent(MultiAgentSearchAgent):
   """
