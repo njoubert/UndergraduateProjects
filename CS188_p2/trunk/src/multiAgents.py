@@ -269,12 +269,11 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
       # DO ANOTHER GHOST
       for s in successors:  
         value = min(value, self.minvalue(s, depth, ghostCount, alpha, beta))
-        beta = min(beta, value)
         if value < alpha:
           #We can still prune here, since finding a smaller value means WE will choose it, but Max will ignore it!
           #print "VALUE < ALPHA!"
-          #assert value >= beta
           return value
+        beta = min(beta, value)
     return value
     
   def getAction(self, gameState):
@@ -303,15 +302,57 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     Your expectimax agent (question 4)
   """
     
+  def terminalnode(self, gameState, depth):
+    if(gameState.isWin() or gameState.isLose() or depth == 0):
+        return True
+    else:
+        return False
+  
+  def maxvalue(self, gameState, depth):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    #print "PACMAN MOVE, depth=", depth
+    value = float("-infinity")
+    actions = gameState.getLegalActions(0)
+    successors = [(action, gameState.generateSuccessor(0,action)) for action in actions]
+    for a, s in successors:
+      value = max(value,self.expectivalue(s,depth,1) )
+    return value
+    
+  """s
+    ghostCount starts at 1 for the first ghost, and counts up to the total amount of ghosts,
+    upon which we decrease the depth and call maxvalue.
+  """  
+  def expectivalue(self, gameState, depth, ghostCount):
+    if (self.terminalnode(gameState,depth) ):
+      return self.evaluationFunction(gameState)
+    #print "GHOST MOVE, depth=", depth
+    value = []
+    actions = gameState.getLegalActions(ghostCount)
+    successors = [(action, gameState.generateSuccessor(ghostCount, action)) for action in actions]
+    ghostCount += 1
+    for a, s in successors:
+      if ghostCount > gameState.getNumAgents()-1:
+        value.append(self.maxvalue(s, depth-1) )
+      else:
+        value.append(self.expectivalue(s, depth, ghostCount))
+    return sum(value)/len(value)
+    
+    
   def getAction(self, gameState):
     """
-      Returns the expectimax action using self.depth and self.evaluationFunction
-      
-      All ghosts should be modeled as choosing uniformly at random from their
-      legal moves.
+      Returns the minimax action from the current gameState using self.depth 
+      and self.evaluationFunction.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #print "INITIAL PACMAN MOVE!"
+    nextActions = gameState.getLegalActions(0);
+    nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
+    utilityValues = [self.expectivalue(state, self.depth, 1) for state in nextStates]
+    bestUtility = max(utilityValues)
+    bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
+    chosenIndex = bestIndices[0]
+    #print "Best utility is", bestUtility
+    return nextActions[chosenIndex]
 
 def betterEvaluationFunction(currentGameState):
   """
