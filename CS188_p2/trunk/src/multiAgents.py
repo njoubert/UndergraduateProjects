@@ -174,6 +174,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
   def maxvalue(self, gameState, depth):
     if (self.terminalnode(gameState,depth) ):
       return self.evaluationFunction(gameState)
+    #print "PACMAN MOVE, depth=", depth
     value = float("-infinity")
     actions = gameState.getLegalActions(0)
     successors = [(action, gameState.generateSuccessor(0,action)) for action in actions]
@@ -188,6 +189,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
   def minvalue(self, gameState, depth, ghostCount):
     if (self.terminalnode(gameState,depth) ):
       return self.evaluationFunction(gameState)
+    #print "GHOST MOVE, depth=", depth
     value = float('inf')
     actions = gameState.getLegalActions(ghostCount)
     successors = [(action, gameState.generateSuccessor(ghostCount, action)) for action in actions]
@@ -205,15 +207,14 @@ class MinimaxAgent(MultiAgentSearchAgent):
       Returns the minimax action from the current gameState using self.depth 
       and self.evaluationFunction.
     """
-    
+    #print "INITIAL PACMAN MOVE!"
     nextActions = gameState.getLegalActions(0);
     nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
-    utilityValues = [self.maxvalue(state, self.depth-1) for state in nextStates]
+    utilityValues = [self.minvalue(state, self.depth, 1) for state in nextStates]
     bestUtility = max(utilityValues)
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
-    chosenIndex = random.choice(bestIndices)
-    
-    print "Best utility is", bestUtility
+    chosenIndex = bestIndices[0]
+    #print "Best utility is", bestUtility
     return nextActions[chosenIndex]
     
     
