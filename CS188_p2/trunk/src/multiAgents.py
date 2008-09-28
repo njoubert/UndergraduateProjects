@@ -384,11 +384,15 @@ def betterEvaluationFunction(currentGameState):
   food = currentGameState.getFood().asList()
   newGhostStates = currentGameState.getGhostStates()
   newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
-  #This is trying to add weight so PAcman can go to the direction of the closest food but it mess up in the end.
+  """
+    This is trying to add weight so PAcman can go to the direction of the closest food but it mess up in the end.
+  """
   closestFood = findClosestFoodToPointInList(food,currentGameState.getPacmanPosition())
+  #print "This is the closest food:",closestFood
   howClose = 0
   if not (closestFood ==None):
     howClose = util.manhattanDistance(closestFood, currentGameState.getPacmanPosition())
+    #print "This is how close it is",howClose
   if howClose>0:
       val += 1.0/howClose
   #distances = [util.manhattanDistance(pacmanPosition, capsulePosition) for capsulePosition in capsules]
@@ -396,6 +400,8 @@ def betterEvaluationFunction(currentGameState):
     val += 1.0/len(capsules)
   if len(food) > 0:
     val += 10000.0/len(food)**2.0
+  if currentGameState.isWin():
+      val += 10000
   #print 10000.0/len(food)**2.0
   return val
 
