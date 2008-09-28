@@ -214,7 +214,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
     utilityValues = [self.minvalue(state, self.depth, 1) for state in nextStates]
     bestUtility = max(utilityValues)
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
-    chosenIndex = bestIndices[0]
+    #chosenIndex = bestIndices[0]
+    chosenIndex = random.choice(bestIndices)
     print "Utilities: ", utilityValues, " statevalues", stateValues, " best utility ", bestUtility, " action", nextActions[chosenIndex], " from ", nextActions
     return nextActions[chosenIndex]
     
@@ -294,7 +295,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
       alpha = max(value, alpha)
     bestUtility = max(utilityValues)
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
-    chosenIndex = bestIndices[0]
+    #chosenIndex = bestIndices[0]
+    chosenIndex = random.choice(bestIndices)
     #print "Best utility is", bestUtility
     return nextActions[chosenIndex]
     
@@ -353,9 +355,20 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     utilityValues = [self.expectivalue(state, self.depth, 1) for state in nextStates]
     bestUtility = max(utilityValues)
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
-    chosenIndex = bestIndices[0]
+    #chosenIndex = bestIndices[0]
+    chosenIndex = random.choice(bestIndices)
     #print "Best utility is", bestUtility
     return nextActions[chosenIndex]
+
+def findClosestFoodToPointInList(list, point):
+  minDistance = 999999
+  closest = None
+  for el in list:
+      d = util.manhattanDistance(el, point)
+      if (d < minDistance):
+          minDistance = d
+          closest = el
+  return closest
 
 def betterEvaluationFunction(currentGameState):
   """
@@ -369,10 +382,21 @@ def betterEvaluationFunction(currentGameState):
   pacmanPosition = currentGameState.getPacmanPosition()
   capsules = currentGameState.getCapsules()
   food = currentGameState.getFood().asList()
+  newGhostStates = currentGameState.getGhostStates()
+  newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+  #This is trying to add weight so PAcman can go to the direction of the closest food but it mess up in the end.
+  closestFood = findClosestFoodToPointInList(food,currentGameState.getPacmanPosition())
+  howClose = 0
+  if not (closestFood ==None):
+    howClose = util.manhattanDistance(closestFood, currentGameState.getPacmanPosition())
+  if howClose>0:
+      val += 1.0/howClose
   #distances = [util.manhattanDistance(pacmanPosition, capsulePosition) for capsulePosition in capsules]
-  val += 1.0/len(capsules)
-  val += 10000.0/len(food)**2.0
-  print 10000.0/len(food)**2.0
+  if len(capsules) > 0:
+    val += 1.0/len(capsules)
+  if len(food) > 0:
+    val += 10000.0/len(food)**2.0
+  #print 10000.0/len(food)**2.0
   return val
 
 DISTANCE_CALCULATORS = {}
