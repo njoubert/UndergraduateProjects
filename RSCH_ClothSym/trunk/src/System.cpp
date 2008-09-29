@@ -9,9 +9,43 @@
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
-    ks = 10;
-    kd = 15;
+    ks = 30;
+    kd = 20;
+    kb = 3000;
     mouseSelected = NULL;
+
+
+//*******************GET REST ANGLE AND STORE IT IN MESH************************************
+    //ITERATION IS CURRENTLY BUGGED ITERATES THROUGH SOME EDGES TWICE, MUST ITERATE THROUGH EDGES NOT POINTS
+    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+    	TriangleMeshVertex* a = mesh->getVertex(i);
+    	TriangleMeshVertex* b;
+			std::vector< TriangleMeshEdge* >::const_iterator it = a->getEdgesBeginIterator();
+			while (it != a->getEdgesEndIterator()) {
+				b = (*it)->getOtherVertex(a);
+				TriangleMeshTriangle* A = (*it)->getParentTriangle(0);
+				TriangleMeshTriangle* B = (*it)->getParentTriangle(1);
+
+				if(A != NULL && B != NULL && A != B){
+						//GET NORMALS
+						vec3 NA = A->getNormal();
+						vec3 NB = B->getNormal();
+
+						//CALCULATE BEND FORCES
+						vec3 e = b - a;
+						e.normalize();
+						vec3 crossNANB = NA^NB;
+						double eDotN = crossNANB*e;
+						double theta = -asin(eDotN);
+
+						(*it)->setRestAngle(theta);
+//						cout<<"Edge: "<<(*it)<<" Rest Angle: "<<(*it)->getRestAngle()<<endl;
+	//					cout<<endl;
+					}
+
+				it++;
+			}
+    }
 }
 
 double System::getT() {
@@ -57,6 +91,68 @@ vec3 System::f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, doub
     return(f);
 }
 
+void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge){
+	vec3 F(0);
+	if(A != NULL && B != NULL && A != B){
+		//GET NORMALS
+		vec3 NA = A->getNormal();
+		vec3 NB = B->getNormal();
+
+		//CALCULATE BEND FORCES
+		vec3 e = b - a;
+		e.normalize();
+		vec3 crossNANB = NA^NB;
+		double eDotN = crossNANB*e;
+		double theta = -asin(eDotN);
+	//	cout<<"Edge: "<<edge<<" Theta: "<<theta<<endl;
+
+
+		//BUGGED CODE FOR REST ANGLE
+	//	vec3 Fa = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NA/NA.length());
+//		vec3 Fb = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NB/NB.length());
+
+		vec3 Fa = -getKb() * (theta) * (NA/NA.length());
+		vec3 Fb = -getKb() * (theta) * (NB/NB.length());
+
+		//FIND WHICH VERTEXES FORCES MUST BE APPLIED TO AND STORE THEM
+		TriangleMeshVertex** ai = A->getVertices();
+		TriangleMeshVertex** bi = B->getVertices();
+		/*
+		cout<<endl;cout<<"a: "<<endl;cout<<a<<endl;cout<<"b: "<<endl;cout<<b<<endl;
+		cout<<"ai: "<<endl;cout<<ai[0]<<endl;cout<<ai[1]<<endl;cout<<ai[2]<<endl;
+		cout<<"bi: "<<endl;cout<<bi[0]<<endl;cout<<bi[1]<<endl;cout<<bi[2]<<endl;
+		//*/
+		int save_ai_Index;
+		int save_bi_Index;
+		for(int i = 0; i < 3; i++){
+			if(ai[i] != a && ai[i] != b){
+				save_ai_Index = i;
+				//ai[i]->setF(Fa);
+				//cout<<"ai: "<<ai[i]<<" Fa: "<<Fa.length()<<endl;
+			}
+			if(bi[i] != a && bi[i] != b){
+				save_bi_Index = i;
+				//bi[i]->setF(Fb;
+				//cout<<"bi: "<<bi[i]<<" Fb: "<<Fb.length()<<endl;
+			}
+
+		}
+		vec3 v = ai[save_ai_Index]->getvX() - bi[save_bi_Index]->getvX();
+
+		//BUGGED CODE MUST GET CORRECT EQUATION FOR DAMPING FORCE ON A ANGULAR SPRING
+		vec3 Fdampa = -getKd()* (v.length2()*theta) * (NA/NA.length());
+		vec3 Fdampb = -getKd() * (v.length2()*theta) * (NB/NB.length());
+
+		ai[save_ai_Index]->setF(Fa);// + Fdampa);
+		bi[save_bi_Index]->setF(Fb);// + Fdampb);
+
+		//cout<<endl;
+	}
+
+
+	//return(F);
+}
+
 inline mat3 System::dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks){
     mat3 I = identity2D();
     vec3 l = pa - pb;
@@ -96,24 +192,32 @@ vec3 System::calculateForces(int pointIndex) {
 		 vec3 pb = b->getX(); vec3 vb = b->getvX();
 		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
 		 vec3 RL = Ua - Ub;
+
 		 double rl = RL.length();
-		 //double rl  = (*it)->getRestLength();
+
+		//CALCULATES BEND FORCE AND STORES IT IN MESH, CURRENTLY BUGGED, ITERATES EDGES TWICE
+		f_bend((*it)->getParentTriangle(0), (*it)->getParentTriangle(1), a, b, (*it));
 
 		//----------Finternal_i--------------------------------------------------------
         vec3 F0i =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
          F0 += F0i;
 
-		//----------Finternal Accumulation----------------------------------------------
 
          it++;
     }
+
+    //cout<<"Finteral: "<<F0.length()<<endl;
 
     vec3 Fexternal(0, -9.8, 0);
 
     Fexternal += f_mouse( a );
 
     F0 = F0 + Fexternal;
+
+    a->setF(F0);
+
+    //cout<<"Fpoint: "<<F0.length()<<endl;
 
     return F0;
 }
@@ -205,7 +309,7 @@ mat3 System::calculateContraints(int pointIndex) {
 
 	mat3 zero(0);
 	if (pointIndex == 0 || pointIndex == 73)
-	    S = zero;
+	    S = identity2D();//zero;
     return S;
 }
 
@@ -236,8 +340,9 @@ void System::takeStep(Solver* solver, double timeStep) {
         std::pair<vec3,vec3> deltas =
             solver->solve(this, timeStep, i, mesh->getVertex(i));
         changes[i] = deltas;
-    }
 
+    }
+   // exit(1);
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
@@ -254,6 +359,10 @@ float System::getKs() {
 
 float System::getKd() {
     return kd;
+}
+
+float System::getKb() {
+	return kb;
 }
 
 Solver::~Solver() {
@@ -298,12 +407,21 @@ ExplicitSolver::~ExplicitSolver() {
 
 std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
 
-    vec3 F = sys->calculateForces(pointIndex);
-    vec3 deltaV = (timeStep / point->getm()) * F;
+	vec3 F = sys->calculateForces(pointIndex); //CHANGE: Now Retrieves Force saved on vertex
+
+	//DEBUG
+	if(pointIndex != 73 && pointIndex != 0){
+	//cout<<"Fpoint: "<<F.length()<<endl;
+	//cout<<"Point: "<<point<<" Ftotal: "<<point->getF().length()<<endl<<endl;
+	}
+
+    vec3 deltaV = (timeStep / point->getm()) * point->getF(); //CHANGED SO IT USES FORCE SAVED IN MESH
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
-    if (pointIndex == 0 || pointIndex == 73)
-        return make_pair(vec3(0,0,0), vec3(0,0,0));
+   if (pointIndex == 0 || pointIndex == 73)
+           return make_pair(vec3(0,0,0), vec3(0,0,0));
+
+    point->clearF();
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
 

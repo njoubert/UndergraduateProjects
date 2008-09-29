@@ -14,8 +14,9 @@
 ****************************************************************/
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
-        X(x,y,z), U(x,y,z), vX(0,0,0), edges() {
+        X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
     S = identity2D();
+
 }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
@@ -42,6 +43,12 @@ vec3 TriangleMeshVertex::getNormal() {
 mat3 & TriangleMeshVertex::getConstaint() { return S; }
 
 void TriangleMeshVertex::setConstraint(mat3 s) { this->S = s; }
+
+vec3 & TriangleMeshVertex::getF() { return F; }
+
+void TriangleMeshVertex::setF(vec3 f) { this->F += f; }
+
+void TriangleMeshVertex::clearF() { this->F = 0; }
 
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
@@ -75,9 +82,11 @@ TriangleMeshEdge::TriangleMeshEdge(TriangleMesh* callingMesh, int v1,int v2) {
     rl = (vertices[0]->getU() - vertices[1]->getU()).length();
 }
 
-double TriangleMeshEdge::getRestLength() {
-    return rl;
-}
+double TriangleMeshEdge::getRestLength() { return rl; }
+
+double TriangleMeshEdge::getRestAngle() { return theta0; }
+
+void TriangleMeshEdge::setRestAngle(double theta) { this->theta0 = theta; }
 
 bool TriangleMeshEdge::isValid() {
     return ((triangles[0] != NULL) || (triangles[1] != NULL)) &&

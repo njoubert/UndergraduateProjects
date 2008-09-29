@@ -78,6 +78,9 @@ public:
     vec3 getNormal();
     mat3 & getConstaint();
     void setConstraint(mat3);
+    vec3 & getF();
+    void setF(vec3);
+    void clearF();
 
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
@@ -87,6 +90,7 @@ public:
 
 private:
     mat3 S;
+    vec3 F;		//Force
     vec3 X;     //Position
     vec3 U;     //Original Position
     vec3 vX;    //Velocity
@@ -112,6 +116,8 @@ public:
      * @return -1 if fail, else the indice of the given parent in this edge.
      */
     double getRestLength();
+    double getRestAngle();
+    void setRestAngle(double);
     int addParentTriangle(TriangleMeshTriangle*);
     bool isPartOfTwoTriangles();
     bool setParentTriangle(int, TriangleMeshTriangle*);
@@ -123,7 +129,8 @@ public:
 private:
     TriangleMeshTriangle* triangles[2];   //PARENTS
     TriangleMeshVertex* vertices[2];    //CHILDREN
-    float rl;
+    float rl;							//Rest Length
+    float theta0;						//Rest Angle
 };
 
 /**

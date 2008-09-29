@@ -33,4 +33,6 @@
 
 #include "algebra3.h"
 
+#define PI 3.14159265
+
 #endif /* UTIL_H_ */
