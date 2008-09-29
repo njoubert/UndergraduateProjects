@@ -24,16 +24,16 @@ class ReflexAgent(Agent):
     """
     # Collect legal moves and successor states
     legalMoves = gameState.getLegalActions()
-
+    legalMoves = [move for move in legalMoves if move != Directions.STOP]
     # Choose one of the best actions
     scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
     bestScore = max(scores)
     bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
     chosenIndex = random.choice(bestIndices)
     scoreList = [(scores[index], legalMoves[index]) for index in range(len(scores))]
-    print scoreList
     "Add more of your code here if you want to"
-    
+    if (legalMoves[chosenIndex] == Directions.STOP):
+        print "STOP is best: ", legalMoves, scores 
     return legalMoves[chosenIndex]
   
   def evaluationFunction(self, currentGameState, action):
@@ -70,8 +70,12 @@ class ReflexAgent(Agent):
     
     #closestFoodDistance = min(newFoodDistances)
     #totalFoodDistance = sum(newFoodDistances)
-    closestFoodDistance = min(oldFoodDistances)
-    totalFoodDistance = sum(oldFoodDistances)
+    if len(newFoodDistances) > 0:
+        closestFoodDistance = min(newFoodDistances)
+        totalFoodDistance = sum(newFoodDistances)
+    else:
+        closestFoodDistance = 0
+        totalFoodDistance = 0
     
     newGhostDistances = [util.manhattanDistance(g.getPosition(), newPos) for g in newGhostStates]
     newGhostDirections = [g.getDirection() for g in newGhostStates]
@@ -88,7 +92,7 @@ class ReflexAgent(Agent):
     
     #CALCULATION OF FEATURES:
     featScore = successorGameState.getScore()
-    featTotalDots = 1.0 / oldFood.count()
+    featTotalDots = 1.0 / (newFood.count()+1)
     featClosestDots = 1.0 / (closestFoodDistance+1)
     featTotalDotsDistance = 1.0 / (totalFoodDistance+1)
     featClosestGhostDistance = (closestGhostDistance+1)
@@ -98,14 +102,21 @@ class ReflexAgent(Agent):
     elif newDir == closestGhostDirection:
         featClosestGhostDirection = 1
      
-#    evaluation = #100 * featScore + \
-        #15 * featTotalDots + \
- #       100 * featClosestDots + \
-        #10 * featTotalDotsDistance + \
-  #      15 * featClosestGhostDistance + \
-   #     0 * featClosestGhostDirection
-     
-    evaluation = 1000 * featClosestDots + 1 * featClosestGhostDistance
+    evaluation = 100 * featScore + \
+        15 * featTotalDots + \
+        1000 * featClosestDots + \
+        10 * featTotalDotsDistance + \
+        5 * featClosestGhostDistance
+        #0 * featClosestGhostDirection
+        
+    if successorGameState.isLose():
+       print "WAAA LOSE! eval=", evaluation
+       return -1
+    
+    if successorGameState.isWin():
+       evaluation += 100000
+        
+    #evaluation = 1000 * featClosestDots + 1 * featClosestGhostDistance
       
     return evaluation
 
@@ -209,6 +220,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
     #print "INITIAL PACMAN MOVE!"
     nextActions = gameState.getLegalActions(0);
+    #from game import Directions
+    #nextActions = [action for action in nextActions if not action == Directions.STOP]
     nextStates = [gameState.generatePacmanSuccessor(action) for action in nextActions]
     stateValues = [self.evaluationFunction(state) for state in nextStates]
     utilityValues = [self.minvalue(state, self.depth, 1) for state in nextStates]
@@ -216,7 +229,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     bestIndices = [index for index in range(len(utilityValues)) if utilityValues[index] == bestUtility]
     #chosenIndex = bestIndices[0]
     chosenIndex = random.choice(bestIndices)
-    print "Utilities: ", utilityValues, " statevalues", stateValues, " best utility ", bestUtility, " action", nextActions[chosenIndex], " from ", nextActions
+    #print "Utilities: ", utilityValues, " statevalues", stateValues, " best utility ", bestUtility, " action", nextActions[chosenIndex], " from ", nextActions
     return nextActions[chosenIndex]
     
     
@@ -402,7 +415,10 @@ def betterEvaluationFunction(currentGameState):
     val += 10000.0/len(food)**2.0
   if currentGameState.isWin():
       val += 10000
+  if currentGameState.isLose():
+      val = 0
   #print 10000.0/len(food)**2.0
   return val
 
 DISTANCE_CALCULATORS = {}
+
