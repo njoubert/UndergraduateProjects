@@ -373,6 +373,11 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     #print "Best utility is", bestUtility
     return nextActions[chosenIndex]
 
+
+"""
+    This function takes a list of food and gives the (x,y) location
+    of the food that is closest to the point given.
+"""
 def findClosestFoodToPointInList(list, point):
   minDistance = 999999
   closest = None
@@ -382,6 +387,7 @@ def findClosestFoodToPointInList(list, point):
           minDistance = d
           closest = el
   return closest
+
 
 def betterEvaluationFunction(currentGameState):
   """
@@ -398,7 +404,9 @@ def betterEvaluationFunction(currentGameState):
   newGhostStates = currentGameState.getGhostStates()
   newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
   """
-    This is trying to add weight so PAcman can go to the direction of the closest food but it mess up in the end.
+    This is trying to add weight so Pacman can go to the direction of the 
+    closest food but it mess up in the end.  This will give the action that
+    is closer to the food more weight.
   """
   closestFood = findClosestFoodToPointInList(food,currentGameState.getPacmanPosition())
   #print "This is the closest food:",closestFood
@@ -409,12 +417,24 @@ def betterEvaluationFunction(currentGameState):
   if howClose>0:
       val += 1.0/howClose
   #distances = [util.manhattanDistance(pacmanPosition, capsulePosition) for capsulePosition in capsules]
+  """
+    The less capsules there are the better the game state, this is essentially what this feature is doing.
+  """
   if len(capsules) > 0:
     val += 1.0/len(capsules)
+  """
+    The less food there is in the game state, the better the game state.
+  """
   if len(food) > 0:
     val += 10000.0/len(food)**2.0
+  """
+    If the gamestate a winner, take that move since it will win the game
+  """
   if currentGameState.isWin():
       val += 10000
+  """
+    If the game state is a losing state, then avoid taking it completely.
+  """
   if currentGameState.isLose():
       val = 0
   #print 10000.0/len(food)**2.0
