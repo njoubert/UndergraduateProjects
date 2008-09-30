@@ -168,9 +168,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
     /------\ 
     | O   O|    -------------------------------\
     |   |  |   /                               |
-    \  --  | ---  I'M A HARD CORE MUTHER FUCKER.|
-     \----/     \    ... BITCHES...             |
-        |        \ -----------------------------/     
+    \  --  | ---  I'M HARD CORE!!             .|
+     \----/     \    ... BIZZATCHES!           |
+        |        \ ---------------------------/     
       /---\ 
         |
       /   \  
@@ -394,9 +394,54 @@ def betterEvaluationFunction(currentGameState):
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (question 5).
     
-    DESCRIPTION: <write something here so we know what you did>
+    Our initial approach was to mimic our reflexAgent's heuristic funcion.
+    Our reflex agent takes the following into account:
+      > Score of the game                  bigger == better
+      DOTS:    
+        > Amount of dots left                smaller == better
+        > Total distance to all dots         smaller == better
+        > Distance to closest dot            smaller == batter
+      GHOSTS:
+        > Distance to closest ghost          bigger == better
+        > Direction of closest ghost         our direction = BAD, other direction = GOOD
+    
+    We were getting very disappointing finishes for the autograded test case, namely
+        python pacman.py -p ExpectimaxAgent --betterEvaluation
+    
+    We came to the conclusion that taking random ghosts into account for any case
+    other than when they're about to kill you gives you poor results, since pacman
+    has to search down to a depth > 4 to avoid being cornered in the classic maze,
+    which we can't do due to processor limits. Thus it is better for us to be
+    very brash in our pacman's behavior, and eat the dots as fast as possible.
+    
+    We achieve this behavior two-fold:
+      - We try to maximize the score of the game
+      - We try to minimize the amount of dots on the board
+      - We try to move closer to the closest dot
+      
+    To then take care of corner cases, we make two exceptions:
+      - If a move takes us to a winning state, take that move
+      - If a move takes us to dying, avoid that move
+      
+    We added one more feature, purely to boost our score:
+      - Minimize the amount of capsules on the board.
+          
+    If a ghost is close to pacman and we eat a capsule, the move
+    that causes us to eat the ghost will increase the game's score
+    significantly, thus this feature, along with the score maximization, causes
+    us to eat scared ghosts.
+    
+    The biggest caveat in our algorithm is the fact that pacman calculates
+    distance to the closest dot as the simple manhattan distance. We want to
+    find the closest dot and calculate it's distance from pacman using a 
+    modified version of the FoodSearchProblem, defined such that the goalstate
+    is eating any food pellet. This would allow us to do a BFS algorithm and
+    find the closest dot. We did not implement this due to time contraints though.
+    
+    All in all, we're impressed by our pacman's performance using such a straightforward
+    evaluation function, and we're curious to no end to hear what other people came up
+    with.
   """
-  "*** YOUR CODE HERE ***"
   val = currentGameState.getScore()
   pacmanPosition = currentGameState.getPacmanPosition()
   capsules = currentGameState.getCapsules()
@@ -404,36 +449,35 @@ def betterEvaluationFunction(currentGameState):
   newGhostStates = currentGameState.getGhostStates()
   newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
   """
-    This is trying to add weight so Pacman can go to the direction of the 
-    closest food but it mess up in the end.  This will give the action that
-    is closer to the food more weight.
+    This is trying to add weights to actions so that Pacman can go in the direction of the 
+    closest food. It fails if there's no food on the board. We give more weight to the
+    action that has its closest pellet closer than in any other action.
   """
   closestFood = findClosestFoodToPointInList(food,currentGameState.getPacmanPosition())
-  #print "This is the closest food:",closestFood
   howClose = 0
   if not (closestFood ==None):
     howClose = util.manhattanDistance(closestFood, currentGameState.getPacmanPosition())
-    #print "This is how close it is",howClose
   if howClose>0:
       val += 1.0/howClose
-  #distances = [util.manhattanDistance(pacmanPosition, capsulePosition) for capsulePosition in capsules]
   """
-    The less capsules there are the better the game state, this is essentially what this feature is doing.
+    This feature increases the evaluation of a state as the amount
+    of capsules on the board becomes less.
   """
   if len(capsules) > 0:
     val += 1.0/len(capsules)
   """
     The less food there is in the game state, the better the game state.
+    This causes pacman to eat food!
   """
   if len(food) > 0:
     val += 10000.0/len(food)**2.0
   """
-    If the gamestate a winner, take that move since it will win the game
+    If the gamestate a winner, take that move!
   """
   if currentGameState.isWin():
       val += 10000
   """
-    If the game state is a losing state, then avoid taking it completely.
+    If the game state is a losing state, then avoid taking it!
   """
   if currentGameState.isLose():
       val = 0
