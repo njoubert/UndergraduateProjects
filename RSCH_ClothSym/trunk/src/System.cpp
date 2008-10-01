@@ -16,36 +16,35 @@ System::System(TriangleMesh* m): mesh(m) {
 
 
 //*******************GET REST ANGLE AND STORE IT IN MESH************************************
-    //ITERATION IS CURRENTLY BUGGED ITERATES THROUGH SOME EDGES TWICE, MUST ITERATE THROUGH EDGES NOT POINTS
-    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
-    	TriangleMeshVertex* a = mesh->getVertex(i);
-    	TriangleMeshVertex* b;
-			std::vector< TriangleMeshEdge* >::const_iterator it = a->getEdgesBeginIterator();
-			while (it != a->getEdgesEndIterator()) {
-				b = (*it)->getOtherVertex(a);
-				TriangleMeshTriangle* A = (*it)->getParentTriangle(0);
-				TriangleMeshTriangle* B = (*it)->getParentTriangle(1);
+    TriangleMeshVertex *a, *b;
+    TriangleMeshTriangle *A, *B;
 
-				if(A != NULL && B != NULL && A != B){
-						//GET NORMALS
-						vec3 NA = A->getNormal();
-						vec3 NB = B->getNormal();
+    EdgesIterator edg_it = mesh->getEdgesIterator();
+    do {
+        a = (*edg_it)->getVertex(0);
+        b = (*edg_it)->getVertex(1);
+        A = (*edg_it)->getParentTriangle(0);
+        B = (*edg_it)->getParentTriangle(1);
 
-						//CALCULATE BEND FORCES
-						vec3 e = b - a;
-						e.normalize();
-						vec3 crossNANB = NA^NB;
-						double eDotN = crossNANB*e;
-						double theta = -asin(eDotN);
+        if (A != NULL && B != NULL) {
+                assert(A != B);
+                //GET NORMALS
+                vec3 NA = A->getNormal();
+                vec3 NB = B->getNormal();
 
-						(*it)->setRestAngle(theta);
-//						cout<<"Edge: "<<(*it)<<" Rest Angle: "<<(*it)->getRestAngle()<<endl;
-	//					cout<<endl;
-					}
+                //CALCULATE BEND FORCES
+                vec3 e = b - a;
+                e.normalize();
+                vec3 crossNANB = NA^NB;
+                double eDotN = crossNANB*e;
+                double theta = -asin(eDotN);
 
-				it++;
-			}
-    }
+                (*edg_it)->setRestAngle(theta);
+//			    cout<<"Edge: "<<(*it)<<" Rest Angle: "<<(*it)->getRestAngle()<<endl;
+//				cout<<endl;
+            }
+
+	} while (edg_it.next());
 }
 
 double System::getT() {

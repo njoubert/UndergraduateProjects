@@ -76,7 +76,7 @@ void printStateOfMesh(TriangleMesh &myMesh, bool showInside) {
 
 }
 
-//*
+/*
 int main() {
     cout << "Testing Mesh Methods:" << endl;
 
@@ -193,7 +193,7 @@ int main() {
     cout << "(" << wee2 << "," << wee3 << "):" << vert3 << " | " << vert2 << endl;
 
 
-    //*
+
 
     cout << "Reading in file..." << endl;
     Parser parser;
@@ -204,7 +204,7 @@ int main() {
 
     printStateOfMesh(*mesh2, false);
 
-     // */
+
 }
 
 // */

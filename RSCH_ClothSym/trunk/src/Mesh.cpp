@@ -121,6 +121,12 @@ TriangleMeshTriangle* TriangleMeshEdge::getOtherTriangle(TriangleMeshTriangle* o
     return triangles[0];
 }
 
+TriangleMeshVertex* TriangleMeshEdge::getVertex(int i) {
+    if (i < 2 && i >= 0)
+        return vertices[i];
+    return NULL;
+}
+
 TriangleMeshVertex* TriangleMeshEdge::getOtherVertex(TriangleMeshVertex* one) {
     if (vertices[0] == one)
         return vertices[1];

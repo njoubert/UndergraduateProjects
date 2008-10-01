@@ -124,6 +124,7 @@ public:
     bool setParentTriangle(int, TriangleMeshTriangle*);
     TriangleMeshTriangle* getParentTriangle(int);
     TriangleMeshTriangle* getOtherTriangle(TriangleMeshTriangle*);
+    TriangleMeshVertex* getVertex(int);
     TriangleMeshVertex* getOtherVertex(TriangleMeshVertex*);
     friend ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
 
