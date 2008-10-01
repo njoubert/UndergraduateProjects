@@ -295,6 +295,7 @@ void myMouseMove(int x, int y) {
 
 }
 
+/*
 int main(int argc, char *argv[]) {
 
     if (parseCommandLine(argc, argv)) {
@@ -317,3 +318,4 @@ int main(int argc, char *argv[]) {
     glutMainLoop();
     return 0;
 }
+// */

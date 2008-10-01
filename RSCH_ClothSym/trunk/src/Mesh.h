@@ -54,6 +54,7 @@ class TriangleMesh;
 class TriangleMeshTriangle;
 class TriangleMeshEdge;
 class TriangleMeshVertex;
+class EdgesIterator;
 
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v);
 ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
@@ -199,10 +200,10 @@ public:
 
     //TODO: Iterater over all vertices
 
-    //TODO: Iterator over all edges
+    EdgesIterator getEdgesIterator();
 
-    //TODO: Iterator over all triangles
-
+    std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesBeginIterator();
+    std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesEndIterator();
 public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 
@@ -214,6 +215,77 @@ public:
     std::vector< TriangleMeshTriangle* > triangles;
     std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 
+};
+
+/**
+ * The EdgesIterator allow you to iterate over all the edges in the mesh.
+ * This does not follow the usual C++ iterator pattern in C++, but rather a modification
+ * of the Java pattern, since it is easier to implement.
+ *
+ * Example code:
+ *
+ *    EdgesIterator edg_it = myMesh.getEdgesIterator();
+ *    do {
+ *       cout << "  edge " << (*edg_it) << endl;
+ *    } while (edg_it.next());
+ *
+ */
+class EdgesIterator {
+public:
+    EdgesIterator(TriangleMesh* mesh) {
+        this->mesh = mesh;
+        findFirst();
+    }
+    bool next() {
+        return findNext();
+    }
+
+    TriangleMeshEdge* operator*() const { return _current; }
+    TriangleMeshEdge* operator->() const { return _current; }
+
+private:
+    bool findFirst() {
+        _currentVertex = _currentEdgeOnVertex = 0;
+        while (mesh->vertices[_currentVertex].second->empty() &&
+                    _currentVertex < mesh->vertices.size()) {
+            _currentVertex++;
+        }
+        if (mesh->vertices[_currentVertex].second->empty())
+            return false; //Couldnt find any edges...
+        _current = mesh->vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
+        return true;
+    }
+
+    bool findNext() {
+        if (_currentVertex >= mesh->vertices.size())
+            return false;
+        if (_currentEdgeOnVertex < mesh->vertices[_currentVertex].second->size()-1) {
+            _currentEdgeOnVertex = _currentEdgeOnVertex + 1;
+            //cout << "Moving to next edge on same vertex..." << _currentEdgeOnVertex << endl;
+
+        } else if (_currentVertex < mesh->vertices.size()-1) {
+            _currentEdgeOnVertex = 0;
+            //cout << "Moving to next vertex..." << _currentVertex << " to ";
+            do  {
+                _currentVertex++;
+            } while (_currentVertex < mesh->vertices.size() &&
+                    mesh->vertices[_currentVertex].second->empty());
+            //cout << _currentVertex << endl;
+            if (_currentVertex >= mesh->vertices.size() ||
+                    mesh->vertices[_currentVertex].second->empty())
+                return false; //Couldnt find any edges...
+        } else {
+            return false;
+        }
+        _current = mesh->vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
+        return true;
+
+    }
+private:
+    TriangleMesh* mesh;
+    TriangleMeshEdge* _current;
+    unsigned int _currentVertex;
+    unsigned int _currentEdgeOnVertex;
 };
 
 void printVertex(TriangleMesh*, int);

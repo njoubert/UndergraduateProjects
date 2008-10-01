@@ -390,6 +390,18 @@ bool TriangleMesh::insertEdgeForVertices(int v1,
     return true;
 }
 
+EdgesIterator TriangleMesh::getEdgesIterator() {
+    return EdgesIterator(this);
+}
+
+std::vector<TriangleMeshTriangle*>::const_iterator TriangleMesh::getTrianglesBeginIterator() {
+    return triangles.begin();
+}
+
+std::vector<TriangleMeshTriangle*>::const_iterator TriangleMesh::getTrianglesEndIterator() {
+    return triangles.end();
+}
+
 /**
  * Enforces a natural ordering:
  * x[0] < y[0]

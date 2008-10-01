@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void printStateOfMesh(TriangleMesh &myMesh) {
+void printStateOfMesh(TriangleMesh &myMesh, bool showInside) {
 
     cout << "************************************" << endl;
 
@@ -23,43 +23,60 @@ void printStateOfMesh(TriangleMesh &myMesh) {
         myMesh.vertices.begin();
 
     cout << "Vertices size=" << myMesh.vertices.size();
-    cout << " contains:" << endl;
+    if (showInside)
+        cout << " contains:" << endl;
+    int eCount = 0;
     while (vert_it != myMesh.vertices.end()) {
-        cout << " " << (*vert_it).first;
+        if (showInside)
+            cout << " " << (*vert_it).first;
+
+        std::vector<TriangleMeshEdge*>::const_iterator vert_ed_it = (*vert_it).first->getEdgesBeginIterator();
+        while (vert_ed_it != (*vert_it).first->getEdgesEndIterator()) {
+            eCount++;
+            vert_ed_it++;
+        }
         vert_it++;
     }
     cout << endl;
+    cout << eCount << " edges counted for all vertices." << endl;
 
     /*************************************
      *  EDGES
      * ***********************************/
-/*
-    map< edgeKey, edgeValue >::const_iterator map_it =
-            myMesh.edgesMap.begin();
-    cout << "Edges size=" << myMesh.edgesMap.size();
-    cout << " contains:" << endl;
-    while (map_it != myMesh.edgesMap.end()) {
-        cout << "  " << map_it->first << " maps to " << map_it->second << endl;
-        map_it++;
-    }
-*/
+
+    EdgesIterator edg_it = myMesh.getEdgesIterator();
+    int count = 0;
+    if (showInside)
+        cout << "TriangleMesh contains edges: " << endl;
+    do {
+        count++;
+        if (showInside)
+            cout << "  edge " << (*edg_it) << endl;
+    } while (edg_it.next());
+    cout << count << " edges detected in mesh." << endl;
+
+
+
     /*************************************
      *  TRIANGLES
      * ***********************************/
 
     vector< TriangleMeshTriangle* >::const_iterator tri_it =
             myMesh.triangles.begin();
-    cout << "Triangles size=" << myMesh.triangles.size() << " contains:" << endl;
-    while (tri_it != myMesh.triangles.end()) {
-        cout << "  (" << (*tri_it)->getEdges()[0] << "," << (*tri_it)->getEdges()[1] << "," << (*tri_it)->getEdges()[2] << ")" << endl;
-        tri_it++;
+    cout << "Triangles size=" << myMesh.triangles.size();
+    if (showInside) {
+        cout << " contains:" << endl;
+        while (tri_it != myMesh.triangles.end()) {
+            cout << "  triangle (" << (*tri_it)->getEdges()[0] << "," << (*tri_it)->getEdges()[1] << "," << (*tri_it)->getEdges()[2] << ")" << endl;
+            tri_it++;
+        }
     }
-
+    cout << endl;
     cout << "************************************" << endl;
 
 }
 
-/*
+//*
 int main() {
     cout << "Testing Mesh Methods:" << endl;
 
@@ -82,7 +99,17 @@ int main() {
 
     TriangleMeshTriangle *triangle3 = myMesh.getTriangle(t3);
 
-    printStateOfMesh(myMesh);
+    //State of the mesh at the moment:
+    //      *
+    //     / \
+    //    /   \
+    //   *-----*
+    //   |\    |
+    //   |  \  |
+    //   |    \|
+    //   *-----*
+    // 5 vertices, 3 triangles, 7 total edges.
+    printStateOfMesh(myMesh, true);
 
     TriangleMeshEdge* v2v3 =
         myMesh.getEdgeBetweenVertices(v2,v3);
@@ -166,6 +193,7 @@ int main() {
     cout << "(" << wee2 << "," << wee3 << "):" << vert3 << " | " << vert2 << endl;
 
 
+    //*
 
     cout << "Reading in file..." << endl;
     Parser parser;
@@ -174,9 +202,9 @@ int main() {
         return 0;
     cout << "Done reading file..." << endl;
 
-    printStateOfMesh(*mesh2);
+    printStateOfMesh(*mesh2, false);
 
-
+     // */
 }
 
 // */
