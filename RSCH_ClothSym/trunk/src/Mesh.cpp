@@ -15,7 +15,7 @@
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
         X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
-    S = identity2D();
+    S = mat3(0);
 
 }
 

@@ -64,7 +64,18 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
 
         double x, y, z;
         ss >>x >>y >>z;
-        myMesh->createVertex(x,y,z);
+        int i = myMesh->createVertex(x,y,z);
+        //**
+        if (!ss.eof()) {
+            string args;
+            ss >> args;
+            //cout << "reading MORE! " << args;
+            if (args.compare("fixed") == 0) {
+                parseDebug("Constraining particle " << i);
+                myMesh->getVertex(i)->setConstraint(identity2D());
+            }
+        }
+           // */
         //printDebug(3, "Parsed Vertex input to ("<<x<<","<<y<<","<<z<<") into vertice buffer.");
 
 
@@ -78,6 +89,9 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
 
     }
     */
+    else if (operand.compare("c") == 0) {
+
+    }
     else if (operand.compare("f") == 0) {
 
     	if (line.find("//") == string::npos) {
@@ -118,8 +132,8 @@ bool Parser::parseLine(string line, TriangleMesh *myMesh) {
     }
 
     if (ss.fail()) {
-        std::cout << "The bad bit of the input file's line's stringstream is set! Couldn't parse!" << endl;
-        exit(1);
+        //std::cout << "The bad bit of the input file's line's stringstream is set! Couldn't parse!" << endl;
+        //exit(1);
     }
     return success;
 }

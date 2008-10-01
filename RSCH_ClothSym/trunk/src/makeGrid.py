@@ -58,6 +58,7 @@ def main(argv=None):
 	pointsList.append((-width,height,0))
 	pointsQueue.append((0,(-width,height,0)))
 	while not len(pointsQueue) == 0:
+		#print "points queue length = ", len(pointsQueue), pointsQueue
 		currentPoint = pointsQueue.pop()
 		pointDown = (currentPoint[1][0], currentPoint[1][1]-step,0)
 		pointRight = (currentPoint[1][0]+step,currentPoint[1][1],0)

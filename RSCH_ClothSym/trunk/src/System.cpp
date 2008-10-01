@@ -302,14 +302,12 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
     return make_pair(dFx,dFv);
 }
 
+/**
+ * @return Returns the S contrain matrix
+ */
 mat3 System::calculateContraints(int pointIndex) {
     TriangleMeshVertex* a = mesh->getVertex(pointIndex);
-	mat3 S = a->getConstaint();
-
-	mat3 zero(0);
-	if (pointIndex == 0 || pointIndex == 73)
-	    S = identity2D();//zero;
-    return S;
+	return a->getConstaint();
 }
 
 /**
@@ -397,7 +395,6 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep, int poi
 
 	return make_pair(deltaX, deltaV);
 
-
 }
 
 ExplicitSolver::~ExplicitSolver() {
@@ -417,10 +414,10 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int poi
     vec3 deltaV = (timeStep / point->getm()) * point->getF(); //CHANGED SO IT USES FORCE SAVED IN MESH
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
-   if (pointIndex == 0 || pointIndex == 73)
-           return make_pair(vec3(0,0,0), vec3(0,0,0));
-
     point->clearF();
+
+    if (point->getConstaint() == identity2D())
+        return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
 

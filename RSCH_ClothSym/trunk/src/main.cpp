@@ -268,7 +268,7 @@ void myMousePress(int button, int state, int x, int y) {
 
             if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
 
-                sys->enableMouseForce(vec3(ox,oy,oz));
+                sys->enableMouseForce(vec3(ox,oy,0));
 
             }
         } else {
@@ -290,7 +290,7 @@ void myMouseMove(int x, int y) {
         glReadPixels( x, view[3]-y, 1, 1,
                  GL_DEPTH_COMPONENT, GL_FLOAT, &z );
         gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
-        sys->updateMouseForce(vec3(ox,oy,oz));
+        sys->updateMouseForce(vec3(ox,oy,0));
     }
 
 }
