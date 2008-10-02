@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define BPP 24
+
 //****************************************************
 // Some Classes
 //****************************************************
@@ -34,10 +36,89 @@ public:
 	float translateZ;
 	bool wireFrame;
 	bool paused;
-	string imgOutDir;
 };
 
-Viewport	viewport;
+Viewport    viewport;
+
+class ImageSaver {
+public:
+    ImageSaver() : frameCount(0) { FreeImage_Initialise(); }
+    ~ImageSaver() { FreeImage_DeInitialise(); }
+
+    void initialize(string directory, double fps) {
+        cout << "Saving frames at " << fps << " frames per second to directory " << directory << endl;
+        imgOutDir = directory;
+        if (imgOutDir[imgOutDir.size()-1] != '/')
+            imgOutDir.append("/");
+        doImageOutput = true;
+        inverseFPS = 1.0 / fps;
+        lastTime = -1 - inverseFPS;
+    }
+
+    void saveFrame(double time) {
+        if (!doImageOutput)
+            return;
+        if (time >= lastTime + inverseFPS)
+            lastTime = time;
+        else
+            return;
+
+        frameCount++;
+        stringstream filename(stringstream::in | stringstream::out);
+        filename << imgOutDir << "sym";
+        filename << std::setfill('0') << setw(6) << frameCount << ".png";
+        cout << "Save frame " << frameCount << "... \t";
+
+        FIBITMAP* bitmap = FreeImage_Allocate(viewport.w, viewport.h, BPP);
+        if (!bitmap) {
+            cout << "Could not create bitmap! Can't save images!" << endl;
+            return;
+        }
+
+        /******************************
+         * Here we draw!
+         ******************************/
+        unsigned char *image;
+
+        /* Allocate our buffer for the image */
+        if ((image = (unsigned char*)malloc(3*viewport.w*viewport.h*sizeof(char))) == NULL) {
+            cout << "Couldn't allocate memory!" << endl;
+            free(bitmap);
+            return;
+        }
+        glPixelStorei(GL_PACK_ALIGNMENT,1);
+        glReadBuffer(GL_BACK_LEFT);
+        glReadPixels(0,0,viewport.w,viewport.h,GL_RGB,GL_UNSIGNED_BYTE,image);
+
+        RGBQUAD color;
+        for (int j=viewport.h-1;j>=0;j--) {
+           for (int i=0;i<viewport.w;i++) {
+              color.rgbRed = image[3*j*viewport.w+3*i+0];
+              color.rgbGreen = image[3*j*viewport.w+3*i+1];
+              color.rgbBlue = image[3*j*viewport.w+3*i+2];
+              FreeImage_SetPixelColor(bitmap,i,j,&color);
+           }
+        }
+
+        if (FreeImage_Save(FIF_PNG, bitmap, filename.str().c_str(), 0)) {
+            cout << "succeeded" << endl;
+        } else
+            cout << "failed!!!" << endl;
+        free(image);
+        free(bitmap);
+
+    }
+
+private:
+    int frameCount;
+    double lastTime;
+    double inverseFPS;
+    string imgOutDir;
+    bool doImageOutput;
+
+};
+
+ImageSaver imagesaver;
 
 //****************************************************
 // Global Variables
@@ -82,8 +163,8 @@ int parseCommandLine(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "-img")) {
 
             if (isThereMore(i, argc, 1)) {
-                std::string filename = std::string(argv[++i]);
-
+                std::string dirname = std::string(argv[++i]);
+                imagesaver.initialize(dirname, 25);
             } else {
                 malformedArg = true;
             }
@@ -249,7 +330,8 @@ void reshape (int w, int h)
    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity();
-   double x = 300;
+   viewport.w = w;
+   viewport.h = h;
    /*
    if (w <= h)
       glOrtho (-1*x, x, -1*x*(GLfloat)h/(GLfloat)w,
@@ -263,12 +345,13 @@ void reshape (int w, int h)
    glLoadIdentity();
 }
 
+
 void myframemove() {
     if (!viewport.paused)
         sys->takeStep(solver, timeStep);
-    //cout << "We're at time " << sys->getT() << endl;
-    //exit(1);
+
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
+    imagesaver.saveFrame(sys->getT());
 }
 
 void myMousePress(int button, int state, int x, int y) {
@@ -321,9 +404,12 @@ int main(int argc, char *argv[]) {
         printUsage();
         exit(1);
     }
+
+    viewport.w = 500;
+    viewport.h = 500;
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (500, 500);
+    glutInitWindowSize (viewport.w, viewport.h);
     glutInitWindowPosition (100, 100);
     glutCreateWindow (argv[0]);
     init ();
@@ -335,6 +421,7 @@ int main(int argc, char *argv[]) {
     glutMouseFunc(myMousePress);
     glutMotionFunc(myMouseMove);
     glutMainLoop();
+
     return 0;
 }
 // */
