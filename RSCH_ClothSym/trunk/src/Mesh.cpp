@@ -42,13 +42,13 @@ vec3 TriangleMeshVertex::getNormal() {
 
 mat3 & TriangleMeshVertex::getConstaint() { return S; }
 
-void TriangleMeshVertex::setConstraint(mat3 s) { this->S = s; }
+void TriangleMeshVertex::setConstraint(mat3 s) { S = s; }
 
 vec3 & TriangleMeshVertex::getF() { return F; }
 
-void TriangleMeshVertex::setF(vec3 f) { this->F += f; }
+void TriangleMeshVertex::setF(vec3 f) { F += f; }
 
-void TriangleMeshVertex::clearF() { this->F = 0; }
+void TriangleMeshVertex::clearF() { F = vec3(0); }
 
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
@@ -339,6 +339,14 @@ TriangleMeshVertex* TriangleMesh::getVertex(int i) {
     if (i < 0 || i > (int) vertices.size()-1)
         return NULL;
     return vertices[i].first;
+}
+
+int TriangleMesh::countVertices() {
+    return vertices.size();
+}
+
+int TriangleMesh::countTriangles() {
+    return triangles.size();
 }
 
 TriangleMeshEdge* TriangleMesh::getEdgeBetweenVertices(

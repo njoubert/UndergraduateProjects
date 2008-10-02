@@ -34,12 +34,8 @@ public:
 	 */
 	double getT();
 
-    /**
-     *
-     * @param pointIndex
-     * @return
-     */
-	vec3 calculateForces(int pointIndex);
+	void calculateInternalForces();
+	void calculateExternalForces();
 
 	/**
 	 * @return pair with first=dFx and second=dFv
@@ -69,7 +65,8 @@ public:
 	vec3 f_mouse( TriangleMeshVertex* selected );
 	vec3 f_spring( vec3 & pa, vec3 & pb, double rl, double Ks);
     vec3 f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd);
-    void f_bend(TriangleMeshTriangle* a, TriangleMeshTriangle* b, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
+    void f_bend(TriangleMeshTriangle* a, TriangleMeshTriangle* b,
+            TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
     inline mat3 dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks);
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
@@ -90,17 +87,23 @@ private:
 class Solver {
 public:
     virtual ~Solver();
-    virtual std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) = 0;
+    virtual void calculateState(System* sys)=0;
+    virtual std::pair<vec3,vec3> solve(System* sys,
+            double timeStep, int pointIndex, TriangleMeshVertex* point) = 0;
 };
 
 class ImplicitSolver: public Solver {
     ~ImplicitSolver();
-    std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point);
+    void calculateState(System* sys);
+    std::pair<vec3,vec3> solve(System* sys,
+            double timeStep, int pointIndex, TriangleMeshVertex* point);
 };
 
 class ExplicitSolver: public Solver {
     ~ExplicitSolver();
-    std::pair<vec3,vec3> solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point);
+    void calculateState(System* sys);
+    std::pair<vec3,vec3> solve(System* sys,
+            double timeStep, int pointIndex, TriangleMeshVertex* point);
 };
 
 

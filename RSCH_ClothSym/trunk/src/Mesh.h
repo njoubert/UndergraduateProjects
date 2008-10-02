@@ -189,8 +189,9 @@ public:
     int createTriangle(int A, int B, int C);
 
     TriangleMeshTriangle* getTriangle(int i);
-
     TriangleMeshVertex* getVertex(int i);
+    int countVertices();
+    int countTriangles();
 
     /**
      * @return NULL if none exists, else pointer to edge object.

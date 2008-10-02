@@ -11,7 +11,8 @@ System::System(TriangleMesh* m): mesh(m) {
     time = 0;
     ks = 30;
     kd = 20;
-    kb = 3000;
+    kb = 300;
+    //kb = 0;
     mouseSelected = NULL;
 
 
@@ -142,8 +143,8 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 		vec3 Fdampa = -getKd()* (v.length2()*theta) * (NA/NA.length());
 		vec3 Fdampb = -getKd() * (v.length2()*theta) * (NB/NB.length());
 
-		ai[save_ai_Index]->setF(Fa);// + Fdampa);
-		bi[save_bi_Index]->setF(Fb);// + Fdampb);
+		ai[save_ai_Index]->setF(-Fa);// + Fdampa);
+		bi[save_bi_Index]->setF(-Fb);// + Fdampb);
 
 		//cout<<endl;
 	}
@@ -175,14 +176,13 @@ mat3 System::dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd){
     return RETURN;
 }
 
-vec3 System::calculateForces(int pointIndex) {
+void System::calculateInternalForces() {
     vec3 F0(0,0,0); //Output net force.
-
-    TriangleMeshVertex* a = mesh->getVertex(pointIndex);
-    TriangleMeshVertex* b;
-    std::vector< TriangleMeshEdge* >::const_iterator it = a->getEdgesBeginIterator();
-    while (it != a->getEdgesEndIterator()) {
-        b = (*it)->getOtherVertex(a);
+    TriangleMeshVertex *a, *b;
+    EdgesIterator edg_it = mesh->getEdgesIterator();
+    do {
+        a = (*edg_it)->getVertex(0);
+        b = (*edg_it)->getVertex(1);
 
         /* Calculate internal forces here.
          * a = first point, b = second point. */
@@ -194,31 +194,26 @@ vec3 System::calculateForces(int pointIndex) {
 
 		 double rl = RL.length();
 
-		//CALCULATES BEND FORCE AND STORES IT IN MESH, CURRENTLY BUGGED, ITERATES EDGES TWICE
-		f_bend((*it)->getParentTriangle(0), (*it)->getParentTriangle(1), a, b, (*it));
+		//CALCULATES BEND FORCE AND STORES IT IN MESH
+		f_bend((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
 
 		//----------Finternal_i--------------------------------------------------------
-        vec3 F0i =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
+        F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
-         F0 += F0i;
 
-
-         it++;
-    }
-
-    //cout<<"Finteral: "<<F0.length()<<endl;
-
-    vec3 Fexternal(0, -9.8, 0);
-
-    Fexternal += f_mouse( a );
-
-    F0 = F0 + Fexternal;
-
-    a->setF(F0);
-
+        a->setF(F0);
+        b->setF(-1 * F0);
+    } while (edg_it.next());
     //cout<<"Fpoint: "<<F0.length()<<endl;
+}
 
-    return F0;
+void System::calculateExternalForces() {
+    TriangleMeshVertex* a;
+    vec3 gravity(0, -9.8, 0);
+    for (int i = 0; i < mesh->countVertices(); i++) {
+        a = mesh->getVertex(i);
+        a->setF(gravity += f_mouse(a));
+    }
 }
 
 void System::enableMouseForce(vec3 mousePosition) {
@@ -255,7 +250,7 @@ vec3 System::f_mouse( TriangleMeshVertex* selected ) {
     if (selected != mouseSelected)
         return vec3(0,0,0);
 
-    double rl = 1;
+    double rl = 10;
     vec3 l = selected->getX() - mouseP;
     double L = l.length();
     vec3 f = -getKs() * (l/L) * (L - rl);
@@ -330,16 +325,18 @@ mat3 System::calculateContraints(int pointIndex) {
  *    update x with delX and v with delV
  */
 void System::takeStep(Solver* solver, double timeStep) {
+
     std::vector<std::pair<vec3,vec3> > changes(mesh->vertices.size(),
             make_pair(vec3(0,0,0), vec3(0,0,0)));
 
-    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+    solver->calculateState(this); //evalDeriv function
+
+    for (unsigned int i = 0; i < mesh->countVertices(); i++) {
         std::pair<vec3,vec3> deltas =
             solver->solve(this, timeStep, i, mesh->getVertex(i));
         changes[i] = deltas;
-
     }
-   // exit(1);
+
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
@@ -370,7 +367,13 @@ ImplicitSolver::~ImplicitSolver() {
 
 }
 
-std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
+void ImplicitSolver::calculateState(System* sys) {
+    sys->calculateInternalForces();
+    sys->calculateExternalForces();
+}
+
+std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep,
+        int pointIndex, TriangleMeshVertex* point) {
 
 	TriangleMeshVertex* a = point;
 	double h = timeStep;
@@ -381,7 +384,7 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep, int poi
 	vec3 Z(0,0,0);
 
 	vec3 v0 = a->getvX(); mat3 I = identity2D();
-	vec3 F = sys->calculateForces(pointIndex);
+	vec3 F = a->getF();
 	std::pair<mat3,mat3> partials = sys->calculateForcePartials(pointIndex);
 	mat3 dFx = partials.first;
 	mat3 dFv = partials.second;
@@ -401,17 +404,15 @@ ExplicitSolver::~ExplicitSolver() {
 
 }
 
-std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep, int pointIndex, TriangleMeshVertex* point) {
+void ExplicitSolver::calculateState(System* sys) {
+    sys->calculateInternalForces();
+    sys->calculateExternalForces();
+}
 
-	vec3 F = sys->calculateForces(pointIndex); //CHANGE: Now Retrieves Force saved on vertex
+std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
+        int pointIndex, TriangleMeshVertex* point) {
 
-	//DEBUG
-	if(pointIndex != 73 && pointIndex != 0){
-	//cout<<"Fpoint: "<<F.length()<<endl;
-	//cout<<"Point: "<<point<<" Ftotal: "<<point->getF().length()<<endl<<endl;
-	}
-
-    vec3 deltaV = (timeStep / point->getm()) * point->getF(); //CHANGED SO IT USES FORCE SAVED IN MESH
+	vec3 deltaV = (timeStep / point->getm()) * point->getF();
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
     point->clearF();

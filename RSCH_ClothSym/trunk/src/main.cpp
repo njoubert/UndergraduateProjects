@@ -23,6 +23,7 @@ public:
         translateY = 0;
         translateZ = 0;
         wireFrame = false;
+        paused = true;
     }
 	int w, h; // width and height
 	float rotateX;
@@ -32,6 +33,7 @@ public:
 	float translateY;
 	float translateZ;
 	bool wireFrame;
+	bool paused;
 };
 
 Viewport	viewport;
@@ -45,7 +47,7 @@ void initSystem(string filename) {
     Parser parser;
     myMesh = parser.parseOBJ(filename);
     sys = new System(myMesh);
-    cout << "Done Parsing .OBJ" << endl;
+    //cout << "Done Parsing .OBJ" << endl;
 }
 
 int parseCommandLine(int argc, char *argv[]) {
@@ -144,6 +146,9 @@ void processKeys(unsigned char key, int x, int y) {
         break;
     case 'v':
         viewport.wireFrame = !viewport.wireFrame;
+        break;
+    case 'p':
+        viewport.paused = !viewport.paused;
         break;
     case 27:
         exit(0);
@@ -246,7 +251,8 @@ void reshape (int w, int h)
 }
 
 void myframemove() {
-    sys->takeStep(solver, timeStep);
+    if (!viewport.paused)
+        sys->takeStep(solver, timeStep);
     //cout << "We're at time " << sys->getT() << endl;
     //exit(1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
