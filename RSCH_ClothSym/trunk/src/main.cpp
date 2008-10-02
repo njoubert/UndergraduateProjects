@@ -26,6 +26,8 @@ public:
         translateZ = 0;
         wireFrame = false;
         paused = true;
+        inverseFPS = 1.0 / 25.0;
+        lastTime = 0;
     }
 	int w, h; // width and height
 	float rotateX;
@@ -34,6 +36,8 @@ public:
 	float translateX;
 	float translateY;
 	float translateZ;
+	double lastTime;
+	double inverseFPS;
 	bool wireFrame;
 	bool paused;
 };
@@ -45,20 +49,19 @@ public:
     ImageSaver() : frameCount(0) { FreeImage_Initialise(); }
     ~ImageSaver() { FreeImage_DeInitialise(); }
 
-    void initialize(string directory, double fps) {
-        cout << "Saving frames at " << fps << " frames per second to directory " << directory << endl;
+    void initialize(string directory) {
+        cout << "Saving frames at " << setprecision(2) << 1.0 / viewport.inverseFPS << " frames per second to directory " << directory << endl;
         imgOutDir = directory;
         if (imgOutDir[imgOutDir.size()-1] != '/')
             imgOutDir.append("/");
         doImageOutput = true;
-        inverseFPS = 1.0 / fps;
-        lastTime = -1 - inverseFPS;
+        lastTime = -1 - viewport.inverseFPS;
     }
 
     void saveFrame(double time) {
         if (!doImageOutput)
             return;
-        if (time >= lastTime + inverseFPS)
+        if (time >= lastTime + viewport.inverseFPS)
             lastTime = time;
         else
             return;
@@ -112,7 +115,6 @@ public:
 private:
     int frameCount;
     double lastTime;
-    double inverseFPS;
     string imgOutDir;
     bool doImageOutput;
 
@@ -164,7 +166,7 @@ int parseCommandLine(int argc, char *argv[]) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string dirname = std::string(argv[++i]);
-                imagesaver.initialize(dirname, 25);
+                imagesaver.initialize(dirname);
             } else {
                 malformedArg = true;
             }
@@ -347,11 +349,14 @@ void reshape (int w, int h)
 
 
 void myframemove() {
-    if (!viewport.paused)
+
+    if (!viewport.paused) {
         sys->takeStep(solver, timeStep);
+    }
 
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
     imagesaver.saveFrame(sys->getT());
+
 }
 
 void myMousePress(int button, int state, int x, int y) {
