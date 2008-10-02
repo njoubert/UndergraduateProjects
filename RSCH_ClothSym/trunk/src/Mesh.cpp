@@ -16,7 +16,6 @@
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
         X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
     S = mat3(0);
-
 }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
