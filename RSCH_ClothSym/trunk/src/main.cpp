@@ -34,6 +34,7 @@ public:
 	float translateZ;
 	bool wireFrame;
 	bool paused;
+	string imgOutDir;
 };
 
 Viewport	viewport;
@@ -74,6 +75,15 @@ int parseCommandLine(int argc, char *argv[]) {
                 std::string filename = std::string(argv[++i]);
                 initSystem(filename);
                 hasOBJ = true;
+            } else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-img")) {
+
+            if (isThereMore(i, argc, 1)) {
+                std::string filename = std::string(argv[++i]);
+
             } else {
                 malformedArg = true;
             }
@@ -158,7 +168,7 @@ void processKeys(unsigned char key, int x, int y) {
 
 void printUsage() {
     cout << "Usage: "<< endl;
-    cout << "  ClothSym -obj filename [-d i] [-timestep i]\\" << endl;
+    cout << "  ClothSym -obj filename [-d i] [-timestep i] [-img directory]\\" << endl;
 }
 
 void init(void)

@@ -15,6 +15,8 @@
 #include "Mesh.h"
 #include "Parser.h"
 
+#include "FreeImage.h"
+
 #define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)
 
 #ifdef _WIN32

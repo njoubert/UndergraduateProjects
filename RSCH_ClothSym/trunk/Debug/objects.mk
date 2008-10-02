@@ -2,6 +2,6 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-LIBS :=
+LIBS := -lfreeimage
 
 USER_OBJS :=
