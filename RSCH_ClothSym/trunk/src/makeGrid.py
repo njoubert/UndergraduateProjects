@@ -33,11 +33,11 @@ def main(argv=None):
 		# option processing
 		for option, value in opts:
 			if option == "-w":
-				width = int(value)
+				width = float(value)
 			if option == "-h":
-				height = int(value)
+				height = float(value)
 			if option == "-s":
-				step = int(value)
+				step = float(value)
 			
 	except Usage, err:
 		print >> sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)

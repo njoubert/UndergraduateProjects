@@ -16,6 +16,7 @@
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
         X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
     S = mat3(0);
+    m = 0.0008;
 }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
@@ -24,7 +25,9 @@ vec3 & TriangleMeshVertex::getU() { return U; }
 
 vec3 & TriangleMeshVertex::getvX() { return vX; }
 
-double TriangleMeshVertex::getm() { return 1; }
+double TriangleMeshVertex::getm() { return m; }
+
+void TriangleMeshVertex::setm(double mass) { m = mass; }
 
 vec3 TriangleMeshVertex::getNormal() {
     std::vector<TriangleMeshEdge*>::const_iterator it =
@@ -346,6 +349,14 @@ int TriangleMesh::countVertices() {
 
 int TriangleMesh::countTriangles() {
     return triangles.size();
+}
+
+void TriangleMesh::setGlobalMassPerParticle(double m) {
+    TriangleMeshVertex *v;
+    for (unsigned int i = 0; i < vertices.size(); i++) {
+        v = getVertex(i);
+        v->setm(m);
+    }
 }
 
 TriangleMeshEdge* TriangleMesh::getEdgeBetweenVertices(

@@ -10,7 +10,7 @@ System* sys;
 //Solver* solver = new ImplicitSolver();
 Solver* solver = new ExplicitSolver();
 
-double timeStep = 0.01;
+double timeStep = 0.0001;
 
 class Viewport {
 public:
@@ -166,7 +166,7 @@ void init(void)
     GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
     GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
    GLfloat mat_shininess[] = { 50.0 };
-   GLfloat light_position[] = { 0.0, 0.0, 150.0, 0.0 };
+   GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.0 };
 
    glClearColor (0.0, 0.0, 0.0, 0.0);
    glShadeModel (GL_SMOOTH);
@@ -240,12 +240,15 @@ void reshape (int w, int h)
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity();
    double x = 300;
+   /*
    if (w <= h)
       glOrtho (-1*x, x, -1*x*(GLfloat)h/(GLfloat)w,
          x*(GLfloat)h/(GLfloat)w, -400.0, 400.0);
    else
       glOrtho (-1*x*(GLfloat)w/(GLfloat)h,
          x*(GLfloat)w/(GLfloat)h, -1*x, x, -400.0, 400.0);
+   */
+   glOrtho (-2, 2, -2, 2, -4.0, 4.0);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 }

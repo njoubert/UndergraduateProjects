@@ -76,6 +76,7 @@ public:
     vec3 & getU();
     vec3 & getvX();
     double getm();
+    void setm(double);
     vec3 getNormal();
     mat3 & getConstaint();
     void setConstraint(mat3);
@@ -95,6 +96,7 @@ private:
     vec3 X;     //Position
     vec3 U;     //Original Position
     vec3 vX;    //Velocity
+    double m;
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 
@@ -192,6 +194,7 @@ public:
     TriangleMeshVertex* getVertex(int i);
     int countVertices();
     int countTriangles();
+    void setGlobalMassPerParticle(double);
 
     /**
      * @return NULL if none exists, else pointer to edge object.

@@ -18,8 +18,10 @@ using namespace std;
  */
 class Parser {
 public:
+    Parser();
 	TriangleMesh* parseOBJ(string);
 private:
+    int vertexCount;
     bool parseLine(string, TriangleMesh *);
 };
 

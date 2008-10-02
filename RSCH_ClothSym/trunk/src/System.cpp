@@ -6,13 +6,14 @@
  */
 
 #include "System.h"
+#define GRAVITY -9.8
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
-    ks = 30;
-    kd = 20;
-    kb = 300;
-    //kb = 0;
+    ks = 10000;
+    kd = 0;
+    //kb = 300;
+    kb = 0;
     mouseSelected = NULL;
 
 
@@ -209,7 +210,7 @@ void System::calculateInternalForces() {
 
 void System::calculateExternalForces() {
     TriangleMeshVertex* a;
-    vec3 gravity(0, -9.8, 0);
+    vec3 gravity(0, GRAVITY, 0);
     for (int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
         a->setF(gravity += f_mouse(a));
@@ -250,7 +251,7 @@ vec3 System::f_mouse( TriangleMeshVertex* selected ) {
     if (selected != mouseSelected)
         return vec3(0,0,0);
 
-    double rl = 10;
+    double rl = 1;
     vec3 l = selected->getX() - mouseP;
     double L = l.length();
     vec3 f = -getKs() * (l/L) * (L - rl);
