@@ -11,8 +11,8 @@
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
     ks = 10000;
-    kd = 0;
-    //kb = 300;
+    kd = .7;
+    //kb = 3;
     kb = 0;
     mouseSelected = NULL;
 
@@ -39,7 +39,7 @@ System::System(TriangleMesh* m): mesh(m) {
                 e.normalize();
                 vec3 crossNANB = NA^NB;
                 double eDotN = crossNANB*e;
-                double theta = -asin(eDotN);
+                double theta = asin(eDotN);
 
                 (*edg_it)->setRestAngle(theta);
 //			    cout<<"Edge: "<<(*it)<<" Rest Angle: "<<(*it)->getRestAngle()<<endl;
@@ -104,7 +104,7 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 		e.normalize();
 		vec3 crossNANB = NA^NB;
 		double eDotN = crossNANB*e;
-		double theta = -asin(eDotN);
+		double theta = asin(eDotN);
 	//	cout<<"Edge: "<<edge<<" Theta: "<<theta<<endl;
 
 
@@ -144,8 +144,8 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 		vec3 Fdampa = -getKd()* (v.length2()*theta) * (NA/NA.length());
 		vec3 Fdampb = -getKd() * (v.length2()*theta) * (NB/NB.length());
 
-		ai[save_ai_Index]->setF(-Fa);// + Fdampa);
-		bi[save_bi_Index]->setF(-Fb);// + Fdampb);
+		ai[save_ai_Index]->setF(Fa);// + Fdampa);
+		bi[save_bi_Index]->setF(Fb);// + Fdampb);
 
 		//cout<<endl;
 	}
@@ -341,8 +341,30 @@ void System::takeStep(Solver* solver, double timeStep) {
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
+
+        //**********************CONSTRAINTS********************************************
+        vec3 p = v->getX();
+        vec3 V = v->getvX();
+        vec3 table(0,.41,0);
+        float tableR = .5;
+        float eps = .01;
+        float eps2 = 4;
+        if((sqrt(p[0]*p[0] + p[2]*p[2]) < tableR) &&
+        		(p[1] < table[1] + eps && p[1] > table[1] - eps)){
+
+			if(v->getvX()[1] > 0) {
+				v->getX()[1] = table[1]-eps2*eps;
+				v->getvX() *= -.1;
+			}
+
+			else
+				v->getX()[1]  = table[1];
+			//v->getvX() = 0;
+        }
+        else{
         v->getX() += changes[i].first;
         v->getvX() += changes[i].second;
+        }
     }
 
     time += timeStep;
@@ -418,11 +440,14 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
 
     point->clearF();
 
+
+
+    //Contraints set in OBJ file
     if (point->getConstaint() == identity2D())
         return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
-
+    //******************************************************************************
     return make_pair(deltaX, deltaV);
 }
 

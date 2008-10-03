@@ -9,6 +9,7 @@ OBJ_SRCS += \
 ../data/cloth1.obj \
 ../data/cloth2.obj \
 ../data/face1.obj \
+../data/flatGridTest.obj \
 ../data/grid1.obj \
 ../data/gridTest.obj \
 ../data/gridTestFine1.obj \
