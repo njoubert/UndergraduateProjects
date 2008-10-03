@@ -352,6 +352,7 @@ int TriangleMesh::countTriangles() {
 }
 
 void TriangleMesh::setGlobalMassPerParticle(double m) {
+    cout << "Setting mass per particle = " << m << " over " << vertices.size() << " vertices." << endl;
     TriangleMeshVertex *v;
     for (unsigned int i = 0; i < vertices.size(); i++) {
         v = getVertex(i);

@@ -15,16 +15,16 @@
  *
  *
  */
-#include "Parser.h"
+#include "OBJParser.h"
 
-Parser::Parser() {
+OBJParser::OBJParser() {
     vertexCount = 0;
 }
 
 /**
  * Attempts to parse an OBJ file. Returns false if we fail.
  */
-TriangleMesh* Parser::parseOBJ(string filename) {
+TriangleMesh* OBJParser::parseOBJ(string filename) {
     //printInfo("Parsing Scene File " << filename);
     char line[1024];
     TriangleMesh* myMesh = new TriangleMesh();
@@ -50,7 +50,7 @@ TriangleMesh* Parser::parseOBJ(string filename) {
 }
 
 
-bool Parser::parseLine(string line, TriangleMesh *myMesh) {
+bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
     string operand;
     bool success = true;
 

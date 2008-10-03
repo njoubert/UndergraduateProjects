@@ -213,7 +213,7 @@ void System::calculateExternalForces() {
     vec3 gravity(0, GRAVITY, 0);
     for (int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
-        a->setF(gravity += f_mouse(a));
+        a->setF(gravity*a->getm() += f_mouse(a));
     }
 }
 
@@ -435,19 +435,25 @@ void ExplicitSolver::calculateState(System* sys) {
 std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
         int pointIndex, TriangleMeshVertex* point) {
 
-	vec3 deltaV = (timeStep / point->getm()) * point->getF();
+	vec3 deltaV = (timeStep ) * point->getF() / (double) point->getm();
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
+    /*
+    if (sys->getT() > 0.1) {
+        cout << "deltaV=" << deltaV << endl;
+        cout << "deltaX=" << deltaX << endl;
+        cout << "F=" << point->getF() << endl;
+        cout << "vX=" << point->getvX() << endl;
+        exit(1);
+    }
+    */
     point->clearF();
 
-
-
-    //Contraints set in OBJ file
     if (point->getConstaint() == identity2D())
         return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
-    //******************************************************************************
+
     return make_pair(deltaX, deltaV);
 }
 

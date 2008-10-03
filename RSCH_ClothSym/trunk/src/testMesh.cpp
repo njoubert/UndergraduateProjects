@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Mesh.h"
-#include "Parser.h"
+#include "OBJParser.h"
 
 using namespace std;
 

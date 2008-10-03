@@ -16,9 +16,9 @@ using namespace std;
 /**
  * Parser that reads in files and creates Mesh objects.
  */
-class Parser {
+class OBJParser {
 public:
-    Parser();
+    OBJParser();
 	TriangleMesh* parseOBJ(string);
 private:
     int vertexCount;

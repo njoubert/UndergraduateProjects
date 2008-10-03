@@ -58,10 +58,10 @@ public:
         lastTime = -1 - viewport.inverseFPS;
     }
 
-    void saveFrame(double time) {
+    void saveFrame(double time, bool JustDoIt) {
         if (!doImageOutput)
             return;
-        if (time >= lastTime + viewport.inverseFPS)
+        if (time >= lastTime + viewport.inverseFPS || JustDoIt)
             lastTime = time;
         else
             return;
@@ -70,7 +70,7 @@ public:
         stringstream filename(stringstream::in | stringstream::out);
         filename << imgOutDir << "sym";
         filename << std::setfill('0') << setw(6) << frameCount << ".png";
-        cout << "Save frame " << frameCount << "... \t";
+        cout << "Save frame " << frameCount << " at "<< setprecision(3) << time <<"s ... \t";
 
         FIBITMAP* bitmap = FreeImage_Allocate(viewport.w, viewport.h, BPP);
         if (!bitmap) {
@@ -128,7 +128,7 @@ ImageSaver imagesaver;
 
 
 void initSystem(string filename) {
-    Parser parser;
+    OBJParser parser;
     myMesh = parser.parseOBJ(filename);
     sys = new System(myMesh);
     //cout << "Done Parsing .OBJ" << endl;
@@ -351,11 +351,15 @@ void reshape (int w, int h)
 void myframemove() {
 
     if (!viewport.paused) {
-        sys->takeStep(solver, timeStep);
-    }
+        //cout << "Taking " << viewport.inverseFPS/timeStep << " steps." << endl;
+        imagesaver.saveFrame(sys->getT(), true);
+        for (int i = 0; i < viewport.inverseFPS/timeStep; i++)
+            sys->takeStep(solver, timeStep);
+        glutPostRedisplay();
 
-    glutPostRedisplay(); // forces glut to call the display function (myDisplay())
-    imagesaver.saveFrame(sys->getT());
+    } else {
+        glutPostRedisplay(); // forces glut to call the display function (myDisplay())
+    }
 
 }
 
