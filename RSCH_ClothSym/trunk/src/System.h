@@ -78,8 +78,9 @@ public:
 private:
     float getKs();
     float getKd();
-    float getKb();
-    float ks, kd, kb;
+    float getKbe();
+    float getKbd();
+    float Ks, Kd, Kbe, Kbd; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
     TriangleMesh* mesh;
     double time;
     TriangleMeshVertex* mouseSelected;

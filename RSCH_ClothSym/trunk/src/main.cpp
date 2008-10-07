@@ -12,7 +12,8 @@ System* sys;
 //Solver* solver = new ImplicitSolver();
 Solver* solver = new ExplicitSolver();
 
-double timeStep = 0.00001; //duration of one iteration.
+double timeStep = 0.0001; //duration of one iteration.
+bool playEveryStep = true;
 
 class Viewport {
 public:
@@ -197,16 +198,16 @@ int parseCommandLine(int argc, char *argv[]) {
 void processSpecialKeys(int key, int x, int y) {
     switch(key) {
     case GLUT_KEY_UP:
-        viewport.translateY -= 2.5f;
+        viewport.translateY -= .1f;
         break;
     case GLUT_KEY_DOWN:
-        viewport.translateY += 2.5f;
+        viewport.translateY += .1f;
         break;
     case GLUT_KEY_RIGHT:
-        viewport.translateX -= 2.5f;
+        viewport.translateX -= .1f;
         break;
     case GLUT_KEY_LEFT:
-        viewport.translateX += 2.5f;
+        viewport.translateX += .1f;
         break;
     }
 }
@@ -256,10 +257,12 @@ void printUsage() {
 
 void init(void)
 {
-    GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
-    GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
+   GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
+   GLfloat mat_ambient[] = { 0.6, 0.0, 0.6, 1.0 };
+   GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
    GLfloat mat_shininess[] = { 50.0 };
    GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.0 };
+   GLfloat light_position2[] = {5.0, 0.0, 20.0, 0.0 };
 
    glClearColor (0.0, 0.0, 0.0, 0.0);
    glShadeModel (GL_SMOOTH);
@@ -267,13 +270,30 @@ void init(void)
    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+   glLightfv(GL_LIGHT1, GL_POSITION, light_position2);
 
    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
    glEnable(GL_LIGHTING);
    glEnable(GL_LIGHT0);
+   glEnable(GL_LIGHT1);
    glEnable(GL_DEPTH_TEST);
+}
+
+void Blue () {
+	GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+	GLfloat mat_ambient[] = { 0.0, 0.1, 0.0, 1.0 };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+}
+
+void Pink () {
+	GLfloat mat_diffuse[] = { 0.8, 0.0, 0.8, 1.0 };
+	GLfloat mat_ambient[] = { 0.6, 0.0, 0.6, 1.0 };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_ambient);
 }
 
 void display(void)
@@ -320,6 +340,16 @@ void display(void)
            glVertex3f(c[0],c[1],c[2]);
        glEnd();
 
+       Blue();
+       glBegin(GL_QUADS);
+		   glNormal3f(0, 0, 1);
+		   glVertex3f(-10, 10, -3);
+		   glVertex3f(-10, -10, -3);
+		   glVertex3f(10, -10, -3);
+		   glVertex3f(10, 10, -3);
+	   glEnd();
+	   Pink();
+
        it++;
    }
 
@@ -350,7 +380,14 @@ void reshape (int w, int h)
 
 void myframemove() {
 
-    if (!viewport.paused) {
+/*
+    sys->takeStep(solver, timeStep);
+    //cout << "We're at time " << sys->getT() << endl;
+    //exit(1);
+    glutPostRedisplay(); // forces glut to call the display function (myDisplay())
+*/
+		//*
+		 if (!viewport.paused) {
         //cout << "Taking " << viewport.inverseFPS/timeStep << " steps." << endl;
         imagesaver.saveFrame(sys->getT(), true);
         for (int i = 0; i < viewport.inverseFPS/timeStep; i++)
@@ -360,7 +397,7 @@ void myframemove() {
     } else {
         glutPostRedisplay(); // forces glut to call the display function (myDisplay())
     }
-
+	//*/
 }
 
 void myMousePress(int button, int state, int x, int y) {

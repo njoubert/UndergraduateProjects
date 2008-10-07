@@ -10,13 +10,18 @@
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
-  //   ks = 20000;
+ //    ks = 20000;
  //   kd = 20;
 //	ks = 5000;
 //	kd = .05;
-    ks = 800;
-    kd = 20;
-    kb = 30;
+ //   Ks = 7;
+ //   Kd = 3;
+ //   Kbe = 10;
+  //  Kbd = 9;
+    Ks  = 20;
+    Kd  = 10;
+    Kbe = .1;
+    Kbd = .01;
     //kb = 0;
     mouseSelected = NULL;
 
@@ -31,21 +36,67 @@ System::System(TriangleMesh* m): mesh(m) {
         b = (*edg_it)->getVertex(1);
         A = (*edg_it)->getParentTriangle(0);
         B = (*edg_it)->getParentTriangle(1);
+    	TriangleMeshVertex** aList = A->getVertices();
+    	TriangleMeshVertex** bList = B->getVertices();
 
         if (A != NULL && B != NULL) {
                 assert(A != B);
                 //GET NORMALS
-                vec3 NA = A->getNormal();
-                vec3 NB = B->getNormal();
+               // vec3 NA = A->getNormal();
+               // vec3 NB = B->getNormal();
+        		//Dirty way to figure out which point is which
+        		int ai, bi;
+        		for(int i = 0; i < 3; i++){
+        			if(aList[i] != a && aList[i] != b)
+        				ai = i;
+
+        			if(bList[i] != a && bList[i] != b)
+        				bi = i;
+        		}
+
+                vec3 x2 = aList[ai]->getX();
+                vec3 x1 = bList[bi]->getX();
+                vec3 x4 = a->getX();
+                vec3 x3 = b->getX();
+
+        		vec3 N1 = (x1 - x3) ^ (x1 - x4);
+        		vec3 N2 = (x2 - x4) ^ (x2 - x3);
+        		vec3 E = x4 - x3;
 
                 //CALCULATE BEND FORCES
-                vec3 e = b - a;
+                /*
+        		vec3 e = b - a;
                 e.normalize();
                 vec3 crossNANB = NA^NB;
                 double eDotN = crossNANB*e;
                 double theta = asin(eDotN);
+                //*/
+        		double N1mag = N1.length();
+        		double N2mag = N2.length();
+        		double Emag = E.length();
+        		vec3 N1unit = N1/N1mag;
+        		vec3 N2unit = N2/N2mag;
+        		vec3 Eunit = E/Emag;
 
-                (*edg_it)->setRestAngle(theta);
+        		double sign = ((N1unit ^ N2unit)*Eunit);
+        		if(sign > 0)
+        			sign = 1;
+        		else
+        			sign = -1;
+
+        		double mustBePos = abs( 1 - N1unit*N2unit);
+        		if(mustBePos < 0)
+        			mustBePos = 0;
+
+        		double sinThetaOver2 = sign * sqrt( (mustBePos ) /2);
+
+        		//*
+       // 		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
+       // 		cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
+        		cout<<"Rest sinThetaOver2 "<<sinThetaOver2<<endl;
+       // 		cout<<endl;
+        		//*/
+                (*edg_it)->setRestAngle(sinThetaOver2);
 //			    cout<<"Edge: "<<(*it)<<" Rest Angle: "<<(*it)->getRestAngle()<<endl;
 //				cout<<endl;
             }
@@ -112,8 +163,8 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 				bi = i;
 		}
 
-		double Ke = 500;
-		double Kd = 1.1;
+		double _Ke = getKbe();
+		double _Kd = getKbd();
 
 		//double Ke = 1000;
 		//double Kd = 1.1;
@@ -174,7 +225,7 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 
 		vec3 Fe[4];
 		for(int i = 0; i < 4; i++)
-			Fe[i] = Ke * ((Emag*Emag)/(N1mag + N2mag)) * sinThetaOver2 * u[i];
+			Fe[i] = _Ke * ((Emag*Emag)/(N1mag + N2mag)) * sinThetaOver2 * u[i];
 
 		vec3 Fd[4];
 		double DthetaDt = u[0]*v1 + u[1]*v2 + u[2]*v3 + u[3]*v4;
@@ -182,7 +233,7 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 			DthetaDt = 0;
 
 		for(int i = 0; i < 4; i++)
-			Fd[i] = -Kd * Emag * DthetaDt * u[i];
+			Fd[i] = -_Kd * Emag * DthetaDt * u[i];
 	/*
 	//	if(!(F[0][0] < 0.001 && F[0][0] > -.001)) {
 	//		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
@@ -240,8 +291,8 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 	//	vec3 Fa = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NA/NA.length());
 //		vec3 Fb = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NB/NB.length());
 
-		vec3 Fa = -getKb() * (theta) * (NA/NA.length());
-		vec3 Fb = -getKb() * (theta) * (NB/NB.length());
+		vec3 Fa = -getKbe() * (theta) * (NA/NA.length());
+		vec3 Fb = -getKbe() * (theta) * (NB/NB.length());
 
 		//FIND WHICH VERTEXES FORCES MUST BE APPLIED TO AND STORE THEM
 		TriangleMeshVertex** ai = A->getVertices();
@@ -499,7 +550,7 @@ void System::takeStep(Solver* solver, double timeStep) {
         v->getX() += changes[i].first;
         v->getvX() += changes[i].second;
         }
-        //*/
+ //*/
     }
 
     time += timeStep;
@@ -507,15 +558,19 @@ void System::takeStep(Solver* solver, double timeStep) {
 
 
 float System::getKs() {
-    return ks;
+    return Ks;
 }
 
 float System::getKd() {
-    return kd;
+    return Kd;
 }
 
-float System::getKb() {
-	return kb;
+float System::getKbe() {
+	return Kbe;
+}
+
+float System::getKbd() {
+	return Kbd;
 }
 
 Solver::~Solver() {
