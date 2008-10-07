@@ -1,19 +1,20 @@
 TODO
 ---------
 
-Move Mouse-Movement code into System. 
-	Allow us to drag fixed points.
-	Allow us to create fixed points.
-
-Implement Energy-based calculation
-
-Implement better solver
-
-
-Mesh -> vertices (points) with edges to each other! encode as vertices with edges ptrs and edges array.
-	- Support iterating over all vertices
-	- Support iterating over all edges
-	- Support getting edges for vertex
-	- Support arbitrary edges per vertex
-	- Support calculating edge length
+Short Term:
+	Better Camera Control (zooming...)
+	Auto-Resizing to fit mesh
+	Command line K-value inputs
 	
+Nice to Have:
+	Better mouse control
+	
+Next Major Steps:
+	Implicit Integrator
+	Jacobians for Bend Forces
+
+Implement in Matlab / Look through Matlab code
+
+Ground Constraint / Arbitrary procedural constraints
+
+Drag force  - air resistance?
