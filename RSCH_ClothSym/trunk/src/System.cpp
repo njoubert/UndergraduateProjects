@@ -10,10 +10,14 @@
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
-    ks = 10000;
-    kd = .7;
-    //kb = 3;
-    kb = 0;
+ //   ks = 20000;
+ //   kd = 20;
+//	ks = 5000;
+//	kd = .05;
+    ks = 800;
+    kd = 20;
+    kb = 30;
+    //kb = 0;
     mouseSelected = NULL;
 
 
@@ -90,6 +94,130 @@ vec3 System::f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, doub
     vec3 f = -Kd * ((l*w)/(L*L)) * l;
     //PrintVec3("Fd: ", f);
     return(f);
+}
+
+void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge){
+	TriangleMeshVertex** aList = A->getVertices();
+	TriangleMeshVertex** bList = B->getVertices();
+
+	if(A != NULL && B != NULL && A != B){
+
+		//Dirty way to figure out which point is which
+		int ai, bi;
+		for(int i = 0; i < 3; i++){
+			if(aList[i] != a && aList[i] != b)
+				ai = i;
+
+			if(bList[i] != a && bList[i] != b)
+				bi = i;
+		}
+
+		double Ke = 500;
+		double Kd = 1.1;
+
+		//double Ke = 1000;
+		//double Kd = 1.1;
+
+//		double Ke = 0;
+//		double Kd = 0;
+
+//*
+		vec3 x2 = aList[ai]->getX();
+		vec3 x1 = bList[bi]->getX();
+		vec3 x4 = a->getX();
+		vec3 x3 = b->getX();
+
+		vec3 v2 = aList[ai]->getvX();
+		vec3 v1 = bList[bi]->getvX();
+		vec3 v4 = a->getvX();
+		vec3 v3 = b->getvX();
+
+		vec3 N1 = (x1 - x3) ^ (x1 - x4);
+		vec3 N2 = (x2 - x4) ^ (x2 - x3);
+		//vec3 N2 = A->getNormal();
+		//vec3 N1 = B->getNormal();
+		vec3 E = x4 - x3;
+
+		double N1mag = N1.length();
+		double N2mag = N2.length();
+		double Emag = E.length();
+		//if(N1mag > 1)
+	//		N1mag = 1;
+	//	if(N2mag > 1)
+	//		N2mag = 1;
+	//	if(Emag > 1)
+	//		Emag = 1;
+		//vec3 N1unit = N1.normalize();
+		//vec3 N2unit = N2.normalize();
+		//vec3 Eunit = E.normalize();
+		vec3 N1unit = N1/N1mag;
+		vec3 N2unit = N2/N2mag;
+		vec3 Eunit = E/Emag;
+
+		vec3 u[4];
+		u[0] = Emag * (N1/(N1mag * N1mag));
+		u[1] = Emag * (N2/(N2mag * N2mag));
+		u[2] =  ( ((x1-x4)*E)/Emag ) * (N1/(N1mag*N1mag)) + ( ((x2-x4)*E)/Emag )*(N2/(N2mag*N2mag));
+		u[3] = -( ((x1-x3)*E)/Emag ) * (N1/(N1mag*N1mag)) - ( ((x2-x3)*E)/Emag )*(N2/(N2mag*N2mag));
+
+		double sign = ((N1unit ^ N2unit)*Eunit);
+		if(sign > 0)
+			sign = 1;
+		else
+			sign = -1;
+
+		double mustBePos = abs( 1 - N1unit*N2unit);
+		if(mustBePos < 0)
+			mustBePos = 0;
+
+		double sinThetaOver2 = sign * sqrt( (mustBePos ) /2);
+
+		vec3 Fe[4];
+		for(int i = 0; i < 4; i++)
+			Fe[i] = Ke * ((Emag*Emag)/(N1mag + N2mag)) * sinThetaOver2 * u[i];
+
+		vec3 Fd[4];
+		double DthetaDt = u[0]*v1 + u[1]*v2 + u[2]*v3 + u[3]*v4;
+		if(DthetaDt < 0.1 && DthetaDt > -0.1)
+			DthetaDt = 0;
+
+		for(int i = 0; i < 4; i++)
+			Fd[i] = -Kd * Emag * DthetaDt * u[i];
+	/*
+	//	if(!(F[0][0] < 0.001 && F[0][0] > -.001)) {
+	//		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
+	//		exit(1);
+	//		cout<<"N1: "<<N1<<"  N2: "<<N2<<"  E: "<<E<<endl;
+			if(N1unit.length() > 1 || N2unit.length() > 1 || Eunit.length() > 1 || (sinThetaOver2 > 2.2*3.14 || sinThetaOver2 < -2.2*3.14)) {
+	//		if(sinThetaOver2 < .01) {
+			cout<<"Unit Normal is > 1!!!!! --- BREAK"<<endl;
+			cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
+			cout<<"N1mag: "<<N1mag<<"  N2mag: "<<N2mag<<"  Emag: "<<Emag<<endl;
+			cout<<"N1unit_length: "<<N1unit.length()<<"  N2unit_length: "<<N2unit.length()<<"  Eunit_length: "<<Eunit.length()<<endl;
+	//		cout<<"normalDotProd: "<<N1unit*N2unit<<endl<<endl;
+	//		exit(0);
+			}
+	//		cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
+	//		cout<<"N1unit: "<<N1unit.length()<<"  N2unit: "<<N2unit.length()<<"  Eunit: "<<Eunit.length()<<endl;
+	//		exit(1);
+	//		cout<<"U1: "<<u[0]<<"  U2: "<<u[1]<<"  U3: "<<u[2]<<"  U4: "<<u[3]<<endl;
+	//		if(sinThetaOver2 > 0.01)
+	//		cout<<"Sign: "<<sign<<"   Theta: "<<sinThetaOver2<<endl;
+	//		cout<<"F1: "<<F[0]<<"  F2: "<<F[1]<<"  F3: "<<F[2]<<"  F4: "<<F[3]<<endl;
+	//		cout<<endl;
+
+	//	}
+	//*/
+		vec3 F[4];
+		for(int i = 0; i < 4; i++)
+			F[i] = Fe[i] + Fd[i];
+
+		aList[ai]->setF(F[1]);
+		bList[bi]->setF(F[0]);
+		a->setF(F[3]);
+		b->setF(F[2]);
+	}
+//*/
 }
 
 void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge){
@@ -196,21 +324,25 @@ void System::calculateInternalForces() {
 		 double rl = RL.length();
 
 		//CALCULATES BEND FORCE AND STORES IT IN MESH
-		f_bend((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
+//		f_bend((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
 
 		//----------Finternal_i--------------------------------------------------------
-        F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
+       F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
 
-        a->setF(F0);
-        b->setF(-1 * F0);
+       a->setF(F0);
+       b->setF(-1 * F0);
+
+	 Forces((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
+
     } while (edg_it.next());
     //cout<<"Fpoint: "<<F0.length()<<endl;
 }
 
 void System::calculateExternalForces() {
     TriangleMeshVertex* a;
-    vec3 gravity(0, GRAVITY, 0);
+ //   vec3 gravity(0, GRAVITY, 0);
+    vec3 gravity(0, 0, GRAVITY);
     for (int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
         a->setF(gravity*a->getm() += f_mouse(a));
@@ -341,8 +473,10 @@ void System::takeStep(Solver* solver, double timeStep) {
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
-
+        v->getX() += changes[i].first;
+        v->getvX() += changes[i].second;
         //**********************CONSTRAINTS********************************************
+/*
         vec3 p = v->getX();
         vec3 V = v->getvX();
         vec3 table(0,.41,0);
@@ -352,19 +486,20 @@ void System::takeStep(Solver* solver, double timeStep) {
         if((sqrt(p[0]*p[0] + p[2]*p[2]) < tableR) &&
         		(p[1] < table[1] + eps && p[1] > table[1] - eps)){
 
-			if(v->getvX()[1] > 0) {
+			if(v->getvX()[1] > eps) {
 				v->getX()[1] = table[1]-eps2*eps;
 				v->getvX() *= -.1;
 			}
 
 			else
 				v->getX()[1]  = table[1];
-			//v->getvX() = 0;
+
         }
         else{
         v->getX() += changes[i].first;
         v->getvX() += changes[i].second;
         }
+        //*/
     }
 
     time += timeStep;
@@ -449,11 +584,15 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
     */
     point->clearF();
 
+
+
+
+    //Contraints set in OBJ file
     if (point->getConstaint() == identity2D())
         return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
-
+    //******************************************************************************
     return make_pair(deltaX, deltaV);
 }
 

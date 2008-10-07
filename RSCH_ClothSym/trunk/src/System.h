@@ -34,6 +34,9 @@ public:
 	 */
 	double getT();
 
+	void Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
+
+
 	void calculateInternalForces();
 	void calculateExternalForces();
 
