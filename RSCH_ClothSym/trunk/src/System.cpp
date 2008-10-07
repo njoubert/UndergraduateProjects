@@ -10,7 +10,7 @@
 
 System::System(TriangleMesh* m): mesh(m) {
     time = 0;
- //   ks = 20000;
+  //   ks = 20000;
  //   kd = 20;
 //	ks = 5000;
 //	kd = .05;
@@ -504,6 +504,7 @@ void System::takeStep(Solver* solver, double timeStep) {
 
     time += timeStep;
 }
+
 
 float System::getKs() {
     return ks;

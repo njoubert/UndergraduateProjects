@@ -12,7 +12,7 @@ System* sys;
 //Solver* solver = new ImplicitSolver();
 Solver* solver = new ExplicitSolver();
 
-double timeStep = 0.00001;
+double timeStep = 0.00001; //duration of one iteration.
 
 class Viewport {
 public:
