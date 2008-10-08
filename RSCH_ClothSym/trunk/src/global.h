@@ -33,6 +33,9 @@
 
 #include "algebra3.h"
 
+//#include "intel_Vector3.h"
+typedef float Physics_t;
+
 #define PI 3.14159265
 
 #endif /* UTIL_H_ */

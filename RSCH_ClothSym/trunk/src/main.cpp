@@ -385,8 +385,8 @@ void myframemove() {
     //cout << "We're at time " << sys->getT() << endl;
     //exit(1);
     glutPostRedisplay(); // forces glut to call the display function (myDisplay())
-*/
-		//*
+//*/
+//*
 		 if (!viewport.paused) {
         //cout << "Taking " << viewport.inverseFPS/timeStep << " steps." << endl;
         imagesaver.saveFrame(sys->getT(), true);
@@ -397,7 +397,7 @@ void myframemove() {
     } else {
         glutPostRedisplay(); // forces glut to call the display function (myDisplay())
     }
-	//*/
+//*/
 }
 
 void myMousePress(int button, int state, int x, int y) {

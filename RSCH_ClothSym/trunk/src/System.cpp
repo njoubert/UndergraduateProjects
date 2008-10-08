@@ -129,6 +129,7 @@ vec3 System::f_spring( vec3 & pa, vec3 & pb, double rl, double Ks){
     //cout<<"Spring"<<endl<<"L "<<L<<endl<<"RL "<<rl<<endl<<"L-rl: "<<L-rl<<endl<<endl;
     vec3 f = -Ks * (l/L) * (L - rl);
     //cout<<"f ";Print(f);
+
     return(f);
 }
 vec3 System::f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd){
@@ -392,8 +393,8 @@ void System::calculateInternalForces() {
 
 void System::calculateExternalForces() {
     TriangleMeshVertex* a;
- //   vec3 gravity(0, GRAVITY, 0);
-    vec3 gravity(0, 0, GRAVITY);
+    vec3 gravity(0, GRAVITY, 0);
+ //   vec3 gravity(0, 0, GRAVITY);
     for (int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
         a->setF(gravity*a->getm() += f_mouse(a));

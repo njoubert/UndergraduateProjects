@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "Mesh.h"
+#include "intel_SparseMatrix.h"
 
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
@@ -85,6 +86,13 @@ private:
     double time;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
+
+    /////////////INTEL INSIDE!!!!!///////////////////////////
+    int m_iParticles, m_iInverseIterations;
+	Physics_LargeVector m_Positions;
+	Physics_LargeVector m_Velocities;
+	Physics_LargeVector m_TotalForces_int, m_TotalForces_ext;
+	////////////////////////////////////////////////////////
 };
 
 
