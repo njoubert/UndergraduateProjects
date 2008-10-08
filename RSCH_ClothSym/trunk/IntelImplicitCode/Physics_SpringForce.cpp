@@ -23,7 +23,7 @@ Physics_SpringForce::~Physics_SpringForce()
 }
 
 void Physics_SpringForce::Apply( Physics_t fTime, Physics_LargeVector &masses, bool bDerivs,
-								 Physics_LargeVector &p, Physics_LargeVector &v, 
+								 Physics_LargeVector &p, Physics_LargeVector &v,
 								 Physics_LargeVector &f_int, Physics_LargeVector &f_ext,
 								 Physics_SparseSymmetricMatrix &f_dp, Physics_SparseSymmetricMatrix &f_dv )
 {
@@ -32,43 +32,56 @@ void Physics_SpringForce::Apply( Physics_t fTime, Physics_LargeVector &masses, b
 	Physics_t C, C_Dot, len;
 	int i, j;
 
+	//Get 2 Positions
 	p1 = p.m_pData[m_iParticle[0]];
 	p2 = p.m_pData[m_iParticle[1]];
 
+	//Get 2 Velocities
 	vv[0] = &v.m_pData[m_iParticle[0]];
 	vv[1] = &v.m_pData[m_iParticle[1]];
 
+	//v1 is the difference between the two positions
 	VECTOR3_SUB( p2, p1, v1 );
 
+	//len is the distance between the two positions
 	len = VECTOR3_LENGTH( v1 );
+	//C is the distance away from rest the spring is
 	C = len - m_RestDistance;
 
+	//Whatever the hell this is /len/len/len?????????
+	//Some kind of strange scaling for the spring derivitive or maybe damping?
 	Physics_t cnst1 = (Physics_t)1.0/len;
 	Physics_t cnst2 = (Physics_t)1.0/len/len/len;
 	VECTOR3_SCALE( v1, -cnst1, dC_dp[0] );
 	VECTOR3_SCALE( v1, cnst1, dC_dp[1] );
 
-	C_Dot = dC_dp[0].x * vv[0]->x + 
-			dC_dp[0].y * vv[0]->y + 
-			dC_dp[0].z * vv[0]->z + 
-			dC_dp[1].x * vv[1]->x + 
-			dC_dp[1].y * vv[1]->y + 
+	//C_Dot must be damping
+	C_Dot = dC_dp[0].x * vv[0]->x +
+			dC_dp[0].y * vv[0]->y +
+			dC_dp[0].z * vv[0]->z +
+			dC_dp[1].x * vv[1]->x +
+			dC_dp[1].y * vv[1]->y +
 			dC_dp[1].z * vv[1]->z;
 
+	//F0 = ks*(x - R) - kd*(deltaV)
 	force.x = -m_kSpring * dC_dp[0].x * C - m_kSpringDamp * dC_dp[0].x * C_Dot;
 	force.y = -m_kSpring * dC_dp[0].y * C - m_kSpringDamp * dC_dp[0].y * C_Dot;
 	force.z = -m_kSpring * dC_dp[0].z * C - m_kSpringDamp * dC_dp[0].z * C_Dot;
 
+	//Were the magic happens: puts force into a large vector class
 	VECTOR3_ADD( f_int.m_pData[m_iParticle[0]], force, f_int.m_pData[m_iParticle[0]] );
 
+	//F1 = ks*(x - R) - kd*(deltaV)
 	force.x = -m_kSpring * dC_dp[1].x * C - m_kSpringDamp * dC_dp[1].x * C_Dot;
 	force.y = -m_kSpring * dC_dp[1].y * C - m_kSpringDamp * dC_dp[1].y * C_Dot;
 	force.z = -m_kSpring * dC_dp[1].z * C - m_kSpringDamp * dC_dp[1].z * C_Dot;
 
+	//Were the magic happens: puts force into a large vector class
 	VECTOR3_ADD( f_int.m_pData[m_iParticle[1]], force, f_int.m_pData[m_iParticle[1]] );
 
 	if( bDerivs )
 	{
+		//???? Really now what is this crap, why do we need the second derivitive of C
 		d2C_dp2[0][0].m_Mx[0] = -cnst2 * ( (v1.x * v1.x) ) + cnst1 ;
 		d2C_dp2[0][0].m_Mx[1] = 0;
 		d2C_dp2[0][0].m_Mx[2] = 0;
@@ -135,6 +148,7 @@ void Physics_SpringForce::Apply( Physics_t fTime, Physics_LargeVector &masses, b
 				df_dp.m_Mx[8] = -m_kSpring * ( dp.m_Mx[8] + d2C_dp2[i][j].m_Mx[8] * C ) -
 								 m_kSpringDamp * ( d2C_dp2[i][j].m_Mx[8] * C_Dot );
 
+				//Oh yea more magic: This is what we don't understand
 				f_dp(m_iParticle[i], m_iParticle[j]).Add( df_dp, f_dp(m_iParticle[i],m_iParticle[j]) );
 
 				df_dv.m_Mx[0] = -m_kSpringDamp * dp.m_Mx[0];
@@ -149,6 +163,7 @@ void Physics_SpringForce::Apply( Physics_t fTime, Physics_LargeVector &masses, b
 				df_dv.m_Mx[7] = -m_kSpringDamp * dp.m_Mx[7];
 				df_dv.m_Mx[8] = -m_kSpringDamp * dp.m_Mx[8];
 
+				//Oh yea more magic: This is what we don't understand
 				f_dv(m_iParticle[i], m_iParticle[j]).Add( df_dv, f_dv(m_iParticle[i],m_iParticle[j]) );
 			}
 		}
@@ -178,10 +193,10 @@ void Physics_SpringForce::Fixup( Physics_LargeVector &invmasses, Physics_LargeVe
 		Physics_Vector3 Dist;
 		Physics_t len;
 
-		VECTOR3_SUB( p.m_pData[m_iParticle[0]], p.m_pData[m_iParticle[1]], Dist ); 
+		VECTOR3_SUB( p.m_pData[m_iParticle[0]], p.m_pData[m_iParticle[1]], Dist );
 		len = Dist.Length();
 
-		if( len > m_MaxDistance ) 
+		if( len > m_MaxDistance )
 		{
 			len -= m_MaxDistance;
 			len /= 2;
