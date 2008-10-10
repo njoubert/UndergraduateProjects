@@ -131,7 +131,8 @@ ImageSaver imagesaver;
 void initSystem(string filename) {
     OBJParser parser;
     myMesh = parser.parseOBJ(filename);
-    sys = new System(myMesh);
+    int verticeCount = myMesh->countVertices();
+    sys = new System(myMesh, verticeCount);
     //cout << "Done Parsing .OBJ" << endl;
 }
 

@@ -25,7 +25,7 @@ class ExplicitSolver;
 /// Contains all the data needed to store a cloth mesh.
 class System {
 public:
-	System(TriangleMesh* m);
+	System(TriangleMesh* m, int verticeCount);
 
 	mat3 outerProduct(vec3 a, vec3 b);
 
@@ -75,6 +75,10 @@ public:
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
+	int m_iParticles, m_iInverseIterations;
+	Physics_LargeVector m_Positions;
+	Physics_LargeVector m_Velocities;
+	Physics_LargeVector m_TotalForces_int, m_TotalForces_ext;
 
 private:
     float getKs();
@@ -87,12 +91,23 @@ private:
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
 
-    /////////////INTEL INSIDE!!!!!///////////////////////////
-    int m_iParticles, m_iInverseIterations;
-	Physics_LargeVector m_Positions;
-	Physics_LargeVector m_Velocities;
-	Physics_LargeVector m_TotalForces_int, m_TotalForces_ext;
-	////////////////////////////////////////////////////////
+    ////////////////////////INTEL INSIDE!!!!!!!!!!!!!!!!!!!!///////
+	Physics_LargeVector m_vTemp1, m_vTemp2, m_PosTemp;
+	Physics_LargeVector m_dv;
+	Physics_LargeVector m_dp;
+	Physics_LargeVector m_Masses, m_MassInv;
+
+	SparseMatrix m_MxMasses;
+	SparseMatrix m_TotalForces_dp;
+	SparseMatrix m_TotalForces_dv;
+
+	SparseMatrix m_A;
+	SparseMatrix m_MxTemp1, m_MxTemp2;
+	Physics_LargeVector m_P, m_PInv;
+	Physics_LargeVector m_z, m_b, m_r, m_c, m_q, m_s, m_y;
+	Physics_Matrix3x3 *m_S;
+	///////////////////////////////////////////////////////////////
+
 };
 
 

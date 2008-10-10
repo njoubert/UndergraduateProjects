@@ -8,7 +8,23 @@
 #include "System.h"
 #define GRAVITY -9.8
 
-System::System(TriangleMesh* m): mesh(m) {
+/////////////////////////////WHERE IS THIS CALLED////////////////////////////////////
+System::System(TriangleMesh* m, int verticeCount): mesh(m),
+	m_Positions( verticeCount ), m_Velocities( verticeCount ),
+	m_dv( verticeCount ), m_dp( verticeCount ),
+	m_vTemp1( verticeCount ), m_vTemp2( verticeCount ), m_PosTemp( verticeCount ),
+	m_TotalForces_int( verticeCount ), m_TotalForces_ext( verticeCount ),
+	m_Masses( verticeCount ), m_MassInv( verticeCount ),
+	m_MxMasses( verticeCount, verticeCount ),
+	m_TotalForces_dp( verticeCount, verticeCount ),
+	m_TotalForces_dv( verticeCount, verticeCount ),
+	m_A( verticeCount, verticeCount ),
+	m_P( verticeCount ),
+	m_PInv( verticeCount ),
+	m_MxTemp1( verticeCount, verticeCount ), m_MxTemp2( verticeCount, verticeCount ),
+	m_z( verticeCount ), m_b( verticeCount ), m_r( verticeCount ),
+	m_c( verticeCount ), m_q( verticeCount ), m_s( verticeCount ), m_y( verticeCount )
+{
     time = 0;
  //    ks = 20000;
  //   kd = 20;
@@ -24,7 +40,6 @@ System::System(TriangleMesh* m): mesh(m) {
     Kbd = .01;
     //kb = 0;
     mouseSelected = NULL;
-
 
 //*******************GET REST ANGLE AND STORE IT IN MESH************************************
     TriangleMeshVertex *a, *b;
@@ -103,6 +118,12 @@ System::System(TriangleMesh* m): mesh(m) {
 
 	} while (edg_it.next());
 }
+
+//void System::loadMatrices() {
+
+
+
+//}
 
 double System::getT() {
     return time;
@@ -382,8 +403,12 @@ void System::calculateInternalForces() {
        F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
 
+       //Store Forces
        a->setF(F0);
        b->setF(-1 * F0);
+
+       //VECTOR3_ADD( m_TotalForces_int.m_pData[m_iParticle[0]], force, m_TotalForces_int.m_pData[m_iParticle[0]] );
+       //VECTOR3_ADD( m_TotalForces_int.m_pData[m_iParticle[1]], force, m_TotalForces_int.m_pData[m_iParticle[1]] );
 
 	 Forces((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
 
