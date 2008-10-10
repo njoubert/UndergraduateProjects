@@ -1,0 +1,78 @@
+#inputMesh Input/thickplate.mesh
+#inputMesh Input/plate2.mesh
+inputMesh  Input/box_coarse.mesh
+#inputMesh  Input/rtets.mesh
+inputMesh  Input/box_med.mesh
+#inputMesh  Input/box_long.mesh
+#inputMesh  Input/box_fine.mesh
+#inputMesh  Input/box_med.mesh
+#inputMesh  Input/2tet.mesh
+#inputMesh  Input/2floattet.mesh
+sceneScale  0.05
+
+
+gravity 0 -0.01 0
+
+
+E   30e3  4e4
+v   0.45  0.45
+rho   1000  1000 
+svdThreshold  1e-3
+baryThreshold  50000000
+irvingStressLimit  1e20
+mixDetThreshold  0.5
+
+
+
+phi   500 500
+psi   500 500
+velMulFactor  1
+
+dampPhysical  1
+dt  0.01
+mouseForceScale  0.00001
+mouseCutScaleOldGUI  0.001
+mouseForceScaleOldGUI 3
+
+lbQual  1
+
+needleBendAngularVel  0.6179938779914943653855361527329
+
+#needleBendAngularVel 0
+#needleInitForwardDir 0.70710678118654752440084436210485 0.70710678118654752440084436210485 0
+#needleInitForwardDir 0.9659258262890682867497431997289 0.25881904510252076234889883762405 0
+needleInitForwardDir 1 0 0
+#needleInitForwardDir 0.965925826	0.258819045	0
+
+
+needleInitUpDir 0 1 0
+needleVel  0.01
+needleAngularVel  62.83185307179586476925286766559 
+needleAngularVel 0
+vel0  0.01
+fsmax  2
+fcut  1
+#fdis  1
+needleLFED  0.1
+pointLocationGiveUpCount  100000
+rcondLimit 100000
+youngDecayFactor 1e-20
+#beta 0.25
+#gamma 0.5
+beta 0.25
+gamma 0.5 
+noRescaleNoTranslate 0
+
+rhoDER 8000
+R  0.001
+gammat  0
+Es  2e18
+alphaDER  1.5e1
+betaDER  10
+
+objRndrSize 1.5
+objRndrDispWorld 1.5 0.0 0.0
+objRndrDispMat -1.5 0.0 0.0
+fixedNodes 0 1 2 3 4 5 6 7 8 10 11 12 13 14 17 18 21 24 27 28 31 32 33 34 35 36 37 38 39 40 45 46 47 48 54 55 56 64 65 66 76 77 78 79 80 90 91 92 93 94    
+needleInitPos -1 0 0
+minFeatureSize 1e-6

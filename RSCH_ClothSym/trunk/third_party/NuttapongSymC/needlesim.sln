@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "needlesim", "needlesim.vcproj", "{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver", "driver\driver.vcproj", "{641A12B2-64F5-447C-9452-FB2149DB485D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E} = {54616632-B9AE-4A9E-AD8B-408E6EA54D3E}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DifTest|Win32 = DifTest|Win32
+		DifTestDebug|Win32 = DifTestDebug|Win32
+		DynamicRemeshDebug|Win32 = DynamicRemeshDebug|Win32
+		DynamicRemeshRelease|Win32 = DynamicRemeshRelease|Win32
+		NoGraphicsRelease|Win32 = NoGraphicsRelease|Win32
+		Release|Win32 = Release|Win32
+		ReleaseWithGUI|Win32 = ReleaseWithGUI|Win32
+		RodTestDebug|Win32 = RodTestDebug|Win32
+		RodTestRelease|Win32 = RodTestRelease|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.Debug|Win32.Build.0 = Debug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DifTest|Win32.ActiveCfg = DifTest|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DifTest|Win32.Build.0 = DifTest|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DifTestDebug|Win32.ActiveCfg = DifTestDebug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DifTestDebug|Win32.Build.0 = DifTestDebug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DynamicRemeshDebug|Win32.ActiveCfg = DynamicRemeshRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DynamicRemeshDebug|Win32.Build.0 = DynamicRemeshRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DynamicRemeshRelease|Win32.ActiveCfg = DynamicRemeshRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.DynamicRemeshRelease|Win32.Build.0 = DynamicRemeshRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.NoGraphicsRelease|Win32.ActiveCfg = NoGraphicsRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.NoGraphicsRelease|Win32.Build.0 = NoGraphicsRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.Release|Win32.ActiveCfg = Release|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.Release|Win32.Build.0 = Release|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.ReleaseWithGUI|Win32.ActiveCfg = SimGUIRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.ReleaseWithGUI|Win32.Build.0 = SimGUIRelease|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.RodTestDebug|Win32.ActiveCfg = RodTestDebug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.RodTestDebug|Win32.Build.0 = RodTestDebug|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.RodTestRelease|Win32.ActiveCfg = Release|Win32
+		{54616632-B9AE-4A9E-AD8B-408E6EA54D3E}.RodTestRelease|Win32.Build.0 = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.Debug|Win32.Build.0 = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DifTest|Win32.ActiveCfg = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DifTest|Win32.Build.0 = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DifTestDebug|Win32.ActiveCfg = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DifTestDebug|Win32.Build.0 = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DynamicRemeshDebug|Win32.ActiveCfg = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DynamicRemeshDebug|Win32.Build.0 = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DynamicRemeshRelease|Win32.ActiveCfg = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.DynamicRemeshRelease|Win32.Build.0 = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.NoGraphicsRelease|Win32.ActiveCfg = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.NoGraphicsRelease|Win32.Build.0 = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.Release|Win32.ActiveCfg = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.Release|Win32.Build.0 = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.ReleaseWithGUI|Win32.ActiveCfg = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.ReleaseWithGUI|Win32.Build.0 = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.RodTestDebug|Win32.ActiveCfg = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.RodTestDebug|Win32.Build.0 = Debug|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.RodTestRelease|Win32.ActiveCfg = Release|Win32
+		{641A12B2-64F5-447C-9452-FB2149DB485D}.RodTestRelease|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

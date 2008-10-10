@@ -1,0 +1,1272 @@
+Number of tet2node = 384
+Number of triangles = 192
+Start main
+Before font init
+After font init
+Frame 1
+Frame 2
+Frame 3
+Frame 4
+Frame 5
+Frame 6
+Frame 7
+Frame 8
+Frame 9
+Frame 10
+Frame 11
+Frame 12
+Frame 13
+Frame 14
+Frame 15
+Frame 16
+Frame 17
+Frame 18
+Frame 19
+Frame 20
+Frame 21
+
+
+Shaft edges exist
+NumTets = 384
+Original volume is 0.000125 current is 0.000125
+Frame 22
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 91
+The best i can do is 0.00115245
+************ Edge split
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 23
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 24
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.00234812
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 25
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 26
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.00359746
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 27
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 28
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.00490864
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 29
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 30
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.00628441
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 31
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 32
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.00772529
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 33
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 34
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.00923104
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 35
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.0107312
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 36
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.012227
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 37
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 97
+Legal because cut tip is in tet 119
+The best i can do is 0.0137166
+************ Move node
+
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 38
+
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 39
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 40
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 41
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.0154742
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 42
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.0150424
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 43
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.0134623
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 44
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 45
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.0117181
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 46
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.0100168
+************ Move node
+
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 47
+Not OK!
+Legal because cut tip is in tet 13
+Legal because cut tip is in tet 119
+Legal because cut tip is in tet 16
+The best i can do is 0.00847095
+************ Node snap
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 48
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0101582
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 49
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0117692
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 50
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.013154
+************ Move node
+
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 51
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 52
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0144107
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 53
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0155343
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 54
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0165325
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 55
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0174127
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 56
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0181821
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 57
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.018847
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 58
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0194141
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 59
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.01989
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 60
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0185286
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 61
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0169664
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 62
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0153098
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 63
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0135682
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 64
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.011754
+************ Move node
+
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 65
+Not OK!
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 7
+Legal because cut tip is in tet 12
+The best i can do is 0.0105367
+************ Node snap
+
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 66
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.012135
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 67
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0136729
+************ Move node
+
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 68
+
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 69
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0152141
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 70
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0156509
+************ Move node
+
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 71
+
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 72
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0147052
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 73
+
+Dynamic
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 74
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0136697
+************ Move node
+
+Static
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 75
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0126208
+************ Move node
+
+Static
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 76
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0115632
+************ Move node
+
+Static
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 77
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.0105034
+************ Move node
+
+Static
+Static
+Static
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 78
+
+Dynamic
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 79
+
+Dynamic
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 80
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.00924832
+************ Move node
+
+Static
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 390
+Original volume is 0.000125 current is 0.000125
+Frame 81
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 11
+Legal because cut tip is in tet 7
+The best i can do is 0.00802386
+************ Edge split
+
+Static
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 82
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 323
+Legal because cut tip is in tet 295
+The best i can do is 0.00682739
+************ Move node
+
+Static
+Dynamic
+Static
+Dynamic
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 83
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 323
+Legal because cut tip is in tet 295
+The best i can do is 0.00566403
+************ Move node
+
+Static
+Dynamic
+Static
+Static
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 84
+
+Dynamic
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 85
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 86
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 323
+Legal because cut tip is in tet 295
+The best i can do is 0.00404162
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 395
+Original volume is 0.000125 current is 0.000125
+Frame 87
+Not OK!
+Legal because cut tip is in tet 203
+Legal because cut tip is in tet 323
+Legal because cut tip is in tet 295
+The best i can do is 0.00431647
+************ Edge split
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 88
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00514757
+************ Move node
+
+Static
+Dynamic
+Static
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 89
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00594871
+************ Move node
+
+Dynamic
+Dynamic
+Static
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 90
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00671341
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 91
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00744467
+************ Move node
+
+Dynamic
+Static
+Dynamic
+Static
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 92
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00813729
+************ Move node
+
+Dynamic
+Static
+Dynamic
+Static
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 93
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 94
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00839242
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 95
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00792746
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 96
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00703234
+************ Move node
+
+Static
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 97
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00620046
+************ Move node
+
+Dynamic
+Dynamic
+Static
+Static
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 98
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00543998
+************ Move node
+
+Dynamic
+Dynamic
+Static
+Static
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 99
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.00475545
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 100
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 101
+Not OK!
+Legal because cut tip is in tet 295
+Legal because cut tip is in tet 331
+Legal because cut tip is in tet 296
+The best i can do is 0.0048531
+************ Node snap
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 102
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00563622
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 103
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00640516
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 104
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 105
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00719473
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 106
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 107
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00799894
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 108
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00877487
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Static
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 109
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.00952456
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 110
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.0102489
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 111
+Not OK!
+Legal because cut tip is in tet 358
+Legal because cut tip is in tet 349
+Legal because cut tip is in tet 43
+The best i can do is 0.0109476
+************ Move node
+
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+Dynamic
+
+Shaft edges exist
+NumTets = 401
+Original volume is 0.000125 current is 0.000125
+Frame 112
+Frame 113
+Frame 114
+Frame 115
+Frame 116
+Frame 117
+Frame 118
+Frame 119
+Frame 120
+Frame 121
+Frame 122
+Frame 123
+Frame 124
+Frame 125
+Frame 126
+Frame 127
+Frame 128
+Frame 129
+Frame 130
+Frame 131
+Frame 132
+Frame 133
+Frame 134
+Frame 135
