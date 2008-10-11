@@ -11,14 +11,15 @@ using namespace std;
  * This class represents the basic pixels of an image.
  * Pixels are addressed in the range [0, 0] to [w-1, h-1] inclusive,
  * for bottom left to top right.
- * 
+ *
  */
 class Image {
 public:
 	typedef struct pixel {
-		unsigned char b;
-		unsigned char g;
-		unsigned char r;
+		 double b;
+		 double g;
+		 double r;
+		 int sampleCount;
 	} pixel;
 	int w;
 	int h;
@@ -32,6 +33,7 @@ public:
 			pixels[i].r = 0;
 			pixels[i].g = 0;
 			pixels[i].b = 0;
+			pixels[i].sampleCount = 0;
 		}
 	}
 
@@ -50,17 +52,26 @@ public:
 	}
 	void setPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
 		int pos = absolutePosition(x, y);
-		pixels[pos].r = r;
-		pixels[pos].g = g;
-		pixels[pos].b = b;
+		pixels[pos].r += r;
+		pixels[pos].g += g;
+		pixels[pos].b += b;
+		pixels[pos].sampleCount += 1;
 	}
-	
+
 	bool getPixel(int x, int y, unsigned char* r, unsigned char* g, unsigned char* b) {
 	    int pos = absolutePosition(x, y);
 	    *r = pixels[pos].r;
 	    *g = pixels[pos].g;
 	    *b = pixels[pos].b;
 	    return true;
+	}
+
+	void bakeValues(int x, int y) {
+	    int pos = absolutePosition(x, y);
+        pixels[pos].r /= pixels[pos].sampleCount;
+        pixels[pos].g /= pixels[pos].sampleCount;
+        pixels[pos].b /= pixels[pos].sampleCount;
+        pixels[pos].sampleCount = 1;
 	}
 
 	/* This routine is an adaptation of the saveBMP routine written by
@@ -72,7 +83,7 @@ public:
 		fstream fp_out;
 
 		int filesize = 54 + 3*w*h;// + h*((4-(w*3)%4)%4); //Account for padding
-		unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};  
+		unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
 		unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
 		char bmppad[3] = {0,0,0};
 
@@ -95,7 +106,13 @@ public:
 		fp_out.write((char*)&bmpinfoheader, 40);
 		for (int row = 0; row < h; row++) {
 			for (int col = 0; col < w; col++) {
-				fp_out.write((char*)&(pixels[absolutePosition(col, row)]), 3);
+			    bakeValues(col, row);
+			     char r = ( char) pixels[absolutePosition(col, row)].r;
+			     char g = ( char) pixels[absolutePosition(col, row)].g;
+			     char b = ( char) pixels[absolutePosition(col, row)].b;
+				fp_out.write(&r, 1);
+                fp_out.write(&g, 1);
+                fp_out.write(&b, 1);
 			}
 			fp_out.write(bmppad, (4-(w*3)%4)%4); //pads it like hellz!
 		}
@@ -131,7 +148,7 @@ public:
 			}
 		}
 		img4.saveAsBMP("tests/Img-Test4-redgreen.bmp");
-		
+
 		printInfo("Image::selfTest Test 5bg");
 		Image img5(255, 255);
 		for (int x = 0; x < 255; x++) {
@@ -140,7 +157,7 @@ public:
 			}
 		}
 		img5.saveAsBMP("tests/Img-Test5-bluegreen.bmp");
-		
+
 		printInfo("Image::selfTest Test 5br");
 		Image img6(255, 255);
 		for (int x = 0; x < 255; x++) {
@@ -149,7 +166,7 @@ public:
 			}
 		}
 		img6.saveAsBMP("tests/Img-Test5-bluered.bmp");
-		
+
 		printInfo("Image::selfTest Test 5rgb");
 		Image img7(255, 255);
 		for (int x = 0; x < 255; x++) {

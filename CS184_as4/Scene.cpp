@@ -39,15 +39,15 @@ class Light {
 public:
     Light() { }
     virtual ~Light() { }
-    
+
     Light(float x,float y,float z,float r,float g,float b) {
         illumination.setColor(r,g,b);
         pos.setX(x); pos.setY(y); pos.setZ(z);
     }
     virtual void getIncidenceNormal(Vector3d & point, Vector3d & incidence) = 0;
-    
+
     virtual void getShadowRay(Vector3d & point, Ray & shadow) = 0;
-    
+
     Color illumination;
     Vector3d pos;
 };
@@ -62,7 +62,13 @@ public:
         incidence.normalize();
     }
     inline void getShadowRay(Vector3d & point, Ray & shadow) {
-        shadow = Ray::getRay(point, pos, SHADOWBIAS);
+        //select a random point on the projected circle of this area ligh
+        double x = (rand() % 100) / 100.0;
+        double y = (rand() % 100) / 100.0;
+        Vector3d newPos = pos;
+        newPos.x += x;
+        newPos.y += y;
+        shadow = Ray::getRay(point, newPos, SHADOWBIAS);
     }
 };
 
@@ -87,7 +93,7 @@ public:
 class Scene {
     vector<Primitive*> primitives;
 public:
-    bool addSphere(float radius, float x, float y, float z, 
+    bool addSphere(float radius, float x, float y, float z,
             float ksr, float ksg, float ksb, float ksp,
             float kar, float kag, float kab,
             float kdr, float kdg, float kdb,
@@ -95,29 +101,29 @@ public:
         primitives.push_back(new Sphere(radius,x,y,z,ksr,ksg,ksb,ksp,kar,kag,kab,kdr,kdg,kdb,rr,rg,rb));
         return true;
     }
-    
+
     bool addEllipsoid(Vector3d pos, Matrix scale, Matrix rotate, Color ks, Color ka, Color kd, Color kr, float ksp) {
         primitives.push_back(new Ellipsoid(pos,scale,rotate,ks,ka,kd,kr,ksp));
         return true;
     }
-    
-    bool addTriangle(float x1, float y1, float z1, 
-            float x2, float y2, float z2, 
-            float x3, float y3, float z3, 
+
+    bool addTriangle(float x1, float y1, float z1,
+            float x2, float y2, float z2,
+            float x3, float y3, float z3,
             float ksr, float ksg, float ksb, float ksp,
-            float kar, float kag, float kab, 
+            float kar, float kag, float kab,
             float kdr, float kdg, float kdb,
             float rr, float rg, float rb) {
-        
+
         primitives.push_back(new Triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb,rr,rg,rb));
         return true;
     }
-    
+
     bool addTriangle(Vector3d* v1, Vector3d* v2, Vector3d* v3, Color ks, Color ka, Color kd, Color kr, float ksp) {
         primitives.push_back(new Triangle(v1,v2,v3,ks,ka,kd,kr,ksp));
         return true;
     }
-    
+
    bool addDirectionLight(float x, float y, float z, float r, float g, float b) {
        lights.push_back(new DirectionalLight(x,y,z,r,g,b));
         return true;
@@ -126,23 +132,23 @@ public:
         lights.push_back(new PointLight(x,y,z,r,g,b));
         return true;
     }
-    
+
     /** Returns the closest object that the given ray intersects, or null */
     Primitive* intersect(Ray & ray, double* t_ptr) {
         double t;
         *t_ptr = numeric_limits<double>::infinity();
         Primitive* p = NULL;
         for (unsigned int i = 0; i < primitives.size(); i++) {
-            t = primitives[i]->intersect(ray);  
+            t = primitives[i]->intersect(ray);
             if ((t < *t_ptr) && (t > ray.min_t)) {          //checking here works...
                 *t_ptr = t;
                 p = primitives[i];
             }
         }
         return p;
-        
+
     }
-    
+
     Eye eye;
     Viewport viewport;
     vector<Light*> lights;

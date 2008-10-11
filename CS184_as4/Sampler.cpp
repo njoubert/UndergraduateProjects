@@ -8,9 +8,9 @@
 /** Creates samples across the viewport in world space */
 class Sampler {
 public:
-    Sampler(Scene * s, Film & f):scene(s), film(f) {
-        incrementu = (1 / (double) film.width);
-        incrementv = (1 / (double) film.height);
+    Sampler(Scene * s, Film & f, int raysPerPixel):scene(s), film(f) {
+        incrementu = (1 / (double) film.width) / raysPerPixel;
+        incrementv = (1 / (double) film.height) / raysPerPixel;
         v = incrementv/2;
         u = -incrementu/2; //hack to start off correctly
     }

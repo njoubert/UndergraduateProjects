@@ -6,7 +6,7 @@
 #include <string>
 
 /** Collects samples across the viewport in world space
- * into buckets for each pixel 
+ * into buckets for each pixel
  * WORLD COORDINATES ===> IMAGE COORDINATES */
 class Film {
     long oldpercent;
@@ -38,11 +38,11 @@ public:
         printDebug(5, "Saving to pixel ("<<x<<","<<y<<") color ("<<(int)color.getBMPR(0,1)<<","<<(int)color.getBMPG(0,1)<<","<<(int)color.getBMPB(0,1)<<")");
         //Be sure to round down!
         long newpercent = ((long)((x + (y * (long)width) + 1))*100)/(long)(width*height);
-        if (oldpercent != newpercent) {
+        if (oldpercent < newpercent) {
             oldpercent = newpercent;
             printDebug(1, "Exposing " << newpercent << "%");
         }
-        
+
         img->setPixel(x,y,
                 color.getBMPR(0,1),
                 color.getBMPG(0,1),
