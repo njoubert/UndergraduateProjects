@@ -3,8 +3,11 @@ viewport -2.0 2.0 15. 	2.0 2.0 15.		2.0 6.0 15.  -2.0 6.0 15.
 
 #lights:
 #pointlight  10.0 -0.5 21.0   0.4 0.5 0.9
-pointlight  -10.0 10.0 21.0   0.5 0.5 0.5
-directionallight 	0.0 -8.5 -1.0 0.5 0.5 0.5 
+#pointlight  -10.0 10.0 21.0   0.5 0.5 0.5
+sphericallight  -10.0 10.0 21.0   0.5 0.5 0.5 10.0
+#directionallight 	0.0 -8.5 -1.0 0.5 0.5 0.5 
+sphericallight 	0.0 -8.5 -1.0 0.5 0.5 0.5 5.0
+
 #smallsphere
 sphere	0.0 6.0 7.0 0.5 	0.4 0.8 0.5 20.0	0.1 0.1 0.1		0.4 0.8 0.5  0.1 0.1 0.1
 

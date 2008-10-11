@@ -8,19 +8,19 @@
  * -- Camera (Eye and Viewport)
  * -- Lights
  * -- Primitives
- * 
+ *
  * Here is the description for my .scene files:
- * 
+ *
  * - all inputs are interpreted as floating point.
  * - blank lines are ignored.
  * - lines starting with # are ignored
  * - no in-line comments allowed
- * 
+ *
  * All files start with an eye, viewport and boundingbox operative.
- * 
+ *
  * File structure:
  * [operative] [operands]\n
- * 
+ *
  * operative        operands
  *  eye             x y z
  *  viewport        llx lly llz lrx lry lrz urx ury urz ulx uly ulz
@@ -29,11 +29,11 @@
  *  triangle        x1 y1 z1 x2 y2 z2 x3 y3 z3 ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
  *  directionlight  x y z r g b
  *  pointlight      x y z r g b
- * 
+ *
  *  #These are subsets of the actual .obj file implementation. This allows you to draw triangles:
- *  v               x y z           
+ *  v               x y z
  *  f               v1 v2 v3
- * 
+ *
  */
 #include <string>
 #include <sstream>
@@ -52,11 +52,11 @@ public:
         kr.setColor(0.2, 0.2, 0.2);
         ksp = 20.0;
     }
-    
+
     bool isDone() {
         return (parsedEye && parsedViewport);
     }
-    
+
     Scene* parseScene(string filename) {
         printInfo("Parsing Scene File " << filename);
         char line[1024];
@@ -71,16 +71,16 @@ public:
             if (!parseLine(string(line), sc))
                 exit(1);
         }
-        
+
         //Check that the scene contains:
         // - an eye
         // - a viewport
-        
+
         inFile.close();
-        
+
         if (!isDone())
             printError("File was compeletely read but did not contain all the necessary elements!");
-        
+
         return sc;
     }
 private:
@@ -89,11 +89,11 @@ private:
     vector<Vector3d*> vertexBuffer;
     Color ka, kd, ks, kr;
     float ksp;
-    
+
     bool parseLine(string line, Scene * scene) {
         string operand;
         bool success = true;
-        
+
         printDebug(4, "Parsing Line: " << line);
         if (line.empty())
             return true;
@@ -104,7 +104,7 @@ private:
         if (operand[0] == '#') {
             return true;
         } else if (operand.compare("eye") == 0) {
-            
+
                 if (parsedEye) {
                     printError("Multiple definitions of an eye in input file!");
                     exit(1);
@@ -114,9 +114,9 @@ private:
                 ss >> scene->eye.pos.z;
                 printDebug(3, "Parsed Eye Input to (" << scene->eye.pos.x << "," << scene->eye.pos.y << "," << scene->eye.pos.z << ")");
                 parsedEye = true;
-                
+
         } else if (operand.compare("viewport") == 0) {
-            
+
                 if (parsedViewport) {
                     printError("Multiple definitions of an viewport in input file!");
                     exit(1);
@@ -132,7 +132,7 @@ private:
                 ss >> scene->viewport.UR.z;
                 ss >> scene->viewport.UL.x;
                 ss >> scene->viewport.UL.y;
-                ss >> scene->viewport.UL.z; 
+                ss >> scene->viewport.UL.z;
                 printDebug(3, "Parsed Viewport Input to LL=(" << scene->viewport.LL.x << ","
                         << scene->viewport.LL.y << ","
                         << scene->viewport.LL.z << ") LR=("
@@ -145,19 +145,19 @@ private:
                         << scene->viewport.UL.x << ","
                         << scene->viewport.UL.y << ","
                         << scene->viewport.UL.z << ")");
-                
+
                 parsedViewport = true;
-                
+
         } else if (operand.compare("sphere") == 0) {
-            
+
             float x, y, z, r, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
             ss >>x >>y >>z >>r >> ksr>> ksg>> ksb>> ksp>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
             success = scene->addSphere(r,x,y,z,ksr,ksg,ksb,ksp,kar,kag,kab,kdr,kdg,kdb,rr,rg,rb);
             printDebug(3, "Parsed Sphere Input to (" << x << "," << y << "," << z << ") r=" << r);
-            
+
         } else if (operand.compare("ellipsoid") == 0) {
-            
-            
+
+
             //ellipse         x y z sx sy sz rx ry rz ksr ksg ksb ksp kar kag kab kdr kdg kdb rr rg rb
             float x, y, z, sx, sy, sz, rx, ry, rz, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
             ss >>x >>y >>z >>sx >>sy >>sz >>rx >>ry >>rz >> ksr>> ksg>> ksb>> ksp>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
@@ -168,21 +168,21 @@ private:
             rot.makeRotate(rx,ry,rz);
             success = scene->addEllipsoid(pos,sc,rot,ks,ka,kd,kr,ksp);
             printDebug(1, "Parsed Ellipsoid Input!");
-            
+
         } else if (operand.compare("triangle") == 0) {
-            
+
             float x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb, rr, rg, rb;
             ss >>x1>> y1>> z1>> x2>> y2>> z2>> x3>> y3>> z3>> ksr>> ksg>> ksb>> ksp>> kar>> kag>> kab>> kdr>> kdg>> kdb>> rr>> rg>> rb;
             success = scene->addTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, ksr, ksg, ksb, ksp, kar, kag, kab, kdr, kdg, kdb,rr,rg,rb);
             printDebug(3, "Parsed Triangle Input to ("<<x1<<","<<y1<<","<<z1<<") ("<<x2<<","<<y2<<","<<z2<<") ("<<x3<<","<<y3<<","<<z3<<")");
-            
+
         } else if (operand.compare("directionallight") == 0) {
-            
+
             float x, y, z, r, g, b;
             ss >>x >>y >>z >>r >>g >>b;
             success = scene->addDirectionLight(x,y,z,r,g,b);
             printDebug(3, "Parsed DirectionLight input to ("<<x<<","<<y<<","<<z<<") color ("<<r<<","<<g<<","<<b<<")");
-            
+
         } else if (operand.compare("pointlight") == 0) {
 
             float x, y, z, r, g, b;
@@ -190,8 +190,17 @@ private:
             success = scene->addPointLight(x,y,z,r,g,b);
             printDebug(3, "Parsed PointLight input to ("<<x<<","<<y<<","<<z<<") color ("<<r<<","<<g<<","<<b<<")");
 
-            
-            
+
+
+        } else if (operand.compare("sphericallight") == 0) {
+
+            float x, y, z, r, g, b, rad;
+            ss >>x >>y >>z >>r >>g >>b >> rad;
+            success = scene->addSphericalLight(x,y,z,rad,r,g,b);
+            printDebug(3, "Parsed SphericalLight input to ("<<x<<","<<y<<","<<z<<") color ("<<r<<","<<g<<","<<b<<")");
+
+
+
         } else if (operand.compare("v") == 0) {
 
             double x, y, z;
@@ -206,19 +215,19 @@ private:
             Vector3d* ver1 = vertexBuffer[v1-1];
             Vector3d* ver2 = vertexBuffer[v2-1];
             Vector3d* ver3 = vertexBuffer[v3-1];
-            
+
             success = scene->addTriangle(ver1, ver2, ver3, ks, ka, kd, kr, ksp);
             printDebug(3, "Parsed Face input from vertices "<<v1<<", "<<v2<<" and "<<v3);
-        
-           
+
+
         } else {
             printError("Unknown operand in scene file, skipping line: " << operand);
         }
-        
+
         if (ss.fail()) {
             printError("The bad bit of the input file's line's stringstream is set! Couldn't parse!")
             exit(1);
-        }     
+        }
         return success;
     }
 };

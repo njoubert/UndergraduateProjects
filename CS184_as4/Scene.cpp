@@ -62,13 +62,7 @@ public:
         incidence.normalize();
     }
     inline void getShadowRay(Vector3d & point, Ray & shadow) {
-        //select a random point on the projected circle of this area ligh
-        double x = (rand() % 100) / 100.0;
-        double y = (rand() % 100) / 100.0;
-        Vector3d newPos = pos;
-        newPos.x += x;
-        newPos.y += y;
-        shadow = Ray::getRay(point, newPos, SHADOWBIAS);
+        shadow = Ray::getRay(point, pos, SHADOWBIAS);
     }
 };
 
@@ -89,6 +83,27 @@ public:
     }
 };
 
+class SphericalLight: public Light {
+public:
+	SphericalLight(float x,float y,float z,float rad,float r,float g,float b): Light(x,y,z,r,g,b), rad(rad) {
+        printDebug(3, "Created new SphericalLight!");
+    }
+    inline void getIncidenceNormal(Vector3d & point, Vector3d & incidence) {
+        incidence.calculateFromPositions(&point,&pos);
+        incidence.normalize();
+    }
+    inline void getShadowRay(Vector3d & point, Ray & shadow) {
+        //select a random point on the projected circle of this area ligh
+        double delx = ((rand() % 100) / 100.0) * rad;
+        double dely = ((rand() % 100) / 100.0) * rad;
+        Vector3d newPos = pos;
+        newPos.x += delx;
+        newPos.y += dely;
+        shadow = Ray::getRay(point, newPos, SHADOWBIAS);
+    }
+private:
+	double rad;
+};
 
 class Scene {
     vector<Primitive*> primitives;
@@ -130,6 +145,10 @@ public:
     }
     bool addPointLight(float x, float y, float z, float r, float g, float b) {
         lights.push_back(new PointLight(x,y,z,r,g,b));
+        return true;
+    }
+    bool addSphericalLight(float x, float y, float z, float rad, float r, float g, float b) {
+        lights.push_back(new SphericalLight(x,y,z,rad,r,g,b));
         return true;
     }
 
