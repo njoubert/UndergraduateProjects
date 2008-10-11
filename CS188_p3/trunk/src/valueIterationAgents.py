@@ -26,17 +26,47 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
     self.mdp = mdp
     self.discount = discount
     self.iterations = iterations
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    self.utilities = util.Counter()
+    states = mdp.getStates()
+    for state in states:
+        self.utilities[state] = 0
+        
+    for i in range(1,iterations+1):
+        newUtilities = util.Counter()
+        for state in states:
+            newUtility = 0
+            for action in mdp.getPossibleActions(state):
+                q_value = 0
+                for transition in mdp.getTransitionStatesAndProbs(state,action):
+                    nextState = transition[0]
+                    probability = transition[1]
+                    q_value += probability*(mdp.getReward(state,action,nextState) + \
+                        discount*self.utilities[nextState])
+                newUtility = max(newUtility, q_value)
+            newUtilities[state] = newUtility
+        self.utilities = newUtilities
+    
+    """ q-values are a dictionary from states to dictionaries of action => qvalue mappings"""
+    self.qvalues = {}
+    for state in states:
+        self.qvalues[state] = util.Counter()
+        for action in mdp.getPossibleActions(state):
+            q_value = 0
+            for transition in mdp.getTransitionStatesAndProbs(state,action):
+                nextState = transition[0]
+                probability = transition[1]
+                q_value += probability*(mdp.getReward(state,action,nextState) + \
+                        discount*self.utilities[nextState])
+            self.qvalues[state][action] = q_value
+    
     
   def getValue(self, state):
     """
       Return the value of the state 
       (after the indicated number of value iteration passes).      
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    return self.utilities[state]
 
   def getQValue(self, state, action):
     """
@@ -46,8 +76,7 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
       necessarily create this quantity and you may have
       to derive it on the fly.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return self.qvalues[state][action]
 
   def getPolicy(self, state):
     """
@@ -58,8 +87,7 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
       You may break ties any way you see fit. The getPolicy method is used 
       for display purposes & in the getAction method below.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return self.qvalues[state].argMax()
 
   def getAction(self, state):
     """
