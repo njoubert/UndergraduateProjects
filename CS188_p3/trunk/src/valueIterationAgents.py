@@ -27,37 +27,36 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
     self.discount = discount
     self.iterations = iterations
     
-    self.utilities = util.Counter()
+    self.utilities = {}
+    self.qvalues = {}
     states = mdp.getStates()
     for state in states:
         self.utilities[state] = 0
+        self.qvalues[state] = util.Counter()
         
-    for i in range(1,iterations+1):
-        newUtilities = util.Counter()
+    for i in range(iterations):
+        newUtilities = {}
         for state in states:
-            newUtility = 0
+            if self.mdp.isTerminal(state):
+                continue
+            childQs = []
             for action in mdp.getPossibleActions(state):
                 q_value = 0
                 for transition in mdp.getTransitionStatesAndProbs(state,action):
-                    nextState = transition[0]
-                    probability = transition[1]
-                    q_value += probability*(mdp.getReward(state,action,nextState) + \
-                        discount*self.utilities[nextState])
-                newUtility = max(newUtility, q_value)
-            newUtilities[state] = newUtility
-        self.utilities = newUtilities
+                    q_value += transition[1]*(mdp.getReward(state,action,transition[0]) + \
+                        discount*self.utilities[transition[0]])
+                childQs.append(q_value)
+            newUtilities[state] = max(childQs)
+        self.utilities.update(newUtilities)
     
     """ q-values are a dictionary from states to dictionaries of action => qvalue mappings"""
-    self.qvalues = {}
+    
     for state in states:
-        self.qvalues[state] = util.Counter()
         for action in mdp.getPossibleActions(state):
             q_value = 0
             for transition in mdp.getTransitionStatesAndProbs(state,action):
-                nextState = transition[0]
-                probability = transition[1]
-                q_value += probability*(mdp.getReward(state,action,nextState) + \
-                        discount*self.utilities[nextState])
+                q_value += transition[1]*(mdp.getReward(state,action,transition[0]) + \
+                    discount*self.utilities[transition[0]])
             self.qvalues[state][action] = q_value
     
     
@@ -66,6 +65,7 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
       Return the value of the state 
       (after the indicated number of value iteration passes).      
     """
+    #print state, self.utilities[state]
     return self.utilities[state]
 
   def getQValue(self, state, action):
@@ -87,6 +87,8 @@ class ValueIterationAgent(AbstractValueEstimationAgent):
       You may break ties any way you see fit. The getPolicy method is used 
       for display purposes & in the getAction method below.
     """
+    #print self.qvalues[state]
+    #print self.qvalues[state].argMax()
     return self.qvalues[state].argMax()
 
   def getAction(self, state):

@@ -28,7 +28,7 @@ class MarkovDecisionProcess:
     from 'state' by taking 'action' along
     with their transition probabilities.  
     
-    Note that in Q-Learning and reinforcment
+    Note that in Q-Learning and reinforcement
     learning in general, we do not know these
     probabilities nor do we directly model them.
     """
