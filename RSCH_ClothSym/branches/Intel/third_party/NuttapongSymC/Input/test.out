@@ -1,0 +1,1089 @@
+Find Special Points
+maxsize = 1100
+tlo 0:
+ [cube=0,1,2,3,4,5] 
+Crosspoint found: (0, 0, 0) diam = 1905.26,  surfs: 0,2,4
+Crosspoint found: (0, 0, 0.2) diam = 0.46515,  surfs: 1,2,4
+Crosspoint found: (0.2, 0, 0) diam = 0.46515,  surfs: 0,2,5
+Crosspoint found: (0.2, 0, 0.2) diam = 0.46515,  surfs: 1,2,5
+Crosspoint found: (0, 1, 0) diam = 0.46515,  surfs: 0,3,4
+Crosspoint found: (0.2, 1, 0) diam = 0.46515,  surfs: 0,3,5
+Crosspoint found: (0, 1, 0.2) diam = 0.46515,  surfs: 1,3,4
+Crosspoint found: (0.2, 1, 0.2) diam = 0.46515,  surfs: 1,3,5
+level 0 has 1 boxes
+level 1 has 8 boxes
+level 2 has 7 boxes
+level 3 has 7 boxes
+level 4 has 7 boxes
+level 5 has 7 boxes
+level 6 has 7 boxes
+level 7 has 7 boxes
+level 8 has 7 boxes
+level 9 has 7 boxes
+level 10 has 7 boxes
+level 11 has 11 boxes
+level 12 has 35 boxes
+level 13 has 76 boxes
+numprim_histogramm = 
+0: 0
+1: 0
+2: 48
+3: 49
+4: 16
+5: 43
+6: 38
+
+AnalyzeSpecialPoints
+24 special points:
+p = (0, 0, 0)   v = (1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0, 0, 0)   v = (0, 1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 0, 0)   v = (0, 0, 1) s1/s2 = 2/4 layer = 1
+p = (0, 0, 0.2)   v = (1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/4 layer = 1
+p = (0.2, 0, 0)   v = (-1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0.2, 0, 0)   v = (0, 1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 0, 0)   v = (0, 0, 1) s1/s2 = 2/5 layer = 1
+p = (0.2, 0, 0.2)   v = (-1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/5 layer = 1
+p = (0, 1, 0)   v = (1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0, 1, 0)   v = (0, -1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 1, 0)   v = (0, 0, 1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0)   v = (-1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0.2, 1, 0)   v = (0, -1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 1, 0)   v = (0, 0, 1) s1/s2 = 3/5 layer = 1
+p = (0, 1, 0.2)   v = (1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0.2)   v = (-1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0.2, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/5 layer = 1
+AnalyzeSpecialPoints
+24 special points:
+p = (0, 0, 0)   v = (1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0, 0, 0)   v = (0, 1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 0, 0)   v = (0, 0, 1) s1/s2 = 2/4 layer = 1
+p = (0, 0, 0.2)   v = (1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/4 layer = 1
+p = (0.2, 0, 0)   v = (-1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0.2, 0, 0)   v = (0, 1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 0, 0)   v = (0, 0, 1) s1/s2 = 2/5 layer = 1
+p = (0.2, 0, 0.2)   v = (-1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/5 layer = 1
+p = (0, 1, 0)   v = (1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0, 1, 0)   v = (0, -1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 1, 0)   v = (0, 0, 1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0)   v = (-1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0.2, 1, 0)   v = (0, -1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 1, 0)   v = (0, 0, 1) s1/s2 = 3/5 layer = 1
+p = (0, 1, 0.2)   v = (1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0.2)   v = (-1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0.2, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/5 layer = 1
+AnalyzeSpecialPoints
+24 special points:
+p = (0, 0, 0)   v = (1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0, 0, 0)   v = (0, 1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 0, 0)   v = (0, 0, 1) s1/s2 = 2/4 layer = 1
+p = (0, 0, 0.2)   v = (1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/4 layer = 1
+p = (0.2, 0, 0)   v = (-1, 0, 0) s1/s2 = 0/2 layer = 1
+p = (0.2, 0, 0)   v = (0, 1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 0, 0)   v = (0, 0, 1) s1/s2 = 2/5 layer = 1
+p = (0.2, 0, 0.2)   v = (-1, 0, 0) s1/s2 = 1/2 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 0, 0.2)   v = (0, 0, -1) s1/s2 = 2/5 layer = 1
+p = (0, 1, 0)   v = (1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0, 1, 0)   v = (0, -1, 0) s1/s2 = 0/4 layer = 1
+p = (0, 1, 0)   v = (0, 0, 1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0)   v = (-1, 0, 0) s1/s2 = 0/3 layer = 1
+p = (0.2, 1, 0)   v = (0, -1, 0) s1/s2 = 0/5 layer = 1
+p = (0.2, 1, 0)   v = (0, 0, 1) s1/s2 = 3/5 layer = 1
+p = (0, 1, 0.2)   v = (1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/4 layer = 1
+p = (0, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/4 layer = 1
+p = (0.2, 1, 0.2)   v = (-1, 0, 0) s1/s2 = 1/3 layer = 1
+p = (0.2, 1, 0.2)   v = (0, -1, 0) s1/s2 = 1/5 layer = 1
+p = (0.2, 1, 0.2)   v = (0, 0, -1) s1/s2 = 3/5 layer = 1
+Surface 1
+Face Descriptor: surfnr = 0, domin = 1, domout = 0, tlosurf = 0, bcprop = 1, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   0 times used rule Right 60 (1)
+   3 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   3 times used rule Fill Triangle
+   2 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+Surface 2
+Face Descriptor: surfnr = 2, domin = 1, domout = 0, tlosurf = 0, bcprop = 2, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   1 times used rule Right 60 (1)
+   0 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   1 times used rule Fill Triangle
+   0 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+Surface 3
+Face Descriptor: surfnr = 1, domin = 1, domout = 0, tlosurf = 0, bcprop = 3, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   3 times used rule Right 60 (1)
+   2 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   2 times used rule Fill Triangle
+   1 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+Surface 4
+Face Descriptor: surfnr = 5, domin = 1, domout = 0, tlosurf = 0, bcprop = 4, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   0 times used rule Right 60 (1)
+   1 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   4 times used rule Fill Triangle
+   3 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+Surface 5
+Face Descriptor: surfnr = 3, domin = 1, domout = 0, tlosurf = 0, bcprop = 5, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   1 times used rule Right 60 (1)
+   0 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   1 times used rule Fill Triangle
+   0 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+Surface 6
+Face Descriptor: surfnr = 4, domin = 1, domout = 0, tlosurf = 0, bcprop = 6, domin_sing = 0, domout_sing = 0
+domin = 1, domout = 0, tlo-surf = 0 mpram.maxh = 1000, maxh = 1000
+   0 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+   1 times used rule Right 60 (1)
+   2 times used rule Left 60 (1)
+   0 times used rule Right 120 (1)
+   0 times used rule Left 120 (1)
+   0 times used rule Left Right 120 (1)
+   3 times used rule Fill Triangle
+   2 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+
+
+Points:           20
+Surface Elements: 36
+
+Elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 0
+0.55 -  0.6: 0
+ 0.6 - 0.65: 0
+0.65 -  0.7: 0
+ 0.7 - 0.75: 0
+0.75 -  0.8: 10
+ 0.8 - 0.85: 26
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+blockfill local h
+rel filldist = 0.1
+
+
+Points:           24
+Volume Elements:  91
+
+Volume elements in qualityclasses:
+   0 - 0.05: 62
+0.05 -  0.1: 1
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 4
+ 0.5 - 0.55: 1
+0.55 -  0.6: 2
+ 0.6 - 0.65: 5
+0.65 -  0.7: 3
+ 0.7 - 0.75: 6
+0.75 -  0.8: 4
+ 0.8 - 0.85: 3
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 7.3e+004
+free: 54, fixed: 37
+
+Start SwapImprove
+free: 0, fixed: 89
+
+Start SwapImprove
+
+
+Points:           24
+Volume Elements:  89
+
+Volume elements in qualityclasses:
+   0 - 0.05: 61
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 4
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 5
+ 0.7 - 0.75: 5
+0.75 -  0.8: 2
+ 0.8 - 0.85: 4
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 7.2e+004
+   0 times used rule Free Tetrahedron
+   0 times used rule Tetrahedron 60
+   0 times used rule Tetrahedron 60 with edge(1)
+   0 times used rule Tetrahedron Vis a Vis Point (1)
+   0 times used rule Tetrahedron Vis a Vis Point with edge(1)
+   0 times used rule Tetrahedron Vis a Vis Point with 2 edges (1)
+   0 times used rule Tetrahedron Vis a Vis Point with 3 edges (1)
+   0 times used rule Tetrahedron Vis a Vis Triangle (1)
+   0 times used rule Octaeder 1
+   0 times used rule Octaeder 2
+   0 times used rule Octaeder 2a
+   0 times used rule Pyramid 1
+   0 times used rule Tetrahedron 2 times 60
+   0 times used rule Fill Tetrahedron (1)
+   0 times used rule Tetrahedron 120 (1)
+   0 times used rule Tetrahedron 2 times 120 (1)
+   0 times used rule four Tetrahedron non convex (4)
+   0 times used rule five Tetrahedron non convex (4)
+   0 times used rule four Tetrahedron non convex (6)
+   0 times used rule four Tetrahedron non convex (6)
+   0 times used rule three Tetrahedron non convex (4)
+   0 times used rule three Tetrahedron non convex (6)
+   0 times used rule four Tetrahedron non convex (6)
+   0 times used rule Tetrahedron 2 in 60 (12)
+   0 times used rule Tetrahedron 120, but more than 180 (13)
+   0 times used rule Free Tetrahedron (14)
+   0 times used rule Free Tetrahedron (15)
+
+
+Points:           20
+Volume Elements:  26
+
+Volume elements in qualityclasses:
+   0 - 0.05: 2
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 5
+ 0.7 - 0.75: 5
+0.75 -  0.8: 2
+ 0.8 - 0.85: 4
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 1e+002
+
+
+Points:           20
+Volume Elements:  26
+
+Volume elements in qualityclasses:
+   0 - 0.05: 2
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 5
+ 0.7 - 0.75: 5
+0.75 -  0.8: 2
+ 0.8 - 0.85: 4
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 1e+002
+Start CombineImprove
+CombineImprove done
+Improve Mesh
+Total badness = 1.1e+002
+Total badness = 108.3813
+start SplitImprove
+Total badness = 108.3813
+Splitt - Improve done
+Total badness = 62.885441
+Improve Mesh
+Total badness = 62.885441
+fail, f = 37.794329 f0 = 37.794329
+Total badness = 62.885441
+
+Start SwapImprove
+Total badness = 62.885441
+
+Start SwapImprove2
+Total badness = 59.623245
+Total badness = 59.623245
+swapimprove2 done
+Improve Mesh
+Total badness = 59.623245
+Total badness = 54.439049
+
+
+Points:           22
+Volume Elements:  34
+
+Volume elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 2
+0.55 -  0.6: 5
+ 0.6 - 0.65: 6
+0.65 -  0.7: 6
+ 0.7 - 0.75: 6
+0.75 -  0.8: 5
+ 0.8 - 0.85: 3
+0.85 -  0.9: 1
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 51
+Start CombineImprove
+illegal tet 23
+illegal tet 29
+illegal tet 30
+illegal tet 31
+CombineImprove done
+Improve Mesh
+Total badness = 38
+Total badness = 38.003324
+start SplitImprove
+Total badness = 38.003324
+Splitt - Improve done
+Total badness = 38.003324
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+Start SwapImprove
+Total badness = 38.003324
+
+Start SwapImprove2
+Total badness = 38.003324
+Total badness = 38.003324
+swapimprove2 done
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+
+Points:           20
+Volume Elements:  24
+
+Volume elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 4
+ 0.7 - 0.75: 6
+0.75 -  0.8: 3
+ 0.8 - 0.85: 3
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 35
+Start CombineImprove
+CombineImprove done
+Improve Mesh
+Total badness = 38
+Total badness = 38.003324
+start SplitImprove
+Total badness = 38.003324
+Splitt - Improve done
+Total badness = 38.003324
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+Start SwapImprove
+Total badness = 38.003324
+
+Start SwapImprove2
+Total badness = 38.003324
+Total badness = 38.003324
+swapimprove2 done
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+
+Points:           20
+Volume Elements:  24
+
+Volume elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 4
+ 0.7 - 0.75: 6
+0.75 -  0.8: 3
+ 0.8 - 0.85: 3
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 35
+Start CombineImprove
+CombineImprove done
+Improve Mesh
+Total badness = 38
+Total badness = 38.003324
+start SplitImprove
+Total badness = 38.003324
+Splitt - Improve done
+Total badness = 38.003324
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+Start SwapImprove
+Total badness = 38.003324
+
+Start SwapImprove2
+Total badness = 38.003324
+Total badness = 38.003324
+swapimprove2 done
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+
+Points:           20
+Volume Elements:  24
+
+Volume elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 4
+ 0.7 - 0.75: 6
+0.75 -  0.8: 3
+ 0.8 - 0.85: 3
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 35
+Start CombineImprove
+CombineImprove done
+Improve Mesh
+Total badness = 38
+Total badness = 38.003324
+start SplitImprove
+Total badness = 38.003324
+Splitt - Improve done
+Total badness = 38.003324
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+Start SwapImprove
+Total badness = 38.003324
+
+Start SwapImprove2
+Total badness = 38.003324
+Total badness = 38.003324
+swapimprove2 done
+Improve Mesh
+Total badness = 38.003324
+Total badness = 38.003324
+
+
+Points:           20
+Volume Elements:  24
+
+Volume elements in qualityclasses:
+   0 - 0.05: 0
+0.05 -  0.1: 0
+ 0.1 - 0.15: 0
+0.15 -  0.2: 0
+ 0.2 - 0.25: 0
+0.25 -  0.3: 0
+ 0.3 - 0.35: 0
+0.35 -  0.4: 0
+ 0.4 - 0.45: 0
+0.45 -  0.5: 0
+ 0.5 - 0.55: 1
+0.55 -  0.6: 1
+ 0.6 - 0.65: 6
+0.65 -  0.7: 4
+ 0.7 - 0.75: 6
+0.75 -  0.8: 3
+ 0.8 - 0.85: 3
+0.85 -  0.9: 0
+ 0.9 - 0.95: 0
+0.95 -    1: 0
+total error: 35
+ne   = 192
+nse  = 144
+nseg = 96
+np   = 81
+nv   = 81
+tables deleted
+face 0 has 2 els, 0 surfels, tot = 2
+face 1 has 2 els, 0 surfels, tot = 2
+face 2 has 2 els, 0 surfels, tot = 2
+face 3 has 2 els, 0 surfels, tot = 2
+face 4 has 2 els, 0 surfels, tot = 2
+face 5 has 2 els, 0 surfels, tot = 2
+face 6 has 1 els, 1 surfels, tot = 2
+face 7 has 2 els, 0 surfels, tot = 2
+face 8 has 2 els, 0 surfels, tot = 2
+face 9 has 1 els, 1 surfels, tot = 2
+face 10 has 2 els, 0 surfels, tot = 2
+face 11 has 1 els, 1 surfels, tot = 2
+face 12 has 2 els, 0 surfels, tot = 2
+face 13 has 2 els, 0 surfels, tot = 2
+face 14 has 2 els, 0 surfels, tot = 2
+face 15 has 2 els, 0 surfels, tot = 2
+face 16 has 2 els, 0 surfels, tot = 2
+face 17 has 1 els, 1 surfels, tot = 2
+face 18 has 2 els, 0 surfels, tot = 2
+face 19 has 2 els, 0 surfels, tot = 2
+face 20 has 2 els, 0 surfels, tot = 2
+face 21 has 1 els, 1 surfels, tot = 2
+face 22 has 2 els, 0 surfels, tot = 2
+face 23 has 2 els, 0 surfels, tot = 2
+face 24 has 2 els, 0 surfels, tot = 2
+face 25 has 2 els, 0 surfels, tot = 2
+face 26 has 1 els, 1 surfels, tot = 2
+face 27 has 2 els, 0 surfels, tot = 2
+face 28 has 2 els, 0 surfels, tot = 2
+face 29 has 2 els, 0 surfels, tot = 2
+face 30 has 1 els, 1 surfels, tot = 2
+face 31 has 2 els, 0 surfels, tot = 2
+face 32 has 1 els, 1 surfels, tot = 2
+face 33 has 2 els, 0 surfels, tot = 2
+face 34 has 1 els, 1 surfels, tot = 2
+face 35 has 2 els, 0 surfels, tot = 2
+face 36 has 1 els, 1 surfels, tot = 2
+face 37 has 1 els, 1 surfels, tot = 2
+face 38 has 1 els, 1 surfels, tot = 2
+face 39 has 2 els, 0 surfels, tot = 2
+face 40 has 1 els, 1 surfels, tot = 2
+face 41 has 2 els, 0 surfels, tot = 2
+face 42 has 1 els, 1 surfels, tot = 2
+face 43 has 2 els, 0 surfels, tot = 2
+face 44 has 1 els, 1 surfels, tot = 2
+face 45 has 1 els, 1 surfels, tot = 2
+face 46 has 2 els, 0 surfels, tot = 2
+face 47 has 2 els, 0 surfels, tot = 2
+face 48 has 2 els, 0 surfels, tot = 2
+face 49 has 2 els, 0 surfels, tot = 2
+face 50 has 2 els, 0 surfels, tot = 2
+face 51 has 1 els, 1 surfels, tot = 2
+face 52 has 2 els, 0 surfels, tot = 2
+face 53 has 2 els, 0 surfels, tot = 2
+face 54 has 1 els, 1 surfels, tot = 2
+face 55 has 2 els, 0 surfels, tot = 2
+face 56 has 1 els, 1 surfels, tot = 2
+face 57 has 2 els, 0 surfels, tot = 2
+face 58 has 1 els, 1 surfels, tot = 2
+face 59 has 2 els, 0 surfels, tot = 2
+face 60 has 2 els, 0 surfels, tot = 2
+face 61 has 2 els, 0 surfels, tot = 2
+face 62 has 2 els, 0 surfels, tot = 2
+face 63 has 1 els, 1 surfels, tot = 2
+face 64 has 2 els, 0 surfels, tot = 2
+face 65 has 2 els, 0 surfels, tot = 2
+face 66 has 2 els, 0 surfels, tot = 2
+face 67 has 2 els, 0 surfels, tot = 2
+face 68 has 2 els, 0 surfels, tot = 2
+face 69 has 2 els, 0 surfels, tot = 2
+face 70 has 2 els, 0 surfels, tot = 2
+face 71 has 1 els, 1 surfels, tot = 2
+face 72 has 2 els, 0 surfels, tot = 2
+face 73 has 1 els, 1 surfels, tot = 2
+face 74 has 2 els, 0 surfels, tot = 2
+face 75 has 1 els, 1 surfels, tot = 2
+face 76 has 2 els, 0 surfels, tot = 2
+face 77 has 1 els, 1 surfels, tot = 2
+face 78 has 2 els, 0 surfels, tot = 2
+face 79 has 2 els, 0 surfels, tot = 2
+face 80 has 1 els, 1 surfels, tot = 2
+face 81 has 2 els, 0 surfels, tot = 2
+face 82 has 2 els, 0 surfels, tot = 2
+face 83 has 2 els, 0 surfels, tot = 2
+face 84 has 2 els, 0 surfels, tot = 2
+face 85 has 2 els, 0 surfels, tot = 2
+face 86 has 1 els, 1 surfels, tot = 2
+face 87 has 2 els, 0 surfels, tot = 2
+face 88 has 2 els, 0 surfels, tot = 2
+face 89 has 1 els, 1 surfels, tot = 2
+face 90 has 2 els, 0 surfels, tot = 2
+face 91 has 2 els, 0 surfels, tot = 2
+face 92 has 2 els, 0 surfels, tot = 2
+face 93 has 1 els, 1 surfels, tot = 2
+face 94 has 2 els, 0 surfels, tot = 2
+face 95 has 2 els, 0 surfels, tot = 2
+face 96 has 2 els, 0 surfels, tot = 2
+face 97 has 2 els, 0 surfels, tot = 2
+face 98 has 2 els, 0 surfels, tot = 2
+face 99 has 2 els, 0 surfels, tot = 2
+face 100 has 2 els, 0 surfels, tot = 2
+face 101 has 2 els, 0 surfels, tot = 2
+face 102 has 2 els, 0 surfels, tot = 2
+face 103 has 2 els, 0 surfels, tot = 2
+face 104 has 1 els, 1 surfels, tot = 2
+face 105 has 2 els, 0 surfels, tot = 2
+face 106 has 1 els, 1 surfels, tot = 2
+face 107 has 2 els, 0 surfels, tot = 2
+face 108 has 2 els, 0 surfels, tot = 2
+face 109 has 2 els, 0 surfels, tot = 2
+face 110 has 2 els, 0 surfels, tot = 2
+face 111 has 2 els, 0 surfels, tot = 2
+face 112 has 2 els, 0 surfels, tot = 2
+face 113 has 2 els, 0 surfels, tot = 2
+face 114 has 1 els, 1 surfels, tot = 2
+face 115 has 2 els, 0 surfels, tot = 2
+face 116 has 2 els, 0 surfels, tot = 2
+face 117 has 1 els, 1 surfels, tot = 2
+face 118 has 2 els, 0 surfels, tot = 2
+face 119 has 2 els, 0 surfels, tot = 2
+face 120 has 2 els, 0 surfels, tot = 2
+face 121 has 2 els, 0 surfels, tot = 2
+face 122 has 2 els, 0 surfels, tot = 2
+face 123 has 2 els, 0 surfels, tot = 2
+face 124 has 2 els, 0 surfels, tot = 2
+face 125 has 1 els, 1 surfels, tot = 2
+face 126 has 1 els, 1 surfels, tot = 2
+face 127 has 2 els, 0 surfels, tot = 2
+face 128 has 1 els, 1 surfels, tot = 2
+face 129 has 1 els, 1 surfels, tot = 2
+face 130 has 2 els, 0 surfels, tot = 2
+face 131 has 2 els, 0 surfels, tot = 2
+face 132 has 2 els, 0 surfels, tot = 2
+face 133 has 2 els, 0 surfels, tot = 2
+face 134 has 2 els, 0 surfels, tot = 2
+face 135 has 2 els, 0 surfels, tot = 2
+face 136 has 1 els, 1 surfels, tot = 2
+face 137 has 2 els, 0 surfels, tot = 2
+face 138 has 1 els, 1 surfels, tot = 2
+face 139 has 1 els, 1 surfels, tot = 2
+face 140 has 2 els, 0 surfels, tot = 2
+face 141 has 2 els, 0 surfels, tot = 2
+face 142 has 1 els, 1 surfels, tot = 2
+face 143 has 2 els, 0 surfels, tot = 2
+face 144 has 2 els, 0 surfels, tot = 2
+face 145 has 1 els, 1 surfels, tot = 2
+face 146 has 2 els, 0 surfels, tot = 2
+face 147 has 2 els, 0 surfels, tot = 2
+face 148 has 2 els, 0 surfels, tot = 2
+face 149 has 2 els, 0 surfels, tot = 2
+face 150 has 2 els, 0 surfels, tot = 2
+face 151 has 2 els, 0 surfels, tot = 2
+face 152 has 2 els, 0 surfels, tot = 2
+face 153 has 2 els, 0 surfels, tot = 2
+face 154 has 2 els, 0 surfels, tot = 2
+face 155 has 2 els, 0 surfels, tot = 2
+face 156 has 1 els, 1 surfels, tot = 2
+face 157 has 1 els, 1 surfels, tot = 2
+face 158 has 2 els, 0 surfels, tot = 2
+face 159 has 2 els, 0 surfels, tot = 2
+face 160 has 1 els, 1 surfels, tot = 2
+face 161 has 1 els, 1 surfels, tot = 2
+face 162 has 2 els, 0 surfels, tot = 2
+face 163 has 2 els, 0 surfels, tot = 2
+face 164 has 1 els, 1 surfels, tot = 2
+face 165 has 1 els, 1 surfels, tot = 2
+face 166 has 2 els, 0 surfels, tot = 2
+face 167 has 2 els, 0 surfels, tot = 2
+face 168 has 2 els, 0 surfels, tot = 2
+face 169 has 2 els, 0 surfels, tot = 2
+face 170 has 2 els, 0 surfels, tot = 2
+face 171 has 2 els, 0 surfels, tot = 2
+face 172 has 1 els, 1 surfels, tot = 2
+face 173 has 1 els, 1 surfels, tot = 2
+face 174 has 1 els, 1 surfels, tot = 2
+face 175 has 2 els, 0 surfels, tot = 2
+face 176 has 1 els, 1 surfels, tot = 2
+face 177 has 2 els, 0 surfels, tot = 2
+face 178 has 1 els, 1 surfels, tot = 2
+face 179 has 2 els, 0 surfels, tot = 2
+face 180 has 2 els, 0 surfels, tot = 2
+face 181 has 1 els, 1 surfels, tot = 2
+face 182 has 1 els, 1 surfels, tot = 2
+face 183 has 2 els, 0 surfels, tot = 2
+face 184 has 2 els, 0 surfels, tot = 2
+face 185 has 1 els, 1 surfels, tot = 2
+face 186 has 2 els, 0 surfels, tot = 2
+face 187 has 2 els, 0 surfels, tot = 2
+face 188 has 2 els, 0 surfels, tot = 2
+face 189 has 2 els, 0 surfels, tot = 2
+face 190 has 1 els, 1 surfels, tot = 2
+face 191 has 1 els, 1 surfels, tot = 2
+face 192 has 2 els, 0 surfels, tot = 2
+face 193 has 2 els, 0 surfels, tot = 2
+face 194 has 1 els, 1 surfels, tot = 2
+face 195 has 1 els, 1 surfels, tot = 2
+face 196 has 2 els, 0 surfels, tot = 2
+face 197 has 2 els, 0 surfels, tot = 2
+face 198 has 1 els, 1 surfels, tot = 2
+face 199 has 1 els, 1 surfels, tot = 2
+face 200 has 2 els, 0 surfels, tot = 2
+face 201 has 2 els, 0 surfels, tot = 2
+face 202 has 2 els, 0 surfels, tot = 2
+face 203 has 2 els, 0 surfels, tot = 2
+face 204 has 2 els, 0 surfels, tot = 2
+face 205 has 2 els, 0 surfels, tot = 2
+face 206 has 2 els, 0 surfels, tot = 2
+face 207 has 1 els, 1 surfels, tot = 2
+face 208 has 2 els, 0 surfels, tot = 2
+face 209 has 2 els, 0 surfels, tot = 2
+face 210 has 1 els, 1 surfels, tot = 2
+face 211 has 1 els, 1 surfels, tot = 2
+face 212 has 2 els, 0 surfels, tot = 2
+face 213 has 1 els, 1 surfels, tot = 2
+face 214 has 1 els, 1 surfels, tot = 2
+face 215 has 2 els, 0 surfels, tot = 2
+face 216 has 2 els, 0 surfels, tot = 2
+face 217 has 1 els, 1 surfels, tot = 2
+face 218 has 1 els, 1 surfels, tot = 2
+face 219 has 2 els, 0 surfels, tot = 2
+face 220 has 2 els, 0 surfels, tot = 2
+face 221 has 2 els, 0 surfels, tot = 2
+face 222 has 2 els, 0 surfels, tot = 2
+face 223 has 2 els, 0 surfels, tot = 2
+face 224 has 2 els, 0 surfels, tot = 2
+face 225 has 2 els, 0 surfels, tot = 2
+face 226 has 1 els, 1 surfels, tot = 2
+face 227 has 2 els, 0 surfels, tot = 2
+face 228 has 2 els, 0 surfels, tot = 2
+face 229 has 1 els, 1 surfels, tot = 2
+face 230 has 2 els, 0 surfels, tot = 2
+face 231 has 2 els, 0 surfels, tot = 2
+face 232 has 1 els, 1 surfels, tot = 2
+face 233 has 1 els, 1 surfels, tot = 2
+face 234 has 2 els, 0 surfels, tot = 2
+face 235 has 1 els, 1 surfels, tot = 2
+face 236 has 2 els, 0 surfels, tot = 2
+face 237 has 1 els, 1 surfels, tot = 2
+face 238 has 2 els, 0 surfels, tot = 2
+face 239 has 2 els, 0 surfels, tot = 2
+face 240 has 2 els, 0 surfels, tot = 2
+face 241 has 2 els, 0 surfels, tot = 2
+face 242 has 1 els, 1 surfels, tot = 2
+face 243 has 2 els, 0 surfels, tot = 2
+face 244 has 1 els, 1 surfels, tot = 2
+face 245 has 2 els, 0 surfels, tot = 2
+face 246 has 2 els, 0 surfels, tot = 2
+face 247 has 2 els, 0 surfels, tot = 2
+face 248 has 1 els, 1 surfels, tot = 2
+face 249 has 1 els, 1 surfels, tot = 2
+face 250 has 2 els, 0 surfels, tot = 2
+face 251 has 1 els, 1 surfels, tot = 2
+face 252 has 2 els, 0 surfels, tot = 2
+face 253 has 1 els, 1 surfels, tot = 2
+face 254 has 1 els, 1 surfels, tot = 2
+face 255 has 1 els, 1 surfels, tot = 2
+face 256 has 2 els, 0 surfels, tot = 2
+face 257 has 2 els, 0 surfels, tot = 2
+face 258 has 1 els, 1 surfels, tot = 2
+face 259 has 2 els, 0 surfels, tot = 2
+face 260 has 2 els, 0 surfels, tot = 2
+face 261 has 1 els, 1 surfels, tot = 2
+face 262 has 2 els, 0 surfels, tot = 2
+face 263 has 1 els, 1 surfels, tot = 2
+face 264 has 2 els, 0 surfels, tot = 2
+face 265 has 2 els, 0 surfels, tot = 2
+face 266 has 2 els, 0 surfels, tot = 2
+face 267 has 2 els, 0 surfels, tot = 2
+face 268 has 1 els, 1 surfels, tot = 2
+face 269 has 2 els, 0 surfels, tot = 2
+face 270 has 1 els, 1 surfels, tot = 2
+face 271 has 2 els, 0 surfels, tot = 2
+face 272 has 1 els, 1 surfels, tot = 2
+face 273 has 1 els, 1 surfels, tot = 2
+face 274 has 2 els, 0 surfels, tot = 2
+face 275 has 2 els, 0 surfels, tot = 2
+face 276 has 2 els, 0 surfels, tot = 2
+face 277 has 2 els, 0 surfels, tot = 2
+face 278 has 2 els, 0 surfels, tot = 2
+face 279 has 2 els, 0 surfels, tot = 2
+face 280 has 1 els, 1 surfels, tot = 2
+face 281 has 2 els, 0 surfels, tot = 2
+face 282 has 1 els, 1 surfels, tot = 2
+face 283 has 2 els, 0 surfels, tot = 2
+face 284 has 2 els, 0 surfels, tot = 2
+face 285 has 2 els, 0 surfels, tot = 2
+face 286 has 1 els, 1 surfels, tot = 2
+face 287 has 2 els, 0 surfels, tot = 2
+face 288 has 2 els, 0 surfels, tot = 2
+face 289 has 1 els, 1 surfels, tot = 2
+face 290 has 2 els, 0 surfels, tot = 2
+face 291 has 2 els, 0 surfels, tot = 2
+face 292 has 2 els, 0 surfels, tot = 2
+face 293 has 1 els, 1 surfels, tot = 2
+face 294 has 1 els, 1 surfels, tot = 2
+face 295 has 2 els, 0 surfels, tot = 2
+face 296 has 2 els, 0 surfels, tot = 2
+face 297 has 1 els, 1 surfels, tot = 2
+face 298 has 2 els, 0 surfels, tot = 2
+face 299 has 2 els, 0 surfels, tot = 2
+face 300 has 2 els, 0 surfels, tot = 2
+face 301 has 2 els, 0 surfels, tot = 2
+face 302 has 1 els, 1 surfels, tot = 2
+face 303 has 2 els, 0 surfels, tot = 2
+face 304 has 1 els, 1 surfels, tot = 2
+face 305 has 2 els, 0 surfels, tot = 2
+face 306 has 1 els, 1 surfels, tot = 2
+face 307 has 2 els, 0 surfels, tot = 2
+face 308 has 2 els, 0 surfels, tot = 2
+face 309 has 1 els, 1 surfels, tot = 2
+face 310 has 2 els, 0 surfels, tot = 2
+face 311 has 2 els, 0 surfels, tot = 2
+face 312 has 2 els, 0 surfels, tot = 2
+face 313 has 2 els, 0 surfels, tot = 2
+face 314 has 2 els, 0 surfels, tot = 2
+face 315 has 2 els, 0 surfels, tot = 2
+face 316 has 2 els, 0 surfels, tot = 2
+face 317 has 1 els, 1 surfels, tot = 2
+face 318 has 2 els, 0 surfels, tot = 2
+face 319 has 1 els, 1 surfels, tot = 2
+face 320 has 2 els, 0 surfels, tot = 2
+face 321 has 2 els, 0 surfels, tot = 2
+face 322 has 2 els, 0 surfels, tot = 2
+face 323 has 1 els, 1 surfels, tot = 2
+face 324 has 2 els, 0 surfels, tot = 2
+face 325 has 2 els, 0 surfels, tot = 2
+face 326 has 1 els, 1 surfels, tot = 2
+face 327 has 2 els, 0 surfels, tot = 2
+face 328 has 2 els, 0 surfels, tot = 2
+face 329 has 2 els, 0 surfels, tot = 2
+face 330 has 2 els, 0 surfels, tot = 2
+face 331 has 2 els, 0 surfels, tot = 2
+face 332 has 2 els, 0 surfels, tot = 2
+face 333 has 1 els, 1 surfels, tot = 2
+face 334 has 1 els, 1 surfels, tot = 2
+face 335 has 2 els, 0 surfels, tot = 2
+face 336 has 1 els, 1 surfels, tot = 2
+face 337 has 1 els, 1 surfels, tot = 2
+face 338 has 2 els, 0 surfels, tot = 2
+face 339 has 2 els, 0 surfels, tot = 2
+face 340 has 2 els, 0 surfels, tot = 2
+face 341 has 2 els, 0 surfels, tot = 2
+face 342 has 2 els, 0 surfels, tot = 2
+face 343 has 2 els, 0 surfels, tot = 2
+face 344 has 1 els, 1 surfels, tot = 2
+face 345 has 2 els, 0 surfels, tot = 2
+face 346 has 1 els, 1 surfels, tot = 2
+face 347 has 2 els, 0 surfels, tot = 2
+face 348 has 2 els, 0 surfels, tot = 2
+face 349 has 1 els, 1 surfels, tot = 2
+face 350 has 2 els, 0 surfels, tot = 2
+face 351 has 2 els, 0 surfels, tot = 2
+face 352 has 1 els, 1 surfels, tot = 2
+face 353 has 2 els, 0 surfels, tot = 2
+face 354 has 2 els, 0 surfels, tot = 2
+face 355 has 2 els, 0 surfels, tot = 2
+face 356 has 2 els, 0 surfels, tot = 2
+face 357 has 2 els, 0 surfels, tot = 2
+face 358 has 2 els, 0 surfels, tot = 2
+face 359 has 2 els, 0 surfels, tot = 2
+face 360 has 2 els, 0 surfels, tot = 2
+face 361 has 1 els, 1 surfels, tot = 2
+face 362 has 2 els, 0 surfels, tot = 2
+face 363 has 1 els, 1 surfels, tot = 2
+face 364 has 2 els, 0 surfels, tot = 2
+face 365 has 1 els, 1 surfels, tot = 2
+face 366 has 2 els, 0 surfels, tot = 2
+face 367 has 2 els, 0 surfels, tot = 2
+face 368 has 1 els, 1 surfels, tot = 2
+face 369 has 2 els, 0 surfels, tot = 2
+face 370 has 2 els, 0 surfels, tot = 2
+face 371 has 2 els, 0 surfels, tot = 2
+face 372 has 1 els, 1 surfels, tot = 2
+face 373 has 2 els, 0 surfels, tot = 2
+face 374 has 1 els, 1 surfels, tot = 2
+face 375 has 2 els, 0 surfels, tot = 2
+face 376 has 2 els, 0 surfels, tot = 2
+face 377 has 1 els, 1 surfels, tot = 2
+face 378 has 2 els, 0 surfels, tot = 2
+face 379 has 2 els, 0 surfels, tot = 2
+face 380 has 2 els, 0 surfels, tot = 2
+face 381 has 2 els, 0 surfels, tot = 2
+face 382 has 2 els, 0 surfels, tot = 2
+face 383 has 2 els, 0 surfels, tot = 2
+face 384 has 2 els, 0 surfels, tot = 2
+face 385 has 1 els, 1 surfels, tot = 2
+face 386 has 2 els, 0 surfels, tot = 2
+face 387 has 2 els, 0 surfels, tot = 2
+face 388 has 2 els, 0 surfels, tot = 2
+face 389 has 2 els, 0 surfels, tot = 2
+face 390 has 2 els, 0 surfels, tot = 2
+face 391 has 2 els, 0 surfels, tot = 2
+face 392 has 2 els, 0 surfels, tot = 2
+face 393 has 1 els, 1 surfels, tot = 2
+face 394 has 2 els, 0 surfels, tot = 2
+face 395 has 1 els, 1 surfels, tot = 2
+face 396 has 1 els, 1 surfels, tot = 2
+face 397 has 1 els, 1 surfels, tot = 2
+face 398 has 2 els, 0 surfels, tot = 2
+face 399 has 1 els, 1 surfels, tot = 2
+face 400 has 1 els, 1 surfels, tot = 2
+face 401 has 1 els, 1 surfels, tot = 2
+face 402 has 2 els, 0 surfels, tot = 2
+face 403 has 2 els, 0 surfels, tot = 2
+face 404 has 2 els, 0 surfels, tot = 2
+face 405 has 2 els, 0 surfels, tot = 2
+face 406 has 2 els, 0 surfels, tot = 2
+face 407 has 2 els, 0 surfels, tot = 2
+face 408 has 1 els, 1 surfels, tot = 2
+face 409 has 2 els, 0 surfels, tot = 2
+face 410 has 1 els, 1 surfels, tot = 2
+face 411 has 1 els, 1 surfels, tot = 2
+face 412 has 2 els, 0 surfels, tot = 2
+face 413 has 1 els, 1 surfels, tot = 2
+face 414 has 2 els, 0 surfels, tot = 2
+face 415 has 1 els, 1 surfels, tot = 2
+face 416 has 2 els, 0 surfels, tot = 2
+face 417 has 2 els, 0 surfels, tot = 2
+face 418 has 1 els, 1 surfels, tot = 2
+face 419 has 2 els, 0 surfels, tot = 2
+face 420 has 2 els, 0 surfels, tot = 2
+face 421 has 2 els, 0 surfels, tot = 2
+face 422 has 2 els, 0 surfels, tot = 2
+face 423 has 1 els, 1 surfels, tot = 2
+face 424 has 2 els, 0 surfels, tot = 2
+face 425 has 1 els, 1 surfels, tot = 2
+face 426 has 2 els, 0 surfels, tot = 2
+face 427 has 2 els, 0 surfels, tot = 2
+face 428 has 2 els, 0 surfels, tot = 2
+face 429 has 2 els, 0 surfels, tot = 2
+face 430 has 2 els, 0 surfels, tot = 2
+face 431 has 1 els, 1 surfels, tot = 2
+face 432 has 2 els, 0 surfels, tot = 2
+face 433 has 2 els, 0 surfels, tot = 2
+face 434 has 1 els, 1 surfels, tot = 2
+face 435 has 2 els, 0 surfels, tot = 2
+face 436 has 2 els, 0 surfels, tot = 2
+face 437 has 1 els, 1 surfels, tot = 2
+face 438 has 2 els, 0 surfels, tot = 2
+face 439 has 2 els, 0 surfels, tot = 2
+face 440 has 2 els, 0 surfels, tot = 2
+face 441 has 2 els, 0 surfels, tot = 2
+face 442 has 2 els, 0 surfels, tot = 2
+face 443 has 1 els, 1 surfels, tot = 2
+face 444 has 2 els, 0 surfels, tot = 2
+face 445 has 1 els, 1 surfels, tot = 2
+face 446 has 2 els, 0 surfels, tot = 2
+face 447 has 1 els, 1 surfels, tot = 2
+face 448 has 2 els, 0 surfels, tot = 2
+face 449 has 1 els, 1 surfels, tot = 2
+face 450 has 2 els, 0 surfels, tot = 2
+face 451 has 2 els, 0 surfels, tot = 2
+face 452 has 2 els, 0 surfels, tot = 2
+face 453 has 2 els, 0 surfels, tot = 2
+face 454 has 2 els, 0 surfels, tot = 2
+face 455 has 1 els, 1 surfels, tot = 2

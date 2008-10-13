@@ -1,0 +1,20 @@
+TODO
+---------
+
+Short Term:
+	Better Camera Control (zooming...)
+	Auto-Resizing to fit mesh
+	Command line K-value inputs
+	
+Nice to Have:
+	Better mouse control
+	
+Next Major Steps:
+	Implicit Integrator
+	Jacobians for Bend Forces
+
+Implement in Matlab / Look through Matlab code
+
+Ground Constraint / Arbitrary procedural constraints
+
+Drag force  - air resistance?
