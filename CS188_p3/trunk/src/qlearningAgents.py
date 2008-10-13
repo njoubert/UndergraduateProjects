@@ -30,9 +30,9 @@ class QLearningAgent(AbstractReinforcementAgent):
        You might want to initialize     
        Q-values here...
     """    
-    AbstractReinforcementAgent.__init__(self, actionFn)    
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    AbstractReinforcementAgent.__init__(self, actionFn) 
+    self.qvalues = {}
+    #self.qvalues = util.Counter()
   
   def getQValue(self, state, action):
     """
@@ -40,7 +40,10 @@ class QLearningAgent(AbstractReinforcementAgent):
       Should return 0.0 if we never seen
       a state or (state,action) tuple 
     """
-    "*** YOUR CODE HERE ***"
+    if not self.qvalues.has_key(state):
+        return 0.0
+    else:
+        return self.qvalues[state].getCount(action)
     util.raiseNotDefined()
   
     
@@ -49,15 +52,25 @@ class QLearningAgent(AbstractReinforcementAgent):
       Returns max_action Q(state,action)        
       where is max is over legal actions
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    if not self.qvalues.has_key(state):
+        self.qvalues[state] = util.Counter()
+        actions = self.getLegalActions(state)
+        for action in actions:
+            self.qvalues[state][action] = 0.0
+    bestAction =  self.qvalues[state].argMax()
+    return self.qvalues[state].getCount(bestAction)
+
     
   def getPolicy(self, state):
     """
     What is the best action to take in a state
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    if not self.qvalues.has_key(state):
+        self.qvalues[state] = util.Counter()
+        actions = self.getLegalActions(state)
+        for action in actions:
+            self.qvalues[state][action] = 0.0
+    return self.qvalues[state].argMax()
     
   def getAction(self, state):
     """
@@ -72,9 +85,13 @@ class QLearningAgent(AbstractReinforcementAgent):
       HINT: you might want to use util.flipCoin
       here..... (see util.py)
     """  
-    # Pick Action
+    # Pick Actio
     action = None
-    "*** YOUR CODE HERE ***"
+    greedy = util.flipCoin(self.epsilon)
+    if greedy:
+        action = random.choice(self.getLegalActions(state))
+    else:
+        action = self.getPolicy(state)
     # Need to inform parent of action for Pacman
     self.doAction(state,action)    
     return action
@@ -88,8 +105,14 @@ class QLearningAgent(AbstractReinforcementAgent):
       NOTE: You should never call this function,
       it will be called on your behalf
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    if not self.qvalues.has_key(state):
+        self.qvalues[state] = util.Counter()
+        actions = self.getLegalActions(state)
+        for action in actions:
+            self.qvalues[state][action] = 0.0
+    currentQ = self.qvalues[state].getCount(action)
+    sample = reward + self.gamma*self.getValue(nextState)
+    self.qvalues[state][action] = (1-self.alpha)*currentQ + self.alpha*sample
     
 class ApproximateQLearningAgent(QLearningAgent):
   """

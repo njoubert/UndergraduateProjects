@@ -35,7 +35,7 @@ def question4e():
   return YOUR_ANSWER
 
 def question7():
-  YOUR_ANSWER = None
+  YOUR_ANSWER = 'NOT POSSIBLE'
   return YOUR_ANSWER
 
 if __name__ == '__main__':
