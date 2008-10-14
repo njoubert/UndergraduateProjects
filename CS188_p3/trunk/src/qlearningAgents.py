@@ -44,7 +44,6 @@ class QLearningAgent(AbstractReinforcementAgent):
         return 0.0
     else:
         return self.qvalues[state].getCount(action)
-    util.raiseNotDefined()
   
     
   def getValue(self, state):
@@ -130,23 +129,38 @@ class ApproximateQLearningAgent(QLearningAgent):
     if featExtractorType == None:
       featExtractorType = IdentityFeatureExtractor
     self.featExtractor = featExtractorType()
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # features -> weights
+    self.weights = util.Counter()
     
   def getQValue(self, state, action):
     """
       Should return Q(state,action) = w * featureVector
       where * is the dotProduct operator
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    featureVector = self.featExtractor.getFeatures(state,action)
+    q_value = 0
+    for feature in featureVector:
+      q_value += featureVector[feature]*self.weights.getCount(feature)
+      
+    return q_value
     
   def update(self, state, action, nextState, reward):
     """
        Should update your weights based on transition  
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # First we update the weights related to this feature
+    correction = reward + self.gamma*self.getValue(nextState) - self.getQValue(state,action)
+    featureVector = self.featExtractor.getFeatures(state,action)
+    for feature in featureVector:
+      self.weights[feature] = self.weights.getCount(feature) + self.alpha*correction*featureVector[feature]
+    # Now we update out Q-Values I think?
+    if not self.qvalues.has_key(state):
+        self.qvalues[state] = util.Counter()
+        actions = self.getLegalActions(state)
+        for action in actions:
+            self.qvalues[state][action] = 0.0
+    currentQ = self.qvalues[state].getCount(action)
+    self.qvalues[state][action] = currentQ + self.alpha*correction
 
 class PacmanQLearningAgent(QLearningAgent):
   def __init__(self):    
