@@ -32,7 +32,7 @@ def question4d():
   return YOUR_ANSWER
 
 def question4e():
-  YOUR_ANSWER = None
+  YOUR_ANSWER = (0.9, 0.0, 100.0)
   return YOUR_ANSWER
 
 def question7():
