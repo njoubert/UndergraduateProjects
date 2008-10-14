@@ -137,11 +137,16 @@ class ApproximateQLearningAgent(QLearningAgent):
       Should return Q(state,action) = w * featureVector
       where * is the dotProduct operator
     """
+    if not self.qvalues.has_key(state):
+        self.qvalues[state] = util.Counter()
+        actions = self.getLegalActions(state)
+        for action in actions:
+            self.qvalues[state][action] = 0.0
     featureVector = self.featExtractor.getFeatures(state,action)
     q_value = 0
     for feature in featureVector:
       q_value += featureVector[feature]*self.weights.getCount(feature)
-      
+    self.qvalues[state][action]=q_value
     return q_value
     
   def update(self, state, action, nextState, reward):
