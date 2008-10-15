@@ -31,7 +31,7 @@ class QLearningAgent(AbstractReinforcementAgent):
        Q-values here...
     """    
     AbstractReinforcementAgent.__init__(self, actionFn) 
-    self.qvalues = {}
+    self.qvalues = util.Counter()
     #self.qvalues = util.Counter()
   
   def getQValue(self, state, action):
@@ -40,10 +40,7 @@ class QLearningAgent(AbstractReinforcementAgent):
       Should return 0.0 if we never seen
       a state or (state,action) tuple 
     """
-    if not self.qvalues.has_key(state):
-        return 0.0
-    else:
-        return self.qvalues[state].getCount(action)
+    return self.qvalues.getCount((state,action))
   
     
   def getValue(self, state):
@@ -51,25 +48,23 @@ class QLearningAgent(AbstractReinforcementAgent):
       Returns max_action Q(state,action)        
       where is max is over legal actions
     """
-    if not self.qvalues.has_key(state):
-        self.qvalues[state] = util.Counter()
-        actions = self.getLegalActions(state)
-        for action in actions:
-            self.qvalues[state][action] = 0.0
-    bestAction =  self.qvalues[state].argMax()
-    return self.qvalues[state].getCount(bestAction)
+    actions = self.getLegalActions(state)
+    bestActions = util.Counter()
+    for action in actions:
+        bestActions[action] = self.getQValue(state, action)
+    return bestActions.getCount(bestActions.argMax())
+    
 
     
   def getPolicy(self, state):
     """
     What is the best action to take in a state
     """
-    if not self.qvalues.has_key(state):
-        self.qvalues[state] = util.Counter()
-        actions = self.getLegalActions(state)
-        for action in actions:
-            self.qvalues[state][action] = 0.0
-    return self.qvalues[state].argMax()
+    actions = self.getLegalActions(state)
+    bestActions = util.Counter()
+    for action in actions:
+        bestActions[action] = self.getQValue(state, action)
+    return bestActions.argMax()
     
   def getAction(self, state):
     """
@@ -104,14 +99,9 @@ class QLearningAgent(AbstractReinforcementAgent):
       NOTE: You should never call this function,
       it will be called on your behalf
     """
-    if not self.qvalues.has_key(state):
-        self.qvalues[state] = util.Counter()
-        actions = self.getLegalActions(state)
-        for action in actions:
-            self.qvalues[state][action] = 0.0
-    currentQ = self.qvalues[state].getCount(action)
+    currentQ = self.qvalues.getCount((state,action))
     sample = reward + self.gamma*self.getValue(nextState)
-    self.qvalues[state][action] = (1-self.alpha)*currentQ + self.alpha*sample
+    self.qvalues[(state,action)] = (1-self.alpha)*currentQ + self.alpha*sample
     
 class ApproximateQLearningAgent(QLearningAgent):
   """
@@ -137,35 +127,27 @@ class ApproximateQLearningAgent(QLearningAgent):
       Should return Q(state,action) = w * featureVector
       where * is the dotProduct operator
     """
-    if not self.qvalues.has_key(state):
-        self.qvalues[state] = util.Counter()
-        actions = self.getLegalActions(state)
-        for action in actions:
-            self.qvalues[state][action] = 0.0
     featureVector = self.featExtractor.getFeatures(state,action)
     q_value = 0
     for feature in featureVector:
       q_value += featureVector[feature]*self.weights.getCount(feature)
-    self.qvalues[state][action]=q_value
     return q_value
     
   def update(self, state, action, nextState, reward):
     """
        Should update your weights based on transition  
     """
+    v_value = 0
+    nextActions = self.getLegalActions(nextState)
+    next_qvalues = util.Counter()
+    for nextAction in nextActions:
+        next_qvalues[(nextState,nextAction)] = self.getQValue(nextState, nextAction)
+    v_value = next_qvalues.getCount(next_qvalues.argMax())
     # First we update the weights related to this feature
-    correction = reward + self.gamma*self.getValue(nextState) - self.getQValue(state,action)
+    correction = (reward + self.gamma*v_value) - self.getQValue(state,action)
     featureVector = self.featExtractor.getFeatures(state,action)
     for feature in featureVector:
       self.weights[feature] = self.weights.getCount(feature) + self.alpha*correction*featureVector[feature]
-    # Now we update out Q-Values I think?
-    if not self.qvalues.has_key(state):
-        self.qvalues[state] = util.Counter()
-        actions = self.getLegalActions(state)
-        for action in actions:
-            self.qvalues[state][action] = 0.0
-    currentQ = self.qvalues[state].getCount(action)
-    self.qvalues[state][action] = currentQ + self.alpha*correction
 
 class PacmanQLearningAgent(QLearningAgent):
   def __init__(self):    
