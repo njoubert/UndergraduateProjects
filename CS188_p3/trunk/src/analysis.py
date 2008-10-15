@@ -20,7 +20,7 @@ def question4a():
   return YOUR_ANSWER
 
 def question4b():
-  YOUR_ANSWER = 'NOT POSSIBLE'
+  YOUR_ANSWER = (0.1,0.1,0)
   return YOUR_ANSWER
 
 def question4c():
