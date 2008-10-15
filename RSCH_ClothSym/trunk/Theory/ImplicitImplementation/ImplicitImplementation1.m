@@ -5,58 +5,84 @@
 
 % We define the parameters of our simulation:
 h = 0.01;        %timestep
-ks = 50;          %spring constant
-kd = .1;         %damping constant
-rl = 0.3;
-% We start off by defining our system:
-n = 3;                        %three particle system
+ks = 20;          %spring constant
+kd = 10;         %damping constant
 dim = 3;                      %3d simulation
-x = [0 0 0  1 0 1  1 2 0];    %positions
-v = [0 0 0  0 0 0  0 0 0];    %velocities
-M = eye(n*dim, n*dim);        %Masses
-M(1:3,1:3) = 1*eye(3,3);      %particle one is 1kg
-M(4:6,4:6) = 2*eye(3,3);      %particle two is 2kg
-M(7:9,7:9) = 3*eye(3,3);      %particle three is 3kg
+
+%initial velocities are all zero by default
+
+% We start off by defining our system:
+%1 square example:
+%n = 5;
+%x = [-1.0 -1.0 0  0.1 -1.0 0  -1.0 0.1 0  0.1 0.1 0  -0.45 -0.45 0.0];
+%edges = [5 1; 1 2; 5 2; 2 4; 5 4; 4 3; 5 3; 3 1;];
+%4 squares example:
+n = 13;                        %three particle system
+x = [-1.0 -1.0 0.0  0.0 -1.0 0.0  1.0 -1.0 0.0  -1.0 0.0 0.0  0.0 0.0 0.0  1.0 0.0 0.0  -1.0 1.0 0.0  0.0 1.0 0.0  1.0 1.0 0.0  -0.5 -0.5 0.0  0.5 -0.5 0.0  -0.5 0.5 0.0  0.5 0.5 0.0];
+edges = [ 1 2; 10 1; 10 2 ; 10 4 ; 10 5 ; 11 2; 11 3 ; 11 5 ; 11 6 ; 12 4 ; 12 5 ; 12 7 ; 12 8 ; 13 5 ; 13 6 ; 13 8 ; 13 9 ; 2 3; 2 5 ; 3 6 ; 4 1; 4 5; 5 6; 5 8; 6 9; 7 4; 8 7; 9 8;];
+
+v = zeros(1,n*dim);
+M = 0.01*eye(n*dim, n*dim);        %Masses, 10g per particle
+%for i=1:3:dim*n,
+%    M(i:i+2,i:i+2) = rand()*.01*eye(3,3);      %randomize masses?
+%end
 Minv = inv(M);
 
-% ====================================
-% Forces between these three particles.
-% our setup is as follows:
-% 
-% ====================================
 t = 0;
 axis manual;
 axis([-.1 .6 -0.5 .30 -.35 .35]);
-for j=1:10,
+for j=1:100,
     %view(1);
     
-    plot3(x(1:3:9), x(2:3:9), x(3:3:9))
-    figure(1)
-    x1 = x(1:3);
-    x2 = x(4:6);
-    x3 = x(7:9);
-    v1 = v(1:3);
-    v2 = v(4:6);
-    v3 = v(7:9);
-    f12 = fsa(x1,x2,rl,ks) + fda(x1,x2,v1,v2,kd);
-    f23 = fsa(x2,x3,rl,ks) + fda(x2,x3,v2,v3,kd);
-    f13 = fsa(x1,x3,rl,ks) + fda(x1,x3,v1,v3,kd);
-    j12p = jdap(x1,x2,v1,v2,rl,kd) + jsap(x1, x2, rl, ks);
-    j23p = jdap(x2,x3,v2,v3,rl,kd) + jsap(x2, x3, rl, ks);
-    j13p = jdap(x1,x3,v1,v3,rl,kd) + jsap(x1, x3, rl, ks);
-    j12v = jdav(x1, x2, v1, v2, rl, kd);
-    j23v = jdav(x2, x3, v2, v3, rl, kd);
-    j13v = jdav(x1, x3, v1, v3, rl, kd);
+%    plot3(x(1:3:9), x(2:3:9), x(3:3:9))
+%    figure(1)
 
-    f1 = f12 + f13;
-    f2 = -1*f12 + f23;
-    f3 = -1*f23 + -1*f13;
-    %FORCE VECTOR
-    f = [f1 f2 f3];
-
-    %JACOBIAN MATRIX
-    JP = [j12p -j12p zeros(3); zeros(3) j23p -j23p; j13p zeros(3) -j13p];
-    JV = [j12v -j12v zeros(3); zeros(3) j23v -j23v; j13v zeros(3) -j13v];
+    %forces:
+    f = zeros(1,n*dim);
+    JP = zeros(n*dim,n*dim);
+    JV = zeros(n*dim,n*dim);
+    
+    %look at each triangle...
+    for i=1:length(edges(:,1)),
+        %Get values for edges
+       ia = (edges(i,1) - 1)*3 + 1;
+       ib = (edges(i,2) - 1)*3 + 1;
+       xa = x(ia:ia+2);
+       xb = x(ib:ib+2);
+       va = v(ia:ia+2);
+       vb = v(ib:ib+2);
+       
+       rl = norm(xb-xa);
+       %Calculate total force on each particle due to this triangle
+       fa = fsa(xa,xb,rl,ks) + fda(xa,xb,va,vb,kd);
+       fb = fsa(xb,xa,rl,ks) + fda(xb,xa,vb,va,kd);
+       %Accumulate Forces
+       f(ia:ia+2) = f(ia:ia+2) + fa;
+       f(ib:ib+2) = f(ib:ib+2) + fb;
+       
+       %Calculate total jacobian wrt position and velocity for each
+       %connection.
+       JP_fa_xa = jdap(xa,xb,va,vb,rl,kd) + jsap(xa, xb, rl, ks);
+       JP_fb_xa = -1*JP_fa_xa;
+       JP_fb_xb = jdap(xb,xa,vb,va,rl,kd) + jsap(xb, xa, rl, ks);
+       JP_fa_xb = -1*JP_fb_xb;
+       
+       JV_fa_xa = jdav(xa, xb, va, vb, rl, kd);
+       JV_fb_xa = -1*JV_fa_xa;
+       JV_fb_xb = jdav(xb, xa, vb, va, rl, kd);
+       JV_fa_xb = -1*JV_fb_xb;
+       
+       %Accumulate Jacobians
+       %remember, JP(force_i, position+i)
+       JP(ia:ia+2,ia:ia+2) = JP(ia:ia+2,ia:ia+2) + JP_fa_xa;
+       JP(ia:ia+2,ib:ib+2) = JP(ia:ia+2,ib:ib+2) + JP_fa_xb;
+       JP(ib:ib+2,ia:ia+2) = JP(ib:ib+2,ia:ia+2) + JP_fb_xa;
+       JP(ib:ib+2,ib:ib+2) = JP(ib:ib+2,ib:ib+2) + JP_fb_xb;
+       JV(ia:ia+2,ia:ia+2) = JV(ia:ia+2,ia:ia+2) + JV_fa_xa;
+       JV(ia:ia+2,ib:ib+2) = JV(ia:ia+2,ib:ib+2) + JV_fa_xb;
+       JV(ib:ib+2,ia:ia+2) = JV(ib:ib+2,ia:ia+2) + JV_fb_xa;
+       JV(ib:ib+2,ib:ib+2) = JV(ib:ib+2,ib:ib+2) + JV_fb_xb;
+    end
     
     %EXPLICIT FORWARD EULER:
     %delX = h*v;
@@ -66,10 +92,13 @@ for j=1:10,
     A = eye(3*n) - h*Minv*JV - h^2*JP;
     b = h*(f + h*v*JP)*Minv;
     
-    delV = b*inv(A);
+    delV = b'\A;
     delX = h*(v + delV);
     
     x = x + delX;
     v = v + delV;
     
+    
 end
+
+x'
