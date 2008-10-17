@@ -18,11 +18,11 @@ clf();
 % ----------------------------------------------------------------------
 
 % We define the parameters of our simulation:
-h = 0.01;        % seconds   - duration of a single timestep
-ks = 10;         %           - spring constant
-kd = 2;          %           - damping constant
-dim = 3;         % dim       - 3d simulation
-totaltime = 5;   % seconds   - Amount of time to simulate
+h = 0.02;        % seconds          - duration of a single timestep
+ks = 100;        % force/meter      - spring constant
+kd = 2;          % force*s/meter    - damping constant
+dim = 3;         % dim              - 3d simulation
+totaltime = 5;   % seconds          - Amount of time to simulate
 
 % THREE DIFFERENT POSSIBLE GRIDS TO SIMULATE:
 % Choose one of them by uncommenting...
@@ -30,17 +30,17 @@ totaltime = 5;   % seconds   - Amount of time to simulate
 %-----------------
 %1 square example:
 %-----------------
-n = 5;
-x = [-1.0 -1.0 0  0.1 -1.0 0  -1.0 0.1 0  0.1 0.1 0  -0.45 -0.45 0.0];
-edges = [5 1; 1 2; 5 2; 2 4; 5 4; 4 3; 5 3; 3 1;];
-triangles=[5 1 2;5 2 4;5 4 3;5 3 1;];
+%n = 5;
+%x = [-1.0 -1.0 0  0.1 -1.0 0  -1.0 0.1 0  0.1 0.1 0  -0.45 -0.45 0.0];
+%edges = [5 1; 1 2; 5 2; 2 4; 5 4; 4 3; 5 3; 3 1;];
+%triangles=[5 1 2;5 2 4;5 4 3;5 3 1;];
 %-----------------
 %4 squares example:
 %-----------------
-%n = 13;
-%x = [-1.0 -1.0 0.0  0.0 -1.0 0.0  1.0 -1.0 0.0  -1.0 0.0 0.0  0.0 0.0 0.0  1.0 0.0 0.0  -1.0 1.0 0.0  0.0 1.0 0.0  1.0 1.0 0.0  -0.5 -0.5 0.0  0.5 -0.5 0.0  -0.5 0.5 0.0  0.5 0.5 0.0];
-%edges = [10 1 ; 1 2 ; 2 10 ; 2 5 ; 5 10 ; 5 4 ; 4 10 ; 4 1 ; 11 2 ; 2 3 ; 3 11 ; 3 6 ; 6 11 ; 6 5 ; 5 11 ; 12 4 ; 5 12 ; 5 8 ; 8 12 ; 8 7 ; 7 12 ; 7 4 ; 13 5 ; 6 13 ; 6 9 ; 9 13 ; 9 8 ; 8 13 ;];
-%triangles = [10 1 2;10 2 5;10 5 4;10 4 1;11 2 3;11 3 6;11 6 5;11 5 2;12 4 5;12 5 8;12 8 7;12 7 4;13 5 6;13 6 9;13 9 8;13 8 5;];
+n = 13;
+x = [-1.0 -1.0 0.0  0.0 -1.0 0.0  1.0 -1.0 0.0  -1.0 0.0 0.0  0.0 0.0 0.0  1.0 0.0 0.0  -1.0 1.0 0.0  0.0 1.0 0.0  1.0 1.0 0.0  -0.5 -0.5 0.0  0.5 -0.5 0.0  -0.5 0.5 0.0  0.5 0.5 0.0];
+edges = [10 1 ; 1 2 ; 2 10 ; 2 5 ; 5 10 ; 5 4 ; 4 10 ; 4 1 ; 11 2 ; 2 3 ; 3 11 ; 3 6 ; 6 11 ; 6 5 ; 5 11 ; 12 4 ; 5 12 ; 5 8 ; 8 12 ; 8 7 ; 7 12 ; 7 4 ; 13 5 ; 6 13 ; 6 9 ; 9 13 ; 9 8 ; 8 13 ;];
+triangles = [10 1 2;10 2 5;10 5 4;10 4 1;11 2 3;11 3 6;11 6 5;11 5 2;12 4 5;12 5 8;12 8 7;12 7 4;13 5 6;13 6 9;13 9 8;13 8 5;];
 %-----------------
 %symmetric gid 0.20:
 %-----------------
@@ -51,7 +51,7 @@ triangles=[5 1 2;5 2 4;5 4 3;5 3 1;];
 
 % SIMULATION INITIAL PARAMETERS
 v = zeros(1,n*dim);                 %velocity starts at 0.
-M = (1 / n)*eye(n*dim, n*dim);      %mass per point
+M = (0.1 / n)*eye(n*dim, n*dim);      %mass per point
 
 %CONSTAINTS:
 %M(1,1) = inf();
@@ -125,7 +125,6 @@ for j=1:steps,
        JV_fa_xb = -1*JV_fb_xb;
        
        %Accumulate Jacobians
-       %remember, JP(force_i, position+i)
        JP(ia:ia+2,ia:ia+2) = JP(ia:ia+2,ia:ia+2) + JP_fa_xa;
        JP(ia:ia+2,ib:ib+2) = JP(ia:ia+2,ib:ib+2) + JP_fa_xb;
        JP(ib:ib+2,ia:ia+2) = JP(ib:ib+2,ia:ia+2) + JP_fb_xa;
@@ -138,7 +137,7 @@ for j=1:steps,
     
     %gravity
     for i=1:3:3*n,
-       f(i:i+2) = f(i:i+2) + M(i,i)*[0 -9.8 0]; 
+       f(i:i+2) = f(i:i+2) + M(i,i)*[0 0 -9.8]; 
     end
     
     %EXPLICIT FORWARD EULER:
@@ -150,9 +149,16 @@ for j=1:steps,
     b = h*(f + h*v*JP)*Minv;
     
     delV = b/A;
-    delV(1:3) = [0 0 0]; %Lame hacked-in constraint
     delX = h*(v + delV);
+    
+    delV(1:3) = [0 0 0]; %Lame hacked-in constraint
     delX(1:3) = [0 0 0]; %Lame hacked-in constraint
+    
+    %delV(111*3:111*3+2) = [0 0 0]; %Lame hacked-in constraint
+    %delX(111*3:111*3+2) = [0 0 0]; %Lame hacked-in constraint
+    %delV(121*3:121*3+2) = [0 0 0]; %Lame hacked-in constraint
+    %delX(121*3:121*3+2) = [0 0 0]; %Lame hacked-in constraint
+    
     
     %update the simulation state:
     x = x + delX;
