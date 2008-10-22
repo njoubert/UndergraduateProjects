@@ -2,6 +2,9 @@
 
 TARGET := main
 SOURCES := $(wildcard ./src/*.cpp)
+PLATFORM := OSX
+#PLATFORM := _WIN32
+#PLATFORM := _POSIX
 
 #Libraries -------------------------------
 
@@ -12,7 +15,8 @@ LIBRARY := -L./lib/
 
 CC := gcc
 CXX := g++
-CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE)
+MACROS := -D$(PLATFORM)
+CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(LIBRARY)
 
 #-----------------------------------------
