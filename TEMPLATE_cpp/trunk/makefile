@@ -9,7 +9,7 @@ PLATFORM := OSX
 #Libraries -------------------------------
 
 INCLUDE := -I./include/
-LIBRARY := -L./lib/
+LIBRARY := -L./lib/ 
 
 #Basic Stuff -----------------------------
 
@@ -17,7 +17,7 @@ CC := gcc
 CXX := g++
 MACROS := -D$(PLATFORM)
 CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
-LDFLAGS := $(LIBRARY)
+LDFLAGS := $(LIBRARY) $(MACROS)
 
 #-----------------------------------------
 OBJECTS = $(SOURCES:.cpp=.o)
