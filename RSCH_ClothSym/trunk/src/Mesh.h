@@ -103,6 +103,7 @@ private:
 
 /**
  * Stores the metadata about which vertices make an edge.
+ * This is stored according to the vertices' Natural Order
  * 2 triangles can share an edge.
  * each edge has 2 vertices.
  */

@@ -13,7 +13,7 @@
 #include "global.h"
 #include "System.h"
 #include "Mesh.h"
-#include "OBJParser.h"
+#include "io/OBJParser.h"
 
 #include <iomanip>
 
