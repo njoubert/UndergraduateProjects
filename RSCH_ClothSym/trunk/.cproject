@@ -44,6 +44,7 @@
 <option id="gnu.cpp.compiler.macosx.exe.debug.option.debugging.level.1323017629" name="Debug Level" superClass="gnu.cpp.compiler.macosx.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 <option id="gnu.cpp.compiler.option.include.paths.1878637627" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 <listOptionValue builtIn="false" value="/usr/X11/include"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ClothSym/include}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/ClothSym/lib}&quot;"/>
 </option>
 <option id="gnu.cpp.compiler.option.other.other.1780584252" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -L&quot;/System/Library/Frameworks/OpenGL.framework/Libraries&quot; -DOSX" valueType="string"/>
@@ -67,11 +68,8 @@
 
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 <storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-<doc-comment-owner id="org.eclipse.cdt.ui.doxygen">
-<path value=""/>
-</doc-comment-owner>
-</storageModule>
+
+
 
 <storageModule moduleId="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
@@ -155,7 +153,7 @@
 <parser enabled="true"/>
 </scannerInfoProvider>
 </profile>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1854722679;cdt.managedbuild.config.macosx.exe.release.1854722679.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1097205272;cdt.managedbuild.tool.gnu.cpp.compiler.input.1829134588">
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.53028778;cdt.managedbuild.config.gnu.macosx.exe.debug.53028778.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.251520417;cdt.managedbuild.tool.gnu.cpp.compiler.input.884274774">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -238,7 +236,7 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.53028778;cdt.managedbuild.config.gnu.macosx.exe.debug.53028778.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.251520417;cdt.managedbuild.tool.gnu.cpp.compiler.input.884274774">
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1854722679;cdt.managedbuild.config.macosx.exe.release.1854722679.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1097205272;cdt.managedbuild.tool.gnu.cpp.compiler.input.1829134588">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -487,6 +485,12 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
+
+<doc-comment-owner id="org.eclipse.cdt.ui.doxygen">
+<path value=""/>
+</doc-comment-owner>
 </storageModule>
 </cconfiguration>
 <cconfiguration id="cdt.managedbuild.config.macosx.exe.release.1854722679">
@@ -551,11 +555,8 @@
 
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 <storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-<doc-comment-owner id="org.eclipse.cdt.ui.doxygen">
-<path value=""/>
-</doc-comment-owner>
-</storageModule>
+
+
 
 <storageModule moduleId="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
@@ -639,7 +640,7 @@
 <parser enabled="true"/>
 </scannerInfoProvider>
 </profile>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1854722679;cdt.managedbuild.config.macosx.exe.release.1854722679.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1097205272;cdt.managedbuild.tool.gnu.cpp.compiler.input.1829134588">
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.53028778;cdt.managedbuild.config.gnu.macosx.exe.debug.53028778.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.251520417;cdt.managedbuild.tool.gnu.cpp.compiler.input.884274774">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -722,7 +723,7 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.53028778;cdt.managedbuild.config.gnu.macosx.exe.debug.53028778.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.251520417;cdt.managedbuild.tool.gnu.cpp.compiler.input.884274774">
+<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1854722679;cdt.managedbuild.config.macosx.exe.release.1854722679.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1097205272;cdt.managedbuild.tool.gnu.cpp.compiler.input.1829134588">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -971,6 +972,12 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
+
+<doc-comment-owner id="org.eclipse.cdt.ui.doxygen">
+<path value=""/>
+</doc-comment-owner>
 </storageModule>
 </cconfiguration>
 </storageModule>

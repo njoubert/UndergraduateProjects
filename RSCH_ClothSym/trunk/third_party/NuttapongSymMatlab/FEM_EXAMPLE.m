@@ -46,8 +46,6 @@ plot3(nodePos(1,constNodes), nodePos(2,constNodes), nodePos(3,constNodes), 'r.')
 const = [(constNodes-1)*3+1 (constNodes-1)*3+2 (constNodes-1)*3+3;];
 %const = [];
 
-stop
-
 % trisurf(surfTri2node',nodePos(1,:),nodePos(2,:),nodePos(3,:),1,'FaceAlpha',0.25);
 % plot3(nodePos(1,constNodes), nodePos(2,constNodes), nodePos(3,constNodes), 'r.');
 % axis equal;
@@ -56,7 +54,7 @@ stop
 % zlabel('z');
 % keyboard;    
 
-% Build mapping from 
+% Build mapping from solution (constraints removed) to full system.
 globalToSol = ones(numValues, 1);
 globalToSol(const) = 0;
 globalToSol = max(1, cumsum(globalToSol));

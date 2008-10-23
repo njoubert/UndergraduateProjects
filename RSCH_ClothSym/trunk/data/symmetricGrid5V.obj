@@ -1,0 +1,22 @@
+ # 
+ # SYMMETRIC MESH
+ # 
+ # Creating mesh from UL (-1.0, -1.0) to LR (1.0, 1.0) with major points at each 1.1
+ # Mesh is 1 major points wide and 1 major points high
+ # Created 4 major points.
+ #  5 total vertices
+ #  4 total faces
+
+ # VERTICES FOLLOW:
+
+v   -1.0 -1.0 0
+v   0.1 -1.0 0
+v   -1.0 0.1 0
+v   0.1 0.1 0
+v   -0.45 -0.45 0.0
+ #FACES FOLLOW:
+
+f   5 1 2
+f   5 2 4
+f   5 4 3
+f   5 3 1
