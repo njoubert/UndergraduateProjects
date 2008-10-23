@@ -1,0 +1,149 @@
+Microsoft Developer Studio Workspace File, Format Version 5.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "RAPID"=.\RAPID.DSP - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "VCollide"=.\VCollide.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name RAPID
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_bunny"=.\demo_bunny.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_hello_world"=.\demo_hello_world.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_hello_world2"=.\demo_hello_world2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_nbody"=.\demo_nbody.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_nbody2"=.\demo_nbody2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_rings"=.\demo_rings.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "demo_torii"=.\demo_torii.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VCollide
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

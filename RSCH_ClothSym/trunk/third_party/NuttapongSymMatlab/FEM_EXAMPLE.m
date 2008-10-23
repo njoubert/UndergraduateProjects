@@ -38,7 +38,7 @@ u = zeros(numValues, 1);
 u_new = zeros(numValues, 1);
 
 % Find nodes that are constrainted
-constNodes = find(nodePos(1,:) < 0.01);
+constNodes = find(nodePos(1,:) < 0.01)
 %constNodes = [];
 %constNodes = find(nodePos(2,:) < -0.049);
 plot3(nodePos(1,constNodes), nodePos(2,constNodes), nodePos(3,constNodes), 'r.');
@@ -46,7 +46,7 @@ plot3(nodePos(1,constNodes), nodePos(2,constNodes), nodePos(3,constNodes), 'r.')
 const = [(constNodes-1)*3+1 (constNodes-1)*3+2 (constNodes-1)*3+3;];
 %const = [];
 
-
+stop
 
 % trisurf(surfTri2node',nodePos(1,:),nodePos(2,:),nodePos(3,:),1,'FaceAlpha',0.25);
 % plot3(nodePos(1,constNodes), nodePos(2,constNodes), nodePos(3,constNodes), 'r.');
@@ -91,7 +91,7 @@ for (step = 1:numSteps)
 
     fext(const) = 0;
     
-
+    %If you want nonzero velocity constraints, you need to put it here too.
     
     % Build A, b
      A = M/dt + C + 0.5*dt*K;
