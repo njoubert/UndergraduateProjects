@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "Mesh.h"
-#include "OBJParser.h"
+#include "../Mesh.h"
+#include "../io/OBJParser.h"
 
 using namespace std;
 

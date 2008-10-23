@@ -20,6 +20,8 @@ OBJ_SRCS += \
 ../data/symmetricGrid0.20.obj \
 ../data/symmetricGrid0.25.obj \
 ../data/symmetricGrid0.50.obj \
+../data/symmetricGrid15V.obj \
+../data/symmetricGrid5V.obj \
 ../data/table.obj \
 ../data/twoTriangles.obj 
 

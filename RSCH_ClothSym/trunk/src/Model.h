@@ -5,6 +5,10 @@
  *      Author: njoubert
  */
 
+#include "System.h"
+#include "Mesh.h"
+#include "Material.h"
+
 #ifndef MODEL_H_
 #define MODEL_H_
 
@@ -25,7 +29,7 @@ public:
 
 private:
     System* _system;
-    Mesh* _mesh;
+    TriangleMesh* _mesh;
     Material* _material;
 };
 

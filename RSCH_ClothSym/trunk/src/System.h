@@ -7,7 +7,6 @@
 
 #include "global.h"
 #include "Mesh.h"
-#include "intel_SparseMatrix.h"
 
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
@@ -76,9 +75,6 @@ public:
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
 	int m_iParticles, m_iInverseIterations;
-	Physics_LargeVector m_Positions;
-	Physics_LargeVector m_Velocities;
-	Physics_LargeVector m_TotalForces_int, m_TotalForces_ext;
 
 private:
     float getKs();
@@ -90,23 +86,6 @@ private:
     double time;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
-
-    ////////////////////////INTEL INSIDE!!!!!!!!!!!!!!!!!!!!///////
-	Physics_LargeVector m_vTemp1, m_vTemp2, m_PosTemp;
-	Physics_LargeVector m_dv;
-	Physics_LargeVector m_dp;
-	Physics_LargeVector m_Masses, m_MassInv;
-
-	SparseMatrix m_MxMasses;
-	SparseMatrix m_TotalForces_dp;
-	SparseMatrix m_TotalForces_dv;
-
-	SparseMatrix m_A;
-	SparseMatrix m_MxTemp1, m_MxTemp2;
-	Physics_LargeVector m_P, m_PInv;
-	Physics_LargeVector m_z, m_b, m_r, m_c, m_q, m_s, m_y;
-	Physics_Matrix3x3 *m_S;
-	///////////////////////////////////////////////////////////////
 
 };
 

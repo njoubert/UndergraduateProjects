@@ -1,7 +1,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-#include "Mesh.h"
+#include "../Mesh.h"
 
 #include <string>
 #include <sstream>
