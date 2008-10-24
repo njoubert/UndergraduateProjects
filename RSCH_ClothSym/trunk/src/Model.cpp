@@ -137,6 +137,9 @@ void SimModel::draw() {
 AniModel::AniModel(string filename) {
 	_filename = filename;
 	_count = 0;
+	_mesh = NULL;
+	advance(0);
+
 }
 
 AniModel::~AniModel() {
@@ -144,7 +147,9 @@ AniModel::~AniModel() {
 }
 
 void AniModel::advance(double netTime) {
-	OBJParser parser;
+	if (_mesh != NULL)
+	    delete _mesh;
+    OBJParser parser;
 	ostringstream filename;
 	filename << _filename;
 	filename << _count;
