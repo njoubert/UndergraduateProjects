@@ -6,7 +6,6 @@
  */
 
 #include "System.h"
-#define GRAVITY -9.8
 
 /////////////////////////////WHERE IS THIS CALLED////////////////////////////////////
 System::System(TriangleMesh* m, int verticeCount): mesh(m)
