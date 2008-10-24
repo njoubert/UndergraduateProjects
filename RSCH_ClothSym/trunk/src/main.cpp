@@ -35,6 +35,19 @@ public:
 
 Viewport    viewport;
 
+void printUsage() {
+    cout << "Usage: "<< endl;
+    cout << "  ClothSym " << endl;
+    cout << "    -statobj input.obj" << endl;
+    cout << "    -simobj input.obj" << endl;
+    cout << "    -aniobj inputXXXXXX.obj" << endl;
+    cout << "    [-d i] " << endl;
+    cout << "    [-img directory] " << endl;
+    cout << "";
+    cout << "";
+    cout << "";
+}
+
 int parseCommandLine(int argc, char *argv[]) {
 
     bool malformedArg;
@@ -97,7 +110,7 @@ int parseCommandLine(int argc, char *argv[]) {
         }
 
         if (malformedArg) {
-            cout << "Malformed input arg in parsing command \"" << argv[i] << "\"";
+            cout << "Malformed input arg in parsing command \"" << argv[i] << "\"" << endl;
             printUsage = true;
         }
     }
@@ -160,11 +173,6 @@ void processKeys(unsigned char key, int x, int y) {
         exit(0);
         break;
     }
-}
-
-void printUsage() {
-    cout << "Usage: "<< endl;
-    cout << "  ClothSym -obj filename [-d i] [-timestep i] [-img directory]\\" << endl;
 }
 
 void init(void)
