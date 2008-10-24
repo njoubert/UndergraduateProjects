@@ -5,6 +5,7 @@
  *      Author: njoubert
  */
 
+#include "global.h"
 #include "System.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -30,7 +31,6 @@ public:
     virtual void draw()=0;
 
 protected:
-    double _timeStep;
     Material* _material;
 };
 
@@ -53,7 +53,7 @@ private:
  */
 class SimModel : public Model {
 public:
-    SimModel();
+    SimModel(TriangleMesh*, System*, Solver*);
     ~SimModel();
     void advance(double);
     void draw();
@@ -62,6 +62,7 @@ private:
     Solver* _solver;
     System* _system;
     TriangleMesh* _mesh;
+    double _timeStep;
 };
 
 /**

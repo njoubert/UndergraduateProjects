@@ -14,7 +14,6 @@
  *------------------------------------------------*/
 
 Model::Model() {
-    _timeStep = 0.02;
     printDebug("Initialized Model Base Class.");
 }
 
@@ -50,8 +49,11 @@ void StatModel::draw() {
  *
  *------------------------------------------------*/
 
-SimModel::SimModel() {
-
+SimModel::SimModel(TriangleMesh* mesh, System* system, Solver* solver) {
+	_mesh = mesh;
+	_system = system;
+	_solver = solver;
+	_timeStep = DEFAULT_TIMESTEP;
 }
 
 SimModel::~SimModel() {

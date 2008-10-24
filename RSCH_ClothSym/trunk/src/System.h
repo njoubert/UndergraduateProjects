@@ -5,18 +5,14 @@
  *      Author: njoubert
  */
 
-#include "global.h"
-#include "Mesh.h"
-
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
-#define GRAVITY 0.98
-
 class System;
-class Solver;
-class ImplicitSolver;
-class ExplicitSolver;
+
+#include "global.h"
+#include "Mesh.h"
+#include "Solver.h"
 
 
 /// \brief Represents the cloth mesh system
@@ -90,27 +86,7 @@ private:
 };
 
 
-class Solver {
-public:
-    virtual ~Solver();
-    virtual void calculateState(System* sys)=0;
-    virtual std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point) = 0;
-};
 
-class ImplicitSolver: public Solver {
-    ~ImplicitSolver();
-    void calculateState(System* sys);
-    std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point);
-};
-
-class ExplicitSolver: public Solver {
-    ~ExplicitSolver();
-    void calculateState(System* sys);
-    std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point);
-};
 
 
 #endif /* SYSTEM_H_ */

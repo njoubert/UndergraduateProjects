@@ -36,7 +36,7 @@
 
 #include <algebra3.h>
 
-typedef float Physics_t;
+#include "DEFAULTS.h"
 
 #define PI 3.14159265
 

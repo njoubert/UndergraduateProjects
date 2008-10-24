@@ -12,6 +12,8 @@
 
 using namespace std;
 
+//Macros allow for easy usage of the << keyword
+
 #define printDebug(A)	if (Debug::DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A << endl; }
 #define printStartDebug(A)	if (Debug::DEBUG) { cout << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << A; }
 #define printPartialDebug(A)	if (Debug::DEBUG) { cout << A; }
