@@ -29,16 +29,17 @@ void World::draw() {
 bool World::loadStatModel(string filename) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
+    return true;
 }
 
 bool World::loadSimModel(string filename) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
-
+    return true;
 }
 
 bool World::loadAniModel(string filename) {
-
+    return true;
 }
 
 double World::getTime() {

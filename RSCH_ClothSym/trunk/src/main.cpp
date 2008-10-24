@@ -36,7 +36,6 @@ public:
 Viewport    viewport;
 
 void printUsage() {
-    /*
     cout << "Usage: "<< endl;
     cout << "  ClothSym " << endl;
     cout << "    -statobj input.obj" << endl;
@@ -44,7 +43,6 @@ void printUsage() {
     cout << "    -aniobj inputXXXXXX.obj" << endl;
     cout << "    [-d i] " << endl;
     cout << "    [-img directory] " << endl;
-    */
 }
 
 int parseCommandLine(int argc, char *argv[]) {
@@ -333,14 +331,10 @@ void myMouseMove(int x, int y) {
 
 int main(int argc, char *argv[]) {
 
-    exit(1);
-
     if (parseCommandLine(argc, argv)) {
         printUsage();
         exit(1);
     }
-
-    exit(1);
 
     viewport.w = 500;
     viewport.h = 500;
