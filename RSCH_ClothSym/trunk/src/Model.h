@@ -39,13 +39,13 @@ protected:
  */
 class StatModel : public Model {
 public:
-    StatModel();
+    StatModel(TriangleMesh*);
     ~StatModel();
     void advance(double);
     void draw();
 
 private:
-
+	TriangleMesh* _mesh;
 };
 
 /**

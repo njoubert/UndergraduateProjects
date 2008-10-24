@@ -27,8 +27,13 @@ void World::draw() {
 }
 
 bool World::loadStatModel(string filename) {
-//    OBJParser parser;
-//    TriangleMesh* mesh = parser.parseOBJ(filename);
+    OBJParser parser;
+    TriangleMesh* mesh = parser.parseOBJ(filename);
+    if (mesh == NULL)
+    	return false;
+    Model* model = new StatModel(
+    		);
+    _models.push_back(model);
     return true;
 }
 
