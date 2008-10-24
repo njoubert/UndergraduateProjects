@@ -15,6 +15,7 @@
 
 Model::Model() {
     _timeStep = 0.02;
+    printDebug("Initialized Model Base Class.");
 }
 
 Model::~Model() {

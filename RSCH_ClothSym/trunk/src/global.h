@@ -32,6 +32,8 @@
 #include <time.h>
 #include <math.h>
 
+#include "Debug.h"
+
 #include <algebra3.h>
 
 typedef float Physics_t;
