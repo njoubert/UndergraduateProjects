@@ -7,7 +7,7 @@
 
 #include "Solver.h"
 
-Solver::Solver(TriangleMesh* mesh) {
+Solver::Solver(TriangleMesh* mesh, int n) {
 	_mesh = mesh;
 }
 
@@ -15,7 +15,7 @@ Solver::~Solver() {
 
 }
 
-ImplicitSolver::ImplicitSolver(TriangleMesh* mesh) : Solver(mesh) {
+ImplicitSolver::ImplicitSolver(TriangleMesh* mesh, int n) : Solver(mesh,n) {
 
 }
 
@@ -56,7 +56,7 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep,
 
 }
 
-ExplicitSolver::ExplicitSolver(TriangleMesh* mesh) : Solver(mesh) {
+ExplicitSolver::ExplicitSolver(TriangleMesh* mesh, int n) : Solver(mesh, n) {
 }
 
 ExplicitSolver::~ExplicitSolver() {
@@ -97,15 +97,13 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
     return make_pair(deltaX, deltaV);
 }
 
-NewmarkSolver::NewmarkSolver(TriangleMesh* mesh) : Solver(mesh) {
-	_gamma = DEFAULT_GAMMA;
-	int n = mesh->vertices.size();
-	_JP(n,n,0,NULL,NULL,NULL);
-	_JV(n,n,0,NULL,NULL,NULL);
-	_f(n);
-	_x(n);
-	_v(n);
+NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
+        Solver(mesh, n),
+        _JP(n,n,0,(double*)NULL,(int*)NULL,(int*)NULL),
+        _JV(n,n,0,(double*)NULL,(int*)NULL,(int*)NULL),
+        _f(n), _x(n), _v(n) {
 
+	_gamma = DEFAULT_GAMMA;
 }
 
 NewmarkSolver::~NewmarkSolver() {

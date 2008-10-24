@@ -8,6 +8,8 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
+#include <CompRow_double.h>
+
 class Solver;
 class ImplicitSolver;
 class ExplicitSolver;
@@ -17,7 +19,7 @@ class NewmarkSolver;
 
 class Solver {
 public:
-	Solver(TriangleMesh* mesh);
+	Solver(TriangleMesh*,int);
     virtual ~Solver();
     virtual void calculateState(System* sys)=0;
     virtual std::pair<vec3,vec3> solve(System* sys,
@@ -28,7 +30,7 @@ protected:
 
 class ImplicitSolver: public Solver {
 public:
-	ImplicitSolver(TriangleMesh* mesh);
+	ImplicitSolver(TriangleMesh*, int);
     ~ImplicitSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,
@@ -37,7 +39,7 @@ public:
 
 class ExplicitSolver: public Solver {
 public:
-	ExplicitSolver(TriangleMesh* mesh);
+	ExplicitSolver(TriangleMesh*, int);
     ~ExplicitSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,
@@ -46,7 +48,7 @@ public:
 
 class NewmarkSolver: public Solver {
 public:
-	NewmarkSolver(TriangleMesh* mesh);
+	NewmarkSolver(TriangleMesh*, int);
     ~NewmarkSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,

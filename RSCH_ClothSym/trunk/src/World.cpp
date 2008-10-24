@@ -45,7 +45,7 @@ bool World::loadSimModel(string filename) {
     Model* model = new SimModel(
     		mesh,
     		new DEFAULT_SYSTEM(mesh,mat),
-    		new DEFAULT_SOLVER(mesh),
+    		new DEFAULT_SOLVER(mesh, mesh->countVertices()),
     		mat);
     _models.push_back(model);
     return true;
