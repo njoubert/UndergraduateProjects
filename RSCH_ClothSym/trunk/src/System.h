@@ -12,6 +12,7 @@ class System;
 
 #include "global.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Solver.h"
 
 
@@ -20,7 +21,7 @@ class System;
 /// Contains all the data needed to store a cloth mesh.
 class System {
 public:
-	System(TriangleMesh* m, int verticeCount);
+	System(TriangleMesh* m, Material* mat);
 
 	mat3 outerProduct(vec3 a, vec3 b);
 
@@ -28,7 +29,7 @@ public:
 	 * Gets the current absolute time this system is at.
 	 * @return
 	 */
-	double getT();
+	//double getT();
 
 	void Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
 
@@ -73,13 +74,14 @@ public:
 	int m_iParticles, m_iInverseIterations;
 
 private:
-    float getKs();
-    float getKd();
-    float getKbe();
-    float getKbd();
-    float Ks, Kd, Kbe, Kbd; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
+    ////float getKs();
+    //float getKd();
+    //float getKbe();
+    //float getKbd();
+    //float Ks, Kd, Kbe, Kbd; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
     TriangleMesh* mesh;
-    double time;
+    Material* _mat;
+    //double time;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
 

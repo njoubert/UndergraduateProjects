@@ -7,8 +7,15 @@
 
 #include "Solver.h"
 
+Solver::Solver(TriangleMesh* mesh) {
+	_mesh = mesh;
+}
 
 Solver::~Solver() {
+
+}
+
+ImplicitSolver::ImplicitSolver(TriangleMesh* mesh) : Solver(mesh) {
 
 }
 
@@ -49,6 +56,9 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep,
 
 }
 
+ExplicitSolver::ExplicitSolver(TriangleMesh* mesh) : Solver(mesh) {
+}
+
 ExplicitSolver::~ExplicitSolver() {
 
 }
@@ -85,6 +95,17 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
     //******************************************************************************
     return make_pair(deltaX, deltaV);
+}
+
+NewmarkSolver::NewmarkSolver(TriangleMesh* mesh) : Solver(mesh) {
+	_gamma = DEFAULT_GAMMA;
+	int n = mesh->vertices.size();
+	_JP(n,n,0,NULL,NULL,NULL);
+	_JV(n,n,0,NULL,NULL,NULL);
+	_f(n);
+	_x(n);
+	_v(n);
+
 }
 
 NewmarkSolver::~NewmarkSolver() {

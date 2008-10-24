@@ -8,22 +8,8 @@
 #include "System.h"
 
 /////////////////////////////WHERE IS THIS CALLED////////////////////////////////////
-System::System(TriangleMesh* m, int verticeCount): mesh(m)
+System::System(TriangleMesh* m, Material* mat): mesh(m), _mat(mat)
 {
-    time = 0;
- //    ks = 20000;
- //   kd = 20;
-//	ks = 5000;
-//	kd = .05;
- //   Ks = 7;
- //   Kd = 3;
- //   Kbe = 10;
-  //  Kbd = 9;
-    Ks  = 20;
-    Kd  = 10;
-    Kbe = .1;
-    Kbd = .01;
-    //kb = 0;
     mouseSelected = NULL;
 
 //*******************GET REST ANGLE AND STORE IT IN MESH************************************
@@ -110,9 +96,6 @@ System::System(TriangleMesh* m, int verticeCount): mesh(m)
 
 //}
 
-double System::getT() {
-    return time;
-}
 
 mat3 System::outerProduct(vec3 a, vec3 b){
 	mat3 C;
@@ -170,15 +153,6 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 				bi = i;
 		}
 
-		double _Ke = getKbe();
-		double _Kd = getKbd();
-
-		//double Ke = 1000;
-		//double Kd = 1.1;
-
-//		double Ke = 0;
-//		double Kd = 0;
-
 //*
 		vec3 x2 = aList[ai]->getX();
 		vec3 x1 = bList[bi]->getX();
@@ -232,7 +206,7 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 
 		vec3 Fe[4];
 		for(int i = 0; i < 4; i++)
-			Fe[i] = _Ke * ((Emag*Emag)/(N1mag + N2mag)) * sinThetaOver2 * u[i];
+			Fe[i] = _mat->_kbe * ((Emag*Emag)/(N1mag + N2mag)) * sinThetaOver2 * u[i];
 
 		vec3 Fd[4];
 		double DthetaDt = u[0]*v1 + u[1]*v2 + u[2]*v3 + u[3]*v4;
@@ -240,7 +214,7 @@ void System::Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 			DthetaDt = 0;
 
 		for(int i = 0; i < 4; i++)
-			Fd[i] = -_Kd * Emag * DthetaDt * u[i];
+			Fd[i] = -_mat->_kbd * Emag * DthetaDt * u[i];
 	/*
 	//	if(!(F[0][0] < 0.001 && F[0][0] > -.001)) {
 	//		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
@@ -298,8 +272,8 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 	//	vec3 Fa = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NA/NA.length());
 //		vec3 Fb = -getKb() * (abs(theta) - abs(edge->getRestAngle())) * (NB/NB.length());
 
-		vec3 Fa = -getKbe() * (theta) * (NA/NA.length());
-		vec3 Fb = -getKbe() * (theta) * (NB/NB.length());
+		vec3 Fa = -_mat->_kbe * (theta) * (NA/NA.length());
+		vec3 Fb = -_mat->_kbe * (theta) * (NB/NB.length());
 
 		//FIND WHICH VERTEXES FORCES MUST BE APPLIED TO AND STORE THEM
 		TriangleMeshVertex** ai = A->getVertices();
@@ -327,8 +301,8 @@ void System::f_bend(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMe
 		vec3 v = ai[save_ai_Index]->getvX() - bi[save_bi_Index]->getvX();
 
 		//BUGGED CODE MUST GET CORRECT EQUATION FOR DAMPING FORCE ON A ANGULAR SPRING
-		vec3 Fdampa = -getKd()* (v.length2()*theta) * (NA/NA.length());
-		vec3 Fdampb = -getKd() * (v.length2()*theta) * (NB/NB.length());
+		vec3 Fdampa = -_mat->_kd* (v.length2()*theta) * (NA/NA.length());
+		vec3 Fdampb = -_mat->_kd * (v.length2()*theta) * (NB/NB.length());
 
 		ai[save_ai_Index]->setF(Fa);// + Fdampa);
 		bi[save_bi_Index]->setF(Fb);// + Fdampb);
@@ -385,7 +359,7 @@ void System::calculateInternalForces() {
 //		f_bend((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
 
 		//----------Finternal_i--------------------------------------------------------
-       F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
+       F0 =  f_spring(pa, pb, rl, _mat->_ks) + f_damp(pa, pb, va, vb, rl, _mat->_kd);
         // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
 
        //Store Forces
@@ -448,7 +422,7 @@ vec3 System::f_mouse( TriangleMeshVertex* selected ) {
     double rl = 1;
     vec3 l = selected->getX() - mouseP;
     double L = l.length();
-    vec3 f = -getKs() * (l/L) * (L - rl);
+    vec3 f = -_mat->_ks * (l/L) * (L - rl);
     return(f);
 }
 
@@ -471,12 +445,10 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
 		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
          vec3 RL = Ua - Ub;
          double rl = RL.length();
-		 //double rl  = (*it)->getRestLength();
-		 double Ks = getKs(); double Kd = getKd();
 		 //CALCULATE FORCES FOR EACH SPRING CONNECTED TO PARTICLE
-         mat3 dFsdxi = dfdx_spring(pa, pb, rl, Ks);  //W.R.T. u[i]
-         mat3 dFddxi = dfdx_damp(pa, pb, va, vb, rl, Kd);
-         mat3 dFddvi = dfdv_damp(pa, pb, rl, Kd);
+         mat3 dFsdxi = dfdx_spring(pa, pb, rl, _mat->_ks);  //W.R.T. u[i]
+         mat3 dFddxi = dfdx_damp(pa, pb, va, vb, rl, _mat->_kd);
+         mat3 dFddvi = dfdv_damp(pa, pb, rl, _mat->_kd);
          mat3 dFdxi = dFsdxi + dFddxi;
 
          //ADD FORCES FOR EACH SPRING CONNECTED TO PARTICLE
@@ -564,22 +536,5 @@ void System::takeStep(Solver* solver, double timeStep) {
  //*/
     }
 
-    time += timeStep;
 }
 
-
-float System::getKs() {
-    return Ks;
-}
-
-float System::getKd() {
-    return Kd;
-}
-
-float System::getKbe() {
-	return Kbe;
-}
-
-float System::getKbd() {
-	return Kbd;
-}

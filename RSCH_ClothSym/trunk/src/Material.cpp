@@ -8,10 +8,12 @@
 #include "Material.h"
 
 Material::Material() {
-    // TODO Auto-generated constructor stub
-
+   _ks = DEFAULT_KS;
+   _kd = DEFAULT_KD;
+   _kbe = DEFAULT_KBE;
+   _kbd = DEFAULT_KBD;
 }
 
 Material::~Material() {
-    // TODO Auto-generated destructor stub
+    // empty
 }

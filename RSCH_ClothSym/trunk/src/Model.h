@@ -27,6 +27,7 @@
 class Model {
 public:
     Model();
+    Model(Material*);
     virtual ~Model();
     virtual void advance(double)=0;
     virtual void draw()=0;
@@ -54,7 +55,7 @@ private:
  */
 class SimModel : public Model {
 public:
-    SimModel(TriangleMesh*, System*, Solver*);
+    SimModel(TriangleMesh*, System*, Solver*, Material*);
     ~SimModel();
     void advance(double);
     void draw();
@@ -84,10 +85,10 @@ private:
 private:
 	string _filename; //the template filename from which to iterate.
 	int _count;
-	int _currenti; //current position in buffer
-	int _lasti; //last valid position in buffer
+//	int _currenti; //current position in buffer
+//	int _lasti; //last valid position in buffer
 	TriangleMesh* _mesh;
-	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
+//	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
 };
 
 #endif /* MODEL_H_ */

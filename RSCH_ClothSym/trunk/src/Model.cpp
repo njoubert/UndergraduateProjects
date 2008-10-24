@@ -18,6 +18,10 @@ Model::Model() {
     _material = new DEFAULT_MATERIAL();
 }
 
+Model::Model(Material* mat) {
+	_material = mat;
+}
+
 Model::~Model() {
     delete _material;
 }
@@ -77,7 +81,8 @@ void StatModel::draw() {
  *
  *------------------------------------------------*/
 
-SimModel::SimModel(TriangleMesh* mesh, System* system, Solver* solver) {
+SimModel::SimModel(TriangleMesh* mesh,
+		System* system, Solver* solver, Material* mat) : Model(mat) {
 	_mesh = mesh;
 	_system = system;
 	_solver = solver;

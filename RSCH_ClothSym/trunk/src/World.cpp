@@ -41,10 +41,12 @@ bool World::loadSimModel(string filename) {
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL)
     	return false;
+    Material* mat = new DEFAULT_MATERIAL();
     Model* model = new SimModel(
     		mesh,
-    		new DEFAULT_SYSTEM(mesh, mesh->vertices.size()),
-    		new DEFAULT_SOLVER());
+    		new DEFAULT_SYSTEM(mesh,mat),
+    		new DEFAULT_SOLVER(mesh),
+    		mat);
     _models.push_back(model);
     return true;
 }
