@@ -121,24 +121,17 @@ for j=1:steps,
        %Calculate total jacobian wrt position and velocity for each
        %connection (each edge in the grid).
        JP_fa_xa = jdap(xa,xb,va,vb,rl(i),kd) + jsap(xa, xb, rl(i), ks);
-       JP_fb_xa = -1*JP_fa_xa;
-       JP_fb_xb = JP_fa_xa;
-       JP_fa_xb = -1*JP_fb_xb;
-       
        JV_fa_xa = jdav(xa, xb, va, vb, rl(i), kd);
-       JV_fb_xa = -1*JV_fa_xa;
-       JV_fb_xb = JV_fa_xa;
-       JV_fa_xb = -1*JV_fb_xb;
-       
+
        %Accumulate Jacobians
        JP(ia:ia+2,ia:ia+2) = JP(ia:ia+2,ia:ia+2) + JP_fa_xa;
-       JP(ia:ia+2,ib:ib+2) = JP(ia:ia+2,ib:ib+2) + JP_fa_xb;
-       JP(ib:ib+2,ia:ia+2) = JP(ib:ib+2,ia:ia+2) + JP_fb_xa;
-       JP(ib:ib+2,ib:ib+2) = JP(ib:ib+2,ib:ib+2) + JP_fb_xb;
+       JP(ia:ia+2,ib:ib+2) = JP(ia:ia+2,ib:ib+2) + -1*JP_fa_xa;
+       JP(ib:ib+2,ia:ia+2) = JP(ib:ib+2,ia:ia+2) + -1*JP_fa_xa;
+       JP(ib:ib+2,ib:ib+2) = JP(ib:ib+2,ib:ib+2) + JP_fa_xa;
        JV(ia:ia+2,ia:ia+2) = JV(ia:ia+2,ia:ia+2) + JV_fa_xa;
-       JV(ia:ia+2,ib:ib+2) = JV(ia:ia+2,ib:ib+2) + JV_fa_xb;
-       JV(ib:ib+2,ia:ia+2) = JV(ib:ib+2,ia:ia+2) + JV_fb_xa;
-       JV(ib:ib+2,ib:ib+2) = JV(ib:ib+2,ib:ib+2) + JV_fb_xb;
+       JV(ia:ia+2,ib:ib+2) = JV(ia:ia+2,ib:ib+2) + -1*JV_fa_xa;
+       JV(ib:ib+2,ia:ia+2) = JV(ib:ib+2,ia:ia+2) + -1*JV_fa_xa;
+       JV(ib:ib+2,ib:ib+2) = JV(ib:ib+2,ib:ib+2) + JV_fa_xa;
     end
     
     for i=1:3:3*n,
