@@ -36,13 +36,11 @@ public:
 Viewport    viewport;
 
 void printUsage() {
-    cout << "Usage: "<< endl;
-    cout << "  ClothSym " << endl;
-    cout << "    -statobj input.obj" << endl;
-    cout << "    -simobj input.obj" << endl;
-    cout << "    -aniobj inputXXXXXX.obj" << endl;
-    cout << "    [-d i] " << endl;
-    cout << "    [-img directory] " << endl;
+    cout << "Usage: ";
+    cout << " ClothSym " << endl;
+    cout << "      {[-statobj input.obj] | [-simobj input.obj | [-aniobj inputXXXXXX.obj]}" << endl;
+    cout << "      [-d i] " << endl;
+    cout << "      [-img directory] " << endl;
 }
 
 int parseCommandLine(int argc, char *argv[]) {
