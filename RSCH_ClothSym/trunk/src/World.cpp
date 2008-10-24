@@ -31,8 +31,7 @@ bool World::loadStatModel(string filename) {
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL)
     	return false;
-    Model* model = new StatModel(
-    		);
+    Model* model = new StatModel(mesh);
     _models.push_back(model);
     return true;
 }
