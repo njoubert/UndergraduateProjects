@@ -9,6 +9,7 @@
 #define DEFAULT_SYSTEM	System
 #define DEFAULT_SOLVER	ExplicitSolver
 #define DEFAULT_MATERIAL Material
+#define DEFAULT_MESHBUFFERSIZE 120
 
 
 

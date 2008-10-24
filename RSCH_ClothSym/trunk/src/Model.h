@@ -9,6 +9,7 @@
 #include "System.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "io/OBJParser.h"
 
 #ifndef MODEL_H_
 #define MODEL_H_
@@ -70,12 +71,23 @@ private:
  */
 class AniModel : public Model {
 public:
-    AniModel();
+    AniModel(string);
     ~AniModel();
     void advance(double);
     void draw();
 
 private:
+	TriangleMesh* getCurrentMesh();
+	void stepToNextMesh();
+	void loadMeshAtNextBufferPos(string filename);
+
+private:
+	string _filename; //the template filename from which to iterate.
+	int _count;
+	int _currenti; //current position in buffer
+	int _lasti; //last valid position in buffer
+	TriangleMesh* _mesh;
+	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
 };
 
 #endif /* MODEL_H_ */
