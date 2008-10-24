@@ -79,8 +79,8 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
 
 
     //Contraints set in OBJ file
-    if (point->getConstaint() == identity2D())
-        return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
+    //if (point->getConstaint() == identity2D())
+      //  return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
     //******************************************************************************
