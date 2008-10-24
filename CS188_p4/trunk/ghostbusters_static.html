@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd"><html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Project 4: Static Ghostbusters</title>
+<link href="projects.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h2>Project 4: Ghostbusters</h2>
+<br>
+<em>Due 10/30 at 11:59pm</em>
+
+
+<h3>Introduction</h3>
+<p>In this project, you will design agents that locate invisible ghosts on a grid using sensors, and
+then guess their locations.&nbsp; For this project, the ghosts do not move.</p>
+<p>The code for this project contains the following files, available as a <a href="static.zip">zip
+archive</a>.</p>
+<table border="0" cellpadding="10">
+  <tr>
+    <td colspan="2"><b>Ghostbusters</b></td>
+  </tr>
+  <tr>
+    <td><a href="ghostbusters.py"><code>ghostbusters.py</code></a></td>
+    <td>The main code for the game of Ghostbusters. You should familiarize
+      yourself with the general outline of this code, which you will be
+      interacting with for the next project as well.</td>
+  </tr>
+  <tr>
+    <td><a href="tutorial.py"><code>tutorial.py</code></a></td>
+    <td>Tutorial script -- start here!</td>
+  </tr>
+  <tr>
+    <td><a href="sensorDistributions.py"><code>sensorDistributions.py</code></a></td>
+    <td>Plug-in for the GUI interface. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="gui.py"><code>gui.py</code></a></td>
+    <td>The graphical user interface for Ghostbusters. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="graphicsUtils.py"><code>graphicsUtils.py</code></a></td>
+    <td>Graphics utilities. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="util.py"><code>util.py</code></a></td>
+    <td>Tools used in ghostbusters. You may be familiar with some of these by now,
+      and they will save you a lot of time.</td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Agents</b></td>
+  </tr>
+  <tr>
+    <td><a href="ghostbusterAgent.py"><code>ghostbusterAgent.py</code></a></td>
+    <td>You will implement the <code>getAction()</code> method in this file. </td>
+  </tr>
+  <tr>
+    <td><a href="staticInferenceModule.py"><code>staticInferenceModule.py</code></a></td>
+    <td>You will implement the <code>getGhostTupleDistributionGivenObservations()</code> and <code>getReadingDistributionGivenObservations()</code> methods in this file.</td>
+  </tr>
+  <tr>
+    <td><a href="dynamicInferenceModule.py"><code>dynamicInferenceModule.py</code></a></td>
+    <td>(You should not modify this file until the next checkpoint.)
+  </tr>
+</table>
+<p>&nbsp;
+<p><strong>What to submit:</strong> You will fill in portions of <code>ghostbusterAgent.py</code>
+and <code>staticInferenceModule.py</code>. You should submit only these files. Please don't change any other files.</p>
+<p><strong>Evaluation:</strong> Your code will be autograded for technical
+correctness. Please <em>do not</em> change the names of any provided functions
+or classes within the code, or you will wreak havoc on the autograder.
+
+<p><strong>Academic Dishonesty:</strong> We will be checking your code against
+other submissions in the class for logical redundancy. If you copy someone
+else's code and submit it with minor changes, we will know. These cheat
+detectors are quite hard to fool, so please don't try. We trust you all to
+submit your own work only; please don't let us down. Instead, contact the course
+staff if you are having trouble.
+
+<h3>Ghostbusters and BNs</h3>
+<p>In this cs188 version of Ghostbusters, the goal is to locate and bust the
+ghost(s) hiding on the grid.&nbsp; However,
+you aren't guessing at random.&nbsp; You can obtain information about the ghosts'
+whereabouts by dropping sensors at grid positions.&nbsp; These sensors return
+readings, which are correlated with the distance to the closest ghost.&nbsp;
+You only have one try to bust each ghost, and once you finish busting, successful or not, the game ends.&nbsp; There are two tasks of interest in this game.&nbsp; First,
+we would like to compute probability distributions over ghost locations given
+sensor readings.&nbsp; This is the inference problem.&nbsp; Second, we want to
+decide, given our current beliefs about ghost locations, whether to sense or
+bust, and where.&nbsp; This is the decision problem.&nbsp; You will build agents
+to solve both of these problems.</p>
+<p>You can probably figure out the rules just by playing, but here's the
+official version:</p>
+<p>At any time, you can sense or bust.&nbsp; If you wish to sense, left-click
+a grid location, and you will reveal the sensor reading at that location.&nbsp;
+You cannot &quot;re-sense&quot; the same location.&nbsp; The intuition is that
+time is frozen and your observation, though noisy, will not change until the
+world changes (which it will not do until the next checkpoint).&nbsp; The
+observation you get from a sensor will be one of <code>RED (closest), ORANGE, YELLOW,</code> or <code>GREEN (furthest)</code>,
+which roughly indicates how close the closest ghost is to the sensor
+location.&nbsp; The exact sensor model is given in <code>sensorDistributions.py</code>.&nbsp;
+Your agent loses one point per sensor revealed.</p>
+<p>Once you are ready to bust, click the BUST button. It will turn red to
+indicate that you are in busting mode.&nbsp; All you can do now is bust as many
+times as there are ghosts on the board.&nbsp; Once all your busts are used up,
+you will see which were hits and which were misses, and the game will end.&nbsp; All ghosts in any squares
+you bust are hit (you can hit multiple ghosts with a single bust if you're
+lucky).&nbsp; Your agent gains 50 points for each ghost that is bust.</p>
+<p>In the next project, you will also have the ability to advance time, at
+which point the ghosts will move and the observations will be updated, but for
+now we are only concerned with the one time step scenario. The "TIME+1" button
+is therefore intentionally greyed out.</p>
+<p>To get started with Ghostbusters, let's play a few games.&nbsp; Run ghostbusters
+from the command line:</p>
+<p><pre>&nbsp; python ghostbusters.py -w -q</pre></p>
+<p>As before, there are many command-line options, which you can display with
+the <code>-h</code> option.&nbsp; In this case, the <code>-w</code> flag shows
+the true locations of the ghosts, and the <code>-q</code> flag suppresses the
+display of agent beliefs (since you have no agent yet).</p>
+<p>Left-click to sensor a square or click the bust button to begin
+busting.&nbsp; Remember that once you bust, the game will end, whether you hit
+the ghost or not.&nbsp; Try a bigger layout using (<code>-l medium</code>).&nbsp;
+Now, using (<code>-l test</code>), a 3 by 3 layout, try sensing all 9 squares.
+Notice that there is no noise in the sensor readings -- that is, the information
+provided by <code>RED, ORANGE, YELLOW,</code> and <code>GREEN</code> is
+deterministic given the location of the ghost.&nbsp; You can set the sensor
+reading distribution at the command line with (<code>-s noisy</code>). Take a
+look at <code>sensorDistributions.py</code> to see what the deterministic and noisy
+distributions look like.&nbsp; It should be more difficult to find the ghost
+using the noisy distribution.&nbsp; Try some games on the medium layout with
+noisy sensors and no true locations to get an idea of what we're asking the
+agents to do!</p>
+<p><em><strong>Question 0 (no points)&nbsp; </strong></em>Work through the brief
+tutorial (<code>tutorial.py</code>), which provides an introduction to the major
+ghostbuster classes and functions you will find helpful.</p>
+<p>Let's formalize the static ghostbusters domain as a Bayes' net.&nbsp; The full
+network structure is shown below (for a 2x3 layout):</p>
+<p><center><img width="300" src="bn-1.png"></center></p>
+<p>The G node represents the tuple of ghost positions.&nbsp; You could imagine
+having a separate variable for each ghost; this formulation is equivalent.&nbsp;
+You can get the prior distribution over ghost tuples from <code>Game.getInitialDistribution()</code>.&nbsp;
+In general, there are a lot of important <code>Game.getX()</code> methods, and
+your agents and inference modules will have <code>self.game</code>
+objects.&nbsp; Note that if there is only one ghost in play, you will still get
+singleton tuples of locations, not just a bare location.&nbsp; There is a random
+variable R<sub>i,j</sub> for each position (row, col) = (i, j).&nbsp; Each
+reading depends only on the  position.&nbsp; The conditional distribution
+for R<sub>i,j</sub> given a value for G can be fetched with <code>Game.getReadingDistributionGivenGhostTuple()</code>.</p>
+
+<p><em><strong>Question 1 (4 points)&nbsp; </strong></em>Try running without the
+<code>-q</code> flag, if you haven't already.
+<p><pre>&nbsp; python ghostbusters.py -w</pre></p>
+&nbsp; The GUI will now display the
+agent's posterior beliefs about the location of the ghost (G) given the revealed
+sensors ({R<sub>i,j</sub>=r<sub>i,j</sub>}).&nbsp; However, as you haven't
+written anything yet, there is a placeholder which always returns the
+prior distribution over locations.&nbsp; You can control the prior distribution
+by invoking the game with the <code>--prior priorstring</code> flag, where <code>priorstring</code> can
+be either <code>uniform</code> (default) or <code>border</code>. Make sure that you exploit this information in your code by making use of <code>getInitialDistribution()</code>. Look at the <code>StaticKeyboardAgent</code>,
+which is actually playing the game: it delegates action choice to you, the
+human, and uses an <code>ExactStaticInferenceModule</code> to compute
+distributions over ghosts.
+<br>
+You will implement the function <code>getGhostTupleDistributionGivenObservations()</code>
+located in the <code>ExactStaticInferenceModule</code> class in <code>staticInferenceModule.py</code>.&nbsp;
+It takes a dictionary of location / reading pair and should calculate the
+posterior distribution over the location of a ghost given those
+observations.&nbsp; The returned object should be a dictionary which has all singleton tuples of all the
+grid locations as keys and posterior probabilities (that the ghost is in that
+position) as values.&nbsp; You might try printing out the observations as you
+play to see what they look like.&nbsp; Test your agent by playing with noiseless
+sensors (<code>-s deterministic</code>, which is the default):
+<p><pre>&nbsp; python ghostbusters.py -s deterministic</pre></p>
+You also might
+use <code>-w</code> to show the true ghost position for debugging:&nbsp;
+<p><pre>&nbsp; python ghostbusters.py -w -s deterministic</pre></p>
+ Once your code seems to be working, try noisy sensor distributions (<code>-s noisy</code>):
+<p><pre>&nbsp; python ghostbusters.py -w -s noisy</pre></p>
+Note that thanks to your results from the homework, you can ignore all unobserved reading
+variables when you compute the posterior over G.  That is, you can treat the network on the
+left as if it were the one on the right:</p>
+<center><img width="300" src="bn-2.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="295" src="bn-3.png"></center>
+
+Hints:
+<ul>
+<li>
+Before typing any code, write down the equation of the inference problem you are trying to solve.
+Being comfortable with the equation is extremely important and will prevent many problems.
+</li>
+<li>Remember that the <code>Counter</code> class in <code>util.py</code> extends the built-in dictionary datastructure.
+This means that you can return a <code>Counter</code> whenever a dictionary is expected.
+We recommend using this class since it has many useful functions that will save you some time.</li>
+<li>The prior distribution of ghosts is available through <code>self.game.getInitialDistribution()</code></li>
+<li>The list of possible configurations of ghosts through <code>self.game.getGhostTuples()</code></li>
+<li>If you run the following command:
+<p><pre>python ghostbusters.py -s deterministic --fixrandomseed --prior border</pre></p>
+and click on the top left and bottom left corners, the expected counts for the other two corners should be <code>0.22</code>.
+</ul>
+
+<p><strong><em>Question 2 (3 points) </em></strong>You can put multiple ghosts on
+the board with the <code>-k</code> option.&nbsp; Try a game with <code>-k 2 -q</code>:&nbsp;
+<p><pre>&nbsp; python ghostbusters.py -w -q -k 2</pre></p>
+You now need to make sure your inference works correctly for the case of
+multiple ghosts; it may already be correct, depending on how you coded your answer
+to question 1 (you will only turn in this more general version).&nbsp;
+Whereas before G was essentially a ghost position, it is now a ghost
+tuple, and so we are calculating posteriors over ghost tuples.&nbsp; For example,
+if we have 2 ghosts, we calculate the posterior probability of (ghost1, ghost2)
+being ((0,0), (0,0)), ((0,0), (0,1)), and so on.&nbsp; Because the ghosts are
+interchangeable, you will never know which exact ghost is in which location, but
+you may know which k locations are occupied.&nbsp; When there are multiple
+ghosts, the GUI will display the expected number of ghosts at each location.&nbsp;
+We have provided a function in the mostly abstract <code>StaticGhostbustersAgent</code>
+class called <code>getExpectedGhostCounts()</code> which extracts expected counts
+from your posterior over G; make sure you understand this method.&nbsp; In the
+single-ghost case, the expected ghosts counts are just the beliefs we compute
+in <code>getGhostTupleDistributionGivenObservations()</code>.&nbsp;
+In the k-ghost case, however, the expected number of ghosts across all locations will
+be k.&nbsp; For example, you may have a posterior that ((0,0), (0,1)) is 0.5 and
+((0,1), (0,0)) is 0.5, at which point both of (0,0) and (0,1) will have expected
+counts of 1.0.&nbsp; Try your code with 2 and 3 ghosts. Make sure you understand
+why inference slows down as k increases:</p>
+<p><pre>&nbsp; python ghostbusters.py -w -k 2</pre></p>
+<p><pre>&nbsp; python ghostbusters.py -w -k 3</pre></p>
+<p><em><strong>Question 3 (5 points) </strong></em>
+<p>You will now write a new agent, which makes decisions using your inference
+code.&nbsp; The simplest decision to make is where to bust given current beliefs
+over ghost locations G.&nbsp; This computation is basically an expectimax
+computation, shown diagrammatically below.&nbsp; At the root max node, you can
+select any busting option (tuple of k squares), and the expected utility (score)
+is the max over all actions' expected utilities.&nbsp; Each action will produce
+an expected utility which is the expected number of ghosts in those squares times
+the score per ghost, <code>GHOST_SCORE</code>.
+<p><center><img width="300" src="tree-1.png"></center></p>
+<p>However, you need not bust right away.&nbsp; Instead, you might sense first,
+revealing a single new reading, and then bust.&nbsp; In this case, you would
+have various sensing actions available to you.&nbsp; Each sensing action leads
+to a chance node with a distribution P(R<sub>i,j</sub> | {r}), which describes
+the agent's beliefs about what reading will emerge at that location, given the
+previous readings.&nbsp; For each such new reading, we will have an optimal
+busting option and the new accompanying expected utility.&nbsp; Your agent should
+usually take the sensing action which reveals the reading which has the largest
+value of information, that is, expected gain in maximum expected utility.&nbsp;
+However, once the value of the information is less that 1 point, it should stop
+sensing and bust.&nbsp; In deciding its actions, your agent does not evaluate the futures
+in which it senses multiple times (though it may indeed end up sensing multiple times).&nbsp;
+This decision process is therefore not optimal; the
+optimal agent would also explicitly consider the possibility of sensing more than once
+before busting.&nbsp; In other words, you have an agent with look-ahead depth 2
+for its action selection.</p>
+<p>The search tree for this process is represented in the following diagram:</p>
+<p><center><img width="300" src="tree-2.png"></center></p>
+
+<p>You should build an agent which not only
+computes posterior beliefs, but also makes decisions, using the at-most-one-sensor
+look-ahead described above.&nbsp; You will need to implement <code>StaticVPIAgent.getAction()</code>
+in <code>ghostbusterAgent.py</code>
+and <code>ExactStaticInferenceModule.getReadingDistributionGivenObservations()</code>
+in <code>staticInferenceModule.py</code>
+.&nbsp;
+You may wish to think first about the one-ghost case before generalizing to the
+multi-ghost case, but the code should be the same either way.&nbsp; Test your VPI
+agent with (<code>-p vpi</code>): first using deterministic sensors (<code>-s
+deterministic</code>):
+<p><pre>&nbsp; python ghostbusters.py -w -p vpi -s deterministic</pre></p>
+ and then with noisy sensors (<code>-s noisy</code>):&nbsp;
+<p><pre>&nbsp; python ghostbusters.py -w -p vpi -s noisy</pre></p>
+It should work very well (better than 90%) in the deterministic case, but might sometimes make obviously
+non-optimal decisions in the noisy case, because of the limited look-ahead.
+Make sure it works with multiple ghosts as well (NOTE: this will be a lot slower than the single ghost case):
+<p><pre>&nbsp; python ghostbusters.py -w -p vpi -k 2</pre></p>
+Hints:
+<ul>
+<li>
+Before typing any code, write down the equation of the inference problem you are trying to solve.
+Being comfortable with the equation is extremely important and will prevent many problems.
+</li>
+<li>The dictionary of observations is stored in: <code>self.observations</code></li>
+<li>There are different ways of implementing the VPI computation yielding equivalent results, but with very different computational costs. For an efficient solution, consider using <code>self.getExpectedGhostCounts()</code> in the <code>StaticGhostbusterAgent</code> class in <code>ghostbusterAgent.py</code>, which optionally takes in a set of observations (default is <code>self.obervations</code>) and returns the expected number of ghosts at each square based on these observations. Of course, you will be graded only on correctness and not on efficiency.</li>
+<li>If you run the following command:
+<p><pre>python ghostbusters.py -p vpi -s deterministic --fixrandomseed --prior border</pre></p>
+your VPI agent should be able to bust the ghost after sensing three times.</li>
+</ul>
+</p>
+
+</body>
+
+</html>

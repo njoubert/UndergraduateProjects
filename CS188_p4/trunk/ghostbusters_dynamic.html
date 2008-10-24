@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd"><html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Project 5: Dynamic Ghostbusters</title>
+<link href="projects.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h2>Project 5: Dynamic Ghostbusters</h2>
+<br>
+<em>Due 11/19 at 11:59pm</em>
+<h3>Introduction</h3>
+<p>In this checkpoint, you will design more agents for the CS188 variant of Ghostbusters.
+Now, the ghosts will be moving, and so your agents will have to model the passage
+of time, in addition to the observation of sensor readings.</p>
+<p> The Ghostbusters code is unchanged from project 4.  This project does, however, include
+a Pacman variant related to the course contest.  <em>Note: The Pacman code is only a contest preview; 
+it doesn't require any additional work on your part.</em> The code for this project contains the following files, available as a <a href="dynamic.zip">zip archive</a>. </p>
+
+<table border="0" cellpadding="10">
+  <tr>
+    <td colspan="2"><b>Ghostbusters</b></td>
+  </tr>
+  <tr>
+    <td><a href="ghostbusters.py"><code>ghostbusters.py</code></a></td>
+    <td>The main code for the game of Ghostbusters. You should familiarize
+      yourself with the general outline of this code, which you will be
+      interacting with for Project 4 and 5.</td>
+  </tr>
+  <tr>
+    <td><a href="tutorial.py"><code>tutorial.py</code></a></td>
+    <td>Tutorial script -- start here!</td>
+  </tr>
+  <tr>
+    <td><a href="sensorDistributions.py"><code>sensorDistributions.py</code></a></td>
+    <td>Plug-in for the GUI interface. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="gui.py"><code>gui.py</code></a></td>
+    <td>The graphical user interface for Ghostbusters. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="graphicsUtils.py"><code>graphicsUtils.py</code></a></td>
+    <td>Graphics utilities. You can ignore this file.</td>
+  </tr>
+  <tr>
+    <td><a href="util.py"><code>util.py</code></a></td>
+    <td>Tools used in ghostbusters. You may be familiar with some of these by now,
+      and they will save you a lot of time.</td>
+  </tr>
+  <tr>
+    <td><a href="ghostbustersAgent.py"><code>dhostbustersAgent.py</code></a></td>
+    <td>This is where all your code will go. Don't ignore this file.</td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Sonar Pacman</b></td>
+  </tr>
+  <tr><td><a href="sonar.py">sonar.py</a> 
+  <td>The main file that runs Sonar Pacman games.</td></tr>
+
+  <tr><td><a href="game.py">game.py</a></td>
+  <td>The logic behind how the Pacman world works.</td></tr>
+
+ <tr><td><a href="sonarAgents.py">sonarAgents.py</a></td>
+  <td>Agents for Sonar Pacman.</td></tr>
+
+  <tr><td><a href="graphicsDisplay.py">graphicsDisplay.py</a></td>
+  <td>Graphics for Pacman</td></tr>
+
+    <tr><td><a href="layout.py">layout.py</a></td>
+  <td>Code for reading layout files and storing their contents</td></tr>
+
+    <tr><td><a href="distanceCalculator.py">distanceCalculator.py</a></td>
+  <td>Code for computing shortest paths through a maze</td></tr>
+
+</table>
+<p>&nbsp;
+<p><strong>What to submit:</strong> You will fill in portions of <code>ghostbustersAgent.py</code>
+(only) during the assignment, and submit it.&nbsp; 
+<p><strong>Evaluation:</strong> Your code will be autograded for technical
+correctness. Please <em>do not</em> change the names of any provided functions
+or classes within the code, or you will wreak havoc on the autograder.
+
+<p><strong>Academic Dishonesty:</strong> We will be checking your code against
+other submissions in the class for logical redundancy. If you copy someone
+else's code and submit it with minor changes, we will know. These cheat
+detectors are quite hard to fool, so please don't try. We trust you all to
+submit your own work only; please don't let us down. Instead, contact the course
+staff if you are having trouble.
+
+<h3>Ghostbusters and Bayes Nets and Time</h3>
+<p>In this checkpoint, you will maintain beliefs over ghost positions as they move
+	around on the board.  You will only address the inference problem of tracking
+	the ghosts; decisions about when and where to bust will be left to the human player.</p>
+	
+<p>You can probably figure out the rules just by playing, but here's the
+official version:</p>
+
+<p>At any time, you can sense or bust.&nbsp; If you wish to sense, left-click a
+grid location, and you will reveal the sensor reading at that location.&nbsp;
+You cannot &quot;re-sense&quot; the same location.&nbsp; The intuition is that
+time is frozen and your observation, though noisy, will not change until the
+world changes (which it will not do until you advance time).&nbsp; The
+observation you get from a sensor will be one of <code>RED, ORANGE, YELLOW,</code>
+or <code>GREEN</code>, which roughly indicates how close the closest ghost is to
+the sensor location.&nbsp; The exact sensor model is given in <code>sensorDistributions.py</code>.&nbsp;
+You lose one point per sensor revealed.</p>
+<p>Once you are ready to bust, click the BUST button. It will turn red to
+indicate that you are in busting mode.&nbsp; All you can do now bust as many
+times as there are ghosts on the board.&nbsp; Once all your busts are used up,
+you will see which were hits and which were misses.&nbsp; All ghosts in any
+squares you bust are hit (you can hit multiple ghosts with a single bust if
+you're lucky).&nbsp; You gain 50 points for each ghost you hit.</p>
+<p>In this checkpoint, you have the ability to advance time by clicking on the
+TIME+1 button.&nbsp; The main reason to advance time (from a decision point of
+view) is that you can get new readings at each location each time step.&nbsp; Of
+course if the sensors are deterministic, there is much less reason to allow time
+to pass.&nbsp; However, your code should correctly track the ghosts across time
+steps in any case.</p>
+<p>To get started with dynamic Ghostbusters, let's play a few games with time.&nbsp; Run
+Ghostbusters from the command line:</p>
+
+<pre>python ghostbusters.py -w -q -m circle</pre>
+
+<p>Click the time button to make the ghost(s) move.&nbsp; The new option <code>-m</code>
+triggers motion, and takes the arguments <code>basic, center,</code> and <code>circle</code>.&nbsp;
+Each of these choices creates a different current patttern: for example, circle
+causes each ghost to move in a clockwise circle.&nbsp; You can make the motion
+noisy with the <code>-n</code> option, which takes a float argument representing
+the probability that the ghost will go in an unexpected direction (i.e. not what
+the current specifies for the ghost's position).</p>
+
+<p>&nbsp;</p>
+
+<p><em><strong>Question 1 (6 points)&nbsp; </strong></em>When time can elapse
+(either <code>-m</code> is not basic or <code>-n</code> is not zero), the
+inference will default to the <code>ExactDynamicInferenceModule</code> in <code>ghostbustersAgent.py</code>.&nbsp;
+This agent blissfully ignores observations and the passage of time (for
+now).&nbsp; You will replace it with an HMM-like inference module which runs the
+forward algorithm.&nbsp; Technically, you will be working with a dynamic Bayes'
+net, not a simple HMM, because some time steps may have multiple observations,
+while others may have none.&nbsp; Unlike the inference module from the first
+checkpoint, you dynamic inference module will maintain, or track, a belief state
+over the possible ghost tuples.&nbsp; We have already given you code which
+initializes the belief state to the prior over tuples.&nbsp; You
+should fill in <code>observe()</code>, which updates these beliefs based on a
+single sensor observation <code>(location, reading)</code>, and you should fill
+in <code>elapseTime()</code> which updates beliefs for a time step
+passing.&nbsp; These methods will alter the agent's belief state in the
+appropriate ways.</p>
+
+<p>You can test your implementation of <code>observe()</code> before <code>elapseTime()</code>
+is written by never clicking on TIME+1.&nbsp; In this case, your agent's beliefs
+should be just as in 3.3 (indeed, you may find that the incremental updates are
+more intuitive and faster than the inference you wrote for 3.3).&nbsp; You can
+also test <code>elapseTime()</code> by itself by using the <code>center</code>
+motion type.&nbsp; 
+
+<pre>python ghostbusters.py -w -m center</pre>
+
+The ghosts, and therefore your agent's beliefs, will always
+drift towards the center of the board.&nbsp; Make sure you code works on the
+multiple ghost case (try two ghosts -- more will be slow).</p>
+
+<p>Some things to try once your inference algorithm is working: First, try
+sensing until you have a peaked distribution of where the ghosts are.&nbsp; Then,
+try elapsing time.&nbsp; Watch how the beliefs spread out if noise (<code>-n</code>)
+is set to, say, 0.25 and motion is set to <code>center</code>.&nbsp; In many
+applications, you would get only one sensor reading per time step.&nbsp; Watch
+how readings tend to sharpen beliefs, while time tends to flatten them.</p>
+
+
+<p>Try putting 3 or more ghosts on the board.&nbsp; Think about why the inference
+is so slow.&nbsp; To address this issue, we will write an approximate inference
+procedure next, using particle filtering.</p>
+
+<p>&nbsp;</p>
+
+<p><strong><em>Question 2 (6 points) </em></strong>You will now fill in the stub
+of the class <code>ApproximateDynamicInferenceModule</code> in <code>ghostbustersAgent.py,</code>
+which you can select from the command line:
+
+<pre>python ghostbusters.py -w -i approximate -m circle</pre>
+
+<p>The general outline is similar to the exact agent, except that the belief state is
+represented by a list of particles (samples) of ghost tuple locations.&nbsp; At
+initialization, you should start your beliefs off with <code>numParticles</code>
+samples from the ghost tuple prior.&nbsp; In particle filtering, each particle is
+a possible value for the hidden state (here, the ghost position tuple) and each
+particle has equal weight after every update.&nbsp; You will then update this
+sample list during <code>elapseTime()</code> and <code>observe()</code>.&nbsp;
+Both updates will start with the current samples, and end with a new list of
+samples according to the particle filtering algorithm.&nbsp; Elapsing time will
+require that you sample a next state for each particle.&nbsp; Observation will
+require that you resample from your particles, where each particle is weighted
+by the observation's likelihood given the state represented by that
+particle.&nbsp; Note that you will be maintaining a list of samples internally,
+but you will still be returning a distribution (in the form of a dictionary or <code>Counter</code>)
+in <code>getGhostTupleDistribution()</code>.&nbsp; This returned distribution may
+be quite sparse if you don't have many samples.&nbsp; </p>
+
+<p>Check out <code>util.py</code>,
+where several sampling methods have been provided for you.&nbsp; Make sure your
+code works with both noisy and deterministic sensors.&nbsp; <em>Note: with
+deterministic sensors, it is possible that all of your particles will be given
+zero weight during the observation update if none of them are consistent with
+your observation.&nbsp; In this case, which usually means you don't have enough
+samples, you should reinitialize with a prior sample.</em></p>
+
+<p>Try various numbers of samples with one, two, or more ghosts.&nbsp; Think
+about whether the approximate inference is faster, and why or why not.&nbsp;
+Also, test how many samples you need to use for one, two, or three ghosts to get
+reasonable approximations.&nbsp; With one ghost and thousands of samples, the
+predictions should be quite good.</p>
+<p>&nbsp;</p>
+
+<p><strong><em>Pacman Contest Preview (0 points) </em></strong> Pacman spends his life running 
+	from ghosts, but things were not always so.  Legend has it that many years ago, Pacman's 
+	great grandfather, Grandpac, learned to hunt ghosts for sport.  However, he was blinded by his
+	power and could only track ghosts by their banging and clanging.
+	
+	<center><img src="sonar.png" width="500px" /></center>
+	
+	<p> <code>Sonar.py</code> defines a variant where Pacman (aka Grandpac) is invincible, and he tries to hunt 
+		down all the ghosts as quickly as possible.  As observations, he receives a noisy distance reading for
+		each remaining ghost.  As a human player, these distances are quite difficult to interpret.  You should try anyway:
+		
+		<pre>python sonar.py</pre>
+		
+		If you want to see the ghosts, you can turn on cheating, which lets you see the ghosts:
+		
+		<pre>python sonar.py --showGhosts</pre>
+		
+		You can also use the inference code from Ghostbusters to track ghosts.  We have set up <code>sonar.py</code>
+		to use your <code>ExactDynamicInferenceModule</code>, which you can invoke via:
+		
+		<pre>python sonar.py -p TrackingKeyboardAgent</pre>
+		
+		<em>Note:</em> This dependency on Ghostbusters code is really a hack, so please accept our apologies if it doesn't work.  If you
+		refer to anything too Ghostbusters-specific in your implementation, this will probably not work as expected.  You 
+		will not be penalized if this doesn't work for you.
+		
+	    <p>We've also implemented a greedy agent for you that uses your Ghostbusters inference code
+		to track ghosts, and moves toward the nearest ghost at each step.  To watch Grandpac hunt all by himself, try:
+		
+		<pre>python sonar.py -p GreedyTrackingAgent --layout bigHunt</pre>
+		
+		The <a href="../contest/contest.html">course contest</a>, currently in beta release, will provide a similar format: 
+		your opponents will be hidden from you unless you are close enough to detect them.  We may provide a similar
+		sonar signal to the defensive agents (ghosts).  Details of the contest will be finalized within the next week.
+	
+		<p><em>Have fun!</em></p>
+
+</body>
+
+</html>
