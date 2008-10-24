@@ -2,18 +2,8 @@
 
 using namespace std;
 
-#define BPP 24
-
-//****************************************************
-// Some Classes
-//****************************************************
-TriangleMesh* myMesh;
-System* sys;
-//Solver* solver = new ImplicitSolver();
-Solver* solver = new ExplicitSolver();
-
-double timeStep = 0.0001; //duration of one iteration.
-bool playEveryStep = true;
+World world;
+ImageSaver imagesaver;
 
 class Viewport {
 public:
@@ -24,7 +14,7 @@ public:
         rotateZ = 0;
         translateX = 0;
         translateY = 0;
-        translateZ = 0;
+        translateZ = 0;1
         wireFrame = false;
         paused = true;
         inverseFPS = 1.0 / 25.0;
@@ -37,110 +27,18 @@ public:
 	float translateX;
 	float translateY;
 	float translateZ;
-	double lastTime;
-	double inverseFPS;
 	bool wireFrame;
-	bool paused;
+	double lastTime;
+    double inverseFPS;
+    bool paused;
 };
 
 Viewport    viewport;
-
-class ImageSaver {
-public:
-    ImageSaver() : frameCount(0) { FreeImage_Initialise(); }
-    ~ImageSaver() { FreeImage_DeInitialise(); }
-
-    void initialize(string directory) {
-        cout << "Saving frames at " << setprecision(2) << 1.0 / viewport.inverseFPS << " frames per second to directory " << directory << endl;
-        imgOutDir = directory;
-        if (imgOutDir[imgOutDir.size()-1] != '/')
-            imgOutDir.append("/");
-        doImageOutput = true;
-        lastTime = -1 - viewport.inverseFPS;
-    }
-
-    void saveFrame(double time, bool JustDoIt) {
-        if (!doImageOutput)
-            return;
-        if (time >= lastTime + viewport.inverseFPS || JustDoIt)
-            lastTime = time;
-        else
-            return;
-
-        frameCount++;
-        stringstream filename(stringstream::in | stringstream::out);
-        filename << imgOutDir << "sym";
-        filename << std::setfill('0') << setw(6) << frameCount << ".png";
-        cout << "Save frame " << frameCount << " at "<< setprecision(3) << time <<"s ... \t";
-
-        FIBITMAP* bitmap = FreeImage_Allocate(viewport.w, viewport.h, BPP);
-        if (!bitmap) {
-            cout << "Could not create bitmap! Can't save images!" << endl;
-            return;
-        }
-
-        /******************************
-         * Here we draw!
-         ******************************/
-        unsigned char *image;
-
-        /* Allocate our buffer for the image */
-        if ((image = (unsigned char*)malloc(3*viewport.w*viewport.h*sizeof(char))) == NULL) {
-            cout << "Couldn't allocate memory!" << endl;
-            free(bitmap);
-            return;
-        }
-        glPixelStorei(GL_PACK_ALIGNMENT,1);
-        glReadBuffer(GL_BACK_LEFT);
-        glReadPixels(0,0,viewport.w,viewport.h,GL_RGB,GL_UNSIGNED_BYTE,image);
-
-        RGBQUAD color;
-        for (int j=viewport.h-1;j>=0;j--) {
-           for (int i=0;i<viewport.w;i++) {
-              color.rgbRed = image[3*j*viewport.w+3*i+0];
-              color.rgbGreen = image[3*j*viewport.w+3*i+1];
-              color.rgbBlue = image[3*j*viewport.w+3*i+2];
-              FreeImage_SetPixelColor(bitmap,i,j,&color);
-           }
-        }
-
-        if (FreeImage_Save(FIF_PNG, bitmap, filename.str().c_str(), 0)) {
-            cout << "succeeded" << endl;
-        } else
-            cout << "failed!!!" << endl;
-        free(image);
-        free(bitmap);
-
-    }
-
-private:
-    int frameCount;
-    double lastTime;
-    string imgOutDir;
-    bool doImageOutput;
-
-};
-
-ImageSaver imagesaver;
-
-//****************************************************
-// Global Variables
-//****************************************************
-
-
-void initSystem(string filename) {
-    OBJParser parser;
-    myMesh = parser.parseOBJ(filename);
-    int verticeCount = myMesh->countVertices();
-    sys = new System(myMesh, verticeCount);
-    //cout << "Done Parsing .OBJ" << endl;
-}
 
 int parseCommandLine(int argc, char *argv[]) {
 
     bool malformedArg;
     bool printUsage = false;
-    bool hasOBJ = false;
     int i;
     for (i = 1; i < argc; i++) {
         malformedArg = false;
@@ -158,7 +56,7 @@ int parseCommandLine(int argc, char *argv[]) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string filename = std::string(argv[++i]);
-                initSystem(filename);
+                world.loadModel(filename);
                 hasOBJ = true;
             } else {
                 malformedArg = true;
@@ -168,7 +66,7 @@ int parseCommandLine(int argc, char *argv[]) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string dirname = std::string(argv[++i]);
-                imagesaver.initialize(dirname);
+                imagesaver.initialize(dirname, viewport.inverseFPS);
             } else {
                 malformedArg = true;
             }
@@ -176,7 +74,7 @@ int parseCommandLine(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "-timestep")) {
 
             if (isThereMore(i, argc, 1)) {
-                timeStep = atof(argv[++i]);
+                viewport.timeStep = atof(argv[++i]);
             } else {
                 malformedArg = true;
             }
@@ -190,7 +88,7 @@ int parseCommandLine(int argc, char *argv[]) {
             printUsage = true;
         }
     }
-    if (printUsage || !hasOBJ)
+    if (printUsage)
         return 1;
     return 0;
 
@@ -297,12 +195,15 @@ void Pink () {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_ambient);
 }
 
+/**
+ * This function draws the actual world using OpenGL.
+ */
 void display(void)
 {
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   //glutSolidSphere (1.0, 20, 16);
    glLoadIdentity();
 
+   //Apply the camera transformations
    glTranslatef(viewport.translateX,
            viewport.translateY,
            viewport.translateZ);
@@ -311,48 +212,14 @@ void display(void)
    glRotatef(viewport.rotateY, 0.0f, 1.0f, 0.0f);
    glRotatef(viewport.rotateZ, 0.0f, 0.0f, 1.0f);
 
-   vec3 a, b, c, na, nb, nc;
-
    if (viewport.wireFrame) {
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    } else {
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    }
 
-   TriangleMeshVertex** vertices;
-   std::vector< TriangleMeshTriangle* >::const_iterator it =
-       myMesh->triangles.begin();
-   while (it != myMesh->triangles.end()) {
-       vertices = (*it)->getVertices();
-
-       a = vertices[0]->getX();
-       na = vertices[0]->getNormal();
-       b = vertices[1]->getX();
-       nb = vertices[1]->getNormal();
-       c = vertices[2]->getX();
-       nc = vertices[2]->getNormal();
-
-       glBegin(GL_TRIANGLES);
-           glNormal3f( na[0], na[1], na[2]);
-           glVertex3f(a[0],a[1],a[2]);
-           glNormal3f( nb[0], nb[1], nb[2]);
-           glVertex3f(b[0],b[1],b[2]);
-           glNormal3f( nc[0], nc[1], nc[2]);
-           glVertex3f(c[0],c[1],c[2]);
-       glEnd();
-
-       Blue();
-       glBegin(GL_QUADS);
-		   glNormal3f(0, 0, 1);
-		   glVertex3f(-10, 10, -3);
-		   glVertex3f(-10, -10, -3);
-		   glVertex3f(10, -10, -3);
-		   glVertex3f(10, 10, -3);
-	   glEnd();
-	   Pink();
-
-       it++;
-   }
+   //Draw the world!
+   world.draw();
 
    glFlush ();
    glutSwapBuffers();
@@ -379,26 +246,25 @@ void reshape (int w, int h)
 }
 
 
+/**
+ * Calculates the next frame of the world.
+ */
 void myframemove() {
+    imagesaver.saveFrame(time, false, viewport.inverseFPS, viewport.w, viewport.h);
+    world.animate(viewport.inverseFPS);
 
-/*
-    sys->takeStep(solver, timeStep);
-    //cout << "We're at time " << sys->getT() << endl;
-    //exit(1);
-    glutPostRedisplay(); // forces glut to call the display function (myDisplay())
-//*/
-//*
-		 if (!viewport.paused) {
-        //cout << "Taking " << viewport.inverseFPS/timeStep << " steps." << endl;
-        imagesaver.saveFrame(sys->getT(), true);
-        for (int i = 0; i < viewport.inverseFPS/timeStep; i++)
-            sys->takeStep(solver, timeStep);
-        glutPostRedisplay();
+    //REMOVE THIS:
+    Blue();
+    glBegin(GL_QUADS);
+        glNormal3f(0, 0, 1);
+        glVertex3f(-10, 10, -3);
+        glVertex3f(-10, -10, -3);
+        glVertex3f(10, -10, -3);
+        glVertex3f(10, 10, -3);
+    glEnd();
+    Pink();
 
-    } else {
-        glutPostRedisplay(); // forces glut to call the display function (myDisplay())
-    }
-//*/
+    glutPostRedisplay();
 }
 
 void myMousePress(int button, int state, int x, int y) {
@@ -417,11 +283,11 @@ void myMousePress(int button, int state, int x, int y) {
 
             if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
 
-                sys->enableMouseForce(vec3(ox,oy,0));
+                //sys->enableMouseForce(vec3(ox,oy,0));
 
             }
         } else {
-            sys->disableMouseForce();
+            //sys->disableMouseForce();
         }
     }
 }
@@ -439,12 +305,11 @@ void myMouseMove(int x, int y) {
         glReadPixels( x, view[3]-y, 1, 1,
                  GL_DEPTH_COMPONENT, GL_FLOAT, &z );
         gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
-        sys->updateMouseForce(vec3(ox,oy,0));
+        //sys->updateMouseForce(vec3(ox,oy,0));
     }
 
 }
 
-//*
 int main(int argc, char *argv[]) {
 
     if (parseCommandLine(argc, argv)) {
@@ -471,4 +336,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-// */

@@ -10,12 +10,12 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "global.h"
-#include "System.h"
-#include "Mesh.h"
-#include "io/OBJParser.h"
 
-#include <iomanip>
+
+#include "global.h"
+#include "Model.h"
+#include "io/OBJParser.h"
+#include "io/ImageSaver.h"
 
 #include <FreeImage.h>
 
