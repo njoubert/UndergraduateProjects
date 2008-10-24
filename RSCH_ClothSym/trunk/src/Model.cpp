@@ -15,6 +15,7 @@
 
 Model::Model() {
     printDebug("Initialized Model Base Class.");
+    _material = new DEFAULT_MATERIAL();
 }
 
 Model::~Model() {

@@ -27,8 +27,8 @@ void World::draw() {
 }
 
 bool World::loadStatModel(string filename) {
-    OBJParser parser;
-    TriangleMesh* mesh = parser.parseOBJ(filename);
+//    OBJParser parser;
+//    TriangleMesh* mesh = parser.parseOBJ(filename);
     return true;
 }
 
@@ -37,7 +37,8 @@ bool World::loadSimModel(string filename) {
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL)
     	return false;
-    Model* model = new SimModel(mesh,
+    Model* model = new SimModel(
+    		mesh,
     		new DEFAULT_SYSTEM(mesh, mesh->vertices.size()),
     		new DEFAULT_SOLVER());
     _models.push_back(model);
