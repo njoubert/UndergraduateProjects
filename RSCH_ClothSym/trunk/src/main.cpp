@@ -43,9 +43,6 @@ void printUsage() {
     cout << "    -aniobj inputXXXXXX.obj" << endl;
     cout << "    [-d i] " << endl;
     cout << "    [-img directory] " << endl;
-    cout << "";
-    cout << "";
-    cout << "";
 }
 
 int parseCommandLine(int argc, char *argv[]) {
