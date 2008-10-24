@@ -251,7 +251,13 @@ TriangleMesh::TriangleMesh() {
 }
 
 TriangleMesh::~TriangleMesh() {
-    // TODO Auto-generated destructor stub
+	for (unsigned int i = 0; i < triangles.size(); i++)
+		delete triangles[i];
+	for (unsigned int i = 0; i < vertices.size(); i++) {
+		delete vertices[i].first;
+		for (unsigned int j = 0; j < vertices[i].second->size(); j++)
+			delete (*vertices[i].second)[j].second;
+	}
 }
 
 int TriangleMesh::createVertex(double x, double y, double z) {
