@@ -37,10 +37,10 @@ protected:
 /**
  * Represents a static object.
  */
-class StaticModel : public Model {
+class StatModel : public Model {
 public:
-    StaticModel();
-    ~StaticModel();
+    StatModel();
+    ~StatModel();
     void takeStep(double);
     void draw();
 
@@ -51,10 +51,10 @@ private:
 /**
  * Represents an object that we need to simulate
  */
-class SimulatedModel : public Model {
+class SimModel : public Model {
 public:
-    SimulatedModel();
-    ~SimulatedModel();
+    SimModel();
+    ~SimModel();
     void takeStep(double);
     void draw();
 
@@ -67,10 +67,10 @@ private:
 /**
  * Represents an object with frames given to us.
  */
-class AnimatedModel : public Model {
+class AniModel : public Model {
 public:
-    AnimatedModel();
-    ~AnimatedModel();
+    AniModel();
+    ~AniModel();
     void takeStep(double);
     void draw();
 

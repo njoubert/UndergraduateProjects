@@ -27,19 +27,19 @@ Model::~Model() {
  *
  *------------------------------------------------*/
 
-StaticModel::StaticModel() {
+StatModel::StatModel() {
 
 }
 
-StaticModel::~StaticModel() {
+StatModel::~StatModel() {
 
 }
 
 
-void StaticModel::takeStep(double netTime) {
+void StatModel::takeStep(double netTime) {
 
 }
-void StaticModel::draw() {
+void StatModel::draw() {
 
 }
 
@@ -49,15 +49,15 @@ void StaticModel::draw() {
  *
  *------------------------------------------------*/
 
-SimulatedModel::SimulatedModel() {
+SimModel::SimModel() {
 
 }
 
-SimulatedModel::~SimulatedModel() {
+SimModel::~SimModel() {
 
 }
 
-void SimulatedModel::takeStep(double netTime) {
+void SimModel::takeStep(double netTime) {
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
         _system->takeStep(_solver, _timeStep);
@@ -66,7 +66,7 @@ void SimulatedModel::takeStep(double netTime) {
         _system->takeStep(_solver, _timeStep);
 }
 
-void SimulatedModel::draw() {
+void SimModel::draw() {
     vec3 a, b, c, na, nb, nc;
 
     TriangleMeshVertex** vertices;
@@ -101,18 +101,18 @@ void SimulatedModel::draw() {
  *
  *------------------------------------------------*/
 
-AnimatedModel::AnimatedModel() {
+AniModel::AniModel() {
 
 }
 
-AnimatedModel::~AnimatedModel() {
+AniModel::~AniModel() {
 
 }
 
-void AnimatedModel::takeStep(double netTime) {
+void AniModel::takeStep(double netTime) {
 
 }
 
-void AnimatedModel::draw() {
+void AniModel::draw() {
 
 }

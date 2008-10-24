@@ -29,7 +29,12 @@ public:
     void draw();
 
     // Loads up a new module from disk.
-    bool loadModel(string);
+    bool loadStatModel(string);
+    bool loadSimModel(string);
+    bool loadAniModel(string);
+
+private:
+    bool addModel(Model* model);
 
 private:
     vector<Model*> _models;

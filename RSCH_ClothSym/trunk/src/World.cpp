@@ -27,10 +27,20 @@ void World::draw() {
         _models[j]->draw();
 }
 
-bool World::loadModel(string filename) {
+bool World::loadStatModel(string filename) {
     OBJParser parser;
     Mesh* mesh = parser.parseOBJ(filename);
     int verticeCount = myMesh->countVertices();
     sys = new System(myMesh, verticeCount);
 }
 
+bool World::loadSimModel(string filename) {
+    OBJParser parser;
+    Mesh* mesh = parser.parseOBJ(filename);
+    int verticeCount = myMesh->countVertices();
+    sys = new System(myMesh, verticeCount);
+}
+
+bool World::loadAniModel(string filename) {
+
+}
