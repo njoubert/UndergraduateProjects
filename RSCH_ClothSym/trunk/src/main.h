@@ -13,14 +13,12 @@
 
 
 #include "global.h"
-#include "Model.h"
-#include "io/OBJParser.h"
+#include "World.h"
 #include "io/ImageSaver.h"
-
-#include <FreeImage.h>
 
 #define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)
 
+//TODO: Timing... to be done in the future!
 #ifdef _WIN32
 static DWORD lastTime;
 #else

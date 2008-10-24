@@ -47,7 +47,7 @@ all: ClothSym
 ClothSym: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MacOS X C++ Linker'
-	g++ -L"/Users/njoubert/Code/workspace1/ClothSym/lib" -framework GLUT -framework OpenGL -L"/System/Library/Frameworks/OpenGL.framework/Libraries" -lGL -lGLU -lm -lstdc++ -DOSX -o "ClothSym" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/Users/njoubert/Documents/workspace/ClothSym/lib" -framework GLUT -framework OpenGL -L"/System/Library/Frameworks/OpenGL.framework/Libraries" -lGL -lGLU -lm -lstdc++ -DOSX -o "ClothSym" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

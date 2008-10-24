@@ -33,6 +33,8 @@ public:
     bool loadSimModel(string);
     bool loadAniModel(string);
 
+    double getTime();
+
 private:
     bool addModel(Model* model);
 

@@ -39,6 +39,7 @@ int parseCommandLine(int argc, char *argv[]) {
 
     bool malformedArg;
     bool printUsage = false;
+    bool hasOBJ = false;
     int i;
     for (i = 1; i < argc; i++) {
         malformedArg = false;
@@ -91,14 +92,6 @@ int parseCommandLine(int argc, char *argv[]) {
                 malformedArg = true;
             }
 
-        } else if (!strcmp(argv[i], "-timestep")) {
-
-            if (isThereMore(i, argc, 1)) {
-                viewport.timeStep = atof(argv[++i]);
-            } else {
-                malformedArg = true;
-            }
-
         } else {
             malformedArg = true;
         }
@@ -108,7 +101,7 @@ int parseCommandLine(int argc, char *argv[]) {
             printUsage = true;
         }
     }
-    if (printUsage)
+    if (printUsage || !hasOBJ)
         return 1;
     return 0;
 
@@ -270,7 +263,7 @@ void reshape (int w, int h)
  * Calculates the next frame of the world.
  */
 void myframemove() {
-    imagesaver.saveFrame(time, false, viewport.inverseFPS, viewport.w, viewport.h);
+    imagesaver.saveFrame(world.getTime(), false, viewport.inverseFPS, viewport.w, viewport.h);
     world.advance(viewport.inverseFPS);
 
     //REMOVE THIS:
@@ -313,6 +306,7 @@ void myMousePress(int button, int state, int x, int y) {
 }
 
 void myMouseMove(int x, int y) {
+	/*
     if (sys->isMouseEnabled()) {
         float z;
         double ox, oy, oz;
@@ -325,9 +319,9 @@ void myMouseMove(int x, int y) {
         glReadPixels( x, view[3]-y, 1, 1,
                  GL_DEPTH_COMPONENT, GL_FLOAT, &z );
         gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
-        //sys->updateMouseForce(vec3(ox,oy,0));
+        sys->updateMouseForce(vec3(ox,oy,0));
     }
-
+	*/
 }
 
 int main(int argc, char *argv[]) {

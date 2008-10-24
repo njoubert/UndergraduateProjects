@@ -8,7 +8,6 @@
 #include "World.h"
 
 World::World() {
-    _timeStep = 0.02;
     _time = 0;
 }
 
@@ -35,10 +34,15 @@ bool World::loadStatModel(string filename) {
 bool World::loadSimModel(string filename) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
-    int verticeCount = mesh->countVertices();
-    sys = new System(myMesh, verticeCount);
+
 }
 
 bool World::loadAniModel(string filename) {
 
 }
+
+double World::getTime() {
+	return _time;
+}
+
+

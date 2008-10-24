@@ -12,6 +12,8 @@
 
 #include "../global.h"
 #include <FreeImage.h>
+#include <sstream>
+
 
 class ImageSaver {
 public:

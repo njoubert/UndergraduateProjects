@@ -32,7 +32,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "algebra3.h"
+#include <algebra3.h>
 
 typedef float Physics_t;
 
