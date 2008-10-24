@@ -36,7 +36,7 @@ StatModel::~StatModel() {
 }
 
 
-void StatModel::takeStep(double netTime) {
+void StatModel::advance(double netTime) {
 
 }
 void StatModel::draw() {
@@ -57,7 +57,7 @@ SimModel::~SimModel() {
 
 }
 
-void SimModel::takeStep(double netTime) {
+void SimModel::advance(double netTime) {
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
         _system->takeStep(_solver, _timeStep);
@@ -109,7 +109,7 @@ AniModel::~AniModel() {
 
 }
 
-void AniModel::takeStep(double netTime) {
+void AniModel::advance(double netTime) {
 
 }
 

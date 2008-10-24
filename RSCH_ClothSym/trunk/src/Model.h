@@ -26,7 +26,7 @@ class Model {
 public:
     Model();
     virtual ~Model();
-    virtual void takeStep(double)=0;
+    virtual void advance(double)=0;
     virtual void draw()=0;
 
 protected:
@@ -41,7 +41,7 @@ class StatModel : public Model {
 public:
     StatModel();
     ~StatModel();
-    void takeStep(double);
+    void advance(double);
     void draw();
 
 private:
@@ -55,7 +55,7 @@ class SimModel : public Model {
 public:
     SimModel();
     ~SimModel();
-    void takeStep(double);
+    void advance(double);
     void draw();
 
 private:
@@ -71,7 +71,7 @@ class AniModel : public Model {
 public:
     AniModel();
     ~AniModel();
-    void takeStep(double);
+    void advance(double);
     void draw();
 
 private:

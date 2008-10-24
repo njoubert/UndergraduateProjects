@@ -16,9 +16,9 @@ World::~World() {
 
 }
 
-void World::animate(double netTime) {
+void World::advance(double netTime) {
     for (int j = 0; j < _models.size(); j++)
-        _models[j]->takeStep(netTime);
+        _models[j]->advance(netTime);
     _time +=  netTime;
 }
 
@@ -29,15 +29,13 @@ void World::draw() {
 
 bool World::loadStatModel(string filename) {
     OBJParser parser;
-    Mesh* mesh = parser.parseOBJ(filename);
-    int verticeCount = myMesh->countVertices();
-    sys = new System(myMesh, verticeCount);
+    TriangleMesh* mesh = parser.parseOBJ(filename);
 }
 
 bool World::loadSimModel(string filename) {
     OBJParser parser;
-    Mesh* mesh = parser.parseOBJ(filename);
-    int verticeCount = myMesh->countVertices();
+    TriangleMesh* mesh = parser.parseOBJ(filename);
+    int verticeCount = mesh->countVertices();
     sys = new System(myMesh, verticeCount);
 }
 

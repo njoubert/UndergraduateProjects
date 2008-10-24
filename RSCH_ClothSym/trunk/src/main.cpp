@@ -14,7 +14,7 @@ public:
         rotateZ = 0;
         translateX = 0;
         translateY = 0;
-        translateZ = 0;1
+        translateZ = 0;
         wireFrame = false;
         paused = true;
         inverseFPS = 1.0 / 25.0;
@@ -52,15 +52,35 @@ int parseCommandLine(int argc, char *argv[]) {
                 malformedArg = true;
             }
 
-        } else if (!strcmp(argv[i], "-obj")) {
+        } else if (!strcmp(argv[i], "-statobj")) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string filename = std::string(argv[++i]);
-                world.loadModel(filename);
+                world.loadStatModel(filename);
                 hasOBJ = true;
             } else {
                 malformedArg = true;
             }
+
+        } else if (!strcmp(argv[i], "-simobj")) {
+
+				if (isThereMore(i, argc, 1)) {
+					std::string filename = std::string(argv[++i]);
+					world.loadSimModel(filename);
+					hasOBJ = true;
+				} else {
+					malformedArg = true;
+				}
+
+        } else if (!strcmp(argv[i], "-aniobj")) {
+
+				if (isThereMore(i, argc, 1)) {
+					std::string filename = std::string(argv[++i]);
+					world.loadAniModel(filename);
+					hasOBJ = true;
+				} else {
+					malformedArg = true;
+				}
 
         } else if (!strcmp(argv[i], "-img")) {
 
@@ -251,7 +271,7 @@ void reshape (int w, int h)
  */
 void myframemove() {
     imagesaver.saveFrame(time, false, viewport.inverseFPS, viewport.w, viewport.h);
-    world.animate(viewport.inverseFPS);
+    world.advance(viewport.inverseFPS);
 
     //REMOVE THIS:
     Blue();

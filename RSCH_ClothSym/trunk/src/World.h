@@ -23,7 +23,7 @@ public:
     virtual ~World();
 
     // Moves the animation of the world forward.
-    void animate(double);
+    void advance(double);
 
     // Draws the world using OpenGL
     void draw();
@@ -39,7 +39,6 @@ private:
 private:
     vector<Model*> _models;
     double _time;
-    double _timeStep;
 };
 
 #endif /* WORLD_H_ */
