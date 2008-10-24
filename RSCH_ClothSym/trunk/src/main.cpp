@@ -54,9 +54,9 @@ int parseCommandLine(int argc, char *argv[]) {
 
         if (strcmp(argv[i],"-d") == 0) {
 
-            //TODO: Set up debug flags...
             if (isThereMore(i, argc, 1)) {
                 ++i;
+                Debug::DEBUG = atoi(argv[i]);
             } else {
                 malformedArg = true;
             }
@@ -256,7 +256,7 @@ void reshape (int w, int h)
       glOrtho (-1*x*(GLfloat)w/(GLfloat)h,
          x*(GLfloat)w/(GLfloat)h, -1*x, x, -400.0, 400.0);
    */
-   glOrtho (-2, 2, -2, 2, -4.0, 4.0);
+   glOrtho (-200, 200, -200, 200, -400.0, 400.0);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 }
