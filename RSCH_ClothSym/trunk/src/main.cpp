@@ -32,6 +32,7 @@ public:
 		_Buttons[0] = _Buttons[1] = _Buttons[2] = 0;
 
 		wireFrame = false;
+		showGrid = true;
         paused = true;
         inverseFPS = 1.0 / 25.0;
         lastTime = 0;
@@ -145,6 +146,7 @@ private:
 public:
 	int _w, _h;
 	bool wireFrame;
+	bool showGrid;
 	double lastTime;
     double inverseFPS;
     bool paused;
@@ -252,6 +254,9 @@ void processKeys(unsigned char key, int x, int y) {
     case 'p':
         cam.paused = !cam.paused;
         break;
+    case 'g':
+        cam.showGrid = !cam.showGrid;
+        break;
     case 27:
         exit(0);
         break;
@@ -329,17 +334,19 @@ void display(void)
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    }
 
-	White();
-	// draw grid
-	glBegin(GL_LINES);
-	for(int i=-10;i<=10;++i) {
-		glVertex3f(i,0,-10);
-		glVertex3f(i,0,10);
+   if (cam.showGrid) {
+        White();
+        // draw grid
+        glBegin(GL_LINES);
+        for(int i=-10;i<=10;++i) {
+            glVertex3f(i,0,-10);
+            glVertex3f(i,0,10);
 
-		glVertex3f(10,0,i);
-		glVertex3f(-10,0,i);
-	}
-	glEnd();
+            glVertex3f(10,0,i);
+            glVertex3f(-10,0,i);
+        }
+        glEnd();
+   }
 	Pink();
 
 	//Draw the world!
