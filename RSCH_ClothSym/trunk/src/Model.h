@@ -9,6 +9,7 @@
 #include "System.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Constraint.h"
 #include "io/OBJParser.h"
 
 #ifndef MODEL_H_
@@ -60,11 +61,14 @@ public:
     void advance(double);
     void draw();
 
+    void registerConstraint(Constraint*);
+
 private:
     Solver* _solver;
     System* _system;
     TriangleMesh* _mesh;
     double _timeStep;
+    vector<Constraint*> _constraints;
 };
 
 /**

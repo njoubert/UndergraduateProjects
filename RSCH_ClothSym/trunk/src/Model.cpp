@@ -98,10 +98,10 @@ SimModel::~SimModel() {
 void SimModel::advance(double netTime) {
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
-        _system->takeStep(_solver, _timeStep);
+        _system->takeStep(_solver, &_constraints, _timeStep);
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0)
-        _system->takeStep(_solver, _timeStep);
+        _system->takeStep(_solver, &_constraints, _timeStep);
 }
 
 void SimModel::draw() {
@@ -132,6 +132,11 @@ void SimModel::draw() {
         it++;
     }
 }
+
+void SimModel::registerConstraint(Constraint* c) {
+    _constraints.push_back(c);
+}
+
 
 /*-------------------------------------------------
  *

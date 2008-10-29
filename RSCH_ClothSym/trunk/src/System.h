@@ -14,7 +14,7 @@ class System;
 #include "Mesh.h"
 #include "Material.h"
 #include "Solver.h"
-
+#include "Constraint.h"
 
 /// \brief Represents the cloth mesh system
 ///
@@ -52,7 +52,7 @@ public:
 	 * @param solver
 	 * @param timeStep
 	 */
-	void takeStep(Solver* solver, double timeStep);
+	void takeStep(Solver* solver, vector<Constraint*> *constraints, double timeStep);
 
 	void enableMouseForce(vec3 mousePosition);
 
@@ -74,17 +74,10 @@ public:
 	int m_iParticles, m_iInverseIterations;
 
 private:
-    ////float getKs();
-    //float getKd();
-    //float getKbe();
-    //float getKbd();
-    //float Ks, Kd, Kbe, Kbd; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
     TriangleMesh* mesh;
     Material* _mat;
-    //double time;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
-
 };
 
 

@@ -8,8 +8,6 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-#include <CompRow_double.h>
-
 class Solver;
 class ImplicitSolver;
 class ExplicitSolver;
@@ -23,7 +21,9 @@ public:
     virtual ~Solver();
     virtual void calculateState(System* sys)=0;
     virtual std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point) = 0;
+            double timeStep,
+            int pointIndex,
+            TriangleMeshVertex* point) = 0;
 protected:
 	TriangleMesh* _mesh;
 };
@@ -34,7 +34,9 @@ public:
     ~ImplicitSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point);
+            double timeStep,
+            int pointIndex,
+            TriangleMeshVertex* point);
 };
 
 class ExplicitSolver: public Solver {
@@ -43,7 +45,9 @@ public:
     ~ExplicitSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point);
+            double timeStep,
+            int pointIndex,
+            TriangleMeshVertex* point);
 };
 
 class NewmarkSolver: public Solver {
@@ -52,14 +56,16 @@ public:
     ~NewmarkSolver();
     void calculateState(System* sys);
     std::pair<vec3,vec3> solve(System* sys,
-            double timeStep, int pointIndex, TriangleMeshVertex* point);
+            double timeStep,
+            int pointIndex,
+            TriangleMeshVertex* point);
 private:
 	float _gamma;
-	CompRow_Mat_double _JP;
-	CompRow_Mat_double _JV;
-	MV_Vector_double _f;
-	MV_Vector_double _x;
-	MV_Vector_double _v;
+	LARGE_VECTOR _JP;
+	LARGE_VECTOR _JV;
+	SPARSE_MATRIX _f;
+	SPARSE_MATRIX _x;
+	SPARSE_MATRIX _v;
 };
 
 #endif /* SOLVER_H_ */

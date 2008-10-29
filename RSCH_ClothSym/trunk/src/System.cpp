@@ -491,7 +491,7 @@ mat3 System::calculateContraints(int pointIndex) {
  * FOR EACH POINT:
  *    update x with delX and v with delV
  */
-void System::takeStep(Solver* solver, double timeStep) {
+void System::takeStep(Solver* solver, vector<Constraint*> *constraints, double timeStep) {
 
     std::vector<std::pair<vec3,vec3> > changes(mesh->vertices.size(),
             make_pair(vec3(0,0,0), vec3(0,0,0)));

@@ -98,10 +98,7 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
 }
 
 NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
-        Solver(mesh, n),
-        _JP(n,n,0,(double*)NULL,(int*)NULL,(int*)NULL),
-        _JV(n,n,0,(double*)NULL,(int*)NULL,(int*)NULL),
-        _f(n), _x(n), _v(n) {
+        Solver(mesh, n) {
 
 	_gamma = DEFAULT_GAMMA;
 }

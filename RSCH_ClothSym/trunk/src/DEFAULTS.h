@@ -19,4 +19,6 @@
 
 #define DEFAULT_SPARSEMAT Coord_Mat_double
 
+#define SPARSE_MATRIX vector< vector<int> >
+#define LARGE_VECTOR vector<int>
 #endif /* DEFAULTS */

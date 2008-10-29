@@ -100,7 +100,6 @@ private:
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 
-
 /**
  * Stores the metadata about which vertices make an edge.
  * This is stored according to the vertices' Natural Order
