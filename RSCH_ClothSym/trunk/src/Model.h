@@ -91,4 +91,30 @@ private:
 //	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
 };
 
+/**
+ * Represents an object made of ellipsoids with frames given to us.
+ */
+class AniElliModel : public Model {
+public:
+	AniElliModel(vector < vector <mat4> >);
+    ~AniElliModel();
+    void advance(double);
+    void draw();
+
+private:
+	//TriangleMesh* getCurrentMesh();
+	//void stepToNextMesh();
+	//void loadMeshAtNextBufferPos(string filename);
+
+private:
+	string _filename; //the template filename from which to iterate.
+	int _count;
+	vector < vector <mat4> > _ellipsoids;
+//	int _currenti; //current position in buffer
+//	int _lasti; //last valid position in buffer
+	//TriangleMesh* _mesh;
+//	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
+};
+
+
 #endif /* MODEL_H_ */

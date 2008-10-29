@@ -12,6 +12,7 @@
 #include "Model.h"
 #include "Mesh.h"
 #include "io/OBJParser.h"
+#include "io/EllipseParser.h"
 
 /**
  * The main class concerned with everything in our world.
@@ -32,6 +33,7 @@ public:
     bool loadStatModel(string);
     bool loadSimModel(string);
     bool loadAniModel(string);
+    bool loadEllipseModel(string, int);
 
     double getTime();
 

@@ -56,6 +56,25 @@ bool World::loadAniModel(string filename) {
     _models.push_back(model);
 }
 
+bool World::loadEllipseModel(string filename, int numFrames) {
+	cout<<"Parsing and Loading EllipseModel..."<<endl;
+
+	ellipseParser parser;
+	vector < vector <mat4> > ellipsoids = parser.parseEllipsoids(filename, numFrames);
+	/*	DEBUG FOR PARSER
+	for(int i = 0; i < 21; i++) {
+		cout<<endl<<endl<<"Frame: "<<i+1<<endl;
+		for(int j = 0; j < 20; j++) {
+			cout<<ellipsoids[i][j]<<endl<<endl;
+		}
+	}
+	//*/
+	Model* model = new AniElliModel(ellipsoids);
+	_models.push_back(model);
+	cout<<"Done Parsing and loading EllipseModel."<<endl;
+	return true;
+}
+
 double World::getTime() {
 	return _time;
 }

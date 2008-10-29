@@ -12,7 +12,7 @@ public:
 	Camera() {
 		_fovy = 30;
 		_zNear = 1;
-		_zFar = 100;
+		_zFar = 10000;
 
 		_left = -10;
 		_right = 10;
@@ -33,7 +33,7 @@ public:
 
 		wireFrame = false;
 		showGrid = true;
-        paused = true;
+        paused = false;
         inverseFPS = 1.0 / 25.0;
         lastTime = 0;
 	}
@@ -213,7 +213,18 @@ int parseCommandLine(int argc, char *argv[]) {
 					malformedArg = true;
 				}
 
-        } else if (!strcmp(argv[i], "-img")) {
+        } else if (!strcmp(argv[i], "-elliobj")) {
+
+			if (isThereMore(i, argc, 2)) {
+				std::string filename = std::string(argv[++i]);
+				int numFrames = atoi(argv[++i]);
+				world.loadEllipseModel(filename, numFrames);
+				hasOBJ = true;
+			} else {
+				malformedArg = true;
+			}
+
+        }  else if (!strcmp(argv[i], "-img")) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string dirname = std::string(argv[++i]);
@@ -324,15 +335,16 @@ void Grey () {
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	cam.setView();
 
-	glPushMatrix();
+	cam.setView();
 
    if (cam.wireFrame) {
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    } else {
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    }
+
+	glPushMatrix();
 
    if (cam.showGrid) {
         White();
@@ -350,6 +362,7 @@ void display(void)
 	Pink();
 
 	//Draw the world!
+	cout<<"drawing World!"<<endl;
 	world.draw();
 
 	glPopMatrix();
@@ -370,8 +383,10 @@ void reshape (int w, int h) {
 // Calculates the next frame of the world.
 //
 void myframemove() {
-    imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
-    world.advance(cam.inverseFPS);
+	if (!cam.paused) {
+		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
+		world.advance(cam.inverseFPS);
+	}
     glutPostRedisplay();
 }
 

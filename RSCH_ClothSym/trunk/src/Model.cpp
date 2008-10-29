@@ -194,3 +194,64 @@ void AniModel::draw() {
         it++;
     }
 }
+
+/*-------------------------------------------------
+ *
+ *   ANIMATED EllIPSOID MODEL
+ *
+ *------------------------------------------------*/
+
+AniElliModel::AniElliModel(vector < vector <mat4> > ellipsoids) {
+	_ellipsoids = ellipsoids;
+
+	/* PARSER DEBUG
+	for(unsigned int i = 0; i < ellipsoids.size(); i++) {
+		cout<<endl<<endl<<"Frame: "<<i+1<<endl<<endl;
+			for (unsigned int j = 0; j < ellipsoids[i].size(); j++) {
+			cout<<_ellipsoids[i][j]<<endl<<endl;
+			}
+	}
+	//*/
+	_count = -1;
+	advance(0);
+
+}
+
+AniElliModel::~AniElliModel() {
+
+}
+
+void AniElliModel::advance(double netTime) {
+	if(_count < _ellipsoids.size()-1){
+			cout<<"Drawing Frame: "<<_count+1<<endl;
+			cout<<_ellipsoids[_count].size()<<" ellipsoids"<<endl;
+	    _count++;
+		}
+	else
+		_count = 0;
+}
+
+void AniElliModel::draw() {
+//*
+
+
+	for(unsigned int i = 0; i < _ellipsoids[_count].size(); i++) {
+
+		glPushMatrix();
+
+		GLdouble m[_ellipsoids[_count].size()];
+		int count = 0;
+		for(int j = 0; j < 4; j++)
+			for(int k = 0; k < 4; k++) {
+				m[count] = _ellipsoids[_count][i][j][k];
+				count++;
+				//cout<<m[j*(k+1)]<<endl;
+			}
+		//exit(1);
+		glMultMatrixd(m);
+		glutSolidSphere(1, 10, 10);
+
+		glPopMatrix();
+	}
+//*/
+}
