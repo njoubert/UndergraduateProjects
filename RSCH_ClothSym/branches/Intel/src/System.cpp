@@ -761,18 +761,19 @@ void System::SolveImplicit(double timeStep) {
 			m_vTemp1.Scale( timeStep, m_b );
 
 			//CONSTRAINTS
-/*
+//*
 			int constrainElementCol = 1;	// 0, 1 or 2
 			int constrainElementRow = 3;	// 0, 3 or 6
 			int constrainBlock = 5;
 
 			for(i = 0; i < numVertices; i++) {
-				m_A(constrainBlock, i).m_Mx[constrainElementRow] = 99990;
-				m_A(constrainBlock, i).m_Mx[constrainElementRow + 1] = 99990;
-				m_A(constrainBlock, i).m_Mx[constrainElementRow + 2] = 99990;
-				m_A(i, constrainBlock).m_Mx[constrainElementCol] = 99990;
-				m_A(i, constrainBlock).m_Mx[constrainElementCol + 3] = 99990;
-				m_A(i, constrainBlock).m_Mx[constrainElementCol + 6] = 99990;
+				for(int j = 0; j < 9; j++)
+				m_A(constrainBlock, i).m_Mx[j] = 0;
+				//m_A(constrainBlock, i).m_Mx[constrainElementRow + 1] = 99990;
+				//m_A(constrainBlock, i).m_Mx[constrainElementRow + 2] = 99990;
+				//m_A(i, constrainBlock).m_Mx[constrainElementCol] = 99990;
+				//m_A(i, constrainBlock).m_Mx[constrainElementCol + 3] = 99990;
+				//m_A(i, constrainBlock).m_Mx[constrainElementCol + 6] = 99990;
 			}
 			int Rows[3];
 			Rows[0] = constrainElementRow;
@@ -783,23 +784,16 @@ void System::SolveImplicit(double timeStep) {
 			Cols[4] = constrainElementCol+3;
 			Cols[5] = constrainElementCol+6;
 
-			for(i = 0; i < 3; i++) {
-				for(int j = 0; j < 3; j++) {
-					if(Rows[i] == Cols[j]) {
-						//m_A(constrainBlock,constrainBlock).m_Mx[i] = 22222;
-					}
-				}
+			for(i = 0; i < 9; i++) {
+						m_A(constrainBlock,constrainBlock).m_Mx[i] = 1;
 			}
-/*
+//*
 			for(int p = 0; p < numVertices; p++) {
-				if(constrainElementRow == 0)
-					m_b.m_pData[constrainBlock].x = 99990;
-				if(constrainElementRow == 3)
-					m_b.m_pData[constrainBlock].y = 99990;
-				if(constrainElementRow == 6)
-					m_b.m_pData[constrainBlock].z = 99990;
+					m_b.m_pData[constrainBlock].x = 0;
+					m_b.m_pData[constrainBlock].y = 0;
+					m_b.m_pData[constrainBlock].z = 0;
 			}
-*/
+//*/
 /*
 			cout<<"global count: "<<globalCount<<endl;
 					if(globalCount == 1){
@@ -1016,9 +1010,9 @@ void System::SolveImplicit(double timeStep) {
 					m_Velocities.Add( m_dv, m_Velocities );
 
 					//CRAPPY CONSTRAINTS
-					m_Velocities.m_pData[0].x = 0;
-					m_Velocities.m_pData[0].y = 0;
-					m_Velocities.m_pData[0].z = 0;
+					//m_Velocities.m_pData[0].x = 0;
+					//m_Velocities.m_pData[0].y = 0;
+					//m_Velocities.m_pData[0].z = 0;
 
 					m_Velocities.Scale( timeStep, m_vTemp1 );
 					// for(int i = 0; i < numVertices; i++) {
