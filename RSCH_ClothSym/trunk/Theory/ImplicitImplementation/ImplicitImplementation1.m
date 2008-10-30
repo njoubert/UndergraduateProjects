@@ -23,7 +23,7 @@ ks = 100;        % force/meter      - spring constant
 kd = 5;          % force*s/meter    - damping constant
 dim = 3;         % dim              - 3d simulation
 totaltime = 10;  % seconds          - Amount of time to simulate
-g = 0.6;         % ratio            - ratio between explicit and implicit in Newmark.
+g = 0.64;         % ratio            - ratio between explicit and implicit in Newmark.
 
 % THREE DIFFERENT POSSIBLE GRIDS TO SIMULATE:
 % Choose one of them by uncommenting...
@@ -55,7 +55,7 @@ constNodes = [1];
 
 % SIMULATION INITIAL PARAMETERS
 v = zeros(1,n*dim);                 %velocity starts at 0.
-M = (0.1 / n)*eye(n*dim, n*dim);      %mass per point
+M = (1.0 / n)*eye(n*dim, n*dim);      %mass per point
 Minv = inv(M);
 
 % CALCULATE REST LENGTHS
@@ -135,10 +135,10 @@ for j=1:steps,
     end
     
     for i=1:3:3*n,
-       fext(i:i+2) = + M(i,i)*[0 0 -9.8]; %gravity
+       fext(i:i+2) = + M(i,i)*[0 -9.8 0]; %gravity
     end
     
-    fext(const) = 0; %constraints
+    %fext(const) = 0; %constraints
     f = f + fext;
     
     %%% We now need to solve the Ax = b system,
@@ -158,34 +158,58 @@ for j=1:steps,
     %These equations give us a symmetric, positive definite system.
     %Unfortunately this only works if you don't do mass modification
     %to enforce constraints.
-    %A = M - h*JV - h^2*JP;
-    %b = h*(f + h*v*JP);
-    
-    %delV = b/A;
-    %delX = h*(v + delV);
-    
-    %=== NEWMARK INTEGRATOR ===
-    A = M - g*h*JV - g*h^2*JP;
-    b = h*(f + g*h*v*JP);
-    
+  
+    A = M - h*JV - h^2*JP;
+    b = h*(f + h*v*JP);
+ 
     %Constraints
-    A(const, :) = [];
-    A(:, const) = [];
-    b(const) = [];
+%     A(const, :) = [];
+%     A(:, const) = [];
+%     b(const) = [];
     
     %Solve for change in V
     delV = b/A;
     
     %take constraints into account
-    delV = delV(globalToSol);
-    delV(const) = 0.0;
+%     delV = delV(globalToSol);
+%     delV(const) = 0.0;
     
     %calculate change in positon
-    delX = h*(v + g*delV);   %This is nuttapong's... correct?
-    %delX = h*(v + delV);    %This is our original...
-   
+    delX = h*(v + delV);
+    
+%     %=== NEWMARK INTEGRATOR ===
+%     A = M - g*h*JV - g*h^2*JP;
+%     b = h*(f + g*h*v*JP);
+%     
+%     %Constraints
+%     A(const, :) = [];
+%     A(:, const) = [];
+%     b(const) = [];
+%     
+%     %Solve for change in V
+%     delV = b/A;
+%     
+%     %take constraints into account
+%     delV = delV(globalToSol);
+%     delV(const) = 0.0;
+%     
+%     %calculate change in positon
+%     delX = h*(v + g*delV);   %This is nuttapong's... correct?
+%     %delX = h*(v + delV);    %This is our original...
+     if(j == 2)
+     v
+     f 
+     JP
+     JV
+     M
+     A
+     b
+    end
+    f;
     %update the simulation state:
     x = x + delX;
     v = v + delV;
+    
+ 
     
 end
