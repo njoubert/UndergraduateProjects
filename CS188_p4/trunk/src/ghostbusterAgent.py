@@ -218,16 +218,9 @@ class StaticVPIAgent(StaticGhostbusterAgent):
   the highest expected utility / score according to its current beliefs.
   """
 
-
-
-
-
-
-
   def getAction(self):
     
-    "*** YOUR CODE HERE ***"
-    
+    # QUESTION 3 
     
     return Actions.makeBustingAction(random.choice(self.game.getBustingOptions()))
     
