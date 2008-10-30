@@ -50,21 +50,49 @@ class ExactStaticInferenceModule(StaticInferenceModule):
   See the abstract 'StaticInferenceModule' class for descriptions of the methods.
   
   The current implementation below is broken, returning all uniform distributions.
+  
+  TERMINOLOGY:
+    STATE:          A possible set of positions for the ghosts. eg: ((1,2),) for one ghost.
+    DISTRIBUTION:   A map from all possible states to probabilities.
+    OBSERVATIONS:   A map from sensor positions to sensor readings.
+  
   """
+  
+  def getReadingSetProbability(self, observations):
+    """ Using Total Probability And Bayes Rule Over All Ghosts """
+    priorDistribution = self.game.getInitialDistribution()
+    probability = 0
+    for ghostTuple in priorDistribution:
+        probabilityOfThisTuple = priorDistribution[ghostTuple]
+        for reading in observations:
+            probabilityOfThisTuple *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
+        probability += probabilityOfThisTuple
+    return probability
+  
+  def getGhostTupleProbabilityGivenObservations(self, observations, ghostTuple, ghostTupleValue):
+    readingSetProbability = self.getReadingSetProbability(observations)
+    probability = ghostTupleValue
+    for reading in observations:
+        probability *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
+    probability /= readingSetProbability
+    return probability
   
   def getGhostTupleDistributionGivenObservations(self, observations):
     
-    "*** YOUR CODE HERE ***"
+    # QUESTION 1
     
-    # BROKEN
-    return self.game.getInitialDistribution() 
+    priorDistribution = self.game.getInitialDistribution()
+    newDistribution = util.Counter();
+    for ghostTuple in priorDistribution:
+        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+    return newDistribution
 
 
-
+    
 
   def getReadingDistributionGivenObservations(self, observations, newLocation):
     
-    "*** YOUR CODE HERE ***"
+    # QUESTION 3
     
     # BROKEN
     return listToDistribution(Readings.getReadings())

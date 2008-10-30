@@ -20,7 +20,7 @@ by introducing you to the game objects and command line options.
    object is really a tuple of ghosts, though currently there is
    only 1 ghost. Try setting numghosts=2 and look at the output.
    Note that now there are more ghost positions than busting options.
-   This is because you multiple ghosts can occupy the same square
+   This is because multiple ghosts can occupy the same square
    but you can only bust a square once. These data-structures are
    created by the functions util.factorials and util.choices.
    
@@ -110,13 +110,13 @@ print 'busting options:', game.getBustingOptions()
 print 'possible sensor readings:', Readings.getReadings()
 print
 
-print 'Priors P(true position):'
+print 'Priors P(true position): game.getInitialDistribution()'
 priors = game.getInitialDistribution()
 for pos in priors.keys():
   print 'position', pos, ': prior =', priors[pos]
 print
 
-print 'P(observation | ghost positions)'
+print 'P(observation | ghost positions) game.getReadingDistributionGivenGhostTuple()'
 observationPosition = (0, 0)
 print 'observing:', observationPosition
 for ghost in game.getGhostTuples():
