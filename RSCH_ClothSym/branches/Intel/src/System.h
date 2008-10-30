@@ -84,6 +84,7 @@ public:
 	Physics_LargeVector m_Positions;
 	Physics_LargeVector m_Velocities;
 	Physics_LargeVector m_TotalForces;
+	int globalCount;
 
 private:
     float getKs();
@@ -108,6 +109,7 @@ private:
 	SparseMatrix m_TotalForces_dp;
 	SparseMatrix m_TotalForces_dv;
 
+	SparseMatrix m_identity;
 	SparseMatrix m_A;
 	SparseMatrix m_MxTemp1, m_MxTemp2;
 	Physics_LargeVector m_P, m_PInv;

@@ -313,7 +313,7 @@ Physics_Matrix3x3 & SparseMatrix::operator() (int row, int col)
 				memcpy( &m_pColumns[k+l+1], &pSave[k+l], (m_iValues-k-l) * sizeof( int ) );
 			delete pSave;
 		}
-		if( pSaveData   )
+		if( pSaveData )
 		{
 			if( (m_iValues-k-l) > 0 )
 				memcpy( &m_pData[k+l+1], &pSaveData[k+l], (m_iValues-k-l) * sizeof( Physics_Matrix3x3 ) );
@@ -354,6 +354,7 @@ void SparseMatrix::Dump( char *szTitle )
 						m_pData[idx+j].m_Mx[k*3+0],
 						m_pData[idx+j].m_Mx[k*3+1],
 						m_pData[idx+j].m_Mx[k*3+2] );
+
 					cout<< szTemp <<endl;
 				}
 				cout<< "\r\n" <<endl;

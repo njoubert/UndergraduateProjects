@@ -12,6 +12,7 @@
 System::System(TriangleMesh* m, int verticeCount): mesh(m),
 	m_Positions( verticeCount ), m_Velocities( verticeCount ),
 	m_dv( verticeCount ), m_dp( verticeCount ),
+	m_identity( verticeCount, verticeCount ),
 	m_vTemp1( verticeCount ), m_vTemp2( verticeCount ), m_PosTemp( verticeCount ),
 	m_TotalForces( verticeCount ),
 	m_Masses( verticeCount ), m_MassInv( verticeCount ),
@@ -25,11 +26,38 @@ System::System(TriangleMesh* m, int verticeCount): mesh(m),
 	m_z( verticeCount ), m_b( verticeCount ), m_r( verticeCount ),
 	m_c( verticeCount ), m_q( verticeCount ), m_s( verticeCount ), m_y( verticeCount )
 {
+	m_TotalForces_dp.Zero();
+	m_TotalForces_dv.Zero();
+	m_identity.Zero();
+	m_PInv.Zero();
+
+
+
+	globalCount = 1;
+
 	numVertices = mesh->countVertices();
+	cout<<numVertices<<endl;
+
+	for(int i = 0; i < numVertices; i++)
+			mesh->getVertex(i)->setID(i);
+
+	for(int i = 0; i < numVertices; i++){
+		m_z.m_pData[i].x = 0;
+		m_z.m_pData[i].y = 0;
+		m_z.m_pData[i].z = 0;
+	}
+	m_z.Zero();
+/*
+	 for(int i = 0; i < numVertices; i++){
+		 cout<<mesh->getVertex(i)->getID()<<endl;
+		 cout<<mesh->getVertex(i)<<endl<<endl;
+	 }
+	 exit(1);
+//*/
 	m_S = new Physics_Matrix3x3[numVertices];
 	mat3 MatrixConverter;
 	for(int i = 0; i < numVertices; i++){
-		//*
+		/*
 		MatrixConverter	 = calculateContraints(i);
 		m_S[i].m_Mx[0] =  MatrixConverter[0][0];
 		m_S[i].m_Mx[1] =  MatrixConverter[0][1];
@@ -42,7 +70,11 @@ System::System(TriangleMesh* m, int verticeCount): mesh(m),
 		m_S[i].m_Mx[8] =  MatrixConverter[2][2];
 
 		//*/
-//		m_S[i].SetIdentity();
+		m_identity(i, i).m_Mx[0] = 1;
+		m_identity(i, i).m_Mx[4] = 1;
+		m_identity(i, i).m_Mx[8] = 1;
+
+		m_S[i].SetIdentity();
 	}
 	//m_S->Zero();
 
@@ -55,8 +87,8 @@ System::System(TriangleMesh* m, int verticeCount): mesh(m),
  //   Kd = 3;
  //   Kbe = 10;
   //  Kbd = 9;
-    Ks  = 20;
-    Kd  = 10;
+    Ks  = 100;
+    Kd  = 5;
     Kbe = .1;
     Kbd = .01;
     //kb = 0;
@@ -126,7 +158,7 @@ System::System(TriangleMesh* m, int verticeCount): mesh(m),
 
         		double sinThetaOver2 = sign * sqrt( (mustBePos ) /2);
 
-        		//*
+        		/*
         		// 		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
         		cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
         		cout<<"N1unit Length: "<<N1unit.length();
@@ -152,7 +184,7 @@ void System::loadMatrices() {
 //	else
 //		cout<<"oh crap"<<endl;
 
-	double a, b, c;
+
 	for(int i = 0; i < numVertices; i++)
 	{
 		m_Positions.m_pData[i].x = mesh->getVertex(i)->getX()[0];
@@ -176,39 +208,17 @@ void System::loadMatrices() {
 
 		m_MxMasses(i,i).m_Mx[0] = mesh->getVertex(i)->getm();
 		m_MxMasses(i,i).m_Mx[4] = mesh->getVertex(i)->getm();
-		m_MxMasses(i,i).m_Mx[8] = mesh->getVertex(i)->getm();;
+		m_MxMasses(i,i).m_Mx[8] = mesh->getVertex(i)->getm();
 
 		m_TotalForces.m_pData[i].x = mesh->getVertex(i)->getF()[0];
 		m_TotalForces.m_pData[i].y = mesh->getVertex(i)->getF()[1];
 		m_TotalForces.m_pData[i].z = mesh->getVertex(i)->getF()[2];
 
-	    //for(int j=0; j < 2; j++ ) {
-	    	//for(int k=j; k < 2 ; k++ ) {
 
-		m_TotalForces_dp(i,i).m_Mx[0] = mesh->getVertex(i)->getDfDx()[0][0];
-		m_TotalForces_dp(i,i).m_Mx[1] = mesh->getVertex(i)->getDfDx()[0][1];
-		m_TotalForces_dp(i,i).m_Mx[2] = mesh->getVertex(i)->getDfDx()[0][2];
-		m_TotalForces_dp(i,i).m_Mx[3] = mesh->getVertex(i)->getDfDx()[1][0];
-		m_TotalForces_dp(i,i).m_Mx[4] = mesh->getVertex(i)->getDfDx()[1][1];
-		m_TotalForces_dp(i,i).m_Mx[5] = mesh->getVertex(i)->getDfDx()[1][2];
-		m_TotalForces_dp(i,i).m_Mx[6] = mesh->getVertex(i)->getDfDx()[2][0];
-		m_TotalForces_dp(i,i).m_Mx[7] = mesh->getVertex(i)->getDfDx()[2][1];
-		m_TotalForces_dp(i,i).m_Mx[8] = mesh->getVertex(i)->getDfDx()[2][2];
 
-		m_TotalForces_dv(i,i).m_Mx[0] = mesh->getVertex(i)->getDfDv()[0][0];
-		m_TotalForces_dv(i,i).m_Mx[1] = mesh->getVertex(i)->getDfDv()[0][1];
-		m_TotalForces_dv(i,i).m_Mx[2] = mesh->getVertex(i)->getDfDv()[0][2];
-		m_TotalForces_dv(i,i).m_Mx[3] = mesh->getVertex(i)->getDfDv()[1][0];
-		m_TotalForces_dv(i,i).m_Mx[4] = mesh->getVertex(i)->getDfDv()[1][1];
-		m_TotalForces_dv(i,i).m_Mx[5] = mesh->getVertex(i)->getDfDv()[1][2];
-		m_TotalForces_dv(i,i).m_Mx[6] = mesh->getVertex(i)->getDfDv()[2][0];
-		m_TotalForces_dv(i,i).m_Mx[7] = mesh->getVertex(i)->getDfDv()[2][1];
-		m_TotalForces_dv(i,i).m_Mx[8] = mesh->getVertex(i)->getDfDv()[2][2];
-
-	    	//}
-	    //}
 	}
-	m_Masses.Invert(m_MassInv);
+	//m_Masses.Invert(m_MassInv);
+
 /*
 	for(int i = 0; i < numVertices; i++) {
 		if(!(m_Positions.m_pData[i].x == mesh->getVertex(i)->getX()[0] &&
@@ -233,6 +243,8 @@ void System::loadMatrices() {
 				 cout<<"WARNING: Forces Loaded with Error (possibly roundoff)"<<endl;
 	}
 //*/
+
+
 
 }
 
@@ -492,54 +504,110 @@ mat3 System::dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd){
 void System::calculateInternalForces() {
     vec3 F0(0,0,0); //Output net force.
     TriangleMeshVertex *a, *b;
-    vec3 p[2], v[2];
+
     EdgesIterator edg_it = mesh->getEdgesIterator();
     do {
-        a = (*edg_it)->getVertex(0);
-        b = (*edg_it)->getVertex(1);
-
         /* Calculate internal forces here.
          * a = first point, b = second point. */
+    	a = (*edg_it)->getVertex(0);
+        b = (*edg_it)->getVertex(1);
 
-		 vec3 pa = a->getX(); vec3 va = a->getvX();
-		 vec3 pb = b->getX(); vec3 vb = b->getvX();
-		 vec3 Ua = a->getU(); vec3 Ub = b->getU();
-		 vec3 RL = Ua - Ub;
+		vec3 pa = a->getX(); vec3 va = a->getvX();
+		vec3 pb = b->getX(); vec3 vb = b->getvX();
+		vec3 Ua = a->getU(); vec3 Ub = b->getU();
+		vec3 RL = Ua - Ub;
+		double rl = RL.length();
 
-		 double rl = RL.length();
-
-		//CALCULATES BEND FORCE AND STORES IT IN MESH
-//		f_bend((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
-
-		//----------Finternal_i--------------------------------------------------------
+	   //STRETCH AND SHEAR FORCES
        F0 =  f_spring(pa, pb, rl, getKs()) + f_damp(pa, pb, va, vb, rl, getKd());
-        // cout<<"F0i "<<F0i[0]<<" "<<F0i[1]<<" "<<F0i[2]<<endl;
-
-       //Store Forces
+       //These must be stored "explicitly"
        a->setF(F0);
        b->setF(-1 * F0);
 
        //THE GOOD BEND FORCE
 	   //Forces((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it));
 
-       p[0] = pa;
-       p[1] = pb;
-       v[0] = va;
-       v[1] = vb;
-       mat3 DfDx, DfDv;
-//*
-       DfDx = dfdx_spring(p[0], p[1], rl, Ks) + dfdx_damp(p[0], p[1], v[0], v[1], rl, Kd);
-       a->setDfDx(DfDx);
-       DfDx = dfdx_spring(p[1], p[0], rl, Ks) + dfdx_damp(p[1], p[0], v[1], v[0], rl, Kd);
-       b->setDfDx(DfDx);
+       mat3 DfDx[4], DfDv[4];
+       int verterxPos[2];		  //vertexPos[0]= xi, vertex[1] = xj
+       verterxPos[0] = a->getID();
+       verterxPos[1] = b->getID();
 
-       DfDv = dfdv_damp(p[0], p[1], rl, Kd);
-       a->setDfDv(DfDv);
-       DfDv = dfdv_damp(p[1], p[0], rl, Kd);
-       b->setDfDv(DfDv);
+     //  cout<<"aX: "<<a->getX()<<endl;
+     //  cout<<"bX: "<<b->getX()<<endl;
+     //  cout<<"aV: "<<a->getvX()<<endl;
+     //  cout<<"bV: "<<b->getvX()<<endl;
+     //  cout<<"RL: "<<rl<<endl;
 
+       mat3 garbage(9);
+       //	Dfa/xa
+       DfDx[0] = dfdx_spring(pa, pb, rl, Ks) + dfdx_damp(pa, pb, va, vb, rl, Kd);
+       //	Dfb/xb
+       DfDx[2] =  DfDx[0];
+       //	Dfa/xb
+       DfDx[1] = -1 * DfDx[0];
+       //	Dfb/xb NOT PUT INTO MARIX
+       DfDx[3] = garbage;//- DfDx[1];
 
+       //	Dfa/va
+       DfDv[0] = dfdv_damp(pa, pb, rl, Kd);
+       //	Dfb/vb
+       DfDv[2] =  DfDv[0];
+       //	Dfa/va
+       DfDv[1] =  -1 * DfDv[0];
+       //	Dfj/vj
+       DfDv[3] = garbage;//- DfDv[1];
+
+ /*
+		double zeroCut = .00001;
+       //get rid of any round off
+       for(int k = 0; k < 3; k++)
+    	   for(int i = 0; i < 3; i++)
+    		   for(int j = 0; j < 3; j++)
+    			   if(DfDx[k][i][j] < zeroCut && DfDx[k][i][j] > -zeroCut)
+					   DfDx[k][i][j] = 0;
+
+       for(int k = 0; k < 3; k++)
+    	   for(int i = 0; i < 3; i++)
+    		   for(int j = 0; j < 3; j++)
+    			   if(DfDv[k][i][j] < zeroCut && DfDv[k][i][j] > -zeroCut)
+					   DfDv[k][i][j] = 0;
+
+//*/
+       //cout<<"DfDx: "<<endl<<DfDx[0]<<endl;
+       //cout<<"DfDv: "<<endl<<DfDv[0]<<endl<<endl;
+
+       //PLACE MINI JACOBIANS INTO LARGE JACOBIAN
+       int Jcounter = 0;
+       for(int i = 0; i < 2; i++) {
+    	   for(int j = i; j < 2; j++) {
+    		   //if(i == 0 &&  j == 1){
+    		  // cout<<Jcounter<<endl;
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[0] += DfDx[Jcounter][0][0];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[1] += DfDx[Jcounter][0][1];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[2] += DfDx[Jcounter][0][2];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[3] += DfDx[Jcounter][1][0];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[4] += DfDx[Jcounter][1][1];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[5] += DfDx[Jcounter][1][2];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[6] += DfDx[Jcounter][2][0];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[7] += DfDx[Jcounter][2][1];
+    		   m_TotalForces_dp(verterxPos[i], verterxPos[j]).m_Mx[8] += DfDx[Jcounter][2][2];
+
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[0] += DfDv[Jcounter][0][0];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[1] += DfDv[Jcounter][0][1];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[2] += DfDv[Jcounter][0][2];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[3] += DfDv[Jcounter][1][0];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[4] += DfDv[Jcounter][1][1];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[5] += DfDv[Jcounter][1][2];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[6] += DfDv[Jcounter][2][0];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[7] += DfDv[Jcounter][2][1];
+    		   m_TotalForces_dv(verterxPos[i], verterxPos[j]).m_Mx[8] += DfDv[Jcounter][2][2];
+    		  // }
+    		   Jcounter++;
+    	   }
+       }
+       //out<<endl;
     } while (edg_it.next());
+
     //cout<<"Fpoint: "<<F0.length()<<endl;
 }
 
@@ -625,7 +693,6 @@ std::pair<mat3,mat3> System::calculateForcePartials(int pointIndex) {
          //dFx = dFx * dFddvi;
          //dFv = dFv * dFdxi;
 
-
         it++;
     }
 
@@ -661,29 +728,203 @@ void System::SolveExplicit(double timeStep) {
     //vec3 deltaX = timeStep * (point->getvX() + deltaV);
 }
 
+
+
 void System::SolveImplicit(double timeStep) {
+	int i;
 	//
 			// Form the symmetric matrix A = M - h * df/dv - h^2 * df/dx
 			// We regroup this as A = M - h * (df/dv + h * df/dx)
 			//
+			//	m_MxTemp1 = h*dfdx
 			m_TotalForces_dp.Scale( timeStep, m_MxTemp1 );
+			//	m_MxTemp2 = (df/dv + h * df/dx)
 			m_TotalForces_dv.Add( m_MxTemp1, m_MxTemp2 );
+			//	m_MxTemp1 = h*(df/dv + h * df/dx)
 			m_MxTemp2.Scale( timeStep, m_MxTemp1 );
+			//	m_A = M - h * (df/dv + h * df/dx)
 			m_MxMasses.Subtract( m_MxTemp1, m_A );
 
 			//
 			// Compute b = h * ( f(0) + h * df/dx * v(0) + df/dx * y )
 			//
+			//	m_vTemp2 = h*v(0)
 			m_Velocities.Scale( timeStep, m_vTemp2 );
+			//	m_vTemp2 = h*v(0) + y
 			m_vTemp2.Add( m_y, m_vTemp2 );
+			//	m_vTemp1 = df/dx*(h*v(0) + y)
 			m_TotalForces_dp.PostMultiply( m_vTemp2, m_vTemp1 );
-	//		m_vTemp1.Scale( timeStep, m_vTemp2 );
+	//		m_vTemp1.Scale( fStep, m_vTemp2 );
+			//	m_vTemp1 = f(0) + h*df/dx*v(0) + df/dx*y
 			m_TotalForces.Add( m_vTemp1, m_vTemp1 );
+			//	m_b = h*(f(0) + h*df/dx*v(0) + df/dx*y)
 			m_vTemp1.Scale( timeStep, m_b );
 
-			int i, iIterations = 0, iMaxIterations = (int)sqrt(numVertices)*3+3;
+			//CONSTRAINTS
+/*
+			int constrainElementCol = 1;	// 0, 1 or 2
+			int constrainElementRow = 3;	// 0, 3 or 6
+			int constrainBlock = 5;
+
+			for(i = 0; i < numVertices; i++) {
+				m_A(constrainBlock, i).m_Mx[constrainElementRow] = 99990;
+				m_A(constrainBlock, i).m_Mx[constrainElementRow + 1] = 99990;
+				m_A(constrainBlock, i).m_Mx[constrainElementRow + 2] = 99990;
+				m_A(i, constrainBlock).m_Mx[constrainElementCol] = 99990;
+				m_A(i, constrainBlock).m_Mx[constrainElementCol + 3] = 99990;
+				m_A(i, constrainBlock).m_Mx[constrainElementCol + 6] = 99990;
+			}
+			int Rows[3];
+			Rows[0] = constrainElementRow;
+			Rows[1] = constrainElementRow+1;
+			Rows[2] = constrainElementRow+2;
+			int Cols[3];
+			Cols[3] = constrainElementCol;
+			Cols[4] = constrainElementCol+3;
+			Cols[5] = constrainElementCol+6;
+
+			for(i = 0; i < 3; i++) {
+				for(int j = 0; j < 3; j++) {
+					if(Rows[i] == Cols[j]) {
+						//m_A(constrainBlock,constrainBlock).m_Mx[i] = 22222;
+					}
+				}
+			}
+/*
+			for(int p = 0; p < numVertices; p++) {
+				if(constrainElementRow == 0)
+					m_b.m_pData[constrainBlock].x = 99990;
+				if(constrainElementRow == 3)
+					m_b.m_pData[constrainBlock].y = 99990;
+				if(constrainElementRow == 6)
+					m_b.m_pData[constrainBlock].z = 99990;
+			}
+*/
+/*
+			cout<<"global count: "<<globalCount<<endl;
+					if(globalCount == 1){
+						ofstream file("../A_and_b.txt");
+					    if (file.is_open())
+					    {
+					    	file<<"TimeStep (h) = "<<timeStep<<endl<<endl;
+							 for( i = 0; i < numVertices; i++){
+								 file<<"Vertex: "<<mesh->getVertex(i)->getID()<<
+								 "  Position: "<<mesh->getVertex(i)->getX()<<
+								 "  Velocity: "<<mesh->getVertex(i)->getvX()<<endl;
+							 }
+							 file<<"v: "<<endl;
+							 for(i = 0; i < numVertices; i++)
+							 	file<<  m_Velocities.m_pData[i].x<<endl<<m_Velocities.m_pData[i].y <<endl<<m_Velocities.m_pData[i].z<<endl;
+							 file<<"F: "<<endl;
+							 for(i = 0; i < numVertices; i++)
+							 	file<< m_TotalForces.m_pData[i].x<<endl<< setprecision(2) << setw(4) << m_TotalForces.m_pData[i].y <<endl<<m_TotalForces.m_pData[i].z<<endl;
+							file<<endl;
+							file<<"DfDx: "<<endl;
+							 	for(i = 0; i < numVertices; i++) {
+							 		for(int j = 0; j < numVertices; j++) {
+							 			file << setprecision(4) << setw(2) << m_TotalForces_dp(i, j).m_Mx[0] << "    ";
+							 			file << setprecision(4) << setw(2) << m_TotalForces_dp(i, j).m_Mx[1] << "    ";
+							 			file << setprecision(4) << setw(2) << m_TotalForces_dp(i, j).m_Mx[2] << "    ";
+							 		}
+							 		file<<endl;
+							 		for(int j = 0; j < numVertices; j++) {
+								 		file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[3] << "    ";
+								 		file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[4] << "    ";
+								 		file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[5] << "    ";
+	 							 	}
+							 		file<<endl;
+							 		for(int j = 0; j < numVertices; j++) {
+							 			file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[6] << "    ";
+								 		file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[7] << "    ";
+								 		file << setprecision(4) << setw(2)<< m_TotalForces_dp(i, j).m_Mx[8] << "    ";
+								 	}
+							 	 	file<<endl;
+								 }
+							 	file<<endl<<endl<<endl;
+							 	cout<<"wrote DfDx to file"<<endl;
+							 	file<<"DfDv: "<<endl;
+							 	for(i = 0; i < numVertices; i++) {
+							 		for(int j = 0; j < numVertices; j++) {
+							 			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[0] << "    ";
+							 			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[1] << "    ";
+							 			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[2] << "    ";
+							 		}
+							 		file<<endl;
+							 		for(int j = 0; j < numVertices; j++) {
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[3] << "    ";
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[4] << "    ";
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[5] << "    ";
+							 		 }
+							 		file<<endl;
+							 		for(int j = 0; j < numVertices; j++) {
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[6] << "    ";
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[7] << "    ";
+							 			file << setprecision(2) << setw(4)<< m_TotalForces_dv(i, j).m_Mx[8] << "    ";
+							 		}
+							 		file<<endl;
+							 }
+							 file<<endl<<endl<<endl;
+							 cout<<"wrote DfDv to file"<<endl;
+							 file<<"M: "<<endl;
+							 for(i = 0; i < numVertices; i++) {
+							 	for(int j = 0; j < numVertices; j++) {
+							 		file << setprecision(2) << setw(4) << m_MxMasses(i, j).m_Mx[0] << "    ";
+							 		file << setprecision(2) << setw(4) << m_MxMasses(i, j).m_Mx[1] << "    ";
+							 		file << setprecision(2) << setw(4) << m_MxMasses(i, j).m_Mx[2] << "    ";
+							 	}
+							 	file<<endl;
+							 	for(int j = 0; j < numVertices; j++) {
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[3] << "    ";
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[4] << "    ";
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[5] << "    ";
+							 	}
+							 	file<<endl;
+							 	for(int j = 0; j < numVertices; j++) {
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[6] << "    ";
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[7] << "    ";
+							 		file << setprecision(2) << setw(4)<< m_MxMasses(i, j).m_Mx[8] << "    ";
+							 	}
+							 	file<<endl;
+							 }
+							file<<endl<<endl<<endl;
+							cout<<"wrote M to file"<<endl;
+					    	file<<"A: "<<endl;
+					    	for(i = 0; i < numVertices; i++) {
+					    		for(int j = 0; j < numVertices; j++) {
+					    			file << setprecision(2) << setw(4) << m_A(i, j).m_Mx[0] << "    ";
+					    			file << setprecision(2) << setw(4) << m_A(i, j).m_Mx[1] << "    ";
+					    			file << setprecision(2) << setw(4) << m_A(i, j).m_Mx[2] << "    ";
+					    		}
+					    		file<<endl;
+					    		for(int j = 0; j < numVertices; j++) {
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[3] << "    ";
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[4] << "    ";
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[5] << "    ";
+					        	}
+					    		file<<endl;
+					    		for(int j = 0; j < numVertices; j++) {
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[6] << "    ";
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[7] << "    ";
+					        		file << setprecision(2) << setw(4)<< m_A(i, j).m_Mx[8] << "    ";
+					        	}
+					    		file<<endl;
+					    	}
+					    	file<<endl<<endl<<endl;
+					    	cout<<"wrote A to file"<<endl;
+					    	file<<"b: "<<endl;
+					    	for(int p = 0; p < numVertices; p++)
+					    		file<< m_b.m_pData[p].x<<endl<<setprecision(4) << setw(4)<<m_b.m_pData[p].y <<endl<<m_b.m_pData[p].z<<endl;
+					    	cout<<"wrote b to file"<<endl;
+					    }
+						file.close();
+						cout<<"close file and exit"<<endl;
+						exit(1);
+					}
+//*/
+
+			int iIterations = 0, iMaxIterations = (int)sqrt(numVertices)*3+3;
 			double alpha, Delta_0, Delta_old, Delta_new;
-			double Eps_Sq = 1e-22;
+			double Eps_Sq = 1e-20;
 			//double FLOOR_Y = -0.99;
 			//
 			// Setup the inverse of preconditioner -- We use a vector for memory efficiency.  Technically it's the diagonal of a matrix
@@ -697,85 +938,129 @@ void System::SolveImplicit(double timeStep) {
 			m_PInv.Invert( m_P );
 
 			//
-			// Modified Preconditioned Conjugate Gradient method
-			//
-
-			m_dv = m_z;
-
-			// delta_0 = DotProduct( filter( b ), P * filter( b ) );
-			m_b.ElementMultiply( m_S, m_vTemp1 );
-			m_P.ElementMultiply( m_vTemp1, m_vTemp2 );
-			Delta_0 = m_vTemp2.DotProduct( m_vTemp1 );
-			if( Delta_0 < 0 )
-			{
-				m_b.Dump( "b:\r\n" );
-				m_P.Dump( "P:\r\n" );
-				cout<< "Negative Delta_0 most likely caused by a non-Positive Definite matrix\r\n" ;
-			}
-
-			// r = filter( b - A * dv )
-			m_A.PostMultiply( m_dv, m_vTemp1 );
-			m_b.Subtract( m_vTemp1, m_vTemp2 );
-			m_vTemp2.ElementMultiply( m_S, m_r );
-
-			// c = filter( Pinv * r )
-			m_PInv.ElementMultiply( m_r, m_vTemp1 );
-			m_vTemp1.ElementMultiply( m_S, m_c );
-
-			Delta_new = m_r.DotProduct( m_c );
-
-			if( Delta_new < Eps_Sq * Delta_0 )
-			{
-				m_b.Dump( "b: \r\n" );
-				m_P.Dump( "P: \r\n" );
-				cout<< "This isn't good!  Probably a non-Positive Definite matrix\r\n" <<endl;
-			}
-
-			while( (Delta_new > Eps_Sq * Delta_0) && (iIterations < iMaxIterations) )
-			{
-				m_A.PostMultiply( m_c, m_vTemp1 );
-
-				m_vTemp1.ElementMultiply( m_S, m_q );
-
-				alpha = Delta_new / (m_c.DotProduct( m_q ) );
-				m_c.Scale( alpha, m_vTemp1 );
-				m_dv.Add( m_vTemp1, m_dv );
-
-				m_q.Scale( alpha, m_vTemp1 );
-				m_r.Subtract( m_vTemp1, m_r );
-
-				m_PInv.ElementMultiply( m_r, m_s );
-				Delta_old = Delta_new;
-				Delta_new = m_r.DotProduct( m_s );
-
-				m_c.Scale( Delta_new / Delta_old, m_vTemp1 );
-				m_s.Add( m_vTemp1, m_vTemp2 );
-				m_vTemp2.ElementMultiply( m_S, m_c );
-
-				iIterations++;
-			}
-
-			m_Velocities.Add( m_dv, m_Velocities );
-			m_Velocities.Scale( timeStep, m_vTemp1 );
-			m_Positions.Add( m_vTemp1, m_Positions );
-
-	/*
-			for( i=0; i<numVertices; i++ )
-				if( m_Positions.m_pData[i].y < FLOOR_Y )
-				{
+					// Modified Preconditioned Conjugate Gradient method
 					//
-					// Constraint the velocity of the particle to NOT move in the Y plane
-					// Basically we modify the constraint matrix manually
-					//
-					m_S[i].SetIdentity();
-					m_S[i].m_Mx[4] = 0;
-					m_y.m_pData[i].y = (FLOOR_Y - m_Positions.m_pData[i].y);
-					m_Positions.m_pData[i].y = FLOOR_Y;
-					m_Velocities.m_pData[i].y = 0;
-				}
-				else
-					m_y.m_pData[i].y = 0;
-	//*/
+
+					m_dv = m_z;
+
+					// delta_0 = DotProduct( filter( b ), P * filter( b ) );
+					m_b.ElementMultiply( m_S, m_vTemp1 );
+					m_P.ElementMultiply( m_vTemp1, m_vTemp2 );
+					Delta_0 = m_vTemp2.DotProduct( m_vTemp1 );
+					if( Delta_0 < 0 )
+					{
+						m_b.Dump( "b:\r\n" );
+						m_P.Dump( "P:\r\n" );
+						cout<<"Negative Delta_0 most likely caused by a non-Positive Definite matrix\r\n" <<endl;
+					}
+
+					// r = filter( b - A * dv )
+					m_A.PostMultiply( m_dv, m_vTemp1 );
+					m_b.Subtract( m_vTemp1, m_vTemp2 );
+					m_vTemp2.ElementMultiply( m_S, m_r );
+
+					// c = filter( Pinv * r )
+					m_PInv.ElementMultiply( m_r, m_vTemp1 );
+					m_vTemp1.ElementMultiply( m_S, m_c );
+
+					Delta_new = m_r.DotProduct( m_c );
+
+					if( Delta_new < Eps_Sq * Delta_0 )
+					{
+						m_b.Dump( "b: \r\n" );
+						m_P.Dump( "P: \r\n" );
+						cout<< "This isn't good!  Probably a non-Positive Definite matrix\r\n" <<endl;
+					}
+
+					while( (Delta_new > Eps_Sq * Delta_0) && (iIterations < iMaxIterations) )
+					{
+						m_A.PostMultiply( m_c, m_vTemp1 );
+
+						m_vTemp1.ElementMultiply( m_S, m_q );
+
+						alpha = Delta_new / (m_c.DotProduct( m_q ) );
+						m_c.Scale( alpha, m_vTemp1 );
+						m_dv.Add( m_vTemp1, m_dv );
+
+						m_q.Scale( alpha, m_vTemp1 );
+						m_r.Subtract( m_vTemp1, m_r );
+
+						m_PInv.ElementMultiply( m_r, m_s );
+						Delta_old = Delta_new;
+						Delta_new = m_r.DotProduct( m_s );
+
+						m_c.Scale( Delta_new / Delta_old, m_vTemp1 );
+						m_s.Add( m_vTemp1, m_vTemp2 );
+						m_vTemp2.ElementMultiply( m_S, m_c );
+
+						iIterations++;
+					}
+/*
+					double cutIt = 0.001;
+					for(int i = 0; i < m_dv.Size(); i++) {
+						m_dv.m_pData[i].x = 0;
+						//m_dv.m_pData[i].y = 0;
+						m_dv.m_pData[i].z = 0;
+						if(m_dv.m_pData[i].x < cutIt && m_dv.m_pData[i].x > -cutIt){
+							//cout<<"value Cut"<<endl;
+							m_dv.m_pData[i].x = 0;
+						}
+						if(m_dv.m_pData[i].y < cutIt && m_dv.m_pData[i].y > -cutIt){
+							m_dv.m_pData[i].y = 0;
+						}
+						if(m_dv.m_pData[i].z < cutIt && m_dv.m_pData[i].z > -cutIt){
+							m_dv.m_pData[i].z = 0;
+						}
+					}
+//*/
+					m_Velocities.Add( m_dv, m_Velocities );
+
+					//CRAPPY CONSTRAINTS
+					m_Velocities.m_pData[0].x = 0;
+					m_Velocities.m_pData[0].y = 0;
+					m_Velocities.m_pData[0].z = 0;
+
+					m_Velocities.Scale( timeStep, m_vTemp1 );
+					// for(int i = 0; i < numVertices; i++) {
+					  //  cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[2]<<endl;
+					   // }
+					m_Positions.Add( m_vTemp1, m_Positions );
+/*
+					for(int i =0; i < m_Velocities.Size(); i++)
+						cout<<m_Velocities.m_pData[i].x<<" "<<m_Velocities.m_pData[i].y<<" "<<m_Velocities.m_pData[i].z<<endl;
+
+					for(int i =0; i < m_Positions.Size(); i++)
+						cout<<m_Positions.m_pData[i].x<<" "<<m_Positions.m_pData[i].y<<" "<<m_Positions.m_pData[i].z<<endl;
+//*/
+					/*
+					 file<<"v: "<<endl;
+					 for(i = 0; i < numVertices; i++)
+						file<<  m_Velocities.m_pData[i].x<<endl<<m_Velocities.m_pData[i].y <<endl<<m_Velocities.m_pData[i].z<<endl;
+					 file<<"p: "<<endl;
+					 for(i = 0; i < numVertices; i++)
+					 	file<<  m_Positions.m_pData[i].x<<endl<<m_Positions.m_pData[i].y <<endl<<m_Positions.m_pData[i].z<<endl;
+					 file.close();
+					 exit(1);
+					 //*/
+
+					/*
+					for( i=0; i<m_iParticles; i++ )
+						if( m_Positions.m_pData[i].y < FLOOR_Y )
+						{
+							//
+							// Constraint the velocity of the particle to NOT move in the Y plane
+							// Basically we modify the constraint matrix manually
+							//
+							m_S[i].SetIdentity();
+							m_S[i].m_Mx[4] = 0;
+							m_y.m_pData[i].y = (FLOOR_Y - m_Positions.m_pData[i].y);
+							m_Positions.m_pData[i].y = FLOOR_Y;
+							m_Velocities.m_pData[i].y = 0;
+						}
+						else
+							m_y.m_pData[i].y = 0;
+					fTotal += (Physics_t)fabs( fStep );
+				*/
 
 }
 
@@ -818,7 +1103,7 @@ void System::setTableConstraints(){
 			m_S[i].m_Mx[4] =  0;
 			m_S[i].m_Mx[5] =  0;
 			m_S[i].m_Mx[6] =  0;
-			m_S[i].m_Mx[7] = 0;
+			m_S[i].m_Mx[7] =  0;
 			m_S[i].m_Mx[8] =  0;
 		}
 	}
@@ -827,15 +1112,160 @@ void System::takeStep(Solver* solver, double timeStep) {
 
     std::vector<std::pair<vec3,vec3> > changes(mesh->vertices.size(),
             make_pair(vec3(0,0,0), vec3(0,0,0)));
+    /*
+    if(globalCount == 1){
+		for(int i = 0; i < numVertices; i++) {
+           mesh->getVertex(i)->getvX()[0] = 2.5;
+           mesh->getVertex(i)->getvX()[1] = 2.5;
+           mesh->getVertex(i)->getvX()[2] = 2.5;
+         }
+    }
+    //*/
+    /*
+            cout<<"Position: "<<endl;
+            for(int i = 0; i < numVertices; i++) {
+               cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[2]<<endl;
+            } cout<<endl;
+            cout<<"Velocity: "<<endl;
+            for(int i = 0; i < numVertices; i++) {
+            cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[2]<<endl;
+            } cout<<endl;
+        //*/
 
+    //cout<<"Calculate State, load force matrix"<<endl;
     solver->calculateState(this); //evalDeriv function
+	//cout<<"Force: "<<endl;
+    //for(int i = 0; i < numVertices; i++) {
+	//cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getF()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getF()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getF()[2]<<endl;
+	//}cout<<endl<<endl;
+
+    /*
+    				double cut = 0.0001;
+
+    					for(int i = 0; i < numVertices; i++) {
+    						for(int j = 0; j < numVertices; j++) {
+    							for(int k = 0; k < 8; k++) {
+    								if( m_TotalForces_dp(i, j).m_Mx[k] < cut && m_TotalForces_dp(i, j).m_Mx[k] > -cut && m_TotalForces_dp(i, j).m_Mx[k] != 0){
+    									//m_TotalForces_dp(i, j).m_Mx[k] = 0;
+    									cout<<"roundoff in zeros of Position Jacobian: "<<m_TotalForces_dp(i, j).m_Mx[k]<<endl;
+    								}
+    							}
+
+    						}
+    					}
+
+    					for(int i = 0; i < numVertices; i++) {
+    						for(int j = 0; j < numVertices; j++) {
+    							for(int k = 0; k < 8; k++) {
+    								if( m_TotalForces_dv(i, j).m_Mx[k] < cut && m_TotalForces_dv(i, j).m_Mx[k] > -cut && m_TotalForces_dp(i, j).m_Mx[k] != 0) {
+    									cout<<"roundoff in zeros of Velocity Jacobian "<<m_TotalForces_dv(i, j).m_Mx[k]<<endl;
+    									//m_TotalForces_dp(i, j).m_Mx[k] = 0;
+    								}
+    							}
+    						}
+    					}
+
+    			//exit(1);
+    	//*/
+
+	loadMatrices();
+
+	/*
+						double cutIt = 0.001;
+						for(int i = 0; i < m_TotalForces.Size(); i++) {
+							if(m_TotalForces.m_pData[i].x < cutIt && m_TotalForces.m_pData[i].x > -cutIt){
+								//cout<<"value Cut"<<endl;
+								m_TotalForces.m_pData[i].x = 0;
+							}
+							if(m_TotalForces.m_pData[i].y < cutIt && m_TotalForces.m_pData[i].y > -cutIt)
+								m_TotalForces.m_pData[i].y = 0;
+							if(m_TotalForces.m_pData[i].z < cutIt && m_TotalForces.m_pData[i].z > -cutIt)
+								m_TotalForces.m_pData[i].z = 0;
+						}
+	//*/
+//	cout<<"Force: "<<endl;
+//	for(int i =0; i < m_TotalForces.Size(); i++)
+//		cout<<m_TotalForces.m_pData[i].x<<" "<<m_TotalForces.m_pData[i].y<<" "<<m_TotalForces.m_pData[i].z<<endl<<endl;
 /*
-    loadMatrices();
-   // setTableConstraints();
+
+    ofstream file ("SparseMatrix.txt");
+    if (file.is_open())
+    {
+		 for(int i = 0; i < numVertices; i++){
+			 file<<"Vertex: "<<mesh->getVertex(i)->getID()<<
+			 "  Position: "<<mesh->getVertex(i)->getX()<<
+			 "  Velocity: "<<mesh->getVertex(i)->getvX()<<endl;
+		 }
+		 file<<endl;
+    	file<<"DfDx: "<<endl;
+    	for(int i = 0; i < numVertices; i++) {
+    		for(int j = 0; j < numVertices; j++) {
+    			file << setprecision(2) << setw(4) << m_TotalForces_dp(i, j).m_Mx[0] << "  ";
+    			file << setprecision(2) << setw(4) << m_TotalForces_dp(i, j).m_Mx[1] << "  ";
+    			file << setprecision(2) << setw(4) << m_TotalForces_dp(i, j).m_Mx[2] << "  ";
+    		}
+    		file<<endl;
+    		for(int j = 0; j < numVertices; j++) {
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[3] << "  ";
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[4] << "  ";
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[5] << "  ";
+        	}
+    		file<<endl;
+    		for(int j = 0; j < numVertices; j++) {
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[6] << "  ";
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[7] << "  ";
+        			file << setprecision(2) << setw(4)<< m_TotalForces_dp(i, j).m_Mx[8] << "  ";
+        	}
+    		file<<endl;
+    	}
+    	file<<endl<<endl<<endl;
+
+    	file<<"DfDv: "<<endl;
+    	for(int i = 0; i < numVertices; i++) {
+    		for(int j = 0; j < numVertices; j++) {
+    			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[0] << "  ";
+    			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[1] << "  ";
+    			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[2] << "  ";
+    		}
+    		file<<endl;
+    		for(int j = 0; j < numVertices; j++) {
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[3] << "  ";
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[4] << "  ";
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[5] << "  ";
+        	}
+    		file<<endl;
+    		for(int j = 0; j < numVertices; j++) {
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[6] << "  ";
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[7] << "  ";
+        			file << setprecision(2) << setw(4) << m_TotalForces_dv(i, j).m_Mx[8] << "  ";
+        	}
+    		file<<endl;
+    	}
+    	file<<endl<<endl<<endl;
+    file.close();
+    }
+    exit(1);
+//*/
+//*
+
+    // setTableConstraints();
 	//m_TotalForces_dp.Zero();
 	//m_TotalForces_dv.Zero();
     SolveImplicit(timeStep);
-    //SolveExplicit(timeStep);
+	//SolveExplicit(timeStep);
+    /*
+        cout<<"Position: "<<endl;
+        for(int i = 0; i < numVertices; i++) {
+           cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getX()[2]<<endl;
+        } cout<<endl;
+        cout<<"Velocity: "<<endl;
+        for(int i = 0; i < numVertices; i++) {
+        cout<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[0]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[1]<<" "<<setprecision(2) << setw(4)<<mesh->getVertex(i)->getvX()[2]<<endl;
+        } cout<<endl;
+    //*/
+    //if(globalCount == 2)
+    //exit(1);
+
 
     m_TotalForces.Zero();
 	m_TotalForces_dp.Zero();
@@ -843,23 +1273,39 @@ void System::takeStep(Solver* solver, double timeStep) {
 	m_MxTemp1.Zero();
 	m_MxTemp2.Zero();
 	m_z.Zero();
+	m_PInv.Zero();
+
+	m_dv.Zero();
+	m_dp.Zero();
+	m_PosTemp.Zero();
+	m_A.Zero();
+	m_P.Zero();
+	m_b.Zero();
+	m_r.Zero();
+	m_c.Zero();
+	m_q.Zero();
+	m_s.Zero();
+	m_y.Zero();
+
 //*/
 
-//*
+/*
     for (unsigned int i = 0; i < mesh->countVertices(); i++) {
     	std::pair<vec3,vec3> deltas =
             solver->solve(this, timeStep, i, mesh->getVertex(i));
         changes[i] = deltas;
     }
   //*/
+	//cout<<"f u"<<endl;
+	//exit(1);
   //cout<<mesh->getVertex(mesh->vertices.size())->getX()<<endl;
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
-        v->getX() += changes[i].first;
-        v->getvX() += changes[i].second;
+//        v->getX() += changes[i].first;
+//        v->getvX() += changes[i].second;
 
-/*
+//*
         v->getX()[0] = m_Positions.m_pData[i].x;
         v->getX()[1] = m_Positions.m_pData[i].y;
         v->getX()[2] = m_Positions.m_pData[i].z;
@@ -867,37 +1313,19 @@ void System::takeStep(Solver* solver, double timeStep) {
         v->getvX()[0] = m_Velocities.m_pData[i].x;
         v->getvX()[1] = m_Velocities.m_pData[i].y;
         v->getvX()[2] = m_Velocities.m_pData[i].z;
-       // cout<<"F: "<<v->getF()<<endl;
+      //  cout<<v->getvX()[0]<<" "<<v->getvX()[1] <<" "<<v->getvX()[2] <<endl;
+      //  cout<<"F: "<<v->getF()<<endl;
         v->clearF();
-        v->clearDfDx();
-        v->clearDfDv();
-//*/
-        //**********************CONSTRAINTS********************************************
-    /*
-        vec3 p = v->getX();
-        vec3 V = v->getvX();
-        vec3 table(0,.41,0);
-        float tableR = .5;
-        float eps = .01;
-        float eps2 = 4;
-        if((sqrt(p[0]*p[0] + p[2]*p[2]) < tableR) &&
-        		(p[1] < table[1] + eps && p[1] > table[1] - eps)){
 
-			if(v->getvX()[1] > eps) {
-				v->getX()[1] = table[1]-eps2*eps;
-				v->getvX() *= -.1;
-			}
-
-			else
-				v->getX()[1]  = table[1];
-
-        }
-        else{
-        v->getX() += changes[i].first;
-        v->getvX() += changes[i].second;
-        }
-    //*/
     }
+    //cout<<globalCount<<endl;
+    //cout<<"i got here"<<endl;
+    if(globalCount == 2) {
+//    	exit(1);
+//		file.close();
+    }
+
+    globalCount++;
 
     time += timeStep;
 }
@@ -986,8 +1414,6 @@ std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
     */
     //cout<<"Force: "<<point->getF()/point->getm()<<endl;
     point->clearF();
-
-
 
 
     //Contraints set in OBJ file

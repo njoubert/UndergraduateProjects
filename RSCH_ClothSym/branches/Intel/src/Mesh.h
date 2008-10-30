@@ -72,23 +72,33 @@ public:
      */
     TriangleMeshVertex(double x, double y, double z);
     void addToEdge(TriangleMeshEdge* edge);
+
     vec3 & getX();
     vec3 & getU();
     vec3 & getvX();
+
     double getm();
     void setm(double);
+
     vec3 getNormal();
+
     mat3 & getConstaint();
     void setConstraint(mat3);
+
     vec3 & getF();
     void setF(vec3);
     void clearF();
+
     mat3 & getDfDx();
     void setDfDx(mat3);
     void clearDfDx();
+
     mat3 & getDfDv();
     void setDfDv(mat3);
     void clearDfDv();
+
+    int & getID();
+    void setID(int);
 
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
@@ -105,6 +115,7 @@ private:
     mat3 DfDx;
     mat3 DfDv;
     double m;
+    int ID;
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 
@@ -129,6 +140,12 @@ public:
     double getRestLength();
     double getRestAngle();
     void setRestAngle(double);
+    mat3 & getDfDx();
+    void setDfDx(mat3);
+    void clearDfDx();
+    mat3 & getDfDv();
+    void setDfDv(mat3);
+    void clearDfDv();
     int addParentTriangle(TriangleMeshTriangle*);
     bool isPartOfTwoTriangles();
     bool setParentTriangle(int, TriangleMeshTriangle*);
@@ -143,6 +160,8 @@ private:
     TriangleMeshVertex* vertices[2];    //CHILDREN
     float rl;							//Rest Length
     float theta0;						//Rest Angle
+    mat3 DfDx;
+    mat3 DfDv;
 };
 
 /**

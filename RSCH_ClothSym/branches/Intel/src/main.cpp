@@ -12,7 +12,7 @@ System* sys;
 //Solver* solver = new ImplicitSolver();
 Solver* solver = new ExplicitSolver();
 
-double timeStep = 0.0005; //duration of one iteration.
+double timeStep = 0.02; //duration of one iteration.
 bool playEveryStep = true;
 
 class Viewport {
@@ -449,9 +449,9 @@ int main(int argc, char *argv[]) {
 
     if (parseCommandLine(argc, argv)) {
         printUsage();
+        cout<<"exited parsing command line"<<endl;
         exit(1);
     }
-
     viewport.w = 500;
     viewport.h = 500;
     glutInit(&argc, argv);

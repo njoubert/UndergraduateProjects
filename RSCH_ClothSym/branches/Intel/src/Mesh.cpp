@@ -60,6 +60,9 @@ mat3 & TriangleMeshVertex::getDfDv() { return DfDv; }
 void TriangleMeshVertex::setDfDv(mat3 tmp) { DfDv += tmp; }
 void TriangleMeshVertex::clearDfDv() { DfDv = mat3(0); }
 
+int & TriangleMeshVertex::getID() { return ID; }
+void TriangleMeshVertex::setID(int _id) { ID = _id; }
+
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);
 }
@@ -97,6 +100,15 @@ double TriangleMeshEdge::getRestLength() { return rl; }
 double TriangleMeshEdge::getRestAngle() { return theta0; }
 
 void TriangleMeshEdge::setRestAngle(double theta) { this->theta0 = theta; }
+
+mat3 & TriangleMeshEdge::getDfDx() { return DfDx; }
+void TriangleMeshEdge::setDfDx(mat3 tmp) { DfDx += tmp; }
+void TriangleMeshEdge::clearDfDx() { DfDx = mat3(0); }
+
+mat3 & TriangleMeshEdge::getDfDv() { return DfDv; }
+void TriangleMeshEdge::setDfDv(mat3 tmp) { DfDv += tmp; }
+void TriangleMeshEdge::clearDfDv() { DfDv = mat3(0); }
+
 
 bool TriangleMeshEdge::isValid() {
     return ((triangles[0] != NULL) || (triangles[1] != NULL)) &&
