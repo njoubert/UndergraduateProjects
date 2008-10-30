@@ -69,8 +69,7 @@ class ExactStaticInferenceModule(StaticInferenceModule):
         probability += probabilityOfThisTuple
     return probability
   
-  def getGhostTupleProbabilityGivenObservations(self, observations, ghostTuple, ghostTupleValue):
-    readingSetProbability = self.getReadingSetProbability(observations)
+  def getGhostTupleProbabilityGivenObservations(self, observations, readingSetProbability, ghostTuple, ghostTupleValue):
     probability = ghostTupleValue
     for reading in observations:
         probability *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
@@ -79,15 +78,14 @@ class ExactStaticInferenceModule(StaticInferenceModule):
   
   def getGhostTupleDistributionGivenObservations(self, observations):
     
-    # QUESTION 1
+    # QUESTION 1 & 2
     
     priorDistribution = self.game.getInitialDistribution()
     newDistribution = util.Counter();
+    readingSetProbability = self.getReadingSetProbability(observations)
     for ghostTuple in priorDistribution:
-        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, readingSetProbability, ghostTuple, priorDistribution[ghostTuple])
     return newDistribution
-
-
     
 
   def getReadingDistributionGivenObservations(self, observations, newLocation):
