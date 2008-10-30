@@ -218,24 +218,55 @@ class StaticVPIAgent(StaticGhostbusterAgent):
   the highest expected utility / score according to its current beliefs.
   """
 
-  def ExpectedValueOfBusting(self, observations):
-    """ Computes the expected best score I can get if I bust now with this set of observations """
+  def expectedValueOfSensing(self, observations):
+    bestSensingOption = None
+    expectedValue = 0
     
+    return (expectedValue, bestSensingOption)
+  
+  def expectedValueOfBust(self, bustOption, expectedGhostCounts):
+    """
+    Calculates the expected value of the game if you bust the specific positions in bustOption.
+    """
+    value = 0
+    for location in bustOption:
+      value += expectedGhostCounts[location]*GHOST_SCORE
+    return value
+
+  def expectedValueOfBusting(self, observations):
+    """ 
+    Computes the expected best score I can get if I bust now with this set of observations.
+    Thus, finds the max of all possible bust options. 
+    """
+    bestBustOption = None
+    expectedValue = 0
+    expectedGhostCounts = getExpectedGhostCounts(observations) #Calls out to our Q2 code
     
-    
-    return (expectedValue, bustPosition)
+    for bustOption in self.game.getBustingOptions():
+      val = expectedValueOfBust(bustOption, expectedGhostCounts)
+      if val >= expectedValue:   #Tie breaking occurs here...
+        expectedValue = val
+        bestBustOption = bustOption
+    return (expectedValue, bestBustOption)
     
   def getAction(self):
     
     # QUESTION 3 
     
-    bustingValue = 
+    #TODO: Do this shit somehow...
+    observations = ()
     
-    return Actions.makeBustingAction(random.choice(self.game.getBustingOptions()))
-    
+    busting = expectedValueOfBusting(observations) 
+    sensing = expectedValueOfSensing(observations)
   
-
+    if (sensing[0] < busting[0]+1):
+      return Actions.makeBustingAction(busting[1])
+    else:
+      return Actions.makeSensingAction(sensing[1])
     
+#    return Actions.makeBustingAction(random.choice(self.game.getBustingOptions()))
+    
+   
 class DynamicGhostbusterAgent(GhostbusterAgent):
   """
   Abstract class for agents for the dynamic game, which do model the passage of time.
