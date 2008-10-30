@@ -89,7 +89,9 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     
 
   def getReadingDistributionGivenObservations(self, observations, newLocation):
-    
+    """ Given a current set of observations and a location, it computes the
+    probability of each possibly sensor reading at this position given other sensor readings.
+    Thus the return value is a mapping from sensor readings to probabilities. """
     # QUESTION 3
     
     # BROKEN

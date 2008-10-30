@@ -218,9 +218,18 @@ class StaticVPIAgent(StaticGhostbusterAgent):
   the highest expected utility / score according to its current beliefs.
   """
 
+  def ExpectedValueOfBusting(self, observations):
+    """ Computes the expected best score I can get if I bust now with this set of observations """
+    
+    
+    
+    return (expectedValue, bustPosition)
+    
   def getAction(self):
     
     # QUESTION 3 
+    
+    bustingValue = 
     
     return Actions.makeBustingAction(random.choice(self.game.getBustingOptions()))
     
