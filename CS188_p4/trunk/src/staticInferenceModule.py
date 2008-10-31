@@ -58,7 +58,6 @@ class ExactStaticInferenceModule(StaticInferenceModule):
   
   """
   
-   #We can just normalize. its faster too/
   def getReadingSetProbability(self, observations):
     # Using Total Probability And Bayes Rule Over All Ghosts
     priorDistribution = self.game.getInitialDistribution()
@@ -66,8 +65,7 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     for ghostTuple in priorDistribution:
         probabilityOfThisTuple = priorDistribution[ghostTuple]
         for reading in observations:
-            dist = self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
-            probabilityOfThisTuple *= dist
+            probabilityOfThisTuple *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
         probability += probabilityOfThisTuple
     return probability
   
@@ -85,10 +83,12 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     newDistribution = util.Counter();
     readingSetProbability = self.getReadingSetProbability(observations)
     for ghostTuple in priorDistribution:
-        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+        probability = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+        if (probability > 0):
+          newDistribution[ghostTuple] = probability
     
-    if newDistribution.totalCount() > 0:
-      newDistribution.normalize()
+    #if newDistribution.totalCount() > 0:
+    newDistribution.normalize()
       
     return newDistribution
     
@@ -98,6 +98,15 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     probability of each possibly sensor reading at this position given other sensor readings.
     Thus the return value is a mapping from sensor readings to probabilities. """
     # QUESTION 3
+    if (observations.has_key(newLocation) > 0):
+        #print "WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+        #print newLocation, observations
+        dist = util.listToDistribution([observations[newLocation]])
+        
+        #print dist
+        #print "WEE"
+        return dist
+    
     readingDistribution = util.Counter()
     from ghostbusters import Readings
     currentSetProbability = self.getReadingSetProbability(observations)

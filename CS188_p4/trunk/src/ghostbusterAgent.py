@@ -261,7 +261,7 @@ class StaticVPIAgent(StaticGhostbusterAgent):
     """
     value = 0
     for location in bustOption:
-      value += expectedGhostCounts[location]*GHOST_SCORE
+      value += expectedGhostCounts.getCount(location)*GHOST_SCORE
     return value
 
   def expectedValueOfBusting(self, observations):
