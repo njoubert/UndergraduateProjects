@@ -87,10 +87,9 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     for ghostTuple in priorDistribution:
         newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
     
-    if newDistribution.totalCount() == 0:  #WHY DOES THIS HAPPEN?
-      return newDistribution
+    if newDistribution.totalCount() > 0:
+      newDistribution.normalize()
       
-    newDistribution.normalize()
     return newDistribution
     
 
