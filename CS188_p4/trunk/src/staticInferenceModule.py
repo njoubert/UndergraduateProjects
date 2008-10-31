@@ -84,7 +84,7 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     newDistribution = util.Counter();
     readingSetProbability = self.getReadingSetProbability(observations)
     if readingSetProbability == 0:  #WHY DOES THIS HAPPEN?
-      print "READINGSETPROBABILITY IS ZERO!"
+      #print "READINGSETPROBABILITY IS ZERO!"
       return self.game.getInitialDistribution()
     for ghostTuple in priorDistribution:
         newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
