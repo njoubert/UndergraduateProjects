@@ -58,8 +58,9 @@ class ExactStaticInferenceModule(StaticInferenceModule):
   
   """
   
+   #We can just normalize. its faster too/
   def getReadingSetProbability(self, observations):
-    """ Using Total Probability And Bayes Rule Over All Ghosts """
+    # Using Total Probability And Bayes Rule Over All Ghosts
     priorDistribution = self.game.getInitialDistribution()
     probability = 0
     for ghostTuple in priorDistribution:
@@ -69,11 +70,10 @@ class ExactStaticInferenceModule(StaticInferenceModule):
         probability += probabilityOfThisTuple
     return probability
   
-  def getGhostTupleProbabilityGivenObservations(self, observations, readingSetProbability, ghostTuple, ghostTupleValue):
+  def getGhostTupleProbabilityGivenObservations(self, observations, ghostTuple, ghostTupleValue):
     probability = ghostTupleValue
     for reading in observations:
         probability *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
-    probability /= readingSetProbability
     return probability
   
   def getGhostTupleDistributionGivenObservations(self, observations):
@@ -83,8 +83,12 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     priorDistribution = self.game.getInitialDistribution()
     newDistribution = util.Counter();
     readingSetProbability = self.getReadingSetProbability(observations)
+    if readingSetProbability == 0:  #WHY DOES THIS HAPPEN?
+      print "READINGSETPROBABILITY IS ZERO!"
+      return self.game.getInitialDistribution()
     for ghostTuple in priorDistribution:
-        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, readingSetProbability, ghostTuple, priorDistribution[ghostTuple])
+        newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+    newDistribution.normalize()
     return newDistribution
     
 
@@ -93,7 +97,12 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     probability of each possibly sensor reading at this position given other sensor readings.
     Thus the return value is a mapping from sensor readings to probabilities. """
     # QUESTION 3
+    readingDistribution = util.Counter()
     
-    # BROKEN
-    return listToDistribution(Readings.getReadings())
-  
+    currentSetProbability = self.getReadingSetProbability(observations)
+    for reading in Readings.getReadings():
+      newObservations = observations.copy()
+      newObservations[newLocation] = reading
+      readingDistribution[reading] = self.getReadingSetProbability(newObservations) / currentSetProbability
+    
+    return readingDistribution

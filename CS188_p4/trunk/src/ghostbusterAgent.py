@@ -218,11 +218,42 @@ class StaticVPIAgent(StaticGhostbusterAgent):
   the highest expected utility / score according to its current beliefs.
   """
 
+  def expectedValueOfSense(self, sensePosition, observations):
+    """
+    Finds the expected value of sensing at the given position, with the current state of observations.
+    """
+    value = 0
+    readingDistribution = self.inferenceModule.getReadingDistributionGivenObservations(observations, sensePosition)
+    
+    for reading in readingDistribution.keys():
+      newObservations = self.observations.copy()
+      newObservations[sensePosition] = reading
+      value += readingDistribution[reading]*self.expectedValueOfBusting(newObservations)[0]
+    
+    return value
+
   def expectedValueOfSensing(self, observations):
-    bestSensingOption = None
+    """ 
+    Computes the expected best score I can get if I sense now with this set of observations.
+    Thus, finds the max of all possible sense options. 
+    """
+    bestSensingPosition = None
     expectedValue = 0
     
-    return (expectedValue, bestSensingOption)
+    #get all sensing options:
+    availableSensingPositions = []
+    for location in self.game.getLocations():
+      if (self.observations.keys().count(location) == 0):
+        availableSensingPositions.append(location)
+        
+    #evaluate each of them:
+    for sensePosition in availableSensingPositions:
+      val = self.expectedValueOfSense(sensePosition, self.observations)
+      if val >= expectedValue:   #Tie breaking occurs here...
+        expectedValue = val
+        bestSensingPosition = sensePosition
+    
+    return (expectedValue, bestSensingPosition)
   
   def expectedValueOfBust(self, bustOption, expectedGhostCounts):
     """
@@ -240,32 +271,25 @@ class StaticVPIAgent(StaticGhostbusterAgent):
     """
     bestBustOption = None
     expectedValue = 0
-    expectedGhostCounts = getExpectedGhostCounts(observations) #Calls out to our Q2 code
+    expectedGhostCounts = self.getExpectedGhostCounts(observations) #Calls out to our Q2 code
     
     for bustOption in self.game.getBustingOptions():
-      val = expectedValueOfBust(bustOption, expectedGhostCounts)
+      val = self.expectedValueOfBust(bustOption, expectedGhostCounts)
       if val >= expectedValue:   #Tie breaking occurs here...
         expectedValue = val
         bestBustOption = bustOption
+        
     return (expectedValue, bestBustOption)
     
   def getAction(self):
-    
-    # QUESTION 3 
-    
-    #TODO: Do this shit somehow...
-    observations = ()
-    
-    busting = expectedValueOfBusting(observations) 
-    sensing = expectedValueOfSensing(observations)
+    """ QUESTION 3 """ 
+    busting = self.expectedValueOfBusting(self.observations) 
+    sensing = self.expectedValueOfSensing(self.observations)
   
     if (sensing[0] < busting[0]+1):
       return Actions.makeBustingAction(busting[1])
     else:
       return Actions.makeSensingAction(sensing[1])
-    
-#    return Actions.makeBustingAction(random.choice(self.game.getBustingOptions()))
-    
    
 class DynamicGhostbusterAgent(GhostbusterAgent):
   """
