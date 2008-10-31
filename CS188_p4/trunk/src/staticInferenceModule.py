@@ -84,12 +84,12 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     priorDistribution = self.game.getInitialDistribution()
     newDistribution = util.Counter();
     readingSetProbability = self.getReadingSetProbability(observations)
-    if readingSetProbability == 0:  #WHY DOES THIS HAPPEN?
-      #print "READINGSETPROBABILITY IS ZERO!"
-      #print observations
-      return self.game.getInitialDistribution()
     for ghostTuple in priorDistribution:
         newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
+    
+    if newDistribution.totalCount() == 0:  #WHY DOES THIS HAPPEN?
+      return newDistribution
+      
     newDistribution.normalize()
     return newDistribution
     
