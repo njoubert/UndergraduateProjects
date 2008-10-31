@@ -66,7 +66,8 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     for ghostTuple in priorDistribution:
         probabilityOfThisTuple = priorDistribution[ghostTuple]
         for reading in observations:
-            probabilityOfThisTuple *= self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
+            dist = self.game.getReadingDistributionGivenGhostTuple(ghostTuple, reading).getCount(observations[reading])
+            probabilityOfThisTuple *= dist
         probability += probabilityOfThisTuple
     return probability
   
@@ -85,6 +86,7 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     readingSetProbability = self.getReadingSetProbability(observations)
     if readingSetProbability == 0:  #WHY DOES THIS HAPPEN?
       #print "READINGSETPROBABILITY IS ZERO!"
+      #print observations
       return self.game.getInitialDistribution()
     for ghostTuple in priorDistribution:
         newDistribution[ghostTuple] = self.getGhostTupleProbabilityGivenObservations(observations, ghostTuple, priorDistribution[ghostTuple])
@@ -98,7 +100,7 @@ class ExactStaticInferenceModule(StaticInferenceModule):
     Thus the return value is a mapping from sensor readings to probabilities. """
     # QUESTION 3
     readingDistribution = util.Counter()
-    
+    from ghostbusters import Readings
     currentSetProbability = self.getReadingSetProbability(observations)
     for reading in Readings.getReadings():
       newObservations = observations.copy()
