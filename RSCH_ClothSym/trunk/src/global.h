@@ -35,7 +35,10 @@
 
 #include "Debug.h"
 
-#include <algebra3.h>
+#include "math/algebra3.h"
+
+#include "math/LargeVector.h"
+#include "math/LargeMatrix.h"
 
 #include "DEFAULTS.h"
 

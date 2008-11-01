@@ -42,7 +42,7 @@
 
 #include <vector>
 #include <iostream>
-#include "algebra3.h"
+#include "global.h"
 #include "assert.h"
 
 using namespace std;

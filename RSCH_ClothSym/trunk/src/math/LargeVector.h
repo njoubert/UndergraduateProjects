@@ -8,73 +8,67 @@
 #ifndef LARGEVECTOR_H_
 #define LARGEVECTOR_H_
 
-#include "vector"
-#include <iostream>
+#define ERRORS
 
-template<class T>
-class LargeVector {
+#include <vector>
+#include <iostream>
+#include "algebra3.h"
+
+class LargeVec3Vector {
 public:
-    LargeVector(int n) :
+    LargeVec3Vector(int n) :
         size(n), elements(n) {
 
     }
-    LargeVector(const LargeVector<T> & v): size(v.getSize()), elements(v.getSize()) {
+    LargeVec3Vector(const LargeVec3Vector & v) :
+        size(v.getSize()), elements(v.getSize()) {
         for (int i = 0; i < v.getSize(); i++) {
             this->elements[i] = v[i]; //Depends on the copy constructor of its contents
         }
     }
-    virtual ~LargeVector() {
+    virtual ~LargeVec3Vector() {
         //Do i need something here?
     }
-    T & operator[](int n) {
+    vec3 & operator[](int n) {
         return elements[n];
     }
-    T operator[](int n) const {
+    vec3 operator[](int n) const {
         return elements[n];
     }
     int getSize() const {
         return size;
     }
-    LargeVector<T> & operator +=(const LargeVector<T> & v) {
+    LargeVec3Vector & operator +=(LargeVec3Vector const &v) {
         for (int i = 0; i < size; i++) {
             elements[i] += v[i];
         }
         return *this;
     }
-    LargeVector<T> & operator -=(const LargeVector<T> & v) {
+    LargeVec3Vector & operator -=(LargeVec3Vector const &v) {
         for (int i = 0; i < size; i++) {
             elements[i] -= v[i];
         }
         return *this;
     }
-    LargeVector<T> & operator *=(const LargeVector<T> & v) {
+    LargeVec3Vector & operator *=(double v) {
         for (int i = 0; i < size; i++) {
-            elements[i] *= v[i];
+            elements[i] *= v;
         }
         return *this;
     }
-    LargeVector<T> & operator /=(const LargeVector<T> & v) {
+    LargeVec3Vector & operator /=(double v) {
         for (int i = 0; i < size; i++) {
-            elements[i] /= v[i];
+            elements[i] /= v;
         }
         return *this;
     }
 
 private:
     int size;
-    std::vector<T> elements;
+    std::vector<vec3> elements;
 
 };
 
-template<class T> ostream & operator <<(ostream & s, const LargeVector<T> & v) {
-    s << "(";
-    for (int i = 0; i < v.getSize() - 1; i++) {
-        s << v[i] << ",";
-    }
-    if (v.getSize() > 1)
-        s << v[v.getSize() - 1];
-    s << ")";
-    return s;
-}
+ostream & operator <<(ostream & s, const LargeVec3Vector &v);
 
 #endif /* LARGEVECTOR_H_ */
