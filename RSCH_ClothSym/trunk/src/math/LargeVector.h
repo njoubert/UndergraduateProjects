@@ -11,19 +11,22 @@
 #include "vector"
 #include <iostream>
 
-template <class T>
+template<class T>
 class LargeVector {
 public:
-    LargeVector(int n) : size(n), elements(n) {
+    LargeVector(int n) :
+        size(n), elements(n) {
 
     }
-    LargeVector(const &LargeVector<T> v) {
-
+    LargeVector(const LargeVector<T> & v): size(v.getSize()), elements(v.getSize()) {
+        for (int i = 0; i < v.getSize(); i++) {
+            this->elements[i] = v[i]; //Depends on the copy constructor of its contents
+        }
     }
     virtual ~LargeVector() {
-
+        //Do i need something here?
     }
-    T& operator[](int n) {
+    T & operator[](int n) {
         return elements[n];
     }
     T operator[](int n) const {
@@ -32,25 +35,25 @@ public:
     int getSize() const {
         return size;
     }
-    LargeVector<T>& operator +=(const LargeVector<T> & v) {
+    LargeVector<T> & operator +=(const LargeVector<T> & v) {
         for (int i = 0; i < size; i++) {
             elements[i] += v[i];
         }
         return *this;
     }
-    LargeVector<T>& operator -=(const LargeVector<T> & v) {
+    LargeVector<T> & operator -=(const LargeVector<T> & v) {
         for (int i = 0; i < size; i++) {
             elements[i] -= v[i];
         }
         return *this;
     }
-    LargeVector<T>& operator *=(const LargeVector<T> & v) {
+    LargeVector<T> & operator *=(const LargeVector<T> & v) {
         for (int i = 0; i < size; i++) {
             elements[i] *= v[i];
         }
         return *this;
     }
-    LargeVector<T>& operator /=(const LargeVector<T> & v) {
+    LargeVector<T> & operator /=(const LargeVector<T> & v) {
         for (int i = 0; i < size; i++) {
             elements[i] /= v[i];
         }
@@ -63,16 +66,15 @@ private:
 
 };
 
-template <class T> ostream& operator << (ostream& s, const LargeVector<T>& v) {
+template<class T> ostream & operator <<(ostream & s, const LargeVector<T> & v) {
     s << "(";
-    for (int i = 0; i < v.getSize()-1; i++) {
+    for (int i = 0; i < v.getSize() - 1; i++) {
         s << v[i] << ",";
     }
     if (v.getSize() > 1)
-        s << v[v.getSize()-1];
+        s << v[v.getSize() - 1];
     s << ")";
     return s;
 }
-
 
 #endif /* LARGEVECTOR_H_ */

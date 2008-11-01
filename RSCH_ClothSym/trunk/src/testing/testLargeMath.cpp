@@ -63,6 +63,27 @@ int main(int argc, char *argv[]) {
     b1 += b2;
     cout << "b1 = " << b1 << endl;
 
+    cout << "TESTING COPY CONSTRUCTOR" << endl;
+    LargeVector<vec3> c1(b1);
 
+    cout << "c1(b1)" << endl;
+    cout << "c1 = " << c1 << endl;
+    b1[1] = vec3(0,0,0);
+    b1[2] = vec3(1,1,1);
+    b1[3] = vec3(2,2,2);
+    cout << "b1 = " << b1 << endl;
+    cout << "c1 = " << c1 << endl;
     cout << "TEST DONE" << endl;
+
+    LargeVector<vec3> * vp = new LargeVector<vec3>(b1);
+
+    cout << "v  = " << *vp << endl;
+    delete vp;
+
+    cout << "TESTING POINTERS" << endl;
+    vec3* p = &b1[1];
+    cout << "b1 = " << b1 << endl;
+    (*p)[0] = 100000;
+    (*p)[1] = 100000;
+    cout << "b1 = " << b1 << endl;
 }
