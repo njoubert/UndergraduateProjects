@@ -10,17 +10,15 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+
+
 #include "global.h"
-#include "System.h"
-#include "Mesh.h"
-#include "OBJParser.h"
-
-#include <iomanip>
-
-#include <FreeImage.h>
+#include "World.h"
+#include "ImageSaver.h"
 
 #define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)
 
+//TODO: Timing... to be done in the future!
 #ifdef _WIN32
 static DWORD lastTime;
 #else

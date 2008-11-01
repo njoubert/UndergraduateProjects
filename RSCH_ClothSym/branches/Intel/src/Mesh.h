@@ -100,6 +100,9 @@ public:
     int & getID();
     void setID(int);
 
+    vec3* getDynamConst();
+    void setDynamConst(vec3);
+
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
     int edgesSize();
@@ -116,6 +119,7 @@ private:
     mat3 DfDv;
     double m;
     int ID;
+    vec3* ConstTo;
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 

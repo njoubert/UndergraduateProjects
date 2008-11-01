@@ -17,6 +17,7 @@ TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
         X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
     S = mat3(identity2D());
     m = 0.0008;
+    ConstTo = NULL;
 }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
@@ -62,6 +63,9 @@ void TriangleMeshVertex::clearDfDv() { DfDv = mat3(0); }
 
 int & TriangleMeshVertex::getID() { return ID; }
 void TriangleMeshVertex::setID(int _id) { ID = _id; }
+
+vec3* TriangleMeshVertex::getDynamConst() { return ConstTo; }
+void TriangleMeshVertex::setDynamConst(vec3 movingParticle) { ConstTo = &movingParticle; }
 
 void TriangleMeshVertex::addToEdge(TriangleMeshEdge* edge) {
     edges.push_back(edge);

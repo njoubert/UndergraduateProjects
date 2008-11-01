@@ -8,6 +8,7 @@
 #include "global.h"
 #include "Mesh.h"
 #include "intel_SparseMatrix.h"
+#include "Constraint.h"
 
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
@@ -16,8 +17,8 @@
 
 class System;
 class Solver;
-class ImplicitSolver;
-class ExplicitSolver;
+//class ImplicitSolver;
+//class ExplicitSolver;
 
 
 /// \brief Represents the cloth mesh system
@@ -56,10 +57,10 @@ public:
 	 * @param solver
 	 * @param timeStep
 	 */
-	void takeStep(Solver* solver, double timeStep);
+	void takeStep(Solver* solver, vector<Constraint*>* constraints, double timeStep);
 
 	void SolveExplicit(double timeStep);
-	void SolveImplicit(double timeStep);
+	void SolveImplicit(double timeStep, vector<Constraint*>* constraints);
 
 	void enableMouseForce(vec3 mousePosition);
 
@@ -68,6 +69,9 @@ public:
 	void disableMouseForce();
 
 	bool isMouseEnabled();
+
+	int setVertexPos2MousePos();
+	vector<int> setVertexPos2NewPos();
 
 	void setTableConstraints();
 
@@ -91,7 +95,7 @@ private:
     float getKd();
     float getKbe();
     float getKbd();
-    float Ks, Kd, Kbe, Kbd; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
+    float Ks, Kd, Kbe, Kbd, g; //Ks -Spring constant, Kd - Damping, Kbe - Bend Force Elastic, Kbd - Bend Force Damping
     int numVertices;
     TriangleMesh* mesh;
     double time;
@@ -110,7 +114,7 @@ private:
 	SparseMatrix m_TotalForces_dv;
 
 	SparseMatrix m_identity;
-	SparseMatrix m_A;
+	//SparseMatrix m_A;
 	SparseMatrix m_MxTemp1, m_MxTemp2;
 	Physics_LargeVector m_P, m_PInv;
 	Physics_LargeVector m_z, m_b, m_r, m_c, m_q, m_s, m_y;
@@ -119,7 +123,7 @@ private:
 
 };
 
-
+/*
 class Solver {
 public:
     virtual ~Solver();
@@ -141,6 +145,6 @@ class ExplicitSolver: public Solver {
     std::pair<vec3,vec3> solve(System* sys,
             double timeStep, int pointIndex, TriangleMeshVertex* point);
 };
-
+*/
 
 #endif /* SYSTEM_H_ */
