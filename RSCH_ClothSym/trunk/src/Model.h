@@ -11,6 +11,9 @@
 #include "Material.h"
 #include "Constraint.h"
 #include "io/OBJParser.h"
+#include "math/LargeVector.h"
+#include "math/LargeMatrix.h"
+
 
 #ifndef MODEL_H_
 #define MODEL_H_

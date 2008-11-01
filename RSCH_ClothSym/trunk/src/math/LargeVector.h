@@ -9,28 +9,70 @@
 #define LARGEVECTOR_H_
 
 #include "vector"
+#include <iostream>
 
 template <class T>
 class LargeVector {
 public:
-    LargeVector(int n);
-    virtual ~LargeVector();
-    T* operator[](int n);
-    T& operator[](int n);
+    LargeVector(int n) : size(n), elements(n) {
+
+    }
+    LargeVector(const &LargeVector<T> v) {
+
+    }
+    virtual ~LargeVector() {
+
+    }
+    T& operator[](int n) {
+        return elements[n];
+    }
+    T operator[](int n) const {
+        return elements[n];
+    }
+    int getSize() const {
+        return size;
+    }
+    LargeVector<T>& operator +=(const LargeVector<T> & v) {
+        for (int i = 0; i < size; i++) {
+            elements[i] += v[i];
+        }
+        return *this;
+    }
+    LargeVector<T>& operator -=(const LargeVector<T> & v) {
+        for (int i = 0; i < size; i++) {
+            elements[i] -= v[i];
+        }
+        return *this;
+    }
+    LargeVector<T>& operator *=(const LargeVector<T> & v) {
+        for (int i = 0; i < size; i++) {
+            elements[i] *= v[i];
+        }
+        return *this;
+    }
+    LargeVector<T>& operator /=(const LargeVector<T> & v) {
+        for (int i = 0; i < size; i++) {
+            elements[i] /= v[i];
+        }
+        return *this;
+    }
+
 private:
+    int size;
     std::vector<T> elements;
+
 };
 
-template <class T>
-LargeVector<T>::LargeVector() {
-
+template <class T> ostream& operator << (ostream& s, const LargeVector<T>& v) {
+    s << "(";
+    for (int i = 0; i < v.getSize()-1; i++) {
+        s << v[i] << ",";
+    }
+    if (v.getSize() > 1)
+        s << v[v.getSize()-1];
+    s << ")";
+    return s;
 }
-
-template <class T>
-LargeVector<T>::~LargeVector() {
-
-}
-
 
 
 #endif /* LARGEVECTOR_H_ */
