@@ -63,7 +63,7 @@ public:
     ~SimModel();
     void advance(double);
     void draw();
-
+    TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
 
 private:

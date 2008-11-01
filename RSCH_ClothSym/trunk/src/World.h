@@ -11,6 +11,7 @@
 #include "global.h"
 #include "Model.h"
 #include "Mesh.h"
+#include "Constraint.h"
 #include "io/OBJParser.h"
 #include "io/EllipseParser.h"
 
@@ -34,8 +35,11 @@ public:
     bool loadSimModel(string);
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
+    bool createVertexToAnimatedEllipseContraint();
 
     double getTime();
+
+
 
 private:
     bool addModel(Model* model);

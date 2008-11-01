@@ -22,6 +22,7 @@ public:
     virtual ~LargeMatrix();
 private:
     std::vector<LargeMatrixRow<T> > rows;
+    int size;
 };
 
 template <class T> class LargeMatrixRow {

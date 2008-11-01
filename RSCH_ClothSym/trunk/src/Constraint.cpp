@@ -7,38 +7,88 @@
 
 #include "Constraint.h"
 
-Constraint::Constraint() {
-    // TODO Auto-generated constructor stub
 
+/****************************************************************
+*                                                               *
+*               Constraint                                      *
+*                                                               *
+****************************************************************/
+
+Constraint::Constraint() {
+   // TODO Auto-generated constructor stub
 }
 
 Constraint::~Constraint() {
     // TODO Auto-generated destructor stub
 }
 
+void Constraint::setLead(Model* lead, int nr) {
+    _lead = lead;
+    _leadIndex = nr;
 
+}
+
+void Constraint::setFollow(TriangleMeshVertex* follow) {
+    _follow = follow;
+}
+
+
+/****************************************************************
+*                                                               *
+*               FixedConstraint                                 *
+*                                                               *
+****************************************************************/
 
 FixedConstraint::FixedConstraint() {
 
 }
-void FixedConstraint::setTarget(TriangleMeshVertex* v) {
-    target = v;
+
+void FixedConstraint::applyConstraintToPoints() {
+
 }
-void FixedConstraint::applyConstraint(double time, SPARSE_MATRIX*, LARGE_VECTOR*) {
+
+void FixedConstraint::applyConstraintToSolverMatrices(double time,
+        SPARSE_MATRIX*, LARGE_VECTOR*) {
 
 }
 
 
-VertexToVertexConstraint::VertexToVertexConstraint() {
+
+/****************************************************************
+*                                                               *
+*               VertexToAnimatedVertexConstraint                *
+*                                                               *
+****************************************************************/
+
+VertexToAnimatedVertexConstraint::VertexToAnimatedVertexConstraint() {
 
 }
-void VertexToVertexConstraint::setSource(TriangleMeshVertex* v) {
-    source = v;
-}
-void VertexToVertexConstraint::setTarget(TriangleMeshVertex* v) {
-    target = v;
-}
 
-void VertexToVertexConstraint::applyConstraint(double time, SPARSE_MATRIX*, LARGE_VECTOR*) {
+void VertexToAnimatedVertexConstraint::applyConstraintToPoints() {
 
 }
+
+void VertexToAnimatedVertexConstraint::applyConstraintToSolverMatrices(
+        double time, SPARSE_MATRIX*, LARGE_VECTOR*) {
+
+}
+
+
+/****************************************************************
+*                                                               *
+*               VertexToAnimatedEllipseConstraint               *
+*                                                               *
+****************************************************************/
+
+VertexToAnimatedEllipseConstraint::VertexToAnimatedEllipseConstraint() {
+
+}
+
+void VertexToAnimatedEllipseConstraint::applyConstraintToPoints() {
+    //Move the follow's points to the same position as the lead's points.
+}
+void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
+        double time, SPARSE_MATRIX*, LARGE_VECTOR*) {
+    //Update the sparse matrices to honor this constraint
+}
+

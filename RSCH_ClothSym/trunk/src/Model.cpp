@@ -133,6 +133,10 @@ void SimModel::draw() {
     }
 }
 
+TriangleMesh* SimModel::getMesh() const {
+    return _mesh;
+}
+
 void SimModel::registerConstraint(Constraint* c) {
     _constraints.push_back(c);
 }
@@ -238,7 +242,6 @@ void AniElliModel::advance(double netTime) {
 
 void AniElliModel::draw() {
 //*
-
 
 	for(unsigned int i = 0; i < _ellipsoids[_count].size(); i++) {
 
