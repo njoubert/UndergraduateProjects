@@ -28,9 +28,9 @@ public:
         _sparseElements(0), _sparseIndices(0), _colLength(cols) {
 
     }
-    //LargeMatrixRow(int cols, sparsityPattern, rownumber) {
-    //
-    //}
+    LargeMat3MatrixRow(int cols, vector<int> & sparsityPattern) {
+        //TODO: Fill in
+    }
     virtual ~LargeMat3MatrixRow() {
 
     }
@@ -55,6 +55,11 @@ public:
                 cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT FOUND IN ROW AT ALL" << endl;
 #endif
         return -1;
+    }
+    void zeroValues() {
+        mat3 zero(0);
+        for (unsigned int i = 0; i < _sparseElements.size(); i++)
+            _sparseElements[i] = zero;
     }
     mat3 & operator[](int c) {
 
@@ -116,9 +121,9 @@ public:
             _rowData[i] = new LargeMat3MatrixRow(cols);
         }
     }
-    //LargeMatrix(int rows, int cols, sparityPattern) {
-    //
-    //}
+    LargeMat3Matrix(int rows, int cols, vector< vector<int> > sparityPattern) {
+        //TODO: Fill in
+    }
     virtual ~LargeMat3Matrix() {
         for (int i = 0; i < _rowLength; i++) {
             delete _rowData[i];
@@ -132,6 +137,24 @@ public:
         }
 #endif
         return (_rowData[r]->getSparseIndexForEntry(c) >= 0);
+    }
+    void zeroValues() {
+        for (int i = 0; i < _rowLength; i++)
+            _rowData[i]->zeroValues();
+    }
+    void zeroRowCol(int r, int c, bool setIntersectionToOne) {
+#ifdef CATCHERRORS
+        if ((r > _rowLength) || (c > (_rowData[r])->getLength())) {
+            cout << __FILE__ << "::" << __LINE__ << ": SPARSE MATRIX DIMESIONS OUT OF RANGE\n" << endl;
+        }
+#endif
+        mat3 zero(0);
+        _rowData[r]->zeroValues();
+        for (int i = 0; i < _rowLength; i++) {
+            (*_rowData[r])[i] = zero;
+        }
+        if (setIntersectionToOne)
+            (*this)(r,c) = identity2D();
     }
     mat3 & operator()(int r, int c) {
 #ifdef CATCHERRORS

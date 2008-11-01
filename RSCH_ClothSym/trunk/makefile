@@ -2,7 +2,8 @@
 
 TARGET := ClothSym
 SOURCES := $(wildcard ./src/*.cpp) \
-    $(wildcard ./src/io/*.cpp)
+    $(wildcard ./src/io/*.cpp) \
+    $(wildcard ./src/math/*.cpp)
 PLATFORM := OSX
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
@@ -32,11 +33,11 @@ LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS)
 OBJECTS = $(SOURCES:.cpp=.o)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(LDFLAGS) $(OBJECTS) -o $(TARGET)
+	$(CXX) $(LDFLAGS) $(OBJECTS) -o $(TARGET)	
 	
 default: $(TARGET)
 
 all: $(TARGET)
-
+	
 clean:
-	/bin/rm -f $(OBJECTS) $(TARGET)
+	/bin/rm -f $(OBJECTS) $(TARGET) $(TESTOBJECTS) $(TESTTARGETS) 
