@@ -17,7 +17,7 @@ LIBRARY :=
 
 CC := gcc
 CXX := g++
-MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' 
+MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' -DCATCHERRORS
 CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS)
 

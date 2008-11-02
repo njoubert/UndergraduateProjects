@@ -46,9 +46,9 @@ def main():
 	print " # SYMMETRIC MESH"
 	print " # "
 	
-	UL = (-1.0, -1.0)
-	LR = (1.0, 1.0)
-	step = 1.1
+	UL = (-10.0, -10.0)
+	LR = (10.0, 10.0)
+	step = 4.0
 	
 	print " # Creating mesh from UL", UL, "to LR", LR, "with major points at each", step
 	xsteps = int(abs((LR[0] - UL[0]) / step)) #steps along x axis, along width

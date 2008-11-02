@@ -1,14 +1,17 @@
-/*
+/******************************************************************************
  * LargeVector.h
  *
  *  Created on: Oct 29, 2008
  *      Author: njoubert
- */
+ *
+ *  PLEASE SEE LARGEMATRIX.H FOR DETAILS!
+ *
+ *****************************************************************************/
 
 #ifndef LARGEVECTOR_H_
 #define LARGEVECTOR_H_
 
-#define ERRORS
+
 
 #include <vector>
 #include <iostream>
@@ -17,55 +20,63 @@
 class LargeVec3Vector {
 public:
     LargeVec3Vector(int n) :
-        size(n), elements(n) {
+        _size(n), _elements(n) {
+
+    }
+    LargeVec3Vector(int n, double v):
+        _size(n), _elements(n, vec3(v)){
 
     }
     LargeVec3Vector(const LargeVec3Vector & v) :
-        size(v.getSize()), elements(v.getSize()) {
+        _size(v.getSize()), _elements(v.getSize()) {
         for (int i = 0; i < v.getSize(); i++) {
-            this->elements[i] = v[i]; //Depends on the copy constructor of its contents
+            this->_elements[i] = v[i]; //Depends on the copy constructor of its contents
         }
     }
     virtual ~LargeVec3Vector() {
         //Do i need something here?
     }
+    void zeroValues() {
+        for (int i = 0; i < _size; i++)
+            _elements[i] = vec3(0);
+    }
     vec3 & operator[](int n) {
-        return elements[n];
+        return _elements[n];
     }
     vec3 operator[](int n) const {
-        return elements[n];
+        return _elements[n];
     }
     int getSize() const {
-        return size;
+        return _size;
     }
     LargeVec3Vector & operator +=(LargeVec3Vector const &v) {
-        for (int i = 0; i < size; i++) {
-            elements[i] += v[i];
+        for (int i = 0; i < _size; i++) {
+            _elements[i] += v[i];
         }
         return *this;
     }
     LargeVec3Vector & operator -=(LargeVec3Vector const &v) {
-        for (int i = 0; i < size; i++) {
-            elements[i] -= v[i];
+        for (int i = 0; i < _size; i++) {
+            _elements[i] -= v[i];
         }
         return *this;
     }
     LargeVec3Vector & operator *=(double v) {
-        for (int i = 0; i < size; i++) {
-            elements[i] *= v;
+        for (int i = 0; i < _size; i++) {
+            _elements[i] *= v;
         }
         return *this;
     }
     LargeVec3Vector & operator /=(double v) {
-        for (int i = 0; i < size; i++) {
-            elements[i] /= v;
+        for (int i = 0; i < _size; i++) {
+            _elements[i] /= v;
         }
         return *this;
     }
 
 private:
-    int size;
-    std::vector<vec3> elements;
+    int _size;
+    std::vector<vec3> _elements;
 
 };
 
