@@ -172,6 +172,9 @@ void testMatrixVectorMultiply() {
     M1(3,1) = mat3(210); M1(3,3) = mat3(122);
     cout << M1 << endl;
 
+    M1.outAsMatlab(cout);
+    cout << endl;
+
     cout << "Creating a not-very-random vector." << endl;
     LargeVec3Vector in3(6);
     in3[0] = vec3(1,2,3);
@@ -185,9 +188,16 @@ void testMatrixVectorMultiply() {
     LargeVec3Vector out3(6);
 
     //Test postmultiply:
+    cout << "Test Postmultiply:" << endl;
+    cout << "COMPUTED: " << M1.postMultiply(in3, out3) << endl;
+    cout << "EXPECTED: (| 1512 1512 1512 |,| 1194 1194 1194 |,| 3516 3516 3516 |,| 1198 1198 1198 |,| 0 0 0 |,| 0 0 0 |)"<< endl;
+    //i love matlab
+
 
     //Test premultiply:
-
+    cout << "Test Premultiply:" << endl;
+    cout << "COMPUTED: " << M1.preMultiply(in3, out3, true) << endl;
+    cout << "EXPECTED: (| 5280 5280 5280 |,| -1110 -1110 -1110 |,| 2574 2574 2574 |,| -962 -962 -962 |,| 0 0 0 |,| 0 0 0 |)" << endl;
     //Now we need to do some big ones...
     srand(10); //Fix a seed for now.
     cout << "Creating a sparsity pattern for a 1000x1000 matrix." << endl;
@@ -220,16 +230,16 @@ void testMatrixVectorMultiply() {
     LargeVec3Vector BIGin(1000, 2);
     LargeVec3Vector BIGout(1000);
 
-    cout << "Lets do 1000 pre and post multiplies: " << endl;
+    cout << "Lets do 2000 vector-matrix multiplies......" << endl;
     double starttime = clock()*1000/CLOCKS_PER_SEC;
-    for (int i = 0; i < 500; i++) {
+    for (int i = 0; i < 1000; i++) {
         //cout << "Lets to a premultiply:" << endl;
         BIG.preMultiply(BIGin, BIGout, true);
         //cout << "Lets do a postmultiply:" << endl;
         BIG.postMultiply(BIGin, BIGout);
     }
     double endtime = clock()*1000/CLOCKS_PER_SEC;
-    cout << "Done in " << endtime - starttime << "ms" << endl;
+    cout << " >>> Done in " << endtime - starttime << "ms" << endl;
 }
 
 

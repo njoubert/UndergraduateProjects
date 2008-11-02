@@ -44,14 +44,16 @@ class LargeMat3MatrixRow;
 class LargeMat3MatrixRow {
 public:
     LargeMat3MatrixRow(int cols) :
-        _sparseElements(0), _sparseIndices(0), _colLength(cols) {
+        _sparseElements(0), _sparseIndices(0), _colLength(cols), ZERO(0) {
 
     }
+    //The behaviour is undefined if there's duplicates in the sparsity pattern
+    //and you do not compile with CATCHERRORS
     LargeMat3MatrixRow(int cols, vector<int> & sparsityPattern, bool insertIdentity):
 #ifdef CATCHERRORS
-        _sparseElements(0), _sparseIndices(0), _colLength(cols) {
+        _sparseElements(0), _sparseIndices(0), _colLength(cols), ZERO(0) {
 #else
-        _sparseElements(sparsityPattern.size()), _sparseIndices(sparsityPattern.size()), _colLength(cols) {
+        _sparseElements(sparsityPattern.size()), _sparseIndices(sparsityPattern.size()), _colLength(cols), ZERO(0) {
 #endif
 
         mat3 toInsert(0);
@@ -87,9 +89,14 @@ public:
         return _sparseElements.size();
     }
     int getSparseIndexForEntry(int c) const {
-        int i = 0;
-        while (i < _colLength) {
-            cout << "c = " << i << endl;
+        unsigned int i = 0;
+        if (0 == _sparseIndices.size()) {
+#ifdef CATCHERRORS
+            cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT IN SPARSE MATRIX" << endl;
+#endif
+            return -1;
+        }
+        while (i < _sparseIndices.size()) {
             if (_sparseIndices[i] < c) {
                 i++;
             } else if (_sparseIndices[i] == c)
@@ -112,10 +119,20 @@ public:
             _sparseElements[i] = zero;
     }
     mat3 & operator[](int c) {
-        return _sparseElements[getSparseIndexForEntry(c)];
+        int ind = getSparseIndexForEntry(c);
+        if (ind < 0) {
+            return ZERO;
+        } else {
+            return _sparseElements[ind];
+        }
     }
     mat3 operator[](int c) const {
-        return _sparseElements[getSparseIndexForEntry(c)];
+        int ind = getSparseIndexForEntry(c);
+        if (ind < 0) {
+            return ZERO;
+        } else {
+            return _sparseElements[ind];
+        }
     }
     LargeMat3MatrixRow & operator +=(LargeMat3MatrixRow const &r) {
 #ifdef CATCHERRORS
@@ -168,6 +185,7 @@ private:
     std::vector<mat3> _sparseElements;
     std::vector<int> _sparseIndices; //We probably want some kind of fast lookup too.
     int _colLength; //The theoretical amount of cols in this row.
+    mat3 ZERO;
 };
 
 /******************************************************************************
@@ -178,13 +196,13 @@ private:
 class LargeMat3Matrix {
 public:
     LargeMat3Matrix(int rows, int cols) :
-        _rowData(rows), _rowCount(rows), _colCount(cols) {
+        _rowData(rows), _rowCount(rows), _colCount(cols), ZERO(0) {
         for (int i = 0; i < rows; i++) {
             _rowData[i] = new LargeMat3MatrixRow(cols);
         }
     }
     LargeMat3Matrix(int rows, int cols, vector< vector<int> > & sparsityPattern, bool insertIdentity) :
-        _rowData(rows), _rowCount(rows), _colCount(cols) {
+        _rowData(rows), _rowCount(rows), _colCount(cols), ZERO(0) {
 #ifdef CATCHERRORS
         if ((unsigned)rows != sparsityPattern.size()) {
             cout << __FILE__ << "::" << __LINE__ << ": SPARSITY PATTERN NOT SAME DIM AS GIVEN ROW DIMENSIONS\n" << endl;
@@ -285,12 +303,28 @@ public:
         }
         return out;
     }
+    ostream & outAsMatlab(ostream & s) {
+        s << "[";
+        for (int rowi = 0; rowi < _rowCount; rowi++) {
+            for (int i = 0; i < 3; i++) {
+                for (int coli = 0; coli < _colCount; coli++) {
+                    s << (*_rowData[rowi])[coli][i][0] << " ";
+                    s << (*_rowData[rowi])[coli][i][1] << " ";
+                    s << (*_rowData[rowi])[coli][i][2] << " ";
+                }
+                s << ";" << endl;
+            }
+        }
+        s << "]";
+        return s;
+    }
     friend ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
 
 private:
     std::vector<LargeMat3MatrixRow*> _rowData;
     int _rowCount; //The total amount of actual rows.
     int _colCount; //The total amount of theoretical cols.
+    mat3 ZERO;
 };
 
 ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
