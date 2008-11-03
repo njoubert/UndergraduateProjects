@@ -37,6 +37,8 @@
  *
  */
 
+// TODO: Count vertices in mesh after mesh is created and store the number of vertices inside the mesh
+
 #ifndef MESH_H_
 #define MESH_H_
 

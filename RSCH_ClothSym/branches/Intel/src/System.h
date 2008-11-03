@@ -57,7 +57,7 @@ public:
 	 * @param solver
 	 * @param timeStep
 	 */
-	void takeStep(Solver* solver, vector<Constraint*>* constraints, double timeStep);
+	void takeStep(Solver* solver, vector<Constraint*>* constraints, vector<Constraint*>* collisions, double timeStep);
 
 	void SolveExplicit(double timeStep);
 	void SolveImplicit(double timeStep, vector<Constraint*>* constraints);

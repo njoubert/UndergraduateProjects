@@ -97,29 +97,35 @@ SimModel::~SimModel() {
 void SimModel::advance(double netTime) {
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
-        _system->takeStep(_solver, &_constraints, _timeStep);
+        _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0)
-        _system->takeStep(_solver, &_constraints, _timeStep);
+        _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
 }
 
 void SimModel::registerConstraint(Constraint* c) {
     _constraints.push_back(c);
 }
 
-void SimModel::applyConstraints(double time, SparseMatrix* m_A, Physics_LargeVector* m_b) {
-	for(int i = 0; i < _constraints.size(); i++) {
-		_constraints[i]->applyConstraintToPoints();
-		_constraints[i]->applyConstraintToSolverMatrices(time, m_A, m_b);
-	}
+void SimModel::registerCollision(Constraint* c) {
+    _collisions.push_back(c);
 }
 
 TriangleMesh* SimModel::getMesh() const {
     return _mesh;
 }
 
+vec3 SimModel::getConstraintPos(int i) {
+	return _constraints[i]->getFollow()->getX();
+}
+
 void SimModel::draw() {
     vec3 a, b, c, na, nb, nc;
+
+    GLfloat mat_diffuse[] = {0.0, 1.0, 0.0, 1.0};
+    	GLfloat mat_ambient[] = {0.0, 0.1, 0.0, 1.0};
+    	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+    	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
 
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
@@ -266,8 +272,6 @@ void AniElliModel::advance(double netTime) {
 	}
 //*/
 
-
-
 }
 
 void AniElliModel::draw() {
@@ -292,3 +296,5 @@ void AniElliModel::draw() {
 }
 
 mat4 AniElliModel::getEllipsoid(int Indx) { return _ellipsoids[_count][Indx]; }
+
+int AniElliModel::getSize() { return _ellipsoids[_count].size(); }

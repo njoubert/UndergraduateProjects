@@ -32,6 +32,17 @@ void Constraint::setFollow(TriangleMeshVertex* follow) {
     _follow = follow;
 }
 
+TriangleMeshVertex* Constraint::getFollow() {
+	return _follow;
+}
+
+void Constraint::setCollisionMesh(TriangleMesh* mesh) {
+    _mesh = mesh;
+}
+
+void Constraint::setCollisionEllipsoids(AniElliModel* ellipsoids) {
+    _ellipsoids = ellipsoids;
+}
 
 /****************************************************************
 *                                                               *
@@ -90,6 +101,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints() {
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	vec4 origin(0);
 	origin[3] = 1;
+	origin[1] = 1.3;
 	int index = _leadIndex;
 	mat4 ElliTransform(0);
 	ElliTransform = _lead->getEllipsoid(index);
@@ -123,4 +135,46 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 
 }
 
+void VertexToAnimatedEllipseConstraint::applyCollisionToMesh(Physics_LargeVector* X, Physics_LargeVector* V){
+	for(int i = 0; i < _mesh->countVertices(); i++) {
+		for(int j = 0; j < _ellipsoids->getSize(); j++) {
+			mat4 elliTransform = _ellipsoids->getEllipsoid(j);
+			TriangleMeshVertex* Vert = _mesh->getVertex(i);
+
+			vec4 v;
+			for(int k = 0; k < 3; k++)
+				v[k] = Vert->getX()[k];
+			v[3] = 1;
+			//cout<<"v : "<<v<<endl;
+			//cout<<"elliTransform: "<<endl<<elliTransform<<endl;
+			vec4 vT = v * elliTransform.inverse();
+			//cout<<"vT: "<<vT<<endl;
+			double L = sqrt(vT[0]*vT[0] + vT[1]*vT[1] + vT[2]*vT[2]);
+			//cout<<"L : "<<L<<endl<<endl;
+			if(L < 1) {
+				//cout<<"colision detected"<<endl;
+				//vT.normalize();
+				vec3 vT_3;
+				for(int k = 0; k < 3; k++)
+					vT_3[k] = vT[k];
+
+				vT_3 = vT_3/sqrt(vT_3[0]*vT_3[0] + vT_3[1]*vT_3[1] + vT_3[2]*vT_3[2]);
+
+				for(int k = 0; k < 3; k++)
+					vT[k] = vT_3[k];
+				vT[3] = 1;
+
+				v = vT * elliTransform;
+
+				X->m_pData[Vert->getID()].x = v[0];
+				X->m_pData[Vert->getID()].y = v[1];
+				X->m_pData[Vert->getID()].z = v[2];
+
+				V->m_pData[Vert->getID()].x = -.1 * V->m_pData[Vert->getID()].x;
+				V->m_pData[Vert->getID()].y = -.1 * V->m_pData[Vert->getID()].y;
+				V->m_pData[Vert->getID()].z = -.1 * V->m_pData[Vert->getID()].z;
+			}
+		}
+	}
+}
 

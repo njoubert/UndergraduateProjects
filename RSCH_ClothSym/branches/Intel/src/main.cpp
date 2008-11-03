@@ -21,7 +21,7 @@ public:
 		_nearVal = 1;
 		_farVal = 1000;
 
-		_zoom = 40.0f;
+		_zoom = 10.0f;
 		_rotx = 10.0f;
 		_roty = 0.0f;
 		_tx = 0.0f;
@@ -34,6 +34,7 @@ public:
 		wireFrame = false;
 		showGrid = true;
         paused = false;
+        follow = false;
         inverseFPS = 1.0 / 25.0;
         lastTime = 0;
 	}
@@ -63,6 +64,27 @@ public:
 		glRotatef(_rotx,1,0,0);
 		glRotatef(_roty,0,1,0);
 
+	}
+
+	void setFocusedView(vec3 focusPt) {
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		//cout<<"focusPt "<<focusPt<<endl;
+		 //You can set the position of the camera qith gluLookAt
+		 gluLookAt(0.0,0.0,1.0,
+		 focusPt[0]/10,focusPt[1]/10,focusPt[2]/10,
+		 0.0,1.0,0.0);
+
+		//gluLookAt(0.0,0.0,1.0,
+		//.1,0,0,
+		//0.0,1.0,0.0);
+
+		//This order gives you Maya-like
+		//mouse control of your camera
+		glTranslatef(0,0,-_zoom);
+		glTranslatef(_tx,_ty,0);
+		glRotatef(_rotx,1,0,0);
+		glRotatef(_roty,0,1,0);
 	}
 
 	void mousemotion(int x,int y) {
@@ -147,6 +169,7 @@ public:
 	int _w, _h;
 	bool wireFrame;
 	bool showGrid;
+	bool follow;
 	double lastTime;
     double inverseFPS;
     bool paused;
@@ -268,6 +291,9 @@ void processKeys(unsigned char key, int x, int y) {
     case 'g':
         cam.showGrid = !cam.showGrid;
         break;
+    case 'f':
+        cam.follow = !cam.follow;
+        break;
     case 27:
         exit(0);
         break;
@@ -280,6 +306,7 @@ void init(void)
 {
    world.createVertexToAnimatedEllipseContraint();
 
+
    GLfloat mat_diffuse[] = { 0.5, 0.5, 0.5, 1.0 };
    GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
    GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
@@ -289,6 +316,8 @@ void init(void)
 
    glClearColor (0.0, 0.0, 0.0, 0.0);
    glShadeModel (GL_SMOOTH);
+
+	glEnable(GL_NORMALIZE);
 
    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
@@ -338,7 +367,10 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	cam.setView();
+	if(cam.follow)
+		cam.setFocusedView(world.getFocusPoint());
+	else
+		cam.setView();
 
    if (cam.wireFrame) {
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

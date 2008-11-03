@@ -1215,7 +1215,7 @@ void System::setTableConstraints() {
 		}
 	}
 }
-void System::takeStep(Solver* solver, vector<Constraint*>* constraints, double timeStep) {
+void System::takeStep(Solver* solver, vector<Constraint*>* constraints, vector<Constraint*>* collisions, double timeStep) {
 	std::vector<std::pair<vec3, vec3> > changes(mesh->vertices.size(),
 			make_pair(vec3(0, 0, 0), vec3(0, 0, 0)));
 	/*
@@ -1277,9 +1277,14 @@ void System::takeStep(Solver* solver, vector<Constraint*>* constraints, double t
 
 	 //exit(1);
 	 //*/
-	for(int i = 0; i < constraints->size(); i++)
+	for(int i = 0; i < constraints->size(); i++) {
 		(*constraints)[i]->applyConstraintToPoints();
+	}
+
+
 	loadMatrices();
+
+	(*collisions)[0]->applyCollisionToMesh(&m_Positions, &m_Velocities);
 
 	/*
 	 double cutIt = 0.001;

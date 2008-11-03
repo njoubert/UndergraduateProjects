@@ -84,28 +84,82 @@ bool World::loadEllipseModel(string filename, int numFrames) {
  */
 bool World::createVertexToAnimatedEllipseContraint() {
 
-    //Get the model I want to constrain
-    SimModel* followModel = (SimModel*) _models[1];
-    //Get the vertex on this model you want to constrain:
-    TriangleMeshVertex* v = followModel->getMesh()->getVertex(0);
+	vector<int> LeadEllipsoids;
+	LeadEllipsoids.push_back(3);
+	LeadEllipsoids.push_back(4);
 
-    //Get the model I want to constrain against
-    AniElliModel* leadModel = (AniElliModel*) _models[0];
-    int ellipsoidNr = 0;
+	vector<int>	FollowVertices;
+	FollowVertices.push_back(30);
+	FollowVertices.push_back(35);
+	//FollowVertices.push_back(7);
+	//FollowVertices.push_back(8);
 
-    //Set up the constraint
-    VertexToAnimatedEllipseConstraint* constraint =
-        new VertexToAnimatedEllipseConstraint();
-    constraint->setLead(leadModel, ellipsoidNr);
-    constraint->setFollow(v);
+	for (int i = 0; i < FollowVertices.size(); i++) {
 
-    followModel->registerConstraint(constraint);
+		if (_models.size() > 1) {
+			//Get the model I want to constrain
+			SimModel* followModel = (SimModel*) _models[1];
+			//Get the vertex on this model you want to constrain (the Follow):
+			TriangleMeshVertex* v = followModel->getMesh()->getVertex(
+					FollowVertices[i]);
 
+			//Get the model I want to constrain against
+			AniElliModel* leadModel = (AniElliModel*) _models[0];
+			//Get the index of the Ellipsoid you want to constrain to (the Lead)
+			int ellipsoidNr = LeadEllipsoids[i];
+
+			//Set up the constraint
+			VertexToAnimatedEllipseConstraint* constraint =
+					new VertexToAnimatedEllipseConstraint();
+			constraint->setLead(leadModel, ellipsoidNr);
+			constraint->setFollow(v);
+
+			followModel->registerConstraint(constraint);
+
+		}
+
+	}
+
+    //COLISIONS (can be thought of as "Collision Constraints")
+	if (_models.size() > 1) {
+		SimModel* collisionModel = (SimModel*) _models[1];
+		TriangleMesh* collisionMesh = collisionModel->getMesh();
+
+		AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
+
+		VertexToAnimatedEllipseConstraint* collisionConstraint =
+				new VertexToAnimatedEllipseConstraint();
+
+		collisionConstraint->setCollisionMesh(collisionMesh);
+		collisionConstraint->setCollisionEllipsoids(collisionEllipsoids);
+		collisionModel->registerCollision(collisionConstraint);
+	}
     return true;
 }
+
+
 
 double World::getTime() {
 	return _time;
 }
 
+vec3 World::getFocusPoint() {
+	//*
+	AniElliModel* focusModel = (AniElliModel*) _models[0];
+	int ellipsoidNr = 13;
+	mat4 elliTransform = focusModel->getEllipsoid(ellipsoidNr);
 
+	vec4 origin(0);
+	origin[3] = 1;
+	//cout<<"transform:"<<endl<<elliTransform<<endl<<endl;
+	vec4 focusPt = origin*elliTransform;
+	//cout<<focusPt<<endl;
+	//for(int i = 0; i < 3; i++)
+		//focusPt[i] = focusPt[i]/focusPt[3];
+	//*/
+	return focusPt;
+
+	//SimModel* focusModel = (SimModel*) _models[1];
+
+	//return focusModel->getConstraintPos(0);
+}

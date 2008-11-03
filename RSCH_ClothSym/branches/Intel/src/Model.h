@@ -66,7 +66,8 @@ public:
     void draw();
     TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
-    void applyConstraints(double time, SparseMatrix* m_A, Physics_LargeVector* m_b);
+    void registerCollision(Constraint* c);
+    vec3 getConstraintPos(int i);
 
 private:
     Solver* _solver;
@@ -74,6 +75,7 @@ private:
     TriangleMesh* _mesh;
     double _timeStep;
     vector<Constraint*> _constraints;
+    vector<Constraint*> _collisions;
 };
 
 /**
@@ -110,6 +112,7 @@ public:
     void advance(double);
     void draw();
     mat4 getEllipsoid(int Indx);
+    int getSize();
 
 private:
 	//TriangleMesh* getCurrentMesh();

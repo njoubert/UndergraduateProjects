@@ -38,6 +38,7 @@ public:
     bool createVertexToAnimatedEllipseContraint();
 
     double getTime();
+    vec3 getFocusPoint();
 
 private:
     bool addModel(Model* model);
