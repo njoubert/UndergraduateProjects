@@ -2,9 +2,11 @@
 
 TARGET := ClothSym
 SOURCES := $(wildcard ./src/*.cpp) \
+	$(wildcard ./src/util/*.cpp) \
     $(wildcard ./src/io/*.cpp) \
     $(wildcard ./src/math/*.cpp)
 PLATFORM := OSX
+MACROS := -DCATCHERRORS
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
 
@@ -25,7 +27,7 @@ LIBRARY := -L./lib/ \
 
 CC := gcc
 CXX := g++
-MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' 
+MACROS += -D$(PLATFORM) -D'COMPLEX=std::complex<double>' 
 CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS)
 

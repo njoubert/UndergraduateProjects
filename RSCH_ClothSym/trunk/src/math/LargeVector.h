@@ -28,8 +28,8 @@ public:
 
     }
     LargeVec3Vector(const LargeVec3Vector & v) :
-        _size(v.getSize()), _elements(v.getSize()) {
-        for (int i = 0; i < v.getSize(); i++) {
+        _size(v.size()), _elements(v.size()) {
+        for (int i = 0; i < v.size(); i++) {
             this->_elements[i] = v[i]; //Depends on the copy constructor of its contents
         }
     }
@@ -46,7 +46,7 @@ public:
     vec3 operator[](int n) const {
         return _elements[n];
     }
-    int getSize() const {
+    int size() const {
         return _size;
     }
     LargeVec3Vector & operator +=(LargeVec3Vector const &v) {
@@ -72,6 +72,13 @@ public:
             _elements[i] /= v;
         }
         return *this;
+    }
+    double Dot(LargeVec3Vector const &v) {
+        double ret = 0;
+        for (int i = 0; i < _size; i++) {
+            ret += _elements[i] * v._elements[i];
+        }
+        return ret;
     }
 
 private:

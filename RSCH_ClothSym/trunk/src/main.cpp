@@ -27,7 +27,7 @@ public:
         wireFrame = false;
         showGrid = true;
         paused = true;
-        inverseFPS = 1.0 / 25.0;
+        inverseFPS = 1.0 / 30.0;
         lastTime = 0;
     }
 
@@ -332,7 +332,7 @@ void display(void) {
     }
 
 	glPushMatrix();
-    
+
     if (cam.showGrid) {
         White();
         // draw grid

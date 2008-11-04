@@ -1,0 +1,9 @@
+fovy = 45;
+	near = 1;
+	aspect = 1;
+	
+	eyeX = (minX + maxX)/2;
+	eyeY = (minY + maxY)/2;
+	eyeZ = minZ - max( ((maxY - minY)/2)/tan((fovy*PI)/360), ((maxX - minX)/2)/tan((fovy*PI)/360) );
+	
+	far = maxZ + 100 - eyeZ;

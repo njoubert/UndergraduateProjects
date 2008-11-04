@@ -11,11 +11,11 @@
 //-----------------------------------------------------------------------------
 ostream & operator <<(ostream & s, const LargeVec3Vector &v) {
     s << "(";
-    for (int i = 0; i < v.getSize() - 1; i++) {
+    for (int i = 0; i < v.size() - 1; i++) {
         s << v[i] << ",";
     }
-    if (v.getSize() > 1)
-        s << v[v.getSize() - 1];
+    if (v.size() > 1)
+        s << v[v.size() - 1];
     s << ")";
     return s;
 }

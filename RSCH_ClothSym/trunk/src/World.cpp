@@ -16,6 +16,12 @@ World::~World() {
 }
 
 void World::advance(double netTime) {
+    //Find the duration of a single step for each model
+
+    //Sort the list of updates from longest duration to shortest duration
+
+    //
+
     for (unsigned int j = 0; j < _models.size(); j++)
         _models[j]->advance(netTime);
     _time += netTime;

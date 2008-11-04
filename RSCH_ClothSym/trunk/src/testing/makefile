@@ -1,7 +1,7 @@
 #My Code   -------------------------------
 
 TARGET := testLargeMath
-SOURCES := $(wildcard ../math/*.cpp) testLargeMath.cpp
+SOURCES := $(wildcard ../math/*.cpp) $(wildcard ../util/*.cpp) testLargeMath.cpp
 PLATFORM := OSX
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
