@@ -5,7 +5,7 @@
 #define GRAVITY -9.8
 
 
-#define DEFAULT_TIMESTEP	0.0001
+#define DEFAULT_TIMESTEP	0.001
 #define DEFAULT_SYSTEM	System
 #define DEFAULT_SOLVER	ExplicitSolver
 #define DEFAULT_MATERIAL Material

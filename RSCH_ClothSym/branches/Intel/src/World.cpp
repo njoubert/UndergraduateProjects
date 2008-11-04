@@ -16,8 +16,24 @@ World::~World() {
 }
 
 void World::advance(double netTime) {
-    for (unsigned int j = 0; j < _models.size(); j++)
-        _models[j]->advance(netTime);
+
+	//Sort the Models from Largest TimeStep to Smallest
+	Model* tempModel;
+	for (int i = 0; i < _models.size()-1; i++) {
+	  for (int j = 0; j < _models.size()-1-i; j++)
+	    if (_models[j+1]->getTimeStep() > _models[j]->getTimeStep()) {
+	    	tempModel = _models[j];
+	      _models[j] = _models[j+1];
+	      _models[j+1] = tempModel;
+	  }
+	}
+
+	//The Simple Version, Assuming only one dependency (cloth on ellipsoids)
+	int stepSize = int(netTime / _models[0]->getTimeStep());
+	 for(int i = 0; i < stepSize; i++) {
+		for (unsigned int j = 0; j < _models.size(); j++)
+	        _models[j]->advance(_models[0]->getTimeStep());
+	 }
 
     _time +=  netTime;
 }
@@ -37,7 +53,7 @@ bool World::loadStatModel(string filename) {
     return true;
 }
 
-bool World::loadSimModel(string filename) {
+bool World::loadSimModel(string filename, double timeStep) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL){
@@ -49,7 +65,7 @@ bool World::loadSimModel(string filename) {
     	    		mesh,
     	    		new DEFAULT_SYSTEM(mesh,mesh->countVertices()),
     	    		new DEFAULT_SOLVER(mesh, mesh->countVertices()),
-    	    		mat);
+    	    		mat, timeStep);
     _models.push_back(model);
     return true;
 }
@@ -89,10 +105,10 @@ bool World::createVertexToAnimatedEllipseContraint() {
 	LeadEllipsoids.push_back(4);
 
 	vector<int>	FollowVertices;
-	FollowVertices.push_back(30);
-	FollowVertices.push_back(35);
-	//FollowVertices.push_back(7);
-	//FollowVertices.push_back(8);
+	//FollowVertices.push_back(30);
+	//FollowVertices.push_back(35);
+	FollowVertices.push_back(7);
+	FollowVertices.push_back(8);
 
 	for (int i = 0; i < FollowVertices.size(); i++) {
 
@@ -162,4 +178,24 @@ vec3 World::getFocusPoint() {
 	//SimModel* focusModel = (SimModel*) _models[1];
 
 	//return focusModel->getConstraintPos(0);
+}
+
+void World::enableMouseForce(vec3 mPos) {
+	SimModel* simModel = (SimModel*) _models[0];
+	simModel->enableMouseForce(mPos);
+}
+
+void World::disableMouseForce() {
+	SimModel* simModel = (SimModel*) _models[0];
+	simModel->disableMouseForce();
+}
+
+void World::updateMouseForce(vec3 new_mPos) {
+	SimModel* simModel = (SimModel*) _models[0];
+	simModel->updateMouseForce(new_mPos);
+}
+
+bool World::isMouseEnabled() {
+	SimModel* simModel = (SimModel*) _models[0];
+	return simModel->isMouseEnabled();
 }

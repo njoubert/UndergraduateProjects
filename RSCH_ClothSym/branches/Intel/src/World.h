@@ -32,13 +32,18 @@ public:
 
     // Loads up a new module from disk.
     bool loadStatModel(string);
-    bool loadSimModel(string);
+    bool loadSimModel(string, double);
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
     bool createVertexToAnimatedEllipseContraint();
 
     double getTime();
     vec3 getFocusPoint();
+
+    void enableMouseForce(vec3);
+    void disableMouseForce();
+    bool isMouseEnabled();
+    void updateMouseForce(vec3);
 
 private:
     bool addModel(Model* model);

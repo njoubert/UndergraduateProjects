@@ -40,7 +40,6 @@ System::System(TriangleMesh* m, int verticeCount) :
 		//m_z.m_pData[i].y = 0;
 	//	m_z.m_pData[i].z = 0;
 	//}
-	cout<<"just zeroed the m_z matrix"<<endl;
 	m_z.Zero();
 	/*
 	 for(int i = 0; i < numVertices; i++){
@@ -49,7 +48,6 @@ System::System(TriangleMesh* m, int verticeCount) :
 	 }
 	 exit(1);
 	 //*/
-	cout<<"about to make S matrix"<<endl;
 	m_S = new Physics_Matrix3x3[numVertices];
 	mat3 MatrixConverter;
 	for (int i = 0; i < numVertices; i++) {
@@ -635,8 +633,8 @@ void System::calculateInternalForces() {
 
 void System::calculateExternalForces() {
 	TriangleMeshVertex* a;
-	vec3 gravity(0, GRAVITY, 0);
-	//   vec3 gravity(0, 0, GRAVITY);
+	//vec3 gravity(0, GRAVITY, 0);
+	vec3 gravity(0, 0, GRAVITY);
 	for (int i = 0; i < mesh->countVertices(); i++) {
 		a = mesh->getVertex(i);
 		a->setF(gravity * a->getm());// += f_mouse(a));
@@ -646,10 +644,12 @@ void System::calculateExternalForces() {
 void System::enableMouseForce(vec3 mousePosition) {
 	//Find closest vertex
 	//cout << "Mouse is at: " << mousePosition << endl;
-	double currentDistance = 900000.0, d;
+	double currentDistance = 900000.0, d, d1, d2;
 	TriangleMeshVertex* currentClosest;
 	for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
-		d = (mousePosition - mesh->getVertex(i)->getX()).length();
+		d1 = (mousePosition[0] - mesh->getVertex(i)->getX()[0]);
+		d2 = (mousePosition[1] - mesh->getVertex(i)->getX()[1]);
+		d = sqrt(d1*d1 + d2*d2);
 		if (d < currentDistance) {
 			currentDistance = d;
 			currentClosest = mesh->getVertex(i);
@@ -659,6 +659,8 @@ void System::enableMouseForce(vec3 mousePosition) {
 
 	//sets mouseSelected to this vertex.
 	mouseSelected = currentClosest;
+	cout<<"Selected Vertex: "<<mouseSelected<<endl;
+	cout<<"Mouse Position: "<<mouseP<<endl;
 }
 
 void System::updateMouseForce(vec3 mousePosition) {
@@ -786,6 +788,8 @@ void System::SolveExplicit(double timeStep) {
 	//vec3 deltaX = timeStep * (point->getvX() + deltaV);
 }
 
+
+
 void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	int i;
 
@@ -798,9 +802,10 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	int constVertexMouse = setVertexPos2MousePos();
 	if (constVertexMouse != -1){
 		constrainBlock.push_back(constVertexMouse);
-		cout<<"just added Mouse Constraint on vertex: "<<constrainBlock[0]<<endl;
+		//cout<<"just added Mouse Constraint on vertex: "<<constrainBlock[0]<<endl;
 	}
-/*
+
+/*	OUTDATED
 	//Dynamic Constraints
 	vector<int> constVertexDynam = setVertexPos2NewPos();
 	for(i = 0; i < constVertexDynam.size(); i++){
@@ -808,8 +813,6 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 			cout<<"Just Added A Dynamic Constraint for Vertex: "<<constVertexDynam[i]<<endl;
 	}
 //*/
-
-
 
 	//Static Constraints (from Obj File via "fixed points" notation)
 	mat3 constraint;
@@ -819,6 +822,7 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 			constrainBlock.push_back(i);
 		}
 	}
+
 	//constrainBlock.push_back(10);
 	//cout<<"constrainblock size: "<<constrainBlock.size()<<endl<<endl;
 	//for(int l = 0; l < constrainBlock.size(); l++){
@@ -867,7 +871,7 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 		(*constraints)[i]->applyConstraintToSolverMatrices(time, &m_A, &m_b);
 
 
-	/*
+	//*
 
 	for (unsigned int k = 0; k < constrainBlock.size(); k++) {
 
@@ -884,11 +888,7 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 				//	cout<<"it should not get to this point: "<<m_A(constrainBlock[k], i).m_Mx[j]<<endl;
 				//}
 			}
-			//m_A(constrainBlock, i).m_Mx[constrainElementRow + 1] = 99990;
-			//m_A(constrainBlock, i).m_Mx[constrainElementRow + 2] = 99990;
-			//m_A(i, constrainBlock).m_Mx[constrainElementCol] = 99990;
-			//m_A(i, constrainBlock).m_Mx[constrainElementCol + 3] = 99990;
-			//m_A(i, constrainBlock).m_Mx[constrainElementCol + 6] = 99990;
+
 		}
 		//cout << "got here1" << endl;
 		for (i = 0; i < 9; i++) {
@@ -1026,9 +1026,10 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	 }
 	 //*/
 
-	int iIterations = 0, iMaxIterations = (int) sqrt(numVertices) * 3 + 3;
+	int iIterations = 0, iMaxIterations = (int)sqrt(numVertices)*3+3;
 	double alpha, Delta_0, Delta_old, Delta_new;
-	double Eps_Sq = 1e-20;
+	double Eps_Sq = 1e-22;
+
 	//double FLOOR_Y = -0.99;
 	//
 	// Setup the inverse of preconditioner -- We use a vector for memory efficiency.  Technically it's the diagonal of a matrix
@@ -1284,7 +1285,8 @@ void System::takeStep(Solver* solver, vector<Constraint*>* constraints, vector<C
 
 	loadMatrices();
 
-	(*collisions)[0]->applyCollisionToMesh(&m_Positions, &m_Velocities);
+	if(collisions->size() > 0)
+		(*collisions)[0]->applyCollisionToMesh(&m_Positions, &m_Velocities);
 
 	/*
 	 double cutIt = 0.001;

@@ -32,7 +32,7 @@ public:
     virtual ~Model();
     virtual void advance(double)=0;
     virtual void draw()=0;
-    //virtual mat4 getEllipsoid(int Indx);
+    virtual double getTimeStep()=0;
 protected:
     Material* _material;
 };
@@ -45,6 +45,7 @@ public:
     StatModel(TriangleMesh*);
     ~StatModel();
     void advance(double);
+    double getTimeStep();
     void draw();
     TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
@@ -53,6 +54,7 @@ private:
     Solver* _solver;
     System* _system;
 	TriangleMesh* _mesh;
+	double _timeStep;
 };
 
 /**
@@ -60,14 +62,22 @@ private:
  */
 class SimModel : public Model {
 public:
-    SimModel(TriangleMesh*, System*, Solver*, Material*);
+    SimModel(TriangleMesh*, System*, Solver*, Material*, double);
     ~SimModel();
     void advance(double);
+    double getTimeStep();
     void draw();
+
+    void setTimeStep(double timeStep);
     TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
     void registerCollision(Constraint* c);
     vec3 getConstraintPos(int i);
+
+    void enableMouseForce(vec3);
+    void updateMouseForce(vec3);
+    void disableMouseForce();
+    bool isMouseEnabled();
 
 private:
     Solver* _solver;
@@ -86,6 +96,7 @@ public:
     AniModel(string);
     ~AniModel();
     void advance(double);
+    double getTimeStep();
     void draw();
 
 private:
@@ -99,6 +110,7 @@ private:
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer
 	TriangleMesh* _mesh;
+	double _timeStep;
 //	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
 };
 
@@ -110,6 +122,7 @@ public:
 	AniElliModel(vector < vector <mat4> >);
     ~AniElliModel();
     void advance(double);
+    double getTimeStep();
     void draw();
     mat4 getEllipsoid(int Indx);
     int getSize();
@@ -125,6 +138,7 @@ private:
 	vector < vector <mat4> > _ellipsoids;
 	vector<vec3> _takeConst;
 	vec4 _origin;
+	double _timeStep;
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer
 	//TriangleMesh* _mesh;

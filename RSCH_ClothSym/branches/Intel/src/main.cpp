@@ -35,6 +35,7 @@ public:
 		showGrid = true;
         paused = false;
         follow = false;
+        mouseIsDown = false;
         inverseFPS = 1.0 / 25.0;
         lastTime = 0;
 	}
@@ -170,6 +171,7 @@ public:
 	bool wireFrame;
 	bool showGrid;
 	bool follow;
+	bool mouseIsDown;
 	double lastTime;
     double inverseFPS;
     bool paused;
@@ -218,13 +220,14 @@ int parseCommandLine(int argc, char *argv[]) {
 
         } else if (!strcmp(argv[i], "-simobj")) {
 
-				if (isThereMore(i, argc, 1)) {
-					std::string filename = std::string(argv[++i]);
-					world.loadSimModel(filename);
-					hasOBJ = true;
-				} else {
-					malformedArg = true;
-				}
+        	if (isThereMore(i, argc, 2)) {
+				std::string filename = std::string(argv[++i]);
+				double timeStep = atof(argv[++i]);
+				world.loadSimModel(filename, timeStep);
+				hasOBJ = true;
+        	} else {
+				malformedArg = true;
+			}
 
         } else if (!strcmp(argv[i], "-aniobj")) {
 
@@ -427,10 +430,9 @@ void myframemove() {
 //-------------------------------------------------------------------------------
 //
 void myMousePress(int button, int state, int x, int y) {
-	cam.mousepress(button,state,x,y);
 
-    if (button == GLUT_LEFT_BUTTON) {
-        if (state == GLUT_DOWN) {
+
+    if (button == GLUT_LEFT_BUTTON  && state == GLUT_DOWN && glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
             //Find the point
             float z = 0.5;
             double ox, oy, oz;
@@ -440,39 +442,50 @@ void myMousePress(int button, int state, int x, int y) {
             glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
             glGetDoublev(GL_PROJECTION_MATRIX, proj);
             glGetIntegerv(GL_VIEWPORT, view);
-            glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
-
+           // glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+            cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
             if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
-
+            	cout<<"mouse Position World Space-> x: "<<ox<<"   y: "<<oy<<"   z: "<<oz<<endl;
+            	world.enableMouseForce(vec3(ox*5,5*oy,0));
                 //sys->enableMouseForce(vec3(ox,oy,0));
-
             }
-        } else {
-            //sys->disableMouseForce();
-        }
+            else
+            	cout<<"gluUnProject Returned False"<<endl;
+    }
+    else {
+    	world.disableMouseForce();
+    	cam.mousepress(button,state,x,y);
     }
 }
 
 //-------------------------------------------------------------------------------
 //
 void myMouseMove(int x, int y) {
-	cam.mousemotion(x,y);
-	/*
-    if (sys->isMouseEnabled()) {
-        float z;
-        double ox, oy, oz;
-        GLdouble modelview[16];
-        GLdouble proj[16];
-        GLint view[4];
-        glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-        glGetDoublev(GL_PROJECTION_MATRIX, proj);
-        glGetIntegerv(GL_VIEWPORT, view);
-        glReadPixels( x, view[3]-y, 1, 1,
-                 GL_DEPTH_COMPONENT, GL_FLOAT, &z );
-        gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
-        sys->updateMouseForce(vec3(ox,oy,0));
+
+
+    if (world.isMouseEnabled()) {
+         //Find the point
+            float z = 0.5;
+            double ox, oy, oz;
+            GLdouble modelview[16];
+            GLdouble proj[16];
+            GLint view[4];
+            glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+            glGetDoublev(GL_PROJECTION_MATRIX, proj);
+            glGetIntegerv(GL_VIEWPORT, view);
+           // glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+            //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
+            if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
+            	//cout<<"mouse Position World Space-> x: "<<ox<<"   y: "<<oy<<"   z: "<<oz<<endl;
+            	world.updateMouseForce(vec3(ox*5,5*oy,0));
+                //sys->enableMouseForce(vec3(ox,oy,0));
+            }
+            else
+            	cout<<"gluUnProject Returned False"<<endl;
     }
-	*/
+    else
+    	cam.mousemotion(x,y);
+
 }
 
 //-------------------------------------------------------------------------------

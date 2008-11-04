@@ -34,6 +34,7 @@ Model::~Model() {
 
 StatModel::StatModel(TriangleMesh* mesh) {
 	_mesh = mesh;
+	_timeStep = 0;
 }
 
 StatModel::~StatModel() {
@@ -43,6 +44,11 @@ StatModel::~StatModel() {
 void StatModel::advance(double netTime) {
 	return;
 }
+
+double StatModel::getTimeStep() {
+	return _timeStep;
+}
+
 void StatModel::draw() {
 
 	//TODO: Lets do this with display lists for real.
@@ -81,11 +87,14 @@ void StatModel::draw() {
  *------------------------------------------------*/
 
 SimModel::SimModel(TriangleMesh* mesh,
-		System* system, Solver* solver, Material* mat) : Model(mat) {
+		System* system, Solver* solver, Material* mat, double timeStep) : Model(mat) {
 	_mesh = mesh;
 	_system = system;
 	_solver = solver;
-	_timeStep = DEFAULT_TIMESTEP;
+	if(timeStep == 0)
+		_timeStep = DEFAULT_TIMESTEP;
+	else
+		_timeStep = timeStep;
 }
 
 SimModel::~SimModel() {
@@ -103,6 +112,14 @@ void SimModel::advance(double netTime) {
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
 }
 
+double SimModel::getTimeStep() {
+	return _timeStep;
+}
+
+void SimModel::setTimeStep(double timeStep) {
+	_timeStep = timeStep;
+}
+
 void SimModel::registerConstraint(Constraint* c) {
     _constraints.push_back(c);
 }
@@ -118,6 +135,12 @@ TriangleMesh* SimModel::getMesh() const {
 vec3 SimModel::getConstraintPos(int i) {
 	return _constraints[i]->getFollow()->getX();
 }
+
+void SimModel::enableMouseForce(vec3 mPos) { _system->enableMouseForce(mPos); }
+void SimModel::updateMouseForce(vec3 new_mPos) { _system->updateMouseForce(new_mPos); }
+void SimModel::disableMouseForce() { _system->disableMouseForce(); }
+bool SimModel::isMouseEnabled() { return _system->isMouseEnabled(); }
+
 
 void SimModel::draw() {
     vec3 a, b, c, na, nb, nc;
@@ -163,6 +186,7 @@ AniModel::AniModel(string filename) {
 	_filename = filename;
 	_count = 0;
 	_mesh = NULL;
+	_timeStep = 0.04;
 	advance(0);
 
 }
@@ -184,6 +208,10 @@ void AniModel::advance(double netTime) {
 	if (mesh != NULL)
 		_mesh = mesh;
 	_count++;
+}
+
+double AniModel::getTimeStep() {
+	return _timeStep;
 }
 
 void AniModel::draw() {
@@ -234,6 +262,7 @@ AniElliModel::AniElliModel(vector < vector <mat4> > ellipsoids) {
 	//*/
 	_count = -1;
 	advance(0);
+	_timeStep = .01;
 
 	_origin[0] = 0;
 	_origin[1] = 0;
@@ -272,6 +301,10 @@ void AniElliModel::advance(double netTime) {
 	}
 //*/
 
+}
+
+double AniElliModel::getTimeStep() {
+	return _timeStep;
 }
 
 void AniElliModel::draw() {
