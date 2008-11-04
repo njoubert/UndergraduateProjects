@@ -11,7 +11,7 @@
 #include "LargeMatrix.h"
 #include "LargeVector.h"
 
-void simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
+int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         int imax, double e);
 
 #endif /* CG_H_ */

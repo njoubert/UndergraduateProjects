@@ -284,11 +284,73 @@ void testSimpleCG() {
     cout << "Done with simpleCG in " << timer.Stop() << " seconds." << endl;
     printResult("Result x1: " << x1);
 
-    printHeading("CONTRIVED TEST");
+    //-------------------------------------
 
-    LargeMat3Matrix A2(10, 10, pattern, true);
-    LargeVec3Vector b2(10, 5);
-    LargeVec3Vector x2(b1.size(), 0);
+    printHeading("CONTRIVED TEST");
+    vector<vector<int> > pattern2(4);
+    pattern2[0].push_back(0); pattern2[0].push_back(2); pattern2[0].push_back(3);
+    pattern2[1].push_back(1); pattern2[1].push_back(2); pattern2[1].push_back(3);
+    pattern2[2].push_back(0); pattern2[2].push_back(1); pattern2[2].push_back(2); pattern2[2].push_back(3);
+    pattern2[3].push_back(0); pattern2[3].push_back(1); pattern2[3].push_back(2); pattern2[3].push_back(3);
+    LargeMat3Matrix A2(4, 4, pattern2, false);
+
+    mat3 m1;
+    m1[0][0] = 0.1460; m1[0][1] = -0.0420; m1[0][2] = 0;
+    m1[1][0] = -0.0420; m1[1][1] = 0.1460; m1[1][2] = 0;
+    m1[2][0] = 0; m1[2][1] = 0; m1[2][2] = 0.02;
+
+    A2(0,0) = m1;
+    A2(1,1) = m1;
+
+    m1[0][1] = m1[1][0] = 0.042;
+    A2(2,2) = m1;
+
+    mat3 m2;
+    m2[0][0] = -0.0420; m2[0][1] = 0.0420; m2[0][2] = 0;
+    m2[1][0] = 0.0420; m2[1][1] = -0.0420; m2[1][2] = 0;
+    m2[2][0] = 0; m2[2][1] = 0; m2[2][2] = 0;
+
+    A2(3,0) = m2;
+    A2(3,1) = m2;
+    A2(0,3) = m2;
+    A2(1,3) = m2;
+
+    mat3 m3;
+    m3[0][0] = -0.0420; m3[0][1] = -0.0420; m3[0][2] = 0;
+    m3[1][0] = -0.0420; m3[1][1] = -0.0420; m3[1][2] = 0;
+    m3[2][0] = 0; m3[2][1] = 0; m3[2][2] = 0;
+
+    A2(3,2) = m3;
+    A2(2,3) = m3;
+
+    A2(3,3)[0][0] = 0.188;
+    A2(3,3)[1][1] = 0.188;
+    A2(3,3)[2][2] = 0.02;
+
+    A2(2, 0)[1][1] = -0.084;
+    A2(2, 1)[0][0] = -0.084;
+
+    A2(0, 2)[1][1] = -0.084;
+    A2(1, 2)[0][0] = -0.084;
+
+    cout << "Input A:" << endl;
+    cout << A2 << endl;
+
+    LargeVec3Vector b2(4, 0);
+    vec3 temp(0, 0, -0.0039);
+    b2[0] = temp; b2[1] = temp; b2[2] = temp; b2[3] = temp;
+
+    cout << "Input b2: " << b2 << endl;
+    LargeVec3Vector x2(b2.size(), 0);
+    cout << "Running simpleCG." << endl;
+    timer.Start();
+    int iter = simpleCG(A2, b2, x2, 100, 0.00000001);
+    cout << "Done with simpleCG in " << iter <<" steps, taking " << timer.Stop() << " seconds." << endl;
+    printResult("Result x2: " << x2);
+
+//    cout << endl << endl << endl;
+//    A2.outAsMatlab(cout);
+
 
 }
 

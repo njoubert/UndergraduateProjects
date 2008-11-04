@@ -76,7 +76,7 @@ public:
     double Dot(LargeVec3Vector const &v) {
         double ret = 0;
         for (int i = 0; i < _size; i++) {
-            ret += _elements[i] * v._elements[i];
+            ret += (_elements[i] * v._elements[i]);
         }
         return ret;
     }
