@@ -297,25 +297,6 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 
 }
 
-/**
- * This is the entry point for simulation. The algorithm is as follows:
- * FOR EACH POINT:
- *      FOR EACH EDGE OF THIS POINT:
- *          calculate forces
- *          calculate partials of forces
- *          accumulate forces
- *      calculate external forces
- *      calculate external partials
- *      accumulate
- *      calculate constraints
- *
- *      use solver to find delV, delX
- *
- *      save delV, delX
- *
- * FOR EACH POINT:
- *    update x with delX and v with delV
- */
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
         double timeStep) {
 
@@ -324,6 +305,7 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
 
     //Run the solver to populate delx, delv
     solver->solve(this, timeStep);
+
     //Update x, y new delx, delv
     LARGE_VECTOR* delx = solver->getDelx();
     LARGE_VECTOR* delv = solver->getDelv();

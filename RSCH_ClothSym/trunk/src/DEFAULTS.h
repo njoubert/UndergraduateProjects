@@ -5,7 +5,7 @@
 #define GRAVITY 0,-9.8,0
 
 
-#define DEFAULT_TIMESTEP	0.02
+#define DEFAULT_TIMESTEP	0.01
 #define DEFAULT_SYSTEM	System
 #define DEFAULT_SOLVER	NewmarkSolver
 #define DEFAULT_MATERIAL Material

@@ -7,7 +7,6 @@
 
 #include "CG.h"
 
-#define PERFORMANCEHAXX
 #define RECALC_RESIDUE 50
 
 int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,

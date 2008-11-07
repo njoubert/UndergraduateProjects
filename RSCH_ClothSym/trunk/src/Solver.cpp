@@ -194,8 +194,6 @@ void NewmarkSolver::solve(System* sys, double timeStep) {
     //delV = b/A
     simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
 
-    //Apply constraints again (filter)
-
     //delX = h*(v + g*delV);
     (*_delx) = (*_delv);
     (*_delx) *= (_gamma);

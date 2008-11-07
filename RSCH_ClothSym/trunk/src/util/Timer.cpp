@@ -37,3 +37,4 @@ float Timer::Stop() {
 #endif
     return deltaT;
 }
+

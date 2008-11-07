@@ -63,13 +63,13 @@ public:
         _lasty = y;
 
         if (_Buttons[2]) {
-            _zoom -= (float) 0.01f * diffx * abs((_zoom + 1));
+            _zoom -= (float) 0.01f * diffx * (abs(_zoom) + 1);
         } else if (_Buttons[0]) {
             _rotx += (float) 0.5f * diffy;
             _roty += (float) 0.5f * diffx;
         } else if (_Buttons[1]) {
-            _tx += (float) 0.05f * diffx;
-            _ty -= (float) 0.05f * diffy;
+            _tx += (float) 0.0005f * diffx * (abs(_zoom) + 1);
+            _ty -= (float) 0.0005f * diffy * (abs(_zoom) + 1);
         }
 
         glutPostRedisplay();
@@ -137,6 +137,8 @@ public:
 };
 
 Camera cam;
+Timer fpstimer;
+Timer frametimer;
 
 //-------------------------------------------------------------------------------
 //
@@ -369,9 +371,20 @@ void reshape(int w, int h) {
 // Calculates the next frame of the world.
 //
 void myframemove() {
+
+
+    if (fpstimer.Stop() < cam.inverseFPS) {
+        return;
+    } else {
+        cout << "running at " << 1.0/fpstimer.Stop() << " fps" << endl;
+        fpstimer.Start();
+    }
+
+    frametimer.Start();
     imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
     world.advance(cam.inverseFPS);
     glutPostRedisplay();
+    cout << "Rendered one frame at " << 1.0/frametimer.Stop() << " fps" << endl;
 }
 
 //-------------------------------------------------------------------------------
@@ -446,6 +459,8 @@ int main(int argc, char *argv[]) {
 
     //Initialize Settings:
     init();
+
+    fpstimer.Start();
 
     //Set up callbacks:
     glutIdleFunc(myframemove);
