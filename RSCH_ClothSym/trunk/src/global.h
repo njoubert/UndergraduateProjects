@@ -32,6 +32,7 @@
 
 #include <math.h>
 #include "util/Timer.h"
+#include "util/TimerCollection.h"
 
 #include "Debug.h"
 
@@ -40,7 +41,7 @@
 #include "DEFAULTS.h"
 
 extern Timer fpstimer;
-extern Timer frametimer;
+extern TimerCollection frametimers;
 
 #define PI 3.14159265
 

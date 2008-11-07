@@ -152,7 +152,9 @@ void printUsage() {
 void printStats() {
     cout << "=== STATISTICS ===" << endl;
     cout << "  Average framerate: " << 1.0 / fpstimer.getRunningAverage() << endl;
-    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimer.getRunningAverage() << endl;
+    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimers.getRunningAverage() << endl;
+    cout << "  Frametimers stats: " << endl;
+    frametimers.printStatistics();
     cout << "==================" << endl;
 }
 //-------------------------------------------------------------------------------
@@ -382,13 +384,13 @@ void myframemove() {
         fpstimer.Start();
     }
 
-    frametimer.Start();
+    frametimers.Start();
 
         imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
         world.advance(cam.inverseFPS);
         glutPostRedisplay();
 
-    frametimer.Stop();
+    frametimers.Stop();
 }
 
 //-------------------------------------------------------------------------------

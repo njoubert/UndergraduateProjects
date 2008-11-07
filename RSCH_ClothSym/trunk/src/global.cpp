@@ -8,4 +8,4 @@
 #include "global.h"
 
 Timer fpstimer;
-Timer frametimer;
+TimerCollection frametimers;
