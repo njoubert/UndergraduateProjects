@@ -21,7 +21,7 @@ System::System(TriangleMesh* m, int verticeCount) :
 			m_MxTemp1(verticeCount, verticeCount), m_MxTemp2(verticeCount,
 					verticeCount), m_z(verticeCount), m_b(verticeCount), m_r(
 					verticeCount), m_c(verticeCount), m_q(verticeCount), m_s(
-					verticeCount), m_y(verticeCount) {
+					verticeCount), m_y(verticeCount), r(verticeCount), d(verticeCount), q(verticeCount), x(verticeCount) {
 	m_TotalForces_dp.Zero();
 	m_TotalForces_dv.Zero();
 	m_identity.Zero();
@@ -633,8 +633,8 @@ void System::calculateInternalForces() {
 
 void System::calculateExternalForces() {
 	TriangleMeshVertex* a;
-	//vec3 gravity(0, GRAVITY, 0);
-	vec3 gravity(0, 0, GRAVITY);
+	vec3 gravity(0, GRAVITY, 0);
+	//vec3 gravity(0, 0, GRAVITY);
 	for (int i = 0; i < mesh->countVertices(); i++) {
 		a = mesh->getVertex(i);
 		a->setF(gravity * a->getm());// += f_mouse(a));
@@ -788,7 +788,55 @@ void System::SolveExplicit(double timeStep) {
 	//vec3 deltaX = timeStep * (point->getvX() + deltaV);
 }
 
+void System::CG(SparseMatrix* A){
+	int i = 0, iMAX = 2000, resCutOff = 5;
+	double EPS = 1e-5;
+	double delta_0, delta_new, delta_old, alpha, beta;
+	//Physics_LargeVector x(numVertices);
+	m_dv.Zero();
+	r.Zero();
+	d.Zero();
+	q.Zero();
+	m_vTemp1.Zero();
+	r = m_b;
+	d = r;
+	delta_new = r.DotProduct(r);
+	delta_0 = delta_new;
 
+	do{
+		//cout<<delta_new<<" >? "<<EPS*EPS*delta_0<<endl;
+		//q = A*d
+		A->PostMultiply(d, q);
+		//alpha = delta_new/(dT*q)
+		alpha = delta_new/(d.DotProduct(q));
+		//x = x + alpha*d
+		d.Scale(alpha, m_vTemp1),
+		m_dv.Add(m_vTemp1, m_dv);
+
+		if(i < resCutOff) {
+			//b = b - Ax
+			A->PostMultiply(m_dv, m_vTemp1);
+			m_b.Subtract(m_vTemp1, r);
+		}
+		else {
+			//r = r - alpha*q
+			q.Scale(alpha, m_vTemp1);
+			r.Subtract(m_vTemp1, r);
+		}
+		//delta_old = delta_new
+		delta_old = delta_new;
+		//delta_new = rT*r
+		delta_new = r.DotProduct(r);
+		//beta = delta_new/delta_old
+		beta = delta_new/delta_old;
+		//d = r + beta*d
+		d.Scale(beta, m_vTemp1);
+		r.Add(m_vTemp1, d);
+		//i = i + 1
+		i = i + 1;
+	} while(i < iMAX && delta_new > (EPS*EPS*delta_0));
+	cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<delta_new<<endl;
+}
 
 void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	int i;
@@ -903,6 +951,8 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 		}
 		//cout << "got here3" << endl;
 	}
+
+
 	//*/
 	/*
 	 cout<<"global count: "<<globalCount<<endl;
@@ -1026,9 +1076,13 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	 }
 	 //*/
 
-	int iIterations = 0, iMaxIterations = (int)sqrt(numVertices)*3+3;
+	//CG(&m_A);
+
+	//*
+	int iIterations = 0, iMaxIterations = 2000;
 	double alpha, Delta_0, Delta_old, Delta_new;
-	double Eps_Sq = 1e-22;
+	double Eps = 1e-5;
+	double Eps_Sq = Eps*Eps;
 
 	//double FLOOR_Y = -0.99;
 	//
@@ -1038,6 +1092,9 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 		m_PInv.m_pData[i].x = m_A(i, i).m_Mx[0];
 		m_PInv.m_pData[i].y = m_A(i, i).m_Mx[4];
 		m_PInv.m_pData[i].z = m_A(i, i).m_Mx[8];
+		//m_PInv.m_pData[i].x = 1;
+		//m_PInv.m_pData[i].y = 1;
+		//m_PInv.m_pData[i].z = 1;
 	}
 	m_PInv.Invert(m_P);
 
@@ -1071,8 +1128,8 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 	Delta_new = m_r.DotProduct(m_c);
 
 	if (Delta_new < Eps_Sq * Delta_0) {
-		m_b.Dump("b: \r\n");
-		m_P.Dump("P: \r\n");
+		//m_b.Dump("b: \r\n");
+		//m_P.Dump("P: \r\n");
 		cout << "This isn't good!  Probably a non-Positive Definite matrix\r\n"
 				<< endl;
 	}
@@ -1099,6 +1156,8 @@ void System::SolveImplicit(double timeStep, vector<Constraint*>* constraints) {
 
 		iIterations++;
 	}
+	//cout<<"Intel's CG Converged at iteration "<<iIterations<<" with a residual of "<<Delta_new<<" < "<<Eps_Sq * Delta_0<<endl;
+	//*/
 	/*
 	 double cutIt = 0.001;
 	 for(int i = 0; i < m_dv.Size(); i++) {
@@ -1278,10 +1337,8 @@ void System::takeStep(Solver* solver, vector<Constraint*>* constraints, vector<C
 
 	 //exit(1);
 	 //*/
-	for(int i = 0; i < constraints->size(); i++) {
+	for(int i = 0; i < constraints->size(); i++)
 		(*constraints)[i]->applyConstraintToPoints();
-	}
-
 
 	loadMatrices();
 

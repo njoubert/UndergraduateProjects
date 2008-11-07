@@ -18,6 +18,7 @@ World::~World() {
 void World::advance(double netTime) {
 
 	//Sort the Models from Largest TimeStep to Smallest
+	/*
 	Model* tempModel;
 	for (int i = 0; i < _models.size()-1; i++) {
 	  for (int j = 0; j < _models.size()-1-i; j++)
@@ -27,6 +28,7 @@ void World::advance(double netTime) {
 	      _models[j+1] = tempModel;
 	  }
 	}
+	//*/
 
 	//The Simple Version, Assuming only one dependency (cloth on ellipsoids)
 	int stepSize = int(netTime / _models[0]->getTimeStep());
@@ -105,10 +107,10 @@ bool World::createVertexToAnimatedEllipseContraint() {
 	LeadEllipsoids.push_back(4);
 
 	vector<int>	FollowVertices;
-	//FollowVertices.push_back(30);
-	//FollowVertices.push_back(35);
-	FollowVertices.push_back(7);
-	FollowVertices.push_back(8);
+	FollowVertices.push_back(30);
+	FollowVertices.push_back(35);
+	//FollowVertices.push_back(7);
+	//FollowVertices.push_back(8);
 
 	for (int i = 0; i < FollowVertices.size(); i++) {
 
@@ -136,24 +138,27 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
 	}
 
-    //COLISIONS (can be thought of as "Collision Constraints")
-	if (_models.size() > 1) {
-		SimModel* collisionModel = (SimModel*) _models[1];
-		TriangleMesh* collisionMesh = collisionModel->getMesh();
 
-		AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
-
-		VertexToAnimatedEllipseConstraint* collisionConstraint =
-				new VertexToAnimatedEllipseConstraint();
-
-		collisionConstraint->setCollisionMesh(collisionMesh);
-		collisionConstraint->setCollisionEllipsoids(collisionEllipsoids);
-		collisionModel->registerCollision(collisionConstraint);
-	}
     return true;
 }
 
+bool World::createVertexToAnimatedEllipseCollisions() {
+	//COLISIONS (can be thought of as "Collision Constraints")
+		if (_models.size() > 1) {
+			SimModel* collisionModel = (SimModel*) _models[1];
+			TriangleMesh* collisionMesh = collisionModel->getMesh();
 
+			AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
+
+			VertexToAnimatedEllipseConstraint* collisionConstraint =
+					new VertexToAnimatedEllipseConstraint();
+
+			collisionConstraint->setCollisionMesh(collisionMesh);
+			collisionConstraint->setCollisionEllipsoids(collisionEllipsoids);
+			collisionModel->registerCollision(collisionConstraint);
+		}
+		return true;
+}
 
 double World::getTime() {
 	return _time;

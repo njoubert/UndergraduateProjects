@@ -16,6 +16,7 @@
 
 Constraint::Constraint() {
    // TODO Auto-generated constructor stub
+
 }
 
 Constraint::~Constraint() {
@@ -135,44 +136,120 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 
 }
 
-void VertexToAnimatedEllipseConstraint::applyCollisionToMesh(Physics_LargeVector* X, Physics_LargeVector* V){
+void VertexToAnimatedEllipseConstraint::frictionForce(TriangleMeshVertex* p, vec3 Velli, int j) {
+	vec3 n = _ellipsoids->getNormal(j, p->getX());
+	vec3 Vrel = p->getvX() - Velli;
+	vec3 saveF = p->getF();
+
+	vec3 N = p->getF()*-1*n;
+	if( p->getvX().length() == 0 && p->getF().length() < (_ellipsoids->getMu_s()*N.length()) )
+		p->getF() = 0;
+	else {
+		vec3 F = -1*_ellipsoids->getMu_d()*N.length()*(Vrel/Vrel.length());
+		p->getF() += F;
+		cout<<"Friction Force of "<<F<<" was applied."<<endl;
+	}
+
+}
+
+void VertexToAnimatedEllipseConstraint::applyCollisionToMesh(Physics_LargeVector* X, Physics_LargeVector* V) {
 	for(int i = 0; i < _mesh->countVertices(); i++) {
 		for(int j = 0; j < _ellipsoids->getSize(); j++) {
-			mat4 elliTransform = _ellipsoids->getEllipsoid(j);
 			TriangleMeshVertex* Vert = _mesh->getVertex(i);
+			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j, Vert->getX());
 
-			vec4 v;
-			for(int k = 0; k < 3; k++)
-				v[k] = Vert->getX()[k];
-			v[3] = 1;
-			//cout<<"v : "<<v<<endl;
-			//cout<<"elliTransform: "<<endl<<elliTransform<<endl;
-			vec4 vT = v * elliTransform.inverse();
-			//cout<<"vT: "<<vT<<endl;
-			double L = sqrt(vT[0]*vT[0] + vT[1]*vT[1] + vT[2]*vT[2]);
-			//cout<<"L : "<<L<<endl<<endl;
-			if(L < 1) {
+			if( _ellipsoids->isPointInsideElli(j, Xc_elliSpace) ) {
 				//cout<<"colision detected"<<endl;
-				//vT.normalize();
-				vec3 vT_3;
-				for(int k = 0; k < 3; k++)
-					vT_3[k] = vT[k];
 
-				vT_3 = vT_3/sqrt(vT_3[0]*vT_3[0] + vT_3[1]*vT_3[1] + vT_3[2]*vT_3[2]);
 
-				for(int k = 0; k < 3; k++)
-					vT[k] = vT_3[k];
-				vT[3] = 1;
 
-				v = vT * elliTransform;
+					//Get Origin of Current Ellipsoid
+				/*	vec4 origin(0); origin[1] = 1;
+					vec4 Xo_4 = origin * elliTransform;
+					vec3 Xo;
+					for(int k = 0; k < 3; k++)
+						Xo[k] = Xo_4[k];
+				//*/
+				//Get Linear Velocity
+				//vec3 linearVelocity = (ElliCenterFuture - ElliCenterPast)/(2*elliTimeStep);
+				//cout<<"Past ellipsoid Position: "<<ElliCenterPast<<endl;
+				//cout<<"future ellipsoid Position: "<<ElliCenterFuture<<endl;
+				//cout<<"timeStep * 2 "<<elliTimeStep*2<<endl;
+				//cout<<"linearVelocity "<<linearVelocity<<endl<<endl;
+			//*
 
-				X->m_pData[Vert->getID()].x = v[0];
-				X->m_pData[Vert->getID()].y = v[1];
-				X->m_pData[Vert->getID()].z = v[2];
 
-				V->m_pData[Vert->getID()].x = -.1 * V->m_pData[Vert->getID()].x;
-				V->m_pData[Vert->getID()].y = -.1 * V->m_pData[Vert->getID()].y;
-				V->m_pData[Vert->getID()].z = -.1 * V->m_pData[Vert->getID()].z;
+
+				//	CurrentTime: Xc -> position of collision, 				Xo -> point of ellipsoid origin (should be center of mass)
+				//	FutureTime: Xc_f -> position of collision in future, 	Xo_f -> point of future ellipsoid origin (should be center of mass)
+				//	PastTime: Xc_p -> position of collision in past, 		Xo_f -> point of past ellipsoid origin (should be center of mass)
+				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+				vec3 Xc_f = _ellipsoids->getPointInFuture(j, Xc);
+				vec3 Xc_p = _ellipsoids->getPointInPast(j, Xc);
+				vec3 Xo = _ellipsoids->getOrigin(j);
+				vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
+				vec3 Xo_p = _ellipsoids->getPastOrigin(j);
+				double elliTimeStep = _ellipsoids->getTimeStep();
+
+				//	V0 = Linear Velocity, W = Angular Velocity, Velli = Total Velocity of Ellipsoid
+				vec3 Vo = (Xo_f - Xo_p)/(2*elliTimeStep);
+				vec3 r = (Xc - Xo), r_p = (Xc_p - Xo_p), r_f = (Xc_f - Xo_f);
+				vec3 Vr = (r_f - r_p)/(2*elliTimeStep);
+				vec3 W = (r^Vr)/(r.length()*r.length());
+				vec3 Wtan = W^r;
+				vec3 Velli = Vo + Wtan;
+
+				vec3 n = _ellipsoids->getNormal(j, Vert->getX());
+
+				//cout<<n<<endl;
+				//vec3 Velocity = Velli.length()*-1*n;
+
+				//frictionForce(Vert, Velli, j);
+
+				//cout<<"Angular Component: "<<Wtan<<endl;
+				//cout<<"Linear Component: "<<Vo<<endl;
+				//cout<<"Total Velocity: "<<Velli<<endl;
+//*
+				X->m_pData[Vert->getID()].x = Xc[0] + 10*(Xc[0] - X->m_pData[Vert->getID()].x);
+				X->m_pData[Vert->getID()].y = Xc[1] + 10*(Xc[1] - X->m_pData[Vert->getID()].y);
+				X->m_pData[Vert->getID()].z = Xc[2] + 10*(Xc[2] - X->m_pData[Vert->getID()].z);
+/*
+				vec3 Vvert;
+				Vvert[0] = V->m_pData[i].x;
+				Vvert[1] = V->m_pData[i].y;
+				Vvert[2] = V->m_pData[i].z;
+
+				for (int k = 0; k < 3; k++) {
+					if (Vvert[k] == 0) {
+						Vvert[k] = Velli[k];
+						cout<<"case1"<<endl;
+					}
+					else if (Velli[k] == 0) {
+						Vvert[k] = -.1*Velli[k];
+						cout<<"case2"<<endl;
+					}
+					else if ((Velli[k] > 0 && Vvert[k] < 0) || (Velli[k] < 0
+							&& Vvert[k] > 0)) {
+						Vvert[k] = Velli[k] + .1*(-Vvert[k]);
+						cout<<"case3"<<endl;
+					}
+					else if ((Velli[k] > 0 && Vvert[k] > 0) || (Velli[k] < 0
+							&& Vvert[k] < 0)) {
+						Vvert[k] = Velli[k] + .1*Vvert[k];
+						cout<<"case4"<<endl;
+					}
+					else {
+						cout<<"Unkown Case Came Up"<<endl;
+						cout<<"Vvert: "<<Vvert<<endl;
+						cout<<"Velli: "<<Velli<<endl;
+						exit(1);
+					}
+				}
+//*/
+				V->m_pData[Vert->getID()].x = -.1*V->m_pData[Vert->getID()].x + Velli[0];//+ Wtan[0];// + Vo[0];//
+				V->m_pData[Vert->getID()].y = -.1*V->m_pData[Vert->getID()].y + Velli[1];//+ Wtan[1];// + Vo[1];//
+				V->m_pData[Vert->getID()].z = -.1*V->m_pData[Vert->getID()].z + Velli[2];//+ Wtan[2];// + Vo[2];//
+//*/
 			}
 		}
 	}

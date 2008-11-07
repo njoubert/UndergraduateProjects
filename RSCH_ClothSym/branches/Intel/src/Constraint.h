@@ -27,6 +27,7 @@ public:
     TriangleMeshVertex* getFollow();
     void setCollisionMesh(TriangleMesh* mesh);
     void setCollisionEllipsoids(AniElliModel* ellipsoids);
+
 //private:
     AniElliModel* _lead;
     int _leadIndex;
@@ -57,6 +58,7 @@ public:
     void applyConstraintToPoints();
     void applyConstraintToSolverMatrices(double time, SparseMatrix* A, Physics_LargeVector* b);
     void applyCollisionToMesh(Physics_LargeVector* X, Physics_LargeVector* V);
+    void frictionForce(TriangleMeshVertex*, vec3, int);
 };
 
 #endif /* CONSTRAINT_H_ */

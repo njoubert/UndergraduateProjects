@@ -127,6 +127,20 @@ public:
     mat4 getEllipsoid(int Indx);
     int getSize();
 
+    vec3 getOrigin(int i);
+    vec3 getPastOrigin(int i);
+    vec3 getFutureOrigin(int i);
+    vec4 convertPoint2ElliSpace(int, vec3);
+    vec3 getPointInsideElli2Surface(int, vec4);
+    bool isPointInsideElli(int, vec4);
+    vec3 getPointInFuture(int i, vec3 x_WorldSpace_3);
+    vec3 getPointInPast(int i, vec3 x_WorldSpace_3);
+
+    vec3 getNormal(int j, vec3 X_world_3);
+
+    double getMu_s();
+    double getMu_d();
+
 private:
 	//TriangleMesh* getCurrentMesh();
 	//void stepToNextMesh();
@@ -139,10 +153,18 @@ private:
 	vector<vec3> _takeConst;
 	vec4 _origin;
 	double _timeStep;
+	double _linearVelocity;
+	double _angularVelocity;
+
+	//Friction Variables
+	double _muS;
+	double _muD;
+
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer
 	//TriangleMesh* _mesh;
 //	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
+
 };
 
 

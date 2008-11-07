@@ -36,6 +36,8 @@ public:
         paused = false;
         follow = false;
         mouseIsDown = false;
+        collisions = false;
+        dynamicConstraints = false;
         inverseFPS = 1.0 / 25.0;
         lastTime = 0;
 	}
@@ -175,6 +177,8 @@ public:
 	double lastTime;
     double inverseFPS;
     bool paused;
+    bool collisions; //not really part of camera, disables/enables collisions
+    bool dynamicConstraints;
 };
 
 Camera cam;
@@ -192,54 +196,54 @@ void printUsage() {
 //-------------------------------------------------------------------------------
 //
 int parseCommandLine(int argc, char *argv[]) {
-    bool malformedArg;
-    bool printUsage = false;
-    bool hasOBJ = false;
-    int i;
-    for (i = 1; i < argc; i++) {
-        malformedArg = false;
+	bool malformedArg;
+	bool printUsage = false;
+	bool hasOBJ = false;
+	int i;
+	for (i = 1; i < argc; i++) {
+		malformedArg = false;
 
-        if (strcmp(argv[i],"-d") == 0) {
+		if (strcmp(argv[i], "-d") == 0) {
 
-            if (isThereMore(i, argc, 1)) {
-                ++i;
-                //Debug::DEBUG = atoi(argv[i]);
-            } else {
-                malformedArg = true;
-            }
+			if (isThereMore(i, argc, 1)) {
+				++i;
+				//Debug::DEBUG = atoi(argv[i]);
+			} else {
+				malformedArg = true;
+			}
 
-        } else if (!strcmp(argv[i], "-statobj")) {
+		} else if (!strcmp(argv[i], "-statobj")) {
 
-            if (isThereMore(i, argc, 1)) {
-                std::string filename = std::string(argv[++i]);
-                world.loadStatModel(filename);
-                hasOBJ = true;
-            } else {
-                malformedArg = true;
-            }
+			if (isThereMore(i, argc, 1)) {
+				std::string filename = std::string(argv[++i]);
+				world.loadStatModel(filename);
+				hasOBJ = true;
+			} else {
+				malformedArg = true;
+			}
 
-        } else if (!strcmp(argv[i], "-simobj")) {
+		} else if (!strcmp(argv[i], "-simobj")) {
 
-        	if (isThereMore(i, argc, 2)) {
+			if (isThereMore(i, argc, 2)) {
 				std::string filename = std::string(argv[++i]);
 				double timeStep = atof(argv[++i]);
 				world.loadSimModel(filename, timeStep);
 				hasOBJ = true;
-        	} else {
+			} else {
 				malformedArg = true;
 			}
 
-        } else if (!strcmp(argv[i], "-aniobj")) {
+		} else if (!strcmp(argv[i], "-aniobj")) {
 
-				if (isThereMore(i, argc, 1)) {
-					std::string filename = std::string(argv[++i]);
-					world.loadAniModel(filename);
-					hasOBJ = true;
-				} else {
-					malformedArg = true;
-				}
+			if (isThereMore(i, argc, 1)) {
+				std::string filename = std::string(argv[++i]);
+				world.loadAniModel(filename);
+				hasOBJ = true;
+			} else {
+				malformedArg = true;
+			}
 
-        } else if (!strcmp(argv[i], "-elliobj")) {
+		} else if (!strcmp(argv[i], "-elliobj")) {
 
 			if (isThereMore(i, argc, 2)) {
 				std::string filename = std::string(argv[++i]);
@@ -250,27 +254,36 @@ int parseCommandLine(int argc, char *argv[]) {
 				malformedArg = true;
 			}
 
-        }  else if (!strcmp(argv[i], "-img")) {
+		} else if (!strcmp(argv[i], "-img")) {
 
-            if (isThereMore(i, argc, 1)) {
-                std::string dirname = std::string(argv[++i]);
-                imagesaver.initialize(dirname, cam.inverseFPS);
-            } else {
-                malformedArg = true;
-            }
+			if (isThereMore(i, argc, 1)) {
+				std::string dirname = std::string(argv[++i]);
+				imagesaver.initialize(dirname, cam.inverseFPS);
+			} else {
+				malformedArg = true;
+			}
 
-        } else {
-            malformedArg = true;
-        }
+		} else if (!strcmp(argv[i], "-coll")) {
 
-        if (malformedArg) {
-            cout << "Malformed input arg in parsing command \"" << argv[i] << "\"" << endl;
-            printUsage = true;
-        }
-    }
-    if (printUsage || !hasOBJ)
-        return 1;
-    return 0;
+			cam.collisions = true;
+
+		} else if (!strcmp(argv[i], "-dcons")) {
+
+			cam.dynamicConstraints = true;
+
+		} else {
+			malformedArg = true;
+		}
+
+		if (malformedArg) {
+			cout << "Malformed input arg in parsing command \"" << argv[i]
+					<< "\"" << endl;
+			printUsage = true;
+		}
+	}
+	if (printUsage || !hasOBJ)
+		return 1;
+	return 0;
 
 }
 
@@ -307,8 +320,10 @@ void processKeys(unsigned char key, int x, int y) {
 //
 void init(void)
 {
-   world.createVertexToAnimatedEllipseContraint();
-
+	if(cam.collisions)
+		world.createVertexToAnimatedEllipseCollisions();
+	if(cam.dynamicConstraints)
+		world.createVertexToAnimatedEllipseContraint();
 
    GLfloat mat_diffuse[] = { 0.5, 0.5, 0.5, 1.0 };
    GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -430,8 +445,8 @@ void myframemove() {
 //-------------------------------------------------------------------------------
 //
 void myMousePress(int button, int state, int x, int y) {
-
-
+	cam.mousepress(button,state,x,y);
+/*
     if (button == GLUT_LEFT_BUTTON  && state == GLUT_DOWN && glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
             //Find the point
             float z = 0.5;
@@ -454,15 +469,16 @@ void myMousePress(int button, int state, int x, int y) {
     }
     else {
     	world.disableMouseForce();
-    	cam.mousepress(button,state,x,y);
+
     }
+    //*/
 }
 
 //-------------------------------------------------------------------------------
 //
 void myMouseMove(int x, int y) {
-
-
+	cam.mousemotion(x,y);
+/*
     if (world.isMouseEnabled()) {
          //Find the point
             float z = 0.5;
@@ -483,8 +499,7 @@ void myMouseMove(int x, int y) {
             else
             	cout<<"gluUnProject Returned False"<<endl;
     }
-    else
-    	cam.mousemotion(x,y);
+    //*/
 
 }
 

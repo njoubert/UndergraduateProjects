@@ -36,6 +36,7 @@ public:
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
     bool createVertexToAnimatedEllipseContraint();
+    bool createVertexToAnimatedEllipseCollisions();
 
     double getTime();
     vec3 getFocusPoint();

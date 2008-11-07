@@ -84,6 +84,8 @@ public:
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
+    void CG(SparseMatrix*);
+
 	int m_iParticles, m_iInverseIterations;
 	Physics_LargeVector m_Positions;
 	Physics_LargeVector m_Velocities;
@@ -101,6 +103,8 @@ private:
     double time;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
+
+    Physics_LargeVector r, d, x, q;
 
 
     ////////////////////////INTEL INSIDE!!!!!!!!!!!!!!!!!!!!///////
