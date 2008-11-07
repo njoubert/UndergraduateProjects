@@ -15,7 +15,7 @@
 #define DEFAULT_KBE 0.1
 #define DEFAULT_KBD 0.01
 
-#define DEFAULT_GAMMA 0.6
+#define DEFAULT_GAMMA 0.64
 
 #define DEFAULT_SPARSEMAT Coord_Mat_double
 
@@ -23,6 +23,6 @@
 #define LARGE_VECTOR LargeVec3Vector
 
 #define MAX_CG_ITER 100
-#define MAX_CG_ERR 0.00001
+#define MAX_CG_ERR 0.0001
 
 #endif /* DEFAULTS */

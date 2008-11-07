@@ -8,8 +8,10 @@
 #include "Timer.h"
 
 Timer::Timer() {
+    running = false;
+    lastLap = 0;
     runningTotal = 0;
-    runningLaps = 1;
+    lapsCount = 1;
 }
 
 Timer::~Timer() {
@@ -17,6 +19,7 @@ Timer::~Timer() {
 }
 
 void Timer::Start() {
+    running = true;
 #ifdef _WIN32
     lastTime = GetTickCount();
 #else
@@ -24,7 +27,10 @@ void Timer::Start() {
 #endif
 }
 
-float Timer::Stop() {
+float Timer::Elapsed() {
+    if (!running)
+        return lastLap;
+
     float deltaT;
 #ifdef _WIN32
     DWORD currentTime = GetTickCount();
@@ -35,14 +41,22 @@ float Timer::Stop() {
     deltaT = (float) ((currentTime.tv_sec - lastTime.tv_sec) + 1e-6
             * (currentTime.tv_usec - lastTime.tv_usec));
 #endif
+
     return deltaT;
 }
 
-void Timer::updateRunningTotal() {
-    float lap = Stop();
-    runningTotal = runningTotal*((float)runningLaps / ((float)runningLaps+1)) + lap/(runningLaps+1);
-    runningLaps++;
+float Timer::Stop() {
+    lastLap = Elapsed();
+    if (!running)
+        return lastLap;
+
+    runningTotal = runningTotal * ((float) lapsCount / ((float) lapsCount + 1))
+            + lastLap / (lapsCount + 1);
+    lapsCount++;
+
+    return lastLap;
 }
-float Timer::getRunningTotal() {
+
+float Timer::getRunningAverage() {
     return runningTotal;
 }

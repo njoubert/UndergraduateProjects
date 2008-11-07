@@ -11,18 +11,19 @@
 
 int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         int imax, double e) {
+
     int i = 0;                                  //Steps so far
-    LargeVec3Vector r(b.size(), 0);            //Residue
+    LargeVec3Vector r(b.size());            //Residue
     A.postMultiply(x, r);
     r *= -1;
     r += b;
     LargeVec3Vector d(r);
-    double deln = r.Dot(d);
+    double deln = r.Dot(r);
     double del0 = deln;
 
     double esquare = e*e;
     double alpha = 0, beta = 0;
-    LargeVec3Vector q(r.size(), 0);
+    LargeVec3Vector q(r.size());
     while (i < imax && deln > esquare*del0) {
         A.postMultiply(d, q);
         alpha = deln / d.Dot(q);
@@ -49,6 +50,7 @@ int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         d *= beta;
         d += r;
         i++;
+        //cout << "deln = " << deln << " del0 = " << del0 << endl;
     }
     return i;
 }

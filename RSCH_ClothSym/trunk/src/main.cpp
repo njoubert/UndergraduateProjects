@@ -137,9 +137,6 @@ public:
 };
 
 Camera cam;
-Timer fpstimer;
-Timer frametimer;
-
 //-------------------------------------------------------------------------------
 //
 void printUsage() {
@@ -154,8 +151,8 @@ void printUsage() {
 
 void printStats() {
     cout << "=== STATISTICS ===" << endl;
-    cout << "  Average framerate: " << 1.0 / fpstimer.getRunningTotal() << endl;
-    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimer.getRunningTotal() << endl;
+    cout << "  Average framerate: " << 1.0 / fpstimer.getRunningAverage() << endl;
+    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimer.getRunningAverage() << endl;
     cout << "==================" << endl;
 }
 //-------------------------------------------------------------------------------
@@ -378,10 +375,10 @@ void reshape(int w, int h) {
 //
 void myframemove() {
 
-    if (fpstimer.Stop() < cam.inverseFPS) {
+    if (fpstimer.Elapsed() < cam.inverseFPS) {
         return;
     } else {
-        fpstimer.updateRunningTotal();
+        fpstimer.Stop();
         fpstimer.Start();
     }
 
@@ -391,7 +388,7 @@ void myframemove() {
         world.advance(cam.inverseFPS);
         glutPostRedisplay();
 
-    frametimer.updateRunningTotal();
+    frametimer.Stop();
 }
 
 //-------------------------------------------------------------------------------

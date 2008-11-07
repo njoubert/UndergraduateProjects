@@ -30,14 +30,17 @@
 #include <GL/glut.h>
 #endif
 
-#include <time.h>
 #include <math.h>
+#include "util/Timer.h"
 
 #include "Debug.h"
 
 #include "math/algebra3.h"
 
 #include "DEFAULTS.h"
+
+extern Timer fpstimer;
+extern Timer frametimer;
 
 #define PI 3.14159265
 

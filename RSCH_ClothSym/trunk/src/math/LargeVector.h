@@ -25,7 +25,6 @@ public:
     }
     LargeVec3Vector(int n, double v):
         _size(n), _elements(n, vec3(v)){
-
     }
     LargeVec3Vector(const LargeVec3Vector & v) :
         _size(v.size()), _elements(v.size()) {
