@@ -50,7 +50,6 @@ int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         d *= beta;
         d += r;
         i++;
-        cout << "deln = " << deln << endl;
     }
     return i;
 }

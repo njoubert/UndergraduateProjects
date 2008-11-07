@@ -49,6 +49,12 @@ public:
     int size() const {
         return _size;
     }
+    LargeVec3Vector & operator =(LargeVec3Vector const &v) {
+        for (int i = 0; i < _size; i++) {
+            _elements[i] = v[i];
+        }
+        return *this;
+    }
     LargeVec3Vector & operator +=(LargeVec3Vector const &v) {
         for (int i = 0; i < _size; i++) {
             _elements[i] += v[i];

@@ -15,6 +15,7 @@ class NewmarkSolver;
 
 #include "System.h"
 #include "connectors/MeshTOLargeMatrix.h"
+#include "math/CG.h"
 
 class Solver {
 public:

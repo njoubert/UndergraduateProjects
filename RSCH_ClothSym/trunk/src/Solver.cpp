@@ -175,48 +175,32 @@ void NewmarkSolver::calculateState(System* sys) {
 }
 
 void NewmarkSolver::solve(System* sys, double timeStep) {
+    //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
-    (*_JV) *= (timeStep*_gamma);
-    (*_JP) *= (timeStep*timeStep*_gamma);
+    (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
+    (*_JP) *= (timeStep*timeStep*_gamma);   //JP = g*h^2*JP
     (*A) -= (*_JV);
     (*A) -= (*_JP);
 
-    //cout << (*_JV) << endl;
-    //cout << (*_JP) << endl;
-    //cout << "============= gamma*timeStep=" << (timeStep*_gamma) << endl;
+    //b = h*f + g*h^2*v*JP);
+    (*_f) *= timeStep;
+    (*_JP).postMultiply((*sys->getV()), *b);
+    (*b) += (*_f);
 
-    cout << (*A) << endl;
+    //Apply constraints (filter):
+    A->zeroRowCol(0,0,true);
+    (*b)[0] = vec3(0,0,0);
 
-    cout << "timestep=" << timeStep << endl;
-    cout << "gamma=" << _gamma << endl;
-    exit(1);
-    /*
-    %=== NEWMARK INTEGRATOR ===
-    A = M - g*h*JV - g*h^2*JP;
-    b = h*(f + g*h*v*JP);
+    //delV = b/A
+    simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
 
-    %A
-    %b
-    %kweee
+    //Apply constraints again (filter)
 
-    %Constraints
-    A(const, :) = [];
-    A(:, const) = [];
-    b(const) = [];
-
-    %Solve for change in V
-    %delV = zeros(1,length(b));
-    %delV = simpleCG(A, b, delV, 100, 0.00001)
-    delV = bicg(A,b);
-
-    %take constraints into account
-    delV = delV(globalToSol);
-    delV(const) = 0.0;
-
-    %calculate change in positon
-    delX = h*(v + g*delV);   %This is nuttapong's... correct?
-    %delX = h*(v + delV);    %This is our original...
-    */
+    //delX = h*(v + g*delV);
+    (*_delx) = (*_delv);
+    (*_delx) *= (_gamma);
+    (*_delx) += *(sys->getV());
+    (*_delx) *= timeStep;
 
 }
 

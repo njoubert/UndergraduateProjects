@@ -88,6 +88,18 @@ public:
     int getNonzeroSize() {
         return _sparseElements.size();
     }
+    bool isNonZero(int c) const {
+        unsigned int i = 0;
+        while (i < _sparseIndices.size()) {
+            if (_sparseIndices[i] < c) {
+                i++;
+            } else if (_sparseIndices[i] == c) {
+                return true;
+            } else
+                return false;
+        }
+        return false;
+    }
     int getSparseIndexForEntry(int c) const {
         unsigned int i = 0;
         if (0 == _sparseIndices.size()) {
@@ -239,13 +251,12 @@ public:
         }
     }
     bool isNonZero(int r, int c) {
-        cout << "isNonZero" << endl;
 #ifdef CATCHERRORS
         if ((r > _rowCount) || (c >= _colCount)) {
             cout << __FILE__ << "::" << __LINE__ << ": SPARSE MATRIX DIMESIONS OUT OF RANGE\n" << endl;
         }
 #endif
-        return (_rowData[r]->getSparseIndexForEntry(c) >= 0);
+        return (_rowData[r]->isNonZero(c));
     }
     int getNonzeroSize() {
         int net = 0;
@@ -266,7 +277,8 @@ public:
         mat3 zero(0);
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
-            (*_rowData[r])[i] = zero;
+            if (_rowData[r]->isNonZero(i))
+                (*_rowData[r])[i] = zero;
         }
         if (setIntersectionToOne)
             (*this)(r,c) = identity2D();
