@@ -23,12 +23,16 @@ public:
 #else
     struct timeval lastTime;
 #endif
+    float runningTotal;
+    int runningLaps;
 
     Timer();
     virtual ~Timer();
 
     void Start();
     float Stop();
+    void updateRunningTotal();
+    float getRunningTotal();
 };
 
 #endif /* TIMER_H_ */

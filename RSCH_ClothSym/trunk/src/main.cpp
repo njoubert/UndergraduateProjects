@@ -44,7 +44,7 @@ public:
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        //You can set the position of the camera qith gluLookAt
+        //You can set the position of the camera with gluLookAt
         gluLookAt(0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
         //This order gives you Maya-like
@@ -152,6 +152,12 @@ void printUsage() {
     cout << "      [-img directory] " << endl;
 }
 
+void printStats() {
+    cout << "=== STATISTICS ===" << endl;
+    cout << "  Average framerate: " << 1.0 / fpstimer.getRunningTotal() << endl;
+    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimer.getRunningTotal() << endl;
+    cout << "==================" << endl;
+}
 //-------------------------------------------------------------------------------
 //
 int parseCommandLine(int argc, char *argv[]) {
@@ -247,7 +253,7 @@ void processKeys(unsigned char key, int x, int y) {
         cam.showGrid = !cam.showGrid;
         break;
     case 27:
-        exit(0);
+        closeMe(0);
         break;
     }
 }
@@ -372,19 +378,20 @@ void reshape(int w, int h) {
 //
 void myframemove() {
 
-
     if (fpstimer.Stop() < cam.inverseFPS) {
         return;
     } else {
-        cout << "running at " << 1.0/fpstimer.Stop() << " fps" << endl;
+        fpstimer.updateRunningTotal();
         fpstimer.Start();
     }
 
     frametimer.Start();
-    imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
-    world.advance(cam.inverseFPS);
-    glutPostRedisplay();
-    cout << "Rendered one frame at " << 1.0/frametimer.Stop() << " fps" << endl;
+
+        imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
+        world.advance(cam.inverseFPS);
+        glutPostRedisplay();
+
+    frametimer.updateRunningTotal();
 }
 
 //-------------------------------------------------------------------------------
@@ -437,6 +444,13 @@ void myMouseMove(int x, int y) {
      sys->updateMouseForce(vec3(ox,oy,0));
      }
      */
+}
+
+//-------------------------------------------------------------------------------
+//
+void closeMe(int code) {
+    printStats();
+    exit(code);
 }
 
 //-------------------------------------------------------------------------------

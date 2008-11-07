@@ -7,7 +7,8 @@ SOURCES := $(wildcard ./src/*.cpp) \
     $(wildcard ./src/math/*.cpp) \
     $(wildcard ./src/connectors/*.cpp) 
 PLATFORM := OSX
-MACROS := -DCATCHERRORS
+MACROS := -DPERFORMANCEHAXX
+MACROS += -DCATCHERRORS
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
 

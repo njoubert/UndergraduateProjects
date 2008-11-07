@@ -1,0 +1,22 @@
+function [x] = simpleCG(A, b, x, imax, e)
+
+i = 0
+r = b - Ax
+d = r
+deln = r'*r
+del0 = deln
+
+for (step = 1:10)
+    q = A*d;
+    alpha = (deln)/ (d'*q);
+    x = x + alpha*d;
+    r = b - Ax;
+    
+    del0 = deln;
+    deln = r'*r;
+    beta = deln / del0;
+    d = r + beta*d;
+    i = i + 1;
+end
+
+x

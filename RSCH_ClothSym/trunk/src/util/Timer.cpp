@@ -8,8 +8,8 @@
 #include "Timer.h"
 
 Timer::Timer() {
-    // TODO Auto-generated constructor stub
-
+    runningTotal = 0;
+    runningLaps = 1;
 }
 
 Timer::~Timer() {
@@ -38,3 +38,11 @@ float Timer::Stop() {
     return deltaT;
 }
 
+void Timer::updateRunningTotal() {
+    float lap = Stop();
+    runningTotal = runningTotal*((float)runningLaps / ((float)runningLaps+1)) + lap/(runningLaps+1);
+    runningLaps++;
+}
+float Timer::getRunningTotal() {
+    return runningTotal;
+}

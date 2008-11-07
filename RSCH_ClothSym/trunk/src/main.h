@@ -26,5 +26,6 @@ static DWORD lastTime;
 //static struct timeval lastTime;
 #endif
 
+void closeMe(int code);
 
 #endif
