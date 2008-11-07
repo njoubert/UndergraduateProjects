@@ -57,6 +57,7 @@ bool World::loadSimModel(string filename) {
 bool World::loadAniModel(string filename) {
     Model* model = new AniModel(filename);
     _models.push_back(model);
+    return true;
 }
 
 bool World::loadEllipseModel(string filename, int numFrames) {

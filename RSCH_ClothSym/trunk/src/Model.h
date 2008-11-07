@@ -5,16 +5,17 @@
  *      Author: njoubert
  */
 
+#ifndef MODEL_H_
+#define MODEL_H_
+
+class Model;
+
 #include "global.h"
 #include "System.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Constraint.h"
 #include "io/OBJParser.h"
-
-
-#ifndef MODEL_H_
-#define MODEL_H_
 
 /**
  * Defines a model in our scene.
@@ -113,7 +114,7 @@ private:
 
 private:
 	string _filename; //the template filename from which to iterate.
-	int _count;
+	unsigned int _count;
 	vector < vector <mat4> > _ellipsoids;
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer

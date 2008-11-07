@@ -70,12 +70,15 @@ public:
     /**
      * Creates a new vertex at position (x,y,z) with no velocity or force on it.
      */
-    TriangleMeshVertex(double x, double y, double z);
+    TriangleMeshVertex(double x, double y, double z, int i);
     void addToEdge(TriangleMeshEdge* edge);
     vec3 & getX();
     vec3 & getU();
     vec3 & getvX();
     double getm();
+
+    int getIndex();
+
     void setm(double);
     vec3 getNormal();
     mat3 & getConstaint();
@@ -97,6 +100,7 @@ private:
     vec3 U;     //Original Position
     vec3 vX;    //Velocity
     double m;
+    int _index;
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 

@@ -96,6 +96,10 @@ SimModel::~SimModel() {
 }
 
 void SimModel::advance(double netTime) {
+
+    //Load x, vx from mesh into system:
+    _system->loadStateFromMesh();
+
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
         _system->takeStep(_solver, &_constraints, _timeStep);

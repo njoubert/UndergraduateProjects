@@ -13,10 +13,10 @@
 *                                                               *
 ****************************************************************/
 
-TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z):
-        X(x,y,z), U(x,y,z), vX(0,0,0), F(0,0,0), edges() {
+TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z, int i):
+    F(0,0,0), X(x,y,z), U(x,y,z),vX(0,0,0), _index(i), edges() {
     S = mat3(0);
-    m = 0.0008;
+
 }
 
 vec3 & TriangleMeshVertex::getX() { return X; }
@@ -28,6 +28,8 @@ vec3 & TriangleMeshVertex::getvX() { return vX; }
 double TriangleMeshVertex::getm() { return m; }
 
 void TriangleMeshVertex::setm(double mass) { m = mass; }
+
+int TriangleMeshVertex::getIndex() { return _index; }
 
 vec3 TriangleMeshVertex::getNormal() {
     std::vector<TriangleMeshEdge*>::const_iterator it =
@@ -261,7 +263,7 @@ TriangleMesh::~TriangleMesh() {
 }
 
 int TriangleMesh::createVertex(double x, double y, double z) {
-    TriangleMeshVertex* newV = new TriangleMeshVertex(x,y,z);
+    TriangleMeshVertex* newV = new TriangleMeshVertex(x,y,z, vertices.size());
     vertices.push_back(make_pair(newV,
             new vector<std::pair< int, TriangleMeshEdge*> >()));
     return vertices.size() - 1;
@@ -346,6 +348,9 @@ TriangleMeshTriangle* TriangleMesh::getTriangle(int i) {
 TriangleMeshVertex* TriangleMesh::getVertex(int i) {
     if (i < 0 || i > (int) vertices.size()-1)
         return NULL;
+#ifdef CATCHERRORS
+    assert(i == vertices[i].first->getIndex());
+#endif
     return vertices[i].first;
 }
 

@@ -7,13 +7,40 @@
 
 #include "Solver.h"
 
+/******************************************************************************
+ *                                                                             *
+ *                 virtual SOLVER                                              *
+ *                                                                             *
+ *******************************************************************************/
+
 Solver::Solver(TriangleMesh* mesh, int n) {
 	_mesh = mesh;
+    _f = new LARGE_VECTOR(n);
+    _delx = new LargeVec3Vector(n);
+    _delv = new LargeVec3Vector(n);
 }
 
 Solver::~Solver() {
 
 }
+
+LARGE_VECTOR* Solver::getDelx() {
+    return _delx;
+}
+
+LARGE_VECTOR* Solver::getDelv() {
+    return _delv;
+}
+
+LARGE_VECTOR* Solver::getf() {
+    return _f;
+}
+/******************************************************************************
+ *                                                                             *
+ *                 ImplicitSolver                                              *
+ *                                                                             *
+ *******************************************************************************/
+/*
 
 ImplicitSolver::ImplicitSolver(TriangleMesh* mesh, int n) : Solver(mesh,n) {
 
@@ -28,7 +55,7 @@ void ImplicitSolver::calculateState(System* sys) {
     sys->calculateExternalForces();
 }
 
-std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep,
+void ImplicitSolver::solve(System* sys, double timeStep,
         int pointIndex, TriangleMeshVertex* point) {
 
 	TriangleMeshVertex* a = point;
@@ -52,10 +79,17 @@ std::pair<vec3,vec3> ImplicitSolver::solve(System* sys, double timeStep,
 
 	//cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
 
-	return make_pair(deltaX, deltaV);
+	//return make_pair(deltaX, deltaV);
 
 }
+*/
 
+/******************************************************************************
+ *                                                                             *
+ *                 ExplicitSolver                                              *
+ *                                                                             *
+ *******************************************************************************/
+/*
 ExplicitSolver::ExplicitSolver(TriangleMesh* mesh, int n) : Solver(mesh, n) {
 }
 
@@ -68,52 +102,121 @@ void ExplicitSolver::calculateState(System* sys) {
     sys->calculateExternalForces();
 }
 
-std::pair<vec3,vec3> ExplicitSolver::solve(System* sys, double timeStep,
+void ExplicitSolver::solve(System* sys, double timeStep,
         int pointIndex, TriangleMeshVertex* point) {
 
 	vec3 deltaV = (timeStep ) * point->getF() / (double) point->getm();
     vec3 deltaX = timeStep * (point->getvX() + deltaV);
 
-    /*
-    if (sys->getT() > 0.1) {
-        cout << "deltaV=" << deltaV << endl;
-        cout << "deltaX=" << deltaX << endl;
-        cout << "F=" << point->getF() << endl;
-        cout << "vX=" << point->getvX() << endl;
-        exit(1);
-    }
-    */
+
+    //if (sys->getT() > 0.1) {
+    //    cout << "deltaV=" << deltaV << endl;
+    //    cout << "deltaX=" << deltaX << endl;
+    //    cout << "F=" << point->getF() << endl;
+    //  cout << "vX=" << point->getvX() << endl;
+    //   exit(1);
+    //}
+
     point->clearF();
-
-
-
 
     //Contraints set in OBJ file
     //if (point->getConstaint() == identity2D())
       //  return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
 
     //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
-    //******************************************************************************
-    return make_pair(deltaX, deltaV);
+    //----------------------------------------------------
+    //return make_pair(deltaX, deltaV);
 }
+*/
 
+/******************************************************************************
+ *                                                                             *
+ *                 NewmarkSolver                                               *
+ *                                                                             *
+ *******************************************************************************/
 NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
         Solver(mesh, n) {
-
-	_gamma = DEFAULT_GAMMA;
+    vector<vector<int> > sparsePattern = MeshTOLargeMatrix::CalculateSparsityPattern(mesh);
+    _JP = new SPARSE_MATRIX(n,n,sparsePattern,false);
+    _JV = new SPARSE_MATRIX(n,n,sparsePattern,false);
+    A = new SPARSE_MATRIX(n,n,sparsePattern,false);
+	b = new LARGE_VECTOR(n);
+    _gamma = DEFAULT_GAMMA;
 }
+
 
 NewmarkSolver::~NewmarkSolver() {
 
 }
 
+SPARSE_MATRIX* NewmarkSolver::getJP() {
+    return _JP;
+}
+
+SPARSE_MATRIX* NewmarkSolver::getJV() {
+    return _JV;
+}
+
 void NewmarkSolver::calculateState(System* sys) {
+    //Zero our current data structures
+    _JP->zeroValues();
+    _JV->zeroValues();
+    _f->zeroValues();
+    _delv->zeroValues();
+    _delx->zeroValues();
+    A->zeroValues();
+    b->zeroValues();
+
+    //Compute _JP, _JV, _f
+    sys->calculateInternalForces(this);
+    sys->calculateExternalForces(this);
+    sys->calculateForcePartials(this);
 
 }
 
-std::pair<vec3,vec3> NewmarkSolver::solve(System* sys, double timeStep,
-        int pointIndex, TriangleMeshVertex* point) {
+void NewmarkSolver::solve(System* sys, double timeStep) {
+    A->insertMatrixIntoDenserMatrix(*(sys->getM()));
+    (*_JV) *= (timeStep*_gamma);
+    (*_JP) *= (timeStep*timeStep*_gamma);
+    (*A) -= (*_JV);
+    (*A) -= (*_JP);
 
+    //cout << (*_JV) << endl;
+    //cout << (*_JP) << endl;
+    //cout << "============= gamma*timeStep=" << (timeStep*_gamma) << endl;
+
+    cout << (*A) << endl;
+
+    cout << "timestep=" << timeStep << endl;
+    cout << "gamma=" << _gamma << endl;
+    exit(1);
+    /*
+    %=== NEWMARK INTEGRATOR ===
+    A = M - g*h*JV - g*h^2*JP;
+    b = h*(f + g*h*v*JP);
+
+    %A
+    %b
+    %kweee
+
+    %Constraints
+    A(const, :) = [];
+    A(:, const) = [];
+    b(const) = [];
+
+    %Solve for change in V
+    %delV = zeros(1,length(b));
+    %delV = simpleCG(A, b, delV, 100, 0.00001)
+    delV = bicg(A,b);
+
+    %take constraints into account
+    delV = delV(globalToSol);
+    delV(const) = 0.0;
+
+    %calculate change in positon
+    delX = h*(v + g*delV);   %This is nuttapong's... correct?
+    %delX = h*(v + delV);    %This is our original...
+    */
 
 }
 

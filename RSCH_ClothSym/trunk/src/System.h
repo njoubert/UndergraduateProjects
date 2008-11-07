@@ -15,6 +15,8 @@ class System;
 #include "Material.h"
 #include "Solver.h"
 #include "Constraint.h"
+#include "math/LargeVector.h"
+#include "connectors/MeshTOLargeMatrix.h"
 
 /// \brief Represents the cloth mesh system
 ///
@@ -23,35 +25,23 @@ class System {
 public:
 	System(TriangleMesh* m, Material* mat);
 
+    //-----------------------------------------
+	//UPDATING AND ACCESSING STATE FOR SOLVER
+	void loadStateFromMesh();
+	LARGE_VECTOR* getX();
+	LARGE_VECTOR* getV();
+	SPARSE_MATRIX* getM();
+    //-----------------------------------------
+
 	mat3 outerProduct(vec3 a, vec3 b);
 
-	/**
-	 * Gets the current absolute time this system is at.
-	 * @return
-	 */
-	//double getT();
+	//-----------------------------------------
+	//CALCULATE STATE FOR SOLVER:
+	void calculateInternalForces(Solver*);
+	void calculateExternalForces(Solver*);
+	void calculateForcePartials(NewmarkSolver*);
+	//-----------------------------------------
 
-	void Forces(TriangleMeshTriangle* A, TriangleMeshTriangle* B, TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
-
-
-	void calculateInternalForces();
-	void calculateExternalForces();
-
-	/**
-	 * @return pair with first=dFx and second=dFv
-	 */
-	std::pair<mat3,mat3> calculateForcePartials(int pointIndex);
-
-	/*
-	 *
-	 */
-	mat3 calculateContraints(int pointIndex);
-
-	/**
-	 *
-	 * @param solver
-	 * @param timeStep
-	 */
 	void takeStep(Solver* solver, vector<Constraint*> *constraints, double timeStep);
 
 	void enableMouseForce(vec3 mousePosition);
@@ -65,23 +55,19 @@ public:
 	vec3 f_mouse( TriangleMeshVertex* selected );
 	vec3 f_spring( vec3 & pa, vec3 & pb, double rl, double Ks);
     vec3 f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd);
-    void f_bend(TriangleMeshTriangle* a, TriangleMeshTriangle* b,
-            TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge);
     inline mat3 dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks);
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
-	int m_iParticles, m_iInverseIterations;
 
 private:
     TriangleMesh* mesh;
+    LARGE_VECTOR* _x;
+    LARGE_VECTOR* _v;
+    SPARSE_MATRIX* _M;
     Material* _mat;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
 };
-
-
-
-
 
 #endif /* SYSTEM_H_ */

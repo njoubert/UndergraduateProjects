@@ -118,6 +118,11 @@ public:
         for (unsigned int i = 0; i < _sparseElements.size(); i++)
             _sparseElements[i] = zero;
     }
+    void insertRowIntoDenserRow(LargeMat3MatrixRow const &r) {
+        for (unsigned int i = 0; i < r._sparseElements.size(); i++) {
+            (*this)[r._sparseIndices[i]] = r._sparseElements[i];
+        }
+    }
     mat3 & operator[](int c) {
         int ind = getSparseIndexForEntry(c);
         if (ind < 0) {
@@ -133,6 +138,17 @@ public:
         } else {
             return _sparseElements[ind];
         }
+    }
+    LargeMat3MatrixRow & operator =(LargeMat3MatrixRow const &r) {
+#ifdef CATCHERRORS
+        if ((_colLength != r._colLength) || (_sparseIndices.size() != r._sparseIndices.size())) {
+            cout << __FILE__ << "::" << __LINE__ << ": SPARSE ROW DIMESIONS DOESNT MATCH\n" << endl;
+        }
+#endif
+        for (unsigned int i = 0; i < _sparseElements.size(); i++) {
+            _sparseElements[i] = r._sparseElements[i];
+        }
+        return *this;
     }
     LargeMat3MatrixRow & operator +=(LargeMat3MatrixRow const &r) {
 #ifdef CATCHERRORS
@@ -152,13 +168,18 @@ public:
         }
 #endif
         for (unsigned int i = 0; i < _sparseElements.size(); i++) {
-            _sparseElements[i] += r._sparseElements[i];
+#ifdef CATCHERRORS
+            if (_sparseIndices[i] != r._sparseIndices[i]) {
+                cout << __FILE__ << "::" << __LINE__ << ": SPARSE ROW INDICES DOESNT MATCH\n" << endl;
+            }
+#endif
+            _sparseElements[i] -= r._sparseElements[i];
         }
         return *this;
     }
     LargeMat3MatrixRow & operator *=(double v) {
         for (unsigned int i = 0; i < _sparseElements.size(); i++) {
-            _sparseElements[i] /= v;
+            _sparseElements[i] *= v;
         }
         return *this;
     }
@@ -250,6 +271,10 @@ public:
         if (setIntersectionToOne)
             (*this)(r,c) = identity2D();
     }
+    void insertMatrixIntoDenserMatrix(LargeMat3Matrix const &m) {
+        for (int i = 0; i < m._rowCount; i++)
+            (*(_rowData[i])).insertRowIntoDenserRow(*(m._rowData[i]));
+    }
     mat3 & operator()(int r, int c) {
 #ifdef CATCHERRORS
         if ((r > _rowCount) || (c >= _colCount)) {
@@ -265,6 +290,12 @@ public:
         }
 #endif
         return (*(_rowData[r]))[c];
+    }
+    LargeMat3Matrix & operator =(LargeMat3Matrix const &m) {
+        for (int i = 0; i < _rowCount; i++)
+            *(_rowData[i]) = *(m._rowData[i]);
+        cout << "COPYING LARGE MATRIX!" << endl;
+        return *this;
     }
     LargeMat3Matrix & operator +=(LargeMat3Matrix const &m) {
         for (int i = 0; i < _rowCount; i++)

@@ -13,6 +13,8 @@ class Constraint;
 #include "global.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "math/LargeVector.h"
+#include "math/LargeMatrix.h"
 
 class Constraint {
 public:

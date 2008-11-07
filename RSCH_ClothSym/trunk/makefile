@@ -4,7 +4,8 @@ TARGET := ClothSym
 SOURCES := $(wildcard ./src/*.cpp) \
 	$(wildcard ./src/util/*.cpp) \
     $(wildcard ./src/io/*.cpp) \
-    $(wildcard ./src/math/*.cpp)
+    $(wildcard ./src/math/*.cpp) \
+    $(wildcard ./src/connectors/*.cpp) 
 PLATFORM := OSX
 MACROS := -DCATCHERRORS
 #PLATFORM := _WIN32
@@ -15,8 +16,6 @@ MACROS := -DCATCHERRORS
 FRAMEWORK := -framework GLUT -framework OpenGL
 
 INCLUDE := -I./include/ \
-    -I./include/mv \
-    -I./include/SparseLib++ \
     -I/usr/X11/include
     
 LIBRARY := -L./lib/ \
@@ -27,7 +26,7 @@ LIBRARY := -L./lib/ \
 
 CC := gcc
 CXX := g++
-MACROS += -D$(PLATFORM) -D'COMPLEX=std::complex<double>' 
+MACROS += -D$(PLATFORM) #-D'COMPLEX=std::complex<double>' 
 CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS)
 
