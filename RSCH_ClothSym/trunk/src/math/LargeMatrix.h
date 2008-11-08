@@ -264,6 +264,12 @@ public:
             net += _rowData[i]->getNonzeroSize();
         return net;
     }
+    int getRowSize() {
+        return _rowCount;
+    }
+    int getColSize() {
+        return _colCount;
+    }
     void zeroValues() {
         for (int i = 0; i < _rowCount; i++)
             _rowData[i]->zeroValues();
