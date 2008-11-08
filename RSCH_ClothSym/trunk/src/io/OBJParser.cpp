@@ -79,7 +79,7 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
             //cout << "reading MORE! " << args;
             if (args.compare("fixed") == 0) {
                 parseDebug("Constraining particle " << i);
-                myMesh->getVertex(i)->setConstraint(identity2D());
+                myMesh->getVertex(i)->setConstraint(true);
             }
         }
            // */

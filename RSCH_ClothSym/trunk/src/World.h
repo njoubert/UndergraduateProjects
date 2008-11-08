@@ -32,10 +32,11 @@ public:
 
     // Loads up a new module from disk.
     bool loadStatModel(string);
-    bool loadSimModel(string);
+    bool loadSimModel(string, double);
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
     bool createVertexToAnimatedEllipseContraint();
+    bool createFixedVertexContraints();
 
     double getTime();
 

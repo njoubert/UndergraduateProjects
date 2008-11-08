@@ -16,10 +16,11 @@ int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
     LargeVec3Vector r(b.size());            //Residue
     A.postMultiply(x, r);
     r *= -1;
-    r += b;
+    r = b;
     LargeVec3Vector d(r);
     double deln = r.Dot(r);
     double del0 = deln;
+    double delo;
 
     double esquare = e*e;
     double alpha = 0, beta = 0;
@@ -44,13 +45,14 @@ int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
             q /= alpha;
         }
 #endif
-        del0 = deln;
+        delo = deln;
         deln = r.Dot(r);
-        beta = deln / del0;
+        beta = deln / delo;
         d *= beta;
         d += r;
         i++;
         //cout << "deln = " << deln << " del0 = " << del0 << endl;
     }
+    cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<deln<<endl;
     return i;
 }

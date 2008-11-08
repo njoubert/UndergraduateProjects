@@ -81,8 +81,8 @@ public:
 
     void setm(double);
     vec3 getNormal();
-    mat3 & getConstaint();
-    void setConstraint(mat3);
+    bool & getConstaint();
+    void setConstraint(bool);
     vec3 & getF();
     void setF(vec3);
     void clearF();
@@ -94,7 +94,7 @@ public:
     std::vector<TriangleMeshEdge*>::const_iterator getEdgesEndIterator();
 
 private:
-    mat3 S;
+    bool _fixed;
     vec3 F;		//Force
     vec3 X;     //Position
     vec3 U;     //Original Position

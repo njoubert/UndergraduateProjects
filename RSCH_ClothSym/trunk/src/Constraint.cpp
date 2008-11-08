@@ -48,12 +48,14 @@ FixedConstraint::FixedConstraint() {
 }
 
 void FixedConstraint::applyConstraintToPoints(LARGE_VECTOR* x, LARGE_VECTOR* v) {
-
+	   //Update the sparse matrices to honor this constraint
 }
 
 void FixedConstraint::applyConstraintToSolverMatrices(
-        SPARSE_MATRIX*, LARGE_VECTOR*) {
-
+        SPARSE_MATRIX* A, LARGE_VECTOR* b) {
+    int cVertex = _follow->getIndex();
+	A->zeroRowCol(cVertex, cVertex, true);
+	(*b)[cVertex] = vec3(0,0,0);
 }
 
 

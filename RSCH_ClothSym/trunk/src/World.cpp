@@ -17,11 +17,28 @@ World::~World() {
 
 void World::advance(double netTime) {
     //Find the duration of a single step for each model
-
+/*
     //Sort the list of updates from longest duration to shortest duration
+	Model* tempModel;
+	for (int i = 0; i < _models.size()-1; i++) {
+	  for (int j = 0; j < _models.size()-1-i; j++)
+	    if (_models[j+1]->getTimeStep() > _models[j]->getTimeStep()) {
+	    	tempModel = _models[j];
+	      _models[j] = _models[j+1];
+	      _models[j+1] = tempModel;
+	  }
+	}
+	//
+//*/
+	//The Simple Version, Assuming only one dependency (cloth on ellipsoids)
+	int stepSize = int(netTime / _models[0]->getTimeStep());
+	for (int i = 0; i < stepSize; i++) {
+		for (unsigned int j = 0; j < _models.size(); j++)
+			_models[j]->advance(_models[0]->getTimeStep());
+	}
 
-    for (unsigned int j = 0; j < _models.size(); j++)
-        _models[j]->advance(netTime);
+
+
     _time += netTime;
 }
 
@@ -40,14 +57,14 @@ bool World::loadStatModel(string filename) {
     return true;
 }
 
-bool World::loadSimModel(string filename) {
+bool World::loadSimModel(string filename, double timeStep) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL)
         return false;
     Material* mat = new DEFAULT_MATERIAL();
     Model* model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
-            new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, DEFAULT_TIMESTEP);
+            new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, timeStep);
     _models.push_back(model);
     return true;
 }
@@ -116,7 +133,8 @@ bool World::createVertexToAnimatedEllipseContraint() {
 			constraint->setFollow(v);
 
 			followModel->registerConstraint(constraint);
-
+			cout<<"Created Dynamic Constraint: Mesh Vertex: "<<FollowVertices[i]
+				<<" is connected to Ellipsoid "<<LeadEllipsoids[i]<<endl;
 		}
 
 	}
@@ -125,6 +143,23 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
     return true;
 }
+
+bool World::createFixedVertexContraints() {
+	cout<<"about to create constarint"<<endl;
+	SimModel* simModel = (SimModel*) _models[1];
+	TriangleMesh* mesh = simModel->getMesh();
+	for(int i = 0; i < mesh->countVertices(); i++){
+	TriangleMeshVertex*	v = mesh->getVertex(i);
+		if(v->getConstaint()){
+			FixedConstraint* constraint = new FixedConstraint();
+			constraint->setFollow(v);
+			simModel->registerConstraint(constraint);
+			cout<<"Created Fixed Constraint"<<endl;
+		}
+	}
+	return true;
+}
+
 double World::getTime() {
     return _time;
 }

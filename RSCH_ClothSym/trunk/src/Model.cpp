@@ -263,7 +263,7 @@ AniElliModel::~AniElliModel() {
 }
 
 void AniElliModel::advance(double netTime) {
-    frametimers.switchToTimer("AniModel::advance");
+    frametimers.switchToTimer("AniEliModel::advance");
 
 	if(_count < _ellipsoids.size()-1){
 			//cout<<"Drawing Frame: "<<_count+1<<endl;
@@ -272,6 +272,7 @@ void AniElliModel::advance(double netTime) {
 		}
 	else
 		_count = 0;
+	frametimers.switchToGlobal();
 }
 
 double AniElliModel::getTimeStep() {

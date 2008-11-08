@@ -27,6 +27,7 @@ public:
         wireFrame = false;
         showGrid = true;
         paused = true;
+        dynamicConstraints = false;
         inverseFPS = 1.0 / 30.0;
         lastTime = 0;
     }
@@ -134,6 +135,7 @@ public:
     double lastTime;
     double inverseFPS;
     bool paused;
+    bool dynamicConstraints;
 };
 
 Camera cam;
@@ -190,7 +192,8 @@ int parseCommandLine(int argc, char *argv[]) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string filename = std::string(argv[++i]);
-                world.loadSimModel(filename);
+                double timeStep = atof(argv[++i]);
+                world.loadSimModel(filename, timeStep);
                 hasOBJ = true;
             } else {
                 malformedArg = true;
@@ -216,6 +219,10 @@ int parseCommandLine(int argc, char *argv[]) {
 			} else {
 				malformedArg = true;
 			}
+
+		} else if (!strcmp(argv[i], "-dcons")) {
+
+			cam.dynamicConstraints = true;
 
 		} else if (!strcmp(argv[i], "-img")) {
 
@@ -271,8 +278,10 @@ void processKeys(unsigned char key, int x, int y) {
 //-------------------------------------------------------------------------------
 //
 void init(void) {
-
-	//world.createVertexToAnimatedEllipseContraint();
+	if(cam.dynamicConstraints)
+	world.createVertexToAnimatedEllipseContraint();
+	else
+	world.createFixedVertexContraints();
 
     glEnable(GL_LIGHTING);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);

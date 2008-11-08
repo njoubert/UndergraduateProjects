@@ -15,7 +15,7 @@
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z, int i):
     F(0,0,0), X(x,y,z), U(x,y,z),vX(0,0,0), _index(i), edges() {
-    S = mat3(0);
+    _fixed = false;
 
 }
 
@@ -44,9 +44,9 @@ vec3 TriangleMeshVertex::getNormal() {
     return n.normalize();
 }
 
-mat3 & TriangleMeshVertex::getConstaint() { return S; }
+bool & TriangleMeshVertex::getConstaint() { return _fixed; }
 
-void TriangleMeshVertex::setConstraint(mat3 s) { S = s; }
+void TriangleMeshVertex::setConstraint(bool fixed) { _fixed = fixed; }
 
 vec3 & TriangleMeshVertex::getF() { return F; }
 
