@@ -178,6 +178,8 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
 }
 
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
+    frametimers.switchToTimer("calculating matrices");
+
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
@@ -195,8 +197,10 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 		(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
 	}
 
+	frametimers.switchToTimer("CG solving");
     //delV = b/A
     simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
+    frametimers.switchToGlobal();
 
     //delX = h*(v + g*delV);
     (*_delx) = (*_delv);

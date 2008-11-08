@@ -10,7 +10,10 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
 #include "Timer.h"
+
+using namespace std;
 
 class TimerCollection {
 public:
@@ -22,18 +25,25 @@ public:
     float Elapsed();
     float Stop();
     float getRunningAverage();
+    float getRunningTotal();
+
 
     //Subtimer control:
-    int addNewTimer();
-    void switchToTimer(int i);
-    float Elapsed(int i);
+private:
+    int getTimer(string);
+    int addNewTimer(string);
     float getRunningAverage(int i);
+    float getRunningTotal(int i);
+public:
+    void switchToTimer(string);
+    void switchToGlobal();
 
     //Misc
     void printStatistics();
 
 private:
-    std::vector<Timer> _timers;
+    vector<Timer> _timers;
+    vector<string> _names;
     Timer _gTimer;
     int _currentSubtimer;
 };

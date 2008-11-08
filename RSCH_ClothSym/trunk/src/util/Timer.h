@@ -25,6 +25,7 @@ public:
 #endif
     bool running;
     float lastLap;
+    float runningAverage;
     float runningTotal;
     int lapsCount;
 
@@ -35,6 +36,7 @@ public:
     float Elapsed();
     float Stop();
     float getRunningAverage();
+    float getRunningTotal();
 };
 
 #endif /* TIMER_H_ */

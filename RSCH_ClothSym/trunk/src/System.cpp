@@ -113,12 +113,14 @@ System::System(TriangleMesh* m, Material* mat) :
  * the state of this system. Used at the beginning of Model.advance()
  */
 void System::loadStateFromMesh() {
+    frametimers.switchToTimer("loadfrom mesh");
     TriangleMeshVertex* v;
     for (int i = 0; i < mesh->countVertices(); i++) {
         v = mesh->getVertex(i);
         (*_x)[i] = v->getX();
         (*_v)[i] = v->getvX();
     }
+    frametimers.switchToGlobal();
 }
 
 LARGE_VECTOR* System::getX() {
@@ -305,12 +307,15 @@ void System::applyConstraints(Solver* solver, vector<Constraint*> *constraints) 
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
         double timeStep) {
 
+    frametimers.switchToTimer("calculateState");
     //Calculate the current derivatives and forces
     solver->calculateState(this, constraints); //evalDeriv function
+    frametimers.switchToGlobal();
 
     //Run the solver to populate delx, delv
     solver->solve(this, constraints, timeStep);
 
+    frametimers.switchToTimer("update");
     //Update x, y new delx, delv
     LARGE_VECTOR* delx = solver->getDelx();
     LARGE_VECTOR* delv = solver->getDelv();
@@ -318,6 +323,7 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
     (*_x) += (*delx);
     (*_v) += (*delv);
 
+    frametimers.switchToTimer("writeback mesh");
     //Write back to mesh
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
@@ -325,5 +331,6 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
         v->getX() = (*_x)[i];
         v->getvX() = (*_v)[i];
     }
+    frametimers.switchToGlobal();
 }
 

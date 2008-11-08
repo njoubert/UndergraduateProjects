@@ -105,7 +105,6 @@ SimModel::~SimModel() {
 }
 
 void SimModel::advance(double netTime) {
-
     //Load x, vx from mesh into system:
     _system->loadStateFromMesh();
 
@@ -115,6 +114,7 @@ void SimModel::advance(double netTime) {
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0)
         _system->takeStep(_solver, &_constraints, _timeStep);
+
 }
 
 double SimModel::getTimeStep() {
@@ -185,7 +185,7 @@ AniModel::~AniModel() {
 }
 
 void AniModel::advance(double netTime) {
-	if (_mesh != NULL)
+    if (_mesh != NULL)
 	    delete _mesh;
     OBJParser parser;
 	ostringstream filename;
@@ -263,6 +263,8 @@ AniElliModel::~AniElliModel() {
 }
 
 void AniElliModel::advance(double netTime) {
+    frametimers.switchToTimer("AniModel::advance");
+
 	if(_count < _ellipsoids.size()-1){
 			//cout<<"Drawing Frame: "<<_count+1<<endl;
 			//cout<<_ellipsoids[_count].size()<<" ellipsoids"<<endl;

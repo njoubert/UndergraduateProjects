@@ -10,6 +10,7 @@
 Timer::Timer() {
     running = false;
     lastLap = 0;
+    runningAverage = 0;
     runningTotal = 0;
     lapsCount = 1;
 }
@@ -19,12 +20,12 @@ Timer::~Timer() {
 }
 
 void Timer::Start() {
-    running = true;
 #ifdef _WIN32
     lastTime = GetTickCount();
 #else
     gettimeofday(&lastTime, NULL);
 #endif
+    running = true;
 }
 
 float Timer::Elapsed() {
@@ -46,17 +47,22 @@ float Timer::Elapsed() {
 }
 
 float Timer::Stop() {
-    lastLap = Elapsed();
     if (!running)
         return lastLap;
+    lastLap = Elapsed();
+    runningTotal += lastLap;
+    running = false;
 
-    runningTotal = runningTotal * ((float) lapsCount / ((float) lapsCount + 1))
-            + lastLap / (lapsCount + 1);
+    runningAverage = runningAverage * ((float) lapsCount / ((float) lapsCount + 1))
+            + lastLap / (float) (lapsCount + 1);
     lapsCount++;
 
     return lastLap;
 }
 
 float Timer::getRunningAverage() {
+    return runningAverage;
+}
+float Timer::getRunningTotal() {
     return runningTotal;
 }

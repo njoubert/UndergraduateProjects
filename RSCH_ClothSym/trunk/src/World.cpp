@@ -20,8 +20,6 @@ void World::advance(double netTime) {
 
     //Sort the list of updates from longest duration to shortest duration
 
-    //
-
     for (unsigned int j = 0; j < _models.size(); j++)
         _models[j]->advance(netTime);
     _time += netTime;
@@ -82,6 +80,7 @@ bool World::loadEllipseModel(string filename, int numFrames) {
 
 /**
  * Magic happens here to load in constraints somehow...
+ * TODO: Parse this from a file or something..
  */
 bool World::createVertexToAnimatedEllipseContraint() {
 	vector<int> LeadEllipsoids;
@@ -96,7 +95,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 	//FollowVertices.push_back(7);
 	//FollowVertices.push_back(8);
 
-	for (int i = 0; i < FollowVertices.size(); i++) {
+	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
 
 		if (_models.size() > 1) {
 			//Get the model I want to constrain
@@ -126,7 +125,6 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
     return true;
 }
-
 double World::getTime() {
     return _time;
 }

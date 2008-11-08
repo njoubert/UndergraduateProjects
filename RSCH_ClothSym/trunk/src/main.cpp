@@ -272,7 +272,7 @@ void processKeys(unsigned char key, int x, int y) {
 //
 void init(void) {
 
-	world.createVertexToAnimatedEllipseContraint();
+	//world.createVertexToAnimatedEllipseContraint();
 
     glEnable(GL_LIGHTING);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
@@ -403,7 +403,10 @@ void myframemove() {
     frametimers.Start();
 
         imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
+
         world.advance(cam.inverseFPS);
+
+        frametimers.switchToTimer("postRedisplay");
         glutPostRedisplay();
 
     frametimers.Stop();
