@@ -297,14 +297,19 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 
 }
 
+void System::applyConstraints(Solver* solver, vector<Constraint*> *constraints) {
+	for (unsigned int i = 0; i < constraints->size(); i++) {
+		(*constraints)[i]->applyConstraintToPoints(_x, _v);
+	}
+}
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
         double timeStep) {
 
     //Calculate the current derivatives and forces
-    solver->calculateState(this); //evalDeriv function
+    solver->calculateState(this, constraints); //evalDeriv function
 
     //Run the solver to populate delx, delv
-    solver->solve(this, timeStep);
+    solver->solve(this, constraints, timeStep);
 
     //Update x, y new delx, delv
     LARGE_VECTOR* delx = solver->getDelx();
@@ -313,11 +318,12 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
     (*_x) += (*delx);
     (*_v) += (*delv);
 
+    //Write back to mesh
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
         v = mesh->getVertex(i);
-        v->getX() += (*delx)[i];
-        v->getvX() += (*delv)[i];
+        v->getX() = (*_x)[i];
+        v->getvX() = (*_v)[i];
     }
 }
 

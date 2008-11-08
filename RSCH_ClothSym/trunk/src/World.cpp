@@ -49,7 +49,7 @@ bool World::loadSimModel(string filename) {
         return false;
     Material* mat = new DEFAULT_MATERIAL();
     Model* model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
-            new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat);
+            new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, DEFAULT_TIMESTEP);
     _models.push_back(model);
     return true;
 }
@@ -84,23 +84,45 @@ bool World::loadEllipseModel(string filename, int numFrames) {
  * Magic happens here to load in constraints somehow...
  */
 bool World::createVertexToAnimatedEllipseContraint() {
+	vector<int> LeadEllipsoids;
+	LeadEllipsoids.push_back(3);
+	LeadEllipsoids.push_back(4);
 
-    //Get the model I want to constrain
-    SimModel* followModel = (SimModel*) _models[1];
-    //Get the vertex on this model you want to constrain:
-    TriangleMeshVertex* v = followModel->getMesh()->getVertex(0);
+	vector<int>	FollowVertices;
+	//FollowVertices.push_back(21);
+	//FollowVertices.push_back(121);
+	FollowVertices.push_back(30);
+	FollowVertices.push_back(35);
+	//FollowVertices.push_back(7);
+	//FollowVertices.push_back(8);
 
-    //Get the model I want to constrain against
-    AniElliModel* leadModel = (AniElliModel*) _models[1];
-    int ellipsoidNr = 1;
+	for (int i = 0; i < FollowVertices.size(); i++) {
 
-    //Set up the constraint
-    VertexToAnimatedEllipseConstraint* constraint =
-        new VertexToAnimatedEllipseConstraint();
-    constraint->setLead(leadModel, ellipsoidNr);
-    constraint->setFollow(v);
+		if (_models.size() > 1) {
+			//Get the model I want to constrain
+			SimModel* followModel = (SimModel*) _models[1];
+			//Get the vertex on this model you want to constrain (the Follow):
+			TriangleMeshVertex* v = followModel->getMesh()->getVertex(
+					FollowVertices[i]);
 
-    followModel->registerConstraint(constraint);
+			//Get the model I want to constrain against
+			AniElliModel* leadModel = (AniElliModel*) _models[0];
+			//Get the index of the Ellipsoid you want to constrain to (the Lead)
+			int ellipsoidNr = LeadEllipsoids[i];
+
+			//Set up the constraint
+			VertexToAnimatedEllipseConstraint* constraint =
+					new VertexToAnimatedEllipseConstraint();
+			constraint->setLead(leadModel, ellipsoidNr);
+			constraint->setFollow(v);
+
+			followModel->registerConstraint(constraint);
+
+		}
+
+	}
+
+	cout<<FollowVertices.size()<< " Dynamic Constraints Created."<<endl;
 
     return true;
 }

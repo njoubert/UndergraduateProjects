@@ -14,6 +14,7 @@ class ExplicitSolver;
 class NewmarkSolver;
 
 #include "System.h"
+#include "Constraint.h"
 #include "connectors/MeshTOLargeMatrix.h"
 #include "math/CG.h"
 
@@ -21,8 +22,8 @@ class Solver {
 public:
 	Solver(TriangleMesh*,int);
     virtual ~Solver();
-    virtual void calculateState(System* sys)=0;
-    virtual void solve(System* sys,
+    virtual void calculateState(System* sys, vector<Constraint*> *)=0;
+    virtual void solve(System* sys,vector<Constraint*> *constraints,
             double timeStep) = 0;
     LARGE_VECTOR* getDelx();
     LARGE_VECTOR* getDelv();
@@ -60,8 +61,8 @@ public:
     ~NewmarkSolver();
     SPARSE_MATRIX* getJP();
     SPARSE_MATRIX* getJV();
-    void calculateState(System* sys);
-    void solve(System* sys,double timeStep);
+    void calculateState(System* sys, vector<Constraint*> *);
+    void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
 	float _gamma;
 	SPARSE_MATRIX* _JP;

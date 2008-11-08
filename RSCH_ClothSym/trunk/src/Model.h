@@ -9,6 +9,10 @@
 #define MODEL_H_
 
 class Model;
+class StatModel;
+class SimModel;
+class AniModel;
+class AniElliModel;
 
 #include "global.h"
 #include "System.h"
@@ -34,9 +38,10 @@ public:
     virtual ~Model();
     virtual void advance(double)=0;
     virtual void draw()=0;
-
+	virtual double getTimeStep()=0;
 protected:
     Material* _material;
+    double _timeStep;
 };
 
 /**
@@ -47,6 +52,7 @@ public:
     StatModel(TriangleMesh*);
     ~StatModel();
     void advance(double);
+    double getTimeStep();
     void draw();
 
 private:
@@ -58,9 +64,10 @@ private:
  */
 class SimModel : public Model {
 public:
-    SimModel(TriangleMesh*, System*, Solver*, Material*);
+    SimModel(TriangleMesh*, System*, Solver*, Material*, double);
     ~SimModel();
     void advance(double);
+    double getTimeStep();
     void draw();
     TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
@@ -81,6 +88,7 @@ public:
     AniModel(string);
     ~AniModel();
     void advance(double);
+     double getTimeStep();
     void draw();
 
 private:
@@ -94,6 +102,7 @@ private:
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer
 	TriangleMesh* _mesh;
+	double _timeStep;
 //	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
 };
 
@@ -105,7 +114,11 @@ public:
 	AniElliModel(vector < vector <mat4> >);
     ~AniElliModel();
     void advance(double);
+    double getTimeStep();
     void draw();
+
+    mat4 getEllipsoid(int Indx);
+    int getSize();
 
 private:
 	//TriangleMesh* getCurrentMesh();
@@ -116,6 +129,8 @@ private:
 	string _filename; //the template filename from which to iterate.
 	unsigned int _count;
 	vector < vector <mat4> > _ellipsoids;
+	vector<vec3> _takeConst;
+	double _timeStep;
 //	int _currenti; //current position in buffer
 //	int _lasti; //last valid position in buffer
 	//TriangleMesh* _mesh;

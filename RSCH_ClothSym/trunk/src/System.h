@@ -40,6 +40,7 @@ public:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
 	void calculateForcePartials(NewmarkSolver*);
+	void applyConstraints(Solver*, vector<Constraint*> *);
 	//-----------------------------------------
 
 	void takeStep(Solver* solver, vector<Constraint*> *constraints, double timeStep);

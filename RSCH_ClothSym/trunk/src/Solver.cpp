@@ -157,7 +157,7 @@ SPARSE_MATRIX* NewmarkSolver::getJV() {
     return _JV;
 }
 
-void NewmarkSolver::calculateState(System* sys) {
+void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints) {
     //Zero our current data structures
     _JP->zeroValues();
     _JV->zeroValues();
@@ -167,6 +167,9 @@ void NewmarkSolver::calculateState(System* sys) {
     A->zeroValues();
     b->zeroValues();
 
+    //TODO: Apply constraints to points right here.
+    sys->applyConstraints(this, constraints);
+
     //Compute _JP, _JV, _f
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
@@ -174,7 +177,7 @@ void NewmarkSolver::calculateState(System* sys) {
 
 }
 
-void NewmarkSolver::solve(System* sys, double timeStep) {
+void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
@@ -188,8 +191,9 @@ void NewmarkSolver::solve(System* sys, double timeStep) {
     (*b) += (*_f);
 
     //Apply constraints (filter):
-    A->zeroRowCol(0,0,true);
-    (*b)[0] = vec3(0,0,0);
+	for (unsigned int i = 0; i < constraints->size(); i++) {
+		(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
+	}
 
     //delV = b/A
     simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);

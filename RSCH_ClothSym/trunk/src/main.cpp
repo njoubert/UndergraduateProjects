@@ -206,7 +206,18 @@ int parseCommandLine(int argc, char *argv[]) {
                 malformedArg = true;
             }
 
-        } else if (!strcmp(argv[i], "-img")) {
+        } else if (!strcmp(argv[i], "-elliobj")) {
+
+			if (isThereMore(i, argc, 2)) {
+				std::string filename = std::string(argv[++i]);
+				int numFrames = atoi(argv[++i]);
+				world.loadEllipseModel(filename, numFrames);
+				hasOBJ = true;
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-img")) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string dirname = std::string(argv[++i]);
@@ -260,6 +271,9 @@ void processKeys(unsigned char key, int x, int y) {
 //-------------------------------------------------------------------------------
 //
 void init(void) {
+
+	world.createVertexToAnimatedEllipseContraint();
+
     glEnable(GL_LIGHTING);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
@@ -268,6 +282,8 @@ void init(void) {
 
     GLfloat global_ambient[] = {.1f, .1f, .1f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
+
+    glEnable(GL_NORMALIZE);
 
     //Lights:
     GLfloat ambient[] = { .1f, .1f, .1f };

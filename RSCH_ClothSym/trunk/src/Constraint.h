@@ -20,12 +20,13 @@ class Constraint {
 public:
     Constraint();
     virtual ~Constraint();
-    virtual void applyConstraintToPoints()=0;
-    virtual void applyConstraintToSolverMatrices(double time, SPARSE_MATRIX*, LARGE_VECTOR*)=0;
-    void setLead(Model*, int);
+    virtual void applyConstraintToPoints(LARGE_VECTOR*, LARGE_VECTOR*)=0;
+    virtual void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*)=0;
+    void setLead(AniElliModel*, int);
     void setFollow(TriangleMeshVertex*);
-private:
-    Model* _lead;
+    TriangleMeshVertex* getFollow();
+protected:
+    AniElliModel* _lead;
     int _leadIndex;
     TriangleMeshVertex* _follow;
 };
@@ -33,22 +34,22 @@ private:
 class FixedConstraint : public Constraint {
 public:
     FixedConstraint();
-    void applyConstraintToPoints();
-    void applyConstraintToSolverMatrices(double time, SPARSE_MATRIX*, LARGE_VECTOR*);
+    void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
+    void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
 class VertexToAnimatedVertexConstraint : public Constraint {
 public:
     VertexToAnimatedVertexConstraint();
-    void applyConstraintToPoints();
-    void applyConstraintToSolverMatrices(double time, SPARSE_MATRIX*, LARGE_VECTOR*);
+    void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
+    void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
 class VertexToAnimatedEllipseConstraint : public Constraint {
 public:
     VertexToAnimatedEllipseConstraint();
-    void applyConstraintToPoints();
-    void applyConstraintToSolverMatrices(double time, SPARSE_MATRIX*, LARGE_VECTOR*);
+    void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
+    void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
 #endif /* CONSTRAINT_H_ */
