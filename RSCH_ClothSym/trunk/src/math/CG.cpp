@@ -51,8 +51,7 @@ int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         d *= beta;
         d += r;
         i++;
-        //cout << "deln = " << deln << " del0 = " << del0 << endl;
     }
-    cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<deln<<endl;
+    //cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<deln<<endl;
     return i;
 }
