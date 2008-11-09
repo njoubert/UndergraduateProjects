@@ -69,8 +69,6 @@ float TimerCollection::getRunningTotal(int i) {
 }
 void TimerCollection::printStatistics() {
     std::cout << fixed << setprecision(2);
-    std::cout << "  global duration: " << _gTimer.getRunningTotal() << "s" << std::endl;
-    std::cout << "  subtimers: " << std::endl;
     float netPercentage = 0, percentage;
     for (unsigned int i = 0; i < _timers.size(); i++) {
         percentage = 100 * getRunningTotal(i) / getRunningTotal();
@@ -80,6 +78,6 @@ void TimerCollection::printStatistics() {
         std::cout << right << " | dur: " << setw(8) << getRunningTotal(i)*1000 << "ms | avg: " << setw(8) << getRunningAverage(i)*1000 << "ms | per: " << setw(8) << percentage << "%" << std::endl;
         netPercentage += percentage;
     }
-    std::cout << "  accounted for " << netPercentage << "% of total time." << endl;
+    std::cout << "  Accounted for " << netPercentage << "% of total time, runtime of " << _gTimer.getRunningTotal() << "s" << endl;
     std::cout << scientific << setprecision(6);
 }

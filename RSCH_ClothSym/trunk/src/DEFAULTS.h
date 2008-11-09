@@ -11,7 +11,7 @@
 #define DEFAULT_MATERIAL Material
 
 #define DEFAULT_KS 100
-#define DEFAULT_KD 5
+#define DEFAULT_KD 10
 #define DEFAULT_KBE 0.1
 #define DEFAULT_KBD 0.01
 
@@ -22,7 +22,7 @@
 #define SPARSE_MATRIX LargeMat3Matrix
 #define LARGE_VECTOR LargeVec3Vector
 
-#define MAX_CG_ITER 100
-#define MAX_CG_ERR 0.0001
+#define MAX_CG_ITER 200
+#define MAX_CG_ERR 0.00001
 
 #endif /* DEFAULTS */
