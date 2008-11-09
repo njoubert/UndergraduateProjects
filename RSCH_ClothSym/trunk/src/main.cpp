@@ -26,8 +26,9 @@ public:
 
         wireFrame = false;
         showGrid = true;
-        paused = true;
+        paused = false;
         dynamicConstraints = false;
+        collisions = false;
         inverseFPS = 1.0 / 30.0;
         lastTime = 0;
     }
@@ -136,6 +137,7 @@ public:
     double inverseFPS;
     bool paused;
     bool dynamicConstraints;
+    bool collisions;
 };
 
 Camera cam;
@@ -221,6 +223,10 @@ int parseCommandLine(int argc, char *argv[]) {
 				malformedArg = true;
 			}
 
+		} else if (!strcmp(argv[i], "-coll")) {
+
+			cam.collisions = true;
+
 		} else if (!strcmp(argv[i], "-dcons")) {
 
 			cam.dynamicConstraints = true;
@@ -280,9 +286,12 @@ void processKeys(unsigned char key, int x, int y) {
 //
 void init(void) {
 	if(cam.dynamicConstraints)
-	world.createVertexToAnimatedEllipseContraint();
+		world.createVertexToAnimatedEllipseContraint();
 	else
-	world.createFixedVertexContraints();
+		world.createFixedVertexContraints();
+
+	if(cam.collisions)
+		world.createVertexToAnimatedEllipseCollisions();
 
     glEnable(GL_LIGHTING);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
@@ -351,6 +360,50 @@ void Grey() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
 }
+
+//-------------------------------------------------------------------------------
+// STUFF FOR RENDERING BITMAPS FOR OPENGL FRAMERATE
+//
+char s[30];
+int Font=(int)GLUT_BITMAP_8_BY_13;
+void setOrthographicProjection() {
+	// switch to projection mode
+	glMatrixMode(GL_PROJECTION);
+	// save previous matrix which contains the
+	//settings for the perspective projection
+	glPushMatrix();
+	// reset matrix
+	glLoadIdentity();
+	// set a 2D orthographic projection
+	gluOrtho2D(0, cam._w, 0, cam._h);
+	// invert the y axis, down is positive
+	glScalef(1, -1, 1);
+	// mover the origin from the bottom left corner
+	// to the upper left corner
+	glTranslatef(0, -cam._h, 0);
+	glMatrixMode(GL_MODELVIEW);
+}
+void resetPerspectiveProjection() {
+	// set the current matrix to GL_PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	// restore previous settings
+	glPopMatrix();
+	// get back to GL_MODELVIEW matrix
+	glMatrixMode(GL_MODELVIEW);
+}
+void renderBitmapString(float x, float y, void *font,char *string)
+{
+  char *c;
+  // set position to start drawing fonts
+  glRasterPos2f(x, y);
+  // loop all the characters in the string
+  for (c=string; *c != '\0'; c++) {
+    glutBitmapCharacter(font, *c);
+  }
+}
+//FPS CALCULATION VARIABLES
+int GLframe=0,GLtime,GLtimebase=0;
+
 //-------------------------------------------------------------------------------
 // This function draws the actual world using OpenGL.
 //
@@ -386,6 +439,32 @@ void display(void) {
 
     glPopMatrix();
 
+    //---------OPENGL FRAMERATE-----------------//
+    //*
+    	//FPS CALCULATOR
+    	GLframe++;
+    	GLtime=glutGet(GLUT_ELAPSED_TIME);
+    	if (GLtime - GLtimebase > 1000) {
+    		sprintf(s,"FPS:%4.2f",
+    			GLframe*1000.0/(GLtime-GLtimebase));
+    		//cout<<"FPS: "<<GLframe*1000.0/(GLtime-GLtimebase)<<endl;
+    		GLtimebase = GLtime;
+    		GLframe = 0;
+    	}
+
+    	//CODE TO RENDER A BITMAP
+    	glColor3f(0.0f,1.0f,1.0f);
+    	setOrthographicProjection();
+    	glPushMatrix();
+    	glLoadIdentity();
+    	renderBitmapString(0,0,(void *)Font,"GLUT Tutorial @ 3D Tech");
+    	renderBitmapString(30,35,(void *)Font,s);
+    	renderBitmapString(30,55,(void *)Font,"Esc - Quit");
+    	glPopMatrix();
+    	resetPerspectiveProjection();
+    //*/
+    //-----------------------------------------------
+
     glFlush();
     glutSwapBuffers();
 }
@@ -403,23 +482,26 @@ void reshape(int w, int h) {
 //
 void myframemove() {
 
-    if (fpstimer.Elapsed() < cam.inverseFPS) {
-        return;
-    } else {
-        fpstimer.Stop();
-        fpstimer.Start();
-    }
+	if (!cam.paused) {
+		if (fpstimer.Elapsed() < cam.inverseFPS) {
+			return;
+		} else {
+			fpstimer.Stop();
+			fpstimer.Start();
+		}
 
-    frametimers.Start();
+		frametimers.Start();
 
-        imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w, cam._h);
+		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w,
+				cam._h);
 
-        world.advance(cam.inverseFPS);
+		world.advance(cam.inverseFPS);
 
-        frametimers.switchToTimer("postRedisplay");
-        glutPostRedisplay();
+		frametimers.switchToTimer("postRedisplay");
+		glutPostRedisplay();
 
-    frametimers.Stop();
+		frametimers.Stop();
+	}
 }
 
 //-------------------------------------------------------------------------------
