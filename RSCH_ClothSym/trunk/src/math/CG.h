@@ -11,7 +11,20 @@
 #include "LargeMatrix.h"
 #include "LargeVector.h"
 
-int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
-        int imax, double e);
+#define RECALC_RESIDUE 50
+
+class ConjugateGradient {
+public:
+    ConjugateGradient(int);
+    ~ConjugateGradient();
+    int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
+            int imax, double e);
+
+private:
+    LargeVec3Vector r;
+    LargeVec3Vector d;
+    LargeVec3Vector q;
+};
+
 
 #endif /* CG_H_ */

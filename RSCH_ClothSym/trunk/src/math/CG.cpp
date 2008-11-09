@@ -7,24 +7,28 @@
 
 #include "CG.h"
 
-#define RECALC_RESIDUE 50
+ConjugateGradient::ConjugateGradient(int size):
+        r(size), d(size), q(size){
 
-int simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
+}
+ConjugateGradient::~ConjugateGradient() {
+
+}
+
+int ConjugateGradient::simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         int imax, double e) {
 
     int i = 0;                                  //Steps so far
-    LargeVec3Vector r(b.size());            //Residue
-    A.postMultiply(x, r);
+    A.postMultiply(x, r);                       //Residue
     r *= -1;
     r = b;
-    LargeVec3Vector d(r);
+    d = r;
     double deln = r.Dot(r);
     double del0 = deln;
     double delo;
 
     double esquare = e*e;
     double alpha = 0, beta = 0;
-    LargeVec3Vector q(r.size());
     while (i < imax && deln > esquare*del0) {
         A.postMultiply(d, q);
         alpha = deln / d.Dot(q);

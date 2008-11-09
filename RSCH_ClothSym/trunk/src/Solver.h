@@ -64,6 +64,7 @@ public:
     void calculateState(System* sys, vector<Constraint*> *);
     void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
+    ConjugateGradient cg;
 	float _gamma;
 	SPARSE_MATRIX* _JP;
 	SPARSE_MATRIX* _JV;

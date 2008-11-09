@@ -135,7 +135,7 @@ void ExplicitSolver::solve(System* sys, double timeStep,
  *                                                                             *
  *******************************************************************************/
 NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
-        Solver(mesh, n) {
+        cg(n), Solver(mesh, n) {
     vector<vector<int> > sparsePattern = MeshTOLargeMatrix::CalculateSparsityPattern(mesh);
     _JP = new SPARSE_MATRIX(n,n,sparsePattern,false);
     _JV = new SPARSE_MATRIX(n,n,sparsePattern,false);
@@ -167,7 +167,7 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     A->zeroValues();
     b->zeroValues();
 
-    //TODO: Apply constraints to points right here.
+    //Apply constraints to points right here.
     sys->applyConstraints(this, constraints);
 
     //Compute _JP, _JV, _f
@@ -196,10 +196,12 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 	for (unsigned int i = 0; i < constraints->size(); i++) {
 		(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
 	}
+    //A->zeroRowCol(0, 0, true);
+    //(*b)[0] = vec3(0,0,0);
 
 	frametimers.switchToTimer("CG solving");
     //delV = b/A
-    simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
+    cg.simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
     frametimers.switchToGlobal();
 
     //delX = h*(v + g*delV);

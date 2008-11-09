@@ -145,8 +145,9 @@ void printUsage() {
     cout << "Usage: ";
     cout << " ClothSym " << endl;
     cout
-            << "      {[-statobj input.obj] | [-simobj input.obj | [-aniobj inputXXXXXX.obj]}"
+            << "      {[-statobj input.obj] | [-simobj input.obj timestep] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
             << endl;
+    cout << "      [-dcons]" << endl;
     cout << "      [-d i] " << endl;
     cout << "      [-img directory] " << endl;
 }
@@ -190,7 +191,7 @@ int parseCommandLine(int argc, char *argv[]) {
 
         } else if (!strcmp(argv[i], "-simobj")) {
 
-            if (isThereMore(i, argc, 1)) {
+            if (isThereMore(i, argc, 2)) {
                 std::string filename = std::string(argv[++i]);
                 double timeStep = atof(argv[++i]);
                 world.loadSimModel(filename, timeStep);

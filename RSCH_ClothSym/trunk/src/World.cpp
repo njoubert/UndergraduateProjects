@@ -146,7 +146,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
 bool World::createFixedVertexContraints() {
 	cout<<"about to create constarint"<<endl;
-	SimModel* simModel = (SimModel*) _models[1];
+	SimModel* simModel = (SimModel*) _models[0];
 	TriangleMesh* mesh = simModel->getMesh();
 	for(int i = 0; i < mesh->countVertices(); i++){
 	TriangleMeshVertex*	v = mesh->getVertex(i);
