@@ -49,7 +49,7 @@ public:
     }
     //The behaviour is undefined if there's duplicates in the sparsity pattern
     //and you do not compile with CATCHERRORS
-    LargeMat3MatrixRow(int cols, vector<int> & sparsityPattern, bool insertIdentity):
+    LargeMat3MatrixRow(int cols, vector<int> sparsityPattern, bool insertIdentity):
 #ifdef CATCHERRORS
         _sparseElements(0), _sparseIndices(0), _colLength(cols), ZERO(0) {
 #else
@@ -234,7 +234,7 @@ public:
             _rowData[i] = new LargeMat3MatrixRow(cols);
         }
     }
-    LargeMat3Matrix(int rows, int cols, vector< vector<int> > & sparsityPattern, bool insertIdentity) :
+    LargeMat3Matrix(int rows, int cols, vector< vector<int> > sparsityPattern, bool insertIdentity) :
         _rowData(rows), _rowCount(rows), _colCount(cols), ZERO(0) {
 #ifdef CATCHERRORS
         if ((unsigned)rows != sparsityPattern.size()) {
