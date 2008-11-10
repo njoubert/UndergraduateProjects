@@ -9,6 +9,10 @@
 #define CONSTRAINT_H_
 
 class Constraint;
+class FixedConstraint;
+class VertexToAnimatedVertexConstraint;
+class VertexToAnimatedEllipseConstraint;
+class VertexToEllipseCollision;
 
 #include "global.h"
 #include "Mesh.h"

@@ -193,12 +193,7 @@ void printUsage() {
 }
 
 void printStats() {
-    cout << "=== STATISTICS ===" << endl;
-    cout << "  Average framerate: " << 1.0 / fpstimer.getRunningAverage() << endl;
-    cout << "  The maximum framerate we could have achieved: " << 1.0 / frametimers.getRunningAverage() << endl;
-    cout << "  Frametimers stats: " << endl;
-    frametimers.printStatistics();
-    cout << "==================" << endl;
+    profiler.print();
 }
 //-------------------------------------------------------------------------------
 //
@@ -721,17 +716,17 @@ void myframemove() {
 			fpstimer.Start();
 		}
 
-		frametimers.Start();
+		profiler.frametimers.Start();
 
 		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w,
 				cam._h);
 
 		world.advance(cam.inverseFPS);
 
-		frametimers.switchToTimer("postRedisplay");
+		profiler.frametimers.switchToTimer("postRedisplay");
 		glutPostRedisplay();
 
-		frametimers.Stop();
+		profiler.frametimers.Stop();
 	}
 }
 
@@ -813,8 +808,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    cam._w = 500;
-    cam._h = 500;
+    cam._w = 600;
+    cam._h = 600;
 
     //Create Window:
     glutInit(&argc, argv);

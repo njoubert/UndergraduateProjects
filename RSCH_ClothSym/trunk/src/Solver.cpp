@@ -135,7 +135,7 @@ void ExplicitSolver::solve(System* sys, double timeStep,
  *                                                                             *
  *******************************************************************************/
 NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
-        cg(n), Solver(mesh, n) {
+        Solver(mesh, n), cg(n) {
     vector<vector<int> > sparsePattern = MeshTOLargeMatrix::CalculateSparsityPattern(mesh);
     _JP = new SPARSE_MATRIX(n,n,sparsePattern,false);
     _JV = new SPARSE_MATRIX(n,n,sparsePattern,false);
@@ -163,10 +163,9 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     _JV->zeroValues();
     _f->zeroValues();
     _delv->zeroValues();
-    _delx->zeroValues();
-
+    //_delx->zeroValues(); //dont do this since delx is set from delv
     A->zeroValues();
-    b->zeroValues();
+    //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
 
     //Apply constraints to points right here.
     sys->applyConstraints(this, constraints);
@@ -177,11 +176,12 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateForcePartials(this);
 
     //Apply Collisions
-    sys->applyCollisions(this, collisions);
+    sys->applyCollisions(this, collisions); //TODO: Really here?
 }
 
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
-    frametimers.switchToTimer("calculating matrices");
+    profiler.frametimers.switchToTimer("calculating matrices");
+
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
@@ -200,19 +200,21 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 			(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
 		}
 	}
+	
+	sys->applyMouseConst2Matrices(A, b);
 
-    sys->applyMouseConst2Matrices(A, b);
-
-	frametimers.switchToTimer("CG solving");
+	profiler.frametimers.switchToTimer("CG solving");
     //delV = b/A
-    cg.simpleCG((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
-    frametimers.switchToGlobal();
+    cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
+    profiler.frametimers.switchToGlobal();
 
+    profiler.frametimers.switchToTimer("calculating matrices");
     //delX = h*(v + g*delV);
     (*_delx) = (*_delv);
     (*_delx) *= (_gamma);
     (*_delx) += *(sys->getV());
     (*_delx) *= timeStep;
+    profiler.frametimers.switchToGlobal();
 
 }
 

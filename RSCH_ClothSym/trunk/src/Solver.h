@@ -8,8 +8,6 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-class VertexToEllipseCollision;
-
 class Solver;
 class ImplicitSolver;
 class ExplicitSolver;
@@ -67,7 +65,7 @@ public:
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
     void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
-    ConjugateGradient cg;
+    DEFAULT_CG cg;
 	float _gamma;
 	SPARSE_MATRIX* _JP;
 	SPARSE_MATRIX* _JV;

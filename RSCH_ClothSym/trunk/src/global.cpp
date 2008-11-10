@@ -8,12 +8,12 @@
 #include "global.h"
 
 Timer fpstimer;
-TimerCollection frametimers;
+Profiler profiler;
 
 float GAMMA = DEFAULT_GAMMA;
 
 int MAX_CG_ITER = DEFAULT_MAX_CG_ITER;
-float MAX_CG_ERR = DEFUALT_MAX_CG_ERR;
+float MAX_CG_ERR = DEFAULT_MAX_CG_ERR;
 
 double TIMESTEP = DEFAULT_TIMESTEP;
 float MASS = DEFAULT_MASS;

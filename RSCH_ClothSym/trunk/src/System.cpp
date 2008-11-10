@@ -113,14 +113,14 @@ System::System(TriangleMesh* m, Material* mat) :
  * the state of this system. Used at the beginning of Model.advance()
  */
 void System::loadStateFromMesh() {
-    frametimers.switchToTimer("loadfrom mesh");
+    profiler.frametimers.switchToTimer("loadfrom mesh");
     TriangleMeshVertex* v;
     for (int i = 0; i < mesh->countVertices(); i++) {
         v = mesh->getVertex(i);
         (*_x)[i] = v->getX();
         (*_v)[i] = v->getvX();
     }
-    frametimers.switchToGlobal();
+    profiler.frametimers.switchToGlobal();
 }
 
 LARGE_VECTOR* System::getX() {
@@ -174,7 +174,7 @@ void System::bendForce(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
 	if (A != NULL && B != NULL && A != B) {
 
 			//Dirty way to figure out which point is which
-			int ai, bi;
+			int ai=0, bi=0;
 			for (int i = 0; i < 3; i++) {
 				if (aList[i] != a && aList[i] != b)
 					ai = i;
@@ -334,7 +334,7 @@ void System::enableMouseForce(vec3 mousePosition) {
 	//Find closest vertex
 	//cout << "Mouse is at: " << mousePosition << endl;
 	double currentDistance = 900000.0, d, d1, d2;
-	TriangleMeshVertex* currentClosest;
+	TriangleMeshVertex* currentClosest = NULL;
 	for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
 		d1 = (mousePosition[0] - mesh->getVertex(i)->getX()[0]);
 		d2 = (mousePosition[1] - mesh->getVertex(i)->getX()[1]);
@@ -489,19 +489,18 @@ void System::applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *
 	for (unsigned int i = 0; i < collisions->size(); i++)
 		(*collisions)[i]->applyCollisionToMesh(_x, _v, solver->getf());
 }
-
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
 		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
 
-    frametimers.switchToTimer("calculateState");
+    profiler.frametimers.switchToTimer("calculateState");
     //Calculate the current derivatives and forces
     solver->calculateState(this, constraints, collisions); //evalDeriv function
-    frametimers.switchToGlobal();
+    profiler.frametimers.switchToGlobal();
 
     //Run the solver to populate delx, delv
     solver->solve(this, constraints, timeStep);
 
-    frametimers.switchToTimer("update");
+    profiler.frametimers.switchToTimer("update");
     //Update x, y new delx, delv
     LARGE_VECTOR* delx = solver->getDelx();
     LARGE_VECTOR* delv = solver->getDelv();
@@ -509,7 +508,7 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
     (*_x) += (*delx);
     (*_v) += (*delv);
 
-    frametimers.switchToTimer("writeback mesh");
+    profiler.frametimers.switchToTimer("writeback mesh");
     //Write back to mesh
     TriangleMeshVertex* v;
     for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
@@ -517,6 +516,6 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
         v->getX() = (*_x)[i];
         v->getvX() = (*_v)[i];
     }
-    frametimers.switchToGlobal();
+    profiler.frametimers.switchToGlobal();
 }
 

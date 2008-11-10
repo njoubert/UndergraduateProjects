@@ -2,10 +2,10 @@
 #define DEFAULTS_H_
 
 
-#define GRAVITY 0,-9.8,0
+#define GRAVITY 0,0,-9.8
 
 
-#define DEFAULT_TIMESTEP	0.01
+#define DEFAULT_TIMESTEP	0.02
 #define DEFAULT_SYSTEM	System
 #define DEFAULT_SOLVER	NewmarkSolver
 #define DEFAULT_MATERIAL Material
@@ -23,13 +23,14 @@
 #define DEFAULT_MUD 0.6
 
 #define DEFAULT_GAMMA 0.64
-
-#define DEFAULT_SPARSEMAT Coord_Mat_double
+//#define DEFAULT_GAMMA 1.0
 
 #define SPARSE_MATRIX LargeMat3Matrix
 #define LARGE_VECTOR LargeVec3Vector
 
-#define DEFAULT_MAX_CG_ITER 100
-#define DEFUALT_MAX_CG_ERR 0.0001
+#define DEFAULT_MAX_CG_ITER 5000
+#define DEFAULT_MAX_CG_ERR 0.00001
+
+#define DEFAULT_CG SimpleCG
 
 #endif /* DEFAULTS */

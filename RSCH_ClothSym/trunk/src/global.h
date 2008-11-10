@@ -33,6 +33,7 @@
 #include <math.h>
 #include "util/Timer.h"
 #include "util/TimerCollection.h"
+#include "util/Profiler.h"
 
 #include "Debug.h"
 
@@ -41,7 +42,7 @@
 #include "DEFAULTS.h"
 
 extern Timer fpstimer;
-extern TimerCollection frametimers;
+extern Profiler profiler;
 
 extern float GAMMA;
 

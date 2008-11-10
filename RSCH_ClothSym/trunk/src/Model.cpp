@@ -102,6 +102,11 @@ SimModel::SimModel(TriangleMesh* mesh,
 		_timeStep = DEFAULT_TIMESTEP;
 	else
 		_timeStep = timeStep;
+
+
+    //Load x, vx from mesh into system:
+    _system->loadStateFromMesh();
+
 }
 
 SimModel::~SimModel() {
@@ -111,8 +116,7 @@ SimModel::~SimModel() {
 }
 
 void SimModel::advance(double netTime) {
-    //Load x, vx from mesh into system:
-    _system->loadStateFromMesh();
+    //Loading state happens on object creation.
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++)
@@ -285,7 +289,7 @@ AniElliModel::~AniElliModel() {
 }
 
 void AniElliModel::advance(double netTime) {
-    frametimers.switchToTimer("AniEliModel::advance");
+    profiler.frametimers.switchToTimer("AniEliModel::advance");
 
 	if(_count < _ellipsoids.size()-1){
 			//cout<<"Drawing Frame: "<<_count+1<<endl;
@@ -294,7 +298,7 @@ void AniElliModel::advance(double netTime) {
 		}
 	else
 		_count = 0;
-	frametimers.switchToGlobal();
+	profiler.frametimers.switchToGlobal();
 }
 
 double AniElliModel::getTimeStep() {
@@ -513,4 +517,3 @@ double AniElliModel::getMu_s() {
 double AniElliModel::getMu_d() {
 	return _muD;
 }
-
