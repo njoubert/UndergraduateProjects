@@ -1,0 +1,90 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf350
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww18300\viewh12780\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs20 \cf0 Demo Command Line Arguments\
+	* use [-img imgs] to render out images for any of the demos\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Friction/Collisions Tests (Press "d" to Drop Cloth)\
+	* 221 Point Mesh Collides with Table\
+	*61 Point Mesh Collides with Table
+\f0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 ---------------------------------------------------------------
+\f1 \
+
+\f0 ./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 120 110 0 10 4 5 7 6\
+\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symGrid61v.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 35 30 0 5 4 5 7 6\
+---------------------------------------------------------------\
+****************************************************************************
+\f1 \
+
+\f0 \
+\
+****************************************************************************
+\f1 \
+
+\f0 //Moving Collisions Tests (Press "e" to see ellipsoids)\
+	* Translation Collision\
+	* Rotations Collision\
+	*Translation+Rotation Collision, \
+	*Translation+Rotation Collision  with Bend Forces\
+	*Rotation Collision with Bend Forces (Ellipsoid Stops For A while)\
+---------------------------------------------------------------
+\f1 \
+
+\f0 ./ClothSym -elliobj data/collisionTestTranslation/frame 600 -simobj data/symmetricGrid0.20.obj .001 1 -coll\
+\
+./ClothSym -elliobj data/collisionTestRotation2/frame 600 -simobj data/symmetricGrid0.20.obj .0005 1 -coll \
+\
+./ClothSym -elliobj data/collisionTestRotTrans/frame 600 -simobj data/symmetricGrid0.20.obj .001 1 -coll\
+\
+./ClothSym -elliobj data/collisionTestRotTrans/frame 600 -simobj data/symmetricGrid0.20.obj .0005 1 -coll  -kbe .01 -kbd .001\
+\
+./ClothSym -elliobj data/collisionTestTransStop/frame 1500 -simobj data/symmetricGrid0.20.obj .0005 1 -coll  -kbe .01 -kbd .001\
+---------------------------------------------------------------
+\f1 \
+
+\f0 ****************************************************************************
+\f1 \
+
+\f0 \
+****************************************************************************
+\f1 \
+
+\f0 //Animated Ellipsoid Man (Press "e" to see ellipsoids)\
+	
+\f1 * 61 Point Mesh ("real time")\
+	* 61 Point Mesh ("high quality")
+\f0 \
+	
+\f1 * 221 Point Mesh ("real time")\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0          * 221 Point Mesh ("high quality")
+\f0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 ---------------------------------------------------------------\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symGrid61v.obj .005 1 -coll -dcons3 30 32 35  20 21  22\
+\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symGrid61v.obj .002 1 -coll -dcons3 30 32 35  20 21  22 -kbe .01 -kbd .001 \
+\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .001 1 -coll -dcons3 110 115 120  20 21  22\
+\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .0005 1 -coll -dcons3 110 115 120  20 21  22 -kbe .01 -kbd .001 \
+---------------------------------------------------------------\
+\
+****************************************************************************
+\f1 \
+
+\f0 //High Res Table Cloth (Held by one point)\
+	* 2500 Point Mesh hung by one Point\
+---------------------------------------------------------------\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/cloth1.obj .002 1\
+---------------------------------------------------------------\
+****************************************************************************}
