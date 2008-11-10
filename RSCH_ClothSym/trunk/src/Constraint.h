@@ -22,13 +22,23 @@ public:
     virtual ~Constraint();
     virtual void applyConstraintToPoints(LARGE_VECTOR*, LARGE_VECTOR*)=0;
     virtual void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*)=0;
+    //virtual void applyCollisionToMesh(LARGE_VECTOR*, LARGE_VECTOR*, LARGE_VECTOR*)=0;
     void setLead(AniElliModel*, int);
     void setFollow(TriangleMeshVertex*);
     TriangleMeshVertex* getFollow();
-protected:
+
+    //COLLISION
+    void setCollisionMesh(TriangleMesh* mesh);
+    void setCollisionEllipsoids(AniElliModel* ellipsoids);
+
+	protected:
     AniElliModel* _lead;
     int _leadIndex;
     TriangleMeshVertex* _follow;
+
+    //FOR COLLISIONS
+    TriangleMesh* _mesh;
+    AniElliModel* _ellipsoids;
 };
 
 class FixedConstraint : public Constraint {
@@ -50,6 +60,15 @@ public:
     VertexToAnimatedEllipseConstraint();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
+};
+
+class VertexToEllipseCollision : public Constraint {
+public:
+	VertexToEllipseCollision();
+    void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
+    void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
+    void applyCollisionToMesh(LARGE_VECTOR*, LARGE_VECTOR*, LARGE_VECTOR*);
+    void frictionForce(int, TriangleMeshVertex*, vec3,  LARGE_VECTOR*);
 };
 
 #endif /* CONSTRAINT_H_ */

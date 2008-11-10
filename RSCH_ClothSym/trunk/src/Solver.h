@@ -8,6 +8,8 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
+class VertexToEllipseCollision;
+
 class Solver;
 class ImplicitSolver;
 class ExplicitSolver;
@@ -18,11 +20,12 @@ class NewmarkSolver;
 #include "connectors/MeshTOLargeMatrix.h"
 #include "math/CG.h"
 
+
 class Solver {
 public:
 	Solver(TriangleMesh*,int);
     virtual ~Solver();
-    virtual void calculateState(System* sys, vector<Constraint*> *)=0;
+    virtual void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *)=0;
     virtual void solve(System* sys,vector<Constraint*> *constraints,
             double timeStep) = 0;
     LARGE_VECTOR* getDelx();
@@ -61,7 +64,7 @@ public:
     ~NewmarkSolver();
     SPARSE_MATRIX* getJP();
     SPARSE_MATRIX* getJV();
-    void calculateState(System* sys, vector<Constraint*> *);
+    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
     void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
     ConjugateGradient cg;

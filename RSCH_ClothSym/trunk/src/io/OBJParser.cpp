@@ -80,6 +80,7 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
             if (args.compare("fixed") == 0) {
                 parseDebug("Constraining particle " << i);
                 myMesh->getVertex(i)->setConstraint(true);
+                cout<<"Fixed Point Found in OBJ"<<endl;
             }
         }
            // */

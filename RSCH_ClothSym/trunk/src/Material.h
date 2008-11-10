@@ -17,8 +17,15 @@ class Material {
 public:
     Material();
     virtual ~Material();
-
-    float _ks,_kd,_kbe,_kbd;
+    float getKe();
+    float getKd();
+    float getKBe();
+    float getKBd();
+private:
+    float _ks;
+    float _kd;
+    float _kbe;
+    float _kbd;
 };
 
 #endif /* MATERIAL_H_ */

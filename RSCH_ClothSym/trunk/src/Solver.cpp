@@ -141,7 +141,7 @@ NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
     _JV = new SPARSE_MATRIX(n,n,sparsePattern,false);
     A = new SPARSE_MATRIX(n,n,sparsePattern,false);
 	b = new LARGE_VECTOR(n);
-    _gamma = DEFAULT_GAMMA;
+    _gamma = GAMMA;
 }
 
 
@@ -157,13 +157,14 @@ SPARSE_MATRIX* NewmarkSolver::getJV() {
     return _JV;
 }
 
-void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints) {
-    //Zero our current data structures
+void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints, vector<VertexToEllipseCollision*> *collisions) {
+	//Zero our current data structures
     _JP->zeroValues();
     _JV->zeroValues();
     _f->zeroValues();
     _delv->zeroValues();
     _delx->zeroValues();
+
     A->zeroValues();
     b->zeroValues();
 
@@ -175,11 +176,12 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateExternalForces(this);
     sys->calculateForcePartials(this);
 
+    //Apply Collisions
+    sys->applyCollisions(this, collisions);
 }
 
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
     frametimers.switchToTimer("calculating matrices");
-
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
@@ -193,11 +195,13 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*b) += (*_f);
 
     //Apply constraints (filter):
-	for (unsigned int i = 0; i < constraints->size(); i++) {
-		(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
+    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+		for (unsigned int i = 0; i < constraints->size(); i++) {
+			(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
+		}
 	}
-    //A->zeroRowCol(0, 0, true);
-    //(*b)[0] = vec3(0,0,0);
+
+    sys->applyMouseConst2Matrices(A, b);
 
 	frametimers.switchToTimer("CG solving");
     //delV = b/A

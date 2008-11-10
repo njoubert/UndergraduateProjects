@@ -8,12 +8,17 @@
 #include "Material.h"
 
 Material::Material() {
-   _ks = DEFAULT_KS;
-   _kd = DEFAULT_KD;
-   _kbe = DEFAULT_KBE;
-   _kbd = DEFAULT_KBD;
+   _ks = Ke;
+   _kd = Kd;
+   _kbe = KBe;
+   _kbd = KBd;
 }
 
 Material::~Material() {
     // empty
 }
+
+float Material::getKe() { return _ks; }
+float Material::getKd() { return _kd; }
+float Material::getKBe() { return _kbe; }
+float Material::getKBd() { return _kbd; }

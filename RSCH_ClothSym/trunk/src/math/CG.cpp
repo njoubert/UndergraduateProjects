@@ -17,7 +17,7 @@ ConjugateGradient::~ConjugateGradient() {
 
 int ConjugateGradient::simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
         int imax, double e) {
-
+//cout<<"Solving with max iterations @ "<<imax<<" and error residual @ "<<e<<endl;
     int i = 0;                                  //Steps so far
     A.postMultiply(x, r);                       //Residue
     r *= -1;
@@ -56,6 +56,8 @@ int ConjugateGradient::simpleCG(LargeMat3Matrix & A, LargeVec3Vector & b, LargeV
         d += r;
         i++;
     }
+    if(i >= imax)
+    	cout<<"Conjugate Gradient Maxed Out at "<<i<<" Iterations!"<<endl;
     //cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<deln<<endl;
     return i;
 }

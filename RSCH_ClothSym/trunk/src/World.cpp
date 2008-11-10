@@ -37,8 +37,6 @@ void World::advance(double netTime) {
 			_models[j]->advance(_models[0]->getTimeStep());
 	}
 
-
-
     _time += netTime;
 }
 
@@ -57,9 +55,11 @@ bool World::loadStatModel(string filename) {
     return true;
 }
 
-bool World::loadSimModel(string filename, double timeStep) {
+bool World::loadSimModel(string filename, double timeStep, float mass) {
     OBJParser parser;
     TriangleMesh* mesh = parser.parseOBJ(filename);
+    mesh->setGlobalMassPerParticle(mass/mesh->countVertices());
+    MESHSIZE = mesh->countVertices();
     if (mesh == NULL)
         return false;
     Material* mat = new DEFAULT_MATERIAL();
@@ -101,16 +101,32 @@ bool World::loadEllipseModel(string filename, int numFrames) {
  */
 bool World::createVertexToAnimatedEllipseContraint() {
 	vector<int> LeadEllipsoids;
-	LeadEllipsoids.push_back(3);
-	LeadEllipsoids.push_back(4);
+	if(LEAD1 != -1)
+		LeadEllipsoids.push_back(LEAD1);
+	if(LEAD2 != -1)
+			LeadEllipsoids.push_back(LEAD2);
+	if(LEAD3 != -1)
+			LeadEllipsoids.push_back(LEAD3);
+	if(LEAD4 != -1)
+			LeadEllipsoids.push_back(LEAD4);
+
+	//LeadEllipsoids.push_back(3);
+	//LeadEllipsoids.push_back(4);
 
 	vector<int>	FollowVertices;
-	//FollowVertices.push_back(21);
-	//FollowVertices.push_back(121);
-	FollowVertices.push_back(30);
-	FollowVertices.push_back(35);
-	//FollowVertices.push_back(7);
-	//FollowVertices.push_back(8);
+	//FollowVertices.push_back(110);
+	//FollowVertices.push_back(120);
+	//FollowVertices.push_back(30);
+	//FollowVertices.push_back(35);
+	if(FOLLOW1 != -1)
+		FollowVertices.push_back(FOLLOW1);
+	if(FOLLOW2 != -1)
+			FollowVertices.push_back(FOLLOW2);
+	if(FOLLOW3 != -1)
+			FollowVertices.push_back(FOLLOW3);
+	if(FOLLOW4 != -1)
+			FollowVertices.push_back(FOLLOW4);
+
 
 	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
 
@@ -133,20 +149,42 @@ bool World::createVertexToAnimatedEllipseContraint() {
 			constraint->setFollow(v);
 
 			followModel->registerConstraint(constraint);
+
 			cout<<"Created Dynamic Constraint: Mesh Vertex: "<<FollowVertices[i]
 				<<" is connected to Ellipsoid "<<LeadEllipsoids[i]<<endl;
+			//followModel->applyInitialConstraints();
+			//cout<<"Dynamic Constraint Initialized."<<endl;
 		}
 
 	}
 
 	cout<<FollowVertices.size()<< " Dynamic Constraints Created."<<endl;
-
+	STATIC_CONSTRAINTS = false;
+	DYNAMIC_CONSTRAINTS = true;
     return true;
 }
 
+bool World::createVertexToAnimatedEllipseCollisions() {
+	//COLISIONS (can be thought of as "Collision Constraints")
+		if (_models.size() > 1) {
+			SimModel* collisionModel = (SimModel*) _models[1];
+			TriangleMesh* collisionMesh = collisionModel->getMesh();
+
+			AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
+
+			VertexToEllipseCollision* collisionConstraint =
+					new VertexToEllipseCollision();
+
+			collisionConstraint->setCollisionMesh(collisionMesh);
+			collisionConstraint->setCollisionEllipsoids(collisionEllipsoids);
+			collisionModel->registerCollision(collisionConstraint);
+		}
+		return true;
+}
+
 bool World::createFixedVertexContraints() {
-	cout<<"about to create constarint"<<endl;
-	SimModel* simModel = (SimModel*) _models[0];
+	cout<<"Checking for Fixed Constraints"<<endl;
+	SimModel* simModel = (SimModel*) _models[1];
 	TriangleMesh* mesh = simModel->getMesh();
 	for(int i = 0; i < mesh->countVertices(); i++){
 	TriangleMeshVertex*	v = mesh->getVertex(i);
@@ -154,6 +192,8 @@ bool World::createFixedVertexContraints() {
 			FixedConstraint* constraint = new FixedConstraint();
 			constraint->setFollow(v);
 			simModel->registerConstraint(constraint);
+			STATIC_CONSTRAINTS = true;
+			DYNAMIC_CONSTRAINTS = false;
 			cout<<"Created Fixed Constraint"<<endl;
 		}
 	}
@@ -164,3 +204,43 @@ double World::getTime() {
     return _time;
 }
 
+vec3 World::getFocusPoint() {
+	//*
+	AniElliModel* focusModel = (AniElliModel*) _models[0];
+	int ellipsoidNr = 13;
+	mat4 elliTransform = focusModel->getEllipsoid(ellipsoidNr);
+
+	vec4 origin(0);
+	origin[3] = 1;
+	//cout<<"transform:"<<endl<<elliTransform<<endl<<endl;
+	vec4 focusPt = origin*elliTransform;
+	//cout<<focusPt<<endl;
+	//for(int i = 0; i < 3; i++)
+		//focusPt[i] = focusPt[i]/focusPt[3];
+	//*/
+	return focusPt;
+
+	//SimModel* focusModel = (SimModel*) _models[1];
+
+	//return focusModel->getConstraintPos(0);
+}
+
+void World::enableMouseForce(vec3 mPos) {
+	SimModel* simModel = (SimModel*) _models[1];
+	simModel->enableMouseForce(mPos);
+}
+
+void World::disableMouseForce() {
+	SimModel* simModel = (SimModel*) _models[1];
+	simModel->disableMouseForce();
+}
+
+void World::updateMouseForce(vec3 new_mPos) {
+	SimModel* simModel = (SimModel*) _models[1];
+	simModel->updateMouseForce(new_mPos);
+}
+
+bool World::isMouseEnabled() {
+	SimModel* simModel = (SimModel*) _models[1];
+	return simModel->isMouseEnabled();
+}

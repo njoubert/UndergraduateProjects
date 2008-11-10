@@ -14,7 +14,7 @@ public:
         _zNear = 1;
         _zFar = 10000;
 
-        _zoom = 40.0f;
+        _zoom = 10.0f;
         _rotx = 10.0f;
         _roty = 0.0f;
         _tx = 0.0f;
@@ -29,9 +29,12 @@ public:
         paused = false;
         dynamicConstraints = false;
         collisions = false;
+        follow = false;
         inverseFPS = 1.0 / 30.0;
         lastTime = 0;
     }
+
+    float getZoom() { return _zoom; }
 
     void setPerspective(int w, int h) {
         _w = w;
@@ -57,6 +60,27 @@ public:
         glRotatef(_roty, 0, 1, 0);
 
     }
+
+	void setFocusedView(vec3 focusPt) {
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		//cout<<"focusPt "<<focusPt<<endl;
+		 //You can set the position of the camera qith gluLookAt
+		 gluLookAt(0.0,0.0,1.0,
+		 focusPt[0]/_zoom,0,0,
+		 0.0,1.0,0.0);
+
+		//gluLookAt(0.0,0.0,1.0,
+		//.1,0,0,
+		//0.0,1.0,0.0);
+
+		//This order gives you Maya-like
+		//mouse control of your camera
+		glTranslatef(0,0,-_zoom);
+		glTranslatef(_tx,_ty,0);
+		glRotatef(_rotx,1,0,0);
+		glRotatef(_roty,0,1,0);
+	}
 
     void mousemotion(int x, int y) {
         int diffx = x - _lastx;
@@ -138,6 +162,7 @@ public:
     bool paused;
     bool dynamicConstraints;
     bool collisions;
+    bool follow;
 };
 
 Camera cam;
@@ -147,11 +172,24 @@ void printUsage() {
     cout << "Usage: ";
     cout << " ClothSym " << endl;
     cout
-            << "      {[-statobj input.obj] | [-simobj input.obj timestep] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
+            << "      {[-statobj input.obj] | [-simobj input.obj timestep mass] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
             << endl;
-    cout << "      [-dcons]" << endl;
+    cout << "      {[-dcons4 FollowPoint1 FollowPoint2 FollowPoint3 FollowPoint4 LeadPoint1 LeadPoint2 LeadPoint3 LeadPoint4] |" << endl;
+    cout << "      [-dcons3 FollowPoint1 FollowPoint2 FollowPoint3  LeadPoint1 LeadPoint2 LeadPoint3 ] |" << endl;
+    cout << "      [-dcons2 FollowPoint1 FollowPoint2 LeadPoint1 LeadPoint2 ] |" << endl;
+    cout << "      [-dcons1 FollowPoint1  LeadPoint1] }" << endl;
+    cout << "      [-coll]" << endl;
+    cout << "      [-kbe KBe(float)]" << endl;
+    cout << "      [-kbd KBd(float)]" << endl;
+    cout << "      [-ke Ke(float)]" << endl;
+    cout << "      [-kd Kd(float)]" << endl;
+    cout << "      [-mus MUs(float)]" << endl;
+    cout << "      [-mud MUd(float)]" << endl;
     cout << "      [-d i] " << endl;
     cout << "      [-img directory] " << endl;
+    cout << "      [-cg max_iter(float) err_res(float)] " << endl;
+    cout << "      [-gamma value(float)] " << endl;
+    cout<<"ORDER MATTERS: -elliobj, -simobj..."<<endl;
 }
 
 void printStats() {
@@ -193,12 +231,26 @@ int parseCommandLine(int argc, char *argv[]) {
 
         } else if (!strcmp(argv[i], "-simobj")) {
 
-            if (isThereMore(i, argc, 2)) {
+            if (isThereMore(i, argc, 3)) {
+                std::string filename = std::string(argv[++i]);
+                TIMESTEP = atof(argv[++i]);
+                MASS = atof(argv[++i]);
+                world.loadSimModel(filename, TIMESTEP, MASS);
+                hasOBJ = true;
+            }
+            /*
+            else if (isThereMore(i, argc, 2)) {
                 std::string filename = std::string(argv[++i]);
                 double timeStep = atof(argv[++i]);
-                world.loadSimModel(filename, timeStep);
+                world.loadSimModel(filename, TIMESTEP, MASS);
                 hasOBJ = true;
-            } else {
+            } else if (isThereMore(i, argc, 1)) {
+                std::string filename = std::string(argv[++i]);
+                world.loadSimModel(filename, TIMESTEP, MASS);
+                hasOBJ = true;
+            }
+            //*/
+            else {
                 malformedArg = true;
             }
 
@@ -224,18 +276,130 @@ int parseCommandLine(int argc, char *argv[]) {
 			}
 
 		} else if (!strcmp(argv[i], "-coll")) {
-
+			COLLISIONS = true;
 			cam.collisions = true;
 
-		} else if (!strcmp(argv[i], "-dcons")) {
+		} else if (!strcmp(argv[i], "-dcons1")) {
+			if (isThereMore(i, argc, 2)) {
+				FOLLOW1 = atoi(argv[++i]);
+				LEAD1 = atoi(argv[++i]);
+				DYNAMIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = true;
+			} else {
+				malformedArg = true;
+			}
 
-			cam.dynamicConstraints = true;
+		} else if (!strcmp(argv[i], "-dcons2")) {
+			if (isThereMore(i, argc, 4)) {
+				FOLLOW1 = atoi(argv[++i]);
+				FOLLOW2 = atoi(argv[++i]);
+				LEAD1 = atoi(argv[++i]);
+				LEAD2 = atoi(argv[++i]);
+				DYNAMIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = true;
+			} else {
+				malformedArg = true;
+			}
 
+		} else if (!strcmp(argv[i], "-dcons3")) {
+			if (isThereMore(i, argc, 4)) {
+				FOLLOW1 = atoi(argv[++i]);
+				FOLLOW2 = atoi(argv[++i]);
+				FOLLOW3 = atoi(argv[++i]);
+				LEAD1 = atoi(argv[++i]);
+				LEAD2 = atoi(argv[++i]);
+				LEAD3 = atoi(argv[++i]);
+				DYNAMIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = true;
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-dcons4")) {
+			if (isThereMore(i, argc, 8)) {
+				FOLLOW1 = atoi(argv[++i]);
+				FOLLOW2 = atoi(argv[++i]);
+				FOLLOW3 = atoi(argv[++i]);
+				FOLLOW4 = atoi(argv[++i]);
+				LEAD1 = atoi(argv[++i]);
+				LEAD2 = atoi(argv[++i]);
+				LEAD3 = atoi(argv[++i]);
+				LEAD4 = atoi(argv[++i]);
+				DYNAMIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = true;
+			} else {
+				malformedArg = true;
+			}
+
+
+		} else if (!strcmp(argv[i], "-ke")) {
+
+			if (isThereMore(i, argc, 1)) {
+				Ke = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
+		} else if (!strcmp(argv[i], "-kd")) {
+
+			if (isThereMore(i, argc, 1)) {
+				Kd = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
+		} else if (!strcmp(argv[i], "-kbe")) {
+
+			if (isThereMore(i, argc, 1)) {
+				KBe = atof(argv[++i]);
+				BEND_FORCES = true;
+			} else {
+				malformedArg = true;
+			}
+		} else if (!strcmp(argv[i], "-kbd")) {
+
+			if (isThereMore(i, argc, 1)) {
+				KBd = atof(argv[++i]);
+				BEND_FORCES = true;
+			} else {
+				malformedArg = true;
+			}
+		} else if (!strcmp(argv[i], "-mus")) {
+
+			if (isThereMore(i, argc, 1)) {
+				MUs = atof(argv[++i]);
+				FRICTION_FORCES = true;
+			} else {
+				malformedArg = true;
+			}
+		} else if (!strcmp(argv[i], "-mud")) {
+
+			if (isThereMore(i, argc, 1)) {
+				MUd = atof(argv[++i]);
+				FRICTION_FORCES = true;
+			} else {
+				malformedArg = true;
+			}
 		} else if (!strcmp(argv[i], "-img")) {
 
             if (isThereMore(i, argc, 1)) {
                 std::string dirname = std::string(argv[++i]);
                 imagesaver.initialize(dirname, cam.inverseFPS);
+            } else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-cg")) {
+
+            if (isThereMore(i, argc, 2)) {
+            	MAX_CG_ITER = atoi(argv[++i]);
+            	MAX_CG_ERR = atof(argv[++i]);
+            } else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-gamma")) {
+
+            if (isThereMore(i, argc, 1)) {
+            	GAMMA = atoi(argv[++i]);
             } else {
                 malformedArg = true;
             }
@@ -276,6 +440,15 @@ void processKeys(unsigned char key, int x, int y) {
     case 'g':
         cam.showGrid = !cam.showGrid;
         break;
+    case 'f':
+        cam.follow = !cam.follow;
+        break;
+    case 'd':
+    	DYNAMIC_CONSTRAINTS= !DYNAMIC_CONSTRAINTS;
+        break;
+    case 'e':
+    	DRAWELLIPSOIDS= !DRAWELLIPSOIDS;
+        break;
     case 27:
         closeMe(0);
         break;
@@ -285,7 +458,7 @@ void processKeys(unsigned char key, int x, int y) {
 //-------------------------------------------------------------------------------
 //
 void init(void) {
-	if(cam.dynamicConstraints)
+	if(DYNAMIC_CONSTRAINTS)
 		world.createVertexToAnimatedEllipseContraint();
 	else
 		world.createFixedVertexContraints();
@@ -401,6 +574,57 @@ void renderBitmapString(float x, float y, void *font,char *string)
     glutBitmapCharacter(font, *c);
   }
 }
+void drawParameters() {
+	//glColor3f(1.0f,1.0f,1.0f);
+	char s2[50];
+	sprintf(s2,"Time Step (s): %4.5f", TIMESTEP);
+	renderBitmapString(5,15,(void *)Font, s2);
+	sprintf(s2,"Mass (kg): %4.2f", MASS);
+	renderBitmapString(5,30,(void *)Font, s2);
+	sprintf(s2,"# of Vertices: %i", MESHSIZE);
+	renderBitmapString(5,45,(void *)Font, s2);
+	sprintf(s2,"Ke (Planar): %4.2f", Ke);
+	renderBitmapString(5,60,(void *)Font, s2);
+    sprintf(s2,"Kd (Planar): %4.2f", Kd);
+    renderBitmapString(5,75,(void *)Font, s2);
+    if (BEND_FORCES) {
+		sprintf(s2, "Bend Forces: Enabled");
+		renderBitmapString(5, 430, (void *) Font, s2);
+		sprintf(s2, "Ke (Bend): %4.4f", KBe);
+		renderBitmapString(5, 445, (void *) Font, s2);
+		sprintf(s2, "Kd (Bend): %4.4f", KBd);
+		renderBitmapString(5, 460, (void *) Font, s2);
+	}
+    else {
+    	sprintf(s2, "Bend Forces: Disabled");
+		renderBitmapString(5, 430, (void *) Font, s2);
+    }
+	if (FRICTION_FORCES) {
+		sprintf(s2, "Friction Forces: Enabled");
+		renderBitmapString(250, 430, (void *) Font, s2);
+		sprintf(s2, "Mu Static: %4.2f", MUs);
+		renderBitmapString(250, 445, (void *) Font, s2);
+		sprintf(s2, "Mu Dynamic: %4.2f", MUd);
+		renderBitmapString(250, 460, (void *) Font, s2);
+	} else {
+		sprintf(s2, "Friction Forces: Disabled");
+		renderBitmapString(250, 430, (void *) Font, s2);
+	}
+	if (COLLISIONS) {
+		sprintf(s2, "Collisions: Enabled");
+		renderBitmapString(250, 475, (void *) Font, s2);
+	} else {
+		sprintf(s2, "Collisions: Disabled");
+		renderBitmapString(250, 475, (void *) Font, s2);
+	}
+	if (DYNAMIC_CONSTRAINTS) {
+		sprintf(s2, "Moving Constraints: Enabled");
+		renderBitmapString(250, 490, (void *) Font, s2);
+	} else {
+		sprintf(s2, "Moving Constraints: Disabled");
+		renderBitmapString(250, 490, (void *) Font, s2);
+	}
+}
 //FPS CALCULATION VARIABLES
 int GLframe=0,GLtime,GLtimebase=0;
 
@@ -409,7 +633,11 @@ int GLframe=0,GLtime,GLtimebase=0;
 //
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cam.setView();
+
+	if(cam.follow)
+		cam.setFocusedView( world.getFocusPoint() );
+	else
+		cam.setView();
 
     if (cam.wireFrame) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -419,6 +647,7 @@ void display(void) {
 
 	glPushMatrix();
 
+	glDisable(GL_LIGHTING);
     if (cam.showGrid) {
         White();
         // draw grid
@@ -433,12 +662,14 @@ void display(void) {
         glEnd();
     }
     Pink();
+    glEnable(GL_LIGHTING);
 
     //Draw the world!
     world.draw();
 
     glPopMatrix();
 
+    glDisable(GL_LIGHTING);
     //---------OPENGL FRAMERATE-----------------//
     //*
     	//FPS CALCULATOR
@@ -453,17 +684,17 @@ void display(void) {
     	}
 
     	//CODE TO RENDER A BITMAP
-    	glColor3f(0.0f,1.0f,1.0f);
+    	glColor3f(1.0f,1.0f,1.0f);
     	setOrthographicProjection();
     	glPushMatrix();
     	glLoadIdentity();
-    	renderBitmapString(0,0,(void *)Font,"GLUT Tutorial @ 3D Tech");
-    	renderBitmapString(30,35,(void *)Font,s);
-    	renderBitmapString(30,55,(void *)Font,"Esc - Quit");
+    	renderBitmapString(400,35,(void *)Font,s);
+    	drawParameters();
     	glPopMatrix();
     	resetPerspectiveProjection();
     //*/
     //-----------------------------------------------
+    glEnable(GL_LIGHTING);
 
     glFlush();
     glutSwapBuffers();
@@ -507,53 +738,63 @@ void myframemove() {
 //-------------------------------------------------------------------------------
 //
 void myMousePress(int button, int state, int x, int y) {
-    cam.mousepress(button, state, x, y);
 
-    if (button == GLUT_LEFT_BUTTON) {
-        if (state == GLUT_DOWN) {
-            //Find the point
-            float z = 0.5;
-            double ox, oy, oz;
-            GLdouble modelview[16];
-            GLdouble proj[16];
-            GLint view[4];
-            glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-            glGetDoublev(GL_PROJECTION_MATRIX, proj);
-            glGetIntegerv(GL_VIEWPORT, view);
-            glReadPixels(x, view[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-
-            if (GL_TRUE == gluUnProject(x, view[3] - y, z, modelview, proj,
-                    view, &ox, &oy, &oz)) {
-
-                //sys->enableMouseForce(vec3(ox,oy,0));
-
-            }
-        } else {
-            //sys->disableMouseForce();
+    //*
+        if (button == GLUT_LEFT_BUTTON  && state == GLUT_DOWN && glutGetModifiers() == GLUT_ACTIVE_SHIFT) {
+        	//Find the point
+                float z = 0.5;
+                double ox, oy, oz;
+                GLdouble modelview[16];
+                GLdouble proj[16];
+                GLint view[4];
+                glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+                glGetDoublev(GL_PROJECTION_MATRIX, proj);
+                glGetIntegerv(GL_VIEWPORT, view);
+               // glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+                //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
+                if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
+                	//cout<<"mouse Position World Space-> x: "<<ox*(1/cam.getZoom())<<"   y: "<<oy*(1/cam.getZoom())<<"   z: "<<0<<endl;
+                	world.enableMouseForce(vec3(ox*5,oy*5,0));
+                    //sys->enableMouseForce(vec3(ox,oy,0));
+                }
+                else
+                	cout<<"gluUnProject Returned False"<<endl;
         }
-    }
+        else {
+        	cam.mousepress(button, state, x, y);
+        	world.disableMouseForce();
+        }
+        //*/
 }
 
 //-------------------------------------------------------------------------------
 //
 void myMouseMove(int x, int y) {
-    cam.mousemotion(x, y);
-    /*
-     if (sys->isMouseEnabled()) {
-     float z;
-     double ox, oy, oz;
-     GLdouble modelview[16];
-     GLdouble proj[16];
-     GLint view[4];
-     glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-     glGetDoublev(GL_PROJECTION_MATRIX, proj);
-     glGetIntegerv(GL_VIEWPORT, view);
-     glReadPixels( x, view[3]-y, 1, 1,
-     GL_DEPTH_COMPONENT, GL_FLOAT, &z );
-     gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz);
-     sys->updateMouseForce(vec3(ox,oy,0));
-     }
-     */
+
+
+    //*
+        if (world.isMouseEnabled()) {
+             //Find the point
+                float z = 0.5;
+                double ox, oy, oz;
+                GLdouble modelview[16];
+                GLdouble proj[16];
+                GLint view[4];
+                glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+                glGetDoublev(GL_PROJECTION_MATRIX, proj);
+                glGetIntegerv(GL_VIEWPORT, view);
+               // glReadPixels( x, view[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+                //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
+                if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
+                	//cout<<"mouse Position World Space-> x: "<<ox<<"   y: "<<oy<<"   z: "<<oz<<endl;
+                	world.updateMouseForce(vec3(ox*5,5*oy,0));
+                }
+                else
+                	cout<<"gluUnProject Returned False"<<endl;
+        }
+        else
+        	cam.mousemotion(x, y);
+    //*/
 }
 
 //-------------------------------------------------------------------------------

@@ -21,6 +21,7 @@ class System;
 /// \brief Represents the cloth mesh system
 ///
 /// Contains all the data needed to store a cloth mesh.
+class VertexToEllipseCollision;
 class System {
 public:
 	System(TriangleMesh* m, Material* mat);
@@ -41,21 +42,23 @@ public:
 	void calculateExternalForces(Solver*);
 	void calculateForcePartials(NewmarkSolver*);
 	void applyConstraints(Solver*, vector<Constraint*> *);
+	void applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions);
 	//-----------------------------------------
 
-	void takeStep(Solver* solver, vector<Constraint*> *constraints, double timeStep);
+	void takeStep(Solver*, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
 
 	void enableMouseForce(vec3 mousePosition);
-
 	void updateMouseForce(vec3 mousePosition);
-
 	void disableMouseForce();
-
 	bool isMouseEnabled();
+	int setVertexPos2MousePos();
+	void applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b);
 
 	vec3 f_mouse( TriangleMeshVertex* selected );
 	vec3 f_spring( vec3 & pa, vec3 & pb, double rl, double Ks);
     vec3 f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd);
+    void bendForce(TriangleMeshTriangle*, TriangleMeshTriangle*, TriangleMeshVertex*,
+    		TriangleMeshVertex*, TriangleMeshEdge*, LARGE_VECTOR*);
     inline mat3 dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks);
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);

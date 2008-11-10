@@ -31,6 +31,8 @@ class AniElliModel;
  *
  *  And it has the ability to change over time.
  */
+class VertexToEllipseCollision;
+
 class Model {
 public:
     Model();
@@ -71,6 +73,13 @@ public:
     void draw();
     TriangleMesh* getMesh() const;
     void registerConstraint(Constraint*);
+    void applyInitialConstraints();
+    void registerCollision(VertexToEllipseCollision*);
+
+    void enableMouseForce(vec3);
+    void updateMouseForce(vec3);
+    void disableMouseForce();
+    bool isMouseEnabled();
 
 private:
     Solver* _solver;
@@ -78,6 +87,7 @@ private:
     TriangleMesh* _mesh;
     double _timeStep;
     vector<Constraint*> _constraints;
+    vector<VertexToEllipseCollision*> _collisions;
 };
 
 /**
@@ -117,8 +127,24 @@ public:
     double getTimeStep();
     void draw();
 
+    //FOR CONSTRAINTS
     mat4 getEllipsoid(int Indx);
     int getSize();
+
+    //FOR COLLISIONS
+    vec3 getOrigin(int i);
+    vec3 getPastOrigin(int i);
+    vec3 getFutureOrigin(int i);
+    vec4 convertPoint2ElliSpace(int, vec3);
+    vec3 getPointInsideElli2Surface(int, vec4);
+    bool isPointInsideElli(int, vec4);
+    vec3 getPointInFuture(int i, vec3 x_WorldSpace_3);
+    vec3 getPointInPast(int i, vec3 x_WorldSpace_3);
+
+    //FOR FRICTION
+    vec3 getNormal(int j, vec3 X_world_3);
+    double getMu_s();
+    double getMu_d();
 
 private:
 	//TriangleMesh* getCurrentMesh();
@@ -131,10 +157,15 @@ private:
 	vector < vector <mat4> > _ellipsoids;
 	vector<vec3> _takeConst;
 	double _timeStep;
-//	int _currenti; //current position in buffer
-//	int _lasti; //last valid position in buffer
-	//TriangleMesh* _mesh;
-//	TriangleMesh* _buffer[DEFAULT_MESHBUFFERSIZE]; //This will be a circular buffer
+
+	//Collision Variables
+	vec4 _origin;
+	double _linearVelocity;
+	double _angularVelocity;
+
+	//Friction Variables
+	double _muS;
+	double _muD;
 };
 
 

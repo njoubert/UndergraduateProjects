@@ -165,6 +165,146 @@ vec3 System::f_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, doubl
     return f;
 }
 
+void System::bendForce(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
+		TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge,
+		LARGE_VECTOR* F) {
+	TriangleMeshVertex** aList = A->getVertices();
+	TriangleMeshVertex** bList = B->getVertices();
+
+	if (A != NULL && B != NULL && A != B) {
+
+			//Dirty way to figure out which point is which
+			int ai, bi;
+			for (int i = 0; i < 3; i++) {
+				if (aList[i] != a && aList[i] != b)
+					ai = i;
+
+				if (bList[i] != a && bList[i] != b)
+					bi = i;
+			}
+
+			//double _Ke = _mat->getKBe();
+			//double _Kd = _mat->getKBd();
+			double _Ke = KBe;
+			double _Kd = KBd;
+
+			//double Ke = 1000;
+			//double Kd = 1.1;
+
+			//		double Ke = 0;
+			//		double Kd = 0;
+
+			//*
+			vec3 x2 = aList[ai]->getX();
+			vec3 x1 = bList[bi]->getX();
+			vec3 x4 = a->getX();
+			vec3 x3 = b->getX();
+
+			vec3 v2 = aList[ai]->getvX();
+			vec3 v1 = bList[bi]->getvX();
+			vec3 v4 = a->getvX();
+			vec3 v3 = b->getvX();
+
+			vec3 N1 = (x1 - x3) ^ (x1 - x4);
+			vec3 N2 = (x2 - x4) ^ (x2 - x3);
+			//vec3 N2 = A->getNormal();
+			//vec3 N1 = B->getNormal();
+			vec3 E = x4 - x3;
+
+			double N1mag = N1.length();
+			double N2mag = N2.length();
+			double Emag = E.length();
+			//if(N1mag > 1)
+			//		N1mag = 1;
+			//	if(N2mag > 1)
+			//		N2mag = 1;
+			//	if(Emag > 1)
+			//		Emag = 1;
+			//vec3 N1unit = N1.normalize();
+			//vec3 N2unit = N2.normalize();
+			//vec3 Eunit = E.normalize();
+			vec3 N1unit = N1 / N1mag;
+			vec3 N2unit = N2 / N2mag;
+			vec3 Eunit = E / Emag;
+
+			vec3 u[4];
+			u[0] = Emag * (N1 / (N1mag * N1mag));
+			u[1] = Emag * (N2 / (N2mag * N2mag));
+			u[2] = (((x1 - x4) * E) / Emag) * (N1 / (N1mag * N1mag)) + (((x2 - x4)
+					* E) / Emag) * (N2 / (N2mag * N2mag));
+			u[3] = -(((x1 - x3) * E) / Emag) * (N1 / (N1mag * N1mag)) - (((x2 - x3)
+					* E) / Emag) * (N2 / (N2mag * N2mag));
+
+			double sign = ((N1unit ^ N2unit) * Eunit);
+			if (sign > 0)
+				sign = 1;
+			else
+				sign = -1;
+
+			double mustBePos = abs(1 - N1unit * N2unit);
+			if (mustBePos < 0.0000001)
+				mustBePos = 0;
+
+			double sinThetaOver2 = sign * sqrt((mustBePos) / 2);
+
+			vec3 Fe[4];
+		//	for (int i = 0; i < 4; i++)
+		//		Fe[i] = _Ke * ((Emag * Emag) / (N1mag + N2mag)) * (sinThetaOver2 - sin(edge->getRestAngle()/2))
+		//				* u[i];
+
+			for (int i = 0; i < 4; i++)
+							Fe[i] = _Ke * ((Emag * Emag) / (N1mag + N2mag)) * (sinThetaOver2)
+									* u[i];
+
+			vec3 Fd[4];
+			double DthetaDt = u[0] * v1 + u[1] * v2 + u[2] * v3 + u[3] * v4;
+			if (DthetaDt < 0.000001 && DthetaDt > -0.000001)
+				DthetaDt = 0;
+
+			for (int i = 0; i < 4; i++)
+				Fd[i] = -_Kd * Emag * DthetaDt * u[i];
+			/*
+			 //	if(!(F[0][0] < 0.001 && F[0][0] > -.001)) {
+			 //		cout<<"x1: "<<x1<<"  x2: "<<x2<<"  x3: "<<x3<<"  x4: "<<x4<<endl;
+			 //		exit(1);
+			 //		cout<<"N1: "<<N1<<"  N2: "<<N2<<"  E: "<<E<<endl;
+			 if(N1unit.length() > 1 || N2unit.length() > 1 || Eunit.length() > 1 || (sinThetaOver2 > 2.2*3.14 || sinThetaOver2 < -2.2*3.14)) {
+			 //		if(sinThetaOver2 < .01) {
+			 cout<<"Unit Normal is > 1!!!!! --- BREAK"<<endl;
+			 cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
+			 cout<<"N1mag: "<<N1mag<<"  N2mag: "<<N2mag<<"  Emag: "<<Emag<<endl;
+			 cout<<"N1unit_length: "<<N1unit.length()<<"  N2unit_length: "<<N2unit.length()<<"  Eunit_length: "<<Eunit.length()<<endl;
+			 //		cout<<"normalDotProd: "<<N1unit*N2unit<<endl<<endl;
+			 //		exit(0);
+			 }
+			 //		cout<<"N1unit: "<<N1unit<<"  N2unit: "<<N2unit<<"  Eunit: "<<Eunit<<endl;
+			 //		cout<<"N1unit: "<<N1unit.length()<<"  N2unit: "<<N2unit.length()<<"  Eunit: "<<Eunit.length()<<endl;
+			 //		exit(1);
+			 //		cout<<"U1: "<<u[0]<<"  U2: "<<u[1]<<"  U3: "<<u[2]<<"  U4: "<<u[3]<<endl;
+			 //		if(sinThetaOver2 > 0.01)
+			 //		cout<<"Sign: "<<sign<<"   Theta: "<<sinThetaOver2<<endl;
+			 //		cout<<"F1: "<<F[0]<<"  F2: "<<F[1]<<"  F3: "<<F[2]<<"  F4: "<<F[3]<<endl;
+			 //		cout<<endl;
+
+			 //	}
+			 //*/
+			vec3 Fb[4];
+			for (int i = 0; i < 4; i++)
+				Fb[i] = Fe[i] + Fd[i];
+
+			//aList[ai]->setF(F[1]);
+			//bList[bi]->setF(F[0]);
+			//a->setF(F[3]);
+			//b->setF(F[2]);
+
+			(*F)[aList[ai]->getIndex()] += Fb[1];
+			(*F)[bList[bi]->getIndex()] += Fb[0];
+			(*F)[a->getIndex()] += Fb[3];
+			(*F)[b->getIndex()] += Fb[2];
+		}
+		//*/
+}
+
 inline mat3 System::dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks) {
     mat3 I = identity2D();
     vec3 l = pa - pb;
@@ -191,21 +331,25 @@ mat3 System::dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd) {
 }
 
 void System::enableMouseForce(vec3 mousePosition) {
-    //Find closest vertex
-    //cout << "Mouse is at: " << mousePosition << endl;
-    double currentDistance = 900000.0, d;
-    TriangleMeshVertex* currentClosest = NULL;
-    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
-        d = (mousePosition - mesh->getVertex(i)->getX()).length();
-        if (d < currentDistance) {
-            currentDistance = d;
-            currentClosest = mesh->getVertex(i);
-            mouseP = mousePosition;
-        }
-    }
+	//Find closest vertex
+	//cout << "Mouse is at: " << mousePosition << endl;
+	double currentDistance = 900000.0, d, d1, d2;
+	TriangleMeshVertex* currentClosest;
+	for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+		d1 = (mousePosition[0] - mesh->getVertex(i)->getX()[0]);
+		d2 = (mousePosition[1] - mesh->getVertex(i)->getX()[1]);
+		d = sqrt(d1*d1 + d2*d2);
+		if (d < currentDistance) {
+			currentDistance = d;
+			currentClosest = mesh->getVertex(i);
+			mouseP = mousePosition;
+		}
+	}
 
-    //sets mouseSelected to this vertex.
-    mouseSelected = currentClosest;
+	//sets mouseSelected to this vertex.
+	mouseSelected = currentClosest;
+	//cout<<"Selected Vertex: "<<mouseSelected<<endl;
+	//cout<<"Mouse Position: "<<mouseP<<endl;
 }
 
 void System::updateMouseForce(vec3 mousePosition) {
@@ -227,13 +371,43 @@ vec3 System::f_mouse(TriangleMeshVertex* selected) {
     double rl = 1;
     vec3 l = selected->getX() - mouseP;
     double L = l.length();
-    vec3 f = -_mat->_ks * (l / L) * (L - rl);
+    vec3 f = -_mat->getKe() * (l / L) * (L - rl);
     return (f);
+}
+
+int System::setVertexPos2MousePos() {
+	TriangleMeshVertex* selected;
+	for (int i = 0; i < mesh->countVertices(); i++) {
+		selected = mesh->getVertex(i);
+		if (selected == mouseSelected) {
+			selected->getX() = mouseP;
+			(*_x)[i][0] = mouseP[0];
+			(*_x)[i][1] = mouseP[1];
+			(*_x)[i][2] = mouseP[2];
+			return i;
+		}
+	}
+	cout<<"PROBLEM WITH MOUSE FORCE!!!??"<<endl;
+	return 0;
+}
+
+void System::applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
+	TriangleMeshVertex* selected;
+	for (int i = 0; i < mesh->countVertices(); i++) {
+		selected = mesh->getVertex(i);
+		if (selected == mouseSelected) {
+		    //Update the sparse matrices to honor this constraint
+		    A->zeroRowCol(i, i, true);
+		    //TODO: Should this be taking the ellipse speed into account?
+		    (*b)[i] = vec3(0,0,0);
+		}
+	}
 }
 
 void System::calculateExternalForces(Solver* solver) {
     TriangleMeshVertex* a;
     vec3 gravity(GRAVITY);
+    //vec3 gravity(0,0,-9.8);
     LARGE_VECTOR* f = solver->getf();
     for (int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
@@ -254,8 +428,11 @@ void System::calculateInternalForces(Solver* solver) {
         vec3 pb = b->getX(); vec3 vb = b->getvX();
         vec3 Ua = a->getU(); vec3 Ub = b->getU();
         vec3 RL = Ua - Ub; double rl = RL.length();
+        F0 = f_spring(pa, pb, rl, _mat->getKe()) + f_damp(pa, pb, va, vb, rl, _mat->getKd());
 
-        F0 = f_spring(pa, pb, rl, _mat->_ks) + f_damp(pa, pb, va, vb, rl, _mat->_kd);
+        //Calculate Bend Forces if they are to be calculated
+        if(BEND_FORCES)
+        	bendForce((*edg_it)->getParentTriangle(0), (*edg_it)->getParentTriangle(1), a, b, (*edg_it), f);
 
         //Update force vector
         (*f)[a->getIndex()] += F0;
@@ -283,8 +460,8 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
         vec3 Ua = a->getU(); vec3 Ub = b->getU();
         vec3 RL = Ua - Ub; double rl = RL.length();
 
-        JP_fa_xa = dfdx_damp(pa, pb, va, vb, rl, _mat->_kd) + dfdx_spring(pa, pb, rl, _mat->_ks);
-        JV_fa_xa = dfdv_damp(pa, pb, rl, _mat->_kd);
+        JP_fa_xa = dfdx_damp(pa, pb, va, vb, rl, _mat->getKd()) + dfdx_spring(pa, pb, rl, _mat->getKe());
+        JV_fa_xa = dfdv_damp(pa, pb, rl, _mat->getKd());
 
         (*JP)(ia,ia) += JP_fa_xa;
         (*JP)(ia,ib) += -1*JP_fa_xa;
@@ -300,16 +477,25 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 }
 
 void System::applyConstraints(Solver* solver, vector<Constraint*> *constraints) {
-	for (unsigned int i = 0; i < constraints->size(); i++) {
-		(*constraints)[i]->applyConstraintToPoints(_x, _v);
+	if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+		for (unsigned int i = 0; i < constraints->size(); i++)
+			(*constraints)[i]->applyConstraintToPoints(_x, _v);
 	}
+	if(isMouseEnabled())
+		setVertexPos2MousePos();
 }
+
+void System::applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions) {
+	for (unsigned int i = 0; i < collisions->size(); i++)
+		(*collisions)[i]->applyCollisionToMesh(_x, _v, solver->getf());
+}
+
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
-        double timeStep) {
+		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
 
     frametimers.switchToTimer("calculateState");
     //Calculate the current derivatives and forces
-    solver->calculateState(this, constraints); //evalDeriv function
+    solver->calculateState(this, constraints, collisions); //evalDeriv function
     frametimers.switchToGlobal();
 
     //Run the solver to populate delx, delv
