@@ -2,7 +2,7 @@
 #define DEFAULTS_H_
 
 
-#define GRAVITY 0,0,-9.8
+#define GRAVITY 0,-9.8,0
 
 
 #define DEFAULT_TIMESTEP	0.02
