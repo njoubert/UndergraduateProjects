@@ -9,6 +9,7 @@ SOURCES := $(wildcard ./src/*.cpp) \
 PLATFORM := OSX
 MACROS := -DPERFORMANCEHAXX
 MACROS += -DCATCHERRORS
+#MACROS += -DFREEIMAGE
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
 
@@ -21,7 +22,7 @@ INCLUDE := -I./include/ \
     
 LIBRARY := -L./lib/ \
     -L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
-    -lGL -lGLU -lm -lstdc++ -lfreeimage -lsparse -lspblas -lmv
+    -lGL -lGLU -lm -lstdc++ #-lfreeimage
     
 #Basic Stuff -----------------------------
 

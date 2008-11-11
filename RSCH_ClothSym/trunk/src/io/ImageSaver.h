@@ -11,15 +11,24 @@
 #define BPP 24
 
 #include "../global.h"
-#include <FreeImage.h>
 #include <sstream>
+
+#ifdef FREEIMAGE
+    #include <FreeImage.h>
+#else
+    #include "Image.h"
+#endif
 
 
 class ImageSaver {
 public:
+#ifdef FREEIMAGE
     ImageSaver() : frameCount(0), doImageOutput(false) { FreeImage_Initialise(); }
     ~ImageSaver() { FreeImage_DeInitialise(); }
-
+#else
+    ImageSaver() : frameCount(0), doImageOutput(false) { ; }
+    ~ImageSaver() { ; }
+#endif
     void initialize(string directory, double inverseFPS) {
         cout << "Saving frames to directory " << directory << endl;
         imgOutDir = directory;
@@ -28,6 +37,8 @@ public:
         doImageOutput = true;
         lastTime = -1 - inverseFPS;
     }
+
+#ifdef FREEIMAGE
 
     void saveFrame(double time, bool JustDoIt, double inverseFPS, int w, int h) {
         if (!doImageOutput)
@@ -82,6 +93,56 @@ public:
         free(bitmap);
 
     }
+#else
+
+    void saveFrame(double time, bool JustDoIt, double inverseFPS, int w, int h) {
+        if (!doImageOutput)
+            return;
+        if (time >= lastTime + inverseFPS || JustDoIt)
+            lastTime = time;
+        else
+            return;
+
+        frameCount++;
+        stringstream filename(stringstream::in | stringstream::out);
+        filename << imgOutDir << "sym";
+        filename << std::setfill('0') << setw(6) << frameCount << ".bmp";
+        cout << "Save frame " << frameCount << " at "<< setprecision(3) << time <<"s ..." << endl;
+
+        Image* img = new Image(w, h);
+
+        /******************************
+         * Here we draw!
+         ******************************/
+        unsigned char *image;
+
+        /* Allocate our buffer for the image */
+        if ((image = (unsigned char*)malloc(3*w*h*sizeof(char))) == NULL) {
+            cout << "Couldn't allocate memory!" << endl;
+            delete img;
+            return;
+        }
+        glPixelStorei(GL_PACK_ALIGNMENT,1);
+        glReadBuffer(GL_BACK_LEFT);
+        glReadPixels(0,0,w,h,GL_RGB,GL_UNSIGNED_BYTE,image);
+
+        unsigned char r, g, b;
+        for (int j=h-1;j>=0;j--) {
+           for (int i=0;i<w;i++) {
+              r = image[3*j*w+3*i+0];
+              g = image[3*j*w+3*i+1];
+              b = image[3*j*w+3*i+2];
+              img->setPixel(i, j, r, g, b);
+           }
+        }
+        img->saveAsBMP(filename.str());
+        delete image;
+        delete img;
+
+    }
+
+
+#endif
 
 private:
     int frameCount;

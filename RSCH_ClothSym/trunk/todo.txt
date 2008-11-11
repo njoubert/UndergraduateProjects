@@ -1,0 +1,20 @@
+Better cape mesh (with TRIANGLE)
+
+Implicit Collisions
+
+Adaptive Timestepping
+
+"Real" Newmark with both gamma and beta parameters
+
+Parameter Tuning for Cloth and Newmark integrator
+
+Scene file
+
+Compile and run on faster machines
+
+Use triangle mesh for mocap data
+
+OpenMP for CG method
+
+Switch away from FreeImage for image output on all machines?
+

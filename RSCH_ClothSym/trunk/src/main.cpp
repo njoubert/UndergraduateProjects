@@ -643,8 +643,9 @@ void display(void) {
 	glPushMatrix();
 
 	glDisable(GL_LIGHTING);
-    if (cam.showGrid) {
-        White();
+	White();
+	glColor3f(1.0f, 1.0f, 1.0f);
+	if (cam.showGrid) {
         // draw grid
         glBegin(GL_LINES);
         for (int i = -10; i <= 10; ++i) {
