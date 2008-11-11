@@ -157,6 +157,10 @@ SPARSE_MATRIX* NewmarkSolver::getJV() {
     return _JV;
 }
 
+LARGE_VECTOR* NewmarkSolver::getY() {
+    return _y;
+}
+
 void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints, vector<VertexToEllipseCollision*> *collisions) {
 	//Zero our current data structures
     _JP->zeroValues();
@@ -200,7 +204,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 			(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
 		}
 	}
-	
+
 	sys->applyMouseConst2Matrices(A, b);
 
 	profiler.frametimers.switchToTimer("CG solving");

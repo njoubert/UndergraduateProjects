@@ -62,6 +62,7 @@ public:
     ~NewmarkSolver();
     SPARSE_MATRIX* getJP();
     SPARSE_MATRIX* getJV();
+    LARGE_VECTOR* getY();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
     void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
@@ -69,6 +70,8 @@ private:
 	float _gamma;
 	SPARSE_MATRIX* _JP;
 	SPARSE_MATRIX* _JV;
+	LARGE_VECTOR* _y;   //Position modification
+
 	SPARSE_MATRIX* A;
 	LARGE_VECTOR* b;
 
