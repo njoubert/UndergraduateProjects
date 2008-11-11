@@ -178,7 +178,7 @@ void VertexToEllipseCollision::frictionForce(int j, TriangleMeshVertex* p, vec3 
 	}
 }
 
-void VertexToEllipseCollision::applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* F ) {
+void VertexToEllipseCollision::applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y ) {
 	for(int i = 0; i < _mesh->countVertices(); i++) {
 		for(int j = 0; j < _ellipsoids->getSize(); j++) {
 			TriangleMeshVertex* Vert = _mesh->getVertex(i);
@@ -206,9 +206,11 @@ void VertexToEllipseCollision::applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTO
 				vec3 Wtan = W^r;
 				vec3 Velli = Vo + Wtan;
 
-				(*X)[Vert->getIndex()][0] = Xc[0];// + .1*(Xc[0] - X->m_pData[Vert->getID()].x);
-				(*X)[Vert->getIndex()][1] = Xc[1];// + .1*(Xc[1] - X->m_pData[Vert->getID()].y);
-				(*X)[Vert->getIndex()][2] = Xc[2];// + .1*(Xc[2] - X->m_pData[Vert->getID()].z);
+				(*Y)[Vert->getIndex()] = Xc - (*X)[Vert->getIndex()];
+
+				//(*X)[Vert->getIndex()][0] = Xc[0];// + .1*(Xc[0] - X->m_pData[Vert->getID()].x);
+				//(*X)[Vert->getIndex()][1] = Xc[1];// + .1*(Xc[1] - X->m_pData[Vert->getID()].y);
+				//(*X)[Vert->getIndex()][2] = Xc[2];// + .1*(Xc[2] - X->m_pData[Vert->getID()].z);
 
 				(*V)[Vert->getIndex()][0] = -.1*(*V)[Vert->getIndex()][0] + Velli[0];//+ Wtan[0];// + Vo[0];//
 				(*V)[Vert->getIndex()][1] = -.1*(*V)[Vert->getIndex()][1] + Velli[1];//+ Wtan[1];// + Vo[1];//

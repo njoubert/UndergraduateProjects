@@ -487,7 +487,7 @@ void System::applyConstraints(Solver* solver, vector<Constraint*> *constraints) 
 
 void System::applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions) {
 	for (unsigned int i = 0; i < collisions->size(); i++)
-		(*collisions)[i]->applyCollisionToMesh(_x, _v, solver->getf());
+		(*collisions)[i]->applyCollisionToMesh(_x, _v, ((NewmarkSolver*)solver)->getY());
 }
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
 		vector<VertexToEllipseCollision*> *collisions, double timeStep) {

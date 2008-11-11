@@ -178,13 +178,13 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     //Apply constraints to points right here.
     sys->applyConstraints(this, constraints);
 
+    //Apply Collisions
+    sys->applyCollisions(this, collisions); //TODO: Really here?
+
     //Compute _JP, _JV, _f
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
     sys->calculateForcePartials(this);
-
-    //Apply Collisions
-    sys->applyCollisions(this, collisions); //TODO: Really here?
 }
 
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
