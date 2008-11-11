@@ -74,6 +74,7 @@ private:
 
 	SPARSE_MATRIX* A;
 	LARGE_VECTOR* b;
+	LARGE_VECTOR* t1;
 
 };
 

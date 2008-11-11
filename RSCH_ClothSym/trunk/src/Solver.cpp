@@ -142,6 +142,7 @@ NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
     _y = new LARGE_VECTOR(n);
     A = new SPARSE_MATRIX(n,n,sparsePattern,false);
 	b = new LARGE_VECTOR(n);
+	t1 = new LARGE_VECTOR(n);
 	_gamma = GAMMA;
 }
 
@@ -189,17 +190,20 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep) {
     profiler.frametimers.switchToTimer("calculating matrices");
 
+    //b = h*f + g*h^2*v*JP  + g*h*y*JP;
+    (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
+    (*_JP) *= (timeStep*_gamma);   			//JP = g*h*JP
+    (*_JP).postMultiply(*_y, *t1);			//t1 = g*h*y*JP
+    (*_JP) *= (timeStep);   				//JP = g*h^2*JP
+    (*_JP).postMultiply((*sys->getV()), *b);//b = g*h^2*v*JP
+    (*_f) *= timeStep;
+    (*b) += (*_f);							//b = h*f + g*h^2*v*JP
+    (*b) += (*t1);							//b = h*f + g*h^2*v*JP + g*h*y*JP
+
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
-    (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
-    (*_JP) *= (timeStep*timeStep*_gamma);   //JP = g*h^2*JP
     (*A) -= (*_JV);
     (*A) -= (*_JP);
-
-    //b = h*f + g*h^2*v*JP);
-    (*_f) *= timeStep;
-    (*_JP).postMultiply((*sys->getV()), *b);
-    (*b) += (*_f);
 
     //Apply constraints (filter):
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
