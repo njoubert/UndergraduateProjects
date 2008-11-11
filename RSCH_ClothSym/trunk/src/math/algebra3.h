@@ -99,7 +99,7 @@ public:
     vec2& operator *=(const double d); // multiplication by a constant
     vec2& operator /=(const double d); // division by a constant
     double& operator [](int i); // indexing
-    double vec2::operator [](int i) const;// read-only indexing
+    double operator [](int i) const;// read-only indexing
 
     // special functions
 
@@ -126,7 +126,7 @@ public:
 #ifdef ALGEBRA3IOSTREAMS
     friend ostream& operator <<(ostream& s, const vec2& v); // output to stream
     friend istream& operator >>(istream& s, vec2& v); // input from strm.
-#endif ALGEBRA3IOSTREAMS
+#endif /* ALGEBRA3IOSTREAMS */
 
     friend void swap(vec2& a, vec2& b); // swap v1 & v2
     friend vec2 min(const vec2& a, const vec2& b); // min(v1, v2)

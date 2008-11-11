@@ -533,7 +533,7 @@ void Grey() {
 // STUFF FOR RENDERING BITMAPS FOR OPENGL FRAMERATE
 //
 char s[30];
-int Font=(int)GLUT_BITMAP_8_BY_13;
+int* Font=(int*)GLUT_BITMAP_8_BY_13;
 void setOrthographicProjection() {
 	// switch to projection mode
 	glMatrixMode(GL_PROJECTION);

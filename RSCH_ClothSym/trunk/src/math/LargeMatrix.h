@@ -29,8 +29,9 @@
 #define LARGEMATRIX_H_
 
 #include <vector>
-#include "algebra3.h"
 #include <iostream>
+#include <algorithm>
+#include "algebra3.h"
 #include "LargeVector.h"
 
 class LargeMat3Matrix;

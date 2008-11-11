@@ -15,6 +15,7 @@
 #include "global.h"
 #include "World.h"
 #include "io/ImageSaver.h"
+#include <string.h>
 
 #define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)
 

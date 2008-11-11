@@ -23,7 +23,7 @@ void Timer::Start() {
 #ifdef _WIN32
     lastTime = GetTickCount();
 #else
-    gettimeofday(&lastTime, NULL);
+    gettimeofday(&lastTime, 0);
 #endif
     running = true;
 }
@@ -38,7 +38,7 @@ float Timer::Elapsed() {
     deltaT = (float)(currentTime - lastTime)*0.001f;
 #else
     timeval currentTime;
-    gettimeofday(&currentTime, NULL);
+    gettimeofday(&currentTime, 0);
     deltaT = (float) ((currentTime.tv_sec - lastTime.tv_sec) + 1e-6
             * (currentTime.tv_usec - lastTime.tv_usec));
 #endif
