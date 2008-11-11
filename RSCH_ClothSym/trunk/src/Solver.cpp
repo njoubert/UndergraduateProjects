@@ -139,9 +139,10 @@ NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
     vector<vector<int> > sparsePattern = MeshTOLargeMatrix::CalculateSparsityPattern(mesh);
     _JP = new SPARSE_MATRIX(n,n,sparsePattern,false);
     _JV = new SPARSE_MATRIX(n,n,sparsePattern,false);
+    _y = new LARGE_VECTOR(n);
     A = new SPARSE_MATRIX(n,n,sparsePattern,false);
 	b = new LARGE_VECTOR(n);
-    _gamma = GAMMA;
+	_gamma = GAMMA;
 }
 
 
@@ -167,9 +168,11 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     _JV->zeroValues();
     _f->zeroValues();
     _delv->zeroValues();
+    _y->zeroValues();
     //_delx->zeroValues(); //dont do this since delx is set from delv
     A->zeroValues();
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
+
 
     //Apply constraints to points right here.
     sys->applyConstraints(this, constraints);
