@@ -200,6 +200,9 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*b) += (*_f);							//b = h*f + g*h^2*v*JP
     (*b) += (*t1);							//b = h*f + g*h^2*v*JP + g*h*y*JP
 
+    //TODO: Should y also be factored into the newmark portion of the integrator?
+    //TODO: Should I apply constraints that include this y? ATM: NO!
+
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     (*A) -= (*_JV);
@@ -220,11 +223,12 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     profiler.frametimers.switchToGlobal();
 
     profiler.frametimers.switchToTimer("calculating matrices");
-    //delX = h*(v + g*delV);
+    //delX = h*(v + g*delV) + y;
     (*_delx) = (*_delv);
     (*_delx) *= (_gamma);
     (*_delx) += *(sys->getV());
     (*_delx) *= timeStep;
+    (*_delx) += *_y;
     profiler.frametimers.switchToGlobal();
 
 }
