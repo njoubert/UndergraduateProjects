@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.9: http://docutils.sourceforge.net/" />
+<title>CS61C Lab 3</title>
+<link rel="stylesheet" href="../default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="cs61c-lab-3">
+<h1 class="title">CS61C Lab 3</h1>
+<h2 class="subtitle" id="malloc">Malloc</h2>
+<!-- $Header: /home/cc/cs61c/sp07/class/cs61c-ca/repository/lab3/index.html,v 1.1.1.1 2007/02/03 22:07:39 cs61c-ca Exp $ -->
+<div class="section" id="background">
+<h1><a name="background">Background</a></h1>
+<div class="section" id="goals">
+<h2><a name="goals">Goals</a></h2>
+<p>This lab will give you practice working with the malloc function.</p>
+</div>
+<div class="section" id="reading">
+<h2><a name="reading">Reading</a></h2>
+<ul class="simple">
+<li>K&amp;R: 6.1-6.5</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercises">
+<h1><a name="exercises">Exercises</a></h1>
+<div class="section" id="partners">
+<h2><a name="partners">Partners</a></h2>
+<p>Working with a partner is highly recommended.  If you work with a
+partner, be sure both partners understand all aspects of your solution.</p>
+</div>
+<div class="section" id="setup">
+<h2><a name="setup">Setup</a></h2>
+<p>Copy the contents of ~cs61c/labs/03 to a suitable location in
+your home directory.</p>
+<pre class="literal-block">
+$ mkdir ~/lab
+$ cp -r ~cs61c/labs/03/ ~/lab
+</pre>
+</div>
+<div class="section" id="exercise-1-part1-c">
+<h2><a name="exercise-1-part1-c">Exercise 0: Updating your Gecos Information</a></h2>
+
+<p>Begin by typing the following command into your UNIX prompt, replacing "<code>&lt;login&gt;</code>" with your cs61c login. 
+
+<pre>
+  % finger | grep &lt;login&gt;
+</pre>
+
+<p>For example, if your login is <code>cs61c-ab</code>, then you would have typed the following:
+
+<pre>
+  % finger | grep cs61c-ab
+</pre>
+
+<p>The result of typing the command should give you an output as follows:
+
+<pre>
+  cs61c-ab Albert Bentley        pts/6            Tue 13:11  nova               
+</pre>
+
+<p>If the 2nd column says "Class Account", you will need to change your Gecos information, the name associated with your account. To do that, please ssh into update (type "ssh update" into the UNIX prompt--it will ask you to enter your password). Once you have logged into <code>update</code>, select "Change your Gecos" and enter a name that is not "Class Account". You don't need to type your real name, but should be something that will give your account an unique name.
+
+<p><table border="1" width="90%" align="center" cellpadding="4" cellspacing="0">
+<tr><td width="90%" height="40" valign="center" align="left" >Show that your Gecos information is not "Class Account"</td><td>&nbsp;</td></tr>
+</table>
+
+<h2><a name="exercise-1-part1-c">Exercise 1: part1.c</a></h2>
+<p>Open part1.c.  Describe (either as comments in this file or a separate
+document) the effect of each of the statements and answer the following
+questions:</p>
+<ol class="arabic simple">
+<li>What areas of memory (heap or stack) are affected by the statement?</li>
+<li>Does any memory get allocated or freed?</li>
+<li>If so, where is this memory?</li>
+<li>Does the statement result in a memory leak?</li>
+</ol>
+<p>Feel free to use gdb or printf statements to help in your investigation.
+Additionally, both of the malloc statements work, but one of them is in
+bad form.  Which is &quot;bad,&quot; why is it &quot;bad,&quot; and how would you change it?</p>
+<div class="section" id="checkoff">
+<h3><a name="checkoff">Checkoff</a></h3>
+<table border="1" width="90%" align="center" cellpadding="4" cellspacing="0">
+<tr><td width="90%" height="40" valign="center" align="left" >Show your answer to your TA.</td><td>&nbsp;</td></tr>
+</table></div>
+</div>
+<div class="section" id="exercise-2-vector-c">
+<h2><a name="exercise-2-vector-c">Exercise 2: vector.c</a></h2>
+<p>In vector.c, we provide you with a framework for implementing a
+variable-length array (in Java and C++, these variable-length arrays are
+known as the Vector class).  This exercise is designed to help
+familiarize you with C structs and memory management in C.</p>
+<p>Fill in the missing code (you only need to modify vector.c), and test it
+by running 'make test'.  If the test breaks, try using gdb (or ddd on the cory 
+server) on the created executable (vector.test) or printf statements to find 
+your bugs. If you have extra time, you can try adding more test cases to the code
+in test.c and explore how we've split up this one program into two different .c 
+files.</p>
+<p>Comments in the code describe how the functions should work.  Look at
+the functions we've filled in to see how the data structures should be
+used.</p>
+<p>For consistency, it is assumed that all entries in the vector are 0
+unless set by the user.  Keep this in mind as malloc() does not zero-out
+the memory it allocates.</p>
+<div class="section" id="id1">
+<h3><a name="id1">Checkoff</a></h3>
+<table border="1" width="90%" align="center" cellpadding="4" cellspacing="0">
+<tr><td width="90%" height="40" valign="center" align="left" >Run vector.test and show it to your TA</td><td>&nbsp;</td></tr>
+<tr><td width="90%" height="40" valign="center" align="left" >Show your TA your modifications in vector.c</td><td>&nbsp;</td></tr>
+<tr><td width="90%" height="40" valign="center" align="left" >Explain why <code>free(v->size);</code> statement is not needed in <code>vector_delete()</code></td><td>&nbsp;</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+Generated by <a class="reference" href="http://docutils.sourceforge.net/">Docutils</a> from <a class="reference" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> source.
+
+</div>
+</body>
+</html>
