@@ -1,0 +1,132 @@
+<html>
+<head>
+<title> Homework </title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="styles/section-dflt.css">
+</head>
+<body>
+
+<h3> 14.2.2. Homework </h3>
+
+
+<ol>
+<li> Exercise 12.1 from <cite>Data Structures Into Java</cite>.  However,
+     the template is in <code><a href="code/hw9/Chase.java">~cs61b/code/hw9/Chase.java</a></code>, rather than
+     what the problem says.
+
+
+<li> Fill in the implementation of the union-find class in 
+	<code><a href="code/hw9/UnionFind.java">~cs61b/code/hw9/UnionFind.java</a></code>.
+
+<li> In the standard Unix <code>make</code> program, the notation
+<pre>
+<var>F0</var> : <var>F1</var> <var>F2</var> &hellip;
+
+</pre>
+means both "to create <var>F0</var>, you must first create or have
+available <var>F1</var>, <var>F2</var>, &hellip;" and also
+"whenever you change any of <var>F1</var>, <var>F2</var>, &hellip;, you
+must then modify <var>F0</var>."  Each of the <var>Fi</var> is a string
+of non-blank characters, not including colon.
+Fill in the template
+
+<code><a href="code/hw9/Make.java">~cs61b/code/hw9/Make.java</a></code> to read a number of lines in 
+this format and then to generate a list of lines of the form
+<pre>
+Generate <var>Fi</var>
+</pre>
+that will create all the <var>Fi</var> that appear to the left of a
+colon in the input in such an order as to obey the rules in the input.  
+If this is impossible (due to circular rules), print just 
+<pre>
+Circularity detected.
+</pre> 
+instead.
+
+<li> [Misha Dynin, from a contest in St. Petersburg, Russia]
+Given a rectangle of letters (such as
+
+<pre>
+    AB
+    BC
+</pre>
+), a starting position within that rectangle (such as the character in the
+upper-left corner), and a string  (such as "ABBC"), consider the
+question of finding paths through the letters that match
+the given string, begin at the starting
+position, and at each step move one square in one  of the eight compass
+directions (north, south, east, west, northeast, northwest, southeast,
+southwest).  For the given example, there are two such paths. They are
+(<code>E-SW-E</code>) and (<code>S-NE-S</code>)&mdash;that is, 
+"one step east, one step
+southwest, one step east" and "one step south, one step northeast,
+and one step south."  For the rectangle
+<pre>
+    CBB
+    BBA
+</pre>
+and the string "BBCBBA", starting at the square in the middle of the
+top row, there are 12 paths.  Paths are allowed to visit the same
+position twice.
+
+<p>
+Using the template in <code><a href="code/hw9/CountPaths.java">~cs61b/code/hw9/CountPaths.java</a></code>,
+you are to write a program that, given such a rectangle, string, and
+starting position, reports the <em>number</em> of distinct paths that
+match the string, according to the definitions above.  The input (on 
+the standard input) will
+consist of four positive integers (call them <var>M</var>,
+
+<var>N</var>, <var>r</var>, and <var>c</var>), a string
+(<var>S</var>), and <var>M</var> strings consisting of upper-case
+letters A&ndash;Z, each of which is <var>N</var> characters long.
+These inputs are all separated from each other by whitespace. The
+<var>M</var> strings are the rows of the rectangle, from top to
+bottom.  The pair <var>(r,c)</var> are the coordinates of the starting
+position, with <var>0&lt;= r &lt; M</var>, <var>0 &lt;= c&lt;N</var>.  Row 0 is
+the top row; column 0 is the left column.  The output will be a line
+reporting the number of paths in the format shown in the examples.
+
+
+<p>
+You may assume that the number of paths is less than <var>2<sup>63</sup></var>,
+<var>M&lt;=80</var>, <var>N&lt;=80</var>.  Nevertheless, be aware that the time limit is 
+less than a minute.
+
+<p>
+<table border=1>
+<tr> <th align=center colspan=2> Examples </th> </tr>
+
+<tr> <th> Input </th> <th> Output </th> </tr>
+<tr> 
+<td>
+<pre>
+2 2 0 0
+ABBC AB
+     BC
+</pre>
+</td>
+<td>
+<pre>
+There are 2 paths.
+
+</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre>
+2 3 0 1 BBCBBA CBB BBA
+</pre>
+</td>
+<td>
+<pre>
+There are 12 paths.
+</pre>
+</td>
+</tr>
+</table>
+</ol>
+
+</body>
+</html>

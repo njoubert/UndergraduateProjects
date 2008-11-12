@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry sourcepath="C:/Program Files/Java/jre1.5.0_06/lib/" kind="lib" path="C:/Program Files/Java/jre1.5.0_06/lib/ucb-s2006.jar">
+		<attributes>
+			<attribute value="http://inst.eecs.berkeley.edu/%7Ecs61b/sp06/reader/ucb-docs/index.html" name="javadoc_location"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path=""/>
+</classpath>
