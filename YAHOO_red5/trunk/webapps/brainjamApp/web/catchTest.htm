@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Catch script test</title>
+	</head>
+	<body>
+		
+<!-- The data encoding type, enctype, MUST be specified as below -->
+<form enctype="multipart/form-data" action="http://db2.berkeley.corp.yahoo.com/brainjamApp/catch.php" method="POST">
+    <!-- MAX_FILE_SIZE must precede the file input field -->
+    <input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+    <!-- Name of input element determines name in $_FILES array -->
+    Send this file: <input name="uploadedFile" type="file" />
+    <input type="submit" value="Send File" />
+</form>
+
+		
+	</body>
+</html>
