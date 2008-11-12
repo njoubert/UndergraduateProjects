@@ -1,0 +1,77 @@
+  Usage: GOL <file> <bornRule> <dieRule> <max generations>
+    This program simulates Conway's Game of Life, a cellular automaton devised
+    by British Mathematician John Horton Conway in 1970. The rules for this
+    zero-player game are the standard rules as described in the Wikipedia article
+    about this game: http://en.wikipedia.org/wiki/Conway%27s_game_of_life. The
+    only difference is births and deaths are determined by the two strings of
+    digits passed as arguments.
+
+    For example, if 34 is passed as <bornRule>, a cell will be born if and
+    only if it has 3 or 4 living neighbors. The rule works similarly for deaths.
+    The standard rules would be represented as <bornRule> = 3 and <dieRule> =
+    0145678.
+
+    This program will take as input a plain PBM file of the format:
+
+      P1 <columns> <rows>
+      <bits for each row indicating a living cell (1) or dead cell (0)>
+
+    and output one PBM file (with identical formatting to the above) for each
+    generation of cells in the game until you reach max generations. The PBM
+    produced will have a comment in the first line indicating the programmer's
+    login and the generation number of the current file. These files will be
+    named the same as the input, but with the generation number appended before
+    the ".pbm". For example, if the input file is "spaceship.pbm", the files
+    written will be named "spaceship0.pbm", "spaceship1.pbm", etc. Generation 
+    0 is the configuration initially given to the program.
+
+    PBM files can be easily viewed using the xv command or converted to another
+    format using the pbmto* and ppmto* utilities. A plain ascii PBM file can be
+    created by adding a header line "P1 <WIDTH> <HEIGHT> and followed by
+    a grid of data (0 = dead = white, 1 = live = black). A call to man pbm can
+    help answer questions about the format.
+
+    Arguments:
+      <file> is the location of a .pbm file to be used as input to the
+      program. This image represents generation 0 for the simulation.
+
+      <bornRule> is the born rule as explained above
+
+      <dieRule> is the die rule as explained above
+
+      <max generations> is the maximum number of generations to generate
+
+    Examples:
+      unix% GOL diesFast.pbm 3 0145678 3
+      unix%
+
+      diesFast.pbm contains the following:
+      P1 4 4
+      0 0 0 0
+      0 0 1 0
+      0 0 0 0
+      0 0 0 0
+
+      The files output will be:
+
+      diesFast0.pbm:
+      P1 4 4 ## Generation 0 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 1 0
+      0 0 0 0
+      0 0 0 0
+
+      diesFast1.pbm:
+      P1 4 4 ## Generation 1 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+
+      diesFast2.pbm:
+      P1 4 4 ## Generation 2 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+

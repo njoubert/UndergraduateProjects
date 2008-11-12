@@ -1,0 +1,187 @@
+<html>
+<head>
+<title>2007Sp CS61C Homework 2: Conway's Game of Life</title>
+</head>
+<body>
+
+<font style="font-size:26pt;" color="#17365D">Sp07 CS61C Homework 2: Conway's Game of Life</font><br>
+
+<i>TA: David Eitan Poll (<a href="mailto:cs61c-tb@imail.eecs.berkeley.edu">cs61c-tb@imail.eecs.berkeley.edu</a>)</i><br>
+<b><font color="#ff0000">Due Wednesday, Jan 31, 2007 @ 11:59pm</font></b><br>
+<b><font color="#008800">Last updated Thursday, Jan 25, 2007 @ 12:23am</font></b>
+
+<p>Ah, Life. Mikey likes it. You can spin for a number to move around the board, getting a job, having children, and paying off student loans. You can even model it in a computer program! I think we'll stick with the latter, but in all its forms, Life is good. I know, I know... Now that you've read that, you're going to tell me that I need to "get a life!"  Well, that's your job. <img src="http://board.acmlm.org/images/smilies/smile.gif"><br>
+<dd>--David Eitan Poll, Spring 07 CS61c TA
+
+<p align=center><img src="glider.jpg"><br>
+A "glider" as visualized by GOL in this project.
+</p>
+
+<p><font size="+2" color="#17365D"><b>Updates</b></font><br>
+<ul>
+<li>Jan 25 @ 12:23am -- corrected PBM file header description in usage string. It is "P1 &lt;cols&gt; &lt;rows&gt;".
+</ul>
+
+<p><font size="+2" color="#17365D"><b>Reading</b></font><br>
+Please read the Wikipedia article on <a
+href="http://en.wikipedia.org/wiki/Conway%27s_game_of_life">Conway's Game of
+Life</a> for this assignment's context and a full description of the
+problem/simulation.
+
+<p>Also, please read K&R: 2.9, 7.2, 7.4, and 7.5 to learn how to manipulate bits, print strings, and work with files.
+
+<p><font size="+2" color="#17365D"><b>Getting Starred</b></font><br>
+
+Copy the contents of ~cs61c/hw/02 to a suitable location in your home directory.
+
+<pre>
+  $ mkdir ~/hw
+  $ cp -r ~cs61c/hw/02/ ~/hw
+</pre>
+
+This will copy in <code>GOL.c</code>, an example PBM file, and a few other files.
+
+<p><font size="+2" color="#17365D"><b>Assignment</b></font><br>
+You will be implementing Conway's Game of Life in C from scratch. Your implementation will use the wraparound technique for dealing with board edges. Specifically, cells on any edge of the board have neighbors on the opposite edge. You may assume you will be given boards with no more than 64 cells in any direction and that they are well formed (means no error checking needed when parsing). However, it may be in your best interest to come up with a solution that theoretically works for any board size. Also, all board names used on your program will end in ".pbm".
+
+<p>Of course, everybody lives life in his/her own way.  Therefore, your implementation will have to play the game using arbitrary rules for when cells are born and die.
+
+<p>Your program must support the following:
+
+<pre>
+  Usage: GOL &lt;file&gt; &lt;bornRule&gt; &lt;dieRule&gt; &lt;max generations&gt;
+    This program simulates Conway's Game of Life, a cellular automaton devised
+    by British Mathematician John Horton Conway in 1970. The rules for this
+    zero-player game are the standard rules as described in the Wikipedia article
+    about this game: http://en.wikipedia.org/wiki/Conway%27s_game_of_life. The
+    only difference is births and deaths are determined by the two strings of
+    digits passed as arguments.
+
+    For example, if 34 is passed as &lt;bornRule&gt;, a cell will be born if and
+    only if it has 3 or 4 living neighbors. The rule works similarly for deaths.
+    The standard rules would be represented as &lt;bornRule&gt; = 3 and &lt;dieRule&gt; =
+    0145678.
+
+    This program will take as input a plain PBM file of the format:
+
+      P1 &lt;columns&gt; &lt;rows&gt;
+      &lt;bits for each row indicating a living cell (1) or dead cell (0)&gt;
+
+    and output one PBM file (with identical formatting to the above) for each
+    generation of cells in the game until you reach max generations. The PBM
+    produced will have a comment in the first line indicating the programmer's
+    login and the generation number of the current file. These files will be
+    named the same as the input, but with the generation number appended before
+    the ".pbm". For example, if the input file is "spaceship.pbm", the files
+    written will be named "spaceship0.pbm", "spaceship1.pbm", etc. Generation 
+    0 is the configuration initially given to the program.
+
+    PBM files can be easily viewed using the xv command or converted to another
+    format using the pbmto* and ppmto* utilities. A plain ascii PBM file can be
+    created by adding a header line "P1 &lt;WIDTH&gt; &lt;HEIGHT&gt; and followed by
+    a grid of data (0 = dead = white, 1 = live = black). A call to man pbm can
+    help answer questions about the format.
+
+    Arguments:
+      &lt;file&gt; is the location of a .pbm file to be used as input to the
+      program. This image represents generation 0 for the simulation.
+
+      &lt;bornRule&gt; is the born rule as explained above
+
+      &lt;dieRule&gt; is the die rule as explained above
+
+      &lt;max generations&gt; is the maximum number of generations to generate
+
+    Examples:
+      unix% GOL diesFast.pbm 3 0145678 3
+      unix%
+
+      diesFast.pbm contains the following:
+      P1 4 4
+      0 0 0 0
+      0 0 1 0
+      0 0 0 0
+      0 0 0 0
+
+      The files output will be:
+
+      diesFast0.pbm:
+      P1 4 4 ## Generation 0 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 1 0
+      0 0 0 0
+      0 0 0 0
+
+      diesFast1.pbm:
+      P1 4 4 ## Generation 1 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+
+      diesFast2.pbm:
+      P1 4 4 ## Generation 2 of Conway's Game of Life by cs61c-tb
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+      0 0 0 0
+</pre>
+
+<p>Please remember that your program stops after a number of generations. It also needs to print the usage string if not enough arguments are given to your program.
+
+<p><font size="+2" color="#17365D"><b>Assignment Correctness</b></font><br>
+<p>In order for your assignment to be graded properly, it must follow these output guidelines:
+
+<ul>
+<li>The first line in each of the output files MUST follow this format:
+    <pre>  P1 [a] [b] ## Generation [c] of Conway's Game of Life by [d]</pre>
+    where [a] is the number of cols, [b] is the number of rows, [c] is the generation number, and [d] is your login.
+
+<li>Do not have any extraneous whitespace characters at the end of the row. This means your rows should end in "0\n" or "1\n" and <b><font color="#ff0000">NOT</font></b> "0 \n" or "1 \n".
+<li>All rows end with a newline character. After your program exits, the UNIX prompt should start on a new line and not on the same line.
+<li>You must have spaces in between your columns (like in the examples above).
+<li>You must copy the usage string <u><b>verbatium</b></u> (this means the Usage, Arguments, and Examples). It should be printed if no arguments are given for GOL. Note, we do provide the text of the usage string in <code>usage_string.txt</code>.
+</ul>
+
+<p><font size="+2" color="#17365D"><b>Handling Error Cases</b></font><br>
+Your program must never segfault/bus error due to input into your program. However, you may assume the PBM files we will give are valid. If the input doesn't satisfy the constraints, or any other user error occurs, print the usage string as specified above.
+
+<p><font size="+2" color="#17365D"><b>Compiling HW2</b></font><br>
+Please compile GOL.c with the following command:
+
+<pre>  % gcc -Wall -g -std=c99 -o GOL GOL.c</pre>
+
+<p><font size="+2" color="#17365D"><b>Oracle</b></font><br>
+We are providing you with an Oracle for this assignment to help you check your solutions. This program represents the behavior your program should have. It will accept the standard arguments as described in the specification above. You can run the oracle by typing "GOL_oracle" from the command prompt.
+
+<p><font size="+2" color="#17365D"><b>Extra Help</b></font><br>
+David Poll will have extra office hours the night before the homework is due. They will be held Tue, Jan 30 from 6-8pm in 271 Soda.
+
+<p>If you have other questions, you are welcome to post them on the newsgroup. However, please do not post the code of your assignment.
+
+<p><font size="+2" color="#17365D"><b>Submission</b></font><br>
+Submit a single file <code>GOL.c</code> by creating a directory called hw2 with your file <code>GOL.c</code> in it. From within this directory run <code>submit hw2</code>. Be certain that your program accepts command line arguments for the file name. If you interactively prompt for these values rather than accepting command line args, your program will hang and fail the autograder.
+
+<p>If you choose to do the second Extra for Experts below, you may also submit <code>GOLUnlimited.c</code> for EPA points.
+
+<p><font size="+2" color="#17365D"><b>3D Visualization</b></font><br>
+We normally think of Conway's Game of Life as a 2-dimensional game. Let's add another dimension! We can plot the generation as the 3rd dimension, producing lively images like you see above. (I know, the puns are getting "cell"fish forgive me!). I've provided for you a script that will let you view a 3D rendering of your Game of Life genealogy! Note: This is an optional part of the assignment. To get the files you need for this feature, use the following command:
+
+<pre>  cp ~cs61c/hw/02/* .</pre>
+
+Once you've run your program to generate the many generations of GOL, run the following command in the same directory that contains the PBM files generated by your program:
+
+<pre>  python 3dScript.py baseFileName.pbm</pre>
+
+This will generate a file, <code>graphed.m</code>, that can be read by a Java applet loaded in a browser. Open visual.html in your favorite browser, and voila! Earlier generations are more blue, while later generations are more green.
+
+<p><font size="+2" color="#17365D"><b>Extra for Experts</b></font><br>
+This section is optional, but will impact your EPA and could be really fun! <img src="http://board.acmlm.org/images/smilies/biggrin.gif">
+
+<ul>
+<li>This assignment will be used as the basis for a performance competition at the end of the semester. We will give huge boards and patterns and have you produce many generations, and see how quickly your implementation can handle them. See how efficiently you can make your code run! You'll learn techniques throughout the semester that might help you with this.
+<li>There are lots of ways to handle edges in GOL, but they all have their limitations. For brave souls, try making an infinite board that grows as necessary. If you write this, please provide that code in <code>GOLUnlimited.c</code> for submission and leave the implementation that matches the spec in GOL.c.
+</ul>
+
+</body>
+</html>
