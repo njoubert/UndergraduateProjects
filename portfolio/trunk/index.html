@@ -8,7 +8,7 @@
     <body>
         <div id="content">
             <div id="topbar">
-                <img src="images/TopBar2.png"/><hr/><a href="assets/resume.pdf">RESUME</a>
+                <img src="images/TopBar2.png"/ alt="Niels Joubert"><hr/><a href="assets/resume.pdf">RESUME</a>
                 &nbsp|&nbsp<a href="index.html">MAIN</a>
                 <hr/>
                 <div class="vspacer">
@@ -22,10 +22,7 @@
                     <div class="right">
                         <div class="rightemphasis">
                             <p>
-                                This is my portfolio, demonstrating my work. My expertise lies in back-end system development, thus a significant part of my work is best demonstrated through applications. This portfolio attempts to serve that purpose by providing a gateway to projects I have worked on. Some projects are embedded into this portfolio, others can best be experienced through visiting their respective online locations, requiring an internet connection.
-                            </p>
-                            <p>
-                                Thank you for taking the time to peruse my work. Please do not hesitate to contact me with any questions regarding my education, work experience or projects.
+                                This is my portfolio, demonstrating research I've been involved in and projects I've worked on. My major fields of interest are computer graphics and human computer interaction, and I've conducted research on physically based simulations and online video interaction. My minor concentrations are large-scale system design and astrophysics, both as a compliment to my simulation interest. My research interests is accompanied by a passion for teaching computer science, and I'm a member of the teaching staff at UC Berkeley.
                             </p>
                         </div>
                     </div>
@@ -47,21 +44,21 @@
 							 | <a href="http://www.vimeo.com/1045326">See Online Video</a>
 							<br/>
 							Rockband Vision is a computer vision system capable of playing the Rockband console game
-							autonomously. Rockband is an interactive band simulator that allows human players to play music
-							according to on-screen musical notation using custom musical instruments. Our system is capable
-							of interpreting the Rockband video feed presented to human players: it is able to read the musical
-							notation in the feed and manipulate the game's guitar input to play the game. This project relied on a
+							autonomously by monitoring the game's display through a camera pointed at a television connected to the console. Rockband is an interactive band simulator that allows human players to play music
+							according to on-screen musical notation. Our system is capable
+							of interpreting the Rockband video feed presented to human players - it reads the musical
+							notation in the feed and manipulate the game's input to play the game. Since it monitors the screen through a video camera, the system is capable of playing alongside human players to form a 4-person band with some instruments played by people, some by our vision system. This project relied on a
 							breadth of knowledge from the computer graphics, numerical analysis and physical computing
-							areas. We present it as our final project for Berkeley's Computer Graphics course.
+							areas. We presented it as our final project for Berkeley's Computer Graphics course.
 
 						</p>
 						
                         <p>
                             <div class="rightheading">
                                 Bezier Surface Renderer&nbsp
-                            </div>(Using custom Bezier interpolation code and OpenGL)
+                            </div>
                             <br/>
-                            This project served as an exploration of curved surface rendering. Input files describing Bezier patches are interpolated using DeCasteljau evaluation into a cloud of points, algebraically grouped into triangles, and optionally adaptively tessellated further until a measure of flatness is satisfied. 
+                            This project served as an exploration of curved surface rendering. Input files describing Bezier patches are interpolated using DeCasteljau evaluation into a cloud of points, grouped into triangles, and tessellated further until a measure of flatness is satisfied. 
                             <br/>
                             <br/>
                             Further details, as well as examples of output, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as5">Surfaces project</a>
@@ -70,7 +67,7 @@
                                 <div class="rightemphasis">
                                     Prototype Mock-ups
                                 </div>
-                                were used to aid designing of this project. Through rapid prototyping of the mathematical methods using the Processing language, I shortened my design cycle and expanded my understanding of the implementation challenges presented by a system converting tens of Bezier surface patches into a model containing upwards of 20 000 triangles.
+                                were used to aid designing of this project. Rapid prototyping was employed to expanded my understanding of the implementation challenges presented by a system converting tens of Bezier surface patches into a model containing upwards of 20 000 triangles.
                                 <table>
                                     <tr>
                                         <td>
@@ -96,11 +93,11 @@
                                     Raytracer&nbsp
                                 </div>
                                 <br/>
-                                I implemented a full-featured Raytracer that renders a description of a scene into an image. The basic premise was to use no external libraries whatsoever - I built each component from the ground up. A full description of this project, including the design methodology, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as4">Raytracer project</a>
+                                I implemented a full-featured Raytracer that renders a description of a scene into an image. The basic premise in the design of this project was to use no external libraries whatsoever - I built each component from the ground up. A full description of this project, including the design methodology, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as4">Raytracer project</a>
                                 website. The Raytracer demonstrates raytracing through the following aspects:
                                 <ul>
                                     <li>
-                                        .OBJ file parsing as input
+                                        .OBJ file input
                                     </li>
                                     <li>
                                         Defining of custom material properties.
@@ -115,7 +112,7 @@
                                         Phong shading of objects
                                     </li>
                                     <li>
-                                        Matrix transforms of objects
+                                        Arbitrary linear transforms applied to objects
                                     </li>
                                 </ul>
                                 Example outputs:
@@ -125,13 +122,13 @@
                                             <a href="assets/cs184/raytracer/image-08.jpg"><img src="assets/cs184/raytracer/image-08s.jpg"/></a>
                                         </td>
                                         <td>
-                                            <a href="assets/raytracer/image-12.jpg"><img src="assets/cs184/raytracer/image-12s.jpg"/></a>
+                                            <a href="assets/cs184/raytracer/image-12.jpg"><img src="assets/cs184/raytracer/image-12s.jpg"/></a>
                                         </td>
                                         <td>
-                                            <a href="assets/raytracer/image-06.jpg"><img src="assets/cs184/raytracer/image-06s.jpg"/></a>
+                                            <a href="assets/cs184/raytracer/image-06.jpg"><img src="assets/cs184/raytracer/image-06s.jpg"/></a>
                                         </td>
                                         <td>
-                                            <a href="assets/raytracer/image-15.jpg"><img src="assets/cs184/raytracer/image-15s.jpg"/></a>
+                                            <a href="assets/cs184/raytracer/image-15.jpg"><img src="assets/cs184/raytracer/image-15s.jpg"/></a>
                                         </td>
                                     </tr>
                                 </table>
