@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ya="com.yahoo.happenings.*">
+<mx:Style>
+	Label {
+		color: #ffffff;
+	}
+</mx:Style>
+	
+	<ya:TimelineView id="timeline" scrubber="{scrubber}" left="10" top="10" bottom="70" right="10" />
+	<ya:TimelineScrubber id="scrubber" timeline="{timeline}" height="60" left="10" right="10" bottom="10"/>
+	
+</mx:Application>

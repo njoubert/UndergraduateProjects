@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="68" 
+	horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	creationComplete="init()"
+	backgroundColor="#000000" borderStyle="none" cornerRadius="0">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.PropertyChangeEvent;
+
+			[Bindable]
+			public var concert:Concert = null;
+			function init():void {
+				addEventListener("propertyChange",function(event:PropertyChangeEvent):void {
+				if (event.property=="concert") {
+					
+				}
+			});
+			}
+			public function set userIcon(_url:String):void {}
+		
+			public function set userName(_name:String):void {}
+			public function get userName():String {
+				return $username_tf.text;
+			}
+			
+			public function set friendStats(_str:String):void {}
+		]]>
+	</mx:Script>
+	<mx:Image x="10" y="9">
+		<mx:source>../assets/buddyicon.jpg</mx:source>
+	</mx:Image>
+	<mx:Text x="65" y="6" text="Hi USERNAME." id="$username_tf" color="#FFFFFF"/>
+	<mx:Text x="65" y="31" text="Latest Happenings:" id="$username_tf0" width="134" fontWeight="bold" color="#FFFFFF"/>
+	<mx:Text x="64" y="44" text="0 shares, 5 favorites" id="$username_tf1" width="134" color="#FFFFFF"/>
+	
+</mx:Canvas>

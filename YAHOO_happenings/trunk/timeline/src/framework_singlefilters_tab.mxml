@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ya="com.yahoo.happenings.*" layout="absolute" width="950" height="760" horizontalAlign="center" verticalAlign="middle" >
+    <mx:states>
+
+        <mx:State name="Filters">
+            <mx:SetProperty target="{hbox1}" name="width" value="410"/>
+            <mx:SetProperty target="{hbox1}" name="x" value="540"/>
+            <mx:SetStyle target="{hbox1}" name="borderStyle" value="solid"/>
+            <mx:SetStyle target="{hbox1}" name="cornerRadius" value="7"/>
+            <mx:SetStyle target="{hbox1}" name="backgroundColor" value="#ffffff"/>
+            <mx:SetEventHandler target="{hbox1}" name="click" handler="currentState = 'Normal'"/>
+   
+            <mx:SetProperty target="{hbox1}" name="y" value="97"/>
+            <mx:SetProperty target="{canvas1}" name="width" value="41"/>
+            <mx:SetProperty target="{image1}" name="y" value="-1"/>
+            <mx:SetProperty target="{hbox1}" name="height" value="651"/>
+        </mx:State>
+        <mx:State name="Normal">
+            <mx:SetProperty target="{hbox1}" name="x" value="904"/>
+            <mx:SetProperty target="{image1}" name="x" value="-3"/>
+
+
+        </mx:State>
+    </mx:states>
+
+    <mx:transitions>
+    	<mx:Transition fromState="*" toState="*">
+           <!--    Parallel effects execute in unison --> 
+            <mx:Parallel targets="{[hbox1]}">
+               
+             <mx:Resize duration="200" /> 
+             <mx:Move duration="100" />
+             
+			
+            </mx:Parallel>
+        </mx:Transition>
+    
+    </mx:transitions> 
+
+  
+    <!-- Create a VBox container so the container for 
+        the buttons appears above the ViewStack container. -->
+        
+
+    <mx:VBox verticalGap="0" paddingTop="8" paddingLeft="15" width="900" height="750">
+    <mx:HBox paddingBottom="13" verticalAlign="bottom" width="878">
+        <mx:Label text="Happenings" fontFamily="Gotham-Bold" fontSize="32" >
+        	
+        </mx:Label>
+        <mx:Spacer width="428" height="35"/>
+        <mx:VBox>
+        	<mx:HBox>
+        		<mx:Spacer width="24" height="20" />
+        		<mx:Label text="Signed in as jaini_srk"/>
+        		
+        		<mx:Spacer width="8" height="20" />
+        		<mx:Label text="Sign Out" color="#ece9d8"/>
+        	</mx:HBox>
+        	<mx:HBox>
+        		<mx:TextInput text="Search Events" enabled="false"/>
+        		<mx:Button label="Search" enabled="false"/>
+        	</mx:HBox>
+        </mx:VBox>
+
+        	
+    </mx:HBox>
+        <mx:HBox>
+            <mx:ComboBox width="352" height="26" id="myEventsList" enabled="true" editable="false" visible="true" borderThickness="0">
+                <mx:dataProvider>
+                	 <mx:Array>
+                		<mx:String>Nationals, Bimbo's, SF | 26 June 2007</mx:String>
+                		<mx:String>Police, PJ's, Berkeley | 15 May 2007</mx:String>
+                	 </mx:Array>
+                </mx:dataProvider>
+			</mx:ComboBox>
+
+            <!-- Define the three buttons. 
+                Each uses the child container identifier 
+                to set the active child container. -->
+                
+                <mx:Spacer width="153" height="28" />
+                <mx:TabBar dataProvider="myViewStack" height="28" width="358">
+                 </mx:TabBar>
+        </mx:HBox>
+       
+<mx:HBox horizontalGap="2">
+	
+
+
+        <!-- Define the ViewStack and the three child containers. -->
+      <mx:ViewStack id="myViewStack" width="880" height="650" backgroundColor="#000000">
+            
+        <mx:Canvas id="Overview" label="Overview" width="880" height="650">
+            <mx:Panel width="220" height="649" paddingLeft="2" backgroundColor="#FFFFFF"  label="The Gossip box" id="Comments"  borderThicknessLeft="0" borderThicknessRight="0" title="The Gossip box" borderColor="#C0C0C0" dropShadowEnabled="false" borderAlpha="90">
+			   <mx:TextArea height="33" width="214" text="trotsky2 says: &#xa;great pic - was an excellent show   " wordWrap="true" borderThickness="1" editable="false" borderColor="#800000">
+			   </mx:TextArea>
+			   <mx:TextArea height="94" width="213" text="kathryn says: &#xa;Yeah, I probably could have shot it at 1600 ISO since I was in the pit and they had brighter lights on for the first 3 songs. But I think it still turned out OK. " editable="false" wordWrap="true" borderColor="#800000">
+			   </mx:TextArea>
+		
+      		   <mx:TextArea height="93" width="213" text="rych says: &#xa;well if you are lucky i will let you borrow my 70-200 2.8 L IS. but if you want a good lens for low light the 50m 1.4 is a great lens for about 300... i have that one too...              " editable="false" wordWrap="true" borderColor="#800000">
+			   </mx:TextArea>
+			   <mx:TextArea height="23" width="217" text="Gossip on my stuff  " editable="false" wordWrap="true" borderStyle="none" fontWeight="bold" color="#000000" backgroundColor="#C0C0C0">
+			   </mx:TextArea>
+		
+			   <mx:TextArea height="50" width="214" text="trisha says: &#xa;Amazing band and Awesome performance!!" wordWrap="true" borderThickness="1" editable="false" borderColor="#800000">
+			   </mx:TextArea>
+		  </mx:Panel>
+		  
+          <ya:GridView  width="650" x="225" height="650" >
+ 
+          </ya:GridView>
+          <ya:PhotoThumbnail id="thumb" x="234" y="10" 
+            >
+            </ya:PhotoThumbnail>
+        </mx:Canvas>
+
+            <mx:Canvas id="Timeline" label="Timeline" height="650">
+	            <ya:TimelineView left="0" top="0" bottom="0" right="0">
+	            </ya:TimelineView>
+            </mx:Canvas>
+
+            <mx:Canvas id="People" label="People">
+                <mx:Label text="People Screen" color="#ffffff"/>
+            </mx:Canvas>
+            <mx:Canvas label="Shares" width="100%" height="100%">
+            	<mx:Label text="Shares Screen" color="#ffffff"/>
+            </mx:Canvas> 
+            <mx:Canvas width="100%" height="100%" icon="@Embed('../assets/shared-bucket-icon.png')">
+            	<mx:Label text="Shares Screen" color="#ffffff"/>
+            </mx:Canvas>
+            <mx:Canvas width="100%" height="100%" icon="@Embed('../assets/uploadicon.png')">
+            	<mx:Label text="Shares Screen" color="#ffffff"/>
+            </mx:Canvas>
+            
+            
+        </mx:ViewStack>
+</mx:HBox>
+    </mx:VBox>
+    
+    <mx:HBox x="908" y="95" width="100%" height="650" id="hbox1" click="currentState = 'Filters'" dropShadowEnabled="true">
+    <mx:Canvas id="canvas1" >
+    <mx:Image source="file:///C|/Documents and Settings/jaini/My Documents/Flex Builder Moxie/timeline/assets/longfilters.png" x="-7" id="image1">
+    	
+    </mx:Image>
+    </mx:Canvas>
+    	
+    </mx:HBox>
+
+
+<mx:Script>
+	<![CDATA[
+	
+	import mx.events.*;
+    import mx.core.*
+    import com.yahoo.happenings.Photo
+    import com.yahoo.happenings.PhotoThumbEvent
+		private function showPreview(photo:Photo):void
+        {
+            thumb.currentState = "miniPreview";
+        }
+        private function writeComments(photo:Photo):void
+        {
+            if (thumb.currentState == "miniPreview")
+			{
+                thumb.currentState = "writecomment";
+            }
+            
+        }
+        private function addBookmark(photo:Photo):void
+        {
+            if (thumb.currentState == "miniPreview")
+			{
+                thumb.currentState = "addbookmark";
+            }
+            
+        }
+        private function addtoShares(photo:Photo):void
+        {
+            if (thumb.currentState == "miniPreview")
+			{
+                thumb.currentState = "addtoshares";
+            }
+            
+        }
+        private function addtoFavorites(photo:Photo):void
+        {
+            if (thumb.currentState == "miniPreview")
+			{
+                thumb.currentState = "addtofavorites";
+            }
+            
+        }
+        
+        private function photoThumbEventHandler(event:PhotoThumbEvent):void
+        {
+            if (event.type == PhotoThumbEvent.MINIPREVIEW)
+            {
+            	if(thumb.currentState =="miniPreview")
+            	{
+            		thumb.currentState = "thumbnail";
+               
+             	}
+             	else
+             	{
+             	  showPreview(event.photo);
+             	}
+             
+            }
+            else if (event.type == PhotoThumbEvent.COMMENTS)
+            {
+                writeComments(event.photo);
+            }
+            else if (event.type == PhotoThumbEvent.BOOKMARK)
+            {
+                addBookmark(event.photo);
+            }
+            else if (event.type == PhotoThumbEvent.SHARE)
+            {
+                addtoShares(event.photo);
+            }
+            else if (event.type == PhotoThumbEvent.FAVORITE)
+            {
+                addtoFavorites(event.photo);
+            }
+            else
+            {
+                dispatchEvent(event);
+            }
+        }
+	]]>
+</mx:Script>
+</mx:Application>

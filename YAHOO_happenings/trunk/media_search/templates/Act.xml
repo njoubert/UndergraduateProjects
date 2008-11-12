@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items:item xmlns:items="http://names.media.yahoo.com:4080/2006-04/items">
+  <items:meta>
+    <items:key>urn:yahoo:yrb:happenings:2007-07#performerName</items:key>
+    <items:string>%s</items:string>
+  </items:meta>
+</items:item>

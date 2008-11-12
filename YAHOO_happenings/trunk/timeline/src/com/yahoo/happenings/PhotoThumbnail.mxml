@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="240" height="240"
+	backgroundColor="#FFFFFF"
+    horizontalScrollPolicy="off" verticalScrollPolicy="off"
+    creationComplete="init()"
+    currentStateChange="setSize()"
+     click="event.stopPropagation()"  styleName="photoCanvas">
+    <mx:states>
+        <mx:State name="writecomment">
+            <mx:RemoveChild target="{toolbuttons}"/>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:Label x="0" y="266" text="Write Comment" visible="true" color="#000000"/>
+            </mx:AddChild>
+            <mx:RemoveChild target="{button1}"/>
+            <mx:RemoveChild target="{filterByUser}"/>
+            <mx:RemoveChild target="{author}"/>
+
+            <mx:RemoveChild target="{favoriteCount}"/>
+        </mx:State>
+        <mx:State name="sendemail">       
+            <mx:RemoveChild target="{toolbuttons}"/>
+            <mx:RemoveChild target="{favoriteCount}"/>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:TextInput id="email" text="Enter email address" focusIn="email.setSelection(0,email.text.length)" bottom="85"  enabled="true" left="10" right="10"/>
+            </mx:AddChild>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:TextInput id="comment" height="50" text="Enter Comments" focusIn="comment.setSelection(0,comment.text.length)" color="#000000" bottom="30" left="10" right="10"/>
+            </mx:AddChild>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+            	<mx:Button x="10" height="20" label="Send" click="sendEmail();event.stopPropagation()" bottom="8"/>
+            </mx:AddChild>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:Button height="20" label="Cancel" click="currentState=''; event.stopPropagation()" bottom="8" right="10"/>
+            </mx:AddChild>
+        
+            <mx:RemoveChild target="{button1}"/>
+
+            <mx:RemoveChild target="{filterByUser}"/>
+            <mx:RemoveChild target="{author}"/>
+
+        </mx:State>
+        <mx:State name="edittimestamp">
+            <mx:RemoveChild target="{spacer1}"/>
+            <mx:RemoveChild target="{expand}"/>
+            <mx:RemoveChild target="{quicksend}"/>
+            <mx:RemoveChild target="{share}"/>
+            <mx:RemoveChild target="{favoriteCount}"/>
+            <mx:RemoveChild target="{favorite}"/>
+            <mx:RemoveChild target="{comments}"/>
+            <mx:RemoveChild target="{toolbuttons}"/>
+
+            <mx:RemoveChild target="{author}"/>
+          
+            <mx:RemoveChild target="{filterByUser}"/>
+            <mx:RemoveChild target="{button1}"/>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:Label x="2" text="New timestamp:" bottom="2" color="#FFFFFF"/>
+            </mx:AddChild>
+            <mx:AddChild position="lastChild" relativeTo="{canvas1}">
+                <mx:Button x="142" label="Save" bottom="2" height="18" click="saveTimestamp()" id="save" fontSize="10"  width="60" styleName="toolButton"/>
+            </mx:AddChild>
+            <mx:AddChild relativeTo="{canvas1}" position="lastChild">
+                <mx:TextArea x="94" bottom="2" width="42" height="18" id="timestamp"/>
+            </mx:AddChild>
+        </mx:State>
+    </mx:states>
+    <mx:Metadata>
+        [Event(name="close", type="com.yahoo.happenings.PhotoThumbEvent")]
+    </mx:Metadata>
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    		import mx.collections.ItemResponder;
+    		import mx.collections.errors.ItemPendingError;
+    		import flash.net.navigateToURL;
+    		import mx.containers.Panel;
+    		import com.yahoo.happenings.Photo;
+    		import com.yahoo.happenings.PhotoThumbEvent;
+    		
+    		
+    		private var extraSpace:Object = {
+    			'default': 80,
+    			'sendemail': 120,
+    			'edittimestamp': 28
+    		};
+    		
+    		public function setSize():void {
+    			if (extraSpace[currentState]) {
+					canvas1.width = imageWidth;
+					width = imageWidth + 24;
+					canvas1.height = imageHeight + extraSpace[currentState];
+					height = imageHeight + extraSpace[currentState]+ 60;
+    			} else {
+					canvas1.width = imageWidth;
+					width = imageWidth + 24;
+					canvas1.height = imageHeight + extraSpace['default'];
+					height = imageHeight + extraSpace['default']+ 60;
+    			}
+    			x = photo.x + photo.width/2 - width/2;
+    			y = photo.y + photo.height/2 - height/2;
+    			if (x<10) x=10;
+    			if (y<10) y=10;
+    			if (x>pseudoParent.width-width-10) x = pseudoParent.width-width-10;
+    			if (y>pseudoParent.height-height-10) y = pseudoParent.height-height-10;
+    		}
+    		
+    		public function init():void {
+    			visible = false;
+    		}
+    		
+    		[Bindable]
+    		public var filterAction:Function = function(filter:Boolean):void {}
+    		
+    		//[Bindable]  public var photo:Photo;
+    		private var _photo:Photo;
+    		private var _hintVisible:Boolean = false;
+    		private var ready:Boolean = false;
+    		private var $pseudoParent:DisplayObject;
+    		
+    		public function set pseudoParent(obj:DisplayObject):void {
+    			$pseudoParent = obj;
+    		}
+    		public function get pseudoParent():DisplayObject {
+    			return $pseudoParent==null ? parent : $pseudoParent;
+    		}
+    		
+    		
+    		public function show():void {
+    			_hintVisible = true;
+    			showPhoto();
+    		}
+    		public function hide():void {
+    			_hintVisible = false;
+    			showPhoto();
+    		}
+    		private function sendEmail():void {
+    			var req:URLRequest = new URLRequest("http://cs2.berkeley.corp.yahoo.com/happenings/email.php");
+    			req.method = URLRequestMethod.POST;
+    			
+    			
+				var variables:URLVariables = new URLVariables();
+					
+    			variables.email = email.text;
+    			variables.message = photo.node.title+" from Happenings:\n\n"+
+    							DeepLinkManager.getInstance().url+"\n\n"+comment.text;
+    			variables.subject = photo.node.title;
+    			
+    			req.data = variables;
+    			var l:URLLoader = new URLLoader();
+    			l.load(req);
+				l.addEventListener("complete",function():void {
+					if (l.data=="1") {
+						Alert.show("Message sent successfully.");
+						currentState = '';
+					} else {
+						Alert.show("Error sending message:\n"+l.data);
+					}
+				});
+    		}
+    		private function showPhoto():void {
+    			if (_hintVisible && ready) {
+    				if (!visible) {
+    					visible = true;
+    					//currentState = 'miniPreview';
+    					currentState = null;
+    				}
+    			} else {
+    				visible = false;
+    				if (video.playing)
+    					video.stop();
+    				video.source = '';
+    			}
+    		}
+    		private var imageWidth:Number, imageHeight:Number;
+			
+			[Embed("buttons_mediaobject/favoriteicon.png")]
+			public var favoriteOff:Class;
+			
+			[Embed("buttons_mediaobject/favoriteicon_filled.png")]
+			public var favoriteOn:Class;
+
+    		public function setFavorited():void {
+    			var favorited:TagInfo = photo.node.favorited;
+    			favoriteCount.text = ""+ favorited.count;
+    			favorite.setStyle("icon",favorited.by(Happenings.userName) ? favoriteOn : favoriteOff);
+    			favorite.enabled = true;
+    		}
+    		private function pad(i:int):String {
+				if (i<10)
+					return "0"+i;
+				return i.toString();
+			}
+
+			private function saveTimestamp():void {
+				photo.setTimestamp(timestamp.text);
+				dispatchEvent(new PhotoThumbEvent(PhotoThumbEvent.TIMECHANGE));
+			}
+    		public function set photo(photo:Photo):void {
+    			if (_photo == photo) return;
+    			visible = false;
+    			ready = false;
+    			if (photo == null)
+    				return;
+    			_photo = photo;
+    			if (photo != null) {
+	    			
+	    			objecttitle.text = photo.node.title;
+	    			author.text = "By: "+photo.owner;
+	    			
+	    			button1.toolTip =  photo.date == null ? "HH:MM" : pad(photo.date.hours)+":"+pad(photo.date.minutes)+ "  Click to edit the timestamp";
+	    			favorite.enabled = false;
+					
+						    			
+					try {
+				        // Will throw error if favorites haven't been loaded
+				        setFavorited();
+					} catch (error:ItemPendingError) {
+						try {
+					        // Favorites not yet loaded
+					        error.addResponder(new ItemResponder(
+						        function():void{
+						    		setFavorited();
+							    }, 
+							    function(error:Object, token:Object = null):void {
+							        Alert.show(String(error));
+								}
+							));
+						} catch (ex:Error) {
+							Alert.show(ex.toString());
+						}
+					}
+					
+					               
+					
+	    			
+	    			//tags.text = photo.node;
+	    			image.visible = false;
+	    			video.visible = false;
+	    			
+				    currentState = null;
+				    			
+    				if (photo.node is YouTubeVideo) {
+    					video.visible = true;
+    					video.source = photo.node.mediaURL;
+    					imageWidth = video.width;
+    					imageHeight = video.height;
+	    				setSize();
+		    			ready = true;
+		    			showPhoto();
+    					
+    				} else {
+	    				image.source = photo.getImage("m");
+	    				image.visible = true;
+			    		image.addEventListener("updateComplete",function():void {
+		    				if (image.contentWidth>0) {
+		    					imageWidth = image.contentWidth;
+		    					imageHeight = image.contentHeight;
+								setSize();
+								
+								image.removeEventListener("updateComplete",arguments.callee);
+				    			ready = true;
+				    			currentState = null;
+				    			showPhoto();
+		    				}
+			    		});
+			    	}
+	    		}
+    		}
+    		public function get photo():Photo {
+    			return _photo;
+    		}
+    		
+        private function favoriteClicked(): void {
+        	if (!photo.node.favorited.by(Happenings.userName)) 
+        		photo.node.favorited.add(Happenings.userName); 
+        	else 
+        		photo.node.favorited.remove(Happenings.userName); 
+        	setFavorited();
+        	
+        }
+        
+    	]]>
+    </mx:Script>
+  <mx:HBox width="100%" paddingTop="0" >
+  	<mx:Label id="objecttitle" width="128" text="Title" color="#ffffff" fontWeight="bold" fontSize="12" />
+  	<mx:Spacer width="100%" height="16" />
+  	<mx:Button id="close_button" width="18" height="18" right="2" top="2" toolTip="Close"  styleName="closeButton"/>
+  </mx:HBox>  
+   <mx:Canvas id="canvas1" verticalScrollPolicy="off" horizontalScrollPolicy="off" left="0" bottom="0" >
+
+	<mx:Image left="0" top="0" id="image" click="dispatchEvent(new PhotoThumbEvent(PhotoThumbEvent.CLOSE));  event.stopPropagation()" scaleContent="false" width="240" height="234"/>
+    
+    <mx:HBox height="28" width="100%" horizontalGap="4" id="toolbuttons" bottom="2">
+        <mx:Button alpha="0.4" width="28" height="28" id="comments" toolTip="Write Comment" enabled="false" styleName="toolButton">
+            <mx:icon>@Embed('buttons_mediaobject/commentsicon.png')</mx:icon>
+        </mx:Button>
+        <mx:Button width="28" height="28" click="favoriteClicked();  event.stopPropagation()" id="favorite" toolTip="Add to Favorites" useHandCursor="true" styleName="toolButton">
+            <mx:icon>@Embed('buttons_mediaobject/favoriteicon.png')</mx:icon>
+        </mx:Button>
+        <mx:Button width="28" height="28" click="currentState='sendemail'; event.stopPropagation()" id="quicksend" toolTip="Send this by email and share quickly" useHandCursor="true" styleName="toolButton">
+             <mx:icon>@Embed('buttons_mediaobject/quicksend.png')</mx:icon>
+        </mx:Button>
+        <mx:Button alpha="0.4" width="28" height="28" click="currentState='addtoshares'; event.stopPropagation()" id="share" enabled="false" toggle="true" toolTip="Add to the shares bucket" styleName="toolButton">
+              <mx:icon>@Embed('buttons_mediaobject/sharesbucket.png')</mx:icon>
+        </mx:Button>
+        
+        <mx:Spacer width="100%" height="27" id="spacer1"/>
+        <mx:Button width="28" height="28" click="navigateToURL(new URLRequest(photo.node.contextURL),'_blank');event.stopPropagation()" id="expand" toolTip="Go to the detailed media page" useHandCursor="true" styleName="toolButton">
+            <mx:icon>@Embed('buttons_mediaobject/expand.png')</mx:icon>
+        </mx:Button>
+    </mx:HBox>
+	
+	
+    <mx:Label text="By: Author" id="author" bottom="56" left="2" color="#ffffff"/>
+
+    <mx:Label text="0" id="favoriteCount" click="favoriteClicked();  event.stopPropagation()" x="38" textAlign="center" bottom="9" fontSize="8"/>
+    <mx:VideoDisplay id="video" x="0" y="0" width="240" height="180" visible="false" click="if (video.source){if(video.playing)video.pause(); else video.play();}event.stopPropagation();" autoPlay="true" autoRewind="true"/>
+    <mx:CheckBox label="Show only media by this user" click="filterAction(filterByUser.selected);" bottom="36" id="filterByUser" color="#FFFFFF" left="2"/>
+    <mx:Button toolTip="Edit the timestamp for this media object" id="button1" height="18" bottom="56"  width="18" right="5" click="currentState='edittimestamp'" styleName="clockButton">
+    </mx:Button>
+	
+   </mx:Canvas>	
+   
+ </mx:Canvas>
+    	

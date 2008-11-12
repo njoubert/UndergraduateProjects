@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="178" height="77" backgroundColor="#FFFFFF" cornerRadius="0" borderStyle="none" borderThickness="0" backgroundAlpha="0.0">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.yahoo.timetags.Annotation;
+			public function set annotation(_ann:Annotation):void {
+				$comment_tf.text = _ann.comment;
+			}
+		]]>
+	</mx:Script>
+	<mx:Image x="0" y="0">
+		<mx:source>../assets/them_speech.png</mx:source>
+	</mx:Image>
+	<mx:Text id="$comment_tf" x="6" y="6" text="Text" width="165" height="50"/>
+	
+	
+</mx:Canvas>

@@ -1,0 +1,1 @@
+function getUsername() { return "<?=addslashes(yck_cookie_get_login())?>"; }

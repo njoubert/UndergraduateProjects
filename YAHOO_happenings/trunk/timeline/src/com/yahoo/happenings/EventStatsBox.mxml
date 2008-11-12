@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="686" height="25" 
+	horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	creationComplete="init()"
+	backgroundColor="#FFFFFF" borderStyle="solid" cornerRadius="5">
+	<mx:Text x="10" y="3" text="Retrieving stats." id="$stats_tf" width="181" height="25"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.events.PropertyChangeEvent;
+			import com.yahoo.timetags.IVisualMediaItem;
+	
+			[Bindable]
+			public var concert:Concert = null;
+	
+			public function init():void {
+				addEventListener("propertyChange",function(event:PropertyChangeEvent):void {
+					var _images = 0;
+					var _videos = 0;
+				if (event.property=="concert") {
+					for each (var _item:IVisualMediaItem in concert.relatedItems) {
+						if (_item is FlickrImage) {
+							_images++;
+						} else if (_item is YouTubeVideo) {
+							_videos++;
+						}
+						$stats_tf.text = _images+" photos and "+_videos+" videos uploaded."
+					}
+				}
+			});
+			}
+		]]>
+	</mx:Script>
+</mx:Canvas>

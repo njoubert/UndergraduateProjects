@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items:item xmlns:items="http://names.media.yahoo.com:4080/2006-04/items">
+  <items:meta>
+    <items:key>http://purl.org/dc/elements/1.1/title</items:key>
+    <items:string>%s</items:string>
+  </items:meta>
+  <items:meta>
+    <items:key>http://purl.org/dc/elements/1.1/description</items:key>
+    <items:string>%s</items:string>
+  </items:meta>
+  <items:meta>
+    <items:key>urn:yahoo:yrb:happenings:2007-07#venue</items:key>
+    <items:string>%s</items:string>
+  </items:meta>
+  <items:meta>
+    <items:key>urn:yahoo:yrb:happenings:2007-07#startTime</items:key>
+    <items:dateTime>%s</items:dateTime>
+  </items:meta>
+  <items:meta>
+	<items:key>urn:yahoo:yrb:happenings:2007-07#act</items:key>
+	<items:collection type="http://chapi.research.yahoo.com/class/2.0/-/Act">
+	  %s
+    </items:collection>
+  </items:meta>
+  <items:meta>
+	<items:key>urn:yahoo:yrb:happenings:2007-07#relatedItem</items:key>
+	%s
+  </items:meta>
+</items:item>

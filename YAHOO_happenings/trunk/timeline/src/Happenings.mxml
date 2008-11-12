@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:ya="com.yahoo.happenings.*" 
+	layout="absolute"
+	creationComplete="initApp()"
+	backgroundGradientColors="[#0075B8, #000000]" backgroundColor="#0C5D88"
+	historyManagementEnabled="false"
+	>
+<mx:Style source="../assets/style/happenings.css"/>
+ <mx:Style>
+     @font-face {
+        src:url("../assets/fonts/GOTHMBOK.TTF");
+        fontFamily: GothamBook;
+     }
+
+      @font-face {
+        src:url("../assets/fonts/GOTHMLIG.TTF");
+        fontFamily: GothamLight;
+     }
+      @font-face {
+        src:url("../assets/fonts/GOTHMMED.TTF");
+        fontFamily: GothamMedium;
+     }
+  </mx:Style>
+
+<mx:Script>
+	<![CDATA[
+		import flash.net.Responder;
+		import mx.controls.Alert;
+		import com.yahoo.chapi.ItemURI;
+		import com.yahoo.happenings.*;
+		import com.yahoo.chapi.ItemFactory;
+		import com.yahoo.chapi.IItem;
+		import mx.collections.ItemResponder;
+		import com.yahoo.chapi.CHAPIResponder;
+		import mx.rpc.IResponder;
+		import com.yahoo.happenings.User;
+		import com.yahoo.chapi.CHAPIDelegate;
+		import com.yahoo.happenings.DeepLinkEvent;
+		import com.yahoo.happenings.DeepLinkManager;
+		private var deepLinkManager:DeepLinkManager;
+			
+	
+		private var chapiDelegate:CHAPIDelegate;
+		
+		[Bindable(event="concertUpdated")]
+		private var concert:Concert = null;
+		
+		[Bindable]
+		public static var userName:String = "guest";
+		
+		[Bindable]
+		public static var userObj:User = null;
+		
+		public var avatarURL = null;
+		
+		public function initApp():void {
+			ItemFactory.registerClass(Concert);
+			ItemFactory.registerClass(FlickrImage);
+			ItemFactory.registerClass(YouTubeVideo);
+			ItemFactory.registerClass(Act);
+			ItemFactory.registerClass(User);
+			
+			userName = ExternalInterface.call("getUsername") as String;
+			
+			deepLinkManager = DeepLinkManager.getInstance();
+			deepLinkManager.titleBase = "Happenings";
+			deepLinkManager.addEventListener(DeepLinkEvent.CHANGE,function(event:DeepLinkEvent):void {
+				switch (event.field) {
+					case "tab":
+						myViewStack.selectedIndex = event.newValue as Number;
+						break;
+				}
+			});
+			
+			chapiDelegate = new CHAPIDelegate(new CHAPIResponder(
+			function success(result:XML):void {
+				var item:IItem = ItemFactory.createItem(result);
+				if (item is Concert) { 
+					concert = item as Concert;
+					
+					timeline.concert = concert;
+					scrubber.concert = concert;
+					dispatchEvent(new Event("concertUpdated"));
+					
+					//deepLinkManager.runEvents();
+				} else {
+					throw new Error("item is not concert ["+item+"]");
+				}
+			},
+			function failure(message:String):void {
+			
+			}));
+			//162189 72651 162248
+			chapiDelegate.getItem(new ItemURI("http://chapi.research.yahoo.com/item/2.0/-/concert/162248"),true);
+			
+			//getting the avatar for the user.
+			User.getUser(userName, new ItemResponder(onUser, onFail));
+		}
+		
+		public function onUser(result:Object, token:Object = null):void {
+			userObj = User(result);
+			OverviewObj.avatarURL = userObj.avatarURL;
+		}
+		
+		//general network failure call.
+		public function onFail(message:String):void {}
+		
+	]]>
+</mx:Script>
+<!--
+    <mx:states>
+        <mx:State name="Filters">
+            <mx:SetProperty target="{hbox1}" name="width" value="408"/>
+            <mx:SetProperty target="{hbox1}" name="x" value="542"/>
+            <mx:SetStyle target="{hbox1}" name="borderStyle" value="solid"/>
+            <mx:SetStyle target="{hbox1}" name="cornerRadius" value="7"/>
+            <mx:SetStyle target="{hbox1}" name="backgroundColor" value="#ffffff"/>
+            <mx:SetEventHandler target="{hbox1}" name="click" handler="currentState = 'Normal'"/>
+   
+            <mx:SetProperty target="{hbox1}" name="y" value="97"/>
+            <mx:SetProperty target="{canvas1}" name="width" value="72"/>
+            <mx:SetProperty target="{image1}" name="y" value="-1"/>
+            <mx:SetProperty target="{hbox1}" name="height" value="651"/>
+
+<mx:states>
+        <mx:State name="Filters">
+
+            <mx:SetProperty target="{canvas1}" name="width" value="216"/>
+            <mx:SetStyle target="{canvas1}" name="borderStyle" value="solid"/>
+            <mx:SetProperty target="{image1}" name="height" value="649"/>
+            <mx:SetProperty target="{canvas1}" name="y" value="98"/>
+
+            <mx:SetProperty target="{canvas1}" name="x"/>
+            <mx:SetStyle target="{canvas1}" name="backgroundColor" value="#FFFFFF"/>
+            <mx:SetEventHandler target="{image1}" name="click" handler="currentState = ''"/>
+            <mx:SetStyle target="{canvas1}" name="right" value="0"/>
+
+
+<mx:states>
+        <mx:State name="Filters">
+
+            <mx:SetProperty target="{canvas1}" name="width" value="216"/>
+            <mx:SetStyle target="{canvas1}" name="borderStyle" value="solid"/>
+            <mx:SetProperty target="{image1}" name="height" value="649"/>
+            <mx:SetProperty target="{canvas1}" name="y" value="98"/>
+
+            <mx:SetProperty target="{canvas1}" name="x"/>
+            <mx:SetStyle target="{canvas1}" name="backgroundColor" value="#FFFFFF"/>
+            <mx:SetEventHandler target="{image1}" name="click" handler="currentState = ''"/>
+            <mx:SetStyle target="{canvas1}" name="right" value="0"/>
+
+            <mx:AddChild relativeTo="{canvas1}" position="lastChild">
+            <mx:Canvas width="214" height="639">
+
+                <mx:Canvas x="15" y="0" width="100%" height="18" backgroundColor="#43557A" borderStyle="none">
+                    <mx:Label text="Show:" fontSize="11" x="2" width="54"  height="16" y="0" color="#FFFFFF"/>
+                </mx:Canvas>
+                <mx:HRule x="15" y="15" width="100%" height="5" id="hrule1"/>
+                <mx:Canvas x="15" y="60" width="100%" height="20" backgroundColor="#43557A" borderStyle="none">
+                	<mx:Label text="Show media of:" color="#FFFFFF" fontSize="11"/>
+                </mx:Canvas>
+                <mx:Canvas x="15" y="82" width="100%" height="200">
+           
+                	<mx:Label text="Research Participants" y="2"/>
+                	<mx:HRule width="100%" height="5" y="20"/>
+                     	
+                </mx:Canvas>
+                <mx:Canvas x="15" y="281" width="100%" height="100">
+           
+                	<mx:Label text="Flickr friends" y="2"/>
+                	<mx:HRule width="100%" height="5" y="20"/>
+                     	
+                </mx:Canvas>
+                <mx:Canvas x="15" y="380" width="100%" height="100%">
+           
+                	<mx:Label text="Other attendees" y="2"/>
+                	<mx:HRule width="100%" height="5" y="20"/>
+                     	
+                </mx:Canvas>
+                <mx:RadioButtonGroup id="mediatype" />
+                <mx:RadioButton x="17" y="26" label="All" groupName="mediatype" selected="true"/>
+                <mx:RadioButton x="59" y="26" label="Photos" groupName="mediatype"/>
+                <mx:RadioButton x="135" y="26" label="Videos" groupName="mediatype"/>
+            </mx:Canvas>
+
+            </mx:AddChild>
+            <mx:SetStyle target="{canvas1}" name="dropShadowColor" value="#FFFFFF"/>
+            <mx:SetStyle target="{canvas1}" name="borderColor" value="#263B71"/>
+        </mx:State>
+    </mx:states>
+    <mx:transitions>
+    	<mx:Transition fromState="*" toState="*">
+             <mx:Parallel targets="{[hbox1]}">
+            <mx:Parallel targets="{[canvas1]}">
+               
+             <mx:Resize duration="200" /> 
+             <mx:Move duration="100" />
+             
+			
+            </mx:Parallel>
+        </mx:Transition>
+    
+    </mx:transitions> 
+-->
+  
+    <!-- Create a VBox container so the container for 
+        the buttons appears above the ViewStack container. -->
+      
+ 		<mx:Canvas width="950" height="116" left="0" top="0" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundImage="@Embed('../assets/header.jpg')">
+	</mx:Canvas>	
+		<mx:TabBar dataProvider="myViewStack" itemClick="deepLinkManager.setParameter('tab',myViewStack.selectedIndex)"  height="28" width="446" y="89" x="494"></mx:TabBar>
+		<!---
+		<mx:TextInput text="Search Events" enabled="false" x="707" y="58"/>
+		<mx:Button label="Search" enabled="false" x="875" y="58"/>
+		//-->
+		<mx:Label text="Signed in as {userName}" y="6" textAlign="right" width="146" x="794" color="#FFFFFF"/>
+        
+	<mx:Canvas width="950" height="116" left="0" top="0" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundImage="@Embed('../assets/header.jpg')" borderStyle="none" borderThickness="0">
+		<mx:TabBar dataProvider="myViewStack" itemClick="deepLinkManager.setParameter('tab',myViewStack.selectedIndex)"  height="28" width="462" x="477" y="66"></mx:TabBar>
+		<mx:Label text="Signed in as {userName}" y="10" textAlign="right" width="146" x="779" color="#FFFFFF" fontFamily="GothamBook"/>
+	</mx:Canvas>	
+
+    <!-- Define the three buttons. 
+        Each uses the child container identifier 
+        to set the active child container. -->
+    <!-- Define the ViewStack and the three child containers. -->
+  <mx:ViewStack id="myViewStack" creationPolicy="all"  backgroundColor="#000000" top="95" bottom="0" includeInLayout="true" left="12" width="925">
+  
+    <mx:Canvas id="Overview" label="Overview" verticalScrollPolicy="off" width="936" borderStyle="none">
+   		<ya:Overview id="OverviewObj" concert="{concert}" userName="{userName}" width="915" height="857"/>
+   			
+    </mx:Canvas>
+ 
+        <mx:Canvas id="Timeline" label="Timeline">
+            <ya:TimelineView id="timeline" scrubber="{scrubber}" left="0" top="0" bottom="60" right="0" />
+			<ya:TimelineScrubber id="scrubber" timeline="{timeline}" height="60" left="0" right="0" bottom="0"/>
+        </mx:Canvas>
+    
+        <mx:Canvas id="People" label="People">
+            <mx:Label text="People Screen" color="#ffffff"/>
+        </mx:Canvas>
+        
+        <mx:Canvas label="Shares">
+   			 <mx:Label text="Shares Screen" color="#ffffff"/>
+        </mx:Canvas> 
+        
+        <mx:Canvas icon="@Embed('../assets/shared-bucket-icon.png')">
+        	<mx:Label text="Shares Screen" color="#ffffff"/>
+        </mx:Canvas>
+        <mx:Canvas icon="@Embed('../assets/uploadicon.png')">
+        	<mx:Label text="Shares Screen" color="#ffffff"/>
+        </mx:Canvas>
+        
+        
+    </mx:ViewStack>
+    <!--
+			<mx:Canvas id="canvas1" shadowDirection="left" shadowDistance="4" dropShadowEnabled="true" x="942" height="526" y="0">
+			</mx:Canvas>
+			<mx:Image click="currentState = 'Filters'" source="../assets/longfilters.png" x="929" id="image1">
+			</mx:Image>
+-->
+</mx:Application>

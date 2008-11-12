@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1024" height="768">
+	
+	    <mx:Script>
+        <![CDATA[
+            // You need to import easing classes even if 
+            // you're going to use them only in MXML.
+            import mx.effects.easing.Bounce;
+        ]]>
+
+    </mx:Script>
+
+    <!-- 
+        Use the transitions property (array) of 
+        the Application class to store your transitions. 
+    -->
+    <mx:transitions>
+        <!--
+            The "*" indicates that the transition should be applied
+            to any changes in the view state. You can set either 
+            property to "" to refer to the base view state. 
+        -->
+       <mx:Transition fromState="*" toState="*">
+            <!-- Parallel effects execute in unison --> 
+            <mx:Parallel targets="{[panel1,panel2,panel3]}">
+                <mx:Move duration="500"  />
+                <mx:Resize targets="{[panel1,panel3]}" duration="200"  startDelay="300"/>
+                <!-- 
+                    Sequence effects execute in turn. The effects
+                    in this sequence will only affect the confirm FormItem.
+                -->
+
+            </mx:Parallel>
+        </mx:Transition>
+    </mx:transitions>
+	<mx:states>
+		<mx:State name="TagCloud">
+			<mx:SetProperty target="{panel1}" name="width" value="325"/>
+			<mx:SetProperty target="{panel1}" name="height" value="325"/>
+			<mx:SetProperty target="{panel2}" name="x" value="10"/>
+			<mx:SetProperty target="{panel2}" name="y" value="338"/>
+			<mx:SetProperty target="{panel3}" name="width" value="568"/>
+			<mx:SetProperty target="{panel3}" name="height" value="653"/>
+			<mx:SetProperty target="{panel3}" name="x" value="343"/>
+		</mx:State>
+		<mx:State name="Gallery view">
+			<mx:SetProperty target="{panel1}" name="x" value="10"/>
+			<mx:SetProperty target="{panel1}" name="y" value="10"/>
+			<mx:SetProperty target="{panel3}" name="x" value="586"/>
+			<mx:SetProperty target="{panel3}" name="y" value="10"/>
+			<mx:SetProperty target="{panel2}" name="x" value="586"/>
+			<mx:SetProperty target="{panel2}" name="y" value="343"/>
+			<mx:SetProperty name="width" value="1024"/>
+			<mx:SetProperty name="height" value="768"/>
+		</mx:State>
+		<mx:State name="PeopleCloud">
+			<mx:SetProperty target="{panel1}" name="width" value="445"/>
+			<mx:SetProperty target="{panel1}" name="height" value="325"/>
+			<mx:SetProperty target="{panel2}" name="x" value="10"/>
+			<mx:SetProperty target="{panel2}" name="width" value="900"/>
+			<mx:SetProperty target="{panel2}" name="height" value="341"/>
+			<mx:SetProperty target="{panel3}" name="x" value="465"/>
+			<mx:SetProperty target="{panel3}" name="width" value="445"/>
+		</mx:State>
+	</mx:states>
+
+			<mx:Panel x="10" y="10" width="568" height="658" layout="absolute" title="Gallery view" id="panel1" click="currentState = 'Gallery view'" ></mx:Panel>
+
+
+
+	
+	<mx:Panel width="325" height="325" layout="absolute" title="Tag Cloud" id="panel3" click="currentState = 'TagCloud'" x="586" y="10">
+	
+	</mx:Panel>
+		<mx:Panel x="586" y="343" width="325" height="325" layout="absolute" title="People Cloud" id="panel2" click="currentState = 'PeopleCloud'">
+	</mx:Panel>
+
+	
+</mx:Application>

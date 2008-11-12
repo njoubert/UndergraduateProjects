@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="178" height="480"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	creationComplete="init()"
+	backgroundColor="#000000">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			
+			import mx.events.PropertyChangeEvent;
+			import com.yahoo.timetags.Annotation;
+			import com.yahoo.happenings.Concert;
+			import mx.collections.IList;
+			import mx.collections.errors.ItemPendingError;
+			import mx.collections.ItemResponder;
+			
+			private var $comments:IList;
+			private var $comment_holder:GraphicsComponent;
+			
+			[Bindable]
+			public var concert:Concert = null;
+			
+			[Bindable]
+			public var userName:String = '';
+			
+			public function init():void {
+				$setupStage();
+			}
+			
+	
+			
+			private function $setupStage():void {
+				
+				$comment_holder = new GraphicsComponent();
+				addChild($comment_holder);
+				$renderComments();
+			
+			}
+			private function $renderComments():void {
+				
+				addEventListener("propertyChange",function(event:PropertyChangeEvent):void {
+					if (event.property=="concert") {
+						try {
+						    $comments = concert.annotations;
+						} catch (error:ItemPendingError) {
+						    error.addResponder(new ItemResponder(annotationsLoaded, loadFailed));
+						}
+					}
+				});			
+			}
+			
+			public function unlock():void {
+				$add_comment_btn.addEventListener(MouseEvent.CLICK, $submitComment);
+				
+			}
+			private function $submitComment(_e:MouseEvent):void {
+				if ($comment_input.text != '' && userName != '') {
+					var comment:Annotation = new Annotation();
+					comment.annotator = userName;
+					comment.comment = $comment_input.text;
+					concert.addAnnotation(comment);
+					$comment_input.text = '';
+				}
+			}
+			
+			private function annotationsLoaded(result:Object, token:Object = null):void {
+			   $comments = IList(result);
+			   
+			   var _arr:Array = $comments.toArray();
+			   trace('COMMENTS:'+_arr);
+			   for(var _i:uint=0; _i<_arr.length; _i++) {
+			   		var _ann:Annotation = _arr[_i] as Annotation;
+			   		var _ic:EventCommentItem = new EventCommentItem();
+			   		addChild(_ic);
+			   		_ic.annotation = _ann;
+			   		_ic.y = 130 + (_i * 70);
+			   	
+			   }
+			   unlock();
+			}
+			       
+			private function loadFailed(error:Object, token:Object = null):void {
+			    trace(String(error));
+			} 
+			
+			
+		
+
+		]]>
+	</mx:Script>
+	
+	<mx:Image x="0" y="0" width="178" height="77" source="@Embed('../../../../assets/me_speech.png')" />
+	<mx:TextArea x="10" y="23" width="158" id="$comment_input" wordWrap="true" editable="true" enabled="true" color="#000000" borderStyle="solid" borderThickness="0" height="47"/>
+	<mx:Button x="0" y="84" id="$add_comment_btn" label="Add Event Comment" width="178"/>
+</mx:Canvas>

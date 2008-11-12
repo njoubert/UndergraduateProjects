@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module layout="absolute" width="918" height="788" creationComplete="init()" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:ya="com.yahoo.happenings.*" >
+	<mx:Script>
+		<![CDATA[
+			import mx.events.PropertyChangeEvent;
+			import com.adobe.utils.DateUtil;
+			
+			[Bindable]
+			public var concert:Concert = null;
+			
+			[Bindable]
+			public var userName:String = '';
+			
+			[Bindable]
+			public var avatarURL:String = '';
+			
+			public function init() {
+				addEventListener("propertyChange",function(event:PropertyChangeEvent):void {
+					if (event.property=="concert") {
+						$title_tf.text = concert.title;
+						$venue_tf.text = concert.venue;
+						var _d:Date = concert.startTime;
+						var _month:String = DateUtil.getFullMonthName(_d);
+						var _day:String = String(_d.day) as String;
+						$date_time_tf.text = _month+' '+_day+', '+String(_d.fullYear);
+					}
+				});			
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	  	<ya:EventCommentsBox x="18" y="76" width="178" height="694" concert="{concert}" userName="{userName}"/>
+         <ya:GridView width="650" x="239" height="650"  y="127.8" concert="{concert}" />
+         <mx:Text x="238" y="8.95" fontFamily="GothamLight" fontSize="28" color="#F9CD5F" width="506"  height="74.05" id="$title_tf"/>
+         <mx:Text x="742" y="29" fontFamily="GothamMedium" fontSize="10" color="#FFFFFF" width="164"  textAlign="right" id="$date_time_tf"/>
+         <mx:Text x="742" y="14" fontFamily="GothamMedium" fontSize="10" color="#FFFFFF" width="163"  textAlign="right" id="$venue_tf"/>
+         <mx:Text x="77" y="14" fontFamily="GothamMedium" fontSize="10" color="#F9CD5F" width="100"  id="$userName_tf" text="{userName}"/>
+         <mx:Text x="77" y="30" fontFamily="GothamMedium" text="Since last login, you've had" fontSize="8" color="#FFFFFF" width="143" />
+         <mx:Text x="77" y="43.95" fontFamily="GothamBook" text="5 Favorited Photos" fontSize="8" color="#FFFFFF" width="122" />
+         <mx:Text x="77" y="57.95" fontFamily="GothamBook" text="8 Comments" fontSize="8" color="#FFFFFF" width="122" />
+         <mx:Image x="19" y="18" width="50" height="50" id="$user_icon" source="{avatarURL}"/>
+         <mx:Button x="266" y="91" label="Media Objects" width="100" textAlign="left" id="$mediaobjects_btn"/>
+         <mx:Button x="403" y="91" label="Photos" width="100" textAlign="left" id="$photos_btn"/>
+         <mx:Button x="659" y="91" label="Shared" width="100" textAlign="left" id="$shared_btn"/>
+         <mx:Image x="239" y="91" source="@Embed('../../../../assets/count_circle.png')"/>
+         <mx:Image x="377" y="91" source="@Embed('../../../../assets/count_circle.png')"/>
+         <mx:Image x="633" y="91" source="@Embed('../../../../assets/count_circle.png')"/>
+         <mx:Text x="243" y="94" text="0" fontFamily="GothamMedium" textAlign="center"/>
+         <mx:Text x="381" y="93.8" text="0" fontFamily="GothamMedium" textAlign="center"/>
+         <mx:Button x="533" y="91" label="Videos" width="100" textAlign="left" id="$videos_btn"/>
+         <mx:Image x="507" y="91" source="@Embed('../../../../assets/count_circle.png')"/>
+         <mx:Text x="511" y="93.8" text="0" fontFamily="GothamMedium" textAlign="center"/>
+         <mx:Text x="637" y="93.8" text="0" fontFamily="GothamMedium" textAlign="center"/>
+         <mx:Button x="789" y="91" label="Favorited" width="100" textAlign="left" id="$favorited_btn"/>
+         <mx:Image x="763" y="91" source="@Embed('../../../../assets/count_circle.png')"/>
+         <mx:Text x="767" y="93.8" text="0" fontFamily="GothamMedium" textAlign="center"/>
+</mx:Module>

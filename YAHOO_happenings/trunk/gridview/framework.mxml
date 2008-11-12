@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ya="com.yahoo.happenings.timeline.*" layout="absolute" width="950" height="760" horizontalAlign="center" verticalAlign="middle" >
+    <mx:states>
+        <mx:State name="People">
+            <mx:SetProperty target="{image1}" name="x" value="0"/>
+            <mx:SetProperty target="{image2}" name="x" value="-7"/>
+            <mx:SetProperty target="{hbox3}" name="width" value="410"/>
+            <mx:SetProperty target="{hbox3}" name="x" value="540"/>
+            <mx:SetStyle target="{hbox3}" name="borderStyle" value="solid"/>
+            <mx:SetStyle target="{hbox3}" name="cornerRadius" value="7"/>
+            <mx:SetStyle target="{hbox3}" name="backgroundColor" value="#ffffff"/>
+            <mx:SetEventHandler target="{hbox3}" name="click" handler="currentState = 'Normal'"/>
+            <mx:SetProperty target="{image2}" name="y" value="0"/>
+            <mx:SetProperty target="{hbox3}" name="height" value="180"/>
+        </mx:State>
+        <mx:State name="Tags">
+            <mx:SetProperty target="{image1}" name="x" value="-7"/>
+            <mx:SetProperty target="{hbox2}" name="width" value="410"/>
+            <mx:SetProperty target="{hbox2}" name="x" value="540"/>
+            <mx:SetStyle target="{hbox2}" name="borderStyle" value="solid"/>
+            <mx:SetStyle target="{hbox2}" name="cornerRadius" value="7"/>
+            <mx:SetStyle target="{hbox2}" name="backgroundColor" value="#ffffff"/>
+            <mx:SetEventHandler target="{hbox2}" name="click" handler="currentState = 'Normal'"/>
+            <mx:SetProperty target="{hbox2}" name="height" value="184"/>
+            <mx:SetProperty target="{image1}" name="y" value="-1"/>
+        </mx:State>
+        <mx:State name="Filters">
+            <mx:SetProperty target="{image3}" name="x" value="-7"/>
+            <mx:SetProperty target="{hbox1}" name="width" value="410"/>
+            <mx:SetProperty target="{hbox1}" name="x" value="540"/>
+            <mx:SetStyle target="{hbox1}" name="borderStyle" value="solid"/>
+            <mx:SetStyle target="{hbox1}" name="cornerRadius" value="7"/>
+            <mx:SetStyle target="{hbox1}" name="backgroundColor" value="#ffffff"/>
+            <mx:SetEventHandler target="{hbox1}" name="click" handler="currentState = 'Normal'"/>
+            <mx:SetProperty target="{image3}" name="y" value="-1"/>
+            <mx:SetProperty target="{hbox1}" name="height" value="184"/>
+        </mx:State>
+        <mx:State name="Normal">
+            <mx:SetProperty target="{hbox3}" name="height" value="181"/>
+            <mx:SetProperty target="{hbox2}" name="height" value="185"/>
+            <mx:SetProperty target="{hbox1}" name="height" value="185"/>
+        </mx:State>
+    </mx:states>
+
+    <mx:transitions>
+    	<mx:Transition fromState="*" toState="*">
+           <!--    Parallel effects execute in unison --> 
+            <mx:Parallel targets="{[hbox1,hbox2,hbox3]}">
+               
+             <mx:Resize duration="200" /> 
+           <mx:Move duration="100" />
+
+            </mx:Parallel>
+        </mx:Transition>
+    
+    </mx:transitions> 
+
+  
+    <!-- Create a VBox container so the container for 
+        the buttons appears above the ViewStack container. -->
+        
+
+    <mx:VBox verticalGap="0" paddingTop="60" paddingLeft="15" width="900" height="660">
+        
+       
+        <mx:HBox>
+
+            <!-- Define the three buttons. 
+                Each uses the child container identifier 
+                to set the active child container. -->
+                <mx:Spacer width="542" height="28" />
+                <mx:TabBar dataProvider="myViewStack" height="28">
+                 </mx:TabBar>
+        </mx:HBox>
+       
+<mx:HBox>
+	
+
+   <mx:Canvas width="172" height="550" y="94" x="10" paddingLeft="0" backgroundAlpha="50" backgroundColor="#FFFFFF"  label="Comments" id="Comments" >
+        </mx:Canvas>
+        <!-- Define the ViewStack and the three child containers. -->
+        <mx:ViewStack id="myViewStack" 
+            
+            width="700" height="550" backgroundColor="#000000">
+            
+            <mx:Canvas id="Overview" label="Overview">
+                <mx:Label text="Overview Screen" id="label1" color="#ffffff"/>
+            </mx:Canvas>
+
+            <mx:Canvas id="Timeline" label="Timeline">
+                <mx:ModuleLoader>
+                    <ya:TimelineView  height="550" width="700" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+                    </ya:TimelineView>
+                </mx:ModuleLoader>
+            </mx:Canvas>
+
+            <mx:Canvas id="People" label="People">
+                <mx:Label text="People Screen" color="#ffffff"/>
+            </mx:Canvas>
+            <mx:Canvas label="Stories" width="100%" height="100%">
+            	<mx:Label text="Stories Screen" color="#ffffff"/>
+            </mx:Canvas> 
+            <mx:Canvas width="100%" height="100%" icon="@Embed('assets/timelineicon.png')">
+            	<mx:Label text="Upload Screen" color="#ffffff"/>
+            </mx:Canvas>
+            
+        </mx:ViewStack>
+</mx:HBox>
+    </mx:VBox>
+    
+    <mx:HBox x="901" y="95" width="100%" height="183" id="hbox1" click="currentState = 'Filters'" dropShadowEnabled="true">
+    <mx:Canvas>
+    	<mx:Image source="@Embed('/assets/filters.png')"  id="image3"/>
+    </mx:Canvas>
+    	
+    </mx:HBox>
+    <mx:HBox x="901" y="280" width="100%" height="183" id="hbox2" click="currentState = 'Tags'" dropShadowEnabled="true">
+    <mx:Canvas>
+    	<mx:Image source="@Embed('/assets/tags.png')"  id="image1" x="0"/>
+    </mx:Canvas>
+    </mx:HBox>
+     <mx:HBox x="901" y="465" width="100%" height="179" id="hbox3" click="currentState = 'People'" dropShadowEnabled="true">
+     <mx:Canvas>
+     	<mx:Image source="@Embed('/assets/people.png')"  id="image2"/>
+     </mx:Canvas>
+    	
+    </mx:HBox>
+
+</mx:Application>
