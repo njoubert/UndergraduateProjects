@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>2007Sp CS61C Project 1: Big Numbers in Little Scheme</title>
+</head>
+<body>
+
+<h1>Project 1: Big Numbers in Little Scheme</h1>
+<i>2007Sp CS61C</i><br>
+<i>TA: <a href="http://inst.eecs.berkeley.edu/~cs61c-tf/">Matt Johnson</a></i><br>
+<b><font color=#ff0000">Due Sunday, Feb 11, 2007 @ 11:59:59pm</font></b><br>
+<b><font color=#009900">Last updated: Saturday, Feb 03, 2007</font></b><br>
+
+<h2>Updates</h2>
+<ul>
+<li> 2007.2.03 12:37am -- There were some tyos in example3.out. Please update that file.
+<li> 2007.2.02 01:06pm -- There was a bug in the iFree function. <b>Please update your <code>i_memory.c</code> file</b>.
+<li> 2007.2.02 08:36am -- There was an error in one of the expt examples; <code>(expt 111.2 5)</code> has now been fixed in both the spec and example3.out.
+<li> 2007.2.01 01:23pm -- The extra for experts examples now show that it is valid for <code>base</code> to take in arguments that are not in decimal format.
+<li> 2007.1.31 02:52pm -- Proj1 deadline has been extended to Sun, Feb 11. However, we encourage you to finish by Fri, Feb 09 so that you will have ample time to finish HW3.
+<li> 2007.1.31 11:00am -- memory tracking system has been enhanced to tell you which function lead to the memory leak. Please update all your source code files.
+<li> 2007.1.30 10:30pm -- you MUST <code>#include "microscheme.h"</code> in all your .c files to enable memory tracking!
+<li> 2007.1.30 06:32pm -- <font color=#ff0000><b>IMPORTANT UPDATE</b></font> revised code base to track memory usage (see Misc. Requirements). In addition, we reorganized the code into two files, <code>microscheme.c</code>, the primary file you will submit your work in, and <code>core.c</code>, contains the functions needed to setup the scheme interpreter environment. <b>Please update all of your files to the new versions (see the Getting Started section).</b> This update should make the project easier!
+<li> 2007.1.30 12:26am -- Slightly modified microscheme.c file to fix bugs. Get a new copy of microscheme.c (as in the Getting Started section).
+<li> 2007.1.29 11:57pm -- Clairified process for submitting project with extra credit.
+<li> 2007.1.29 08:15pm -- Added examples with nested subexpressions.
+<li> 2007.1.29 06:29pm -- Minor edits to organization and wording.
+<li> 2007.1.29 -- Project spec posted!<br>
+</ul>
+
+<h2>Introduction</h2>
+<p>
+Does anyone else miss Scheme and CS61A? Ah, the good ol' days, when we didn't worry about low-level number representation with its imprecisions and limitations. We could call <b>expt</b> without worrying about overflow, or take fractional parts in stride:
+
+<pre>
+   STk> (expt 2 100)
+   1267650600228229401496703205376
+   STk> (/ 1 5)
+   0.2
+</pre>
+
+As Scheme programmers, we only cared about <i>numbers</i>, not fixed-bit-length <code>int</code>s, <code>char</code>s, and <code>unsigned short</code>s. Well, grab your parentheses, because we want you to implement "bignums" (a datatype and some arithmetic operations) in a very small and simple Scheme interpreter called microscheme! <font size="-1">(without using any C bignum libraries, of course...)</font>
+</p>
+
+<hr width=75%>
+
+<h2>Assignment</h2>
+<p>
+<b>We want the provided microscheme interpreter to be able to input, output, and do arithmetic on decimal <a href="http://en.wikipedia.org/wiki/Positional_notation">positional notation</a> numbers that can have sign and both whole and fractional parts (each arbitrarily sized).</b> There should be no hard-coded limit to number length. We also want to implement the following arithmetic operations on bignums: <b>+</b> (addition), <b>-</b> (subtraction), <b>*</b> (multiplication), and <b>expt</b> (exponentiation), though you only have to be able to raise a bignum to a non-negative integer power.
+<br><br>
+Note that we do want you to implement "bignum fractions" that can handle any size fractional part. This implementation will be even better than STk's bignums, because STk can't handle really big fractions:
+<pre>
+   STk> .9999999999999999999999999999999999999
+   1.0
+</pre>
+We don't want any rounding in our microscheme interpreter, so it should respond like this:
+<pre>
+   > .9999999999999999999999999999999999999
+   0.9999999999999999999999999999999999999
+</pre>
+The project can be broken down into the following steps.
+</p>
+
+<h3>(0) Create a bignum data type</h3>
+
+The interpreter currently assumes that all numbers can be represented within C's <code>int</code> data type, but that just won't do. You must extend it to be able to internally represent numbers of arbitrary size, possibly with fractional parts: enter the <code>bignum</code>.<br>
+
+<p>You will have to create a <code>bignum</code> data type for the interpreter to use internally by modifying the <code>struct thing</code> definition in <code>thing.h</code>. It must keep track of sign, whole, and fractional parts, but you are free to choose the internal representation. You can use a binary representation like those in <code>int</code>s, or you can simply store decimal digits (like a <a href="http://en.wikipedia.org/wiki/Binary-coded_decimal">binary-coded decimal</a>). Don't forget the principles of data abstraction! See the Suggestions section below.
+
+<h3>(1) Implement arithmetic operations on bignum data (in C) </h3>
+
+You will also have to implement arithmetic operations for the bignum data. These will be functions like <code>bignum bignum_add(bignum a, bignum b)</code>, but should include addition, subtraction, multiplication, and exponentiation via non-negative integer powers. They will be called by the microscheme interpreter to manipulate bignums. You will add these new functions in <code>microscheme.c</code>.
+
+<h3>(2) Modify microscheme I/O</h3>
+
+You will have to modify the microscheme interpreter input/output to parse decimal number strings into bignums and print the bignums. The decimal strings can now be arbitrary-sized, meaning <i>don't have a hardcoded limit</i> to the number of characters in a number (hint hint). The code provided only supports input up to 30 characters and has a limited printing system for numbers.
+
+<p>Numbers should be parsed from and printed to the decimal form [-]Y.Z, where Y and Z are decimal digit strings of any length and  [-] indicates an optional '-'. If Z has zero length then the decimal point should not be printed, but if Y has zero length a "0" should be printed in its place. For details on valid numbers at the input and the output, see below:
+
+<p>A <b>valid number</b> for <b>input</b> is defined as follows:<br>
+<ul>
+<li> A number string can only contain decimal digits, a decimal point '.', and an optional '-'.
+<li> The '-' can only appear at the start of the number. The decimal point can appear anywhere, including at the very beginning or very end of the digit string.
+<li> Numbers are delimited by whitespace (e.g. one or more ' ').
+<li> Strings resembling numbers but containing some other characters (e.g. 100a.2) should be considered non-numeric.
+<li> You can assume that numbers are small enough in magnitude that the decimal representations of numbers will never excede 2<sup>31</sup>-1 digits on either side of the decimal point.
+<li> Valid input examples: 1, -0, -5., .141, 42.42, -100.99234, 8927389798483283823847147623.387198720384721233421233413
+</ul>
+
+A <b>valid number</b> for <b>output</b> is defined as follows:<br>
+<ul>
+<li> Printed numbers should not have unnecessary leading or ending zeros (e.g., the bignum 1 should be printed simply as "1", not as "1.0" or "01", even if I entered something like "001.00").
+<li> The decimal point should not be printed unless there is a non-zero fractional part to be printed (e.g., no "5.").
+<li> Numbers with only a fractional part should be printed with a leading zero (e.g. "0.25" instead of ".25").
+<li> Zero should never have a negative sign when printed ("-0" should not be printed), though "-0.5" is fine.
+</ul>
+See the sample interactions for more examples.
+
+<h3>(3) Add interpreter support for the new arithmetic ops</h3>
+
+Even a Scheme interpreter that can handle bignums is boring if you can't perform any arithmetic operations on them! Add interpreter support for the new arithmetic operations, specifically <b>+</b> (addition), <b>-</b> (subtraction), <b>*</b> (multiplication), and <b>expt</b> (exponentiation to non-negative integer powers). Most of the arithmetic operations will have to be added, since only <b>+</b> is currently supported. This is the section where the interpreter learns to use your bignum arithmetic functions.
+
+<p>Your arithmetic operators should act similarly to the STk ones. That is, they should take arbitrary-sized arguments, where each argument can be any valid number, except for <b>expt</b>, which takes only two arguments, the second of which must be a non-negative integer. If <b>+</b> or <b>*</b> is called with no arguments, 0 or 1 should be returned, respectively. If <b>-</b> is called with one argument, the argument should be negated. Multi-argument calls to <b>-</b> should behave similarly to STk, namely all but the first argument should subtract from the first. Add these functions into <code>microscheme.c</code>.
+
+<p>The <b>car</b> and <b>cdr</b> operations are already implemented in the microscheme interpreter, and you should stick to the "Thing" data abstraction for evaluated Scheme expressions.
+
+<h3>(4) Misc. Requirements</h3>
+<ul>
+<li> <b>You are also required to practice good memory management!</b> <font color="#ff0000"><b>*UPDATE*</b></font> We have attached a memory tracking system to the project so that it will tell you if you leaked any memory. It requires no work on your part to use other than to call <code>malloc()</code> and <code>free()</code>. You <i>must</i> <code>#include microscheme.h</code> in any .c file you add to the project so that memory tracking will work!
+<br><br>
+<li> You may use only the libraries specified in the Appendix of K&R or other code provided through the assignments in the class.
+<br><br>
+<li> <b>Running time</b> must be reasonable for the operations. If you are adding big integers, it's not reasonable to perform the addition by repeatedly adding 1, so <code>(+ 9999999999 99999999999999999999)</code> shouldn't have to perform 9999999999 (or 99999999999999999999) additions.
+</ul>
+</p>
+
+<hr width=75%>
+
+<h2>Handling Error Cases</h2>
+We will only test your code on valid Scheme expressions. However, expressoins like <code>(+ 'hi 'matt)</code> are legal Scheme from a syntax perspective, and such things shouldn't crash microscheme.  Instead, print some error and continue the read-eval-print loop. It doesn't matter what you print on such erroneous input, but make your errors descriptive like "non-numeric argument to +". Never segfault from any input!
+<p><hr width=75%>
+
+<h2>Getting Started</h2>
+<p>
+Copy the contents of ~cs61c/proj/01 to your home directory.
+
+<pre>
+   $ mkdir ~/proj
+   $ cp -r ~cs61c/proj/01 ~/proj1
+</pre>
+
+The directory contains several files:
+
+<ul>
+<li><code><a href="thing.h">thing.h</a></code>, contains the definition of <code>thing</code>, the structure used to represent all objects in microscheme.
+<li><code><a href="core.c">core.c</a></code>, a file to setup the microscheme interpreter environment. 
+<li><code><a href="microscheme.c">microscheme.c</a></code>, which is the file you will work from to enhance microscheme.
+<li><code><a href="microscheme.h">microscheme.h</a></code>, the header file for microscheme. Do not edit, but <code>#include</code> in any C files for which you want to track memory management.
+</ul>
+There is also a <code><a href="Makefile">Makefile</a></code>, which is a file that will tell us how to compile your submission (see the Compiling section). The directory also contains several text files of sample interactions with a bignum-enabled microscheme interpreter.
+
+Try compiling and running the interpreter (see next section). Try a few commands and notice the definite lack of bignum support! Also, poke around the C file and figure out the read-eval-print process.
+</p>
+
+<hr width=75%>
+
+<h2>Compiling</h2>
+Typing the following commands will compile and run your project:
+
+<pre>
+  % gmake proj1
+  % ./microscheme
+</pre>
+
+<code>gmake</code> is a program that makes the compiling process easier when you have many files. It knows how to compile your submission based on the contents of the <code><a href="Makefile">Makefile</a></code> in the same directory. 
+<br><br>
+Any additional files that needs to be compiled with your project will need to be added to the Makefile. Directions on augmenting the Makefile can be found in the Makefile itself. We will be using the Makefile to compile your assignment in the autograder, so be sure to update it.
+
+<p><hr width=75%>
+
+<h2>Submitting</h2>
+Submit your project using <code>submit proj1</code> command from your proj1 folder. The submission process will ask you to submit the Makefile, <code>microscheme.c</code>, <code>thing.h</code>, any additional .c and .h (C header files) needed to compile your project, and a README, information you want to tell the reader about how your code is organized as well as what does and doesn't work. Please do not submit addtional files such as your executable, the code we already gave you, and the sample files we gave you. To reduce the number of files that <code>submit</code> will go through, it will help to run the command "<code>gmake clean</code>".
+
+<p><hr width=75%>
+<h2>Correctness, Testing, and Examples</h2>
+A completed and correct microscheme interpreter should act just like STk for the arithmetic operations described above, except it must also support big fractions like <code>0.99999999999999999999999999999</code>. It should also produce the same output as the examples.
+<br><br>
+There are sample interactions in the project directory. You can use these interactions to test your own code, though you should do other testing as well. You can run commands like the following to compare your output to the examples:
+
+<pre>
+   $ cat example0.in | ./microscheme > example0.myout
+   $ diff example0.myout example0.out
+</pre>
+
+The examples given are not meant to be as exhaustive as the autograder will be, so matching these examples doesn't guarantee a perfect grade!
+<br><br>
+Here are some transcript examples:
+<br><br>
+<h3>Addition</h3>
+<pre>
+   > (+ 1 2)
+   3
+   > (+ 0 0.0)
+   0
+   > (+ 1.0 5)
+   6
+   > (+ 000200.0000 050)
+   250
+   > (+ 99999999999999999999 99999999999999999999)
+   199999999999999999998
+   > (+ -100 100)
+   0
+   > (+ 123980234983 -2)
+   123980234981
+   > (+ -49283 200.999999999999999999999999999 300)
+   -48782.000000000000000000000000001
+   > (+ -50000000000 -50000000000 -50000000000 -50000000000)
+   -200000000000
+</pre>
+<h3>Subtraction</h3>
+<pre>
+   > (- 10 5)
+   5
+   > (- 10000)
+   -10000
+   > (- 20 5 5 5 5)
+   0
+   > (- 0)
+   0
+   > (- 2390840928309.12093894892389 90082389.9999999999999999999999999999)
+   2390750845919.1209389489238900000000000001
+   > (- -500 23895)
+   -24395
+</pre>
+<h3>Multiplication</h3>
+<pre>
+   > (* 100 0)
+   0
+   > (* 1 .99999999999999999999)
+   0.99999999999999999999
+   > (* 1000000 1000000)
+   1000000000000
+   > (* 1 -1 1 -1 1 -1 1 -1)
+   1
+   > (* 2.5 2 2)
+   10
+   > (* -6 5 2.25)
+   -67.5
+</pre>
+<h3>Exponentiation</h3>
+<pre>
+   > (expt 238 0)
+   1
+   > (expt -1 100)
+   1
+   > (expt 111.2 5)
+   17002936630.96832
+</pre>
+<h3>Mixed (with nested expressions)</h3>
+<pre>
+   > (+ (- 1 1) 10)
+   10
+   > (+ (- 452 4.52) (* 42 52) (- (+ 3 (- 4 2)) 4.24))
+   2632.24
+   > (* (- 1) (+ 100 50 2) (expt 2 4))
+   -2432
+</pre>
+
+<p><hr width=75%>
+
+<h2>Suggestions/Tips</h2>
+<ul>
+<p><li> <b>Pace yourself!</b> It is a very bad idea to code your entire project and hope that it compiles without errors. You should periodically compile your project just to make sure you do not have significant error messages from gcc. It's much easier to handle 10 errors than to try to pick apart 100 errors.
+<p><li> <b>Good organization</b> is important. You should not be adding all your code to <code>microscheme.c</code>, but rather creating separate C and header files. A good way to organize is by data abstraction, so you'll probably at least want a <code>bignum.c</code> and <code>bignum.h</code>
+<p><li> <b>Data abstraction!</b> Don't forget to obey data abstraction rules, as they will really simplify your code (especially when working with operations on bignums). Think about the "getters" and "setters" you need, and think about how you might make a function like <code>bignum new_bignum(void)</code> that would call malloc and set up a bignum type for use. The keys to abstraction in C are structs, typedefs, and appropriate getters, setters, and other operations on data.
+<p><li> <b>Think sign-magnitude!</b> Why might sign-magnitude representation be more natural here?
+<p><li> <b>For arithmetic algorithms, think back to elementary school!</b> Take it one digit at a time, and pay attention to various cases (e.g. sign of arguments)!
+<p><li> <b>Use the newsgroups!</b> The newsgroups are a wonderful way of finding an answer to your question as well as a way to get your question answered by the TAs or your peers. Any significant updates to the project spec will be announced there as well.
+<p><li> <b>GDB is your friend!</b> There is a reason why we give you practice in using GDB. If you have a segfault, gdb is a great way to find it. If you are not sure why your code is behaving in a certain way, gdb can help trace through what your code is doing at a given time. If you would like a graphical interface to gdb, there is <code>ddd</code>, which is only accessible through <code>cory</code> server (<code>ssh cory.eecs.berkeley.edu</code>).
+<p><li> If there is some part of the <code>microscheme.c</code> code that you don't understand (like the <code>union</code> keyword in the struct), ask! Okay, you should probably check K&R and try to figure it out for yourself first. If you still do not understand, then make a newsgroup post and/or go to office hours of a TA!
+</ul>
+
+<p><hr width=75%>
+
+<h2>Extra for Experts (and for extra credit!)</h2>
+This section is completely optional, but if you do it you can gain a maximum of 10% extra credit on the project (so a perfect score with full extra credit is worth 110% of the project grade).
+
+<p>After making a backup copy of your primary proj1 submission, do the following:
+<ol>
+<p><li>Add the division operator <b>/</b> for bignum division, which should work like STk's division but with our new bignums. Some results do not terminate (e.g. <code>(/ 1 3)</code>. For these cases it's up to you what to do (looping forever is fine); we will not test with any numbers that have infinite decimal (or other radix) representations.
+<p><li>Using your division and multiplication routines, implement base conversion operations for bignums so that your interpreter can input and output in our three favorite bases: decimal, binary, and hexadecimal. You will have to edit microscheme's I/O so it can recognize the base identifiers "0b" and "0x" at the input and print them at the output when appropriate.
+
+<pre>
+   > (base 2 10)
+   0b1010
+   > (base 10 0b100000)
+   32
+   > (base 0b1010 0b100000)
+   32
+   > (base 16 0b100000)
+   0x20
+   > (base 0x10 0b100000)
+   0x20
+   > (base 10 0b100000000000000000000000000000000000000000000000000)
+   1152921504606846976
+   > (base 2 70643625237641)
+   0b10000000100000000000000001100000001110010001001
+   > (base 2 -10.5)
+   -0b1010.1
+   > (base 10 -0b1010.1)
+   -10.5
+</pre>
+</ol>
+In summary, numbers can now appear in one of three forms: 0b_______, 0x_______, or ordinary decimal. They should still be bignums! Convert between them using the <code>(base x y)</code> where x must be 2, 10, or 16.
+
+<p>To submit the extra credit, you will submit it to "submit proj1_xc". Do NOT submit this section using "submit proj1" unless you are confident your changes will not effect the primary requirements of this project.
