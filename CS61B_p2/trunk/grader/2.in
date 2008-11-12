@@ -1,0 +1,7 @@
+# As for test #1, but break into two parts and use
+# load command.
+
+load grader/2a.in
+load grader/2b.in
+
+quit

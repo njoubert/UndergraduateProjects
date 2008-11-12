@@ -1,0 +1,25 @@
+#collision with walls
+bounds -10 -10 10 10
+rad 0.5
+
+add 2 1 0 1 0		#moves towards the right wall
+add 3 -1 0 -1 0		#moves towards the left wall
+add 4 0 1 0 1		#moves to the top wall
+add 5 0 -1 0 -1		#moves towards the bottom wall
+
+near 0 0 10		#nothing has happened yet.
+
+simulate 6.0
+
+near 0 0 10		#everything has moves out by 6 units now
+
+simulate 2.0	#very close to walls now!
+
+near 0 0 10
+
+simulate 4.0 	# should be moving back now!
+
+near 0 0 10
+
+quit
+

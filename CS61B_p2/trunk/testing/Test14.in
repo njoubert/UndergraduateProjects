@@ -1,0 +1,21 @@
+#particle to particle head on collision
+bounds -10 -10 10 10
+rad 0.5
+add 1 -5 0 1 0
+add 2 5 0 -1 0
+
+within 11
+
+simulate 4.0
+
+within 5.0
+
+simulate 3.0 #collision!
+
+within 6.2
+
+simulate 1.0 #just to prove it reversed direction
+
+within 8.13 #some random nr
+
+quit

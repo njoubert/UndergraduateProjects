@@ -1,0 +1,6 @@
+# Objects out of bounds (II)
+
+bounds 0 0 10 10
+
+add 1 -1 -1 0 0 
+quit

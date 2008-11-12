@@ -1,0 +1,22 @@
+# Various syntactic matters: make sure we use free format.
+
+bounds 
+
+
+-10 
+
+
+-10 5
+
+5 rad
+
+
+0.5 add 1 0 0
+0
+0
+
+near 1
+1
+4
+
+quit

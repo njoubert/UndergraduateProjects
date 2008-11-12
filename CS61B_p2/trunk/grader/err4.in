@@ -1,0 +1,7 @@
+# Objects out of bounds (I)
+
+bounds 0 0 10 10
+rad 1
+
+add 1 0 0 0 0 
+quit

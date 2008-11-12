@@ -1,0 +1,38 @@
+#multiple particles colliding at the same time
+bounds -10 -10 10 10
+rad 0.5
+add 1 -5 -1 0 1
+add 2 -4 -1 0 1
+add 3 -3 -1 0 1
+add 4 -2 -1 0 1
+add 5 -1 -1 0 1
+add 6 0 -1 0 1
+add 7 1 -1 0 1
+add 8 2 -1 0 1
+add 9 3 -1 0 1
+add 10 4 -1 0 1
+
+add 11 -5 1 0 -1
+add 12 -4 1 0 -1
+add 13 -3 1 0 -1
+add 14 -2 1 0 -1
+add 15 -1 1 0 -1
+add 16 0 1 0 -1
+add 17 1 1 0 -1
+add 18 2 1 0 -1
+add 19 3 1 0 -1
+add 20 4 1 0 -1
+
+near * 0 2 #oi they're all pretty darn close!
+
+simulate 0.2
+
+near * 0 2 #slight move huh?
+
+simulate 2.0 #collisions like mad!
+
+near * 0 2.0 #shouldnt do anyything... no particles so close!
+
+near * 0 3.0
+
+quit

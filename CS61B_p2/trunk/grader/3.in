@@ -1,0 +1,13 @@
+# Test bouncing off left and right walls
+
+bounds -10 -10 5 10 rad 0.5
+
+add 1 0 0 1 0 
+add 2 0 2 -1 0
+add 3 0 -2 4 0
+
+simulate 11
+
+near 0 0 15
+
+quit

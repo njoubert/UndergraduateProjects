@@ -1,0 +1,171 @@
+Niels Joubert
+CS61B-BO
+USER DOCUMENTATION
+------------------
+
+Dear User
+
+Thank you for picking up this efficient, effective little Particle Simulator program.
+We can do a wide range of interesting physics with this packadge to simulate particles
+moving through space, colliding and interacting with one another. Specifically designed
+to give fast performance for points in a region, this package is effective, fast,
+and easy to use. Since we are just as sick as you of programs randomly not
+working, giving ambiguous error messages when everything should  be working, we
+are give you the driver position, and will gracefully accept as much as possible 
+of what you want to do, and only fail in the most extreme cases.
+
+Let's take a look at what this program offers in a holistic view before we jump
+into the nitty gritty user details.
+
+Introduction
+----------------
+The Particle Simulator in its simplest form is a spatial database. It stores points
+according to geographical location relative to one another in a specific region.
+Optimized for fast range queries through innovative use of quadrant splitting
+techniques, this program is great at finding objects close to each other or near a
+specific point at blazing speeds. We then go one step further by giving you the 
+capability to assign velocity vectors to points, and simulating 
+their movement and interaction with each other.
+
+Speed
+----------
+We have been boasting about performance for a while now, so let's take a quick peek under
+the hood and give some hard data about the speed of our program. 
+The core of the simulator is a databasing system specifically geared towards 
+2D geographical data. By splitting regions into ever-more quadrants, points are stored
+according to their position, and their relative position to one another. An example of the
+effectivity of this approach is computing all the elements that are near one point.
+Given a 1000 points in a database, finding all the points in a region if, for example,
+there is only one point that is in that region, needs to look at less than 6 points to find that 
+one point. Another example is the speed of arranging elements. 16 000 random points can be arranged
+according to location, then extracted in order or their identification numbers, and their position data
+retrieved, in less than 0.2 seconds on our reccomended specifications - Pentium M 1.8 Ghz or compatible.
+
+Usage
+----------
+If you're still with us, you're definitely ready to jump in and start simulating! 
+Let's get started right away. 
+Upon loading the particle simulator, the welcome screen greets you with a prompt ready to
+recieve instructions. Any supported command can be typed here. There is also the neat
+feature of loading in files (and writing out files to save your state) so that you can
+prepare your particles beforehand, and quickly import them into the database.
+
+	- a Quick little tutorial
+		OK, let's do some simulation right away! Then we'll look at all the commands.
+		Type the following at the prompt to set up a basic situation of one particle moving
+		along in the x-direction in the middle of your region.
+		
+			> bounds -10 -10 10 10
+			> rad 1
+			> add 0 0 0 1 0
+		
+		now let's have a quick look at what the situation looks like.
+		Type in
+		
+			>near 0 0 10
+			
+		and the following should be seen:
+			
+			> near 0 0 10
+			0:(0.000,0.000) 
+			
+		Now let's simulate its movement. We are moving along the x-axis at 1 unit per unit time,
+		so lets simulate for about 6 seconds to get along to the right boundary of our region.
+		
+			> simulata 6.0
+			
+		another near 0 0 10 gives us a report of the simuation:
+		
+			> near 0 0 10
+			0:(6.000,0.000)
+			
+		Now let's see it bounce of the wall. simulate for another 7 seconds, which means
+		it will bounce into the wall.
+		
+			> near 0 0 10
+			0:(5.000,0.000) 
+			
+		Indeed are moving towards the opposite direcion now.
+		
+		
+	- Basic Usage
+		Now that you've seen some of its power and ease of use, let's demystify the terms
+		and commands. To simulate a region, we first need to define the region.
+		this is done with the bounds command, which takes in the lower left x and y and
+		upper right x and y coordinate and sets the region to that size.
+		Next you must define a radius for the particles (the default is infinite, so no
+		particles fit in your region) by using the rad command followed by the size of particles.
+		From here the add command is probaby the most useful to start adding particles. Also, the load
+		command will read in a file as if you typed it at the console. Let's look at the supported 
+		commands.
+	
+	- Supported Commands
+		---
+		In the form:
+		<command> <parameters>
+			<description>
+		---
+		
+		# comment
+		
+		bounds xlow ylow xhigh yhigh
+			The first command necessary, to set the region size you are working in.
+			Once a region is set, it cannot be decreased in size, only increased.
+			Also, the default, starting region is (0,0) to (0,0), so you have to increase
+			it from there.
+			
+		rad r
+			The second command necessary, to set up the radius of particles.
+			Particles all have a radius bigger than zero, and cannot be increased after
+			the initial setting, only decreased. particles cannot overlap each other, and will
+			cause an error if you try to insert overlapping particles.
+		
+		add id x y vx vy
+			adds a particle with the given id and the given position and velocity.
+			all particles have to have distinct IDs!
+			
+			
+		load filename
+			Loads the given filename as if the commands in it were typed by the user 
+			instead of loading the file.
+			
+		write filename
+			Writes the current state of the system to a file in the form of a bounds command, 
+			a rad command, and an add command for every id in the system. You can load
+			this at a later time to restore the exact current system of particles
+			at the current time.
+			
+		near x y d
+			Finds all particles within a circular distance d of the point (x,y)
+			
+		near x * d
+			Finds all particles within the rectangle the height of the region, the width of
+			x+-d., centered at x.
+			
+		near * y d
+			Finds all the particles withing the rectangle the width of the the region, the height
+			of y+-d, centered at y.
+			
+		within d
+			Finds all pairs of particles closer than d together (also returns those exactly d distance
+			apart).
+			
+		simulate t
+			Simulates the movement of particles for the given time interval. Does not print any
+			value to the screen.
+			
+		quit
+			halts the program immediately.
+			
+Closing
+----------
+Thank you once more for your interest in this program!
+This easy-to-use, fast and small particle simulator should
+keep you satisfied indefinitely, and any complainst should please be
+forwarded to the author. We always welcome contact with the users of our application!
+
+Happy Simulating!
+
+-Niels Joubert
+ CS61B
+

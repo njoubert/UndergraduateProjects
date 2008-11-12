@@ -1,0 +1,13 @@
+# Test bouncing off top and bottom walls
+
+bounds -10 -5 10 4 rad 0.5
+
+add 1 0 0  0 1 
+add 2 2 0 0 -1
+add 3 -2 0 0 4
+
+simulate 11
+
+near 0 0 10
+
+quit

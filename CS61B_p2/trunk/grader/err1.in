@@ -1,0 +1,6 @@
+# Bad bounds command
+
+bounds -10 -10 10 10
+bounds -5 -5 5 5 
+
+quit

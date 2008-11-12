@@ -1,0 +1,13 @@
+# Should be OK to ask about points outside bounding box.
+
+bounds -5 -5 5 5 
+rad 0.25
+
+add 1 0 0 0 0 
+add 2 1 1 0 0
+
+near 20 20 1
+near 20 1 19.5
+near 20 20 30
+
+quit

@@ -1,0 +1,11 @@
+#changing rad illegally
+
+bounds -10 -10 10 10
+rad 0.5
+
+add 1 0 0 4 5
+
+rad 0.6
+
+
+

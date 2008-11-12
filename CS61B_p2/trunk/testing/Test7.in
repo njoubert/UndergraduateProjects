@@ -1,0 +1,4 @@
+#loading a file
+load testing/loadTest.in
+quit
+

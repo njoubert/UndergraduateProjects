@@ -1,0 +1,782 @@
+Niels Joubert
+CS61B-BO
+
+
+							INTERNALS
+					-----------------------
+
+
+--------------
+|tracker.Main|
+--------------
+
+HANDING OF INPUT
+	In the tracker.Main.main() method, parsing of the input it started.
+	Pattern matching is used to get rid of comments. The delimiter between elements
+	are set to be either whitespace or a comment ending in newline:
+		inp.useDelimiter("(\\s+#.*\\s+)|(\\s+)");
+		
+	A variant on the "Command" design pattern is now used to parse each command.
+	This is achieved by retrieving the first token in the input, and 
+	passed to the Command class' "create" method.
+	
+	please refer to the tracker.Command section of the INTERNALS file
+	for a continuation of this discussion.
+	
+	
+-----------------
+|tracker.Command|
+-----------------
+
+the Abstract Command class:
+	packadge methods:
+		
+		static Command create(String comm, Scanner in) throws ProblemException, ParsedException
+			Creates the command object associated with the given comm string,
+			with the required arguments extracted from the scanner.
+			If the command is not recognized, an exception is thrown.
+			
+		abstract Command parse(String c, Scanner in) throws ParsingException
+			creates the class it is implemented in, according to the given
+			arguments in the scanner, AS LONG AS the given string c matches the 
+			expected name of the command it represents. If not, it returns null.
+			
+		static double[] extractArray (Scanner, int) throws ProblemException
+			Extracts the amount of tokens given by the integer argument from the Scanner,
+			expecting each token to be a double, and returning an array of the
+			extracted tokens.
+			
+the Implemented Command classes:
+		String execute(State theState, 
+			<expected arguments... see list under "COMMANDS" section>) throws ProblemException
+			
+			executes the given object. It uses a reference to the current State object
+			to call the methods that modify the data structure.
+		
+HANDLING OF INPUT (cont'd) AND EXECUTION OF COMMANDS
+
+	Command execution follows a variant on the Command design pattern.
+	We store pointers to an instantiated object of each possible type of command.
+	These objects identifies themselves against the type of command they
+	represent through the input given to their parse method, and
+	executes the command they represent with the arguments in
+	the scanner given to them as argument through an interplay between
+	parse and execute.
+	
+	The general idea is the following:
+		We extract the command's name from the Scanner,
+		which we pass as a String to the Command.create() method, along
+		with the Scanner to use to extract arguments (if needed) and a reference to
+		the State object - the current state of the system of particles.
+		
+		The Command.create method runs through its array of known command types,
+		trying to find a match for the specific given command. If none is found,
+		a ProblemException is thrown. 
+		When a command matches a specific Command object, the parse method
+		attempts to extract the arguments needed for the command to work, and
+		uses the execute method of the specific object to run the command with
+		the arguments parse() extracts from the scanner.
+	
+COMMANDS
+
+	As mentioned above, the Command design pattern is used to handle Commands.
+	Here I will discuss the possible commands recognized by this system.
+	Keep in mind that the command execution and parsing methods have access
+	to the Scanner to read input and the current State object.
+	
+	These are the known commands according to the specifications in the form:
+		<Command Class> <Command name> 	(<expected arguments ...>)
+			<return despcription to be printed>
+			<Description>
+		Where the expected arguments are what is expected to come from the scanner passed to the 
+		parse method of a command if it is instantiated.
+			
+	BoundsCommand "bounds" (double xlow, double ylow, double xhigh, double yhigh)
+		no string gets printed to the standard output.
+		
+		the parse method uses the extractArray to get the 4 coordinates (in the event
+		of failure extractArray will thrown an exception, which will be passed on to
+		the main driverloop). These 4 boundaries will be sent to execute, which
+		will call the moveBoundaries method of the State object.
+		
+		
+	AddCommand "add" (int ID, double x, double y, double vx, double vy)
+		no output string.
+		
+		As BoundsCommand, the Add command extracts the arguments it expects using
+		extractArray, and calls the State object's add method from its execute method.
+		It checks whether the return value if true or false - whether the add
+		succeeded or not - and throws an ProblemException if necesary.
+		
+	RadCommand "rad" (double r)
+		no return string gets printed to the prompt.
+		
+		As BoundsCommand and AddCommand, the rad command simply extracts the arguments
+		it requires using extractArray, and then uses its execute method to call
+		the setRadius command in the State object. Again, the boolean return value
+		from this call is checked for success or failure, and the appropriate
+		error - a ProblemException with relevant message - gets thrown.
+		
+	LoadCommand "load" (String filename)
+		no return string
+			
+		Seeing that load has to load a file and run its contents as if it was typed
+		at the prompt instead of the load command, the exact process that came to
+		this execution should be repeated with the contents of the file. 
+		This is where the State object's pointer to the current Main object 
+		comes in handy, because	its driverloop will be used to evaluate 
+		the contents of the file.
+		
+		parse(), if the given command matches the load command, extracts the next
+		token in the scanner, and tries to use this as the filename to send to execute.
+		If this fails, a FileNotFoundException is caught and relayed up to our
+		Main.driverloop method, where our graceful recovery routine kicks in.
+		
+		If the filename is successfully instantiated into a FileInputStream, we call
+		our current Main class' driverLoop with this new scanner, from which
+		it will read all the input in the normal way. Also, the driverloop automatically closes
+		the program once execution is done (when the newly created Scanner is empty), thus we need not
+		worry about end-of-files or coming back to the return value of this routine.
+		
+		This execute method can throw a ParsingException when the FileName does not resolve.
+			
+	WriteCommand "write" (String filename)
+		no string to the console. Writes a file to the given filename location.
+		The filename is extracted from the scanner, and a new PrintWriter
+		object is instantiated with a new File object to represent this file.
+		The PrintWriter is used to write the following, using the
+		format method:
+			"bounds %.4g %.4g %.4g %.4g%n" xlow, ylow, xhigh, yhigh
+			"rad %.4g%n" rad
+			for each point in the system we are simulating:
+			"add %s %.4g %.4g %.4g %.4g%n" id, x, y, vx, vy
+		
+		When this is done, the PrintWriter is closed, and we're done.
+		
+	NearCommand "near" (double x, double y, double d) or (double x, *, double d) or (*, double y, double d)
+		returns a string of up to 4 points per line, each point in the format ID:(x,y)
+		
+		
+		the Parse method checks where a "*" appears, and creates the appropriate iterator to handle 
+		the region according to the input data.
+		
+		the Execute method takes in the current State, this iterator, and the x, y and d values.
+		if x or y is an "*", the appropriate x or y value will be equal to Double.NaN
+		
+		The given iterator is used to iterate over the boundaries set from the input data in parse.
+		For each particle within the bounding box, if we are looking for the distance from a point,
+		the distance is calculated from the given point to the current point, and if within the region,
+		printed to the screen. 
+		
+		
+		
+	WithinCommand "within" (double d)
+		returns string of two points per line
+		
+		For each element in the Quadtree we need to find all the elements that's within D
+		of that point, and save this result in a Set so that there are no duplicates.
+		The result of this gets printed to the screen.
+		The printing is handled that a pair is only printed if 
+		id1 < id2 to ensure that two points aren't printed twice.
+		
+		The specification is pretty tight about printing the values.
+		For all ids, print ID1 < ID2, one per line, in increasing order of ID1.
+		Then, for all ID1s that are the same, print ID2 in increasing order.
+		This means we have to sort our incoming ArrayList, and the best way to sort
+		this in an arbitrary way is with a Comparator.
+		Thus, before printing with the printf command, we sort with 
+		the Comparator:
+		
+		class CompareIDs implements Comparator<int[]>
+			compareTo(int[] pairA, int[] pairB)
+				This method works really simple.
+				If A's ID1 < B's ID1 , then return -1
+				If ID1s are the same
+					check if A's ID2 < B's ID2, return -1
+					if A's ID2 == B's ID2, return 0	(this will ever happen, think about within's set-like properties!)
+				else return 1 	... the second element is bigger
+				
+		
+	SimulateCommand "simulate" (double t)
+		no returns string
+		This command immediately calls the simulate method of the State.
+		
+	QuitCommand "quit" 
+		no return string.
+		terminates the program.
+		This is simply done by calling the Main.exit(0) command.
+		
+		
+---------------------------------------
+|tracker.*Exception and Error Handling|
+---------------------------------------
+
+We use exceptions to handle errneous input. The elegent part
+of this approach, when implemented correctly, is that we don't
+need any "recover from error" procedure, it is all handled by the Exceptions.
+
+The ideology behind handling erroneous issues is the following:
+Whenever we encounter input that is erronoues, we try to get as much
+information as possible from it. Thus, if we encounter an illegal token, 
+we notify the user, and we keep parsing, trying to find another legal command
+in the line. This also takes care of updating the scanner's input when an illegal
+token is found.
+
+With input we have two error cases
+	ParsedException - we extracted a token to use as an argument and it gave an error.
+		This token that gave the error is contained within this exception, so we can recover
+		if the problem is that the previous command did not have enough arguments, by starting
+		with this token as the next command.
+		
+	ProblemException - we wanted to extract the token but it is not what we expected for the argument
+		OR we extracted the token and it was an unrecognized token in our program.
+
+ERROR CLASSES:
+	ProblemException
+		Given exception class that indicates some error occured.
+		Used when a general error with the input or command occured.
+		Also used when the actual input did not match the expected input
+		but we did NOT extract it from the scanner.
+		
+	ParsedException
+		 An exception class specifically used to 
+		 signal an error in the arguments of a command.
+		 It carries the argument that caused the exception
+		 as a String, and is used ONLY to recover
+		 gracefully if the illegal argument was extracted from the scanner.
+		 In Version 2.0, the actual recovery of this token to reuse
+		 has not been implemented, but left for future versions, if an improvement
+		 on error handling needs to be made.
+
+		 
+---------------------------------------------------
+|tracker.State and keeping track of all the points|		<----The bridge between commands and database
+----------------------------------------------------
+
+tracker.State represents the State of the current particle system.
+The aim with this class is to have an object which supplies the
+x, y, vx and vy components of any particle if you know it's ID.
+This works well along with the Quadtree, which gives you the
+functionality of quickly finding ID's according to (x, y) position
+
+The State has two distinct parts interleaved in one object:
+1) Data Storage - storage of points with coordinates and velocities in an effective way
+2) Data Mutation - changing and updating these values through simulation
+
+		|===============================|
+		| STORAGE AND WRAPPER PROPERTIES|
+		|===============================|
+
+We want to store IDs according to position. Each ID thus has a position and a velocity
+associated with it. The operations on the data can be grouped into two categoried:
+	a) operations concerned with positions of particles relative to each other
+	b) operations concerned with single particles
+Since we do not only have points with coordinates, but velocities associated with these points,
+both of which can change over time (position and velocity) we need more than just a QuadTree
+for position storage.
+
+Thus:
+a) For methods concerned with particles in relation to one another, such as finding particles
+close to each other all finding all particle pairs within a certain distance of each other,
+we use a QuadTree, that ensures log(n) time for operations. The Quadtree is thus responsible for
+storage of position data associated with an ID, so we get the blazing speed of range 
+queries the QuadTree offers (theta(log(n))), and fast position lookups (theta(1))
+b) For associating velocities with IDs, we use a hashtable to store velocities, where the ID
+is the key and the velocity vectors are the values.
+
+
+The State class becomes a wrapper for both QuadTree and Hashtable representations of these points,
+both structures containing information about particles, but stored in different ways. From outside
+the State class, this gives the impression that both lookup procedures and range queries have
+excellent efficiency. It is also the responsibility of the State class to ensure that
+the same data is in both data structures - synchronizing the positions in the QuadTree and velocities
+in the Hashtable with the IDs.
+
+STORING THE DATA
+	The State class gives you access to points in the from of a double array:
+	 	p = {x, y, vx, vy}
+	Since it functions like a set, it does not allow duplicate IDs.
+	
+	This double array is build up of the velocity data stored in
+	the Hashtable in the form [id -> {vx, vy}]
+	and the position data in the QuadTree [id -> {x, y}]
+	
+RETRIEVING THE DATA
+	The State class gives both range queries (near and within)
+	and specific point queries (get() variations).
+	
+	Inside the State class itself, methods have access to both parts
+	of the representation (velocities in hashtable, positions in QuadTree).
+	
+FUDGE FACTORS AND APPROXIMATE CALCULATIONS TO PREVENT SIMULATION ERRORS
+	Since the whole simuation relies on the accurate movement
+	of particles to within a very close distance of each other if
+	they will collide, but the QuadTree and State is set up to ensure
+	that no two objects overlap each other to the walls, 
+	we need to be very careful with how we move our objects.
+	Multiple approaches to ensuring that objects never overlap
+	has shed light on the situation, and the problem is addressed 
+	both in the add method (where we check for overlap and allow for a very slight
+	overlap due to the collision) and the simulation's collision calculation part, where
+	we look for objects that are touching and are very very close to touching.
+	"very very" is a very very ambiguous definition, so to make it concrete:
+	
+		in add, the smalled allowed distance between particles is:
+			2.0 * rad * (1.0 - 1.0/(1L<<50))
+		allowing for the round-off error of doubles.
+		
+		in simulate, the biggest distance between centers of colling objects is:
+			2.0*rad*(1.0 + 1.0/(1L<<40))
+	
+FIELDS:
+	private Hashtable<Integer, double[]> velocities;
+		Provides the structure for storing velocity data
+		
+	private Set2D myTree;
+		Provides the structture for storing relative position data
+		
+	private double rad;
+		Stores the radius of all particles
+	
+	private Main myMain;
+		Stores a pointer to the Main class that instantiated yourself
+		Used by the simulation method when a new State is created non-destructively
+		and needs to replace the current State.
+	
+	private double D;
+		stores the maximum distance over which we search for Collisions during simulate.
+	
+CONSTRUCTORS:
+	State(myMain)
+		Sets up the data structures and fields for a blank State.
+		The fields are initialized in such a way that insertion is not
+		yet possible until boundaries and a radius is set.
+		
+	State(Main myMain, double xlow, double ylow, double xhigh, double yhigh, double rad)
+		Sets up a new State with the given values for the bounding box
+		and raidus of particles, read for insertion of items.
+
+METHODS:
+
+	public Main getMyMain()
+		returns a pointer to the Main clause of which this State is associated with.
+		
+	
+	boolean Add (int ID, double x, double y, double vx, double vy) 
+		or (int ID, double p[])
+		
+		Adds a new element to this State.
+		Checks for the following before storing:
+			The ID must be unique, else throw ProblemException.
+			Particle circumfence must be inside boundaries, else throw ProblemException
+			Must not overlap another particle by more than the fudge factor allows 
+			for simulations or collisions, else throw ProblemException.
+			
+			
+		The QuadTree myTree's add method id now called with the ID, x and Y positions,
+		and the velocities Hashtable's put method is called to insert the vx, vy positions.
+	 	Returns true if successful.
+		
+		To implement the version of this method that takes in an array of
+		the form p = {x, y, vx, vy}
+		the method that takes distinct arguments are called.
+		
+
+	boolean set (int ID, double x, double y, double vx, double vy)
+		
+		Changes the value of the given ID. Returns false if the ID is not
+		already in the State. 
+		
+		This is implemented by checking whether the ID already exists in the 
+		hashtable, and if so, simply uses the QuadTree's set method and
+		the Hashtable's put method.
+		
+
+	boolean Contains (int ID)
+		returns true if the current element exists in this State
+		
+	double[] Get (int ID)
+		returns point ID's data in the form p = {x, y, vx, vy}
+		or null if the point does not exist.
+		
+	double getx/y/vx/vy (int ID)
+		returns the x, y, vx or vy coordinate of the given ID, or null
+		if the point does not exist. All these methods are implemented to
+		NOT rely on the Get method that returns a double array. This means
+		that generally speaking, a specific getX, for example, is less lookups
+		than a general get()
+		
+		The implementation of this is designed to allow for fast
+		lookup, adding or changing of position data according to ID.
+		Thus the methods that work with ID all run in constant time.
+		
+	double llx(), lly(), urx(), ury()
+		returns the bounding box of the QuadTree that this State wraps.
+		
+	Set2DIterator iterator()
+		returns the Iterater for the QuadTree wrapped by this class.
+		
+	Set2DIterator iterator (double xl, double yl, double xu, double yu)
+	returns the bounded Iterater for the QuadTree wrapped by this class.
+	
+	TreeSet<Integer> nearCircle(Set2DIterator iterator, double x, double y, double d)
+		Takes in an iterator (usually a Bounded iterator, but not necessarily)
+		and finds all the points in this iterator that is also within
+		distance d away from the point (x,y).
+		Returns these points in ascending order.
+		
+	TreeSet<Integer> nearBox(Set2DIterator iterator)
+		Takes the iterator and sticks all the values within its bounding box
+		
+	ArrayList<int[]> within(double d)
+		returns an ArrayList of integer arrays of pairs of integer IDs that lies
+		within the distance d from each other. 
+		The algorithm is relatively simple thanks to our QuadTree's blazing performance
+		with range lookups.
+		We need to look at all the points, so we create an iterator for all the points.
+		For every point in the State, we find all the other points that are within
+		distance d of it using the near method, and add these pairs to
+		the ArrayList. To ensure that we do not have duplicates in the list
+		(after all, if particle 1 is close to particle 2, then you will also find that
+		particle 2 is close to particle 1, but we only need to simulate that as one 
+		collision!) we use a very smart little mathematical trick.
+		Since you will ALWAYS find BOTH pairs . id1-id2 and id2-id1, we only store a
+		value if id1 < id2.
+		
+		finally we return the now filled ArrayList.
+		
+	boolean setRadius(double r)
+		sets the radius of all particles in the system - the rad value of this State.
+		it checks that the radius is not increased, and updates the 
+		D value - used in the calculation of collisions to find the maximum distance over
+		which we check for collisions.
+		
+	double getRadius()
+		returns the radius.
+	
+	public static double distanceSquare(double x1, double y1, double x2, double y2)
+		returns the distance squared between the two points given by
+		(x1, y1) and (x2, y2)
+		
+	public static double distance(double x1, double y1, double x2, double y2)
+		uses the distanceSquare formula and roots.
+	
+	public static double pyth(double x1, double y1)
+		uses the distance formula with one coordinate as zero
+		thus calculates the distance between two points.
+	
+	boolean Simulate(double totalTime)
+	
+		We start by finding the maximum V that appears in this State. This is 
+		stored in a double called Vmax, and retrieved by a call to findMaxVelocity().
+		
+		Next we find the time interval in which this maximum V is translated over a 
+		fixed distance.
+		
+		We create a new State that will replace the current one, and using the unbounded
+		iterator we run through all the values in our current state, moving
+		them to their new positions (those that collide will thus now be lying against each other)
+		During this moving of elements I also check whether the point currently
+		being translated is colliding with a wall, and if so, reversing the appropriate
+		velocity (yes, i do look at all the values here, but it is much cleaner
+		than creating 4 iterators for the 4 walls and then simulating the collision
+		after we moved it)
+		
+		Now we need to simulate the actual collisions, which we do by
+		getting all particles that are withing 2.0*rad*(1.0 + 1.0/(1L<<40)) of 
+		each other's center. Notice the fudge factor once again. We use the Physics
+		package's rebound function on all these elements to change their velocity and
+		(if necessary) position, and update the data using the State's set method.
+		
+		We have not completed a small step of the total collision, and a new State is
+		ready. Thus we replace the current State with the new state, and call the
+		Simulate method on the now shorter time interval.		
+	 
+	double findMaxVelocity() 
+		Runs through the given set, comparing each element's velocity vector with
+		the current maximum velocity to find the biggest velocity vector in out System
+		
+		
+		an Iterator is created that iterates over the values of the velocities Hashtable.
+		we iterate over the velocities, each time retrieving the components of v, 
+		and calling the pythagorean formula to find the total v. The Physics packadge is used
+		to calculate the time to collision of all the pairs, and the smallest value
+		is kept as the tc value (time-collision)
+		
+		Since the Pythagorean theorem returns absolute values - that is, the scalar quantity
+		with only magnitude - it will always be positive no matter the direction the
+		particle is heading, thus this simple comparison is possible.
+	
+		an iterator for every wall now checks for the time to a collision with the wall, and
+		compares this with the already computed time-to-collision value, trying to find the smallest
+		time to the first velocity.
+		
+		This time to first collision is returned.
+
+		
+		============================================================================
+						API - Quadtree - A Set2D & Set2DIterator Implementation 
+		============================================================================
+		
+		A Quadtree consists of a QuadTree object as the "wrapper" for the
+		objects that build up the database, and the different type of nodes
+		for the database:
+			RootNode, InnerNode, LeafNode, EmptyNode	extends QuadTreeNode
+			
+		All these nodes represent the different parts of the QuadTree structure, 
+		with one RootNode at the top, working as a base case or beginning case
+		for methods such as llx(), lly(), urx(), ury(), that depends on a parent
+		to give them meaning. InnerNodes represent a split of a certain quadrant into
+		4 smaller quadrants, with these 4 quadrants (the "children" or an InnerNode)
+		each a type of node as well - leading to the recursive definition of this data structure.
+		LeafNodes are the only nodes that is "visible" to the user, because it contains
+		the id data stored according to position in the QuadTree.
+		an EmptyNode serves as a base case, so that all nodes except EmptyNodes has 
+		children that are nodes. Never is there a child of value "null", always "EmptyNode".
+		
+		The abstraction pattern for these classes look like this:
+		
+							abstract QUADTREENODE
+					Constructor(wholeTree, parent, quadrant)
+						creates a new QuadTreeNode with the given
+						wholeTree, parent and quadrant stored in fields inside it.
+					llx(), lly(), urx(), ury(), midPX(), midPY()
+						the bounding box of the given node. Uses the parent
+						and its quadrant number to find this by default.
+					isWithin(id), isWithin(id, llx, lly, urx, ury)
+						boolean whether the given id is in the given box.
+					insert(id), remove(id)
+						abstract methods for the child classes
+					type()
+						returns a string - "empty", "leaf", "inner", "root"
+						representing the type of the node.
+					int quadrant - which quadrant of its parent it is.
+					myParent - pointer to the node above me.
+					myTree - pointer to the main QuadTree object.
+						
+						
+					astract QUADTREEMULTINODE extends QUADTREENODE
+						
+					insert(id)
+						defines the iterative procedure of
+						selecting which child quadrant to
+						insert in, and inserting into it.
+					remove(id)
+						defines the iterative decision procedure
+						of finding which quadrant to call remove on,
+						and follows up by calling the justifyExistence procedure
+					justifyExistance()
+						returns the QuadTreeNode that takes up this
+						quadrant. Thus, it returns itself if it has multiple
+						children, or destroys itself if it has only one
+						leaf node, and returns that leafnode (modified to
+						this quadrant). This chain reaction of shrinking
+						moves upwards through the tree as remove is called,
+						so it will never happen that a innernode has only one innernode
+						child, except at the Root.
+						The root overrides this method, since it always stays in existance.
+						
+					QuadTreeNode children[4] array
+						stores pointes to its 4 quadrants.
+						
+						
+						
+						ROOTNODE extends QUADTREEMULTINODE
+					Constructor(myTree)
+						creates itself as the root of a new QuadTreeNode chain
+						by creating 4 EmptyNodes in its children array.
+						its parent is null and quadrant defaults to 0.
+					llx(), lly(), urx(), ury()
+						returns the value of the bounding box of myTree.
+					
+						INNERNODE extends QUADTREEMULTINODE
+					Constructor(wholeTree, parent, quadrant)
+						finds its bounding box values using the default methods,
+						then saves it in fields.
+						creates EmptyNodes for all its children.
+					llx(), lly(), urx(), ury()
+						returns the bounding box values stored inside the innernode.
+					justifyExistance()
+						counts the number of EmptyNode children and finds
+						the only LeafNode (if there is only one)
+						and will destructively change its only LeafNode
+						to take its place if there is only one LeafNode and 
+						three EmptyNodes as children.
+						
+					
+						LEAFNODE extends QuadTreeNode
+					Constructor(wholeTree, parent, quadrant, id)
+						stores the given id as a field inside itself.
+					insert(id)
+						creates a new InnerNode in its place, and inserts
+						its own value and the new id into this InnerNode.
+					remove(id)
+						replaces itself with an EmptyNode
+					final int id - stores the value of the id it represents.
+					
+						EMPTYNODE extends QuadTreeNode
+					insert(id)
+						creates a new LeafNode with the given id.
+					remove(id)
+						removing an EmptyNode gives an EmptyNode
+						ensures that the base case is always an
+						EmptyNode
+					
+		
+		
+QUADTREE STRUCTURE AND INTERNAL WORKINGS:
+		
+	Bounding Box:
+		
+		I faced the challenge of defining methods that can give the
+		bounding box of any QuadTreeNode. To keep the speed of the QuadTree
+		as fast as possible and avoid long chains of recursion, every 
+		InnerNode stores the double values of its bounding box. Children
+		of an InnerNode can use this to find their own quadrant.
+		To ease the finding of a Quadrant (to not, for example, use a for
+		loop to find which element of the parent's children class, and thus 
+		which quadrant, you are) the number of the quadrant you are in, is stored.
+		When trying to find which Quadrant you are, you use a simple mathematical
+		procedure abstracted out in the QuadTreeSingleNode
+		
+		The quadrants look like this:
+		|---------------|
+		|		|		|
+		|	1	|	0	|
+		|		|		|
+		|-------|-------|
+		|		|		|
+		|	2	|	3	|
+		|		|		|
+		|---------------|
+
+		To find the values of quadrant 0:
+			llx = midPoint(myParent.llx, myParent.urx)
+			lly = midPoint(myParent.lly, myParent.ury)
+			urx = myParent.urx()
+			ury = myParent.ury()
+		and so forth...
+		Seeing that we have this midpoint of the x and y values quite frequently, 
+		this is abstracted out as a procedure - midPX(), midPY() - for any
+		QuadTreeNode();\
+		
+		Thus, as items are created, bounding box values trickles down.
+		ALL the QuadTreeNode types have a integer flag for Quadrant, and the
+		InnerNode has its own int values for llx, lly, urx, ury.
+		
+		The Root node is the base case in this recursively defined idea,
+		because the Root node always return the size of the bounding box
+		of the whole Quadtree.
+		
+		When an inner node is created, it uses the QuadTreeNode procedures
+		that finds the bounding box of a certain quadrant from the parent,
+		and stores these values, so that its children can refer directly to it.
+		This works like a mini-base-case that prevents recursive calls to travel
+		up more than one level, adding to the blazing speed of the QuadTree.
+		
+		
+	Insertion:
+	
+		Insertion works amazingly beautifully from two facts stemming from
+		one ideology:
+		If you want to insert a node, you have to find the position - that is, 
+		the little quadrant in which it can lie alone in - in the tree, which
+		corresponds to its position.
+		Tho accomplish this, our insertion algorithm works itself down
+		the tree from the top. Every node has an insert method defined
+		on it to handle the specifics of the operation, and returns the
+		value of the QuadTreeNode after it has inserted this new eleent.
+		Thus, it is as if a signal is slowly filtering down the QTNodes,
+		always probing which level to go down in, and "notifying" the level
+		above it to change the structure if necessary.
+		
+		Insertion changes the type of quadrant - splitting it or fillin it in.
+		Thus this is the different cases of insertion:
+		
+		Insertion into an EmptyNode:
+			Create a LeafNode with the position properties of this EmptyNode
+			and return it.
+			
+		Insertion into an LeafNode:
+			Create an InnerNode, into which the LeafNode into which is inserted
+			and the id attempting to be inserted are inserted.
+			This is an interesting step-back in the recursive procedure, because
+			to replace a LeafNode, you need to create the InnerNode in its place, and
+			the insert the LeafNode in it and insert the new ID.
+			
+		Insertion into a QuadTreeMultiNode (extended to RootNode and InnerNode):
+			This is the most complicated insert method, because it is here
+			where the whole power of the data structure lies - making
+			a choice of where to story the ID according to position data.
+			This is where the isWithin method becomes incredibly handy.
+			isWithin(id) returns a boolean value indicating whether the given ID
+			(which has already been stored in the hashtable in the head of the tree)
+			fits in the node it is called on. 
+			Whenever we insert at a MultiNode we query each of its Quadrants
+			to see in which one's bounding rectangle this ID will fit, and 
+			we insert into the one that does.
+			
+	
+	Removal:
+		The trickiest part of removal is "cleaning up" the trea after removing
+		an element that might change the type of its parent.
+		Removing an EmptyNode has no action per definition - its already empty.
+		Removing a LeafNode changes it to an EmptyNode *AND* changes its parent
+		from an InnerNode to a LeafNode if it now only had one child.
+		Removing an InnerNode means removing one of its children, and then checking
+		whether it has enough children to justify its status as a InnerNode, and if not
+		changes it to a LeafNode.
+		
+
+ITERATION:
+		
+		Both types of iteration are handled by the same class, one constructor creating
+		a bounded iterator and the other creating a unbounded iterator, both with their
+		own associated analyze procedure that probes the Quadtree to find the nodes to
+		iterate over.
+		
+		Iteration heavily depends on the type() methods of the different nodes, because
+		it identified the node according to the string return value of the type() method, 
+		and so decide what to do with the current node - add, ignore, or probe its children.
+		
+	Iteration over the whole set, in order of ID.
+	
+		We face various challenges when iterating over the whole set.
+		To keep the order of IDs, i settled on a data structure that preserved
+		the natural ordering of the elements that is inserted in it.
+		I selected a TreeSet for its excellent insertion time of
+		theta(logN) and its fast removal from the top of the tree.
+		
+		The QuadTreeIteratorClass creates an instance of a TreeSet,
+		and uses a simple algorithm to follow the recursive
+		structure of the tree down to the leaves, adding the IDs
+		of leaf nodes to the TreeSet, which automatically sorts it.
+		The constructor itself starts the process with its 4 children nodes,
+		and from here a new procedure - the analyze(QuadTreeNode) procedure - 
+		looks at the type of node that is passed to it, adds it
+		if it is a leaf node, or recursively analyze its children.
+		
+		the hasNext() method simply checks whether there is still
+		ids in the TreeSet, and the next method pops off the 
+		first element on the TreeSet
+		
+	Iteration over a part of the set
+	
+		This is where the beauty of the QuadTree's method of storing information
+		really comes in. We want to iterate only over the elements that are on
+		or within a bounding box of coordinates. This iterater accomplishes this
+		by working itself down the structure of nodes, at every junction into 4
+		Quadrants probing only those quadrants that are within the bounding box.
+		
+		The constructor sets the bounds as fields in the Iterator object, and evaluates
+		the 4 quadrants of the root, deciding which to analyze. The same algorith is
+		then used recursively by analyzeBox(), either adding a leaf node's id to the TreeSet
+		if it falls within the box, or recurses with the appropriate children of the innernode.
+		The decide whether a quadrant contains a part of the bounding box' contents, the following
+		decision structure is used:
+			for Quadrant 1: xu >= quadrant.llx() && yu >= quadrant.lly()
+		 	for Quadrant 2: xl < quadrant.urx() && yu > quadrant.lly()	
+		  	for Quadrant 3: xl < quadrant.urx() && yl < quadrant.ury()
+		 	for Quadrant 4: xu >= quadrant.llx() && yl <= quadrant.ury()
+			
+

@@ -1,0 +1,11 @@
+# Test single object bouncing around on all walls
+
+bounds 0 0 30 10
+rad 1.0
+
+add 1 2.0 2.0 2.0 -2.0
+
+simulate 30
+near 0 0 40.0
+
+quit

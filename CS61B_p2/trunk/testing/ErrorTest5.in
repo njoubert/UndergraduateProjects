@@ -1,0 +1,7 @@
+#adding outside walls
+
+bounds -10 -10 10 10
+rad 0.5
+
+add 1 40 40 0 0
+

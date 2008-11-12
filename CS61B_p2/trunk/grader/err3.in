@@ -1,0 +1,4 @@
+# Bad input format
+
+near 0 0 foobar
+quit

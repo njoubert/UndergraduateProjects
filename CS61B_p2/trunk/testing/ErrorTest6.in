@@ -1,0 +1,7 @@
+#Making rad smaller than 0
+
+bounds -10 -10 10 10
+rad -2
+
+
+

@@ -1,0 +1,13 @@
+# Test of two colliding objects
+
+bounds 0 0 10 10 
+rad 0.5
+
+add 3 2 4 1 0 
+add 6 4 4 0 0 
+
+simulate 3
+
+near 5 5 7
+
+quit

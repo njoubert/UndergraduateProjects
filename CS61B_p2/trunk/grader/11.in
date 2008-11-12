@@ -1,0 +1,17 @@
+# Make sure we don't require that ids be entered in order or that
+# they be continguous
+
+bounds -10 -10 10 10
+rad 0.5
+
+add 10 0 0 0 0
+add 3 1 0 0 0
+add 0 1 1 0 0
+add 5 2 2 0 0
+add 4 3 3 0 0
+add 12 4 -1 0 0
+add 2 -3 -3 0 0
+
+near 0 0 10
+
+quit

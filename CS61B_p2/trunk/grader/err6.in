@@ -1,0 +1,8 @@
+# Objects too close
+
+bounds 0 0 10 10
+rad 0.5
+
+add 1 2 2 0 0 
+add 2 2.1 2.2 0 0
+quit

@@ -1,0 +1,38 @@
+#collisions with corners coming at 45 degrees
+#yes i like comments
+#very much
+
+bounds -10 -10 10 10
+rad 1
+
+add 1 0 0 1 1
+
+near 10 10 20 	#checking from top corner now for fun
+
+simulate 5.0
+
+near 10 10 7.5
+
+simulate 3.0
+
+near 10 10 3
+
+simulate 1.0
+
+near 10 10 2.5 # craperoni its right there in the corner!
+
+simulate 14 #moving back all the way ot the negative quardant heading for it!
+
+near -10 -10 8.0 #coming towards the lower left!
+
+simulate 4.0
+
+near -10 -10 3.0 
+#almost there!
+
+
+simulate 10.0
+
+near 0 0 2
+
+quit

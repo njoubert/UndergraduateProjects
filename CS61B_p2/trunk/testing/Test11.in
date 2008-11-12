@@ -1,0 +1,18 @@
+#simulate to move a single particle
+bounds -10 -10 10 10
+rad 0.5
+
+add 1 0 0 0 1
+
+near 0 0 10
+
+simulate 1.0
+
+near 0 0 10
+
+simulate 3.567
+
+near 0 0 10
+
+quit
+

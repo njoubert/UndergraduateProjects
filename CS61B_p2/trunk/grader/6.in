@@ -1,0 +1,13 @@
+# Test two objects chasing each other around
+
+bounds 0 0 10 10
+rad 0.5
+
+add 0 4 6 1 1 
+add 1 2 4 1 1
+
+simulate 40
+
+near 5 5 7
+
+quit

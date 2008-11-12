@@ -1,0 +1,14 @@
+# Make sure that we aren't simply using a box for near.
+
+bounds -5 -5 5 5 
+rad 0.1
+
+add 0 0 0 0 0 
+add 1 0.9 0.9 0 0 
+near 0 0 1.0
+near 0 0 1.4
+within 1.0
+within 1.4
+
+
+quit

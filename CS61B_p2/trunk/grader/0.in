@@ -1,0 +1,4 @@
+# This file just creates an empty set, and prints
+# things around 0 (there shouldn't be anything).
+near 0 0 1000.0 
+quit

@@ -1,0 +1,7 @@
+# Test of write, part II
+
+load DATA
+
+near 5 5 8
+
+quit
