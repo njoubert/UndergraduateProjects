@@ -1,0 +1,43 @@
+MMMM  M    M MMMMMMM MMMMM M     MMMMM     MMM    MMM   M   M     M MMMM  MMMM
+M   M M    M      M      M M     M        M   M  M   M  M   M     M M     M   M
+M   M M    M     M      M  M     M        M      M   M  M    M   M  M     M   M
+M   M M    M    M      M   M     M        M      M   M  M    M   M  M     M   M
+MMMM  M    M   M       M   M     MMMM      MMM   M   M  M    M   M  MMM   MMMM  
+M     M    M   M      M    M     M            M  M   M  M     M M   M     M   M
+M     M    M  M      M     M     M            M  M   M  M     M M   M     M   M
+M     M    M M      M      M     M        M   M  M   M  M      M    M     M   M
+M      MMMM  MMMMMM MMMMMM MMMMM MMMMM     MMM    MMM   MMMM   M    MMMM  M   M
+
+WELCOME TO THE ULTIMATE LOGIC PUZZLE SOLVER!
+You have supplied an unknown argument to the program
+or you simply didn't supply any... therefore!
+This is what you need to do:
+
+The Puzzle Sover application will solve logic puzzles
+from an input file. The file must have the following format:
+
+[ASSERTION1]
+[ASSERTION2]
+...
+[ASSERTIONx]
+
+[QUESTION1]
+[QUESTION2]
+...
+[QUESTIONx]
+
+Assertions are sentences ending in a full stop, questions end in a question mark.
+The following assertions are understood:
+	[person-designator] [house-relation] the [color] house.
+	[Name] [occupation-relation] the [occupation]
+	[person-designator] lives around here.
+	There is a [color] house.
+	
+The following questions are understood:
+	What do you know about [person-designator]?
+	What do you know about the [color] house?
+	Who is the [occupation]?
+	Who lives in the [color] house?
+	What does the occupant of the [color] house do?
+	What does [name] do?
+	Where does [person-designator] live?

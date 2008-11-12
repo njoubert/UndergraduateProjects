@@ -1,0 +1,8 @@
+1. The chemist does not live in the dank house.
+2. Dmitri does not live in the renovated house.
+3. Roman is the chemist.
+4. The chemist lives in the renovated house.
+Q: What do you know about Dmitri?
+A: Dmitri lives in the dank house.
+Q: What do you know about Roman?
+A: Roman is the chemist and lives in the renovated house.

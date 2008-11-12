@@ -1,0 +1,12 @@
+1. The athlete lives around here.
+2. The beerdrinker lives in the bavarian house.
+3. Peter is not the athlete.
+4. Tomas lives around here.
+5. Tomas lives in the czech house.
+6. Alex lives in the american house.
+Q: What do you know about Peter?
+A: Peter is the beerdrinker and lives in the bavarian house.
+Q: What do you know about Tomas?
+A: Tomas lives in the czech house.
+Q: What does Alex do?
+A: I don't know.

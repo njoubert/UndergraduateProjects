@@ -1,0 +1,22 @@
+1. Dmitry does not live in the russian house.
+2. The physicist does not live in the russian house.
+3. Dmitry is not the chemist.
+4. Wolodja is not the physicist.
+5. Roman is not the diplomat.
+6. The diplomat does not live in the belorussian house.
+7. The chemist does not live in the ukrainian house.
+8. Roman does not live in the belorussian house.
+Q: What do you know about Wolodja?
+A: Wolodja is the diplomat and lives in the ukrainian house.
+Q: What do you know about the physicist?
+A: Dmitry is the physicist and lives in the belorussian house.
+Q: What do you know about the chemist?
+A: Roman is the chemist and lives in the russian house.
+Q: Where does the chemist live?
+A: The chemist lives in the russian house.
+Q: Who is the diplomat?
+A: Wolodja is the diplomat.
+Q: Where does Dmitry live?
+A: Dmitry lives in the belorussian house.
+Q: Who lives in the russian house?
+A: Roman lives in the russian house.

@@ -1,0 +1,25 @@
+1. John is the professor.
+2. Jack is not the professor.
+3. John lives in the green house.
+4. Jack does not live in the green house.
+5. The professor lives in the green house.
+6. The churchwarden does not live in the green house.
+7. John lives around here.
+8. There is a blue house.
+9. The churchwarden lives around here.
+Q: What do you know about the professor?
+A: John is the professor and lives in the green house.
+Q: What do you know about Jack?
+A: Jack is the churchwarden and lives in the blue house.
+Q: What do you know about the blue house?
+A: Jack is the churchwarden and lives in the blue house.
+Q: Who lives in the green house?
+A: John lives in the green house.
+Q: What does the occupant of the blue house do?
+A: The churchwarden lives in the blue house.
+Q: What does Jack do?
+A: Jack is the churchwarden.
+Q: Where does Jack live?
+A: Jack lives in the blue house.
+Q: Where does the churchwarden live?
+A: The churchwarden lives in the blue house.

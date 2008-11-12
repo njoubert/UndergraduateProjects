@@ -1,0 +1,294 @@
+Your results don't match ours.  We were expecting:
+==================================================
+1. Sara lives around here.
+2. Sara is the clown.
+3. Sara lives in the dark house.
+4. Sara lives in the dark house.
+Q: What do you know about Sara?
+A: Sara is the clown and lives in the dark house.
+Q: Who lives in the dark house?
+A: Sara lives in the dark house.
+Q: Who is the clown?
+A: Sara is the clown.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. John is the professor.
+2. Jack is not the professor.
+3. John lives in the green house.
+4. Jack does not live in the green house.
+5. The professor lives in the green house.
+6. The churchwarden does not live in the green house.
+7. John lives around here.
+8. There is a blue house.
+9. The churchwarden lives around here.
+Q: What do you know about the professor?
+A: John is the professor and lives in the green house.
+Q: What do you know about Jack?
+A: Jack is the churchwarden and lives in the blue house.
+Q: What do you know about the blue house?
+A: Jack is the churchwarden and lives in the blue house.
+Q: Who lives in the green house?
+A: John lives in the green house.
+Q: What does the occupant of the blue house do?
+A: The churchwarden lives in the blue house.
+Q: What does Jack do?
+A: Jack is the churchwarden.
+Q: Where does Jack live?
+A: Jack lives in the blue house.
+Q: Where does the churchwarden live?
+A: The churchwarden lives in the blue house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Dmitri is the physicist.
+2. Wolodja is not the physicist.
+3. Wolodja lives in the ukrainian house.
+4. There is a belorussian house.
+5. The diplomat lives around here.
+Q: Who is the diplomat?
+A: Wolodja is the diplomat.
+Q: What do you know about Dmitri?
+A: Dmitri is the physicist and lives in the belorussian house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Roman lives in the russian house.
+2. Dmitri does not live in the ukranian house.
+3. Wolodja does not live in the russian house.
+4. There is a belorussian house.
+Q: Where does Dmitri live?
+A: Dmitri lives in the belorussian house.
+Q: Where does Wolodja live?
+A: Wolodja lives in the ukranian house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Alex lives around here.
+2. Peter lives in the underground house.
+Q: What do you know about Alex?
+A: Nothing.
+Q: What do you know about Peter?
+A: Peter lives in the underground house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Kaushik is not the student.
+2. Paul is not the ta.
+3. Nick is not the professor.
+4. Kaushik lives in the fifth house.
+5. Paul lives in the seventh house.
+6. The professor lives in the seventh house.
+7. The ta lives in the fifth house.
+8. There is a studenthousing house.
+Q: Where does Nick live?
+A: Nick lives in the studenthousing house.
+Q: Who is the professor?
+A: Paul is the professor.
+Q: Who is the student?
+A: Nick is the student.
+Q: What do you know about Kaushik?
+A: Kaushik is the ta and lives in the fifth house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Stefan is the geneticist.
+2. Alex is not the geneticist.
+3. The businesswoman lives around here.
+4. There is a buzzard house.
+Q: Who lives in the buzzard house?
+A: I don't know.
+Q: What does Alex do?
+A: Alex is the businesswoman.
+Q: Who is the geneticist?
+A: Stefan is the geneticist.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. The athlete lives around here.
+2. The beerdrinker lives in the bavarian house.
+3. Peter is not the athlete.
+4. Tomas lives around here.
+5. Tomas lives in the czech house.
+6. Alex lives in the american house.
+Q: What do you know about Peter?
+A: Peter is the beerdrinker and lives in the bavarian house.
+Q: What do you know about Tomas?
+A: Tomas lives in the czech house.
+Q: What does Alex do?
+A: I don't know.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Peter lives in the buzzard house.
+2. Alex is the businesswoman.
+3. Alex lives in the buzzard house.
+4. The beerdrinker lives in the buzzard house.
+That's impossible.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Jura is not the dummy.
+2. Wolodymyr is not the dummy.
+3. Wolodymyr is not the lawyer.
+4. Jura is not the diplomat.
+5. Dummy lives around here.
+Q: Who is the dummy?
+A: Dummy is the dummy.
+Q: What does Dummy do?
+A: Dummy is the dummy.
+Q: What do you know about Jura?
+A: Jura is the lawyer.
+Q: What do you know about Wolodymyr?
+A: Wolodymyr is the diplomat.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. The chemist does not live in the dank house.
+2. Dmitri does not live in the renovated house.
+3. Roman is the chemist.
+4. The chemist lives in the renovated house.
+Q: What do you know about Dmitri?
+A: Dmitri lives in the dank house.
+Q: What do you know about Roman?
+A: Roman is the chemist and lives in the renovated house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Sue lives around here.
+2. There is a brown house.
+3. The professor lives around here.
+Q: What do you know about Sue?
+A: Sue is the professor and lives in the brown house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Dmitry does not live in the russian house.
+2. The physicist does not live in the russian house.
+3. Dmitry is not the chemist.
+4. Wolodja is not the physicist.
+5. Roman is not the diplomat.
+6. The diplomat does not live in the belorussian house.
+7. The chemist does not live in the ukrainian house.
+8. Roman does not live in the belorussian house.
+Q: What do you know about Wolodja?
+A: Wolodja is the diplomat and lives in the ukrainian house.
+Q: What do you know about the physicist?
+A: Dmitry is the physicist and lives in the belorussian house.
+Q: What do you know about the chemist?
+A: Roman is the chemist and lives in the russian house.
+Q: Where does the chemist live?
+A: The chemist lives in the russian house.
+Q: Who is the diplomat?
+A: Wolodja is the diplomat.
+Q: Where does Dmitry live?
+A: Dmitry lives in the belorussian house.
+Q: Who lives in the russian house?
+A: Roman lives in the russian house.
+
+Your results don't match ours.  We were expecting:
+==================================================
+1. Erik does not live in the threadbare house.
+2. Chuck lives around here.
+3. Alex is the apothecary.
+4. Bryan lives in the tan house.
+5. The dentist lives around here.
+6. The grocer lives in the threadbare house.
+7. There is a orange house.
+8. Dan lives in the fuchsia house.
+9. The endodontist lives in the fieldstone house.
+10. Bryan is not the banker.
+Q: What does Bryan do?
+A: Bryan is the dentist.
+Q: Who is the grocer?
+A: Chuck is the grocer.
+Q: What does Dan do?
+A: Dan is the banker.
+Q: Where does Alex live?
+A: Alex lives in the orange house.
+Q: What does the occupant of the orange house do?
+A: The apothecary lives in the orange house.
+Q: Who is the endodontist?
+A: Erik is the endodontist.
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+The chemist does not live in the dank house.  dmitri does not
+live in the renovated house.  Roman is the chemist.  The
+chemist lives in the renovated house.
+
+What do you know about dmitri?
+What do you know about Roman?
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+The Chemist does not live in the dank house.  Dmitri does not
+live in the renovated house.  Roman is the Chemist.  The
+Chemist lives in the renovated house.
+
+What do you know about Dmitri?
+What do you know about Roman?
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+The chemist does not live in the dank house.  Dmitri does not
+live in the renovated house.  Roman is the chemist.  The
+chemist lives in the renovated house.
+
+What do you know about Dmitri?
+What do you know about Jack?
+
+
+Your results don't match ours.  We were expecting:
+
+The chemist does not live in the dank house.  Dmitri does not
+live in the renovated house.  890abc is the chemist.  The
+chemist lives in the renovated house.
+
+What do you know about Dmitri?
+What do you know about 890abc?
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+The chemist does not live in the dank house.  Dmitri does not
+live in the chemist house.  Roman is the chemist.  The
+chemist lives in the chemist house.
+
+What do you know about Dmitri?
+What do you know about Roman?
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+Why did the chicken cross the road?
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+The ball is in the pen.
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+John is the barber.
+Jill is the milkman!
+
+
+Your results don't match ours.  We were expecting:
+==================================================
+<Output contains some error message>
+
+Jack is the detective.  What does Jack do?
+Jill is the divorcee.  What does Jill do?
+

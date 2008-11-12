@@ -1,0 +1,16 @@
+1. Kaushik is not the student.
+2. Paul is not the ta.
+3. Nick is not the professor.
+4. Kaushik lives in the fifth house.
+5. Paul lives in the seventh house.
+6. The professor lives in the seventh house.
+7. The ta lives in the fifth house.
+8. There is a studenthousing house.
+Q: Where does Nick live?
+A: Nick lives in the studenthousing house.
+Q: Who is the professor?
+A: Paul is the professor.
+Q: Who is the student?
+A: Nick is the student.
+Q: What do you know about Kaushik?
+A: Kaushik is the ta and lives in the fifth house.
