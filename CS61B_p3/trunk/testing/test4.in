@@ -1,0 +1,11 @@
+#We are going to test the loading of nested multiple files
+
+game 10 red
+1:1
+load testing/test4a.in
+
+1:6
+1:5
+1:4
+dump
+quit

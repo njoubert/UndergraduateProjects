@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This shell script allows a standard Unix-style invocation of the
+# game. 
+
+java jump61b "$@"

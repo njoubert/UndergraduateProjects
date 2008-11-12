@@ -1,0 +1,7 @@
+load testing/test12b.in
+
+dump
+1:3
+2:2
+1:2
+3:1

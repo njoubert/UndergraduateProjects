@@ -1,0 +1,26 @@
+# Simple 3x3 test in which the entire game is played during set-up.
+# Warning: this is a case where the last move causes an infinite
+# loop unless you are careful to stop as soon as the board is all red or
+# all blue
+
+game 3 red
+
+1:1
+1:2
+1:1
+3:1
+3:3
+3:1
+1:2
+2:1
+dump
+1:3
+2:2
+1:2
+3:1
+
+# Since the game is finished, this should immediately terminate the
+# game with a "Blue wins." message.
+start
+quit
+
