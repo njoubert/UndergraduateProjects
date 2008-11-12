@@ -1,0 +1,536 @@
+<html>
+<head>
+<title>2007Sp CS61C Project 3: Processor Design</title>
+</head>
+<body>
+
+<h1>Project 3: Processor Design</h1>
+<i>2007Sp CS61C</i><br>
+<i>TA: <a href="http://inst.eecs.berkeley.edu/~cs61c-te/">Alex Kronrod</a></i><br>
+<b><font color="#ff0000">Due Friday, April 6, 2007 @ 11:59:59pm</font></b><br>
+<b><font color="#009900">Last updated: 3/24</font></b><br>
+
+<h2>Updates</h2>
+<ul>
+<li> <font color="#006699">3/24 7:50 AM- All updates are in this color.<br>
+<!-- <a href="#part2">Part 2</a> (testing) has been posted.<br>-->
+- various clarifications throughout the spec.<br>
+- Added <a href="#hints">suggestions/hints</a>.<br>
+- Part 2 (testing) will be posted later today.</font>
+<li> <font color="#006699">3/25 2:00 AM - Part 2 has been updated</font>
+</ul>
+
+<hr width=75%>
+
+<h2>Introduction</h2>
+<p>
+Now that you are done with implementing an ALU, let's implement a simple 8-bit single cycle CPU. This means, we will have 8-bit instructions and 8-bit byte addressing. As with HW6, you will be using <a href="http://ozark.hendrix.edu/~burch/logisim/">Logisim</a> to complete this project.
+</p>
+
+<hr width=75%>
+
+<h2>Getting Started</h2>
+
+<p>Copy the contents of ~cs61c/proj/03 to your home directory.
+<pre>
+   $ mkdir ~/proj
+   $ cp -r ~cs61c/proj/03 ~/proj3
+</pre>
+This will copy in cpu.circ, the Logisim circuit file where you will be implementing your processor, and converter.circ, a file that will help you implement a particular instruction in this project.
+
+<p><hr width=75%>
+
+<h2>Assignment -- Part 1: the ISA</h2>
+
+<p>In <code>cpu.circ</code>, you will be implementing a simple 8-bit processor with four 8-bit data registers. This processor will also have separate instruction and data memories.</p>
+
+<p>Similar to the MIPS ISA presented in lecture, there will be three 
+different instruction types: R, I, and J-type. The R-type instruction 
+format seen in lecture has 3 fields to specify the source, target, and 
+destination registers. Unfortunately, with 8 bits we don't have enough 
+bits to specify all the information if we want to maximize functionality. As a result, we will permanently designate two registers to have special functionality -- one always acting as a source ($rs), and the other always acting as the destination ($rd). The remaining two registers  ($r0 and $r1) will behave as normal data registers that you have been accustomed to. Naturally, there will be special instructions to move information between the data registers ($r0 and $r1) and the special registers ($rs and $rd).
+
+<font color="#006699">Note: In total, there are <b>4</b> registers!</font>
+
+<p>The primary instruction encoding is given below. You can determine which instruction a byte encodes by looking at the opcode (bits 5-7). Please note that $rx registers below refer only to registers $r0 and $r1.</p>
+<table align=center border="1">
+  <tr>
+    <th width="25"><font color="#006699">
+$rx value</font></th><th width="25"><font color="#006699">
+Register name</font></th>
+  </tr>
+
+  <tr bgcolor="e0e0e0">
+    <td align="center" colspan="1"><font color="#006699">
+0</font></td>
+    <td align="center" colspan="2"><font color="#006699">
+$r0</font></td>	
+  </tr>
+
+  <tr>
+    <td align="center" colspan="1"><font color="#006699">
+1</font></td>
+    <td align="center" colspan="2"><font color="#006699">
+$r1</font></td>
+  </tr>
+</table>
+<br>
+<a name="i_type">
+<table align=center border="1">
+  <tr>
+    <th width="25">7</th><th width="25">6</th><th width="25">5</th><th width="25">4</th>
+    <th width="25">3</th><th width="25">2</th><th width="25">1</th><th width="25">0</th>
+    <th><font color="#006699">Name</font></th><th><font color="#006699">Meaning (RTL)</font></th><th>Notes</th>
+  </tr>
+
+  <tr bgcolor="e0e0e0">
+    <td align="center" colspan="3">0</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">funct</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"><i>see <a href="#r_type">R-type Instructions Section</a></i></td>
+  </tr>
+
+  <tr>
+    <td align="center" colspan="3">1</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">immediate</td>
+    <td align="left">disp</td>
+    <td align="left">DISP[imm] = <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td align="left"><i>see <a href="#display">Display Instruction</a></i></td>
+  </tr>
+
+  <tr bgcolor="e0e0e0">
+    <td align="center" colspan="3">2</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">immediate</td>
+    <td align="left">lui</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = imm &lt;&lt; 4</td>
+    <td align="left"></td>
+  </tr>
+
+  <tr>
+    <td align="center" colspan="3">3</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">immediate</td>
+    <td align="left">ori</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rx<font color="#006699">]</font> | imm</td>
+    <td align="left"></td>
+  </tr>
+
+  <tr bgcolor="e0e0e0">
+    <td align="center" colspan="3">4</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">immediate</td>
+    <td align="left">lw</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = MEM[<font color="#006699">R[</font>$rx<font color="#006699">]</font> + imm]</td>
+    <td align="left"></td>
+  </tr>
+
+  <tr>
+    <td align="center" colspan="3">5</td>
+    <td align="center">rx</td>
+    <td align="center" colspan="4">immediate</td>
+    <td align="left">sw</td>
+    <td align="left">MEM[<font color="#006699">R[</font>$rx<font color="#006699">]</font>+imm] = <font color="#006699">R[</font>$rs<font color="#006699">]</font></td>
+    <td align="left"></td>
+  </tr>
+
+  <tr bgcolor="e0e0e0">
+    <td align="center" colspan="3">6</td>
+    <td align="center" colspan="5">address</td>
+    <td align="left">jump</td>
+    <td align="left"><font color="#006699">PC = (PC & 0xE0) | address</font></td>
+    <td align="left"><i><a href="#j_type">see J-type instruction section</a></i></td>
+  </tr>
+
+  <tr>
+    <td align="center" colspan="3">7</td>
+    <td align="center" colspan="5">offset</td>
+    <td align="left">beq</td>
+    <td align="left"><font color="#006699">if R[$r0]==R[$r1], PC = PC+1+offset</font></td>
+    <td align="left"><i><a href="#j_type">see J-type instruction section</a></i></td>
+  </tr>
+</table>
+
+<a name="r_type">
+<h3>R-type instructions</h3>
+
+<p>The following table lists the various R-type instructions there are based on the funct field.
+
+<p><table border="1" align=center>
+
+  <tr>
+    <th width="50">Funct</th>
+    <th><font color="#006699">
+<b>Name</b></font></th>
+    <th>Meaning <font color="#006699">
+(RTL)</font></th>
+    <th><b>Notes</b>
+  </tr>
+
+  <tr>
+    <td align="center">0</td>
+    <td align="left">add</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> + <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td align="center">1</td>
+    <td align="left">sub</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> - <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td align="center">2</td>
+    <td align="left">or</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> | <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>bitwise OR</td>
+  </tr>
+
+  <tr>
+    <td align="center">3</td>
+    <td align="left">and</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> & <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>bitwise AND</td>
+  </tr>
+
+  <tr>
+    <td align="center">4</td>
+    <td align="left">sll</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> << <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td align="left">shift left logical, zero extend from the right</td>
+  </tr>
+
+  <tr>
+    <td align="center">5</td>
+    <td align="left">slt</td>
+
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> < <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td align="left">set $rd to 1 if $rs < $rx, else 0; treat values as signed</td>
+  </tr>
+
+  <tr>
+    <td align="center">6</td>
+    <td align="left">srl</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> >>> <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>shift right logical, zero extend from the left</td>
+  </tr>
+
+  <tr>
+    <td align="center">7</td>
+    <td align="left">sra</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = <font color="#006699">R[</font>$rs<font color="#006699">]</font> >> <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>shift right arithmetic, sign extend from the left</td>
+  </tr>
+
+  <tr>
+    <td align="center"></td>
+    <td align="left"></td>
+  </tr>
+
+  <tr>
+    <td align="center">8</td>
+    <td align="left"><font color="#006699"><u>mxd</u></font></td>
+    <td align="left"><font color="#006699">R[</font>$rx<font color="#006699">]</font> = <font color="#006699">R[</font>$rd<font color="#006699">]</font></td>
+    <td align="left"><font color="#006699"><u>m</u>ove value into register $r<u>x</u> from $r<u>d</u></font></td>
+  </tr>
+
+  <tr>
+    <td align="center">9</td>
+    <td align="left"><font color="#006699"><u>msx</u></font></td>
+    <td align="left"><font color="#006699">R[</font>$rs<font color="#006699">]</font> = <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td><font color="#006699"><u>m</u>ove value into register $r<u>s</u> from $r<u>x</u></font></td>
+  </tr>
+
+  <tr>
+    <td align="center">10</td>
+    <td align="left"><font color="#006699"><u>msd</u></font></td>
+    <td align="left"><font color="#006699">R[</font>$rs<font color="#006699">]</font> = <font color="#006699">R[</font>$rd<font color="#006699">]</font> </td>
+    <td><font color="#006699"<u>m</u>ove value into $r<u>s</u> from $r<u>d</u></font></td>
+  </tr>
+
+  <tr>
+    <td align="center">11</td>
+    <td align="left">not</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = ~<font color="#006699">R[</font>$rx<font color="#006699">]</td>
+    <td>bitwise NOT</td>
+  </tr>
+
+  <tr>
+    <td align="center">12</td>
+    <td align="left">neg</td>
+    <td align="left"><font color="#006699">R[</font>$rd<font color="#006699">]</font> = -1*<font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>negate</td>
+  </tr>
+
+  <tr>
+    <td align="center">13</td>
+    <td align="left">jr</td>
+    <td align="left">PC = <font color="#006699">R[</font>$rx<font color="#006699">]</font></td>
+    <td>jump register</td>
+  </tr>
+
+  <tr>
+    <td align="center">14-15</td>
+
+    <td align="left"></td>
+    <td align="left">"reserved for future use"</td>
+    <td align="left">You can implement anything you want with these.</td>
+
+  </tr>
+</table>
+
+<p>You've already built an ALU that should support the first 8 R-type instructions.
+Let us now add 6 more instructions. Note that you actually <i>don't</i> have to modify
+your ALU in order to implement these new instructions. Try to think of clever ways to
+use the ALU in order to get the wanted functionality.<p>
+
+
+<h3>I-type instructions</h3>
+
+<p>All <tt>immediate</tt> fields are treated as <b><u>unsigned</u></b> numbers and are zero-extended accordingly.</p>
+<font color="#006699"><i>see the behavior of <a href="#i_type">I-type instructions</a> in the table above (opcode 1-5).</i></font>
+
+<a name="j_type">
+<h3>J-type instructions</h2>
+
+  <h4><tt>jump</tt></h4>
+
+  <p>The <tt>jump</tt> instruction's argument is a pseudoabsolute
+  address, just as in MIPS. <tt>address</tt> is an unsigned number
+  representing the lower five bits of the next instruction to be
+  executed. The upper three bits are taken from the current
+  <tt>PC</tt>.</p>
+  <pre>
+    PC = (PC &amp; 0xe0) | address  </pre>
+
+  <h4><tt>beq</tt></h4>
+
+  <p>The <tt>beq</tt> instruction's argument is a <b><u>signed</u></b>
+  offset relative to the next instruction to be executed normally,
+  also as in MIPS. <tt>beq</tt> can be represented as the
+  following:</p>
+
+  <pre>
+    if $r0 == $r1
+      PC = PC + 1 + offset
+    else
+      PC = PC + 1</pre>
+
+<font color="#006699">Note: offset is two's-complement!</font>
+
+<hr width=75%>
+
+<a name=part2>
+<h2>Assignment -- Part 2: Testing</h2>
+<font color="#006699">
+<p> I am now done, I think...  but how do I know it works? Write 
+programs using the instructions you have to test the correctness of your 
+CPU's functionality. For now, here is a simple program <a href="halt.hex">halt.hex</a> that does nothing, 
+it halts (infinite loop) by jumping to itself.<br><br>
+You are <u>required</u> to write two programs:<br>
+<li> Fibonacci Numbers have been recurring throughout the semester - so 
+why not do it now? Write a program that computes the first N Fibannocci 
+numbers and stores <i>i</i>th number in memory at address i 
+(MEM(i)=Fib[i]) Let Fib[0]=0, Fib[1]=1, Fib[2]=1, etc. In the beginning, 
+write code that initializes $r0 to N, specifying how many numbers you want 
+to compute. Use the value 10 for N for the program that you submit. 
+The last instruction must be a <i>halt</i> (an instruction that jumps or 
+branches to itself indefinitely). Save the ROM image in a file 
+"fib.hex"<br><br>
+<li> Write a program that displays the first byte of memory in octal 
+(base 
+8). For example, if the first byte were 0x9f, the seven segment displays 
+would read 0237. Again, you may clobber any memory values you like and 
+your program must end with a halt. Save the ROM image in a file 
+"octal.hex". </p>
+</font>
+<hr width=75%>
+
+<h2>Logisim</h2>
+
+<p>It is strongly recommended that you download and run Logisim
+on your local machine while developing your CPU. As you've
+probably discovered in lab, Logisim can quickly overwhelm the
+instructional machines. Though Logisim is generally stable
+compared to earlier semesters, it is still recommended that you
+save and backup your .circ files early and often. The official
+version of Logisim we will be using for evaluation is v2.1.5.</p>
+
+  <h4>RAM Modules</h4>
+
+  <p>Logisim RAM modules can be found in the built-in memory
+  library. To add the library to your project, select "Project/Load
+  Library/Built-in Library..." and select the Memory
+  module.</p><img src="ram.png" align="center" />
+
+  <p>The best way to learn how these work is simply to play with
+  them. In any case, here's a little bit of info to help you get
+  started. The Logisim help page on RAM modules can be found
+  <a href=
+  "http://ozark.hendrix.edu/~burch/logisim/docs/2.0.3/libs/mem/ram.html">
+  here</a>, but is not terribly helpful. "A" chooses which address
+  will be accessed (if any). "sel" essentially determines whether
+  or not the RAM module is active (if "sel" is low, "D" is
+  undefined). The clock input provides synchronization for memory
+  writes. "out" determines whether or not memory is being read or
+  written. If "out" is high, then "D" will be driven with the
+  contents of memory at address "A". "clr" will instantly set all
+  contents of memory to 0 if high. "D" acts as both data in and
+  data out for this module. This means that you must use a
+  controlled buffer on the input of "D" to prevent conflicts
+  between data being driven in and the contents of memory. The
+  "poke" tool can be used to modify the contents of the module.</p>
+
+  <p>You will be using a Logisim ROM module for your instruction
+  memory. It is a much simplified version of a RAM module Both RAM
+  and ROM modules can also be loaded from files using
+  "right-click/Load Image..."</p>
+
+<font color="#006699">Note: ROM's are READ only, while with RAM's you can either read or write (but you can't do both at the same time).<br> You want to be able to read the code from the instruction memory, but you want to be able to read from <u>and</u> write to the data memory!</font>
+
+<a name="disp" id="disp"></a>
+
+  <a name=display>
+  <h3>The Display Instruction</h3>
+
+  <p>If you check the tattoo on your left arm, you'll be reminded
+  that every computer has five parts: control, datapath, memory,
+  input, and output devices. Accordingly, your project must include
+  an array of four seven-segment displays for output. It should
+  look something like the array shown below:</p><img src=
+  "display.png" />
+
+  <p>The <tt>disp</tt> instruction assigns a register's value to
+  the <tt>imm</tt>th seven-segment display. This value should be
+  held until the next time a <tt>disp</tt> instruction replaces
+  that display index. You may ignore or wrap immediates beyond the
+  range of the display you've implemented. We've provided a
+  converter library to make seven-segment displays easier to deal
+  with. It can be downloaded <a href="Converter.circ">here</a> and
+  included via the "Load Library/Logisim Library" menu option. See
+  the examples section to get a better idea of how to incorporate
+  these into your project. Any single digit hexadecimal value 0-f
+  will be displayed as you'd expect. 0xff is displayed as a blank
+  display (no segments highlighted). All other inputs will result
+  in a '?' being displayed.</p><a name="test" id="test"></a>
+
+<hr width=75%>
+  <a name=hints>
+<h2>Hints and Comments</h2>
+This section contains hints and comments to help you get started and foster some academic debate. Feel free to skip this section for now and come back after you've gotten your hands dirty.
+
+<font color="#006699"><p><h4>General suggestions</h4> <li> Modularize all your subcircuits. Try reusing circuits you have already built. For example, think of a way to create an "extended ALU" that adds the new functionality, which is just a wrapper around your already implemented ALU.
+<li>Test all your subcircuits separately, preferably right when you finish building it.
+<li>When designing your datapath, think of the design we've learned in class. Having the basic layout of your datapath may make things easier to reason about and to implement.
+<li>Build the control first. Then implement datapath, testing as you add new elements. For example. first test that your control is working. Then add the register file and test that you can access and write correct registers. Then the ALU... etc.</p></font>
+
+  <h4>Testing for Equality</h4>
+  <p>It is possible to test for equality using already required ALU
+  components (without adding a subtractor or comparator). Think
+  about truth tables and boolean algebra.</p>
+
+  <h4>Display Logic</h4>
+
+  <p>You might want to make some sort of specialized register file
+  for keeping track of current display values. The desired
+  functionality is about halfway between a register file and a RAM
+  module.</p>
+
+  <h4>RISC vs. CISC</h4>
+
+  <p>An in-depth discussion to come soon</p>
+
+  <h4>Logisim's Combination Analysis Feature</h4>
+
+  <p>Logisim offers some functionality for automating circuit
+  implementation given a truth table, or vice versa. Though not
+  disallowed (enforcing such a requirement is impractical), use of
+  this feature is discouraged. Remember that you will not be
+  allowed a laptop running Logisim on the final.</p>
+
+  <h4>Key Differences From MIPS</h4>
+  1) The zero register isn't special. $r0 is just a regular register like $r1.<br />
+
+  2) Data memory and instruction memory are distinct. This is what we tell you in MIPS as well, but when we talk about
+  caching we'll find out they still live in the same address space.<br />
+
+<font color="#006699">3) BEQ instruction is I-type in MIPS, but is J-type in the spec given</font>
+
+<hr width=75%>
+
+<h2>Things to Ponder</h2>
+
+<ol>
+<li>How can we swap the two registers without going to memory?
+<li>What instructions act as <tt>nop</tt>s?
+<li>What are the different ways of halting a program?
+</ol>
+
+<hr width=75%>
+
+<h2>Miscellaneous Requirements</h2>
+
+<ul>
+<li><b>Logisim Libraries</b> You may use any built-in logisim library circuit components in implementing your CPU.</p>
+
+<li><b>Memory Placement</b> You must have your instruction ROM module and data RAM module
+  visible from the main circuit of your Logisim project. You must
+  include an array at least four seven segment displays in the main
+  circuit as well. Feel free to add additional seven segment
+  displays if it does not clutter your CPU.</p>
+
+<li><b>Gated Clocks</b> Logisim allows you to send a clock through a gate. Do <font color="#ff0000"><b>NOT</b></font> do that. In real life, this is rarely done and there are always better ways to accomplish the same effect of running a clock through a gate. Any solution that uses a gated clock will be penalized heavily.</p>
+
+<li><b>Comment your circuit.</b> Use the label tool and disconnected wires to organize your
+  CPU. In particular label the control, datapath, and display
+  sections.</p>
+
+<li><b>You must use subcircuits.</b> They make it easier for you, they make it easier for us. Give your subcircuits appropriate labels as well. Keep in mind that this won't be autograded, and humans will have to look at your schematics (and grade them!)<br>
+  This is actually a requirement, excessively cluttered implementations may lose some points!</p>
+
+<li><b>USE multi-bit buses in logisim!</b> You will have to use splitters to get individual bits from the wire or to combine the bits to get a multi-bit bus! If you didn't use it for HW6, this is the time to learn how to! If you're not sure how to use these, look at <a href="../../lab/09">Lab 9</a>. If you're still confused, ask us or your peers!</p>
+
+<li><b>USE multi-bit inputs and outputs.</b> It is difficult to debug if 
+you have 16+ individual inputs scattered throughout your circuit</p>
+</ul>
+
+<hr width=75%>
+
+  <h2>Submission</h2>
+  From the directory containing cpu.circ and the files that will be specified in part 2 of this project, submit your project using the following command:
+
+  <pre>  % submit proj3</pre>
+
+<hr width=75%>
+
+<!--  <h2>Extra for Experts</h2>
+
+  <p>Once you've got your CPU up and running, give these a
+  try:</p>
+
+  <ol>
+  <li> Write an assembler that can handle labels, long
+  branches and jumps, and pseudo instructions. Feel free to define
+  your own register and/or memory conventions to make this work
+  (declare MEM[15] as assembler reserved, etc.)
+  <br />
+  <li> Try writing a program that divides MEM[0] by MEM[1] and stores
+  the quotient in MEM[2] and the remainder in MEM[3].
+  <br />
+  <li> Use your program from part 2 to write a program that displays
+  a location in memory as a decimal value! (be careful about jumps,
+  being a linker can be tough).
+  <br />
+  <li> There are two R-type funct values that have not been used. Play around with these two - implement something new.
+  <br />
+  <li> Write something crazy that we haven't thought of.
+  </ol>
+-->
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+#make use of all 4 DISP modules.
+
+#with MAL:
+li $r0 7 #load 7
+disp $r0 0
+li $r1 3 #load 3
+disp $r1 1
+disp $r1 2
+li $r0 1 #load 1
+disp $r0 3
+halt
+
+#addr #instr      #hex  #TAL:
+0x00  010 0 0000 : 40   lui 0 #load 7
+0x01  000 0 1000 : 08   mxd $r0
+0x02  011 0 0111 : 67   ori $r0 7
+0x03  000 0 1000 : 08   mxd $r0
+0x04  001 0 0000 : 20   disp $r0 0
+0x05  010 0 0000 : 40   lui 0 #load 3
+0x06  000 1 1000 : 18   mxd $r1
+0x07  011 1 0011 : 73   ori $r1 3
+0x08  000 1 1000 : 18   mxd $r1
+0x09  001 1 0001 : 31   disp $r1 1
+0x0a  001 1 0010 : 32   disp $r1 2
+0x0b  010 0 0000 : 40   lui 0 #load 1
+0x0c  000 0 1000 : 08   mxd $r0
+0x0d  011 0 0001 : 61   ori $R0 1
+0x0e  000 0 1000 : 08   mxd $r0
+0x0f  001 0 0011 : 23   disp $r0 3
+0x10  110 10000  : d0   j 16
+
