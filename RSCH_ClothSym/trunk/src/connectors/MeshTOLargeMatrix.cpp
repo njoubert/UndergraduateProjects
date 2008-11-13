@@ -37,3 +37,11 @@ vector<vector <int> > MeshTOLargeMatrix::GenerateIdentityPattern(int dim) {
     }
     return sparsePattern;
 }
+
+vector<vector <int> > MeshTOLargeMatrix::GenerateNByOnePattern(int dim) {
+    vector<vector<int> > sparsePattern(dim);
+    for (int i = 0; i < dim; i++) {
+        sparsePattern[i].push_back(0);
+    }
+    return sparsePattern;
+}

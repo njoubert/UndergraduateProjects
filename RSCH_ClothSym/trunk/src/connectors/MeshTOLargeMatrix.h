@@ -17,6 +17,8 @@ public:
 
     static vector<vector <int> > GenerateIdentityPattern(int dim);
 
+    static vector<vector <int> > GenerateNByOnePattern(int dim);
+
 };
 
 #endif /* MESHTOLARGEVECTOR_H_ */
