@@ -1,0 +1,181 @@
+########################################################################
+ 		
+ 		####################################
+ 		# Niels Joubert                    #
+ 		# EE122 Project 1 Milestone 2      #
+ 		# WireShark LAB                    #
+ 		####################################
+ 
+ 
+ NOTE: For parts 1 through 19 I ran WireShark on my local computer
+ with the following setup:
+ 
+ HP Notebook
+ Broadcom NetXtreme Gigabit Ethernet Driver
+ Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.8) 
+ 		Gecko/20071008 Firefox/2.0.0.8
+ 		
+ Connected to a local LAN, with a D-Link router serving as
+ the connection to the internet through a Comcast high-speed
+ cable internet connection. This might cause slight discrepancies
+ between my answers and the given trace' answers.
+ 
+ ##########	
+ Part 1
+ ##########
+ 
+ 1.)
+ 	The request line contains the statement "HTTP/1.1",
+ 	thus the browser is compatible with HTTP version 1.1
+ 	The response line contains the statement "HTTP/1.1",
+ 	thus the server is running HTTP version 1.1
+ 	
+ 2.)
+ 	The browser contains the following header:
+ 	"Accept-Language: en-us,en;q=0.5\r\n"
+ 	Thus the browser accepts American English and Standard English.
+ 	
+ 3.)
+ 	My client IP is 192.168.0.198
+ 	The server IP is 128.119.245.12
+ 	
+ 4.)
+ 	The response line is: "HTTP/1.1 200 OK\r\n"
+ 	thus I receieved status code 200
+ 	
+ 5.)
+ 	The server sent the following header:
+ 	"Last-Modified: Sun, 21 Oct 2007 02:48:02 GMT\r\n"
+ 	Thus the file was last modified
+ 	Sunday, 21st of October 2007, 7:48:02 PM Pacific Standard time
+ 	
+ 6.)
+ 	The server sent the following header:
+ 	"Content-Length: 128"
+ 	Thus the server is returning 128 bytes (this is actually executed,
+ 	not read from traces given to me)
+ 	
+ 7.)
+ 	No, every header that is present in the bytestream from the server
+ 	is analyzed and displayed by WireShark
+ 
+ ##########	 
+ Part 2
+ ##########
+ 
+ 8.)
+ 	In the first request the client sent to the server, right after
+ 	clearing the browser's cache, there is no "if-modified-since"
+ 	header.
+ 	
+ 9.)
+ 	The response to this first request contains the full contents
+ 	of the file, as can be found after the first CRLF denoting the end
+ 	of the HTTP Headers. The Content-Length header is also non-zero,
+ 	indicating that actual content was returned.
+ 	
+ 10.)
+ 	In the second request, issued seconds after the first, the 
+ 	following header is present:
+ 	"If-Modified-Since: Sun, 21 Oct 2007 03:04:01 GMT\r\n"
+ 	The date given is the same as the last-modified header in the
+ 	first response, which looked like this:
+ 	"Last-Modified: Sun, 21 Oct 2007 03:04:01 GMT\r\n"
+ 	
+ 11.)
+ 	The server returned the following request line:
+ 	"HTTP/1.1 304 Not Modified\r\n"
+ 	Thus a status code of 304 and a phrase of "Not Modified"
+ 	was returned by the server. There is no content after the CRLF
+ 	denoting the end of the header, and no Content-Length field.
+ 	Thus the server did not return the file at all, it only indicated
+ 	to the browser that the requested file did not change, upon
+ 	which our browser pulled it out of its local cache
+ 	 	 
+ ##########		 	 
+ Part 3
+ ##########
+ 
+ 12.)
+ 	My browser sent only one HTTP Request to the server for the
+ 	indicated url.
+ 	
+ 13.)
+ 	Wireshark shows 5 TCP Packets that were reassembled into one
+ 	full HTTP Response. They were fragmented as follows:
+ 		Frame: 13, payload: 0-308 (309 bytes)
+ 		Frame: 14, payload: 309-1768 (1460 bytes)
+ 		Frame: 16, payload: 1769-3228 (1460 bytes)
+ 		Frame: 17, payload: 3229-4688 (1460 bytes)
+ 		Frame: 19, payload: 4689-4808 (120 bytes)
+ 		
+ 	In the given traces, only 4 fragments were recieved, since my first
+ 	and last fragment can be combined into one and still make it
+ 	thought the Ethernet MTU
+ 	
+ 14.)
+ 	The server returned the following response line:
+ 	"HTTP/1.1 200 OK\r\n"
+ 	Thus a status code of 200, phrase of "OK" was returned by the 
+ 	server to our request.
+ 	
+ 15.)
+ 	No, the packets carrying "other" parts of the HTTP response
+ 	does not contain any HTTP information, in fact, HTTP and the
+ 	application layer does not even know about the fragmentation
+ 	of the response into multiple packets in the networking
+ 	layer.
+ 
+ ##########	 	 	 
+ Part 4
+ ##########
+ 	
+ 16.)
+ 	The browser made a total of 3 http requests:
+ 	"GET /wireshark-labs/HTTP-wireshark-file4.html HTTP/1.1\r\n" to
+ 	to gaia.cs.umass.edu
+ 	"GET /~kurose/cover.jpg HTTP/1.1\r\n"
+ 	to manic.cs.umass.edu
+ 	"GET /catalog/images/pearson-logo-footer.gif HTTP/1.1\r\n"
+ 	to www.pearsoned.com
+ 	
+ 17.)
+ 	The browser downloaded the two images in parallel.
+ 	I come to this conclusion by inspecting the timestamps wireshark
+ 	puts on the captured packets. The two GET requests for the 
+ 	images were sent within 100 milliseconds of each other, and 
+ 	were consecutive packet numbers in the packets wireshark picked
+ 	up.
+ 	
+ 	The response to both of these requests were received within 
+ 	about 900 milliseconds of each other - with the two servers
+ 	taking varying times to respond.
+  
+ ##########	 	 	 
+ Part 5
+ ##########
+ 
+ 18.)
+ 	The server responds with the response line:
+ 	"HTTP/1.1 401 Authorization Required"
+ 	Thus, a status code of 401 and phrase of "Authorization Required"
+ 			
+ 19.)
+ 	The server now includes the following header line:
+ 	"Authorization: Basic d2lyZXNoYXJrLXN0dWRlbnRzOm5ldHdvcms=\r\n"
+ 	This a Base64 encoded version of the username and password needed
+ 	to access this site.
+ 	
+ 
+ ##########	 	 	 
+ ADDENDUM
+ ##########
+ 
+ 20.) WireShark trace is in file "question20.trace"
+ 	1) My client sent 8 packets
+ 	2) one SYN, one FIN packet
+ 	3) 4 acks that didnt have data, one that did
+ 	
+ 	
+ 	
+########################################################################

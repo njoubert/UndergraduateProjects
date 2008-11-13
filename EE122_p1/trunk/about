@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>Wombat | about</title>
+	<link href="/stylesheets/standard.css?1188731970" media="screen" rel="Stylesheet" type="text/css" />
+	<link href="/stylesheets/layout_with_sidebar.css?1187056967" media="screen" rel="Stylesheet" type="text/css" />
+  	<link href="/stylesheets/scaffold.css?1187234150" media="screen" rel="Stylesheet" type="text/css" />	
+</head>
+<body>
+<div id="page">
+	<div id="top">
+		<div id="header" class="section">
+			<h1>Wombat</h1>
+			<h2>Helping you Burrow though the Universe</h2>
+		</div>
+	</div>
+	
+	<div id="middle">
+		<div id="left">
+			<div id="content" class="section">
+				
+				<p style="color: green"></p>
+				
+								<h2>About Wombat</h2>
+				<p>
+					Wombat is an intelligent catalog of celestial objects. 
+					It aims to help in discovering, tracking, observing and analyzing 
+					data concerned with supernovae. It is built around a database of
+					known supernovae as tracked by Alex Fillipenko's supernova team, and
+					assists in organizing observations around celestail objects.
+				</p>
+				<h3>For Scientists</h3>
+				<p>
+					Wombat offers access to one of the most extensive collections of supernovae currently available.
+					Simple borwsing and searching of supernovae gives rich access to photometry, spectrometry and image data.
+					We aim to lower the technological hurdles of finding patterns and anomolies in our database, hopefully
+					leading to interesting and compelling science.
+				</p>
+				<h3>For Image Checkers</h3>
+				<p>
+					Wombat assists in the discovery of supernovae by allowing image checkers direct input into the
+					supernovae database, and giving feedback to the discoverer as his supernovae is studied. This will
+					hopefully make image checking more rewarding, and aid in the tracking of the group's interations
+					with supernovae.
+				</p>
+				<h3>For 40", 120" and Keck Observers</h3>
+				<p>
+					Wombat understands the evolution of different types of supernovae, and assists in scheduling
+					observation runs by dynamically estimating exposures and ideal orderings of observations. Wombat
+					also includes a lightweight logging system and interaction with the data from these instruments.
+				</p>
+				<h3>For Administrators</h3>
+				<p>
+					Wombat allows full, unrestricted access to every facet of the database behind it. Administrators
+					are presented with dynamic information on users, observation runs and supernovae, making it
+					easy to organize the group to be as efficient as possible.
+				</p>
+
+				
+			</div>
+		</div>
+		<div id="right">
+					
+			<div id="sidebar" class="section">
+								
+					<ul id="sidebar-items">
+					 
+					  
+			          <li>
+			            <h3>Site Navigation</h3>
+
+			            <ul class="links">
+			              <li><a href="/">Main</a></li>
+			              <li><a href="/main/about">About</a></li>
+						  
+						  <li><a href="/login/login">Login</a></li>
+						  
+			            </ul>
+			          </li>
+			          
+			          <li>
+			            <h3>Helpful Links</h3>
+			            <ul class="links">
+			              <li><a href="http://mthamilton.ucolick.org/">UCO Lick Observatory</a></li>
+			            </ul>
+			          </li>
+					  
+					  <li>
+					  	<h3>Software</h3>
+						<ul class="links">
+						  	<li><a href="http://www.spreadfirefox.com/?q=affiliates&amp;id=0&amp;t=210"><img border="0" alt="Firefox 2" title="Firefox 2" src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox2/firefox-spread-btn-1b.png"/></a></li>
+						 	<li><a href="http://www.rubyonrails.org/"><img alt="RubyOnRails" src="/images/rails.png" /></li></a>
+					 	</ul>
+					  </li>
+			        </ul>
+
+			</div>	
+			
+		</div>
+		
+	</div>
+	
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,7 @@
+This is the start of the file.
+
+A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two.
+
+A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two. A paragraph or two.
+
+This is the end of the file.

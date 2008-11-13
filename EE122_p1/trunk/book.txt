@@ -1,0 +1,209 @@
+HTTP/1.0 400 Bad Request
+Server: squid/2.6.STABLE13
+Date: Sun, 21 Oct 2007 01:11:25 GMT
+Content-Type: text/html
+Content-Length: 20827
+Expires: Sun, 21 Oct 2007 01:11:25 GMT
+X-Squid-Error: ERR_INVALID_REQ 0
+X-Cache: MISS from sq33.wikimedia.org
+X-Cache-Lookup: NONE from sq33.wikimedia.org:80
+Via: 1.0 sq33.wikimedia.org:80 (squid/2.6.STABLE13)
+Proxy-Connection: close
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Wikimedia Error</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+<style type="text/css">
+<!--
+body {font-family: Verdana,sans-serif; background-color: #ffffff; color: #000000}
+p {margin-left: 5%; margin-right: 5%}
+h1{font-family: Nimbus Roman No9 L, Times New Roman, FreeSerif, Times, serif; font-size: 100%; font-weight: normal; text-align: center; white-space: nowrap}
+h2{font-family: Verdana, sans-serif; font-size: 100%; font-weight: bold; text-align: center}
+h3{font-family: Verdana, sans-serif; font-size: 100%; margin-left: 2%}
+a {text-decoration: underline}
+a:hover {color: #003A0B; text-decoration: underline}
+.nl_link {color: #81A18F; text-decoration: none}
+.sv_link {color: #81A18F; text-decoration: none}
+.es_link {color: #81A18F; text-decoration: none}
+.zh_link {color: #81A18F; text-decoration: none}
+.fr_link {color: #81A18F; text-decoration: none}
+.en_link {color: #81A18F; text-decoration: none}
+.de_link {color: #81A18F; text-decoration: none}
+.ja_link {color: #81A18F; text-decoration: none}
+.pl_link {color: #81A18F; text-decoration: none}
+.it_link {color: #81A18F; text-decoration: none}
+.pt_link {color: #81A18F; text-decoration: none}
+.cs_link {color: #81A18F; text-decoration: none}
+.link {color: #326241}
+-->
+</style>
+
+
+<script type="text/javascript">
+
+<!-- Begin
+
+var subs_array = new Array ("en","fr","de","zh","ja","es","pl","it","sv","nl","pt","cs","en_head","fr_head","de_head","zh_head","ja_head","es_head","pl_head","it_head","sv_head","nl_head","pt_head","cs_head");// Put the id's of your hidden divs in this array
+var links_array = new Array (".nl_link",".sv_link",".es_link",".zh_link",".fr_link",".en_link",".de_link",".ja_link",".pl_link",".it_link",".pt_link",".cs_link");// Make sure these link classes are in the order, left-to-right, that they are on the page
+
+function displaySubs(the_sub){
+
+  for (i=0;i<subs_array.length;i++){
+
+	var my_sub = document.getElementById(subs_array[i]);
+
+	my_sub.style.display = "none";
+
+	}
+
+  document.getElementById(the_sub).style.display = "";
+
+  if (the_sub == 'en') { 
+    document.title = "Error - Wikimedia Foundation";
+    linkcolours('5')
+   }
+  else if (the_sub == 'fr') { 
+    document.title = "Erreur - Wikimedia Foundation";
+    linkcolours('4')
+   }
+  else if (the_sub == 'de') {
+    document.title = "Fehler - Wikimedia Foundation";
+    linkcolours('6')
+   }
+  else if (the_sub == 'ja') {
+    document.title = "エラー - ウィキメディア財団";
+    linkcolours('7')
+   }
+  else if (the_sub == 'zh') {
+    document.title = "错误 / 錯誤";
+    linkcolours('3')
+   }
+  else if (the_sub == 'es') {
+    document.title = "Fallo - Fundación Wikimedia";
+    linkcolours('2')
+   }
+  else if (the_sub == 'pl') {
+    document.title = "Błąd - Fundacja Wikimedia";
+    linkcolours('8')
+   }
+  else if (the_sub == 'it') {
+    document.title = "Errore - Wikimedia Foundation";
+    linkcolours('9')
+   }
+  else if (the_sub == 'sv') {
+    document.title = "Fel - Wikimedia Foundation";
+    linkcolours('1')
+   }
+  else if (the_sub == 'nl') {
+    document.title = "Fout - Wikimedia Foundation";
+    linkcolours('0')
+   }
+  else if (the_sub == 'pt') {
+    document.title = "Erro - Fundação Wikimedia";
+    linkcolours('10')
+   }
+  else if (the_sub == 'cs') {
+    document.title = "Chyba - Wikimedia Foundation";
+    linkcolours('11')
+   }
+
+  }
+
+function startup(){
+
+ if (navigator.userLanguage) var language = navigator.userLanguage // use the user's preferred language (non-Gecko)
+ else if (navigator.appName == 'Netscape') var language = navigator.language // use the only language information available to Gecko
+ else var language = navigator.browserLanguage // get the browser language information in non-Gecko browsers (IE, Opera, Konqueror)
+
+ // Try to automatically detect the navigator's language, or else default to English
+ if (language.indexOf('en') > -1) displaySubs('en');
+ else if (language.indexOf('fr') > -1) displaySubs('fr');
+ else if (language.indexOf('de') > -1) displaySubs('de');
+ else if (language.indexOf('ja') > -1) displaySubs('ja');
+ else if (language.indexOf('zh') > -1) displaySubs('zh');
+ else if (language.indexOf('es') > -1) displaySubs('es');
+ else if (language.indexOf('pl') > -1) displaySubs('pl');
+ else if (language.indexOf('it') > -1) displaySubs('it');
+ else if (language.indexOf('sv') > -1) displaySubs('sv');
+ else if (language.indexOf('nl') > -1) displaySubs('nl');
+ else if (language.indexOf('pt') > -1) displaySubs('pt');
+ else if (language.indexOf('cs') > -1) displaySubs('cs');
+ else displaySubs('en');
+
+}
+
+// Colour the links according to which one is currently active:
+function linkcolours(subnum) { 
+ var cssrulesname
+
+ if (document.all) cssrulesname = 'rules' // Opera, IE
+ else if (document.getElementById) cssrulesname = 'cssRules' // FireFox, Konqueror
+ else return
+
+ if (!document.styleSheets) return // document.styleSheets does not function in Opera as of version 8.02
+
+ for (var i = 0; i < links_array.length; i++) {
+  for (var j = 0; j < document.styleSheets.length; j++) {
+   for (var k = 0; k < document.styleSheets[j][cssrulesname].length; k++) {
+    if (document.styleSheets[j][cssrulesname][k].selectorText == links_array[i]) {
+     if (subnum == i) {
+      document.styleSheets[j][cssrulesname][k].style.color = "#24442E" // active link colour
+      }
+     else if (Math.abs(subnum - i) == 1) {
+      document.styleSheets[j][cssrulesname][k].style.color = "#61816D" // fade colour 1
+      }
+     else if (Math.abs(subnum - i) == 2) {
+      document.styleSheets[j][cssrulesname][k].style.color = "#6F8F7D" // fade colour 2
+      }
+     else {
+      document.styleSheets[j][cssrulesname][k].style.color = "#81A18F" // inactive link colour
+      }
+    }
+   }
+  }
+ }
+
+}
+
+// End -->
+</script>
+</head>
+
+<body onload="startup();">
+
+<h1>
+<span style="text-decoration: line-through">
+<font color="#F4F6F5">&nbsp;</font><font color="#D9E1DD">&nbsp;</font><font color="#C3CDC7">&nbsp;</font><font color="#A4B8AD">&nbsp;</font><font color="#869E91">&nbsp;</font><font color="#6E8679">&nbsp;</font><font color="#5E7267">&nbsp;</font><font color="#475B50">&nbsp;</font><font color="#36463D">&nbsp;</font><font color="#222C26">&nbsp;</font></span>&nbsp;<span style="font-size: 200%">W<small>IKIMEDIA</small> F<small>OUNDATION</small>&nbsp;</span><span style="text-decoration: line-through"><font color="#222C26">&nbsp;</font><font color="#36463D">&nbsp;</font><font color="#475B50">&nbsp;</font><font color="#5E7267">&nbsp;</font><font color="#6E8679">&nbsp;</font><font color="#869E91">&nbsp;</font><font color="#A4B8AD">&nbsp;</font><font color="#C3CDC7">&nbsp;</font><font color="#D9E1DD">&nbsp;</font><font color="#F4F6F5">&nbsp;</font></span>
+</h1>
+
+<h2>
+<a href="#Dutch" class="nl_link" onclick="displaySubs('nl')">Fout</a> <a href="#Swedish" class="sv_link" onclick="displaySubs('sv')">Fel</a> <a href="#Spanish" class="es_link" onclick="displaySubs('es')">Fallo</a> <a href="#Chinese" class="zh_link" onclick="displaySubs('zh')">错误</a> <a href="#Chinese" class="zh_link" onclick="displaySubs('zh')">錯誤</a> <a href="#French" class="fr_link" onclick="displaySubs('fr')">Erreur</a> <a href="#English" class="en_link" onclick="displaySubs('en')">Error</a> <a href="#German" class="de_link" onclick="displaySubs('de')">Fehler</a> <a href="#Japanese" class="ja_link" onclick="displaySubs('ja')">エラー</a> <a href="#Polish" class="pl_link" onclick="displaySubs('pl')">Błąd</a> <a href="#Italian" class="it_link" onclick="displaySubs('it')">Errore</a> <a href="#Portuguese" class="pt_link" onclick="displaySubs('pt')">Erro</a> <a href="#Czech" class="cs_link" onclick="displaySubs('cs')">Chyba</a>
+</h2>
+
+<div id="en" lang="en"><h3 id="en_head"><a name="English">English</a></h3><p>The Wikimedia Foundation servers are currently experiencing technical difficulties.</p><p>The problem is most likely temporary and will hopefully be fixed soon. Please <a href="[no URL]" class="link">check back</a> in a few minutes.</p><p>For further information, you can visit the <a href="irc://irc.freenode.net/wikipedia" class="link">#wikipedia</a> channel on the <a href="http://www.freenode.net" class="link">Freenode</a> IRC network.</p><p>In the meantime, you may be able to view <a href="http://www.google.com/search?q=[no URL]" class="link">Google's cached version of this page</a>.</p><p>Wikipedia is now one of the <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">most visited</a> sites on the Internet by traffic and continues to grow, and as a result the Wikimedia Foundation has a constant need to purchase new hardware. If you would like to help, please <a href="http://wikimediafoundation.org/wiki/Fundraising" class="link">donate</a>.</p></div>
+
+<div id="de" lang="de"><h3 id="de_head"><a name="German">Deutsch</a></h3><p>Bei den Servern der Wikimedia Foundation sind gerade technische Probleme aufgetreten.</p><p>In der Regel handelt es sich um ein vorübergehendes Problem, das hoffentlich bald behoben ist. Bitte versuche es in ein paar Minuten noch einmal.</p><p>Weitere Informationen gibt es im Channel <a href="irc://irc.freenode.net/wikipedia-de" class="link">#wikipedia-de</a> im <a href="http://www.freenode.net" class="link">Freenode-IRC-Netz</a>.</p><p>In der Zwischenzeit kannst du vielleicht die <a href="http://www.google.de/search?q=[no URL]" class="link">Version aus dem Cache von Google</a> benutzen.</p>
+<p>Wikipedia gehört inzwischen zu den am häufigsten besuchten Websites und wächst weiterhin, weshalb der Hardwarebedarf ständig steigt. <a href="http://wikimediafoundation.org/wiki/Spenden" class="link">Spenden</a>  für die Anschaffung neuer Hardware sind immer gern gesehen.</p></div>
+
+<div id="fr" lang="fr"><h3 id="fr_head"><a name="French">Français</a></h3><p>Les serveurs de la <em>Wikimedia Foundation</em> ont actuellement des problèmes techniques.</p><p>Le problème est vraisemblablement passager, et nous espérons le régler dans les plus brefs délais. Veuillez <a href="[no URL]" class="link">réessayer</a> dans quelques minutes.</p><p>Pour de plus amples informations, veuillez visiter le canal IRC <a href="irc://irc.freenode.net/wikipedia-fr" class="link">#wikipedia-fr</a> sur le réseau <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>Wikipédia est l’un des sites <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">les plus visités</a> d’Internet, ce qui contraint la <em>Wikimedia Foundation</em> à acheter régulièrement de nouveaux équipements. Si vous voulez nous aider, vous pouvez <a href="http://wikimediafoundation.org/wiki/Faites_un_don" class="link">faire un don</a>.</p></div>
+
+<div id="ja" lang="ja"><h3 id="ja_head"><a name="Japanese">日本語</a></h3><p>現在、ウィキメディア財団のサーバに技術的な問題が発生しています。</p><p>問題は一時的なものでまもなく回復する見込みです。しばらくしてから<a href="[no URL]" class="link">もう一度接続してみてください</a>。</p><p>詳しい情報は <a href="http://www.freenode.net" class="link">Freenode</a> の IRC  チャンネル <a href="irc://irc.freenode.net/wikipedia-ja" class="link">#wikipedia-ja</a> をご覧下さい。</p><p>ウィキペディアは現在<a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">インターネット上でもっともアクセスの多いサイトのひとつ</a>になっており、財団は新しいハードウェアを絶え間なく購入する必要に迫られています。よろしければ<a href="http://wikimediafoundation.org/wiki/[No Error]50X0.00800BFBF0D74P-1022F%84[No Error]4[no URL]B%98" class="link">寄付をお願い致します</a>。</p></div>
+
+<div id="zh" lang="zh"><h3 id="zh_head"><a name="Chinese">中文</a></h3><p><strong>简体中文</strong></p><p>维基媒体基金会服务器现在发生技术问题。</p><p>此问题应为暂时状况，我们将尽快修复，<a href="[no URL]" class="link">请稍后再试</a>。</p><p>如欲了解更多信息，请登陆<a href="http://www.freenode.net" class="link">Freenode IRC Network</a>上<a href="irc://irc.freenode.net/wikipedia" class="link">#Wikipedia</a>频道。</p><p><strong>正體中文</strong></p><p>維基媒體基金會伺服器現在發生技術問題。</p><p>此問題應為暫時狀況，我們將盡快修復，<a href="[no URL]" class="link">請稍後再試</a>。</p><p>如欲瞭解更多資訊，請登入<a href="http://www.freenode.net" class="link">Freenode IRC Network</a>上<a href="irc://irc.freenode.net/wikipedia" class="link">#Wikipedia</a>頻道。</p></div>
+
+<div id="es" lang="es"><h3 id="es_head"><a name="Spanish">Español</a></h3><p>Los servidores de la Fundación Wikimedia están experimentando en estos momentos problemas técnicos.</p><p>Probablemente el problema es temporal y —esperamos—, se arreglará en seguida. Por favor, <a href="[no URL]" class="link">prueba de nuevo dentro</a> de unos minutos.</p><p>Para más información, puedes visitar el canal <a href="irc://irc.freenode.net/wikipedia-es" class="link">#wikipedia-es</a> de la red de IRC <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>Wikipedia es en la actualidad uno de los sitios de Internet <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">más visitados</a>, y la Fundación Wikimedia tiene que comprar hardware nuevo constantemente. Si deseas ayudarnos, haz <a href="http://wikimediafoundation.org/wiki/Donaciones" class="link">una donación</a>, por favor.</p></div>
+
+<div id="pl" lang="pl"><h3 id="pl_head"><a name="Polish">Polski</a></h3><p>Serwery Fundacji Wikimedia mają w tej chwili problemy techniczne.</p><p>Prawdopodobnie to nic poważnego; problem powinien zostać usunięty w przeciągu paru minut.</p><p>W celu uzyskania dokładniejszych informacji możesz odwiedzić kanał <a href="irc://irc.freenode.net/wikipedia-pl" class="link">#wikipedia-pl</a> na sieci IRC <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>Wikipedia jest obecnie jedną z najpopularniejszych stron w Internecie, więc Fundacja Wikimedia musi regularnie inwestować w nowy sprzęt. Jeżeli chcesz pomóc, wesprzyj Fundację <a href="http://wikimediafoundation.org/wiki/Dary_pieniame="Italian">Italiano</a></h3><p>I server della Wikimedia Foundation hanno al momento qualche problema tecnico.</p><p>Il problema è probabilmente temporaneo e sarà risolto in fretta. Per favore, <a href="[no URL]" class="link">riprova</a> tra qualche minuto.</p><p>Per ulteriori informazioni puoi visitare il canale  <a href="irc://irc.freenode.net/wikipedia" class="link">#wikipedia</a> sulla rete IRC di <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>Wikipedia è ora uno dei siti internet <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">più visitati</a> e la Wikimedia Foundation deve comprare in continuazione nuovo hardware. Se vuoi aiutarci, per favore <a href="http://wikimediafoundation.org/wiki/Donazioni" class="link">fai una donazione</a>.</p></div>
+
+<div id="sv" lang="sv"><h3 id="sv_head"><a name="Swedish">Svenska</a></h3><p>Wikimedias servrar har för tillfället tekniska problem.</p><p>Problemet är antagligen temporärt och kommer förhoppningsvis att fixas snart. Du kan <a href="[no URL]" class="link">försöka igen</a> om någon minut.</p><p>För mer information kan du besöka <a href="irc://irc.freenode.net/wikipedia" class="link">#wikipedia</a> på <a href="http://www.freenode.net" class="link">Freenode</a> IRC.</p><p>Wikipedia är nu en av internets <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">mest besökta sidor</a> och stiftelsen Wikimedia måste ständigt köpa ny hårdvara. Om du vill hjälpa till får du gärna <a href="http://wikimediafoundation.org/wiki/Insamling" class="link">donera</a>.</p></div>
+
+<div id="nl" lang="nl"><h3 id="nl_head"><a name="Dutch">Nederlands</a></h3><p>Er zijn momenteel technische problemen met de servers van de Wikimedia Foundation.</p><p>Het probleem is waarschijnlijk tijdelijk en zal hopelijk snel worden verholpen. <a href="[no URL]" class="link">Probeer</a> het over een paar minuten nog eens.</p><p>Voor meer informatie kan men terecht in het kanaal <a href="irc://irc.freenode.net/wikipedia" class="link">#wikipedia</a> op het <a href="http://www.freenode.net" class="link">Freenode</a> IRC-netwerk.</p><p>Wikipedia is een van de <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">drukst bezochte</a> sites op internet en de Wikimedia Foundation moet voortdurend nieuwe hardware kopen om aan de bezoekersvraag te voldoen. Mocht u willen helpen, dan is uw <a href="http://wikimediafoundation.org/wiki/Giften" class="link">donatie</a> zeer welkom.</p></div>
+
+<div id="pt" lang="pt"><h3 id="pt_head"><a name="Portuguese">Português</a></h3><p>Os servidores da Fundação Wikimedia estão com dificuldades técnicas.</p><p>Provavelmente, o problema é temporário e será corrigido brevemente. Por favor, <a href="[no URL]" class="link">tente dentro</a> de alguns minutos.</p><p>Para mais informações, pode tentar o canal <a href="irc://irc.freenode.net/wikipedia-pt" class="link">#wikipedia-pt</a> na rede de IRC <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>A Wikipedia é, actualmente, um dos sites <a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">mais visitados</a> o que impõe à Fundação Wikimedia crescentes aquisições de hardware. Se puder ajudar, <a href="http://wikimediafoundation.org/wiki/Coleta_de_fundos" class="link">faça uma doação</a>.</p></div>
+
+<div id="cs" lang="cs"><h3 id="cs_head"><a name="Czech">Česky</a></h3><p>Servery nadace Wikimedia Foundation mají momentálně technické problémy.</p><p>Ty jsou s největší pravděpodobností jen dočasné a&nbsp;budou, doufejme, brzy vyřešeny. Prosíme, zkuste <a href="[no URL]" class="link">stránku nahrát znovu</a> za několik minut.</p><p>Další informace můžete získat na kanále <a href="irc://irc.freenode.net/wikipedia-cs" class="link">#wikipedia-cs</a> v&nbsp;IRC síti <a href="http://www.freenode.net" class="link">Freenode</a>.</p><p>Po dobu čekání můžete zkusit <a href="http://www.google.com/search?q=[no URL]" class="link">cachovanou verzi požadované stránky na Googlu</a>.</p><p>Wikipedie je co do provozu jedním z&nbsp;<a href="http://www.alexa.com/data/details/traffic_details?q=&amp;url=http://wikipedia.org" class="link">nejnavštěvovanějších</a> míst na Internetu a&nbsp;stále roste, což má za následek neustálou potřebu nového hardwaru pro provoz serverů nadace Wikimedia Foundation. Pokud chcete pomoci, prosíme, <a href="http://wikimediafoundation.org/wiki/Sponzorstv

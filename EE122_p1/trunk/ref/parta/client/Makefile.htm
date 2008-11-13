@@ -1,0 +1,12 @@
+CC=g++
+CFLAGS= -ggdb -Wall
+LFLAGS=-lsocket -lnsl
+
+http_client: http_client.cpp
+	$(CC) $(CFLAGS) $(LFLAGS) -o http_client $^
+
+linux: http_client.cpp
+	$(CC) -o http_client $^
+
+clean:
+	rm -f http_client http_client.o
