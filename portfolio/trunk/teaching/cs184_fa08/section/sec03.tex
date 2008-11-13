@@ -1,0 +1,286 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-09-16.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+
+\setlength\footskip{0.2in}
+\setlength\headheight{0.5in}
+\setlength\textheight{9.2in}
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Section Notes on Surface Shading and Assignment 3}
+\author{ Niels Joubert }
+
+\date{2008-09-16}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\section{Local Surface Shading}
+
+We compute the \textbf{local shading values} of a point on a surface by considering the lights, surface properties and viewer in the scene. We can do this because \textbf{light is linear}, and we consider only local phenomenon in shading calculations. We approximate real world lighting using one of the following methods:
+
+\begin{itemize}
+    \item \textbf{Full Bi-Directional Reflectance Distribution} \\
+        Calculate fraction of incoming light that reaches the viewer for with $\rho = \rho(\theta_{viewer}, \theta_{incidence}, \lambda_{in}, \lambda_{out})$ where $\theta_{incidence}$ is the angle of incoming light w.r.t. the surface normal, and $\theta_{viewer}$ is the angle of the viewer w.r.t. the surface normal. \\ \\
+    \textwidth{Good:\enspace\hrulefill}    \\ \\
+    \textwidth{Bad:\enspace\hrulefill}
+          
+    \item \textbf{Component-wise Bi-Directional Reflectance Distribution} \\ 
+    Calculate the fraction of incoming light that reaches the viewer for each color component rather than all $\lambda_{in}$ and $\lambda_{out}$: 
+    \begin{align*}
+        \rho_r \;&=\; \rho_r(\theta_{viewer}, \theta_{incidence}) \;=\; \rho(\theta_{viewer}, \theta_{incidence}, K_{r}) \\
+        \rho_g \;&=\; \rho_g(\theta_{viewer}, \theta_{incidence}) \;=\; \rho(\theta_{viewer}, \theta_{incidence}, K_{g})  \\
+        \rho_b \;&=\; \rho_b(\theta_{viewer}, \theta_{incidence}) \;=\; \rho(\theta_{viewer}, \theta_{incidence}, K_{b}) 
+    \end{align*}
+    Where $K_{r}$ gives you the \textbf{material properties} for the red component, and so forth. \\ \\
+    \textwidth{Good:\enspace\hrulefill}    \\ \\
+    \textwidth{Bad:\enspace\hrulefill}
+    
+    
+    \item \textbf{Extended BRDFs} \\
+        Allow us to model complex light behaviour, although this might not technically be local shading. \\ \\
+    \textwidth{Good:\enspace\hrulefill}    \\ \\
+    \textwidth{Bad:\enspace\hrulefill}
+
+\end{itemize} \\ \\
+
+All of these models assume that we can look up a $\rho$ value for a given $\theta_{viewer}$ and $\theta_{incidence}$, which translates to a table lookup in most cases. Thus we build an approximate model of the BRDF that we use for shading calculations.
+
+\pagebreak
+
+\subsection{Approximate BRDF}
+
+The lectures and the book use Phong shading loosely. What is important to understand is that we approximate the BRDF as the sum of different light terms, which is an approximation of the BRDF:
+
+\begin{equation}
+    \rho = k_{a}\mathbf{I} \; + \; k_{d}\mathbf{I}\,\text{max}(\hat{\mathbf{I}} \cdot \hat{\mathbf{n}}, 0) \; + \; k_{s}\mathbf{I}\,\text{max}(\hat{\mathbf{r}} \cdot \hat{\mathbf{v}}, 0)^{p}
+\end{equation}
+\\
+$\mathbf{I} = (r,g,b)$ is the color of the incoming light.\\
+$\mathbf{\hat{I}}$ is the incidence vector, supplying the angle of incoming light.\\
+$\mathbf{\hat{n}}$ is the surface normal vector.\\
+$\mathbf{\hat{v}}$ is the vector to the viewer.\\
+$\mathbf{\hat{r}}$ is the reflectance vector, supplying the angle of reflected light.\\
+$k_{a}$, $k_{d}$ and $k_{s}$, each consisting of $(r,g,b)$, is the ambient, diffuse and specular properties of the material. 
+
+\subsubsection{Ambient Lighting}
+
+Light reflects around a room, illuminating objects uniformly from all sides. We model this effect by simply setting each object to have a default ambient color multiplied by the total intensity of all the lights in the scene, as if some uniform illumination is supplying color to the object. You can even just set it to $k_{a}$ and get the same effect - both approaches work.
+
+\subsubsection{Diffuse Lighting}
+
+We assume that surfaces are \textbf{Lambertian} \\
+$\Longrightarrow$ they obey \emph{Lambert's Cosine Law} \\
+$\Longrightarrow$ color $c \propto \cos(\theta_{incidence})$ and $c \propto \hat{\mathbf{n}} \cdot \hat{\mathbf{I}}$ \\
+
+Thus, this states that the color of a point on a surface is independent of the viewer, and depends only on the angle between the surface normal and the incidence vector (the direction from which light falls on the point). We want the actual color to depend on both the color of the light source $\mathbf{I} = (r,g,b)$ and the material properties $k_{d} = (r,g,b)$
+\begin{equation}
+    \rho_{\text{diffuse}} = k_{d}\mathbf{I}\,\max(\hat{\mathbf{n}} \cdot \hat{\mathbf{I}}, 0)
+\end{equation}
+Where $\rho_{\text{diffuse}}$ is an (r,g,b) color value. This relation also implies that the most reflection you can get in a single direction on a matte surface is 1 / (area of unit hemisphere). (Why?)
+\\ $\hat{\mathbf{n}}$ needs to be calculated for the surface itself.
+\\ $\hat{\mathbf{I}}$ needs to be calculated by the light according to what type of light it is.
+\\ Notice that $k_{d}$ is limited - in physical reality, it can't be more than the integral over the unit hemisphere. So setting $k_{d}$ to (1,1,1) will give us a much brighter appearance, and possibly clipped specular values, than a value that's within limits.
+ 
+
+\subsubsection{Specular Lighting}
+
+The Phong illumination model states that there is a bright, mirror-like reflection of the light source on the surface. This effect depends on where the viewer is. The effect is the strongest when the viewer vector and reflectance vector is parallel, and it depends on $\mathbf{I = (r,g,b)}$ the incidence color and $k_{s} = (r,g,b)$, the material properties.
+\begin{equation}
+    \rho_{\text{specular}} = k_{s} \mathbf{I} \max(\hat{\mathbf{r}} \cdot \hat{\mathbf{v}})^{p}
+\end{equation}
+$p$ is the \textbf{roughness} of the material - it affects how small the specular highlight is.
+\\ $\hat{\mathbf{v}}$ is calculated between the point on the surface and the viewer position.
+\\ $\hat{\mathbf{r}}$, the reflectance vector, is calculated using $\hat{\mathbf{I}}$ and $\hat{\mathbf{n}}$:
+\begin{equation}
+    \hat{\mathbf{r}} = -\hat{\mathbf{I}} +2(\hat{\mathbf{I}} \cdot \hat{\mathbf{n}})\hat{\mathbf{n}}
+\end{equation}
+
+\pagebreak
+ 
+\subsection{Applying local shading to an object}
+
+So far we have only considered a single point on an object. To shade an object as a whole, we have to take into consideration that our geometry are made of flat, discrete pieces. We calculate shading over a region using one of the following methods:
+
+\subsubsection{Flat Shading}
+
+What is flat shading? 
+\textwidth{\hrulefill} 
+\\
+
+\textwidth{\hrulefill}
+
+\subsubsection{Gouraud Shading}
+
+What is gouraud shading? 
+\textwidth{\hrulefill} 
+\\
+
+\textwidth{\hrulefill}
+
+\subsubsection{Phong Shading} 
+
+What is phong shading? 
+\textwidth{\hrulefill} 
+\\
+
+\textwidth{\hrulefill}
+ 
+\subsection{Lights}\label{lights}
+
+A basic light is characterized by a position in space $\hat{\mathbf{P}}$ and a color intensity $\mathbf{I}$. This allows us to calculate $\hat{\mathbf{I}}$ for points on a surface. Lights differ primarily in how their $\hat{\mathbf{I}}$ vector and $\mathbf{I}$ color is calculated.
+
+\subsubsection{Point Light}
+
+What is a point light? 
+\textwidth{\hrulefill} 
+\\
+\\
+How do you calculate its $\hat{\mathbf{I}}$?
+\textwidth{\hrulefill}
+
+\subsubsection{Directional Light}
+
+What is a directional light? 
+\textwidth{\hrulefill} 
+\\
+\\
+How do you calculate its $\hat{\mathbf{I}}$?
+\textwidth{\hrulefill}
+
+\subsubsection{Spot Light}
+
+A spot light is a light that drops off in intensity sharply beyond a predefined border. \\
+A spotlight's $\hat{\mathbf{I}}$ is calculated the same as a point light's $\hat{\mathbf{I}}$, but if $\hat{\mathbf{I}} \cdot \hat{\mathbf{X}} > x$ then $\mathbf{I} = 0$ where $x$ is the size of the spot, and $\hat{\mathbf{X}}$ is the direction the spot points in.
+
+\subsection{More on lighting and shading}
+
+Lighting is a complete department in itself at most studios - we have studied the building blocks of most lighting tools. Some topics that I have not covered in these notes are:
+
+\begin{itemize}
+    \item Falloff (let $\mathbf{I}$ be proportional to the distance from the light to the object).
+    \item Anisotropy (make the roughness term $p$ depend on the parameterization of the object).
+    \item Texturing (eg. Bump Mapping is simply perturbing the surface normals)
+\end{itemize}
+
+\pagebreak
+
+\section{Shading Assignment}
+
+It would be extra-helpful if you write your shader in such a way that you can reuse the code for your raytracing assignment. We currently work with \emph{procedural shaders} - they take the world, run some code, and give you color values. \\
+\\
+Aside: \textbf{How do you draw a shaded 3d sphere pixel-by-pixel on a 2d surface?}
+\begin{align*}
+    &\text{What is the equation for a sphere in 3 dimensional space?} \\
+    &\text{Using this, at any point along x, how do you find the range of y on the sphere?} \\
+    &\text{Using this, how do you calculate the z coordinate?} \\
+    &\text{How do you find the surface normal from these 3 coordinates?}
+\end{align*}
+
+\subsection{A possible class structure}
+
+We need Lights, a Sphere, a Shader (that can be part of the sphere) and a Viewer. We need vectors to store position and direction, and we need colors that add and multiply component-wise. To complete this class structure for the project, ask yourself:
+\begin{itemize}
+    \item What is the interface that Lights provide?
+    \item If Objects are the drivers of the shading routine, what information do they pass to the shader to get a color back for each point on their surfaces?
+\end{itemize}
+\textbf{Example C++ code:} (There might be errors in this, it was typed up *very early in the morning*)
+\lstset{language=c++}
+\lstset{commentstyle=\textit}\\
+Lights.h:
+\begin{lstlisting}[frame=tb]{}
+class Light {
+public:
+    Light();            //Default Constructor
+    virtual ~Light();   //Default Destructor
+    Light(float x, float y, float z, float r,float g,float b);
+    const Color getColor(); //Return value may not be modified.
+    virtual Vector3d getIncidence(Vector3d & point) = 0; //Abstract function
+private:
+    Color illumination;
+    Vector3d position;
+}
+class PointLight: public Light { //Child of Light
+    PointLight(float x,float y,float z,float r,float g,float b);
+    Vector3d getIncidence(Vector3d & point); //Implement parent function.
+}
+\end{lstlisting}
+Lights.cpp:
+\begin{lstlisting}[frame=tb]{}
+Light::Light() {};            //Default Constructor
+Light::Light(float x, float y, float z, float r,float g,float b) {
+    this->x = x; this->y = y; this->z = z; //'this' is a pointer
+};
+const Color Light::getColor() { return illumination; //data in parent. };
+PointLight::PointLight(float x,float y,float z,float r,float g,float b): 
+    Light(x,y,z,r,g,b) { }; //Parent initialized by : Light(...)
+Vector3d PointLight::getIncidence(Vector3d & point) {
+       Vector3d incidence;
+       Vector3d light_pos = pos.getAbsolutePosition(multiplier);
+       incidence.calculateFromPositions(&point,&light_pos);
+       return incidence;
+};
+\end{lstlisting}
+
+
+
+\end{document}

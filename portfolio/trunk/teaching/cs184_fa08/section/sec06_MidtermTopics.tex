@@ -1,0 +1,192 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-10-06.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[8pt]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+%\addtolength{\topmargin}{+.0in}
+% \addtolength{\topmargin}{+.0in}
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\textwidth}{1in}
+
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.75in}
+
+
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+\usepackage{verbatim}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Midterm Topics List}
+\author{ Niels Joubert }
+
+\date{2008-10-07}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\begin{itemize}
+    
+    \item \textbf{Color}
+    
+    \begin{itemize}
+        
+        \item Eye's mechanism and perception of color
+        
+        \item Full spectra and our RGB color model
+        
+        \item Additive and Subtractive mixing
+        
+        \item Chromacity and the CIE color space
+        
+        \item Color Phenomenon - reflection, transmission, scattering, etc.
+        
+    \end{itemize}
+    
+    \item \textbf{Shading}
+
+    \begin{itemize}
+        
+        \item Local Shading Phenomenon - what is, what isn't
+        
+        \item Pointwise Shading
+        
+        \begin{itemize}
+        
+            \item BRDF - Full, Component-wise and Extended
+        
+            \item Approximate BRDF as used in our shading model (section 3 handout)
+        
+            \item Lambertian (Diffuse) materials
+        
+        \end{itemize}
+        
+        \item Surface shading - Phong, Gouraud and Flat Shading
+        
+    \end{itemize}
+    
+    \item \textbf{Linear Transformations}
+    
+    \begin{itemize}
+        
+        \item 2D - Scale, Rotate, Shear, Translate
+        
+        \item 3D - Scale, Shear, Translate
+        
+        \item Homogenized Coordinates (2D and 3D)
+        
+        \item 3D Rotations
+        
+        \begin{itemize}
+            
+            \item Axis-Aligned Rotations
+            
+            \item Euler Angles
+            
+            \item Exponential Maps
+            
+            \item Quaternions
+            
+        \end{itemize}
+        
+    \end{itemize}
+    
+    \item \textbf{Perspective Transforms} (yes, perspective transforms often are linear transforms)
+    
+    \begin{itemize}
+     
+        \item What is it? It is present in Raytracing? Scan Conversion?
+        
+        \item Linear Projection
+        
+        \item Orthogonal Projection
+        
+        \item Canonical View Space - ``placing your eye at an arbitrary position and direction''
+        
+        \item Perspective Projection
+        
+        \begin{itemize}
+            \item Theory
+            \item Vanishing Points
+            \item Visual Tricks
+            \item Depth Distortion
+        \end{itemize}
+       
+    \end{itemize}
+    
+    \item \textbf{Raytracing}
+    
+    \begin{itemize}
+     
+        \item Why Raytracing? What can we model with it, what can't we? What is expensive, what is cheap?
+     
+        \item General Algorithm
+        
+        \begin{itemize}
+            \item Different ``kinds'' of rays - shadow, reflection, etc - and how we incorporate them.
+            \item Intersection tests - sphere and triangle.
+        \end{itemize}
+        
+        \item Extra additions - soft shadows, area lights, motion blur, DoF, etc.
+        
+        \item Speedup Structures and BSPs - Know how to build and traverse BSPs on paper!
+       
+    \end{itemize}
+    
+    
+\end{itemize}
+
+\end{document}

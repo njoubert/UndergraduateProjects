@@ -1,0 +1,302 @@
+%
+%  Created by Niels Joubert on 2008-10-25.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\addtolength{\topmargin}{-0.25in}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{subfigure}
+\usepackage{url} 
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+\usepackage{verbatim}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Viewing and Camera Control in OpenGL}
+\author{ Niels Joubert \& James Andrews \footnote{Much of this handout was adapted from Stu Pomerantz at the Pittsburgh Supercomputing Center. http://www.psc.edu/} }
+
+\date{2008-10-28}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\section{Basic OpenGL Transformations}
+
+Whenever we work in OpenGL, we have access to its API that defines functions for basic transformations. We use the following functions to create a transform matrix and push it onto the current transform stack\footnote{See section \ref{stacks}}:
+
+\begin{verbatim}
+    glScalef(x, y, z)           - scale object by x,y,z scalars along the current axes
+    glTranslatef(x, y, z)       - move an object by x,y,z along the current axes.
+    glRotatef(x, y, z, angle);  - rotate an object by angle around vector [x,y,z]
+\end{verbatim}
+
+Using techniques from linear algebra, any transform can be decomposed into a combination of these simple transforms. Luckily, we do not have to resort to always using only these transforms - OpenGL defines an interface to intuitively work with the camera's orientation and perspective, or we can define arbitrary transforms and load this into OpenGL.
+
+\section{OpenGL Transformation Stacks \label{stacks}}
+
+We think of viewing in OpenGL as specifying properties about a hypothetical camera inside our scene. To do this, we will be specifying transformations that must be applied to our world during the rendering process. OpenGL supports this by storing transformations in a user-controllable stack. OpenGL has 3 different transformation stacks which are applied at different times of the rendering pipeline. We are concerned with two of these stacks: the \emph{Modelview} stack and the \emph{Projection} stack.\footnote{There is also a Texture transform stack.} We will explore the relation between our hypothetical camera and these transformations stacks. Each of these OpenGL transformation stacks specify the following information about the camera:
+
+\begin{itemize}
+    \item \textbf{GL\_MODELVIEW} - The position and orientation of the camera and the world.
+    \item \textbf{GL\_PROJECTION} - How the camera sees the world
+\end{itemize}
+
+\section{Projection transformation}
+
+The projection transform defines how a point (or vertex) is transformed from world space to the 2D plane of the screen (screen space). This is part of what we studied when we discussed perspective transforms. OpenGL gives you functions to define an \emph{orthographic} or a \emph{perspective} projection \textbf{relative to the camera}:
+
+\begin{verbatim}
+    glFustrum (left, right, bottom, top, near, far);
+    gluPerspective(fovy, aspect, near, far);
+    glOrtho(left, right, bottom, top, near, far);
+\end{verbatim}
+
+The following sketches should explain each of these functions:
+
+\begin{figure}[htp]
+     \centering
+     \subfigure[glOrtho given left, right, bottom, top, near and far]{
+          \includegraphics[scale=.6]{proyeccionOrtogonal.pdf}}
+%     \hspace{.3in}
+     \subfigure[glFustrum give left, right, bottom, top, near and far]{
+          \includegraphics[scale=.6]{proyeccionPerspectiva.pdf}}\\
+%     \vspace{.3in
+%     \hspace{.1in}
+     \subfigure[glPerspective given field-of-view, aspect-ratio, near and far]{
+           \includegraphics[scale=.6]{proyeccionPerspectiva2.pdf}}
+     \caption{OpenGL perspective functions}
+     \label{fig:2858multifig}
+\end{figure}
+
+\section{Modelview transformation}
+
+The Modelview transformation specifies both the position and orientation of the camera and the objects in the world. Why don't we have a model transform and a view transform? Because translating the world and translating the camera has exactly the same effect - thus we combine it into one Modelview transform. We tend to specify a viewing transform to place the camera, followed by transformations on the objects. Note that placing the camera using the viewing transform is exactly the same as applying the rotations and translations to place your camera using OpenGL's transformation functions.
+
+\begin{verbatim}
+Define the viewing transform:
+	  void gluLookAt(eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ)
+        
+PARAMETERS
+	  eyeX,	eyeY, eyeZ  - Specifies the	position of the	eye point.
+	  centerX, centerY, centerZ - Specifies the	position of the	reference point.
+	  upX, upY, upZ	- Specifies the	direction of the up vector.
+
+\end{verbatim}
+
+Since the default transformation on any stack is the identity, this translates into a default camera with eye at $(0,0,1)$ and center at $(0,0,0)$ with an up direction of $(0,1,0)$ along the y axis. In other words, gluLookAt(0,0,1,0,0,0,0,1,0) is the default view.
+
+\section{Managing the Transformation Stacks}
+
+Today's graphics programs demand complex scenes with many objects, each rendered under its own transform. To facilitate this, as mentioned, OpenGL stores transformations in a stack. We control this stack through the following four methods:
+
+\begin{itemize}
+    \item \textbf{glMatrixMode(}\emph{STACK}\textbf{)} - Selects the stack to affect.
+    \item \textbf{glLoadIdentity()} - Resets the selected stack to the Identity transform.
+    \item \textbf{glPushMatrix()} - Duplicates the top transform of the current stack.
+    \item \textbf{glPopMatrix()} - Deletes the top transform of the current stack.
+\end{itemize}
+
+We tend to initialize the ModelView stack to the identity, then apply our viewing transform (positioning the camera). Once this has occurred, for each object we want to render, we push a duplicate matrix onto the modelview stack, apply the transformations for the given object, draw the object, and pop the top matrix off the stack, thereby returning to the original view transform, ready to draw the next object.
+
+\section{Putting it all together - Specify the Camera}
+
+In order to specify the view in OpenGL:
+\begin{itemize}
+    \item Set the viewport
+    \item Set the projection transformation
+    \item Set the modelview transformation
+\end{itemize} 
+
+If you specify your viewport and projection on initialization, you need to specify only your modelview transformation every time you render. OpenGL's stack-based approach then allows you to apply different transformations to each object. Thus, a possible Reshape callback function (also called on initialization) would look like the following:
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL, caption=Specifying the view]{}
+void reshape(int w, int h) {
+    //Set the viewport
+    glViewport(0,0,w,h);
+    
+    //Set the projection transform
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45,1,5,100);
+}
+\end{lstlisting}
+
+And a possible display function would look like the following:
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL, caption=Rendering the scene]{}
+float zoom, rotx, roty, tx, ty;
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear Z-Buffer
+    
+    //Set the camera orientation:
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(0,0,-1, 0,0,0, 0,1,0);    
+    
+    //Rotate and zoom the camera. This order gives you maya-like control.
+    glTranslatef(0,0,-zoom);
+    glTranslatef(tx,ty,0);
+    glRotatef(rotx,1,0,0);
+    glRotatef(roty,0,1,0);
+    
+    //FOR EACH OBJECT:
+        glPushMatrix(); //Save the current view matrix.
+        //HERE YOU CAN APPLY TRANSFORMATIONS TO EACH OBJECT BEFORE DRAWING IT
+        //AND HERE YOU CAN DRAW IT!
+        glPopMatrix(); //Restore to the view matrix
+            
+    glutSwapBuffers();
+}
+\end{lstlisting}
+
+For more information, consult either the Red Book, or the following sites:
+\begin{verbatim}
+http://www.newcyber3d.com/selfstudy/tips/camera_analogy.htm
+http://www.robthebloke.org/opengl_programming.html#4
+http://www.morrowland.com/apron/tut_gl.php
+\end{verbatim}
+
+\pagebreak
+
+\section{Assorted OpenGL notes - OpenGL 101}
+
+We highly recommend a copy of the so-called Blue\footnote{\url{http://www.opengl.org/documentation/blue_book/}} and Red\footnote{\url{http://www.opengl.org/documentation/red_book/}} books for all graphics programmers. OpenGL is your friend. The cake is not a lie. 
+\\
+\\\textbf{NOTE: We suggest googling for the MAN pages of the functions we mention here!}
+
+\subsection{Drawing Objects}
+
+You already know how to do this, but as a brief overview, objects are drawn by issuing \verb=glVertex()= and \verb=glNormal()= calls between \verb=glBegin(TYPE)= and \verb=glEnd()= commands. For the normals to matter, you also want to enable lighting and define both material properties and lights, as covered in section \ref{exLights}. If you scale your objects, you need to have OpenGL renormalize your normals. You can enable this behavior with \verb=glEnable(GL_NORMALIZE)=.  
+
+\subsection{Shading}
+
+OpenGL supports flat and smooth (gouraud) shading as part of the hardware pipeline. This is toggled between with \verb=glShadeModel(GL_SMOOTH)= and \verb=glShadeModel(GL_FLAT)=. The shading model uses colors at vertices which are either computed by the lighting model or, if lighting is not enabled, specified directly with \verb=glColor()=.
+
+\subsection{Wireframes}
+
+OpenGL can draw polygons in one of several modes, controlled through the \verb=glPolygonMode()= function. You can switch between filled polygons and outlined polygons with \verb=glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)= and \verb=glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)=. Keep in mind that lighting and shading occurs in the same fashion for both of these, so it is often wise to disable lighting when drawing in \verb=GL_LINE= mode, which you can do with \verb=glDisable(GL_LIGHTING)=.
+
+\subsection{The Z-Buffer and Depth Tests}
+
+OpenGL implements a Z-Buffering algorithm to calculate the visibility of polygons. The Z-Buffer is initialized by passing the \verb=GLUT_DEPTH= flag to \verb=glutInitDisplayMode()=, and enabled with \verb=glEnable(GL_DEPTH_TEST)=. Once the Z-Buffer has been enabled, you can clear it by calling \verb=glClear(GL_DEPTH_BUFFER_BIT)=, something you normally want to do at the start of each frame's rendering cycle. If you want greater control of how the depth test is performed, you can use \verb=glDepthFunc(FUNC)=. By default, a pixel is compared with the current Z-Buffer value using \verb=GL_LESS=. 
+
+\subsubsection{Hidden Line Removal}
+We can use a trick to draw wireframes but remove hidden lines by employing a two-pass scheme. Render the scene with filled polygons without populating your color buffer (call \verb=glColorMask()= with all \verb=GL_FALSE=) to calculate the depth buffer values. Then rerender the scene with wireframed polygons without clearing the depth buffer, but switching the depth test from \verb=GL_LESS= to \verb=GL_LEQUAL=.
+
+\subsection{Display Lists}
+
+Display lists provide an easy way to speed things up, by letting OpenGL remember a list of rendering instructions. It can optimize the instructions for rendering, and store them so you don't constantly need to send them to the card yourself. See \url{http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=12}
+
+\pagebreak
+
+\subsection{Lighting Example\label{exLights}}
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL, caption=Lighting Example]{}
+void initLights() {
+    glEnable(GL_LIGHTING);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
+    GLfloat global_ambient[] = { .1f, .1f, .1f };
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
+
+    //define and enable light0. You have 8 lights in total.
+    GLfloat ambient[] = { .1f, .1f, .1f };
+    GLfloat diffuse[] = { .6f, .5f, .5f };
+    GLfloat specular[]={0.0, 0.0, 0.0, 1.0};
+    GLfloat pos[] = { -3, 0, 2, 1 };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    glEnable(GL_LIGHT0);
+
+    //define material properties:
+    //You probably don't want to use the emission term for this class.
+    GLfloat mat_specular[]={1.0, 0.0, 0.0, 1.0};
+    GLfloat mat_diffuse[]={0.0, 1.0, 0.0, 1.0};
+    GLfloat mat_ambient[]={0.0, 0.1, 0.1, 1.0};
+    GLfloat mat_emission[]={0.2, 0.0, 0.0, 1.0};
+    GLfloat mat_shininess={10.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, mat_emission);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+
+    glShadeModel(GL_SMOOTH); // GL_FLAT gives flat shading
+
+    //Allows you to scale objects at the cost of some performance.
+    glEnable(GL_NORMALIZE); 
+}
+
+int main(int argc,char** argv) {
+	glutInit(&argc,argv);
+	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
+	glutInitWindowSize(640,480);
+	glutCreateWindow("Lighting Test");
+	...
+	initLights();
+	glEnable(GL_DEPTH_TEST);
+	glutMainLoop();
+}
+\end{lstlisting}
+
+\end{document}

@@ -1,42 +1,81 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print">  
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection, print">    
+        <!--[if IE]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <title>Niels Joubert's Portfolio</title>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
     </head>
     <body>
-        <div id="content">
-            <div id="topbar">
-                <img src="images/TopBar2.png"/ alt="Niels Joubert"><hr/><a href="assets/resume.pdf">RESUME</a>
-                &nbsp|&nbsp<a href="index.html">MAIN</a>
-                <hr/>
-                <div class="vspacer">
-                </div>
+        <div class="container">
+
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+            
+            <div id="topbar" class="span-24">
+                
+                <img src="images/TopBar2.png"/ alt="Niels Joubert">
+                <hr class="heading">
+                <a href="assets/resume.pdf">RESUME</a>
+                &nbsp|&nbsp
+                <a href="index.html">MAIN</a>
+                <hr class="heading">
+                
             </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+
+            <div class="span-24 last">
+                &nbsp
+            </div>
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         INTRODUCTION
                     </div>
-                    <div class="right">
+                    
+                    <div class="span-20 last">
                         <div class="rightemphasis">
                             <p>
-                                This is my portfolio, demonstrating research I've been involved in and projects I've worked on. My major fields of interest are computer graphics and human computer interaction, and I've conducted research on physically based simulations and online video interaction. My minor concentrations are large-scale system design and astrophysics, both as a compliment to my simulation interest. My research interests is accompanied by a passion for teaching computer science, and I'm a member of the teaching staff at UC Berkeley.
+                                This is my portfolio, demonstrating research I've been involved in and projects I've worked on. My major fields of interest are computer graphics and human computer interaction, and I've conducted research on physically based simulations and online video interaction. My minor concentrations are large-scale system design and astrophysics, both as a compliment to my graphics interest. My research interests is accompanied by a passion for teaching computer science, and I'm a member of the teaching staff at UC Berkeley.
                             </p>
                         </div>
                     </div>
-                </p>
+                    
             </div>
-            <div class="vspacer">
-            </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+            
+            
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+            
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         COMPUTER GRAPHICS
                     </div>
-                    <div class="right">
+                    
+                    <div class="span-20 last">
+                    	
                     	<p>
+                        <span class="rightheading">
+                            Client-Server Simulation Improvement & Cloth Simulation
+                        </span> (Work in Progress)
+                        <br>
+                        I'm working on improving simulation quality and efficiency in multiplayer game environments. To that end, I've built a real-time cloth simulator and am working on synchronizing simulations between clients and servers to improve simulation quality. This project is done in conjunction with Sebastian Burke, and under lead of <a href="http://eecs.berkeley.edu/~job/">Prof. James O'Brien</a>.
+                        </p>
+                    	
+                    	
+                    	<p>
+                        <span class="rightheading">Marionette - Pixar Animation Studios</span> Software Engineering Internship
+                        <br>
+                        I interned at Pixar during Summer 2007, where I was a member of Pixar's next generation software engineering team. I worked on symmetric rig modeling as part of Pixar's "Marionette" animation toolkit. Details of my work in still under Non-Disclosure Agreement.
+                        </p>
+                    	
                     		<div class="rightheading">
                     			Rockband Vision
 							</div>
@@ -44,12 +83,13 @@
 							 | <a href="http://www.vimeo.com/1045326">See Online Video</a>
 							<br/>
 							Rockband Vision is a computer vision system capable of playing the Rockband console game
-							autonomously by monitoring the game's display through a camera pointed at a television connected to the console. Rockband is an interactive band simulator that allows human players to play music
+							autonomously by monitoring the game's display through a camera pointed at a television connected to the console. 
+							Rockband is an interactive band simulator that allows human players to play music
 							according to on-screen musical notation. Our system is capable
 							of interpreting the Rockband video feed presented to human players - it reads the musical
 							notation in the feed and manipulate the game's input to play the game. Since it monitors the screen through a video camera, the system is capable of playing alongside human players to form a 4-person band with some instruments played by people, some by our vision system. This project relied on a
 							breadth of knowledge from the computer graphics, numerical analysis and physical computing
-							areas. We presented it as our final project for Berkeley's Computer Graphics course.
+							areas, and was built on top of the <a href="http://opencvlibrary.sourceforge.net/">OpenCV</a> framework. We presented it as our final project for Berkeley's Computer Graphics course.
 
 						</p>
 						
@@ -58,17 +98,8 @@
                                 Bezier Surface Renderer&nbsp
                             </div>
                             <br/>
-                            This project served as an exploration of curved surface rendering. Input files describing Bezier patches are interpolated using DeCasteljau evaluation into a cloud of points, grouped into triangles, and tessellated further until a measure of flatness is satisfied. 
-                            <br/>
-                            <br/>
-                            Further details, as well as examples of output, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as5">Surfaces project</a>
-                            website.
-                            <p>
-                                <div class="rightemphasis">
-                                    Prototype Mock-ups
-                                </div>
-                                were used to aid designing of this project. Rapid prototyping was employed to expanded my understanding of the implementation challenges presented by a system converting tens of Bezier surface patches into a model containing upwards of 20 000 triangles.
-                                <table>
+                            This project served as an exploration of curved surface rendering. Input files describing Bezier patches are interpolated using DeCasteljau evaluation into a cloud of points, grouped into triangles, and tessellated further until a measure of flatness is satisfied. Prototypes were used to aid designing of this project. Rapid prototyping was employed to expanded my understanding of the concepts of splines, and provide rapid feedback of my design. You can access them as Java applets here:
+                                <table margin=0 padding=0>
                                     <tr>
                                         <td>
                                             <a href="assets/cs184/bezier/bezier_applet/index.html"><img src="assets/cs184/bezier/bezcurve_s.jpg"/></a>
@@ -86,15 +117,15 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </p>
+                            
 							
-                            <p>
+                            
                                 <div class="rightheading">
                                     Raytracer&nbsp
                                 </div>
                                 <br/>
                                 I implemented a full-featured Raytracer that renders a description of a scene into an image. The basic premise in the design of this project was to use no external libraries whatsoever - I built each component from the ground up. A full description of this project, including the design methodology, can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as4">Raytracer project</a>
-                                website. The Raytracer demonstrates raytracing through the following aspects:
+                                website. <!-- The Raytracer demonstrates raytracing through the following aspects:
                                 <ul>
                                     <li>
                                         .OBJ file input
@@ -115,7 +146,8 @@
                                         Arbitrary linear transforms applied to objects
                                     </li>
                                 </ul>
-                                Example outputs:
+                            -->
+                                Examples:
                                 <table cellborder=0 cellspacing=5 cellpadding=0>
                                     <tr>
                                         <td>
@@ -132,15 +164,13 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <br/>
-                            </p>
-                            <p>
+                                
+
                                 <div class="rightheading">
                                     Phong Shader&nbsp
                                 </div>
                                 <br/>
-                                I implemented the Phong shading algorithm as a first interaction on a pixel level with OpenGL. The Phong calculation is done over a sphere, and my program calculates the pixel color value over the surface. This served as an excellent entry to using OpenGL as display API and play with implementing shading algorithms that interpret normals, colors and color mixing in various ways. More information can be found on my <a href="http://inst.eecs.berkeley.edu/~cs184-dv/index.php?page=as3">Shader</a>
-                                project website.
+                                I implemented the Phong shading algorithm to shade objects in OpenGL. This served as a component for my raytracing project, but allowed me to experiment with implementing shading algorithms that interpret normals, colors and color mixing inside OpenGL. This was a project for Berkeley's CS184 course. Examples:
                                 <table>
                                     <tr>
                                         <td>
@@ -151,36 +181,39 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <br/>
-                            </p>
-                            <p>
+                                
+
                             <div class="rightheading">
                                 Particle Physics Simulator&nbsp
                             </div>
                             <br/>
-                            Data structures play a crucial role in Computer Graphics. I implemented a Quadtree structure to store points in 2D space, allowing simulation of collisions in a collection on the order of 10 000 points. A default environment is populated with a random distribution of particles, each with a random velocity vector. The simulation optimizes itself by calculating the next point in time at which two particles will collide, and moving the simulation of the environment to that point. Collisions are fully elastic and calculated using a semi-non-deterministic physics engine.
+                            Data structures play a crucial role in Computer Graphics. I implemented a Quadtree structure to store points in 2D space, allowing simulation of collisions in a collection on the order of 10 000 points. A default environment is populated with a random distribution of particles, each with a random velocity vector. The simulation optimizes itself by calculating the next point in time at which two particles will collide, and moving the simulation of the environment to that point. Collisions are fully elastic and calculated using a non-deterministic physics engine.
                             </div>
                         </p>
                         </p>
                     
-                </p>
             </div>
             
-			<div class="vspacer">
-            </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+                        
+<!-- =============================================== MAJOR SECTION ========================================================== -->           
+            
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         ONLINE VIDEO INTERACTION
                     </div>
-                    <div class="right">
+                    
+                    <div class="span-20 last">
                         <p>
                             I interned at <a href="http://www.yahooresearchberkeley.com/">Yahoo! Research Berkeley</a>
                             for the duration of 2007. I was a member of the Media and Community team, responsible for the back-end Flash video server, as well as synchronous video sharing applications built on top of the platform I developed. The video server platform was based around the Red5 video server, and our prototypes, codenamed Zync and Webzync, went on to be intergrated into Yahoo! Messenger and Yahoo! Live.
                         </p>
                         <p>
                             <div class="rightheading">
-                                CHI 2008 Video Interactivity Paper&nbsp
+                                SIGCHI 2008 Video Interactivity Paper&nbsp
                             </div>
                             <br>
                             <div class="rightemphasis">
@@ -196,7 +229,7 @@
                         </p>
                         <p>
                             <div class="rightheading">
-                                Zync & Webzync synchronous video sharing&nbsp
+                                Zync & Webzync synchronous video sharing applications&nbsp
                             </div>
                             <br/>
                             <a href="http://timetags.research.yahoo.com/zync/">Zync</a>
@@ -216,24 +249,116 @@
                             When I joined the research team, they were using a slightly modified HTTP server to progressively download video to the client. I started working on the Red5 Open Source Flash video server as an alternative to the in-house server. Red5 had serious limitations - seeking was slow and used excessive disk space, audio support was minimal, and there was no abstraction between files on disk and video streams. I solved each of these issues and Red5 became the prime platform for the <a href="http://www.yahooresearchberkeley.com/">research lab</a>'s video prototypes.
                         </p>
                     </div>
-                </p>
             </div>
-            <div class="vspacer">
+            
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->   
+            <div class="span-24">
+
+                <!-- =========================== LEFT SECTION =============================== -->
+                <div class="span-4 leftheading">
+                     TEACHING
+                </div>
+                <!-- *************************** LEFT SECTION ******************************* -->
+
+
+                <!-- =========================== RIGHT SECTION ============================== -->                    
+                <div class="span-20 last">
+
+                        <!-- ================== SUBSECTION ================================== -->
+                        <p>
+                        <span class="rightheading">
+                            CS184 Computer Graphics
+                        </span>
+                        <br>
+                        I served as a Student Instructor for Berkeley's undergraduate computer graphics course. The teaching staff for this semester consisted of myself, my fellow student <a href="http://www.eecs.berkeley.edu/~jima/">James Andrews</a> and <a href="http://www.cs.berkeley.edu/~job/">Professor James O'Brien</a>. I taught two discussion sections, wrote handouts as supplements to lectures and projects, and worked one-on-one with students to develop final projects for the class. My instructor page can be found <a href="teaching/cs184_fa08/index.html">here</a>.
+                        </ul>
+                            
+                        
+                        </p>
+                        <!-- ******************* END SUBSECTION ***************************** -->
+
+
+                        <!-- ================== SUBSECTION ================================== -->
+                        <p>
+                        <span class="rightheading">
+                            Self Paced Center 
+                        </span>
+                        <br>
+                        Berkeley's <a href="http://inst.eecs.berkeley.edu/~selfpace/">Self Paced Center</a> offers one-on-one teaching of introductory computer science courses and language-specific training. I spent a semester working as a tutor, teaching Java, Scheme, C/C++ and introductory programming. All the teaching in these courses happen on a one-on-one level between students and tutors. I received high ratings as a tutor and strove to embed a fascination for computer science through an intricate understanding of the concepts along with an enjoyment for hacking on projects.
+                        
+                        </p>
+                        <!-- ******************* END SUBSECTION ***************************** -->
+
+
+                </div>
+                <!-- *************************** END RIGHT SECTION ************************** -->
+
             </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+
+
+            <div class="span-24 last">
+                &nbsp<hr>
+            </div>
+            <!-- *********************************************** END MAJOR SECTION ****************************************************** -->            
+
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->   
+            <div class="span-24">
+
+                    <!-- =========================== LEFT SECTION =============================== -->
+                    <div class="span-4 leftheading">
+                         NETWORKING & SYSTEMS DESIGN
+                    </div>
+                    <!-- *************************** LEFT SECTION ******************************* -->
+
+
+                    <!-- =========================== RIGHT SECTION ============================== -->                    
+                    <div class="span-20 last">
+
+                            <!-- ================== SUBSECTION ================================== -->
+                            <p>
+                            <span class="rightheading">
+                                Heading
+                            </span>
+                            <br>
+                            Stuff that describes Heading.
+                            <span class="rightemphasis">
+                                SubHeading
+                            </span> is even cooler.
+                            </p>
+                            <!-- ******************* END SUBSECTION ***************************** -->
+
+                    </div>
+                    <!-- *************************** END RIGHT SECTION ************************** -->
+
+
+            </div>
+
+
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+<!-- *********************************************** END MAJOR SECTION ****************************************************** -->
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+            
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         WEB APPLICATIONS
                     </div>
-                    <div class="right">
-                        <p>
+                    
+                    <div class="span-20 last">
                             <div class="rightheading">
                                 2draw.net&nbsp
                             </div>
                             (<a href="http://2draw.net/">link</a>)
                             <br/>
-                            2draw is an online art space, providing drawing tools and a social hub for amateur and professional artists. I joined the 2draw team (currently 4 in number) during summer 2008. With such a small team we are all involved with the many facets of the site. I have been responsible for server maintenance and overhaul and web framework development. I have also taken the position as <a href="http://2draw.net/blog/">blog</a>
-                            editor, responsible for regular articles on art, design and inspiration.
+                            2draw is an online art space, providing drawing tools and a social hub for amateur and professional artists. I joined the 2draw team (currently 4 members) during summer 2008. With such a small team we are all involved with the many facets of the site. I have been responsible for server maintenance and overhaul and web framework development. I am also involved with our <a href="http://2draw.net/blog/">blog</a> where we discuss inspiration for artists.
                         </p>
                         <p>
                             <div class="rightheading">
@@ -252,19 +377,23 @@
                                     KitchenZync - A twist on the original Zync application focused around coopertive cooking! Follow a master chef with your friends in creating edible masterpieces, regardless of whether your friend is next door or on another continent. Think your crepe looks good? Then show it off to the other participants!
                                 </li>
                             </ul>
-                        </p>
                     </div>
-                </p>
             </div>
-            <div class="vspacer">
-            </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+            
+            
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+            
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         FILM PRODUCTION
                     </div>
-                    <div class="right">
-                        <p>
+                    
+                    <div class="span-20 last">
                             <div class="rightemphasis">
                                 "Go Big or Go Home" (<a href="assets/video/GoBig.avi">180Mb AVI video link</a>) - a top 10 entry for the "Gone in 60 seconds" national film competition.&nbsp
                             </div>
@@ -275,7 +404,7 @@
                             <div class="rightemphasis">
                                 "Eden downhill"&nbsp
                             </div>
-                            (<a href="assets/video/EdenDownhill.avi">400Mb AVI video link</a>) continued my exploration of extreme sports through film.
+                            (<a href="http://video.google.com/videoplay?docid=-4092869627870364967">external video link</a>) continued my exploration of extreme sports through film.
                             <br>
                         </p>
                         <p>
@@ -283,21 +412,26 @@
                                 Stellenbosch Youth Orchestra&nbsp
                             </div>
                             <br/>
-                            The SYO is the premier orchestra for high school students in South Africa. I was one of a 3 member team that filmed and authored 5 DVDs featuring their live performances. This included live audio and video capture, non-linear editing and DVD authoring. The final DVD was used as a successful application the the Vancouver Youth Orchestra's conductor position.
+                            The SYO is the premier orchestra for high school students in South Africa. I was one of a 3 member team that filmed and authored 5 DVDs featuring their live performances. This included live audio and video capture, non-linear editing and DVD authoring. The final DVD was used as a successful application to the Vancouver Youth Orchestra's conductor position.
                         </p>
                     </div>
-                </p>
             </div>
-            <div class="vspacer">
-            </div>
-            <div class="section">
-                <p>
-                    <div class="left">
+            
+            
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+            
+<!-- =============================================== MAJOR SECTION ========================================================== -->
+            
+            <div class="span-24">
+                    
+                    <div class="span-4 leftheading">
                         ASTROPHYSICS
                     </div>
-                    <div class="right">
-                        <p>
-                            <div class="rightemphasis">
+                    
+                    <div class="span-20 last">
+                            <div class="rightheading">
                                 Supernova Search and Tracking group&nbsp
                             </div>
                             <br/>
@@ -306,8 +440,24 @@
                             <a href="http://astro.berkeley.edu/~bait/kait.html">Official website.</a>
                             <br/>
                             <a href="http://www.ucolick.org/public/telescopes/kait.html">Press Release.</a>
-                        </p>
                         <br/>
+                        <br/>
+                        <span class="rightemphasis">
+                            Paper acknowledgements:
+                        </span>
+                        <br/>
+                        <a href="http://xxx.lanl.gov/abs/0808.2193">The Exceptionally Luminous Type II-L SN 2008es</a>
+                        <br/>
+                        <br/>
+                        </p>
+                        
+                        <p>
+                        <span class="rightheading">
+                            Radioastronomy
+                        </span>
+                        <br>
+                        Much of astrophysics consists of signal processing and simulation problems, and can serve as a rich body of work to motivate and enrich computer simulations. Berkeley's Radioastronomy course depends on the student's ability to model and simulate the solar system for tracking purposes, and apply engineering principles to measure physical parameters of objects in our galaxy. Here I present 4 papers my team authored during our radioastronomy class.
+                        </p>
                         <p>
                             <div class="rightemphasis">
                                 Digital Sampling, Fourier Transforms and Double Sideband Mixers.&nbsp
@@ -315,13 +465,7 @@
                             <a href="assets/astronomy/lab1.pdf">Download paper</a>
                             <br>
                             We present a report on activities concerning radioastronomy bench measurements performed
-                            during the first 3 weeks of enrollment in Astronomy 121 at UC Berkeley. We performed several
-                            experiments to become acquainted with the equipment and signal processing involved in the Radio
-                            Astronomy Lab. This document focuses on four main areas: Fourier transforms, investigating the
-                            Nyquist frequency1, investigating Dual Sideband Mixers, and phase detection using mixers. Each
-                            area depends heavily and contains information on Discreet Fourier Transforms, IDL programming
-                            & organization, and the UNIX operating system. This document strives to be an overview of
-                            each of these sections in context of the main areas.
+                            during the first 3 weeks of enrollment in Astronomy 121 at UC Berkeley. This document focuses on our experiments concering Fourier transforms,the Nyquist frequency, investigating Dual Sideband Mixers, and phase detection using mixers.
                         </p>
                         <br/>
                         <p>
@@ -330,15 +474,7 @@
                             </div>
                             <a href="assets/astronomy/lab2.pdf">Download paper</a>
                             <br>
-                            We present a report on the activities concerning the radioastronomy technique known as interferometry.
-                            We first discuss coordinate systems, coordinate system conversions and precession.
-                            We prelude our technical findings with an exhaustive discussion on radio interferometry theory,
-                            in which we cover interference, point source response, and notes on our technical equipment.
-                            The main body of the report consists of using interferometry to measure accurate declinations
-                            of point sources and accurate angular diameters of extended sources. We cover both the theory
-                            and practice of these two fundamental uses of interferometry. Finally, we present brute force and
-                            non-linear least squares techniques. We studied the sun and moon as our extended sources and
-                            the Crab Nebula as a point source with UC Berkeley's undergraduate interferometer.
+                            We present a report on studying the sun, the moon and the Crab Nebula using the technique known as interferometry. We present an exhaustive discussion on radio interferometry theory, followed by a discussion of using interferometry to measure accurate declinations of point sources and accurate angular diameters of extended sources using non-linear least squares techniques. 
                         </p>
                         <br/>
                         <p>
@@ -349,7 +485,7 @@
                             <br>
                             This lab report covers several overlapping topics and concludes with observations of the 21-cm
                             Hydrogen line. We examine transmission lines and waveguides to further our knowledge of the
-                            electronics we need to do our observations with.
+                            electronics we use for observations.
                         </p>
                         <p>
                             <div class="rightemphasis">
@@ -359,16 +495,7 @@
                              | <a href="assets/astronomy/image20.jpg">See Map</a>
                             <br/>
                             We attempted to use natural hydrogen emission to map a high velocity cloud falling into our
-                            galaxy at speeds in the region of 120 km/s to 170 km/s. We went to extensive trouble to track
-                            and predict our extended object across the sky, and spent approximately 62 hours on observations
-                            alone. Our object had peak signals of about 2 Kelvin, forcing us to use several procedures to
-                            minimize noise and tease out our signal from the background radiation and equipment noise.
-                            We used Gaussian fitting and Fourier filtering along with the spectrum calibration process to
-                            successfully reduce all our observations to useful velocity and intensity values, which we put
-                            through an interpolation and resizing process to successfully generate color maps of our object.
-                            <br/>
-                            <br/>
-                            See the map we created of the HVC C complex cloud:
+                            galaxy. We spent approximately 62 hours observing a hydrogen cloud with peak signals of 2 Kelvin, forcing us to use several procedures to minimize noise and tease out our signal from the background radiation and equipment noise. Gaussian fitting and Fourier filtering accompanied by spectrum calibration allowed us to generate a map of this fast-moving hydrogen cloud:                            <br/>
                             <table>
                                 <tr>
                                     <td>
@@ -376,12 +503,13 @@
                                     </td>
                                 </tr>
                             </table>
-                        </p>
                     </div>
-                </p>
             </div>
-            <div class="vspacer">
-            </div>
+            
+            <div class="span-24 last">&nbsp</div>            
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
+        
         </div>
 		</div>
 

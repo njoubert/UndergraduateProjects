@@ -1,0 +1,164 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-09-30.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+\addtolength{\topmargin}{+.75in}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+\usepackage{verbatim}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Writing Single-Line Parsers in C++}
+\author{ Niels Joubert, CS184 TA, UC Berkeley }
+\date{2008-09-30}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+You've just been asked to write a parser to pull in some ascii-text format into your raytracer. Luckily enough, the standard template library for C++ has some {\it really good} text parsing functionality that makes parsing files a breeze. Since the \verb=OBJ= file format is a line-by-line format, this document will focus on writing parsers for such a case.\footnote{This document does not describe the only way to write parsers, and not even the best way, but it is easy!}
+
+\subsection{The Standard Template Library's string and stream functionality}\label{stl}
+
+Silicon Graphics did not only contribute fantastic advances in computer graphics to the developer community, they also wrote a large bundle of C++ classes that became the equivalent of Java's built-in API for C++. We will use the \verb=ifstream= class to parse an input file into \verb=stringstream= objects. Notice the abundance of the \verb=stream= class' subclasses.
+\\
+We use streams since they have two very useful operators defined on them:
+\begin{verbatim}
+    operator>>      Extracts formatted data
+    operator<<      Insert data with format
+\end{verbatim}
+By default, the \verb=>>= extract operator considers whitespace to be a separator, and will return something of the type of variable it is used on. In other words, you can do the following:
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=trbl]{}
+// instream contains a string of the format "1.0 1.0 1.0 1 2 3"
+void parseCommand(stream & instream) {}    
+    double x,y,z;
+    int i,j,k;
+    instream >> x >> y >> z >> i >> j >> k;
+}
+\end{lstlisting}
+
+The above will populate $x$, $y$ and $z$ with the correct double values of $1.0$ and $i$, $j$ and $k$ with the expected $1$, $2$ and $3$ respectively. The opposite is also valid - using \verb=<<= to pipe out different data types to file.
+
+\subsection{The OBJ file format\footnote{See http://local.wasp.uwa.edu.au/~pbourke/dataformats/obj/ for a full discussion of the OBJ format.}}
+
+The obj file format defines geometry on a line-by-line basis of commands. Each line consists of an \textbf{operator} followed by one or more \textbf{operands}. The subset of the obj file format that is very applicable to the raytracer project is as follows:
+
+\begin{verbatim}
+    FILE STRUCTURE:
+    [operator] [operands]\n
+     
+    LINE STRUCTURE:
+    [operator]      [operands]
+    v               x y z
+    f               i j k
+\end{verbatim}
+
+$(x,y,z)$ gives the world-space coordinates of a vertex. $i, j$ and $k$ gives the indices of three vertices that make up a triangle, where indices are counted from \textbf{1} to \textbf{n} where 1 is the first vertex read in from the file and n is the last. You can easily extend this format to support everything your raytracer does.
+
+\subsection{Using ifstream}
+
+ifstream allows us to represent a file on disk as a stream. Thus we can do the following (Please note the \verb=...= are to indicate that you can (and probably will) be passing around other arguments as well.):
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL, caption=Using ifstream]{}
+void parseScene(string filename, ...) {
+        char line[1024]; //We create some temporary storage
+        ifstream inFile(filename.c_str(), ifstream::in); //Open as stream
+        if (!inFile) {
+            cout << "Could not open given file " << filename;
+            exit(1);
+        }
+        while (inFile.good()) {
+            inFile.getline(line, 1023);     //Read line into temporary storage
+            if (!parseLine(string(line), ... ))    //Do something with line
+                exit(1);                           //An error occurred?
+        }
+        inFile.close();
+}
+\end{lstlisting}
+
+\subsection{Using stringstream}
+
+We could run some regex expression on each line, but regex is much uglier than streams, so we can define each line as a stream, and parse that line with the operators explained in section \ref{stl}.
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL, caption=Using stringstream]{}
+bool parseLine(string line, ...) {
+       string op;
+
+       if (line.empty())
+           return true;
+       stringstream ss(stringstream::in | stringstream::out);
+       ss.str(line);
+       ss >> op;
+       if (op[0] == '#') { //access strings as arrays.
+           return true;
+       } else if (op.compare("v") == 0) {
+           double x, y, z;
+           ss >>x >>y >>z;  //Now you have an x,y,z as doubles.
+           ...   
+       }
+       if (ss.fail())
+            return false;
+       return true;
+}
+\end{lstlisting}
+
+\end{document}

@@ -1,0 +1,323 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-09-29.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+\addtolength{\topmargin}{+.75in}
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% For programming codes
+\usepackage{verbatim}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Using FreeImage 3.11 for Image Output}
+\author{ Niels Joubert, CS184 TA, UC Berkeley }
+
+\date{2008-09-29}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+FreeImage is an input/output library written in C, compatible with Linux, OSX and Windows. You need to download the latest source from \verb=http://freeimage.sourceforge.net/=.\\
+\\
+\textbf{WARNING:} FreeImage has one big caveat for projects at Berkeley. It is not on the instructional machines, thus you need to include the compiled library with your source code when you submit, and make sure it runs on the instructional machines. \footnote{As an alternative, ImageMagick is installed on all instructional machines.}
+
+\section{Getting FreeImage and linking it to your source code.}\label{compileANDlink}
+
+\begin{itemize}
+    \item Extract the source zip into a folder of your choice.
+    
+    \item Find the library files (an .a and file for Linux or Mac, a .dll file for Windows) in the extracted directory, and the \verb=FreeImage.h= header file in \verb=./Source= directory. You can compile the source manually or just use the supplied library files.
+    
+    \item Copy the \verb=.a= and \verb=.h= files to your root project folder. (For windows, see section \ref{windows})
+    
+\end{itemize}
+
+\subsection{Linking against FreeImage (and libraries in general)}
+
+\subsubsection{With GCC - as on Mac and Linux}
+
+Let me preface this by saying that I don't enjoy messing with linker issues. Its painful and incredibly frustrating, and I really hope this document will help everyone avoid such issues! The g++ compiler has the following flags that tells the linker about files of interest:\footnote{For this example, your source code is in ``./'', your FreeImage.h is in ``./'' and your libfreeimage.a is in ``./'', in other words, all relevant files are in the root of your project folder.} (Note the naming convention for libraries)\footnote{For more information on the naming of libraries, see http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html}
+\begin{verbatim}
+    -I<directory>   Add <directory> to the list of directories searched through for includes
+                    This directory is searched through for .h files
+                    eg: -I./
+        
+    -L<directory>   Add <directory> to the list of directories searched through for libraries.
+                    This directory is searched through for object code files of type .a, .so, etc
+                    eg: -L./
+    
+    -l<library>     Links the given library object code into your executable.
+                    Takes in the real name (eg. "freeimage" for "libfreeimage.a")
+                    eg: -lfreeimage
+\end{verbatim}
+\\
+We compile and link C++ source code using the G++ (or GCC, really the same thing) compiler. Your favorite IDE (eclipse, xcode, kdevelop, textmate, emacs, vim, etc) most probably calls out to g++ to compile your code, so it's worth having some knowledge of what's going on underneath the hood.
+\\
+\\
+\textbf{Note:} In section \ref{usingFree} there is example code you can grab to try out compiling and linking.
+\\
+\\
+To \textbf{compile} your source code (and your \verb=FreeImage.h= is not in the same directory as your source code), you need to supply g++ with the -I flag and the path to the directory containing \verb=FreeImage.h=. This is unnecessary in our case, where \verb=FreeImage.h= is in the same folder as your source, but let's show an example for completeness:
+
+\begin{verbatim}
+    g++ -c -Wall -I./ test.cpp -o test.o
+\end{verbatim}
+\\
+To \textbf{link} your compiled object files into one executable file, you need to supply g++ with the -L flag with a path to the directory containing your \verb=FreeImage.a= file, and the -l flag with the name of the library, which is ``freeimage'' in our case.
+
+\begin{verbatim}
+    g++ -L./ -lfreeimage test.o -o test
+\end{verbatim}
+\\
+You can combine the linking and compiling steps, which is fine if you don't have several source .cpp and .h files. You can \textbf{compile and link} (assuming all your files is in the same directory) using:
+
+\begin{verbatim}
+    g++ -Wall -I./ -L./ -lfreeimage test.cpp -o test
+\end{verbatim}
+\\
+If you have several source files, the best approach is to do these steps separately, which you can automate with a Makefile, as section \ref{exmake} will demonstrate.
+
+\subsubsection{With Visual Studio C++ on Windows}\label{windows}
+Thanks to Daniel Ritchie for contributing this section of the notes!
+\begin{itemize}
+\item Make sure you have the following three files: \verb=FreeImage.h=, \verb=FreeImage.lib=, and \verb=FreeImage.dll=. These should all be included in the .zip file you download from the FreeImage site.
+
+\item You can put these files anywhere as long as you tell Visual Studio where to look for them, but I like the following setup for it's simplicity:
+
+
+\begin{enumerate}
+
+\item Create a folder in your Project Directory (you typically have a solution directory, inside of which you have one or more project directories) called \verb=FreeImage=. Put the \verb=.h= and the \verb=.lib= files in here.
+
+\item Put the \verb=.dll= file directly into your Project Directory (it should be sitting alongside files such as your \verb=.vcproj= file).
+
+\item In the Visual Studio Solution Explorer (It's a tree-view widget that's typically docked on the far-right or far-left of the screen. If it's not there, you can get to it via \verb=View->Solution Explorer= from the top menu), right click your project (it should be located under your Solution) and select \verb=Properties=.
+
+\item Expand ``Configuration Properties'', then ``C/C++'', and then select ``General''. Enter \\\verb="$(ProjectDir)/FreeImage"= into the field titled ``Additional Include Directories''. This tells Visual Studio to look in this directory for any \verb=.h= files that it can't find in the standard locations.
+
+\item Now expand ``Linker'' under ``Configuration Properties''. In the General page, enter \\ \verb="$(ProjectDir)/FreeImage"= into the field titled ``Additional Library Directories'' (again, this tells Studio to look here for \verb=.lib= files).
+
+\item In \verb=Linker->Input=, add \verb="FreeImage.lib"= to the ``Additional Dependencies'' field.
+
+\end{enumerate}
+
+\item You're done! Click OK and build your project. 
+
+\end{itemize}
+
+
+\textbf{NOTE}: You might have noticed that I didn't say anything about FreeImage.dll beyond putting it in your Project Directory. It's really important that you have it there, though--your project will still build without it, but you won't be able to run the program without it.
+
+\section{Including and using FreeImage in your source code.}\label{usingFree}
+
+You can use the following example code to test your linking and compiling stages. Paste this into your editor of choice, and compile it with the above examples.
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL,caption=test.cpp : Simple FreeImage test code,label=lstSimple]{}
+#include <iostream>
+#include "FreeImage.h"
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+	FreeImage_Initialise();	
+	cout << "FreeImage " << FreeImage_GetVersion() << "\n";
+	cout << FreeImage_GetCopyrightMessage() << "\n\n";
+	FreeImage_DeInitialise();
+}
+\end{lstlisting}
+
+If everything went well, you should see the version and copyright message of FreeImage when you try to run the created test executable. Notice how each FreeImage function starts with \verb=FreeImage_= to make it easily identifiable. Neato!
+
+\subsection{Creating a bitmap and setting its pixels}
+
+We will use FreeImage to store bitmap data - color data for each pixel. FreeImage bitmaps have their origin \verb=(0,0)= at the bottom left corner of the image, which you need to take into account when you're iterating over your viewport.
+\\
+\\
+To create a bitmap, use the \verb=FreeImage_Allocate= API call:
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=trbl]{}
+    FIBITMAP * bitmap = FreeImage_Allocate(WIDTH, HEIGHT, BitsPerPixel);
+\end{lstlisting}
+Where Width and Height is in pixels, and we use 24 bits per pixel. This function call returns a pointer to an FIBITMAP struct. You don't need to worry if you're not comfortable with pointers though, since all you have to do it pass the ``bitmap'' object to other functions.
+\subsection{Saving image}
+
+We now convert the internal bitmap image representation into a compact image format (TIFF, PNG or JPEG) on disk. I recommend using a lossless format (PNG or TIFF can both be lossless) since you would rather not have the quality of your raytraced images be degraded by lossy compression. 
+\\
+\\To save an image use the \verb=FreeImage_Save= API call:
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=trbl]{}
+    FreeImage_Save(FIF_PNG, bitmap, "filename.png", 0)
+\end{lstlisting}
+For other formats and specific flags, see page 19 of the API documentation mentioned in section \ref{api}.
+
+\subsection{API documentation}\label{api}
+
+Get the full API documentation in PDF format from \verb=http://freeimage.sourceforge.net/download.html= or read the header file.
+
+\subsection{Complete Example Code}
+
+\lstset{language=c++}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL,caption=Everything you need for pixel-level PNG output,label=lstComplete]{}
+#include <iostream>
+#include "FreeImage.h"
+
+#define WIDTH 800
+#define HEIGHT 600
+#define BPP 24	//Since we're outputting three 8 bit RGB values
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+	FreeImage_Initialise();
+	
+	FIBITMAP* bitmap = FreeImage_Allocate(WIDTH, HEIGHT, BPP);
+	RGBQUAD color;
+	
+	if (!bitmap)
+		exit(1); //WTF?! We can't even allocate images? Die!
+		
+	//Draws a gradient from blue to green:
+	for (int i=0; i<WIDTH; i++) {
+		for (int j=0; j<HEIGHT; j++) {
+			color.rgbRed = 0;
+			color.rgbGreen = (double)i / WIDTH * 255.0;
+			color.rgbBlue = (double)j / HEIGHT * 255.0;
+			FreeImage_SetPixelColor(bitmap,i,j,&color);
+			//Notice how we're calling the & operator on "color"
+			//so that we can pass a pointer to the color struct.
+		}
+	}
+		
+	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
+		cout << "Image successfully saved!" << endl;
+	
+	FreeImage_DeInitialise(); //Cleanup!
+}
+\end{lstlisting}
+
+\pagebreak
+
+\section{Submitting a project that uses FreeImage}
+
+You need to include FreeImage's library files in your submission since it is not installed on the Instructional Machines.\\
+
+\textbf{Windows:} Include the .dll and .h files in your Visual Studio Solution submission, and confirm that it compiles on one of the instructional machines.\\
+
+\textbf{Linux and Mac:} Make sure you include the library files (specifically, the \verb=.a= file) relevant to the platform you're submitting on. You need to compile your own library on the Solaris machines to generate a \verb=libfreeimage.a= file for your submission, which you can easily do using \verb=make=. Confirm that your submission runs on the instructional Solaris machines (for Linux) or instructional Mac (although it should be just as easy to confirm that it works on Solaris as well). Feel free to ask me for help! 
+
+\section{ADDENDUM: Example Makefile}\label{exmake}
+
+Makefiles are great, and it is unfortunate that Berkeley students aren't exposed to them more. We use Makefiles to build source code from many separate .h and .cpp files, to reference libraries such as GLUT and FreeImage that our code depends on, and to speed up compiling by doing {\it partial compiles}\footnote{"partial compiles" recompiles only the files that changed since the last compilation, thus saving compile time.}.
+
+\lstset{language=make}
+\lstset{commentstyle=\textit}
+\begin{lstlisting}[frame=TRBL,caption=Sample Makefile,label=lstMakefile]{}
+#Basic Stuff -----------------------------
+CC          = g++ -g -Wall -O2 -fmessage-length=0
+
+#Libraries -------------------------------
+CCOPTS = -c  #I don't need -I since everything is in the current directory
+LDOPTS = -L./ -lfreeimage
+
+#Final Files and Intermediate .o files----
+SOURCES = raytracer.cpp #ADD YOUR SOURCES
+OBJECTS = raytracer.o   #ADD YOUR .o FILES
+TARGET = raytracer
+
+#-----------------------------------------
+raytracer: $(OBJECTS)
+	$(CC) $(LDOPTS)  $(OBJECTS) -o $(TARGET)
+	
+raytracer.o: 
+	$(CC) $(CCOPTS) $(SOURCES)  
+	
+default: $(TARGET)
+
+clean:
+	/bin/rm -f *.o $(TARGETS)
+\end{lstlisting}
+
+Run it by typing ``\verb=make='' at the command line in the root of your project directory.
+
+\end{document}
+
+
+\section{ADDENDUM: Compiling FreeImage on OS X Leopard}\label{macinstall}
+
+This is not necessary if you're just using the precompiled \verb=.a= file that comes with the source code. Thus, this section is \textbf{not necessary!} But if you want to compile the FreeImage library on a mac yourself, you need to update the makefile for FreeImage. It needs to be modified to work with the latest XTools SDK. We can fix this easily enough by modifying two lines inside \verb=makefile.osx=:\\
+\\Replace
+\begin{verbatim}
+    INCLUDE_PPC = -isysroot /Developer/SDKs/MacOSX10.3.9.sdk
+\end{verbatim}
+with
+\begin{verbatim}
+    INCLUDE_PPC = -isysroot /Developer/SDKs/MacOSX10.5.sdk
+\end{verbatim}
+and replace
+\begin{verbatim}
+    LIBRARIES_PPC = -Wl,-syslibroot /Developer/SDKs/MacOSX10.3.9.sdk/usr/lib
+\end{verbatim}
+with
+\begin{verbatim}
+    LIBRARIES_PPC = -Wl,-syslibroot /Developer/SDKs/MacOSX10.5.sdk/usr/lib
+\end{verbatim}
+You should now be able to compile successfully using \verb=make -f makefile.osx=
