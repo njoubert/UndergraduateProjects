@@ -7,10 +7,6 @@ body {
 	color: #888;
 }
 
-#topbar {
-	text-align: right;
-}
-
 a img {
 	border: solid 2px; margin: 0px; padding: 0px;
 }
@@ -27,6 +23,16 @@ hr.heading {
 	margin: 0.5em 0 0.5em 0;
 	background:#000;
 	color:#000;
+	clear:both
+	float:none;
+	width:100%;
+	height:1px;
+	border:none;
+}
+hr {
+	margin: 0.5em 0 0.5em 0;
+	background:#888;
+	color:#888;
 	clear:both
 	float:none;
 	width:100%;
@@ -50,6 +56,12 @@ hr.heading {
 		a:visited  { color: #3399cc; text-decoration: underline; }
 		a:active   { color: #3399cc; text-decoration: underline; }
 		a:hover    { color: #3399cc; text-decoration: underline; }
+
+		.leftheading a          { color: #000; }
+		.leftheading a:link     { color: #000; text-decoration: none; }
+		.leftheading a:visited  { color: #000; text-decoration: none; }
+		.leftheading a:active   { color: #000; text-decoration: none; }
+		.leftheading a:hover    { color: #000; text-decoration: none; }
 
 /** 
  * TEXT STYLES

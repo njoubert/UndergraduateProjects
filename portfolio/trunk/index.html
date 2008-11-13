@@ -7,6 +7,8 @@
         <!--[if IE]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <title>Niels Joubert's Portfolio</title>
+        <script src="javascripts/prototype.js" type="text/javascript"></script>
+        <script src="javascripts/scriptaculous.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="container">
@@ -33,10 +35,10 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
-                        INTRODUCTION
+                            INTRODUCTION
                     </div>
                     
-                    <div class="span-20 last">
+                    <div class="span-20 last" id="introduction">
                         <div class="rightemphasis">
                             <p>
                                 This is my portfolio, demonstrating research I've been involved in and projects I've worked on. My major fields of interest are computer graphics and human computer interaction, and I've conducted research on physically based simulations and online video interaction. My minor concentrations are large-scale system design and astrophysics, both as a compliment to my graphics interest. My research interests is accompanied by a passion for teaching computer science, and I'm a member of the teaching staff at UC Berkeley.
@@ -46,8 +48,7 @@
                     
             </div>
             
-            
-            <div class="span-24 last">&nbsp</div>            
+                   
             <div class="span-24 last">&nbsp<hr></div>
             <div class="span-24 last">&nbsp</div>
             
@@ -56,11 +57,19 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('computergraphics', 'appear', {duration:0}); Effect.toggle('computergraphicsHID', 'appear', {duration:0}); return false;">
                         COMPUTER GRAPHICS
+                        </a>
                     </div>
                     
-                    <div class="span-20 last">
-                    	
+                    <div class="span-20 last" id="computergraphicsHID" style="display:none;">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
+                    </div>
+                    
+                    <div class="span-20 last" id="computergraphics">
+                    <div>
                     	<p>
                         <span class="rightheading">
                             Client-Server Simulation Improvement & Cloth Simulation
@@ -189,12 +198,10 @@
                             <br/>
                             Data structures play a crucial role in Computer Graphics. I implemented a Quadtree structure to store points in 2D space, allowing simulation of collisions in a collection on the order of 10 000 points. A default environment is populated with a random distribution of particles, each with a random velocity vector. The simulation optimizes itself by calculating the next point in time at which two particles will collide, and moving the simulation of the environment to that point. Collisions are fully elastic and calculated using a non-deterministic physics engine.
                             </div>
-                        </p>
-                        </p>
+                            </div>
                     
             </div>
-            
-            <div class="span-24 last">&nbsp</div>            
+               
             <div class="span-24 last">&nbsp<hr></div>
             <div class="span-24 last">&nbsp</div>
                         
@@ -203,10 +210,20 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('onlinevideointeraction', 'appear', {duration:0}); Effect.toggle('onlinevideointeractionHID', 'appear', {duration:0}); return false;">
                         ONLINE VIDEO INTERACTION
+                        </a>
+                    </div>
+
+                    <div class="span-20 last" id="onlinevideointeractionHID" style="display:none;">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
                     </div>
                     
-                    <div class="span-20 last">
+                    
+                    <div class="span-20 last" id="onlinevideointeraction">
+                    <div>
                         <p>
                             I interned at <a href="http://www.yahooresearchberkeley.com/">Yahoo! Research Berkeley</a>
                             for the duration of 2007. I was a member of the Media and Community team, responsible for the back-end Flash video server, as well as synchronous video sharing applications built on top of the platform I developed. The video server platform was based around the Red5 video server, and our prototypes, codenamed Zync and Webzync, went on to be intergrated into Yahoo! Messenger and Yahoo! Live.
@@ -249,9 +266,9 @@
                             When I joined the research team, they were using a slightly modified HTTP server to progressively download video to the client. I started working on the Red5 Open Source Flash video server as an alternative to the in-house server. Red5 had serious limitations - seeking was slow and used excessive disk space, audio support was minimal, and there was no abstraction between files on disk and video streams. I solved each of these issues and Red5 became the prime platform for the <a href="http://www.yahooresearchberkeley.com/">research lab</a>'s video prototypes.
                         </p>
                     </div>
+                    </div>
             </div>
-            
-            <div class="span-24 last">&nbsp</div>            
+                      
             <div class="span-24 last">&nbsp<hr></div>
             <div class="span-24 last">&nbsp</div>
             
@@ -260,14 +277,22 @@
 
                 <!-- =========================== LEFT SECTION =============================== -->
                 <div class="span-4 leftheading">
+                    <a href="#" onclick="Effect.toggle('teaching', 'appear', {duration:0}); Effect.toggle('teachingHID', 'appear', {duration:0}); return false;">
                      TEACHING
+                     </a>
+                </div>
+                
+                <div class="span-20 last" id="teachingHID" style="display:none;">
+                <div>
+                Click the heading on the left to expand this category.     
+                </div>    
                 </div>
                 <!-- *************************** LEFT SECTION ******************************* -->
 
 
                 <!-- =========================== RIGHT SECTION ============================== -->                    
-                <div class="span-20 last">
-
+                <div class="span-20 last" id="teaching">
+                <div>
                         <!-- ================== SUBSECTION ================================== -->
                         <p>
                         <span class="rightheading">
@@ -293,16 +318,15 @@
                         </p>
                         <!-- ******************* END SUBSECTION ***************************** -->
 
-
+                </div>
                 </div>
                 <!-- *************************** END RIGHT SECTION ************************** -->
-
+            
             </div>
 
-
-            <div class="span-24 last">
-                &nbsp<hr>
-            </div>
+         
+            <div class="span-24 last">&nbsp<hr></div>
+            <div class="span-24 last">&nbsp</div>
             <!-- *********************************************** END MAJOR SECTION ****************************************************** -->            
 
             
@@ -311,35 +335,61 @@
 
                     <!-- =========================== LEFT SECTION =============================== -->
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('networkingandsystemsdesign', 'appear', {duration:0}); Effect.toggle('networkingandsystemsdesignHID', 'appear', {duration:0}); return false;">
                          NETWORKING & SYSTEMS DESIGN
+                         </a>
                     </div>
+                    
+                    <div class="span-20 last" id="networkingandsystemsdesignHID">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
+                    </div>
+                    
                     <!-- *************************** LEFT SECTION ******************************* -->
 
 
                     <!-- =========================== RIGHT SECTION ============================== -->                    
-                    <div class="span-20 last">
+                    <div class="span-20 last" id="networkingandsystemsdesign" style="display:none;">
+                    <div>
+                            <!-- ================== SUBSECTION ================================== -->
+                            <p>
+                            <span class="rightheading">
+                                HTTP/1.0 compliant web server
+                            </span>
+                            <br>
+                            A fully functional web server, supporting keep-alive connections and chunking for high throughput, written in C with no dependencies outside of kernel-provided sockets. 
+                            </p>
+                            <!-- ******************* END SUBSECTION ***************************** -->
+                            
+                            <!-- ================== SUBSECTION ================================== -->
+                            <p>
+                            <span class="rightheading">
+                                Modified TCP-IP Implementation 
+                            </span>
+                            <br>
+                            A reliable data stream protocol built on top of UDP using selective acknowledgements and TCP Vegas style congestion control to improve TCP throughput and performance in lossy situations.
+                            </p>
+                            <!-- ******************* END SUBSECTION ***************************** -->
 
                             <!-- ================== SUBSECTION ================================== -->
                             <p>
                             <span class="rightheading">
-                                Heading
+                                NACHOS Operating System
                             </span>
                             <br>
-                            Stuff that describes Heading.
-                            <span class="rightemphasis">
-                                SubHeading
-                            </span> is even cooler.
+                            Extensions to the basic NACHOS operating system to support threads, multiprogramming, caching and virtual memory.
                             </p>
                             <!-- ******************* END SUBSECTION ***************************** -->
 
+                    </div>
                     </div>
                     <!-- *************************** END RIGHT SECTION ************************** -->
 
 
             </div>
 
-
-            <div class="span-24 last">&nbsp</div>            
+         
             <div class="span-24 last">&nbsp<hr></div>
             <div class="span-24 last">&nbsp</div>
 <!-- *********************************************** END MAJOR SECTION ****************************************************** -->
@@ -349,10 +399,19 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('webapplications', 'appear', {duration:0}); Effect.toggle('webapplicationsHID', 'appear', {duration:0}); return false;">
                         WEB APPLICATIONS
+                        </a>
                     </div>
                     
-                    <div class="span-20 last">
+                    <div class="span-20 last" id="webapplicationsHID">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
+                    </div>
+                    
+                    <div class="span-20 last" id="webapplications" style="display:none;">
+                    <div>
                             <div class="rightheading">
                                 2draw.net&nbsp
                             </div>
@@ -378,10 +437,10 @@
                                 </li>
                             </ul>
                     </div>
+                    </div>
             </div>
             
-            
-            <div class="span-24 last">&nbsp</div>            
+                       
             <div class="span-24 last">&nbsp<hr></div>
             <div class="span-24 last">&nbsp</div>
             
@@ -390,16 +449,26 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('filmproduction', 'appear', {duration:0}); Effect.toggle('filmproductionHID', 'appear', {duration:0}); return false;">
                         FILM PRODUCTION
+                        </a>
                     </div>
                     
-                    <div class="span-20 last">
+                    <div class="span-20 last" id="filmproductionHID">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
+                    </div>
+                    
+                    <div class="span-20 last" id="filmproduction" style="display: none;">
+                    <div>
                             <div class="rightemphasis">
                                 "Go Big or Go Home" (<a href="assets/video/GoBig.avi">180Mb AVI video link</a>) - a top 10 entry for the "Gone in 60 seconds" national film competition.&nbsp
                             </div>
                             <br>
                             My first forage into short films focused on my love of extreme sports. I find that the human drive to challenge Nature creates a most facinating scene for exploration through the medium of film.
                         </p>
+                        
                         <p>
                             <div class="rightemphasis">
                                 "Eden downhill"&nbsp
@@ -415,6 +484,8 @@
                             The SYO is the premier orchestra for high school students in South Africa. I was one of a 3 member team that filmed and authored 5 DVDs featuring their live performances. This included live audio and video capture, non-linear editing and DVD authoring. The final DVD was used as a successful application to the Vancouver Youth Orchestra's conductor position.
                         </p>
                     </div>
+                    </div>
+            
             </div>
             
             
@@ -427,10 +498,19 @@
             <div class="span-24">
                     
                     <div class="span-4 leftheading">
+                        <a href="#" onclick="Effect.toggle('astrophysics', 'appear', {duration:0}); Effect.toggle('astrophysicsHID', 'appear', {duration:0}); return false;">
                         ASTROPHYSICS
+                        </a>
                     </div>
                     
-                    <div class="span-20 last">
+                    <div class="span-20 last" id="astrophysicsHID">
+                    <div>
+                    Click the heading on the left to expand this category.     
+                    </div>    
+                    </div>
+                    
+                    <div class="span-20 last" id="astrophysics" style="display:none;">
+                    <div>
                             <div class="rightheading">
                                 Supernova Search and Tracking group&nbsp
                             </div>
@@ -503,6 +583,7 @@
                                     </td>
                                 </tr>
                             </table>
+                    </div>
                     </div>
             </div>
             
