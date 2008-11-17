@@ -65,9 +65,13 @@ class ExactDynamicInferenceModule(DynamicInferenceModule):
     
     Provided implementation is broken.
     """
-
+    for dist,belief in self.beliefs.items():
+        readingDist = self.game.getReadingDistributionGivenGhostTuple(dist, observation[0])
+        self.beliefs[dist] = belief*readingDist.getCount(observation[1])
+    self.beliefs.normalize()
+        
     "*** YOUR CODE HERE ***"    
-    pass
+    #pass
  
 
     
@@ -78,9 +82,17 @@ class ExactDynamicInferenceModule(DynamicInferenceModule):
     
     Provided implementation is broken.
     """
-
+    sumDist = util.Counter()
+    for belief in self.beliefs:
+        dist = self.game.getGhostTupleDistributionGivenPreviousGhostTuple(belief)
+        for eachDist in dist:
+            dist[eachDist] = dist.getCount(eachDist)* self.beliefs.getCount(belief)
+        sumDist +=dist
+    for belief in self.beliefs:
+        self.beliefs[belief] = sumDist[belief]
+    print self.beliefs
     "*** YOUR CODE HERE ***"    
-    pass
+    #pass
 
         
   def getBeliefDistribution(self):
