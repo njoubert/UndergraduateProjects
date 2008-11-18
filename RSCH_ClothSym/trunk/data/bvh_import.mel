@@ -1,0 +1,240 @@
+//
+// Copyright (C) 2000 Big film Corp.
+//
+//
+// BVH_import.mel v 0.9 beta
+//
+// By sung joo, Kang (Gangs) / sjkang@bigfilm.co.kr, gangs2@nownuri.net
+//
+//
+// Last modified in 2000. 6. 9
+//
+//
+//
+// Description :
+//
+//       import BVH format files(motion capture)
+//
+//	            and joint..
+//
+// Usage :
+//
+//       1. excute script
+//
+//       2. select bvh file
+//
+//
+// Input value :
+//
+//       none
+//
+// output value :
+//
+//       none
+//
+//
+// last tested in 2000. 6. 9 (gypsy 2.5)
+//
+//
+//
+// thanks to sang bum, Jo and gye do, jeon
+//
+//                     and smartguy
+//
+
+
+
+string $filename=`fileDialog -dm "*.bvh"`;
+
+$fileId=`fopen $filename "r"`;
+
+select -cl;
+int $joint_name_val = 0;
+string $joint_name[];
+float $offset_joint_x[], $offset_joint_y[], $offset_joint_z[];
+string $index_joint[];
+int $index = 0;
+int $index_ch = 0;
+string $index_channel[];
+string $make_joint_cmd;
+string $ch_tmp;
+float $frame_interval;
+string $temp_buff[];
+string $name, $name_temp;
+
+clear $joint_name $offset_joint_x $offset_joint_y $offset_joint_z $index_joint $index_channel;
+
+
+
+$name = `group -em -n bvh_import`;
+tokenize $name "bvh_import" $temp_buff;
+if (size($temp_buff) == 0 ) {
+	$name_temp = "";
+}
+else {
+	$name_temp = $temp_buff[0];
+}
+
+
+
+string $nextWord = `fgetword $fileId`;
+
+float $offsetx = 0;
+float $offsety = 0;
+float $offsetz = 0;
+
+int $frames;
+float $time_count = 0;
+
+
+while (  size($nextWord) >0 )	{
+
+		if ($nextWord == "ROOT")	{
+				$jointname = `fgetword $fileId`;
+				$joint_name[0] = $jointname+$name_temp;
+				$index_joint[$index] = $jointname+$name_temp;
+				joint -n $joint_name[0] -p 0 0 0;
+
+			}
+
+		if (($nextWord=="JOINT") || ($nextWord=="End"))    {
+
+		// find Joint name
+
+				$jointname = `fgetword $fileId`;
+				$joint_name[$joint_name_val] = $jointname+$name_temp;
+				$index_joint[$index] = $jointname+$name_temp;
+			}
+
+		if ($nextWord == "{")	{
+
+				$nextWord = `fgetword $fileId`;
+
+			if ($nextWord == "OFFSET" )  {
+
+			// find Joint offset data
+
+					float $offset_x=`fgetword $fileId`;
+					float $offset_y=`fgetword $fileId`;
+					float $offset_z=`fgetword $fileId`;
+					$offset_joint_x[$joint_name_val] = $offset_x;
+					$offset_joint_y[$joint_name_val] = $offset_y;
+					$offset_joint_z[$joint_name_val] = $offset_z;
+
+					$offsetx = $offsetx + $offset_joint_x[$joint_name_val];
+					$offsety = $offsety + $offset_joint_y[$joint_name_val];
+					$offsetz = $offsetz + $offset_joint_z[$joint_name_val];
+
+					if ($joint_name_val != 0)	{
+						$make_joint_cmd = "joint -n "+ $joint_name[$joint_name_val]+ " -p " + $offsetx + " " + $offsety + " " + $offsetz;
+						$sel_joint_cmd = "select -r " + $joint_name[$joint_name_val-1];
+
+						eval($sel_joint_cmd);
+						eval($make_joint_cmd);
+						}
+
+
+				}
+				$joint_name_val ++;
+
+			}
+
+		if ($nextWord == "}")	{
+				$joint_name_val --;
+				$offsetx = $offsetx - $offset_joint_x[$joint_name_val];
+				$offsety = $offsety - $offset_joint_y[$joint_name_val];
+				$offsetz = $offsetz - $offset_joint_z[$joint_name_val];
+
+
+			}
+
+ 		if ($nextWord == "CHANNELS") {
+
+				int $tmp = `fgetword $fileId`;
+				for ($i = 1; $i	<= $tmp; $i++)	{
+						string $tmp2 = `fgetword $fileId`;
+						switch ($tmp2)	{
+								case "Xposition" :
+									$ch_tmp = "translateX";
+									break;
+
+								case "Yposition" :
+									$ch_tmp = "translateY";
+									break;
+
+								case "Zposition" :
+									$ch_tmp = "translateZ";
+									break;
+
+								case "Xrotation" :
+									$ch_tmp = "rotateX";
+									break;
+
+								case "Yrotation" :
+									$ch_tmp = "rotateY";
+									break;
+
+								case "Zrotation" :
+									$ch_tmp = "rotateZ";
+									break;
+
+						}
+						$index_channel[$index_ch] = $index_joint[$index] + "." + $ch_tmp;
+						$index_ch++;
+
+
+					}
+
+					$index ++;
+
+			}
+
+	    if ($nextWord == "MOTION") {
+
+			$nextWord = `fgetword $fileId`;
+
+			if  ($nextWord == "Frames:") {
+				$frames = `fgetword $fileId`;
+			}
+			$nextWord = `fgetword $fileId`;
+			$nextWord = `fgetword $fileId`;
+
+			if ($nextWord == "Time:") {
+				$frame_interval = `fgetword $fileId`;
+			}
+
+			$nextWord = `fgetword $fileId`;
+			for ( $k = 1; $k <$frames; $k++) {
+
+				currentTime $time_count;
+
+				for ($j=1; $j<$index_ch; $j++) {
+
+
+				float $value = $nextWord;
+				string $buffer[];
+
+				tokenize $index_channel[$j-1] "." $buffer;
+				setAttr $index_channel[$j-1] $value;
+				setKeyframe -at $buffer[1] $buffer[0];
+
+
+
+				$nextWord =`fgetword $fileId`;
+
+				}
+
+				$time_count += ($frame_interval*30);
+				$nextWord = `fgetword $fileId`;
+			}
+		}
+
+
+
+	    $nextWord = `fgetword $fileId`;
+
+
+	}
+
+select -cl;
+fclose $fileId;
