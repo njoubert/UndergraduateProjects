@@ -31,6 +31,7 @@ public:
 	void loadStateFromMesh();
 	LARGE_VECTOR* getX();
 	LARGE_VECTOR* getV();
+	LARGE_VECTOR* getA();
 	SPARSE_MATRIX* getM();
     //-----------------------------------------
 
@@ -40,7 +41,7 @@ public:
 	//CALCULATE STATE FOR SOLVER:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
-	void calculateForcePartials(NewmarkSolver*);
+	void calculateForcePartials(Solver*);
 	void applyConstraints(Solver*, vector<Constraint*> *);
 	void applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions);
 	//-----------------------------------------
@@ -68,6 +69,7 @@ private:
     TriangleMesh* mesh;
     LARGE_VECTOR* _x;
     LARGE_VECTOR* _v;
+    LARGE_VECTOR* _a;
     SPARSE_MATRIX* _M;
     Material* _mat;
     TriangleMeshVertex* mouseSelected;

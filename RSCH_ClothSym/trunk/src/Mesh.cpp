@@ -434,6 +434,30 @@ std::vector<TriangleMeshTriangle*>::const_iterator TriangleMesh::getTrianglesBeg
     return triangles.begin();
 }
 
+void TriangleMesh::exportAsOBJ(string filename) {
+    ofstream outfile (filename.c_str());
+
+    //Iterate over vertices
+    TriangleMeshVertex* v;
+    for (int i = 0; i < countVertices(); i++) {
+        v = getVertex(i);
+        outfile << "v " << v->getX()[0] << " " << v->getX()[1] << " " << v->getX()[2] << endl;
+    }
+    outfile << "# FACES FOLLOW" << endl;
+
+    //Iterate over faces (triangles).
+    TriangleMeshTriangle* t;
+    for (int i = 0; i < countTriangles(); i++) {
+        t = getTriangle(i);
+        outfile << "f " << t->getVertices()[0]->getIndex() << " "
+            << t->getVertices()[0]->getIndex() << " "
+            << t->getVertices()[0]->getIndex() << endl;
+    }
+
+    outfile.close();
+
+}
+
 std::vector<TriangleMeshTriangle*>::const_iterator TriangleMesh::getTrianglesEndIterator() {
     return triangles.end();
 }

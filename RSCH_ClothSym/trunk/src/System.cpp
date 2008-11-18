@@ -106,6 +106,7 @@ System::System(TriangleMesh* m, Material* mat) :
 
     _x = new LargeVec3Vector(m->countVertices());
     _v = new LargeVec3Vector(m->countVertices());
+    _a = new LargeVec3Vector(m->countVertices());
 }
 
 /*
@@ -120,17 +121,19 @@ void System::loadStateFromMesh() {
         (*_x)[i] = v->getX();
         (*_v)[i] = v->getvX();
     }
+    _a->zeroValues();
     profiler.frametimers.switchToGlobal();
 }
 
 LARGE_VECTOR* System::getX() {
     return _x;
 }
-
 LARGE_VECTOR* System::getV() {
     return _v;
 }
-
+LARGE_VECTOR* System::getA() {
+    return _a;
+}
 SPARSE_MATRIX* System::getM() {
     return _M;
 }
@@ -441,7 +444,7 @@ void System::calculateInternalForces(Solver* solver) {
     } while (edg_it.next());
 }
 
-void System::calculateForcePartials(NewmarkSolver* solver) {
+void System::calculateForcePartials(Solver* solver) {
     SPARSE_MATRIX* JP = solver->getJP();
     SPARSE_MATRIX* JV = solver->getJV();
 
@@ -499,14 +502,6 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
 
     //Run the solver to populate delx, delv
     solver->solve(this, constraints, timeStep);
-
-    profiler.frametimers.switchToTimer("update");
-    //Update x, y new delx, delv
-    LARGE_VECTOR* delx = solver->getDelx();
-    LARGE_VECTOR* delv = solver->getDelv();
-
-    (*_x) += (*delx);
-    (*_v) += (*delv);
 
     profiler.frametimers.switchToTimer("writeback mesh");
     //Write back to mesh

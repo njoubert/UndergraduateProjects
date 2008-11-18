@@ -213,6 +213,9 @@ public:
 
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesBeginIterator();
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesEndIterator();
+
+    void exportAsOBJ(string filename);
+
 public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 

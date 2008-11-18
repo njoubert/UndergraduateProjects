@@ -15,6 +15,8 @@
 #include "global.h"
 #include "World.h"
 #include "io/ImageSaver.h"
+#include "io/OBJParser.h"
+#include "io/OFFParser.h"
 #include <string.h>
 
 #define isThereMore(CURR, MAX, WANT)    ((MAX - CURR) > WANT)

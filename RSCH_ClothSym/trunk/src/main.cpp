@@ -26,7 +26,7 @@ public:
 
         wireFrame = false;
         showGrid = true;
-        paused = false;
+        paused = true;
         dynamicConstraints = false;
         collisions = false;
         follow = false;
@@ -172,7 +172,7 @@ void printUsage() {
     cout << "Usage: ";
     cout << " ClothSym " << endl;
     cout
-            << "      {[-statobj input.obj] | [-simobj input.obj timestep mass] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
+            << "      {[-statobj input.obj] | [-simobj input.obj timestep mass] | [-simOFF input.obj timestep mass] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
             << endl;
     cout << "      {[-dcons4 FollowPoint1 FollowPoint2 FollowPoint3 FollowPoint4 LeadPoint1 LeadPoint2 LeadPoint3 LeadPoint4] |" << endl;
     cout << "      [-dcons3 FollowPoint1 FollowPoint2 FollowPoint3  LeadPoint1 LeadPoint2 LeadPoint3 ] |" << endl;
@@ -230,7 +230,36 @@ int parseCommandLine(int argc, char *argv[]) {
                 std::string filename = std::string(argv[++i]);
                 TIMESTEP = atof(argv[++i]);
                 MASS = atof(argv[++i]);
+                OBJParser parser;
+                TriangleMesh* mesh = parser.parseOBJ(filename);
+                world.loadSimModel(mesh, TIMESTEP, MASS);
+                hasOBJ = true;
+            }
+            /*
+            else if (isThereMore(i, argc, 2)) {
+                std::string filename = std::string(argv[++i]);
+                double timeStep = atof(argv[++i]);
                 world.loadSimModel(filename, TIMESTEP, MASS);
+                hasOBJ = true;
+            } else if (isThereMore(i, argc, 1)) {
+                std::string filename = std::string(argv[++i]);
+                world.loadSimModel(filename, TIMESTEP, MASS);
+                hasOBJ = true;
+            }
+            //*/
+            else {
+                malformedArg = true;
+            }
+
+        } else if (!strcmp(argv[i], "-simOFF")) {
+
+            if (isThereMore(i, argc, 3)) {
+                std::string filename = std::string(argv[++i]);
+                TIMESTEP = atof(argv[++i]);
+                MASS = atof(argv[++i]);
+                OFFParser parser;
+                TriangleMesh* mesh = parser.parse(filename);
+                world.loadSimModel(mesh, TIMESTEP, MASS);
                 hasOBJ = true;
             }
             /*

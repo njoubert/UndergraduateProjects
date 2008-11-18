@@ -11,6 +11,7 @@ Timer fpstimer;
 Profiler profiler;
 
 float GAMMA = DEFAULT_GAMMA;
+float BETA = DEFAULT_BETA;
 
 int MAX_CG_ITER = DEFAULT_MAX_CG_ITER;
 float MAX_CG_ERR = DEFAULT_MAX_CG_ERR;

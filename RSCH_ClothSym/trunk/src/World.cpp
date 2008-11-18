@@ -55,9 +55,7 @@ bool World::loadStatModel(string filename) {
     return true;
 }
 
-bool World::loadSimModel(string filename, double timeStep, float mass) {
-    OBJParser parser;
-    TriangleMesh* mesh = parser.parseOBJ(filename);
+bool World::loadSimModel(TriangleMesh* mesh, double timeStep, float mass) {
     mesh->setGlobalMassPerParticle(mass/mesh->countVertices());
     MESHSIZE = mesh->countVertices();
     if (mesh == NULL)

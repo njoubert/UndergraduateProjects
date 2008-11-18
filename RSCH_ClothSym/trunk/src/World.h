@@ -12,7 +12,6 @@
 #include "Model.h"
 #include "Mesh.h"
 #include "Constraint.h"
-#include "io/OBJParser.h"
 #include "io/EllipseParser.h"
 
 /**
@@ -32,7 +31,7 @@ public:
 
     // Loads up a new module from disk.
     bool loadStatModel(string);
-    bool loadSimModel(string, double, float);
+    bool loadSimModel(TriangleMesh*, double, float);
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
 

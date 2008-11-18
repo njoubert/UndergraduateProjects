@@ -22,7 +22,7 @@ OBJParser::OBJParser() {
 }
 
 /**
- * Attempts to parse an OBJ file. Returns false if we fail.
+ * Attempts to parse an OBJ/OFF file. Returns false if we fail.
  */
 TriangleMesh* OBJParser::parseOBJ(string filename) {
     //printInfo("Parsing Scene File " << filename);

@@ -1,5 +1,5 @@
-#ifndef OBJPARSER_H_
-#define OBJPARSER_H_
+#ifndef OFFPARSER_H_
+#define OFFPARSER_H_
 
 #include "../Mesh.h"
 
@@ -16,13 +16,12 @@ using namespace std;
 /**
  * Parser that reads in files and creates Mesh objects.
  */
-class OBJParser {
+class OFFParser {
 public:
-    OBJParser();
-	TriangleMesh* parseOBJ(string);
+    OFFParser();
+	TriangleMesh* parse(string);
 private:
     int vertexCount;
-    bool parseLine(string, TriangleMesh *);
 };
 
-#endif /*OBJPARSER_H_*/
+#endif /*OFFPARSER_H_*/

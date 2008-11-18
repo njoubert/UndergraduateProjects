@@ -29,12 +29,16 @@ public:
     LARGE_VECTOR* getDelx();
     LARGE_VECTOR* getDelv();
     LARGE_VECTOR* getf();
+    SPARSE_MATRIX* getJP();
+    SPARSE_MATRIX* getJV();
 
 protected:
 	TriangleMesh* _mesh;
 	LARGE_VECTOR* _delx;
 	LARGE_VECTOR* _delv;
 	LARGE_VECTOR* _f;
+	SPARSE_MATRIX* _JP;
+    SPARSE_MATRIX* _JV;
 };
 
 /*
@@ -60,22 +64,38 @@ class NewmarkSolver: public Solver {
 public:
 	NewmarkSolver(TriangleMesh*, int);
     ~NewmarkSolver();
-    SPARSE_MATRIX* getJP();
-    SPARSE_MATRIX* getJV();
     LARGE_VECTOR* getY();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
     void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
 private:
     DEFAULT_CG cg;
 	float _gamma;
-	SPARSE_MATRIX* _JP;
-	SPARSE_MATRIX* _JV;
 	LARGE_VECTOR* _y;   //Position modification
 
 	SPARSE_MATRIX* A;
 	LARGE_VECTOR* b;
 	LARGE_VECTOR* t1;
 
+};
+
+class FullNewmarkSolver: public Solver {
+public:
+    FullNewmarkSolver(TriangleMesh*, int);
+    ~FullNewmarkSolver();
+    LARGE_VECTOR* getY();
+    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
+    void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
+private:
+    DEFAULT_CG cg;
+    float _gamma;
+    float _beta;
+    LARGE_VECTOR* _y;   //Position modification
+
+    SPARSE_MATRIX* A;
+    SPARSE_MATRIX* Minv;
+    LARGE_VECTOR* b;
+    LARGE_VECTOR* t1;
+    LARGE_VECTOR* an;
 };
 
 #endif /* SOLVER_H_ */

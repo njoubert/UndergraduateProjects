@@ -35,6 +35,15 @@ LARGE_VECTOR* Solver::getDelv() {
 LARGE_VECTOR* Solver::getf() {
     return _f;
 }
+
+SPARSE_MATRIX* Solver::getJP() {
+    return _JP;
+}
+
+SPARSE_MATRIX* Solver::getJV() {
+    return _JV;
+}
+
 /******************************************************************************
  *                                                                             *
  *                 ImplicitSolver                                              *
@@ -149,14 +158,6 @@ NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
 
 NewmarkSolver::~NewmarkSolver() {
 
-}
-
-SPARSE_MATRIX* NewmarkSolver::getJP() {
-    return _JP;
-}
-
-SPARSE_MATRIX* NewmarkSolver::getJV() {
-    return _JV;
 }
 
 LARGE_VECTOR* NewmarkSolver::getY() {

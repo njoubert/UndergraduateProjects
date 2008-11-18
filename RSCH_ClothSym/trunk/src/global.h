@@ -45,6 +45,7 @@ extern Timer fpstimer;
 extern Profiler profiler;
 
 extern float GAMMA;
+extern float BETA;
 
 extern int MAX_CG_ITER;
 extern float MAX_CG_ERR;
