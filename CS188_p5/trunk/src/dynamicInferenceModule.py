@@ -118,8 +118,8 @@ class ApproximateDynamicInferenceModule(DynamicInferenceModule):
     Initialize the agent's beliefs to a prior sampling over positions.
     """
     
-    "*** YOUR CODE HERE ***"    
-    self.particles = util.Counter()
+    "*** YOUR CODE HERE ***"  
+    self.particles = util.sampleMultiple(self.game.getInitialDistribution(), self.numParticles)
     
     
   def observe(self, observation):
@@ -130,8 +130,19 @@ class ApproximateDynamicInferenceModule(DynamicInferenceModule):
     given the state represented by that particle.
     """
     
-    "*** YOUR CODE HERE ***"    
-    pass
+    "*** YOUR CODE HERE ***"  
+    weight = util.Counter()
+    for particle in self.particles:
+         weight[particle] = self.game.getReadingDistributionGivenGhostTuple(particle,observation[0]).getCount(observation[1])
+    
+    weight.normalize()
+    if weight.totalCount() == 0:
+        self.initialize()
+    else:
+        self.particles = util.sampleMultiple(weight, self.numParticles)
+    #for ghost in self.game.getGhostTuples():
+    #    readingDist = self.game.getReadingDistributionGivenGhostTuple(ghost, observation[0])
+    #    self.beliefs[ghost] = self.beliefs.getCount(ghost)*readingDist.getCount(observation[1])
 
 
   def elapseTime(self):
@@ -140,8 +151,11 @@ class ApproximateDynamicInferenceModule(DynamicInferenceModule):
     You will need to sample a next state for each particle.
     """    
 
-    "*** YOUR CODE HERE ***"    
-    pass
+    "*** YOUR CODE HERE ***" 
+    temp = []
+    for particle in self.particles:
+         temp.append(util.sample(self.game.getGhostTupleDistributionGivenPreviousGhostTuple(particle)))
+    self.particles = temp
 
     
   def getBeliefDistribution(self):
@@ -153,6 +167,6 @@ class ApproximateDynamicInferenceModule(DynamicInferenceModule):
     over these missing tuples will be treated as zero by the GUI.
     """
     
-    "*** YOUR CODE HERE ***"    
-    pass
+    "*** YOUR CODE HERE ***"
+    return util.listToDistribution(self.particles)
     
