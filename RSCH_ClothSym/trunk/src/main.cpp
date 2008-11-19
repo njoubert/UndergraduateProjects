@@ -613,40 +613,40 @@ void drawParameters() {
     renderBitmapString(5,75,(void *)Font, s2);
     if (BEND_FORCES) {
 		sprintf(s2, "Bend Forces: Enabled");
-		renderBitmapString(5, 430, (void *) Font, s2);
+		renderBitmapString(5, cam._h - 75, (void *) Font, s2);
 		sprintf(s2, "Ke (Bend): %4.4f", KBe);
-		renderBitmapString(5, 445, (void *) Font, s2);
+		renderBitmapString(5, cam._h - 60, (void *) Font, s2);
 		sprintf(s2, "Kd (Bend): %4.4f", KBd);
-		renderBitmapString(5, 460, (void *) Font, s2);
+		renderBitmapString(5, cam._h - 45, (void *) Font, s2);
 	}
     else {
     	sprintf(s2, "Bend Forces: Disabled");
-		renderBitmapString(5, 430, (void *) Font, s2);
+		renderBitmapString(5, cam._h - 75, (void *) Font, s2);
     }
 	if (FRICTION_FORCES) {
 		sprintf(s2, "Friction Forces: Enabled");
-		renderBitmapString(250, 430, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 75, (void *) Font, s2);
 		sprintf(s2, "Mu Static: %4.2f", MUs);
-		renderBitmapString(250, 445, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 60, (void *) Font, s2);
 		sprintf(s2, "Mu Dynamic: %4.2f", MUd);
-		renderBitmapString(250, 460, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 45, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Friction Forces: Disabled");
-		renderBitmapString(250, 430, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 75, (void *) Font, s2);
 	}
 	if (COLLISIONS) {
 		sprintf(s2, "Collisions: Enabled");
-		renderBitmapString(250, 475, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 30, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Collisions: Disabled");
-		renderBitmapString(250, 475, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 30, (void *) Font, s2);
 	}
 	if (DYNAMIC_CONSTRAINTS) {
 		sprintf(s2, "Moving Constraints: Enabled");
-		renderBitmapString(250, 490, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 15, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Moving Constraints: Disabled");
-		renderBitmapString(250, 490, (void *) Font, s2);
+		renderBitmapString(250, cam._h - 15, (void *) Font, s2);
 	}
 }
 //FPS CALCULATION VARIABLES
@@ -713,7 +713,7 @@ void display(void) {
     	setOrthographicProjection();
     	glPushMatrix();
     	glLoadIdentity();
-    	renderBitmapString(400,35,(void *)Font,s);
+    	renderBitmapString(cam._w - 100,15,(void *)Font,s);
     	drawParameters();
     	glPopMatrix();
     	resetPerspectiveProjection();
