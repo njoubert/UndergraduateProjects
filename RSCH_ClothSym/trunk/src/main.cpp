@@ -488,7 +488,7 @@ void init(void) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
     glShadeModel(GL_SMOOTH);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.7, 0.7, 0.7, 0.0);
 
     GLfloat global_ambient[] = {.1f, .1f, .1f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);

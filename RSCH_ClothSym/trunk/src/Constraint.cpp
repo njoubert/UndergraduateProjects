@@ -182,7 +182,7 @@ void VertexToEllipseCollision::applyConstraintToPoints(LARGE_VECTOR* X, LARGE_VE
 void VertexToEllipseCollision::applyConstraintToSolverMatrices(
         SPARSE_MATRIX* A, LARGE_VECTOR* b) {
     //Update the sparse matrices to honor this constraint
-	for(int i = 0; i < _collisionIndices.size(); i++) {
+	for(unsigned int i = 0; i < _collisionIndices.size(); i++) {
     A->zeroRowCol(_collisionIndices[i], _collisionIndices[i], true);
     //TODO: Should this be taking the ellipse speed into account?
     (*b)[_collisionIndices[i]] = _collisionVelocities[i];

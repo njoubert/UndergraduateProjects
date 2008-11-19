@@ -531,7 +531,7 @@ void System::calculateDampingToLimitStrain(Solver* solver, SPARSE_MATRIX* JV, do
 	        vec3 strain = (pa - pb) - RL;
 	        vec3 p_dir = (pa - pb).normalize();
 	        double maxStrainPercent = .10;
-	        double strainPercent = strain.length()/RL.length();
+	        double strainPercent = strain.length()/rl;
 
 	        if(strainPercent > maxStrainPercent)
 	        	F0 = -Ksd * ((va-vb)*p_dir)*p_dir;
@@ -574,7 +574,7 @@ void System::calculateDampingToLimitStrain(Solver* solver, SPARSE_MATRIX* JV, do
 void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV, vector<VertexToEllipseCollision*> *collisions) {
 	LARGE_VECTOR* F = solver->getf();
 
-	for(int i = 0; i < (*collisions).size(); i++)
+	for(unsigned int i = 0; i < (*collisions).size(); i++)
 		(*collisions)[i]->applyDampedCollisions(100, JV, F);
 }
 

@@ -35,6 +35,7 @@ Model::~Model() {
 StatModel::StatModel(TriangleMesh* mesh) {
 	_mesh = mesh;
 	_timeStep = 0;
+	_material->makeStatColor();
 }
 
 StatModel::~StatModel() {
@@ -53,10 +54,7 @@ double StatModel::getTimeStep() {
 void StatModel::draw() {
 
     //Make the Static Objects Blue
-    GLfloat mat_diffuse[] = { 0.0, 0.0, 1.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.0, 0.1, 0.0, 1.0 };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+    _material->setGLcolors();
 
 	//TODO: Lets do this with display lists for real.
     vec3 a, b, c, na, nb, nc;
@@ -137,8 +135,7 @@ void SimModel::disableMouseForce() { _system->disableMouseForce(); }
 bool SimModel::isMouseEnabled() { return _system->isMouseEnabled(); }
 
 void SimModel::draw() {
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, _material->getMatDiffuse());
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, _material->getMatAmbient());
+    _material->setGLcolors();
 
     vec3 a, b, c, na, nb, nc;
     TriangleMeshVertex** vertices;
@@ -224,6 +221,9 @@ double AniModel::getTimeStep() {
 }
 
 void AniModel::draw() {
+
+    _material->setGLcolors();
+
     vec3 a, b, c, na, nb, nc;
 
     TriangleMeshVertex** vertices;
@@ -314,6 +314,10 @@ vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
 }
 
 void AniElliModel::draw() {
+
+    _material->setGLcolors();
+
+
 	if (DRAWELLIPSOIDS) {
 		//*
 		for (unsigned int i = 0; i < _ellipsoids[_count].size(); i++) {

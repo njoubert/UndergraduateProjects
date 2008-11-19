@@ -17,12 +17,20 @@ class Material {
 public:
     Material();
     virtual ~Material();
+
+    void makeDefaultColor();
+    void makeSimColor();
+    void makeStatColor();
+    void setGLcolors();
+
     float getKe();
     float getKd();
     float getKBe();
     float getKBd();
     GLfloat* getMatDiffuse();
     GLfloat* getMatAmbient();
+    GLfloat* getMatSpecular();
+    GLfloat* getMatShininess();
 private:
     float _ks;
     float _kd;
@@ -30,6 +38,9 @@ private:
     float _kbd;
     GLfloat mat_ambient[4];
     GLfloat mat_diffuse[4];
+    GLfloat mat_specular[4];
+    GLfloat mat_shininess[1];
+
 };
 
 #endif /* MATERIAL_H_ */

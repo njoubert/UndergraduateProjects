@@ -75,6 +75,7 @@ bool World::loadSimModel(TriangleMesh* mesh, double timeStep, float mass) {
     if (mesh == NULL)
         return false;
     Material* mat = new DEFAULT_MATERIAL();
+    mat->makeSimColor();
     Model* model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
             new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, timeStep);
     _models.push_back(model);
