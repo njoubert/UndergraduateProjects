@@ -488,7 +488,7 @@ void init(void) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
     glShadeModel(GL_SMOOTH);
-    glClearColor(0.7, 0.7, 0.7, 0.0);
+    Material::clearGLcolors();
 
     GLfloat global_ambient[] = {.1f, .1f, .1f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
@@ -672,11 +672,11 @@ void display(void) {
         // draw grid
         glBegin(GL_LINES);
         for (int i = -10; i <= 10; ++i) {
-            glVertex3f(i, 0, -10);
-            glVertex3f(i, 0, 10);
+            glVertex3f(i, 0.1, -10);
+            glVertex3f(i, 0.1, 10);
 
-            glVertex3f(10, 0, i);
-            glVertex3f(-10, 0, i);
+            glVertex3f(10, 0.1, i);
+            glVertex3f(-10, 0.1, i);
         }
         glEnd();
     }
@@ -773,7 +773,7 @@ void myMousePress(int button, int state, int x, int y) {
                 //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
                 if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
                 	//cout<<"mouse Position World Space-> x: "<<ox*(1/cam.getZoom())<<"   y: "<<oy*(1/cam.getZoom())<<"   z: "<<0<<endl;
-                	world.enableMouseForce(vec3(ox*5,oy*5,0));
+                	world.enableMouseForce(vec3(ox,oy,0));
                     //sys->enableMouseForce(vec3(ox,oy,0));
                 }
                 else
@@ -806,7 +806,7 @@ void myMouseMove(int x, int y) {
                 //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
                 if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
                 	//cout<<"mouse Position World Space-> x: "<<ox<<"   y: "<<oy<<"   z: "<<oz<<endl;
-                	world.updateMouseForce(vec3(ox*5,5*oy,0));
+                	world.updateMouseForce(vec3(ox,oy,0));
                 }
                 else
                 	cout<<"gluUnProject Returned False"<<endl;
@@ -832,7 +832,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    cam._w = 600;
+    cam._w = 800;
     cam._h = 600;
 
     //Create Window:
