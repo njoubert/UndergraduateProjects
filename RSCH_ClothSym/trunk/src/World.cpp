@@ -196,20 +196,23 @@ bool World::createVertexToAnimatedEllipseCollisions() {
 }
 
 bool World::createFixedVertexContraints() {
-	cout<<"Checking for Fixed Constraints"<<endl;
-	SimModel* simModel = (SimModel*) _models[1];
-	TriangleMesh* mesh = simModel->getMesh();
-	for(int i = 0; i < mesh->countVertices(); i++){
-	TriangleMeshVertex*	v = mesh->getVertex(i);
-		if(v->getConstaint()){
-			FixedConstraint* constraint = new FixedConstraint();
-			constraint->setFollow(v);
-			simModel->registerConstraint(constraint);
-			STATIC_CONSTRAINTS = true;
-			DYNAMIC_CONSTRAINTS = false;
-			cout<<"Created Fixed Constraint"<<endl;
+	if (STATIC_CONSTRAINTS) {
+		cout << "Checking for Fixed Constraints" << endl;
+		SimModel* simModel = (SimModel*) _models[1];
+		TriangleMesh* mesh = simModel->getMesh();
+		for (int i = 0; i < mesh->countVertices(); i++) {
+			TriangleMeshVertex* v = mesh->getVertex(i);
+			if (v->getConstaint()) {
+				FixedConstraint* constraint = new FixedConstraint();
+				constraint->setFollow(v);
+				simModel->registerConstraint(constraint);
+				STATIC_CONSTRAINTS = true;
+				DYNAMIC_CONSTRAINTS = false;
+				cout << "Created Fixed Constraint" << endl;
+			}
 		}
 	}
+
 	return true;
 }
 

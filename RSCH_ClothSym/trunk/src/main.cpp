@@ -346,6 +346,10 @@ int parseCommandLine(int argc, char *argv[]) {
 			}
 
 
+		} else if (!strcmp(argv[i], "-discons")) {
+				DYNAMIC_CONSTRAINTS = false;
+				cam.dynamicConstraints = false;
+				STATIC_CONSTRAINTS = false;
 		} else if (!strcmp(argv[i], "-ke")) {
 
 			if (isThereMore(i, argc, 1)) {
@@ -413,7 +417,7 @@ int parseCommandLine(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "-gamma")) {
 
             if (isThereMore(i, argc, 1)) {
-            	GAMMA = atoi(argv[++i]);
+            	GAMMA = atof(argv[++i]);
             } else {
                 malformedArg = true;
             }

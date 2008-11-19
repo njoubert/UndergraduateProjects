@@ -511,11 +511,71 @@ void System::calculateInternalForces(Solver* solver) {
     } while (edg_it.next());
 }
 
+void System::calculateDampingToLimitStrain(Solver* solver, SPARSE_MATRIX* JV, double Ksd) {
+	LARGE_VECTOR* f = solver->getf();
+	    vec3 F0(0, 0, 0);
+	    TriangleMeshVertex *a, *b;
+	    int ia, ib;
+	    EdgesIterator edg_it = mesh->getEdgesIterator();
+	    do {
+	        a = (*edg_it)->getVertex(0);
+	        b = (*edg_it)->getVertex(1);
+
+	        ia = a->getIndex(); ib = b->getIndex();
+
+	        vec3 pa = a->getX(); vec3 va = a->getvX();
+	        vec3 pb = b->getX(); vec3 vb = b->getvX();
+	        vec3 Ua = a->getU(); vec3 Ub = b->getU();
+	        vec3 RL = Ua - Ub; double rl = RL.length();
+
+	        vec3 strain = (pa - pb) - RL;
+	        vec3 p_dir = (pa - pb).normalize();
+	        double maxStrainPercent = .10;
+	        double strainPercent = strain.length()/RL.length();
+
+	        if(strainPercent > maxStrainPercent)
+	        	F0 = -Ksd * ((va-vb)*p_dir)*p_dir;
+
+	        //Update Force vector
+	        (*f)[a->getIndex()] += F0;
+	        (*f)[b->getIndex()] += (-1 * F0);
+
+	        //Update Velocity Jacobian Matrix
+	        //*
+	        mat3 jv(0);
+			//A
+	        double norm = ( (pa[0]-pb[0])*(pa[0]-pb[0]) + (pa[1]-pb[1])*(pa[1]-pb[1]) + (pa[2]-pb[2])*(pa[2]-pb[2]) );
+	        jv[0][0] = (-1*Ksd*(pa[0]-pb[0])*(pa[0]-pb[0]))/norm;
+	        jv[0][1] = (-1*Ksd*(pa[0]-pb[0])*(pa[1]-pb[1]))/norm;
+	        jv[0][2] = (-1*Ksd*(pa[0]-pb[0])*(pa[2]-pb[2]))/norm;
+	        jv[1][0] = (-1*Ksd*(pa[0]-pb[0])*(pa[1]-pb[1]))/norm;
+	        jv[1][1] = (-1*Ksd*(pa[1]-pb[1])*(pa[1]-pb[1]))/norm;
+	        jv[1][2] = (-1*Ksd*(pa[1]-pb[1])*(pa[2]-pb[2]))/norm;
+	        jv[2][0] = (-1*Ksd*(pa[0]-pb[0])*(pa[2]-pb[2]))/norm;
+	        jv[2][1] = (-1*Ksd*(pa[1]-pb[1])*(pa[2]-pb[2]))/norm;
+	        jv[2][2] = (-1*Ksd*(pa[2]-pb[2])*(pa[2]-pb[2]))/norm;
+	        /*
+	        jv[0][0] = -1*Ksd;
+	        jv[1][1] = -1*Ksd;
+	        jv[2][2] = -1*Ksd;
+	        //*/
+	        //*
+	        (*JV)(ia,ia) += jv;
+	        (*JV)(ia,ib) += -1*jv;
+	        (*JV)(ib,ia) += -1*jv;
+	        (*JV)(ib,ib) += jv;
+
+
+	        //*/
+
+	    } while (edg_it.next());
+}
+
 void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV, vector<VertexToEllipseCollision*> *collisions) {
 	LARGE_VECTOR* F = solver->getf();
 
 	for(int i = 0; i < (*collisions).size(); i++)
-		(*collisions)[i]->applyDampedCollisions(10, JV, F);
+		(*collisions)[i]->applyDampedCollisions(100, JV, F);
 }
 
 void System::calculateForcePartials(NewmarkSolver* solver) {

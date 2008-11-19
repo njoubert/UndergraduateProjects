@@ -283,7 +283,9 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
     sys->calculateForcePartials(this);
-    sys->calculateCollisionDamping(this, _JV, collisions);
+    if(COLLISIONS)
+    	sys->calculateCollisionDamping(this, _JV, collisions);
+    //sys->calculateDampingToLimitStrain(this, _JV, 10);
 
 
     //sys->applyCollisions(this, collisions);
@@ -363,6 +365,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*_delx) += *_y;
     profiler.frametimers.switchToGlobal();
 
+    //Update x, y new delx, delv
     LARGE_VECTOR* _xTMP = sys->getX();
     LARGE_VECTOR* _vTMP = sys->getV();
     (*_xTMP) += (*_delx);
@@ -372,13 +375,6 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
      sys->applyConstraints(this, constraints);
 
 //     sys->applyCollisions(this, collisions);
-
-/*
-     //Update x, y new delx, delv
-
-//*/
-
-
 
     profiler.frametimers.switchToTimer("update");
 

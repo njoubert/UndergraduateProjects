@@ -395,9 +395,8 @@ void VertexToEllipseCollision::applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTO
 }
 
 vec3 VertexToEllipseCollision::f_dampCollision(vec3 Vn, vec3 vEllipsoid, double Kcd) {
-	//cout<<"Vn: "<<Vn<<endl;
 
-	vec3 f = -Kcd * Vn;// - vEllipsoid);
+	vec3 f = -Kcd * Vn;
     return f;
 }
 
@@ -430,26 +429,15 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd, SPARSE_MATRIX* 
 				vec3 Wtan = W^r;
 				vec3 Velli = Vo + Wtan;
 
-				//_collisionVelocities.push_back(Vert->getvX() - Velli);
-				//_collisionIndices.push_back(Vert->getIndex());
 
 				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
-
-				//cout<<"Xc: "<<Xc<<endl;
 				vec3 Vn = ((Vert->getvX()-Velli)*n)*n;
 				//vec3 Vn = (Vert->getvX());
+
 				//damping force only applied if moving into ellipse.
-				//if ((Vn * n) < 0) {
-					cout << "woo apply damping forces! n= " << n << " Vn=" << Vn << endl;
+				if ((Vn * n) < 0) {
+				//	cout << "woo apply damping forces! n= " << n << " Vn=" << Vn << endl;
 					vec3 dampingForce = f_dampCollision( Vn, Velli, Kcd);
-		//			for(int k = 0; k < 3; k++) {
-		//				if(dampingForce[k] > (*F)[i][k]) {
-						//	cout<<"Force is: "<<(*F)[i][k]<<endl;
-						//	cout<<"Damping Force: "<<dampingForce<<endl;
-		//					dampingForce[k] = (-1) * ((*F)[i][k]);
-						//	cout<<"damping Force changed to: "<<dampingForce<<endl;
-		//				}
-		//			}
 
 					(*F)[i]  += dampingForce;
 					mat3 jv(0);
@@ -470,9 +458,9 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd, SPARSE_MATRIX* 
 					jv[2][2] = -Kcd * n[2]*n[2];
 					//*/
 					(*JV)(i,i) += jv;
-				//} else {
-				//	cout << "NONE damping forces! n= " << n << " Vn=" << Vn << endl;
-				//}
+				} else {
+			//		cout << "NONE damping forces! n= " << n << " Vn=" << Vn << endl;
+				}
 				//frictionForce(j, Vert, Velli, F);
 			}
 		}
