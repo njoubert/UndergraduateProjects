@@ -46,6 +46,7 @@ TriangleMesh* OBJParser::parseOBJ(string filename) {
 
     inFile.close();
     parseDebug("Parser exiting...");
+    cout << "Parsed an OBJ mesh with " << myMesh->countVertices() << " vertices, " << myMesh->countTriangles() << " triangles." << endl;
     return myMesh;
 }
 

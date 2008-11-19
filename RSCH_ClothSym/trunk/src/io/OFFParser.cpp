@@ -87,14 +87,17 @@ TriangleMesh* OFFParser::parse(string filename) {
             cout << "Wrong number of vertices per polygon. We only support triangles! We detected " << a << endl;
             inFile.close();
             return NULL;
+        } else {
+            if (b == 0 || c == 0 || d == 0)
+                cout << "ADDED POINT 0" << endl;
+            myMesh->createTriangle(b,c,d);
         }
-        myMesh->createTriangle(b,c,d);
     }
     cout << "Mesh created with " << myMesh->countTriangles() << " triangles, " << myMesh->countVertices() << " vertices." << endl;
     myMesh->setGlobalMassPerParticle(1.0 / nvert);
-    myMesh->exportAsOBJ("EXPORTEDOFF.OBJ");
     inFile.close();
     parseDebug("Parser exiting...");
+    cout << "Parsed an OFF mesh with " << myMesh->countVertices() << " vertices, " << myMesh->countTriangles() << " triangles." << endl;
     return myMesh;
 }
 
