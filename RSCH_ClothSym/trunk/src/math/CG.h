@@ -35,6 +35,19 @@ private:
     LargeVec3Vector q;
 };
 
+class ModifiedCG : public ConjugateGradient {
+public:
+	ModifiedCG(int);
+    ~ModifiedCG();
+    int solve(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & x,
+                int imax, double e);
+    LargeVec3Vector* filter(LargeVec3Vector*);
+private:
+    LargeVec3Vector r;
+    LargeVec3Vector d;
+    LargeVec3Vector q;
+};
+
 class PreconditionedCG : public ConjugateGradient {
 public:
     PreconditionedCG(int);

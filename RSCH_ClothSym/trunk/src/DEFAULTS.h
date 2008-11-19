@@ -2,7 +2,7 @@
 #define DEFAULTS_H_
 
 
-#define GRAVITY 0,0,-9.8
+#define GRAVITY 0,-9.8,0
 
 
 #define DEFAULT_TIMESTEP	0.02
@@ -22,15 +22,14 @@
 #define DEFAULT_MUS 0.4
 #define DEFAULT_MUD 0.6
 
-#define DEFAULT_GAMMA 0.5
-#define DEFAULT_BETA 0.25
-//#define DEFAULT_GAMMA 1.0
+//#define DEFAULT_GAMMA 0.64
+#define DEFAULT_GAMMA 1.0
 
 #define SPARSE_MATRIX LargeMat3Matrix
 #define LARGE_VECTOR LargeVec3Vector
 
-#define DEFAULT_MAX_CG_ITER 2000
-#define DEFAULT_MAX_CG_ERR 1e-5;
+#define DEFAULT_MAX_CG_ITER 200
+#define DEFAULT_MAX_CG_ERR 0.00001
 
 #define DEFAULT_CG SimpleCG
 

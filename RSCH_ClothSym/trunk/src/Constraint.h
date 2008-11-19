@@ -52,6 +52,14 @@ public:
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
+class FixedBaraffConstraint : public Constraint {
+public:
+    FixedBaraffConstraint();
+    void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
+    void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
+    void applyMassMod(SPARSE_MATRIX*);
+};
+
 class VertexToAnimatedVertexConstraint : public Constraint {
 public:
     VertexToAnimatedVertexConstraint();
@@ -64,6 +72,8 @@ public:
     VertexToAnimatedEllipseConstraint();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
+private:
+	vec3 _vel;
 };
 
 class VertexToEllipseCollision : public Constraint {
@@ -71,8 +81,15 @@ public:
 	VertexToEllipseCollision();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
-    void applyCollisionToMesh(LARGE_VECTOR*, LARGE_VECTOR*, LARGE_VECTOR*);
+    void changeDelvToAvoidCollisions(LARGE_VECTOR* delv, double h, NewmarkSolver* solver);
     void frictionForce(int, TriangleMeshVertex*, vec3,  LARGE_VECTOR*);
+    bool applyCollisions(LARGE_VECTOR*, LARGE_VECTOR*, LARGE_VECTOR*, double);
+    void applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y );
+    vec3 f_dampCollision(vec3 vPoint, vec3 vEllipsoid, double Kcd);
+    void applyDampedCollisions(double , SPARSE_MATRIX* , LARGE_VECTOR* );
+private:
+	vector <int> _collisionIndices;
+	vector <vec3> _collisionVelocities;
 };
 
 #endif /* CONSTRAINT_H_ */

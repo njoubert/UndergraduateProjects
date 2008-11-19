@@ -33,6 +33,8 @@ public:
 	LARGE_VECTOR* getV();
 	LARGE_VECTOR* getA();
 	SPARSE_MATRIX* getM();
+	SPARSE_MATRIX* getW();
+	SPARSE_MATRIX* getI();
     //-----------------------------------------
 
 	mat3 outerProduct(vec3 a, vec3 b);
@@ -41,9 +43,12 @@ public:
 	//CALCULATE STATE FOR SOLVER:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
-	void calculateForcePartials(Solver*);
+	void calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV, vector<VertexToEllipseCollision*> *collisions);
+	void calculateForcePartials(NewmarkSolver*);
+	void calculateForcePartials(ImplicitSolver* solver);
 	void applyConstraints(Solver*, vector<Constraint*> *);
 	void applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions);
+
 	//-----------------------------------------
 
 	void takeStep(Solver*, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
@@ -55,6 +60,12 @@ public:
 	int setVertexPos2MousePos();
 	void applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b);
 
+	int getMaxNrCollTests();
+	int getNrCollTests();
+	void setNrCollTests(int);
+	void setMaxNrCollTests(int);
+
+
 	vec3 f_mouse( TriangleMeshVertex* selected );
 	vec3 f_spring( vec3 & pa, vec3 & pb, double rl, double Ks);
     vec3 f_damp( vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, double Kd);
@@ -65,15 +76,24 @@ public:
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
 
+
 private:
     TriangleMesh* mesh;
     LARGE_VECTOR* _x;
     LARGE_VECTOR* _v;
     LARGE_VECTOR* _a;
     SPARSE_MATRIX* _M;
+    SPARSE_MATRIX* _S;
+    SPARSE_MATRIX* _W;
+    SPARSE_MATRIX* _I;
     Material* _mat;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
+
+    LARGE_VECTOR* _x0;
+    LARGE_VECTOR* _v0;
+    int _nrCollTests;
+    int _maxNrCollTests;
 };
 
 #endif /* SYSTEM_H_ */

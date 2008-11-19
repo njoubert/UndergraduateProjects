@@ -12,6 +12,10 @@ System::System(TriangleMesh* m, Material* mat) :
     mesh(m), _mat(mat) {
     mouseSelected = NULL;
 
+    _nrCollTests = 1;
+    _maxNrCollTests = 3;
+
+    cout<<"		Creating Sparse Mass Matrix..."<<endl;
     int n = m->countVertices();
     vector<vector<int> > sparsePattern = MeshTOLargeMatrix::GenerateIdentityPattern(n);
     _M = new SPARSE_MATRIX(n,n,sparsePattern , true);
@@ -22,6 +26,37 @@ System::System(TriangleMesh* m, Material* mat) :
         mass *= m->getVertex(i)->getm();
         (*_M)(i,i) = mass;
     }
+    cout<<"		Done Creating Sparse Mass Matrix."<<endl;
+
+//MATRICES FOR BARAFF CONSTRAINTS
+/*
+    int n = m->countVertices();
+    vector<vector<int> > sparsePatternNx1 = MeshTOLargeMatrix::GenerateNByOnePattern(n);
+    _S = new SPARSE_MATRIX(n,1,sparsePatternNx1,true);
+
+
+    _W = new SPARSE_MATRIX(n,n,sparsePattern,true);
+
+    mat3 S;
+    for(int i = 0; i < m->countVertices(); i++) {
+    	if(mesh->getVertex(i)->getConstaint())
+    	    S = mat3(0);
+    	else
+    		S = mat3(identity2D());
+
+    	mass = identity2D();
+    	mass *= (1/m->getVertex(i)->getm());
+    	mass = mass*S;
+    	(*_W)(i,i) = mass;
+    }
+
+    _I = new SPARSE_MATRIX(n,n,sparsePattern,true);
+
+    for(int i = 0; i < m->countVertices(); i++)
+       (*_I)(i,i) = mat3(identity2D());
+
+//*/
+
 
     //*******************GET REST ANGLE AND STORE IT IN MESH************************************
     TriangleMeshVertex *a, *b;
@@ -106,7 +141,13 @@ System::System(TriangleMesh* m, Material* mat) :
 
     _x = new LargeVec3Vector(m->countVertices());
     _v = new LargeVec3Vector(m->countVertices());
+
+    _x0 = new LargeVec3Vector(m->countVertices());
+    _v0 = new LargeVec3Vector(m->countVertices());
+
     _a = new LargeVec3Vector(m->countVertices());
+
+    cout<<_x->size()<<" "<<_x0->size()<<"	"<<_v->size()<<" "<<_v0->size()<<endl;
 }
 
 /*
@@ -128,6 +169,7 @@ void System::loadStateFromMesh() {
 LARGE_VECTOR* System::getX() {
     return _x;
 }
+
 LARGE_VECTOR* System::getV() {
     return _v;
 }
@@ -136,6 +178,30 @@ LARGE_VECTOR* System::getA() {
 }
 SPARSE_MATRIX* System::getM() {
     return _M;
+}
+
+SPARSE_MATRIX* System::getW() {
+    return _W;
+}
+
+SPARSE_MATRIX* System::getI() {
+	return _I;
+}
+
+int System::getNrCollTests() {
+	return _nrCollTests;
+}
+
+int System::getMaxNrCollTests() {
+	return _maxNrCollTests;
+}
+
+void System::setNrCollTests(int nrCollTets) {
+	_nrCollTests = nrCollTets;
+}
+
+void System::setMaxNrCollTests(int maxNrCollTests) {
+	_maxNrCollTests = maxNrCollTests;
 }
 
 mat3 System::outerProduct(vec3 a, vec3 b) {
@@ -167,6 +233,7 @@ vec3 System::f_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, doubl
     vec3 f = -Kd * ((l * w) / (L * L)) * l;
     return f;
 }
+
 
 void System::bendForce(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
 		TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge,
@@ -444,7 +511,49 @@ void System::calculateInternalForces(Solver* solver) {
     } while (edg_it.next());
 }
 
-void System::calculateForcePartials(Solver* solver) {
+void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV, vector<VertexToEllipseCollision*> *collisions) {
+	LARGE_VECTOR* F = solver->getf();
+
+	for(int i = 0; i < (*collisions).size(); i++)
+		(*collisions)[i]->applyDampedCollisions(10, JV, F);
+}
+
+void System::calculateForcePartials(NewmarkSolver* solver) {
+    SPARSE_MATRIX* JP = solver->getJP();
+    SPARSE_MATRIX* JV = solver->getJV();
+
+    mat3 JP_fa_xa, JV_fa_xa;
+    TriangleMeshVertex *a, *b;
+    int ia, ib;
+    EdgesIterator edg_it = mesh->getEdgesIterator();
+    do {
+        a = (*edg_it)->getVertex(0);
+        b = (*edg_it)->getVertex(1);
+
+        ia = a->getIndex(); ib = b->getIndex();
+
+        vec3 pa = a->getX(); vec3 va = a->getvX();
+        vec3 pb = b->getX(); vec3 vb = b->getvX();
+        vec3 Ua = a->getU(); vec3 Ub = b->getU();
+        vec3 RL = Ua - Ub; double rl = RL.length();
+
+        JP_fa_xa = dfdx_damp(pa, pb, va, vb, rl, _mat->getKd()) + dfdx_spring(pa, pb, rl, _mat->getKe());
+        JV_fa_xa = dfdv_damp(pa, pb, rl, _mat->getKd());
+
+        (*JP)(ia,ia) += JP_fa_xa;
+        (*JP)(ia,ib) += -1*JP_fa_xa;
+        (*JP)(ib,ia) += -1*JP_fa_xa;
+        (*JP)(ib,ib) += JP_fa_xa;
+
+        (*JV)(ia,ia) += JV_fa_xa;
+        (*JV)(ia,ib) += -1*JV_fa_xa;
+        (*JV)(ib,ia) += -1*JV_fa_xa;
+        (*JV)(ib,ib) += JV_fa_xa;
+    } while (edg_it.next());
+
+}
+
+void System::calculateForcePartials(ImplicitSolver* solver) {
     SPARSE_MATRIX* JP = solver->getJP();
     SPARSE_MATRIX* JV = solver->getJV();
 
@@ -494,14 +603,13 @@ void System::applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *
 }
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
 		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
-
     profiler.frametimers.switchToTimer("calculateState");
     //Calculate the current derivatives and forces
     solver->calculateState(this, constraints, collisions); //evalDeriv function
     profiler.frametimers.switchToGlobal();
 
     //Run the solver to populate delx, delv
-    solver->solve(this, constraints, timeStep);
+    solver->solve(this, constraints, timeStep, collisions);
 
     profiler.frametimers.switchToTimer("writeback mesh");
     //Write back to mesh
