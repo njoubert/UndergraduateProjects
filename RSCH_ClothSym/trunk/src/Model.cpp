@@ -305,10 +305,15 @@ double AniElliModel::getTimeStep() {
 	return _timeStep;
 }
 
-vec3 AniElliModel::getNormal(int j, vec3 X_world_3) {
-	vec3 origin = getOrigin(j);
-	vec3 n = X_world_3 - origin;
-	return n.normalize();
+vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
+	//Get Position Were Collision Occurs
+		mat4 elliTransform = getEllipsoid(j);
+
+		X_elli_4[3] = 0;
+		vec3 Xc(elliTransform.inverse().transpose() * X_elli_4, VW);
+		Xc.normalize();
+
+		return Xc;
 }
 
 void AniElliModel::draw() {
@@ -433,19 +438,12 @@ vec4 AniElliModel::convertPoint2ElliSpace(int j, vec3 X_world_3) {
 vec3 AniElliModel::getPointInsideElli2Surface(int j, vec4 X_elli_4) {
 	//Get Position Were Collision Occurs
 	mat4 elliTransform = getEllipsoid(j);
-	vec3 X_elli_3;
 
-	for (int k = 0; k < 3; k++)
-		X_elli_3[k] = X_elli_4[k];
-	X_elli_3 = X_elli_3 / sqrt(X_elli_3[0] * X_elli_3[0] + X_elli_3[1] * X_elli_3[1] + X_elli_3[2]* X_elli_3[2]);
-	for (int k = 0; k < 3; k++)
-		X_elli_4[k] = X_elli_3[k];
-
+	X_elli_4 = X_elli_4 / sqrt(X_elli_4[0] * X_elli_4[0] + X_elli_4[1] * X_elli_4[1] + X_elli_4[2]* X_elli_4[2]);
 	X_elli_4[3] = 1;
+
 	vec4 Xc_4 = X_elli_4 * elliTransform;
-	vec3 Xc;
-	for (int k = 0; k < 3; k++)
-		Xc[k] = Xc_4[k];
+	vec3 Xc(Xc_4, VW);
 
 	return Xc;
 }

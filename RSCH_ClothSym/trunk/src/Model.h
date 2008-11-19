@@ -142,7 +142,7 @@ public:
     vec3 getPointInPast(int i, vec3 x_WorldSpace_3);
 
     //FOR FRICTION
-    vec3 getNormal(int j, vec3 X_world_3);
+    vec3 getNormal(int j, vec4 X_elli_4);
     double getMu_s();
     double getMu_d();
 
