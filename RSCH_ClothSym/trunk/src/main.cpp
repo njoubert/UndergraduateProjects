@@ -235,18 +235,6 @@ int parseCommandLine(int argc, char *argv[]) {
                 world.loadSimModel(mesh, TIMESTEP, MASS);
                 hasOBJ = true;
             }
-            /*
-            else if (isThereMore(i, argc, 2)) {
-                std::string filename = std::string(argv[++i]);
-                double timeStep = atof(argv[++i]);
-                world.loadSimModel(filename, TIMESTEP, MASS);
-                hasOBJ = true;
-            } else if (isThereMore(i, argc, 1)) {
-                std::string filename = std::string(argv[++i]);
-                world.loadSimModel(filename, TIMESTEP, MASS);
-                hasOBJ = true;
-            }
-            //*/
             else {
                 malformedArg = true;
             }

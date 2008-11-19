@@ -30,7 +30,7 @@
 #define SPARSE_MATRIX LargeMat3Matrix
 #define LARGE_VECTOR LargeVec3Vector
 
-#define DEFAULT_MAX_CG_ITER 200
+#define DEFAULT_MAX_CG_ITER 1000
 #define DEFAULT_MAX_CG_ERR 0.00001
 
 #define DEFAULT_CG SimpleCG

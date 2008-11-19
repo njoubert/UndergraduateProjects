@@ -101,6 +101,7 @@ bool World::loadEllipseModel(string filename, int numFrames) {
      }
      }
      //*/
+
     Model* model = new AniElliModel(ellipsoids);
     _models.push_back(model);
     cout << "Done Parsing and loading EllipseModel." << endl;

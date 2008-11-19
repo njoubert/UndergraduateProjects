@@ -21,11 +21,15 @@ public:
     float getKd();
     float getKBe();
     float getKBd();
+    GLfloat* getMatDiffuse();
+    GLfloat* getMatAmbient();
 private:
     float _ks;
     float _kd;
     float _kbe;
     float _kbd;
+    GLfloat mat_ambient[4];
+    GLfloat mat_diffuse[4];
 };
 
 #endif /* MATERIAL_H_ */

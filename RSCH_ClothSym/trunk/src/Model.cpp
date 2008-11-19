@@ -137,17 +137,14 @@ void SimModel::disableMouseForce() { _system->disableMouseForce(); }
 bool SimModel::isMouseEnabled() { return _system->isMouseEnabled(); }
 
 void SimModel::draw() {
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, _material->getMatDiffuse());
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, _material->getMatAmbient());
+
     vec3 a, b, c, na, nb, nc;
-
-    //Make the simulation green
-    GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.0, 0.1, 0.0, 1.0 };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
         _mesh->triangles.begin();
+
     while (it != _mesh->triangles.end()) {
         vertices = (*it)->getVertices();
 

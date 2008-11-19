@@ -449,9 +449,9 @@ void TriangleMesh::exportAsOBJ(string filename) {
     TriangleMeshTriangle* t;
     for (int i = 0; i < countTriangles(); i++) {
         t = getTriangle(i);
-        outfile << "f " << t->getVertices()[0]->getIndex() << " "
-            << t->getVertices()[0]->getIndex() << " "
-            << t->getVertices()[0]->getIndex() << endl;
+        outfile << "f " << t->getVertices()[0]->getIndex()+1 << " "
+            << t->getVertices()[1]->getIndex()+1 << " "
+            << t->getVertices()[2]->getIndex()+1 << endl;
     }
 
     outfile.close();
