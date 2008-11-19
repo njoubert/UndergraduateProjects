@@ -13,13 +13,13 @@ Material::Material() {
    _kbe = KBe;
    _kbd = KBd;
 
-   mat_diffuse[0] = 0.0f;
-   mat_diffuse[1] = 0.8f;
-   mat_diffuse[2] = 0.1f;
+   mat_diffuse[0] = 245.0f / 255.0f;
+   mat_diffuse[1] = 245.0f / 255.0f;
+   mat_diffuse[2] = 220.0f / 255.0f;
    mat_diffuse[3] = 1.0f;
-   mat_ambient[0] = 0.6f;
-   mat_ambient[1] = 0.6f;
-   mat_ambient[2] = 0.6f;
+   mat_ambient[0] = 245.0f / 255.0f;
+   mat_ambient[1] = 245.0f / 255.0f;
+   mat_ambient[2] = 220.0f / 255.0f;
    mat_ambient[3] = 1.0f;
 }
 
