@@ -291,7 +291,7 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     //sys->applyCollisions(this, collisions);
 
     //Apply constraints to points right here.
-    //sys->applyConstraints(this, constraints);
+    sys->applyConstraints(this, constraints);
 
 }
 
@@ -342,7 +342,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 //    if(COLLISIONS)
 //    	(*collisions)[0]->applyConstraintToSolverMatrices(A,b);
 
-	//sys->applyMouseConst2Matrices(A, b);
+	sys->applyMouseConst2Matrices(A, b);
 
 	profiler.frametimers.switchToTimer("CG solving");
     //delV = b/A
