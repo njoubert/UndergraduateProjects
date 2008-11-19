@@ -105,7 +105,7 @@ public:
         unsigned int i = 0;
         if (0 == _sparseIndices.size()) {
 #ifdef CATCHERRORS
-            cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT IN SPARSE MATRIX" << endl;
+            cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT IN SPARSE MATRIX: c=" << c << endl;
 #endif
             return -1;
         }
@@ -116,7 +116,7 @@ public:
                 return i;
             else {
 #ifdef CATCHERRORS
-                cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT IN SPARSE MATRIX" << endl;
+                cout << __FILE__ << "::" << __LINE__ << ": ENTRY NOT IN SPARSE MATRIX: c=" << c << endl;
 #endif
                 return -1;
             }
