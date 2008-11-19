@@ -82,9 +82,9 @@ void Image::saveAsBMP(string filename) {
             char r = (char) pixels[absolutePosition(col, row)].r;
             char g = (char) pixels[absolutePosition(col, row)].g;
             char b = (char) pixels[absolutePosition(col, row)].b;
-            fp_out.write(&r, 1);
-            fp_out.write(&g, 1);
             fp_out.write(&b, 1);
+            fp_out.write(&g, 1);
+            fp_out.write(&r, 1);
         }
         fp_out.write(bmppad, (4 - (w * 3) % 4) % 4); //pads it like hellz!
     }
