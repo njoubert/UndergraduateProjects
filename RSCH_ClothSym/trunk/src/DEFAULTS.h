@@ -24,6 +24,8 @@
 
 //#define DEFAULT_GAMMA 0.64
 #define DEFAULT_GAMMA 1.0
+#define DEFAULT_BETA 0.25
+
 
 #define SPARSE_MATRIX LargeMat3Matrix
 #define LARGE_VECTOR LargeVec3Vector
