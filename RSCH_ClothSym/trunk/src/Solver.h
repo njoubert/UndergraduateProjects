@@ -78,24 +78,4 @@ private:
 
 };
 
-class FullNewmarkSolver: public Solver {
-public:
-    FullNewmarkSolver(TriangleMesh*, int);
-    ~FullNewmarkSolver();
-    LARGE_VECTOR* getY();
-    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
-    void solve(System* sys,vector<Constraint*> *constraints,double timeStep);
-private:
-    DEFAULT_CG cg;
-    float _gamma;
-    float _beta;
-    LARGE_VECTOR* _y;   //Position modification
-
-    SPARSE_MATRIX* A;
-    SPARSE_MATRIX* Minv;
-    LARGE_VECTOR* b;
-    LARGE_VECTOR* t1;
-    LARGE_VECTOR* an;
-};
-
 #endif /* SOLVER_H_ */
