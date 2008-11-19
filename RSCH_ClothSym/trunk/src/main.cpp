@@ -259,6 +259,8 @@ int parseCommandLine(int argc, char *argv[]) {
                 MASS = atof(argv[++i]);
                 OFFParser parser;
                 TriangleMesh* mesh = parser.parse(filename);
+                string objfilename = filename + ".obj";
+                mesh->exportAsOBJ(objfilename);
                 world.loadSimModel(mesh, TIMESTEP, MASS);
                 hasOBJ = true;
             }

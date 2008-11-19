@@ -9,6 +9,7 @@
 
 World::World() {
     _time = 0;
+    _displayListsValid = false;
 }
 
 World::~World() {
@@ -41,6 +42,19 @@ void World::advance(double netTime) {
 }
 
 void World::draw() {
+    if (!_displayListsValid) {
+        _displayListsIndex = glGenLists(_statmodels.size());
+        for (unsigned int j = 0; j < _statmodels.size(); j++) {
+            glNewList(_displayListsIndex + j, GL_COMPILE);
+            _statmodels[j]->draw();
+            glEndList();
+        }
+        _displayListsValid = true;
+    }
+    for (unsigned int j = 0; j < _statmodels.size(); j++) {
+        glCallList(_displayListsIndex + j);
+    }
+
     for (unsigned int j = 0; j < _models.size(); j++)
         _models[j]->draw();
 }
@@ -50,8 +64,8 @@ bool World::loadStatModel(string filename) {
     TriangleMesh* mesh = parser.parseOBJ(filename);
     if (mesh == NULL)
         return false;
-    Model* model = new StatModel(mesh);
-    _models.push_back(model);
+    StatModel* model = new StatModel(mesh);
+    _statmodels.push_back(model);
     return true;
 }
 

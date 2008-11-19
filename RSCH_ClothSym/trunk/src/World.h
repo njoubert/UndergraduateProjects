@@ -52,8 +52,11 @@ private:
     bool addModel(Model* model);
 
 private:
+    vector<StatModel*> _statmodels;
     vector<Model*> _models;
     double _time;
+    bool _displayListsValid;
+    int _displayListsIndex;
 };
 
 #endif /* WORLD_H_ */
