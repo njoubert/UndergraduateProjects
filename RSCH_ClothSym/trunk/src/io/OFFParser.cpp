@@ -55,7 +55,6 @@ TriangleMesh* OFFParser::parse(string filename) {
         double x, y, z;
         s2 >>x >>y >>z;
         int j = myMesh->createVertex(x,y,z);
-        cout << j << " " << endl;
         s2 >>ws;
         if (!s2.eof()) {
             string args;
