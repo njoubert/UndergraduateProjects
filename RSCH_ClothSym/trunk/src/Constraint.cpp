@@ -87,7 +87,7 @@ void FixedBaraffConstraint::applyConstraintToSolverMatrices(
 
 void FixedBaraffConstraint::applyMassMod( SPARSE_MATRIX* M ) {
 	mat3 S;
-    for(int i = 0; i < _mesh->countVertices(); i++) {
+    for(unsigned int i = 0; i < _mesh->countVertices(); i++) {
     	if(_mesh->getVertex(i)->isPinned())
     		S = mat3(0);
     	else
@@ -218,7 +218,7 @@ void VertexToEllipseCollision::frictionForce(int j, TriangleMeshVertex* p, vec3 
 void VertexToEllipseCollision::changeDelvToAvoidCollisions(LARGE_VECTOR* delv, double h, NewmarkSolver* solver) {
 	TriangleMeshVertex* Vert;
 
-	for(int i = 0; i < _mesh->countVertices(); i++) {
+	for(unsigned int i = 0; i < _mesh->countVertices(); i++) {
 		for(int j = 0; j < _ellipsoids->getSize(); j++) {
 			Vert = _mesh->getVertex(i);
 
@@ -354,7 +354,7 @@ return collisions;
 
 void VertexToEllipseCollision::applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y ) {
 
-	for(int i = 0; i < _mesh->countVertices(); i++) {
+	for(unsigned int i = 0; i < _mesh->countVertices(); i++) {
 		for(int j = 0; j < _ellipsoids->getSize(); j++) {
 			TriangleMeshVertex* Vert = _mesh->getVertex(i);
 			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j, Vert->getX());
@@ -404,7 +404,7 @@ vec3 VertexToEllipseCollision::f_dampCollision(vec3 Vn, vec3 vEllipsoid, double 
 
 void VertexToEllipseCollision::applyDampedCollisions(double Kcd, SPARSE_MATRIX* JV, LARGE_VECTOR* F ) {
 
-	for(int i = 0; i < _mesh->countVertices(); i++) {
+	for(unsigned int i = 0; i < _mesh->countVertices(); i++) {
 		for(int j = 0; j < _ellipsoids->getSize(); j++) {
 			TriangleMeshVertex* Vert = _mesh->getVertex(i);
 			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j, Vert->getX());

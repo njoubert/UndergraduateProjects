@@ -102,16 +102,16 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
 
         double x, y, z;
         ss >>x >>y >>z;
-        int ind = myMesh->createVertexNormal(x,y,z);
-        parseDebug("Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer index "<< ind <<".");
+        myMesh->createVertexNormal(x,y,z);
+        parseDebug("Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer index.");
         vertexNormalCount++;
     }
     else if (operand.compare("vt") == 0) {
 
         double u, v;
         ss >>u >>v;
-        int ind = myMesh->createVertexTexture(u, v);
-        parseDebug("Parsed Vertex Texture input to ("<<u<<","<<v<<") into vertice normals buffer index "<< ind <<".")
+        myMesh->createVertexTexture(u, v);
+        parseDebug("Parsed Vertex Texture input to ("<<u<<","<<v<<") into vertice normals buffer index.")
         vertexTextureCount++;
 
     }
