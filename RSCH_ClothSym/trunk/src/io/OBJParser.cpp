@@ -55,7 +55,7 @@ TriangleMesh* OBJParser::parseOBJ(string filename) {
     cout << "Parsed an OBJ mesh with " << myMesh->countVertices() << " vertices, "
 		<< vertexNormalCount << " vertex normals, " << vertexTextureCount << " texture vertices, "
 		<< myMesh->countTriangles() << " triangles." << endl;
-    myMesh->exportOriginalAsOBJ("OBJPARSER_DEFEXPORT.obj");
+    myMesh->exportAsOBJ("OBJPARSER_DEFEXPORT.obj", true);
     return myMesh;
 }
 

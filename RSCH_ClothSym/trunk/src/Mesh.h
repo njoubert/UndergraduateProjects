@@ -261,11 +261,12 @@ public:
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesBeginIterator();
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesEndIterator();
 
-    void exportOriginalAsOBJ(string filename);
+    void exportAsOBJ(string filename, bool);
 
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 
 private:
+	void dumpVertexToFile(ofstream &, TriangleMeshTriangle*, int, bool);
     //TODO: Write a comment on how the hell this datastructure actually looks...
 
     std::vector< TriangleMeshTriangle* > _triangles;

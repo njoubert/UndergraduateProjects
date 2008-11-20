@@ -528,7 +528,29 @@ std::vector<TriangleMeshTriangle*>::const_iterator TriangleMesh::getTrianglesBeg
     return _triangles.begin();
 }
 
-void TriangleMesh::exportOriginalAsOBJ(string filename) {
+/**
+ * Dumps either the original file's data or the new position and normal to an ofstream.
+ * Has the form v/vt/vn, v/vt or v//vn
+ */
+void TriangleMesh::dumpVertexToFile(ofstream & outfile, TriangleMeshTriangle* t, int v, bool exportOriginalMesh) {
+	outfile << t->getVertices()[v]->getIndex() + 1;
+	if (t->hasVerticeTexture())
+		outfile << "/" << t->getVerticeTextures()[v]->getIndex() + 1;
+
+	if (exportOriginalMesh) {
+		if (t->hasVerticeNormals()) {
+			if (!t->hasVerticeTexture())
+				outfile << "/";
+			outfile << "/" << t->getVerticeNormals()[v]->getIndex() + 1;
+		}
+	} else {
+		if (!t->hasVerticeTexture())
+				outfile << "/";
+		outfile << "/" << t->getVertices()[v]->getIndex() + 1;
+	}
+}
+
+void TriangleMesh::exportAsOBJ(string filename, bool exportOriginalMesh) {
 
 	ofstream outfile(filename.c_str());
 
@@ -539,17 +561,30 @@ void TriangleMesh::exportOriginalAsOBJ(string filename) {
 	TriangleMeshVertex* v;
 	for (unsigned int i = 0; i < countVertices(); i++) {
 		v = getVertex(i);
-		outfile << "v " << v->getU()[0] << " " << v->getU()[1] << " "
-				<< v->getU()[2] << endl;
+		if (exportOriginalMesh) {
+			outfile << "v " << v->getU()[0] << " " << v->getU()[1] << " "
+					<< v->getU()[2] << endl;
+		} else {
+			outfile << "v " << v->getX()[0] << " " << v->getX()[1] << " "
+					<< v->getX()[2] << endl;
+		}
 	}
 
 	outfile << "# VERTEX NORMALS FOLLOW. " << _verticenormals.size() << " vertice normals."<< endl;
 	outfile << "# -----------------------------------------" << endl;
 
+	if (exportOriginalMesh) {
 		for (unsigned int i = 0; i < _verticenormals.size(); i++) {
 			outfile << "vn " << _verticenormals[i]->getvn()[0] << " " << _verticenormals[i]->getvn()[1] << " "
 					<< _verticenormals[i]->getvn()[2] << endl;
 		}
+	} else {
+		for (unsigned int i = 0; i < countVertices(); i++) {
+			v = getVertex(i);
+			outfile << "vn " << v->getNormal()[0] << " " << v->getNormal()[1] << " "
+					<< v->getNormal()[2] << endl;
+		}
+	}
 
 
 	outfile << "# VERTEX TEXTURE COORDINATES FOLLOW. " << _verticetextures.size() << " vertices."<< endl;
@@ -569,39 +604,12 @@ void TriangleMesh::exportOriginalAsOBJ(string filename) {
 		t = getTriangle(i);
 		outfile << "f ";
 
-		//FIRST TRIANGLE
-		outfile << t->getVertices()[0]->getIndex() + 1;
-		if (t->hasVerticeTexture())
-			outfile << "/" << t->getVerticeTextures()[0]->getIndex() + 1;
-
-		if (t->hasVerticeNormals()) {
-			if (!t->hasVerticeTexture())
-				outfile << "/";
-			outfile << "/" << t->getVerticeNormals()[0]->getIndex() + 1;
-		}
+		dumpVertexToFile(outfile, t, 0, exportOriginalMesh);
 		outfile << " ";
-
-		//SECOND TRIANGLE
-		outfile << t->getVertices()[1]->getIndex() + 1;
-		if (t->hasVerticeTexture())
-			outfile << "/" << t->getVerticeTextures()[1]->getIndex() + 1;
-		if (t->hasVerticeNormals()) {
-			if (!t->hasVerticeTexture())
-				outfile << "/";
-			outfile << "/" << t->getVerticeNormals()[1]->getIndex() + 1;
-		}
+		dumpVertexToFile(outfile, t, 0, exportOriginalMesh);
 		outfile << " ";
+		dumpVertexToFile(outfile, t, 0, exportOriginalMesh);
 
-		//THIRD TRIANGLE
-		outfile << t->getVertices()[2]->getIndex() + 1;
-		if (t->hasVerticeTexture())
-			outfile << "/" << t->getVerticeTextures()[2]->getIndex() + 1;
-		if (t->hasVerticeNormals()) {
-			if (!t->hasVerticeTexture())
-				outfile << "/";
-			outfile << "/" << t->getVerticeNormals()[2]->getIndex() + 1;
-		}
-		outfile << endl;
 	}
 
 	outfile.close();
