@@ -21,9 +21,9 @@ public:
     OBJParser();
 	TriangleMesh* parseOBJ(string);
 private:
-    int vertexCount;
-    int vertexNormalCount;
-    int vertexTextureCount;
+    unsigned int vertexCount;
+    unsigned int vertexNormalCount;
+    unsigned int vertexTextureCount;
 
     bool parseLine(string, TriangleMesh *);
 };
