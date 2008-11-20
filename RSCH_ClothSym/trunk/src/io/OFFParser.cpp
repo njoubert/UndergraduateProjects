@@ -62,7 +62,7 @@ TriangleMesh* OFFParser::parse(string filename) {
             //cout << "reading MORE! " << args;
             if (args.compare("fixed") == 0) {
                 parseDebug("Constraining particle " << i);
-                myMesh->getVertex(j)->setConstraint(true);
+                myMesh->getVertex(j)->setPinned(true);
                 cout<<"Fixed Point Found in OBJ"<<endl;
             }
         }

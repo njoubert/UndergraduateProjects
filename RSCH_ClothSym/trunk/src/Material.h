@@ -22,6 +22,7 @@ public:
     void makeSimColor();
     void makeStatColor();
     void setGLcolors();
+    static void clearGLcolors();
 
     float getKe();
     float getKd();

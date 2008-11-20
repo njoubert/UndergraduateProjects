@@ -49,9 +49,9 @@ void Material::makeSimColor() {
 }
 
 void Material::makeStatColor() {
-    mat_diffuse[0] = 40.0f / 255.0f;
-    mat_diffuse[1] = 40.0f / 255.0f;
-    mat_diffuse[2] = 55.0f / 255.0f;
+    mat_diffuse[0] = 60.0f / 255.0f;
+    mat_diffuse[1] = 60.0f / 255.0f;
+    mat_diffuse[2] = 80.0f / 255.0f;
     mat_diffuse[3] = 1.0f;
     mat_ambient[0] = 8.5f / 255.0f;
     mat_ambient[1] = 8.5f / 255.0f;
@@ -78,6 +78,9 @@ void Material::setGLcolors() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+}
+void Material::clearGLcolors() {
+	glClearColor(0.7, 0.7, 0.7, 0.0);
 }
 
 float Material::getKe() {

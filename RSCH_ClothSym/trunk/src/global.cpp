@@ -29,7 +29,7 @@ bool BEND_FORCES = false;
 bool FRICTION_FORCES = false;
 bool COLLISIONS = false;
 
-bool STATIC_CONSTRAINTS = false;
+bool STATIC_CONSTRAINTS = true;
 bool DYNAMIC_CONSTRAINTS = false;
 int FOLLOW1 = -1;
 int FOLLOW2 = -1;

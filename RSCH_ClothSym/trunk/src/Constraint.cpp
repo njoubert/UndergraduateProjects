@@ -88,7 +88,7 @@ void FixedBaraffConstraint::applyConstraintToSolverMatrices(
 void FixedBaraffConstraint::applyMassMod( SPARSE_MATRIX* M ) {
 	mat3 S;
     for(int i = 0; i < _mesh->countVertices(); i++) {
-    	if(_mesh->getVertex(i)->getConstaint())
+    	if(_mesh->getVertex(i)->isPinned())
     		S = mat3(0);
     	else
     		S = mat3(identity2D());
@@ -193,11 +193,12 @@ void VertexToEllipseCollision::applyConstraintToSolverMatrices(
 
 void VertexToEllipseCollision::frictionForce(int j, TriangleMeshVertex* p, vec3 Velli, LARGE_VECTOR* F) {
 	vec3 n = _ellipsoids->getNormal(j, p->getX());
-	vec3 Vrel = p->getvX() - Velli;
+	vec3 Vrel = p->getXdot() - Velli;
+
 
 	vec3 N = (*F)[p->getIndex()]*n;
-	if( p->getvX().length() == 0 && p->getF().length() < (_ellipsoids->getMu_s()*N.length()) ) {
-		p->getF() = 0;
+	if( p->getXdot().length() == 0 && (*F)[p->getIndex()].length() < (_ellipsoids->getMu_s()*N.length()) ) {
+		(*F)[p->getIndex()] = 0;
 		cout<<"static Friction Applied"<<endl;
 	}
 	else {
@@ -211,6 +212,7 @@ void VertexToEllipseCollision::frictionForce(int j, TriangleMeshVertex* p, vec3 
 		cout<<"Friction Magnitude of "<<Friction.length()<<endl;
 		cout<<"Friction Force of "<<Friction<<" was applied."<<endl<<endl;
 	}
+
 }
 
 void VertexToEllipseCollision::changeDelvToAvoidCollisions(LARGE_VECTOR* delv, double h, NewmarkSolver* solver) {
@@ -221,7 +223,7 @@ void VertexToEllipseCollision::changeDelvToAvoidCollisions(LARGE_VECTOR* delv, d
 			Vert = _mesh->getVertex(i);
 
 			//Calculate new position for this vertex according to our current delv:
-			vec3 newWorldX = solver->calculateNewPosition(Vert->getX(), Vert->getvX(), (*delv)[Vert->getIndex()], h);
+			vec3 newWorldX = solver->calculateNewPosition(Vert->getX(), Vert->getXdot(), (*delv)[Vert->getIndex()], h);
 			vec3 newWorldV = solver->calculateNewVelocity(Vert->getX(), (*delv)[Vert->getIndex()]);
 			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j, newWorldX);
 
@@ -255,8 +257,8 @@ void VertexToEllipseCollision::changeDelvToAvoidCollisions(LARGE_VECTOR* delv, d
 				double newVnormal = Vobj*normal - (1.0/h)*(newWorldX - Xc).length();
 				vec3 newVtangential = vec3(0,0,0);
 				vec3 Vnew = newVnormal*normal + newVtangential;
-				vec3 newDelv = solver->calculateNewDelv(Vert->getvX(), Vnew, h);
-				cout << "New normal: " << newVnormal << ", old normal: " << (Vert->getvX()*normal) << endl;
+				vec3 newDelv = solver->calculateNewDelv(Vert->getXdot(), Vnew, h);
+				cout << "New normal: " << newVnormal << ", old normal: " << (Vert->getXdot()*normal) << endl;
 
 				(*delv)[Vert->getIndex()] = newDelv;
 
@@ -431,7 +433,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd, SPARSE_MATRIX* 
 
 
 				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
-				vec3 Vn = ((Vert->getvX()-Velli)*n)*n;
+				vec3 Vn = ((Vert->getXdot()-Velli)*n)*n;
 				//vec3 Vn = (Vert->getvX());
 
 				//damping force only applied if moving into ellipse.

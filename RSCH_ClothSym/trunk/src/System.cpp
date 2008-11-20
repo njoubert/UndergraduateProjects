@@ -21,7 +21,7 @@ System::System(TriangleMesh* m, Material* mat) :
     _M = new SPARSE_MATRIX(n,n,sparsePattern , true);
 
     mat3 mass;
-    for (int i = 0; i < m->countVertices(); i++) {
+    for (unsigned int i = 0; i < m->countVertices(); i++) {
         mass = identity2D();
         mass *= m->getVertex(i)->getm();
         (*_M)(i,i) = mass;
@@ -157,10 +157,10 @@ System::System(TriangleMesh* m, Material* mat) :
 void System::loadStateFromMesh() {
     profiler.frametimers.switchToTimer("loadfrom mesh");
     TriangleMeshVertex* v;
-    for (int i = 0; i < mesh->countVertices(); i++) {
+    for (unsigned int i = 0; i < mesh->countVertices(); i++) {
         v = mesh->getVertex(i);
         (*_x)[i] = v->getX();
-        (*_v)[i] = v->getvX();
+        (*_v)[i] = v->getXdot();
     }
     _a->zeroValues();
     profiler.frametimers.switchToGlobal();
@@ -270,10 +270,10 @@ void System::bendForce(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
 			vec3 x4 = a->getX();
 			vec3 x3 = b->getX();
 
-			vec3 v2 = aList[ai]->getvX();
-			vec3 v1 = bList[bi]->getvX();
-			vec3 v4 = a->getvX();
-			vec3 v3 = b->getvX();
+			vec3 v2 = aList[ai]->getXdot();
+			vec3 v1 = bList[bi]->getXdot();
+			vec3 v4 = a->getXdot();
+			vec3 v3 = b->getXdot();
 
 			vec3 N1 = (x1 - x3) ^ (x1 - x4);
 			vec3 N2 = (x2 - x4) ^ (x2 - x3);
@@ -405,7 +405,7 @@ void System::enableMouseForce(vec3 mousePosition) {
 	//cout << "Mouse is at: " << mousePosition << endl;
 	double currentDistance = 900000.0, d, d1, d2;
 	TriangleMeshVertex* currentClosest = NULL;
-	for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+	for (unsigned int i = 0; i < mesh->countVertices(); i++) {
 		d1 = (mousePosition[0] - mesh->getVertex(i)->getX()[0]);
 		d2 = (mousePosition[1] - mesh->getVertex(i)->getX()[1]);
 		d = sqrt(d1*d1 + d2*d2);
@@ -447,7 +447,7 @@ vec3 System::f_mouse(TriangleMeshVertex* selected) {
 
 int System::setVertexPos2MousePos() {
 	TriangleMeshVertex* selected;
-	for (int i = 0; i < mesh->countVertices(); i++) {
+	for (unsigned int i = 0; i < mesh->countVertices(); i++) {
 		selected = mesh->getVertex(i);
 		if (selected == mouseSelected) {
 			selected->getX() = mouseP;
@@ -463,7 +463,7 @@ int System::setVertexPos2MousePos() {
 
 void System::applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	TriangleMeshVertex* selected;
-	for (int i = 0; i < mesh->countVertices(); i++) {
+	for (unsigned int i = 0; i < mesh->countVertices(); i++) {
 		selected = mesh->getVertex(i);
 		if (selected == mouseSelected) {
 		    //Update the sparse matrices to honor this constraint
@@ -479,7 +479,7 @@ void System::calculateExternalForces(Solver* solver) {
     vec3 gravity(GRAVITY);
     //vec3 gravity(0,0,-9.8);
     LARGE_VECTOR* f = solver->getf();
-    for (int i = 0; i < mesh->countVertices(); i++) {
+    for (unsigned int i = 0; i < mesh->countVertices(); i++) {
         a = mesh->getVertex(i);
         (*f)[i] += (gravity * a->getm() += f_mouse(a));
     }
@@ -494,8 +494,8 @@ void System::calculateInternalForces(Solver* solver) {
         a = (*edg_it)->getVertex(0);
         b = (*edg_it)->getVertex(1);
 
-        vec3 pa = a->getX(); vec3 va = a->getvX();
-        vec3 pb = b->getX(); vec3 vb = b->getvX();
+        vec3 pa = a->getX(); vec3 va = a->getXdot();
+        vec3 pb = b->getX(); vec3 vb = b->getXdot();
         vec3 Ua = a->getU(); vec3 Ub = b->getU();
         vec3 RL = Ua - Ub; double rl = RL.length();
         F0 = f_spring(pa, pb, rl, _mat->getKe()) + f_damp(pa, pb, va, vb, rl, _mat->getKd());
@@ -523,8 +523,8 @@ void System::calculateDampingToLimitStrain(Solver* solver, SPARSE_MATRIX* JV, do
 
 	        ia = a->getIndex(); ib = b->getIndex();
 
-	        vec3 pa = a->getX(); vec3 va = a->getvX();
-	        vec3 pb = b->getX(); vec3 vb = b->getvX();
+	        vec3 pa = a->getX(); vec3 va = a->getXdot();
+	        vec3 pb = b->getX(); vec3 vb = b->getXdot();
 	        vec3 Ua = a->getU(); vec3 Ub = b->getU();
 	        vec3 RL = Ua - Ub; double rl = RL.length();
 
@@ -592,8 +592,8 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 
         ia = a->getIndex(); ib = b->getIndex();
 
-        vec3 pa = a->getX(); vec3 va = a->getvX();
-        vec3 pb = b->getX(); vec3 vb = b->getvX();
+        vec3 pa = a->getX(); vec3 va = a->getXdot();
+        vec3 pb = b->getX(); vec3 vb = b->getXdot();
         vec3 Ua = a->getU(); vec3 Ub = b->getU();
         vec3 RL = Ua - Ub; double rl = RL.length();
 
@@ -627,8 +627,8 @@ void System::calculateForcePartials(ImplicitSolver* solver) {
 
         ia = a->getIndex(); ib = b->getIndex();
 
-        vec3 pa = a->getX(); vec3 va = a->getvX();
-        vec3 pb = b->getX(); vec3 vb = b->getvX();
+        vec3 pa = a->getX(); vec3 va = a->getXdot();
+        vec3 pb = b->getX(); vec3 vb = b->getXdot();
         vec3 Ua = a->getU(); vec3 Ub = b->getU();
         vec3 RL = Ua - Ub; double rl = RL.length();
 
@@ -674,10 +674,10 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints,
     profiler.frametimers.switchToTimer("writeback mesh");
     //Write back to mesh
     TriangleMeshVertex* v;
-    for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
+    for (unsigned int i = 0; i < mesh->countVertices(); i++) {
         v = mesh->getVertex(i);
         v->getX() = (*_x)[i];
-        v->getvX() = (*_v)[i];
+        v->getXdot() = (*_v)[i];
     }
     profiler.frametimers.switchToGlobal();
 }

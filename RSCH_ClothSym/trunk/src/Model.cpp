@@ -61,8 +61,11 @@ void StatModel::draw() {
 
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->triangles.begin();
-    while (it != _mesh->triangles.end()) {
+        _mesh->getTrianglesBeginIterator();
+    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
+        _mesh->getTrianglesEndIterator();
+
+    while (it != it_end) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();
@@ -140,9 +143,11 @@ void SimModel::draw() {
     vec3 a, b, c, na, nb, nc;
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->triangles.begin();
+        _mesh->getTrianglesBeginIterator();
+    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
+        _mesh->getTrianglesEndIterator();
 
-    while (it != _mesh->triangles.end()) {
+    while (it != it_end) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();
@@ -228,8 +233,11 @@ void AniModel::draw() {
 
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->triangles.begin();
-    while (it != _mesh->triangles.end()) {
+        _mesh->getTrianglesBeginIterator();
+    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
+        _mesh->getTrianglesEndIterator();
+
+    while (it != it_end) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();

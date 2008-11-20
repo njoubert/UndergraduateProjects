@@ -201,9 +201,9 @@ bool World::createFixedVertexContraints() {
 		cout << "Checking for Fixed Constraints" << endl;
 		SimModel* simModel = (SimModel*) _models[1];
 		TriangleMesh* mesh = simModel->getMesh();
-		for (int i = 0; i < mesh->countVertices(); i++) {
+		for (unsigned int i = 0; i < mesh->countVertices(); i++) {
 			TriangleMeshVertex* v = mesh->getVertex(i);
-			if (v->getConstaint()) {
+			if (v->isPinned()) {
 				FixedConstraint* constraint = new FixedConstraint();
 				constraint->setFollow(v);
 				simModel->registerConstraint(constraint);
