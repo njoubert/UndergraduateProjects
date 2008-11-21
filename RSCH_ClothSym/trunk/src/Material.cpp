@@ -38,13 +38,13 @@ void Material::makeDefaultColor() {
 }
 
 void Material::makeSimColor() {
-    mat_diffuse[0] = 245.0f / 255.0f;
-    mat_diffuse[1] = 245.0f / 255.0f;
-    mat_diffuse[2] = 220.0f / 255.0f;
+    mat_diffuse[0] = 255.0f / 255.0f;
+    mat_diffuse[1] = 255.0f / 255.0f;
+    mat_diffuse[2] = 255.0f / 255.0f;
     mat_diffuse[3] = 1.0f;
-    mat_ambient[0] = 24.5f / 255.0f;
-    mat_ambient[1] = 24.5f / 255.0f;
-    mat_ambient[2] = 22.0f / 255.0f;
+    mat_ambient[0] = 255.0f / 255.0f;
+    mat_ambient[1] = 255.0f / 255.0f;
+    mat_ambient[2] = 255.0f / 255.0f;
     mat_ambient[3] = 1.0f;
 }
 
