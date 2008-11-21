@@ -1,0 +1,9 @@
+mesh: pPlaneShape1 tranform: pPlane1 1.117665883 0 0 0 0 1.249564274 0 0 0 0 1.249564274 0 -2.842170943e-14 -0.2327586207 -2.842170943e-14 1
+
+
+mesh: pSphereShape1 tranform: pSphere1 1000 0 0 0 0 1 0 0 0 0 1000 0 0 -1.00862069 0 1
+
+
+mesh: pSphereShape2 tranform: pSphere2 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+
+
