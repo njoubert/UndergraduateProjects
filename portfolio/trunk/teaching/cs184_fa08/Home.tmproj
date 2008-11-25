@@ -38,7 +38,7 @@
 			<key>filename</key>
 			<string>index.html</string>
 			<key>lastUsed</key>
-			<date>2008-11-23T21:30:58Z</date>
+			<date>2008-11-25T08:46:56Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -60,6 +60,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{668, 0}, {577, 778}}</string>
+	<string>{{294, 114}, {1012, 835}}</string>
 </dict>
 </plist>
