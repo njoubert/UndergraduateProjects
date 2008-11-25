@@ -1,0 +1,384 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-11-23.
+%  Copyright (c) 2008 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+\addtolength{\topmargin}{+.0in}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+\usepackage{verbatim}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\newtheorem{definition}{Definition}
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Numerical Methods for Inverse Kinematics}
+\author{ Niels Joubert, UC Berkeley, CS184 }
+
+\date{2008-11-25}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+Inverse Kinematics is used to pose models by specifying endpoints of segments rather than individual joint angles. We will go through the steps of deriving a simple inverse kinematics problem. We are given a model in a starting state and a goal point to which we want to move the end of the arm, and we will solve for the new joint angles. In doing this we will use two areas of knowledge - trigonometric relationships to describe the model we're posing, and linearization to find successive approximations of our answer.
+
+\section{Problem Description}
+
+We want to calculate the change in joint angles needed to bring the endpoint of our joint to the given position. \textbf{Forward kinematics} is concerned with the endpoint's position as you change the joint angles. \textbf{Inverse Kinematics} is concerned with the joint angles needed to produce a specific endpoint's position. A basic understanding of trigonometry should enable us to write down the forward trigonometric equations\footnote{Section \ref{forwardKin}}.
+
+There is a collection of possible joint angles, all of which bring the endpoint's position to the wanted goal. An analytical solution becomes extremely complicated. Thus, we will render this as a minimization problem, so that we can apply root-finding techniques to it. 
+
+\subsection{Terminology}
+
+\begin{itemize}
+    \item DOF - Degrees of Freedom - a parameter we can control. In 3-space: 3 translations, 3 rotations.
+    \item Joint - A connection between bodies with some DOF that modifies and propagates its transform to its outbound body.
+    \item Inbound body - A body determining the transform of a given joint.
+    \item Outbound body - A body whose orientation is determined by the given joint.
+    \item Root Body - A body with a fixed position set by the global transform.
+    \item Root Joint - the joint on the root body (thus, fixed position) with some DOF (generally 1 or 2 rotations).
+    
+    \item Linearization - Finding a linear approximation to a nonlinear function
+    \item Root-finding - Finding the solution to $f(x) = 0$.\textbf{}
+\end{itemize}
+
+\pagebreak
+
+\section{Forward Kinematics}\label{forwardKin}
+
+Here we'll derive the forward kinematics equation for the arm of three joints in the following picture. We'll describe the endpoint in terms of the joint angles and lengths.
+\begin{figure}[htp]
+    \centering
+    \subfigure[3-jointed arm] {
+        \includegraphics[scale=0.6]{3joints.pdf}
+        \label{3jointarm}
+    }
+    \hspace{3cm}
+    \subfigure[Right angle triangle] {
+        \includegraphics[scale=0.6]{90degtriangle.pdf}
+        \label{90degtriangle}
+    }
+\end{figure}
+I'll start by reminding you of the relationships between angles and sides found in the right angle triangle of Figure \ref{90degtriangle}:
+\begin{eqnarray}
+    s*\sin\left(\Omega\right) = o\\
+    s*\cos\left(\Omega\right) = a
+\end{eqnarray}
+
+Write down the equations for $p_{1x}$ and $p_{1y}$ (the x and y coordinate of the endpoint of the first joint) in terms of $\theta_1$ and $l_1$.
+\\
+\\
+    $p_{1x} = $ % origin + $l_1 \sin\left(\theta_1\right)$
+\vspace{0.5cm}
+\\
+    $p_{1y} = $ % origin + $l_1 \cos\left(\theta_1\right)$
+\vspace{0.5cm}
+
+Write down the equation for $p_{2x}$ and $p_{2y}$ in terms of $p_1$, $\theta_2$ and $l_2$. \textbf{Think about the angles very carefully!}
+\\
+\\
+    $p_{2x} = $ % $ p_{1x} + l_2 \sin\left(\theta_1 + \theta_2\right) $
+\vspace{0.5cm}
+\\
+    $p_{2y} = $ % $ p_{1y} + l_2 \cos\left(\theta_1 + \theta_2\right) $
+\vspace{0.5cm}
+
+Write down the equation for $p_{3x}$ and $p_{3y}$ in terms of $p_2$, $\theta_3$ and $l_3$. Then expand it out to find $p_{3x}$ and $p_{3y}$ in terms of the three joint angles ($\theta_1$, $\theta_2$, $\theta_3$) and body lengths ($l_1$, $l_2$, $l_3$). 
+\\
+\\
+    $p_{3x} = $ % $p_{2x} + l_3 \sin\left(\theta_1 + \theta_2 + \theta_3\right) $ \\
+     %$p_{3x} = $ origin + $l_1 \sin\left(\theta_1\right) + l_2 \sin\left(\theta_1 + \theta_2\right) + l_3 \sin\left(\theta_1 + \theta_2 + \theta_3\right) $ 
+\vspace{1.5cm}
+\\
+    $p_{3y} = $ % $ p_{2y} + l_3 * \cos\left(\theta_1 + \theta_2 + \theta_3\right) $ \\
+    %$p_{3y} = $ origin + $l_1 \cos\left(\theta_1\right) + l_2 \cos\left(\theta_1 + \theta_2\right) + l_3 \cos\left(\theta_1 + \theta_2 + \theta_3\right) $
+\vspace{1cm}
+
+We can now describe the position of the endpoint of our chain in terms of the joint angles. \textbf{Notice that we defined all our rotations as clockwise from the y-axis.} This is arbitrary, but you need to be consistent.
+ 
+\section{Inverse Kinematics}
+We want to find the set of joint angles that produce a specific end position. Assume you are given a configuration for your skeleton, and you want to move it to a new position. Thus, we want to compute the \textbf{change in joint angles} needed to produce the \textbf{change in endpoint positon.} From lecture (and the trigonometry on the previous page) you know that the analytic solution for $p_{3x}$ and $p_{3y}$ in terms of the three joint angles ($\theta_1$, $\theta_2$, $\theta_3$) is hard and messy. We will circumvent this by finding a linear approximation to the change in position bought about by the change in joint angle.
+
+\subsection{Linearization and Jacobians}\label{linearization}
+
+Consider the single joint in the following figure:
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{linearSingleJoint.pdf}
+    \label{linearSingleJoint}
+    \caption{Single 1 DOF joint.}
+\end{figure}
+
+We plot the path of $p_1$ as it varies over $\theta_1$, and we plot the tangent of the path at the current point of $p_1$. Notice how the tangent is a close approximation to the actual path in the region around $p_1$. \textbf{Linearization} is the process of approximating a nonlinear function by its tangent around a point. 
+\\
+\\
+In section \ref{forwardKin} we described the actual path. We now need to find the tangent path - a straight line varying with parameter $\theta$. Since a tangent is just a derivative of a function at some point, calculate the derivative of $p_{1x}$ and $p_{1y}$ (from section \ref{forwardKin}) with respect to $\theta_1$ (remember your trigonometric derivatives...):
+\\
+\\
+\begin{equation*}
+    \frac{\partial p_{1x}}{\partial \theta_1} = % l_1 *\cos(\theta_1)
+\end{equation*}
+\vspace{0.1cm}
+\begin{equation*}
+    \frac{\partial p_{1y}}{\partial \theta_1} = % -l_1 *\sin(\theta_1)
+\end{equation*}
+\vspace{0.1cm}
+
+Since the tangent is a line, and an equation for a straight line from some point $a$ is $f(x) = m*(x-a_x) + a_y$ we can now write the function $p_{1}(x)$ that determines the position of $p_1$. Assume the joint is currently at an angle of $\theta_1$ at point $(p_x,p_y)$ and we want to find $pl_{1}(\theta)$, the linear approximation of $p_1(\theta)$ around $\theta_1$:
+\begin{equation*}
+    pl_{1x}(\theta) = % p_{x} + \frac{\partial p_{1x}}{\partial \theta_1}(\theta_1) * (\theta - \theta_1)
+\end{equation*}
+\vspace{0.1cm}
+\begin{equation*}
+    pl_{1y}(\theta) = % p_{y} + \frac{\partial p_{1y}}{\partial \theta_1}(\theta_1) * (\theta - \theta_1)
+\end{equation*}
+\pagebreak
+
+Consider the two functions you just found. They describe the position of the joint as a linear function of the joint angles. In other words, we've linearized the forward kinematics equation. What we did was write out the \textbf{Taylor expansion} for the function $p_{1x}$ and $p_{1y}$ around $p_1$'s current position.
+
+\subsubsection{The Jacobian matrix}
+
+So far we've been working with the endpoint's position $p_1$ as two coordinates, $p_{1x}$ and $p_{1y}$. We can collapse these two coordinates into $p_1$ and define $p_1(\theta)$ as a vector function - a function returning a vector. We just found a partial derivative for $p_{1x}$ and $p_{1y}$ - the change in each coordinate with respect to each joint angle. We will now introduce the Jacobian:
+
+\begin{definition}
+The Jacobian matrix is a matrix of all the first order partial derivatives of a vector function.
+\end{definition}
+
+This means that the Jacobian matrix describe how each coordinate changes with respect to each joint angle in our system. You can think of it as a big function with two arguments - the joint angle and the coordinate - and it describes the first order linear approximation between these two arguments. Mathematically, we write this as:
+\begin{equation}
+    \mathbf{J}_{ij} = \frac{\partial p_{i}}{\partial \theta_j} \hspace{1cm} p_{i} = \text{$i$th coordinate of endpoint $p$;} \hspace{0.5cm} \theta_j = \text{$j$th joint angle.}
+\end{equation}
+
+The Jacobian matrix is \emph{extremely} useful, since it describes the first order linear behavior of a system. In spring-mass simulations it is used for integration purposes. In IK it is used to successively approximate the joint angles needed for a given endpoint. Let's apply this to our original three-joint arm:
+\begin{figure}[htp]
+    \centering
+        \includegraphics[scale=0.6]{3joints.pdf}
+        \label{3jointarm2}
+    \caption{3-jointed arm}
+\end{figure}
+
+Then the Jacobian will be the following 2 by 3 matrix (2 coordinates, 3 joint angles). You should notice that you computed some of these terms in section \ref{forwardKin} and section \ref{linearization} and you know how to compute them all.
+\begin{eqnarray*} 
+    \mathbf{J}(\theta) = 
+\begin{bmatrix}
+  \dfrac{\partial p_{3x}}{\partial \theta_1} & \dfrac{\partial p_{3x}}{\partial \theta_2} & \dfrac{\partial p_{3x}}{\partial \theta_3} \\\\[-2mm]
+  \dfrac{\partial p_{3y}}{\partial \theta_1} & \dfrac{\partial p_{3y}}{\partial \theta_2} & \dfrac{\partial p_{3y}}{\partial \theta_3} \\
+\end{bmatrix}
+ = 
+\begin{bmatrix}
+    \left(
+    \begin {array}{c}
+    l_1\cos(\theta_1) + l_2\cos(\theta_1 + \theta_2) +  \\
+    l_3\cos(\theta_1 + \theta_2 + \theta_3)
+    \end{array}
+    \right) &    
+    \left(
+    \begin {array}{c}
+    l_2\cos(\theta_1 + \theta_2) + \\
+    l_3\cos(\theta_1 + \theta_2 + \theta_3) 
+    \end{array}
+    \right)    
+    & l_3\cos(\theta_1 + \theta_2 + \theta_3) \\\\[-2mm]
+  
+    \left(
+    \begin {array}{c}
+    -l_1\sin(\theta_1) - l_2\sin(\theta_1 + \theta_2)  \\
+    - l_3\sin(\theta_1 + \theta_2 + \theta_3)
+    \end{array}
+    \right) &    
+    \left(
+    \begin {array}{c}
+    -l_2\sin(\theta_1 + \theta_2)\\
+    - l_3\sin(\theta_1 + \theta_2 + \theta_3) 
+    \end{array}
+    \right)    
+    & -l_3\sin(\theta_1 + \theta_2 + \theta_3) \\\\[-2mm]
+\end{bmatrix}
+\end{eqnarray*}
+We can now rewrite out original taylor expansion of a coordinate around a point determined by the joint angles $\theta_{\text{current}}$ (The last two equations in setion \ref{linearization}) in terms of the vector function $p_1(\theta)$ and the Jacobian:
+\begin{eqnarray}\label{JacobiLinearization}
+    p(\theta) \;\; \approx \;\; p_{\text{linear}}(\theta) \;\; = \;\; p_(\theta_{\text{current}}) + \mathbf{J}(\theta_{\text{current}})(\theta - \theta_{\text{current}})
+\end{eqnarray}
+This is a linear vector function that approximates our forward kinematics equation. And since it is linear, we can employ all our linear algebra techniques to find its inverse. Congratulations, you linearized the kinematics problem.
+\pagebreak
+
+\subsection{Solving for Joint Angles - Pseudoinverses and Root Finding}
+The original problem we set out to solve is described by figure \ref{3jointarmGoal}:
+\begin{figure}[htp]
+    \centering
+        \includegraphics[scale=0.6]{3jointsGoal.pdf}
+        \label{3jointarmGoal}
+    \caption{3-jointed arm with goal position}
+\end{figure}
+
+\textbf{What must the change in joint angles be to achieve the change in endpoint position $\Delta p$?}
+Look again at equation \ref{JacobiLinearization}. Let's define $\Delta p$ and $\Delta \theta$ in terms of both the quantities in figure \ref{3jointarmGoal} and the quantities of equation \ref{JacobiLinearization}:
+\begin{eqnarray}
+    \Delta \theta & = & \theta_{\text{goal}} - \theta_{\text{current}} \label{deltaTheta}\\ 
+    \Delta p & = & \text{Goal} - p_\text{current} \label{deltaP}\\
+     & \approx & p_{\text{linear}}(\theta_{\text{goal}}) - p_{\text{current}} \label{deltaPapprox}
+\end{eqnarray}
+Notice that I collapsed all the joint angles into one $\theta$ variable. We can do this by letting $\theta = \left( \theta_1, \theta_2\right)$. Thus, $\theta$ is a vector. Notice that in lecture professor O'Brien followed a slightly different approach by defining $\theta^*$ as a linear combination of $\theta_1$ and $\theta_2$.
+\\
+\\
+Now rewrite equation \ref{JacobiLinearization} in terms of equations \ref{deltaTheta} and \ref{deltaPapprox}, and manipulate it so that you find an equation for $\Delta \theta$:
+\vspace{2.5cm}
+%\begin{equation*} \Delta p & = & \mathbf{J}(\theta_{\text{current}}) * \Delta \theta \end{equation*}
+%\begin{equation*} \Delta \theta & = & \mathbf{J}(\theta_{\text{current}})^{-1} * \Delta p \end{equation*}
+\vspace{2cm}
+
+We just found an expression for the change in joint angles needed to move the endpoint from its current position to the goal position, in terms of quantities we can compute. \textbf{But this still doesn't completely work!} $\mathbf{J}(\theta_{\text{current}})$ in our example is not even a square matrix, thus there is no way to invert it. This is the same problem we originally had - there is a whole set of solutions that satisfy our goal position, thus the matrix is not invertible. Luckily we have ways of dealing with that for matrices.
+
+\subsection{How to solve this set of equations}
+
+We're now entering the realm of higher level linear algebra, thus I will unfortunately not go through the derivations of how things work, but rather only propose a way to find the solution to $\Delta \theta$.
+
+You should have found the following equation on the previous page:
+\begin{equation*}\label{approximateChanges} \Delta \theta & = & \mathbf{J}(\theta_{\text{current}})^{-1} * \Delta p \end{equation*}
+But, as we noted, $\mathbf{J}(\theta_{\text{current}})^{-1}$ is almost never invertible, thus we have to compute a \emph{pseudoinverse}. The pseudoinverse of a matrix has most but not necessarily all of the properties of an inverse, and it not necessarily unique. Since we are already taking a linear approximation of our $p(\theta)$ function, we can justify taking another approximation, since we have to account for these assumptions in our final solution in either case. (We will do this by successive iterations of this algorithm).
+
+\subsubsection{Calculating a Pseudoinverse using Singular Value Decomposition}
+The Singular Value Decompositon is a technique that allows us to decompose \emph{any} matrix into three matrices, two square orthogonal matrices and a possibly non-square diagonal matrix:
+\begin{eqnarray}
+    \mathbf{T} & = & \mathbf{U} \mathbf{S} \mathbf{V}^\mathrm{T}
+\end{eqnarray}
+There exists algorithms to compute the SVD decomposition of a matrix. Once you've found the SVD decomposition, the pseudoinverse of $T$ is defined as:
+\begin{eqnarray}
+    \mathbf{T}^\mathrm{+} & = & \mathbf{V}  \mathbf{S}^\mathrm{+}  \mathbf{U}^\mathrm{T}
+\end{eqnarray}
+where $S^+$ is $S$ with all its nonzero diagonal entries replaced with its corresponding reciprocals. Why does this work? Replacing the diagonals with its reciprocals is the same as inverting the matrix, but in the case that there are zeros on the diagonals, we can't take the reciprocals, so we calculate an approximate inverse by taking the reciprocals only of the nonzero terms. Since $\mathbf{U}$ and $\mathbf{V}$ are orthogonal, their transpose is their inverse. Thus the pseudo-inverse of $\mathbf{T}$ consists of the inverse of $\mathbf{U}$, $\mathbf{V}$ and an approximate inverse of $\mathbf{S}$.
+\\
+\\
+Thus we can compute a pseudoinverse of the jacobian, and we can solve for the change in joint angles needed to achieve the change in position we want. Except this change is still only a linear approximation. So, we'll turn it into a root-finding problem, which we'll explain in the last section of this worksheet.
+
+\subsubsection{Root-finding}
+
+Root-finding is the numerical process by which we solve for $x$ in the equation $f(x) = 0$. With some simple algebra, we can rearrange our terms so that our equations are in this form. Rewrite the equation you derived on page 5 in the form $f(x) = 0$:
+\vspace{3cm}
+
+You can now apply any of the many root-finding techniques to it, but you will realize that Inverse Kinematics is a \emph{really nice} problem in this case, and a simple iterative approach can work. I will justify this statement as follows: If we compute an approximate change in joint angles needed to achieve this change in position, we can simply \emph{move} our system of joints and bodies to this new location and \emph{repeat the procedure we just went through}. This is known as \textbf{Newton's Method}, and is a well-studied algorithm for finding roots to something of the form $f(x) = 0$. We implement it with successive iterations of finding the change in joint angles using the pseudoinverse of the jacobian. There is one more caveat - Newton's method does not always converge.
+
+\subsubsection{Convergence}
+
+Newton's method does not always converge. Thus, calculating the approximate change in angle we need and simply applying that interactively does not necessarily bring us closer to the correct solution. We can amend this situation by implementing a binary search on the change in angle:
+
+\begin{enumerate}
+    \item Calculate the new position the current change in $\theta$ would cause.
+    \item Calculate the distance from the goal.
+    \item If the distance decreased, take the step.
+    \item If the distance did not decrease, set the change in $\theta$ to be half the current change, and try again.
+\end{enumerate}
+
+\subsubsection{Minimization}
+
+We can also cast everything we've done as a minimization problem. We're attempting to minimize the error between the current position and the goal position ($\Delta \theta & = & \theta_{\text{goal}} - \theta_{\text{current}}$), and we're achieving that using a linear approximation of the function and applying root-finding techniques to it. This is a common method to solve these types of problems, and appears in numerical simulations in physics, math and engineering. We implicitly did exactly this, thus I mention it for completeness.
+
+\section{Summary and Overview}
+
+We've gone through a long derivation of a general numerical approach to solving the inverse kinematics problem. To summarize our approach, the following diagram demonstrates a simple IK solver:
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.65]{sec13IKchart.pdf}
+    \label{summary}
+    \caption{A simple IK solver.}
+\end{figure}
+
+Finally, the Jacobian is a very powerful tool. To extend this system to allow for multiple goals with multiple arms as one IK system, you simply expand your Jacobian to include all the joints. If you want to constrain some joints not to move at all, you can simply reduce your jacobian not to include them. More advance techniques to implement constraints make use of Lagrangian Multipliers. Also, it is worth noting that our solution is a \emph{local solver}. We make an approximation of the function that holds in the area around the current joint angles.
+
+\subsection{Real World IK Solvers}
+
+Real World IK Solvers are not necessarily built in the same manner as this tutorial explains, but this is one of the accepted approaches. Others are particle-based IK and Cyclic Coordinate Descent. We did not cover one important facet though - real world IK solvers does includes a strong framework for setting constraints. You often want to use an IK solver to pose your model, but you want specific joints to have specific orientations - the modeler wants control over which list of joint angles is picked by the solver.
+\\
+\\
+For more information:
+http://billbaxter.com/courses/290/html/
+
+
+\end{document}
+
+
+HERE IS ALL THE MATRICES AMSMATH GIVES YOU:
+
+\[
+\begin{pmatrix}
+  1 & 2 & 3 & 4\\
+  5 & 6 & 7 & 8\\
+  9 &10 &11 &12\\
+  13&14 &15 &16
+\end{pmatrix}
+\begin{bmatrix}
+  1 & 2 & 3 & 4\\
+  5 & 6 & 7 & 8\\
+  9 &10 &11 &12\\
+  13&14 &15 &16
+\end{bmatrix}
+\begin{Bmatrix}
+  1 & 2 & 3 & 4\\
+  5 & 6 & 7 & 8\\
+  9 &10 &11 &12\\
+  13&14 &15 &16
+\end{Bmatrix}
+\begin{vmatrix}
+  1 & 2 & 3 & 4\\
+  5 & 6 & 7 & 8\\
+  9 &10 &11 &12\\
+  13&14 &15 &16
+\end{vmatrix}
+\begin{Vmatrix}
+  1 & 2 & 3 & 4\\
+  5 & 6 & 7 & 8\\
+  9 &10 &11 &12\\
+  13&14 &15 &16
+\end{Vmatrix}
+\]
