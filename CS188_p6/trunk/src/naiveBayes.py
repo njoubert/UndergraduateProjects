@@ -16,6 +16,9 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     self.k = 1 # this is the smoothing parameter
     self.automaticTuning = False # Flat for automatic tuning of the parameters
     
+    self.labelDistribution = util.Counter()
+    self.featuresGivenLabelsDistribution = util.Counter()
+    
   def setSmoothing(self, k):
     """
     This is used by the main method to change the smoothing parameter before training.
@@ -36,6 +39,15 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         kgrid = [self.k]
         
     return self.trainAndTune(trainingData, trainingLabels, validationData, validationLabels, kgrid)
+  
+  def getCounterOfFeatureLabelPairs(self, data, labels):
+    counter = util.Counter()
+    for i in range(len(labels)):
+      y = labels[i]
+      for (feat, featval) in data[i].items():
+        counter.incrementCount((y, feat, featval), 1)                           
+    return counter
+    
       
   def trainAndTune(self, trainingData, trainingLabels, validationData, validationLabels, kgrid):
     """
@@ -57,12 +69,84 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     (can only take the value 0 or 1).
 
     You should also keep track of the priors and conditional probabilities for
-    further usage in calculateLogJointProbabilities methid
+    further usage in calculateLogJointProbabilities method
+    
+    FeaturesGivenLabelsDistribution:
+        Key: (label, feature, featureValue)
+        Value: Probability
+        
     """
     
     ## YOUR CODE HERE
-  
     
+    # Compute P(Y = y) from training data.
+    for label in self.legalLabels:
+        self.labelDistribution[label] = trainingLabels.count(label)
+    self.labelDistribution.normalize()
+    
+    
+    featureLabelCount = self.getCounterOfFeatureLabelPairs(trainingData, trainingLabels)
+    
+    
+    conditionalDistributionList = []
+    for k in kgrid:
+      P_feature_label = util.Counter()
+      for y in self.legalLabels:
+        for f in self.features:
+          ### For F = 1:
+          probability = float((featureLabelCount.getCount((y, f, 1)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
+          P_feature_label.incrementCount((y, f, 1), probability)
+           ### For F = 0:
+          probability = float((featureLabelCount.getCount((y, f, 0)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
+          P_feature_label.incrementCount((y, f, 0), probability)   
+          
+      conditionalDistributionList.append((k, P_feature_label))
+    
+    """
+    conditionalDistributionList = []
+    for k in kgrid:
+        tempFeaturesGivenLabelsDistribution = util.Counter()
+        
+        #first we calculate top = count(Fi = fi, Y = y) and bottom:
+        for y in self.legalLabels:
+            for fi in self.features:
+                
+                top = float(k)
+                bottom = float(0)
+                for i in range(len(trainingLabels)):
+                    if (trainingLabels[i] == y):
+                        top += trainingData[i][fi]
+                        bottom += 2*k + 1
+                
+                tempFeaturesGivenLabelsDistribution[(y, fi, 1)] = top / bottom
+                tempFeaturesGivenLabelsDistribution[(y, fi, 0)] = 1 - (top / bottom)
+                
+        conditionalDistributionList.append((k, tempFeaturesGivenLabelsDistribution))        
+       
+    """    
+        
+    bestAccuracy = float(0)    
+    for (k, dist) in conditionalDistributionList:
+        tempDist = self.featuresGivenLabelsDistribution
+        tempK = self.k
+        
+        self.featuresGivenLabelsDistribution = dist
+        self.k = k
+        
+        guessedLabels = self.classify(validationData)
+        netright = 0
+        for i in range(len(guessedLabels)):
+            if (guessedLabels[i] == validationLabels[i]):
+                netright += 1
+        
+        accuracy = float(netright) / len(guessedLabels)
+        if (accuracy < bestAccuracy):
+            self.featuresGivenLabelsDistribution = tempDist
+            self.k = tempK
+        else:
+            bestAccuracy = accuracy
+            self.k = k
+            
     return self.k
     
   def classify(self, testData):
@@ -88,7 +172,14 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     logJoint = util.Counter()
     
     ## YOUR CODE HERE
+    
     # example of type of values: logJoint["SomeLabel"] = math.log(1e-301) 
+    for y in self.legalLabels:
+      logJoint[y] = math.log(self.labelDistribution[y])
+      for fi in datum.keys():
+        #print self.featuresGivenLabelsDistribution.has_key((y, fi, datum[fi]))
+        #print self.featuresGivenLabelsDistribution.getCount((y, fi, datum[fi]))
+        logJoint[y] += math.log(self.featuresGivenLabelsDistribution.getCount((y, fi, datum[fi])))
     
     return logJoint
   
