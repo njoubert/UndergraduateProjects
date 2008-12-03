@@ -72,8 +72,10 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     further usage in calculateLogJointProbabilities method
     
     FeaturesGivenLabelsDistribution:
-        Key: (label, feature, featureValue)
-        Value: Probability
+      {key: {(feat, val): prob, ..., (feat, val):prob},
+        ...
+        ...
+        key:{(feat, val): prob, ..., (feat, val):prob}}
         
     """
     
@@ -88,42 +90,26 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     featureLabelCount = self.getCounterOfFeatureLabelPairs(trainingData, trainingLabels)
     
     
+    
+    
     conditionalDistributionList = []
     for k in kgrid:
-      P_feature_label = util.Counter()
+      P_feature_label = {}#util.Counter()
       for y in self.legalLabels:
+        P_feature_label[y] = util.Counter()
         for f in self.features:
           ### For F = 1:
           probability = float((featureLabelCount.getCount((y, f, 1)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
-          P_feature_label.incrementCount((y, f, 1), probability)
+          P_feature_label[y].incrementCount((f, 1), probability)
            ### For F = 0:
           probability = float((featureLabelCount.getCount((y, f, 0)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
-          P_feature_label.incrementCount((y, f, 0), probability)   
+          P_feature_label[y].incrementCount((f, 0), probability)   
           
       conditionalDistributionList.append((k, P_feature_label))
     
-    """
-    conditionalDistributionList = []
-    for k in kgrid:
-        tempFeaturesGivenLabelsDistribution = util.Counter()
-        
-        #first we calculate top = count(Fi = fi, Y = y) and bottom:
-        for y in self.legalLabels:
-            for fi in self.features:
-                
-                top = float(k)
-                bottom = float(0)
-                for i in range(len(trainingLabels)):
-                    if (trainingLabels[i] == y):
-                        top += trainingData[i][fi]
-                        bottom += 2*k + 1
-                
-                tempFeaturesGivenLabelsDistribution[(y, fi, 1)] = top / bottom
-                tempFeaturesGivenLabelsDistribution[(y, fi, 0)] = 1 - (top / bottom)
-                
-        conditionalDistributionList.append((k, tempFeaturesGivenLabelsDistribution))        
-       
-    """    
+    
+    
+    
         
     bestAccuracy = float(0)    
     for (k, dist) in conditionalDistributionList:
@@ -179,7 +165,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
       for fi in datum.keys():
         #print self.featuresGivenLabelsDistribution.has_key((y, fi, datum[fi]))
         #print self.featuresGivenLabelsDistribution.getCount((y, fi, datum[fi]))
-        logJoint[y] += math.log(self.featuresGivenLabelsDistribution.getCount((y, fi, datum[fi])))
+        logJoint[y] += math.log(self.featuresGivenLabelsDistribution[y].getCount((fi, datum[fi])))
     
     return logJoint
   
@@ -192,13 +178,21 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
                      P(feature=on|class1)/P(feature=on|class2) 
     """
 
-    featuresClass1 = []
-    featuresClass2 = []
-    featuresOdds = []
+    featuresClass1 = self.featuresGivenLabelsDistribution[class1].sortedKeys()
+    featuresClass1 = [x[0] for x in featuresClass1 if x[1] == 1]
+    featuresClass2 = self.featuresGivenLabelsDistribution[class2].sortedKeys()
+    featuresClass2 = [x[0] for x in featuresClass2 if x[1] == 1]
+    oddsCounter = util.Counter()
+    for f in self.features:
+      o1 = self.featuresGivenLabelsDistribution[class1].getCount((f,1))
+      o2 = self.featuresGivenLabelsDistribution[class2].getCount((f,1))
+      oddsCounter.incrementCount((f), float(o1)/float(o2))
+    featuresOdds = oddsCounter.sortedKeys()
     
     ## YOUR CODE HERE
+    
 
-    return featuresClass1,featuresClass2,featuresOdds
+    return featuresClass1[0:99],featuresClass2[0:99],featuresOdds[0:99]
     
 
     
