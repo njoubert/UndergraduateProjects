@@ -48,6 +48,29 @@ def basicFeatureExtractorFace(datum):
         features[(x,y)] = 0
   return features
 
+def getNeighborsForDigit(pixel, pixelsLeft):
+  neighborList = [(pixel[0]+1, pixel[1]  ), 
+                  (pixel[0]-1, pixel[1]  ), 
+                  (pixel[0],   pixel[1]+1), 
+                  (pixel[0],   pixel[1]-1)]
+  #neighborList = [x for x in neighborList if (x[0] < DIGIT_DATUM_WIDTH and
+  #                                            x[0] >= 0 and
+  #                                            x[1] < DIGIT_DATUM_HEIGHT and
+  #                                            x[1] >= 0)]
+  neighbors = [x for x in neighborList if pixelsLeft.has_key(x)]
+  return neighbors
+  
+def getWhiteNeighborsForDigit(pixel, pixelsLeft):
+  neighbors = getNeighborsForDigit(pixel, pixelsLeft)
+  whiteNeighbors = [x for x in neighbors if pixelsLeft[x] == 0]
+  return whiteNeighbors
+
+def filterOnlyWhitePixels(pixels):
+  for x in pixels.keys():
+    if pixels[x] > 0:
+      del pixels[x]
+  return pixels
+
 def enhancedFeatureExtractorDigit(datum):
   """
   Your feature extraction playground.
@@ -61,8 +84,57 @@ def enhancedFeatureExtractorDigit(datum):
   """
   features =  basicFeatureExtractorDigit(datum)
 
-  # YOUR CODE HERE TO IMPROVE FEATURES! 
+  """ WE SEARCH FOR AMOUNT OF CONNECTED WHITE REGIONS """
+  pixelsLeft = filterOnlyWhitePixels(util.Counter(features.copy()))
+  connectedRegions = 0
+  while (len(pixelsLeft.keys()) > 0):
+    currP = pixelsLeft.keys()[0]
+    connectedRegions += 1
+    whitePixelsLeftInArea = [currP]
+    del pixelsLeft[currP]
+    while (len(whitePixelsLeftInArea) > 0):
+      currP = whitePixelsLeftInArea[0]
+      del whitePixelsLeftInArea[0]
+      #print "currently looking at", currP, "with white pixels left", whitePixelsLeftInArea
+      neighbors = getNeighborsForDigit(currP, pixelsLeft)
+      for x in neighbors:
+        del pixelsLeft[x]
+      whitePixelsLeftInArea.extend(neighbors)
 
+  #print "Found Total Connected White Regions :", connectedRegions
+  
+  if connectedRegions == 1:
+    features.setCount("regionCount1", 1)
+  else:
+    features.setCount("regionCount1", 0) 
+
+  if connectedRegions == 2:
+    features.setCount("regionCount2", 1)
+  else:
+    features.setCount("regionCount2", 0) 
+  
+  if connectedRegions == 3:
+    features.setCount("regionCount3", 1)
+  else:
+    features.setCount("regionCount3", 0) 
+  
+  if connectedRegions == 4:
+    features.setCount("regionCount4", 1)
+  else:
+    features.setCount("regionCount4", 0) 
+  
+  if connectedRegions == 5:
+    features.setCount("regionCount5", 1)
+  else:
+    features.setCount("regionCount5", 0) 
+  
+  if connectedRegions == 6:
+    features.setCount("regionCount6", 1)
+  else:
+    features.setCount("regionCount6", 0) 
+  
+
+    
   return features
 
 def enhancedFeatureExtractorFace(datum):
@@ -103,9 +175,15 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
           print "==================================="
           print "Mistake on example %d" % i 
           print "Predicted %d; truth is %d" % (prediction, truth)
+          print "regionCount1", testData[i].getCount("regionCount1")
+          print "regionCount2", testData[i].getCount("regionCount2")
+          print "regionCount3", testData[i].getCount("regionCount3")
+          print "regionCount4", testData[i].getCount("regionCount4")
+          print "regionCount5", testData[i].getCount("regionCount5")
+          print "regionCount6", testData[i].getCount("regionCount6")
           print "Image: "
           print rawTestData[i]
-          break
+          
 
 
 ## =====================
