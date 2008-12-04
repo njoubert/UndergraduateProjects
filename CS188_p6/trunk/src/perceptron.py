@@ -80,7 +80,5 @@ class PerceptronClassifier:
     featuresOdds = self.weights[class1] - self.weights[class2]
     featuresOdds = featuresOdds.sortedKeys()
 
-    ## YOUR CODE HERE
-
     return featuresClass1[0:100],featuresClass2[0:100],featuresOdds[0:100]
 

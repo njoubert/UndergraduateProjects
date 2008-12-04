@@ -1,5 +1,6 @@
 # Mira implementation
 import util
+import math
 PRINT = True
 
 class MiraClassifier:
@@ -33,6 +34,20 @@ class MiraClassifier:
         
     return self.trainAndTune(trainingData, trainingLabels, validationData, validationLabels, Cgrid)
 
+  def score( self, datum, weights):
+    vectors = util.Counter()
+    for l in self.legalLabels:
+      vectors[l] = weights[l] * datum  
+    return vectors
+
+  def calculateTau(self, c, wy, wyp, f):
+    sumsquares = 0
+    for key in f.keys():
+      sumsquares += f.getCount(key)*f.getCount(key)
+    subtracted = wyp - wy
+    tau = float(subtracted * f + 1) / float(2*sumsquares)
+    return min(c, tau)
+
   def trainAndTune(self, trainingData, trainingLabels, validationData, validationLabels, Cgrid):
     """
     See the project description for details how to update weight vectors for each label in training step. 
@@ -46,7 +61,58 @@ class MiraClassifier:
     (i.e. the parameter that yeilds best accuracy for the validation dataset)
     """
     # YOUR CODE HERE
+    self.features = trainingData[0].keys()
+    
+    weightsList = []
+      
+    for c in Cgrid:
+      weights = {}
+      for label in self.legalLabels:
+        weights[label] = util.Counter() # this is the data-structure you should use
 
+      for iteration in range(self.max_iterations):
+        print "Starting iteration ", iteration, " for c", c
+        for i in range(len(trainingData)):
+          ## YOUR CODE HERE
+          y = trainingLabels[i]
+          score = self.score(trainingData[i], weights)
+          yprime = score.argMax()
+          if yprime != y:
+            #we got it wrong, so update...
+            tau = self.calculateTau(c, weights[y], weights[yprime], trainingData[i])
+            trainingDataTemp = trainingData[i]
+            trainingDataTemp.multiplyAll(tau)
+            weights[y] = weights[y] + trainingDataTemp
+            weights[yprime] = weights[yprime] - trainingDataTemp
+            
+      weightsList.append((c, weights))
+    
+    bestAccuracy = float(0)
+    for (c, weights) in weightsList:
+      
+      tempW = self.weights
+      tempC = self.C
+      
+      self.weights = weights
+      self.C = c
+      
+      guessedLabels = self.classify(validationData)
+      netright = 0
+      for i in range(len(guessedLabels)):
+        if (guessedLabels[i] == validationLabels[i]):
+          netright += 1
+      accuracy = float(netright) / len(guessedLabels)
+      if (accuracy < bestAccuracy or (accuracy == bestAccuracy and tempC < c)):
+        self.weights = tempW
+        self.C = tempC  
+      else:
+        bestAccuracy = accuracy
+      
+      print "  Validating accuracy of c = ", c, "gives us", accuracy*100, "%"
+    
+    
+    print "  We picked c=", self.C    
+    return self.C
 
   def classify(self, data ):
     """
@@ -74,9 +140,11 @@ class MiraClassifier:
 
     """
 
-    featuresClass1 = []
-    featuresClass2 = []
-    featuresOdds = []
+    featuresClass1 = self.weights[class1].sortedKeys()
+    featuresClass2 = self.weights[class2].sortedKeys()
+    featuresOdds = self.weights[class1] - self.weights[class2]
+    featuresOdds = featuresOdds.sortedKeys()
 
-    return featuresClass1,featuresClass2,featuresOdds
+    return featuresClass1[0:100],featuresClass2[0:100],featuresOdds[0:100]
+
 
