@@ -188,7 +188,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     ## YOUR CODE HERE
     
 
-    return featuresClass1[0:99],featuresClass2[0:99],featuresOdds[0:99]
+    return featuresClass1[0:100],featuresClass2[0:100],featuresOdds[0:100]
     
 
     
