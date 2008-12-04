@@ -85,13 +85,9 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     for label in self.legalLabels:
         self.labelDistribution[label] = trainingLabels.count(label)
     self.labelDistribution.normalize()
-    
-    
+        
     featureLabelCount = self.getCounterOfFeatureLabelPairs(trainingData, trainingLabels)
-    
-    
-    
-    
+
     conditionalDistributionList = []
     for k in kgrid:
       P_feature_label = {}#util.Counter()

@@ -15,6 +15,12 @@ class PerceptronClassifier:
     self.weights = {}
     for label in legalLabels:
       self.weights[label] = util.Counter() # this is the data-structure you should use
+  
+  def score( self, datum):
+    vectors = util.Counter()
+    for l in self.legalLabels:
+      vectors[l] = self.weights[l] * datum  
+    return vectors
       
   def train( self, trainingData, trainingLabels, validationData, validationLabels ):
     """
@@ -34,7 +40,14 @@ class PerceptronClassifier:
       print "Starting iteration ", iteration, "..."
       for i in range(len(trainingData)):
           ## YOUR CODE HERE
-          pass
+          y = trainingLabels[i]
+          score = self.score(trainingData[i])
+          yprime = score.argMax()
+          if yprime != y:
+            #we got it wrong, so update...
+            self.weights[y] = self.weights[y] + trainingData[i]
+            self.weights[yprime] = self.weights[yprime] - trainingData[i]
+          
     
   def classify(self, data ):
     """
@@ -62,11 +75,12 @@ class PerceptronClassifier:
 
     """
 
-    featuresClass1 = []
-    featuresClass2 = []
-    featuresOdds = []
+    featuresClass1 = self.weights[class1].sortedKeys()
+    featuresClass2 = self.weights[class2].sortedKeys()
+    featuresOdds = self.weights[class1] - self.weights[class2]
+    featuresOdds = featuresOdds.sortedKeys()
 
     ## YOUR CODE HERE
 
-    return featuresClass1,featuresClass2,featuresOdds
+    return featuresClass1[0:99],featuresClass2[0:99],featuresOdds[0:99]
 
