@@ -249,10 +249,10 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
           print "==================================="
           print "Mistake on example %d" % i 
           print "Predicted %d; truth is %d" % (prediction, truth)
-          for j in range(1,6):
-            print "regionCount"+str(j), testData[i].getCount("regionCount"+str(j))
-          for j in range(0,6):
-            print "horizontal"+str(j), testData[i].getCount("horizontal"+str(j))
+          #for j in range(1,6):
+          ##  print "regionCount"+str(j), testData[i].getCount("regionCount"+str(j))
+          #for j in range(0,6):
+          #  print "horizontal"+str(j), testData[i].getCount("horizontal"+str(j))
           print "Image: "
           print rawTestData[i]
       
