@@ -32,6 +32,22 @@ def basicFeatureExtractorDigit(datum):
         features[(x,y)] = 0
   return features
 
+def onlyBlackPixelsFeatureExtractorDigit(datum):
+  """
+  Returns a set of pixel features indicating whether
+  each pixel in the provided datum is white (0) or gray/black (1)
+  """
+  a = datum.getPixels()
+
+  features = util.Counter()
+  for x in range(DIGIT_DATUM_WIDTH):
+    for y in range(DIGIT_DATUM_HEIGHT):
+      if datum.getPixel(x, y) > 1:
+        features[(x,y)] = 1
+      else:
+        features[(x,y)] = 0
+  return features
+
 def basicFeatureExtractorFace(datum):
   """
   Returns a set of pixel features indicating whether
@@ -49,10 +65,13 @@ def basicFeatureExtractorFace(datum):
   return features
 
 def getNeighborsForDigit(pixel, pixelsLeft):
-  neighborList = [(pixel[0]+1, pixel[1]  ), 
-                  (pixel[0]-1, pixel[1]  ), 
-                  (pixel[0],   pixel[1]+1), 
-                  (pixel[0],   pixel[1]-1)]
+  neighborList = [(pixel[0]+1, pixel[1]  ), #top 
+                  (pixel[0]-1, pixel[1]  ), #bottom
+                  (pixel[0],   pixel[1]+1), #right
+                  (pixel[0],   pixel[1]-1), #left
+                  #diagonals:
+                  (pixel[0]+1, pixel[1]+1),(pixel[0]+1, pixel[1]-1), (pixel[0]-1, pixel[1]-1), (pixel[0]-1, pixel[1]+1)
+                  ] 
   #neighborList = [x for x in neighborList if (x[0] < DIGIT_DATUM_WIDTH and
   #                                            x[0] >= 0 and
   #                                            x[1] < DIGIT_DATUM_HEIGHT and
@@ -83,9 +102,12 @@ def enhancedFeatureExtractorDigit(datum):
   ##
   """
   features =  basicFeatureExtractorDigit(datum)
+  blackPixels = onlyBlackPixelsFeatureExtractorDigit(datum)
 
   """ WE SEARCH FOR AMOUNT OF CONNECTED WHITE REGIONS """
-  pixelsLeft = filterOnlyWhitePixels(util.Counter(features.copy()))
+  
+  #pixelsLeft = filterOnlyWhitePixels(util.Counter(features.copy()))
+  pixelsLeft = filterOnlyWhitePixels(util.Counter(blackPixels))
   connectedRegions = 0
   while (len(pixelsLeft.keys()) > 0):
     currP = pixelsLeft.keys()[0]
@@ -133,6 +155,8 @@ def enhancedFeatureExtractorDigit(datum):
   else:
     features.setCount("regionCount6", 0) 
   
+  if connectedRegions > 6:
+    print "WTF more than 6 connected regions!"
 
     
   return features
@@ -171,6 +195,7 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
   for i in range(len(guesses)):
       prediction = guesses[i]
       truth = testLabels[i]
+      
       if (prediction != truth):
           print "==================================="
           print "Mistake on example %d" % i 
@@ -183,7 +208,19 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
           print "regionCount6", testData[i].getCount("regionCount6")
           print "Image: "
           print rawTestData[i]
-          
+      
+      """
+      print "==================================="
+      print "Predicted %d; truth is %d" % (prediction, truth)
+      print "regionCount1", testData[i].getCount("regionCount1")
+      print "regionCount2", testData[i].getCount("regionCount2")
+      print "regionCount3", testData[i].getCount("regionCount3")
+      print "regionCount4", testData[i].getCount("regionCount4")
+      print "regionCount5", testData[i].getCount("regionCount5")
+      print "regionCount6", testData[i].getCount("regionCount6")
+      print "Image: "
+      print rawTestData[i]
+      """    
 
 
 ## =====================

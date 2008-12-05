@@ -40,14 +40,26 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         
     return self.trainAndTune(trainingData, trainingLabels, validationData, validationLabels, kgrid)
   
-  def getCounterOfFeatureLabelPairs(self, data, labels):
-    counter = util.Counter()
+  def getDictOfFeatureValuesCountersForLabelFeatureValuePairs(self, data, labels):
+    countsDict = {}
     for i in range(len(labels)):
       y = labels[i]
       for (feat, featval) in data[i].items():
-        counter.incrementCount((y, feat, featval), 1)                           
-    return counter
+        if (not countsDict.has_key((y, feat))):
+          countsDict[(y, feat)] = util.Counter()
+          #This is lame, but this makes sure we have all the allowed values in the range:
+          countsDict[(y, feat)].incrementCount(0, 0)
+          countsDict[(y, feat)].incrementCount(1, 0)
+        countsDict[(y, feat)].incrementCount(featval, 1)
+    return countsDict
     
+  
+  def calculateProbabilityOfLabelFeaturevalue(self, featureLabelCount, k, y, f, fv):
+    """
+    """
+    count = float(featureLabelCount[(y, f)].getCount(fv) + k)
+    netCount = sum([k + occurances for (value, occurances) in featureLabelCount[(y, f)].items()])
+    return count / float(netCount)
       
   def trainAndTune(self, trainingData, trainingLabels, validationData, validationLabels, kgrid):
     """
@@ -71,11 +83,18 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     You should also keep track of the priors and conditional probabilities for
     further usage in calculateLogJointProbabilities method
     
-    FeaturesGivenLabelsDistribution:
-      {key: {(feat, val): prob, ..., (feat, val):prob},
+    FeatureLabelCount:
+      {(y, feat): {featval:count, featval:count},
         ...
         ...
-        key:{(feat, val): prob, ..., (feat, val):prob}}
+       (y, feat, featval): count 
+      }
+    
+    FeaturesGivenLabelsDistribution, P_feature_labels:
+      {y: {(feat, val): prob, ..., (feat, val):prob},
+        ...
+        ...
+        y:{(feat, val): prob, ..., (feat, val):prob}}
         
     """
     
@@ -86,7 +105,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         self.labelDistribution[label] = trainingLabels.count(label)
     self.labelDistribution.normalize()
         
-    featureLabelCount = self.getCounterOfFeatureLabelPairs(trainingData, trainingLabels)
+    featureLabelCount = self.getDictOfFeatureValuesCountersForLabelFeatureValuePairs(trainingData, trainingLabels)
 
     conditionalDistributionList = []
     for k in kgrid:
@@ -94,12 +113,12 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
       for y in self.legalLabels:
         P_feature_label[y] = util.Counter()
         for f in self.features:
-          ### For F = 1:
-          probability = float((featureLabelCount.getCount((y, f, 1)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
-          P_feature_label[y].incrementCount((f, 1), probability)
-           ### For F = 0:
-          probability = float((featureLabelCount.getCount((y, f, 0)) + k)) / (2*k + featureLabelCount.getCount((y, f, 1)) + featureLabelCount.getCount((y, f, 0)))
-          P_feature_label[y].incrementCount((f, 0), probability)   
+          ### For F = 0:
+          probability = self.calculateProbabilityOfLabelFeaturevalue(featureLabelCount, k, y, f, 0)
+          P_feature_label[y].incrementCount((f, 0), probability)
+           ### For F = 1:
+          probability = self.calculateProbabilityOfLabelFeaturevalue(featureLabelCount, k, y, f, 1)
+          P_feature_label[y].incrementCount((f, 1), probability)  
           
       conditionalDistributionList.append((k, P_feature_label))
     
