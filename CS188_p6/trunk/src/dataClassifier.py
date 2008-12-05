@@ -70,7 +70,7 @@ def getNeighborsForDigit(pixel, pixelsLeft):
                   (pixel[0],   pixel[1]+1), #right
                   (pixel[0],   pixel[1]-1), #left
                   #diagonals:
-                  (pixel[0]+1, pixel[1]+1),(pixel[0]+1, pixel[1]-1), (pixel[0]-1, pixel[1]-1), (pixel[0]-1, pixel[1]+1)
+                  #(pixel[0]+1, pixel[1]+1),(pixel[0]+1, pixel[1]-1), (pixel[0]-1, pixel[1]-1), (pixel[0]-1, pixel[1]+1)
                   ] 
   #neighborList = [x for x in neighborList if (x[0] < DIGIT_DATUM_WIDTH and
   #                                            x[0] >= 0 and
@@ -98,16 +98,26 @@ def enhancedFeatureExtractorDigit(datum):
   for this datum (datum is of type samples.Datum).
   
   ## DESCRIBE YOUR ENHANCED FEATURES HERE...
-  
+    Please see the comments inside the code.
   ##
   """
   features =  basicFeatureExtractorDigit(datum)
   blackPixels = onlyBlackPixelsFeatureExtractorDigit(datum)
 
-  """ WE SEARCH FOR AMOUNT OF CONNECTED WHITE REGIONS """
+  """ 
   
-  #pixelsLeft = filterOnlyWhitePixels(util.Counter(features.copy()))
-  pixelsLeft = filterOnlyWhitePixels(util.Counter(blackPixels))
+  WE SEARCH FOR AMOUNT OF CONNECTED WHITE REGIONS 
+  
+  We formulate the search of connected white regions as a modified BFS search problem, 
+  where the closed list is implicitly stored by deleting already-visited values.
+  
+  Once we've found the connected regions, we add a feature for each of 1 through 5+ connected
+  regions.
+  
+  """
+  
+  pixelsLeft = filterOnlyWhitePixels(util.Counter(features.copy()))
+  #pixelsLeft = filterOnlyWhitePixels(util.Counter(blackPixels))
   connectedRegions = 0
   while (len(pixelsLeft.keys()) > 0):
     currP = pixelsLeft.keys()[0]
@@ -135,30 +145,69 @@ def enhancedFeatureExtractorDigit(datum):
   else:
     features.setCount("regionCount2", 0) 
   
-  if connectedRegions == 3:
+  if connectedRegions >= 3:
     features.setCount("regionCount3", 1)
   else:
     features.setCount("regionCount3", 0) 
   
-  if connectedRegions == 4:
-    features.setCount("regionCount4", 1)
-  else:
-    features.setCount("regionCount4", 0) 
+  """    
+    if connectedRegions >= 4:
+      features.setCount("regionCount4 " + str(i), 1)
+    else:
+      features.setCount("regionCount4 " + str(i), 0) 
+  """  
   
-  if connectedRegions == 5:
-    features.setCount("regionCount5", 1)
-  else:
-    features.setCount("regionCount5", 0) 
   
-  if connectedRegions == 6:
-    features.setCount("regionCount6", 1)
-  else:
-    features.setCount("regionCount6", 0) 
+  """
   
-  if connectedRegions > 6:
-    print "WTF more than 6 connected regions!"
-
-    
+  WE SEARCH FOR THE LONGEST HORIZONTAL LINE OF CONNECTED SPOTS.
+  
+  This helps us distinguish between characters that have significant
+  horizontal expansion(think of 4, 5, 7) versus characters with mostly vertical
+  expansion (for example 1, 9)
+  
+  """
+  
+  longestEver = 0
+  longest = 0
+  for y in range(DIGIT_DATUM_HEIGHT):
+    for x in range(DIGIT_DATUM_WIDTH):
+      if datum.getPixel(x, y) > 0:
+        longest += 1
+      else:
+        longestEver = max(longest, longestEver)
+        longest = 0
+  
+  if longestEver <= 5:
+    features.setCount("horizontal0", 1)
+  else:
+    features.setCount("horizontal0", 0)      
+  
+  if longestEver > 5:
+    features.setCount("horizontal1", 1)
+  else:
+    features.setCount("horizontal1", 0)      
+  
+  if longestEver > 7:
+    features.setCount("horizontal2", 1)
+  else:
+    features.setCount("horizontal2", 0)      
+  
+  if longestEver > 9:
+    features.setCount("horizontal3", 1)
+  else:
+    features.setCount("horizontal3", 0)      
+  
+  if longestEver > 11:
+    features.setCount("horizontal4", 1)
+  else:
+    features.setCount("horizontal4", 0)      
+ 
+  if longestEver > 13:
+    features.setCount("horizontal5", 1)
+  else:
+    features.setCount("horizontal5", 0)  
+     
   return features
 
 def enhancedFeatureExtractorFace(datum):
@@ -200,12 +249,10 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
           print "==================================="
           print "Mistake on example %d" % i 
           print "Predicted %d; truth is %d" % (prediction, truth)
-          print "regionCount1", testData[i].getCount("regionCount1")
-          print "regionCount2", testData[i].getCount("regionCount2")
-          print "regionCount3", testData[i].getCount("regionCount3")
-          print "regionCount4", testData[i].getCount("regionCount4")
-          print "regionCount5", testData[i].getCount("regionCount5")
-          print "regionCount6", testData[i].getCount("regionCount6")
+          for j in range(1,6):
+            print "regionCount"+str(j), testData[i].getCount("regionCount"+str(j))
+          for j in range(0,6):
+            print "horizontal"+str(j), testData[i].getCount("horizontal"+str(j))
           print "Image: "
           print rawTestData[i]
       
