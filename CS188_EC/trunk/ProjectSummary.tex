@@ -1,0 +1,333 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2008-12-05.
+%  Copyright (c) 2008 UC Berkeley. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+\addtolength{\topmargin}{+0.0in}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+\usepackage{fancyhdr}
+
+% Multipart figures
+\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{url}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+
+\usepackage[pdftex,
+	pdfauthor={Niels Joubert},
+	pdftitle={CS188 Project Summary},
+	pdfsubject={Summary of projects in Berkeley's Artificial Intelligence class}, 
+	pdfkeywords={Niels Joubert, 2008-12-05, CS188, Artificial Intelligence, AI, Berkeley},
+	colorlinks
+]{hyperref}
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+
+\title{CS188 Artificial Intelligence Projects Summary}
+\author{ Niels Joubert }
+
+\date{2008-12-05}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\begin{abstract}
+Berkeley's CS188 course teaches the basics of Artificial Intelligence as defined by the \textbf{rational agent} approach. Since this course taught a significant amount of material through doing projects, it's worth revisiting what we did and how it worked. All the code is in Python 2.4
+\end{abstract}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Project 1 - Search in Pacman - Agents and Search}\label{P1}
+
+\subsection{Theory about Searching}
+
+\textbf{Reflex Agents} considers only the current precept and memory. It does not consider the future consequences of its actions.
+\textbf{Goal-based Agents} plan ahead, basing decisions on hypothesized consequences of actions.
+
+\subsubsection{Graph Searching}
+
+Problem consists of:
+\begin{itemize}
+    \item State Space - all the current possibilities
+    \item Successor Function - how to advance one state to the next
+    \item Start and Goal - where I am and where I want to get.
+\end{itemize}
+Solution is a set of actions that transforms start state to end state. We can't build the whole graph - it's too big. So we find only the important parts. General formulation:
+Keep a \textbf{Fringe} of unvisited nodes and a \textbf{Closed Set} of already-visited nodes.
+Different formulations simply have different \textbf{Exploration Strategies}:
+\begin{itemize}
+
+    \item \textbf{Depth First Search (DFS)} \\
+    LIFO queue. Always expand the child of the current node first. \\
+    \indent [Complete with cycle checking, Not optimal, time: $O(b^{m+1})$, space: $O(bm)$]
+
+    \item \textbf{Breadth First Search (BFS)} \\
+     FIFO queue. Always expand \emph{all} the successors of a node first. \\
+     \indent [Complete, Possibly Optimal, time: $O(b^{s+1})$, space: $O(b^s)$]
+
+    \item \textbf{Iterative Deepening} \\
+     Combination of BFS and DFS. \\
+     \indent [Complete, Possibly Optimal, time: $O(b^{s+1})$, space: $O(bs)$]
+     
+     \item \textbf{Uniform Cost Search} \\
+     Expand node with cheapest cost. BFS if constant costs.\footnote{UCS could be worse than BFS since UCS explores cheapest nodes first, so it might expand significant parts of the tree with small steps.} Orders by \emph{backward cost}. Priority Queue. \\
+     \indent [Complete, Optimal, time: $O(C^{*}b^{C^*/\epsilon})$, space: $O(b^{C^*/\epsilon})$]
+     
+     \item \textbf{Best First Search / Greedy Search} (Heuristic-based)\\
+     Expand node with lowest heuristic. Best - straight, Worst - whole tree. Orders by \emph{forward cost}.\\
+     \indent [Complete with cycle checking, Not Optimal]
+     
+     \item \textbf{A* Search} (Heuristic-based)\\
+     UCS + Greedy. Order by \emph{forward + backward cost}.\\
+     \indent [Complete, Optimal with consistent (admissable for tree) heuristic.]
+\end{itemize}
+$b$ is branching factor (amount of children per node)\\
+$s$ is the depth of the shallowest goal\\
+$m$ is the maximum depth of a goal (or, the depth of a goal DFS will fine)\\
+$C^*$ is the cost of the optimal solution (the total path cost). \\
+$\epsilon$ is the least cost of an action.
+
+\textbf{BFS} finds the optimal goal if the path length is nondecreasing with depth.
+
+\textbf{DFS $>>$ BFS} when there exists many solutions at a similar (possibly deep) depth.
+
+\textbf{DFS $<<$ BFS} when solutions are sparse.
+
+\subsubsection{Heuristics}
+
+A heuristic is a function $h(n)$ that maps a \emph{node} to an estimated \emph{cost to goal}. It provides the \emph{forward cost} - an estimate of how expensive it is to reach the goal from the given node. Note that the \emph{backwards cost} is the true cost of the whole path to some node.
+
+\paragraph{}
+
+Heuristic is \textbf{Admissable} if $h(n) \leq h^*(n)$, that is, if the estimated cost is less than the true cost to the nearest goal. Heuristic is \textbf{Consistent} if $cost(n, a, n') \geq h(n) - h(n')$, that is, if the true cost of a path exceeds the change in heuristic moving along that path.
+
+\paragraph{}
+
+Trade off the quality of your estimate with the work needed per node. Thus we try to come up with a \textbf{relaxed problem} heuristic: Simplify (relax) the problem specification, and come up with a cost function for the simplified problem.
+
+\subsection{Project Overview}
+
+This project takes place on a Pacman board with Pacman as the only agent. The project asked us to write two types of search problems - one where you find a path from the start position to a endposition on the board, one where you find a path to each all the food on the pacman board. Both were route-planning problems, but the states in the search problem varied.
+
+\subsection{Questions 1 through 4 - Find a Path to a Dot}
+
+\textbf{Files and Functions}: \\
+\emph{search.py}: simpleSearch, informedSearch
+
+\paragraph{}
+
+We abstracted search into two search functions: Simple Search and Informed Search, both in \emph{search.py}. Simple Search expands nodes one by one and placed it in the appropriate datastructure to generate BFS or DFS. Informed Search included a heuristic to decide how to expand nodes, thus implementing UCS and A* Search.
+
+\paragraph{}
+
+Nodes in the graph consisted of the $(x,y)$ position of pacman. On the fringe we stored the total path, consisting of a list of (node, the action to get to that node, and the cost of the step from its parent to that node) tuples.
+
+\subsection{Questions 5 and 6 - Eating all the Dots}
+
+\textbf{Files and Functions}: \\
+\emph{search.py}: simpleSearch, informedSearch\\
+\emph{searchAgents.py}: AStarFoodSearchAgent, getFoodHeuristic
+
+\paragraph{}
+
+A solution is now a path that eats all the dots on the board. A state consists of the whole board - a tuple of (pacman's position, layout of food on grid). Thus the goal state is a grid such that there are no more pellets on the board. Since the state space is now considerably bigger, we need more expansive search techniques.
+
+\paragraph{}
+
+We had to write an admissible heuristic to run A* on this problem. We also wrote Greedy Search to take advantage of our heuristic. We started off with nothing very fancy, but we could not break our goals. We ended up implementing \emph{Prim's Minimum Spanning Tree Algorithm} as a heuristic.
+
+\pagebreak
+
+\section{Project 2 - Multi-Agent Pacman - Agents and Game Trees}\label{P2}
+
+\subsection{Theory about Local and Adversarial Search}
+
+Game Trees are a form of local, \textbf{adversarial search} problems.
+\textbf{Local Search} is the process of improving what you know until you can't make it any better. This is in general a vast improvement of global search queue-based algorithms discussed for project 1. It is \emph{incomplete} though, and will not guarantee finding any solution.
+
+\paragraph{}
+
+\textbf{Hill Climbing} is the same as Greedy search, and is the simplest local search algorithm: always choose the best neighbor. This gets stuck in local maxima. \textbf{Simulated Annealing}\footnote{Annealing means \emph{to harden something through heat, to make less brittle by heat treatment.}} attempts to improve this by allowing downhill moves, but makes them rarer over time (as if it cools down). \textbf{Beam Search} is the same as hill climbing, but always keeps at least $k$ states, thus encouraging diversity. \textbf{Genetic Algorithms} is similar to beam search, but uses a \emph{natural selection} metaphor to pick neighbors, allowing for \emph{pairwise crossover} with optional mutation.
+
+\subsubsection{Adversarial Search for Deterministic Games}
+
+Many formalizations are possible. For Example: States, Players, Actions depending on Player and State, and Transition Function $f(S,A) \mapsto S'$. A solution is a \textbf{policy}: $p(S) \mapsto A$. We will build a tree. Each node stores a value: the best outcome that can be reached from this node. This is the maximal outcome of its children. Thus, \emph{ build the tree bottom up}: construct down to endpoints, calculate endpoint score, propagate score up the tree. This is most easily done \emph{recursively}. 
+
+\paragraph{}
+
+\textbf{Minimax search} alternates players in a \textbf{Zero-Sum Game:} Both players use the same score, player A maximizes it, player B minimizes it. Your level of the tree (\emph{a max node}) will choose the action with the highest score. Your opponent's level of the tree (\emph{a min node}) will choose the action with the lowest score.
+\\
+\textbf{Time Complexity}: $O(b^m)$, \textbf{Space Complexity}: $O(bm)$ where $b$ is branching factor and $m$ is depth. \\
+This is too deep, so we \emph{limit the depth}. Loses optimal play guarantee. We need a way to guess the value of the nodes we terminate it.
+
+\paragraph{}
+
+\textbf{Evaluation Function:} Scores non-terminal states. In practice: Evaluate as a linear sum of features, $Eval(s) = w_1f_1(s) + \dots + w_nf_n(s)$. We use a \textbf{Feature Extractor} to calculate the value of a feature given some state. These can be \emph{distances}, \emph{amounts left}, \emph{score}, etc.
+
+\paragraph{}
+
+\textbf{Alpha-Beta Pruning} exploits knowledge about outcomes so far and computational interplay. For Max: $\alpha$ is best option of its Min children so far. Any Min child node of the current node with a child with $score < \alpha$ can be ignored. This works since the Min node will always choose the smallest, so if you've found something smaller on this node's children, then this Min child will be a worse option, so we ignore it. $U$ is the utility.
+\\
+\textbf{Zero Sum:} $|U_b + U_a| = 0$. Prune when $-U_b \leq \alpha$.\\
+\textbf{Non-Zero Sum:} $|U_b + U_a| \leq \epsilon$. Prune when $-U_b + \epsilon \leq \alpha$.
+
+\subsubsection{Adversarial Search for Stochastic Games}
+
+If we don't know the result of an action (one of a set of possibilities) we use \textbf{Expected Value} as score of node. Thus, introduce \emph{Chance Nodes} that calculated average of children states.\footnote{Notice that we can combine any amount of min, max and chance nodes in a hybrid tree.} This can be formalized as a \textbf{MDP}\ref{P3}.
+
+\paragraph{}
+
+\textbf{Maximum Expected Utility:} Take the action that you believe has the best net response. This is the definition of \emph{rationality}. Expectation $E[f(x)] = \sum_x f(x) \mathbb{P}(x)$. Utilities describe the agent's preference.
+
+\subsection{Project Overview}
+
+For this project we had to write pacman agents that play against ghosts. Thus, you had one Maximizer player, and two or more Minimizer players. Our agents supported simple reflex agents, minimax agents and expectimax agents.
+
+\subsection{Question 1 - Reflex Agent and Move Evaluation Function}
+
+\textbf{Files and Functions}: \\
+\emph{multiAgents.py}: ReflexAgent.getAction(), ReflexAgent.evaluationFunction()
+
+\paragraph{}
+
+Reflex Agents examine all the actions available according to its successor state with no consideration for the consequences of its actions. Thus, we find all the successor states and evaluate each of them, choosing the highest scoring successor. Our evaluation function was a weighted sum of features:
+\begin{itemize}
+    \item Game Score
+    \item Total Dots left
+    \item Distance to closest dots
+    \item Sum of distances to each dot
+    \item Distance to closest ghost
+\end{itemize}
+
+\subsection{Question 2 and 3 - Minimax Agent with Alpha-Beta pruning}
+
+\textbf{Files and Functions}: \\
+\emph{multiAgents.py}: MinimaxAgent, AlphaBetaAgent
+
+\paragraph{}
+
+These were both written as recursive problems, switching between a min and a max cycle in the recursion. Its basically straight from \emph{Artificial Intelligence: A Modern Approach}. MiniMax agents always assume the worst. They play in such a way to try and win even if the opponent plays the perfect game against them. 
+
+\subsection{Question 4 and 5 - Expectimax Agent and State Evaluation Function}
+
+\textbf{Files and Functions}: \\
+\emph{multiAgents.py}: ExpectimaxAgent, betterEvaluationFunction()
+
+\paragraph{}
+
+Again, almost straight from the required text. Probabilistic agents concede that the opponent will not play a perfect game against you, and that you can do better by playing in such a way as to maximize your \emph{expected} value, rather than the \emph{minimal} value.
+
+\paragraph{}
+
+As for our evaluation function, we maximized the score, minimized the amount of dots, moved towards the closest dot, minimize the amount of capsules and take or avoid the appropriate terminal nodes. We came to the conclusion that taking random ghosts into account for any case other than when they're about to kill you gives you poor results.
+
+\pagebreak
+
+\section{Project 3 - Markov Decision Processes and Reinforcement Learning}\label{P3}
+
+\subsection{Theory about MDPs and RL}
+
+\subsection{Project Overview}
+
+
+\pagebreak
+
+\section{Project 4 - Static Ghostbusters - Bayes Nets}\label{P4}
+
+\subsection{Theory about Bayes' Nets}
+
+\subsection{Project Overview}
+
+
+\pagebreak
+
+\section{Project 5 - Dynamic Ghostbusters - Hidden Markov Models}\label{P5}
+
+\subsection{Theory about HMMs}
+
+\subsection{Project Overview}
+
+
+\pagebreak
+
+\section{Project 6 - Classification - Machine Learning}\label{P6}
+
+\subsection{Theory about ML}
+
+\subsection{Project Overview}
+
+\pagebreak
+
+\section{Closing Remarks}
+
+CS188 with professor Dan Klein was an incredible experience. Follow-up courses to keep in mind is \textbf{CS281A/B} and \textbf{CS288}.
+
+\bibliographystyle{plain}
+\bibliography{}
+
+Artificial Intelligence A Modern Approach. Russel, Norvig. 
+
+CS188 Dan Klein lecture slides, Fall 2008.
+
+\end{document}
+
+
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{linearSingleJoint.pdf}
+    \label{linearSingleJoint}
+    \caption{Single 1 DOF joint.}
+\end{figure}
+

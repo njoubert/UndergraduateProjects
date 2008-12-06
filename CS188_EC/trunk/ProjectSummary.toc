@@ -1,0 +1,45 @@
+\sectbegin 
+\contentsline {section}{\numberline {1}Project 1 - Search in Pacman - Agents and Search}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Theory about Searching}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}Graph Searching}{2}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}Heuristics}{3}{subsubsection.1.1.2}
+\contentsline {paragraph}{}{3}{section*.2}
+\contentsline {paragraph}{}{3}{section*.3}
+\contentsline {subsection}{\numberline {1.2}Project Overview}{3}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Questions 1 through 4 - Find a Path to a Dot}{3}{subsection.1.3}
+\contentsline {paragraph}{}{3}{section*.4}
+\contentsline {paragraph}{}{3}{section*.5}
+\contentsline {subsection}{\numberline {1.4}Questions 5 and 6 - Eating all the Dots}{3}{subsection.1.4}
+\contentsline {paragraph}{}{3}{section*.6}
+\contentsline {paragraph}{}{3}{section*.7}
+\contentsline {section}{\numberline {2}Project 2 - Multi-Agent Pacman - Agents and Game Trees}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Theory about Local and Adversarial Search}{4}{subsection.2.1}
+\contentsline {paragraph}{}{4}{section*.8}
+\contentsline {subsubsection}{\numberline {2.1.1}Adversarial Search for Deterministic Games}{4}{subsubsection.2.1.1}
+\contentsline {paragraph}{}{4}{section*.9}
+\contentsline {paragraph}{}{4}{section*.10}
+\contentsline {paragraph}{}{4}{section*.11}
+\contentsline {subsubsection}{\numberline {2.1.2}Adversarial Search for Stochastic Games}{4}{subsubsection.2.1.2}
+\contentsline {paragraph}{}{4}{section*.12}
+\contentsline {subsection}{\numberline {2.2}Project Overview}{5}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Question 1 - Reflex Agent and Move Evaluation Function}{5}{subsection.2.3}
+\contentsline {paragraph}{}{5}{section*.13}
+\contentsline {subsection}{\numberline {2.4}Question 2 and 3 - Minimax Agent with Alpha-Beta pruning}{5}{subsection.2.4}
+\contentsline {paragraph}{}{5}{section*.14}
+\contentsline {subsection}{\numberline {2.5}Question 4 and 5 - Expectimax Agent and State Evaluation Function}{5}{subsection.2.5}
+\contentsline {paragraph}{}{5}{section*.15}
+\contentsline {paragraph}{}{5}{section*.16}
+\contentsline {section}{\numberline {3}Project 3 - Markov Decision Processes and Reinforcement Learning}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Theory about MDPs and RL}{6}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Project Overview}{6}{subsection.3.2}
+\contentsline {section}{\numberline {4}Project 4 - Static Ghostbusters - Bayes Nets}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}Theory about Bayes' Nets}{7}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Project Overview}{7}{subsection.4.2}
+\contentsline {section}{\numberline {5}Project 5 - Dynamic Ghostbusters - Hidden Markov Models}{8}{section.5}
+\contentsline {subsection}{\numberline {5.1}Theory about HMMs}{8}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Project Overview}{8}{subsection.5.2}
+\contentsline {section}{\numberline {6}Project 6 - Classification - Machine Learning}{9}{section.6}
+\contentsline {subsection}{\numberline {6.1}Theory about ML}{9}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Project Overview}{9}{subsection.6.2}
+\contentsline {section}{\numberline {7}Closing Remarks}{10}{section.7}
+\sectbegin 

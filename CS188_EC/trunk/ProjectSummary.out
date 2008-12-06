@@ -1,0 +1,28 @@
+\BOOKMARK [1][-]{section.1}{Project 1 - Search in Pacman - Agents and Search}{}
+\BOOKMARK [2][-]{subsection.1.1}{Theory about Searching}{section.1}
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Graph Searching}{subsection.1.1}
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Heuristics}{subsection.1.1}
+\BOOKMARK [2][-]{subsection.1.2}{Project Overview}{section.1}
+\BOOKMARK [2][-]{subsection.1.3}{Questions 1 through 4 - Find a Path to a Dot}{section.1}
+\BOOKMARK [2][-]{subsection.1.4}{Questions 5 and 6 - Eating all the Dots}{section.1}
+\BOOKMARK [1][-]{section.2}{Project 2 - Multi-Agent Pacman - Agents and Game Trees}{}
+\BOOKMARK [2][-]{subsection.2.1}{Theory about Local and Adversarial Search}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Adversarial Search for Deterministic Games}{subsection.2.1}
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Adversarial Search for Stochastic Games}{subsection.2.1}
+\BOOKMARK [2][-]{subsection.2.2}{Project Overview}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Question 1 - Reflex Agent and Move Evaluation Function}{section.2}
+\BOOKMARK [2][-]{subsection.2.4}{Question 2 and 3 - Minimax Agent with Alpha-Beta pruning}{section.2}
+\BOOKMARK [2][-]{subsection.2.5}{Question 4 and 5 - Expectimax Agent and State Evaluation Function}{section.2}
+\BOOKMARK [1][-]{section.3}{Project 3 - Markov Decision Processes and Reinforcement Learning}{}
+\BOOKMARK [2][-]{subsection.3.1}{Theory about MDPs and RL}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Project Overview}{section.3}
+\BOOKMARK [1][-]{section.4}{Project 4 - Static Ghostbusters - Bayes Nets}{}
+\BOOKMARK [2][-]{subsection.4.1}{Theory about Bayes' Nets}{section.4}
+\BOOKMARK [2][-]{subsection.4.2}{Project Overview}{section.4}
+\BOOKMARK [1][-]{section.5}{Project 5 - Dynamic Ghostbusters - Hidden Markov Models}{}
+\BOOKMARK [2][-]{subsection.5.1}{Theory about HMMs}{section.5}
+\BOOKMARK [2][-]{subsection.5.2}{Project Overview}{section.5}
+\BOOKMARK [1][-]{section.6}{Project 6 - Classification - Machine Learning}{}
+\BOOKMARK [2][-]{subsection.6.1}{Theory about ML}{section.6}
+\BOOKMARK [2][-]{subsection.6.2}{Project Overview}{section.6}
+\BOOKMARK [1][-]{section.7}{Closing Remarks}{}
