@@ -40,7 +40,7 @@ import sys, util, types, time, random
 
 # If you change these, you won't affect the server, so you can't cheat
 KILL_POINTS = 0 
-SONAR_NOISE_RANGE = 9 # Must be odd
+SONAR_NOISE_RANGE = 7 # Must be odd
 SONAR_NOISE_VALUES = [i - (SONAR_NOISE_RANGE - 1)/2 for i in range(SONAR_NOISE_RANGE)]
 SIGHT_RANGE = 5 # Manhattan distance
 

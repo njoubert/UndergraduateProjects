@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Contest: Pacman Capture the Flag</title>
+<style type="text/css">
+<!--
+.style1      { font-style: italic; font-weight: bold }
+-->
+</style>
+<link href="contest_files/projects.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style2      { color: #990000 }
+-->
+</style>
+</head><body>
+
+<h2>Contest: Pacman Capture the Flag</h2>
+<blockquote>
+<center>
+<img src="contest_files/capture_the_flag.png" height="210" width="540">
+</center>
+  <p><cite></cite></p><center>Enough of defense,<br>
+  Onto enemy terrain.<br>
+  Capture all their food!</center>
+</blockquote>
+
+<strong><i>Contest updated 2 December with exact details for
+qualification. Qualifications are now open, and you may qualify until
+6PM on 7 December. Semifinal will be 8 December beginning at 5:30PM. <strong>Please</strong> email the staff list if the server seems to be down at any point in the next week - thanks! NEW: FAQ at bottom of webpage!</i></strong>
+<p>
+<strong><i> Note: an important bug was fixed in the contest code: you
+were being given distances that were at most 5 wrong rather than 4
+wrong. It is now fixed on the server; to fix it in your own code,
+change line 43 in capture.py from "SONAR_NOISE_RANGE = 9 # Must be odd"
+to "SONAR_NOISE_RANGE = 7 # Must be odd". Sorry for the error, and
+thanks for your patience!</i></strong>
+</p><h3>Introduction</h3>
+<p>The course contest this semester involves a multi-player capture the
+flag variant of Pacman, where agents control both Pacman and ghosts in
+coordinated team-based strategies.
+</p><p>In a game of Capture the Flag, your team will try to eat all of
+the food on the far side of the map, while defending the food on your
+home side. When on your side, you are a ghost: able to eat Pacman but
+not food. When in enemy territory, you are Pacman, eating food whilst
+avoiding enemy ghosts. </p><p>This version shares much in common with classic Pacman from
+projects 1 and 2, but also integrates motion tracking from project 5
+since you cannot see enemies unless they are relatively close to you.
+It will be up to you to decide what material from the course you
+leverage to make your agent. As in the projects, you can work with a
+partner if you would like.
+</p><p>The code for this project contains the files listed below. The pydoc for the files is available <a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/Documentation">here</a>.  We provide the source as both a <a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/ContestREADME.html">zip file</a>
+and through SVN, our recommended option. SVN is a version control
+system that allows you to easily share code with someone else and
+allows us to give you updates to the code we provide. </p><p>Since you are allowed to work with a partner, we need to create an SVN
+repository that grants both of you access.  Please go to 
+<a href="http://spreadsheets.google.com/viewform?key=p0Vbe8ElOug6w7JzYfqOoVQ&amp;hl=en">this form</a>
+and fill it out to request an account. If you are planning to
+work with a group, please fill out the form only once for your entire
+group. Once the accounts are created, you will be sent an email.
+</p><p>Once the account is created, you should be able to run
+</p><pre>svn checkout https://isvn.eecs.berkeley.edu/cs188/groupNN</pre>
+to get the files.  Then, you can change into the 'trunk' subdirectory of the checked out repository and do edits.  In order to
+commit your changes (save them to the repository), run 
+<pre>svn commit</pre>
+and if you want to incorporate the most recent commit into your working code, run
+<pre>svn update</pre>
+One of the group members can make and commit some changes, and then the other partner can run update to pull those changes
+and merge them with the modifications the second partner made.  Furthermore, if the staff needs to make any changes, we will
+publish them on a branch and that will make it easy to merge them into your codebase.
+
+
+<table border="0" cellpadding="10">
+  <tbody><tr><td><b>Key files to read:</b></td></tr>
+  
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/capture.py">capture.py</a> </td>
+  <td>The main file that runs games locally.  This file also describes the new capture the flag GameState type and rules.</td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/pacclient.py">pacclient.py</a> </td>
+  <td>The main file that runs games over the network. </td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/captureAgents.py">captureAgents.py</a> </td>
+  <td>Some example agents for this variant of the game. </td></tr>
+
+  <tr><td><b>Supporting files:</b></td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/game.py">game.py</a></td>
+  <td>The
+logic behind how the Pacman world works. This file describes several
+supporting types like AgentState, Agent, Direction, and Grid.</td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/util.py">util.py</a></td>
+  <td>Useful data structures for implementing search algorithms.</td></tr>  
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/distanceCalculator.py">distanceCalculator.py</a> </td>
+  <td>Computes shortest paths between all maze positions. </td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/graphicsDisplay.py">graphicsDisplay.py</a></td>
+  <td>Graphics for Pacman</td></tr>
+    
+    <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/graphicsUtils.py">graphicsUtils.py</a></td>
+  <td>Support for Pacman graphics</td></tr>
+
+  <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/textDisplay.py">textDisplay.py</a></td>
+  <td>ASCII graphics for Pacman</td></tr>  
+
+    <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/keyboardAgents.py">keyboardAgents.py</a></td>
+  <td>Keyboard interfaces to control Pacman</td></tr>
+
+    <tr><td><a href="http://inst.eecs.berkeley.edu/%7Ecs188/fa08/projects/contest/layout.py">layout.py</a></td>
+  <td>Code for reading layout files and storing their contents</td></tr>
+
+</tbody></table>
+
+<p><strong>Academic Dishonesty:</strong> While we won't grade contests, we still expect you not to falsely represent your work.  <em>Please</em> don't let us down. If you do, we will pursue the strongest consequences available to us.
+
+</p><h3>Rules of Pacman Capture the Flag</h3>
+
+<b>Layout:</b> The Pacman map is now divided into two halves: blue
+(right) and red (left). Red agents (which all have odd indices) must
+defend the red food while trying to eat the blue food. When on the red
+side, a red agent is a ghost and must abide by ghost movement rules: it
+cannot stop or turn around. When in enemy territory, the agent becomes
+a Pacman and can move freely, but at half the speed of a ghost. <p><b>Capturing:</b> When a Pacman agent is eaten by an opposing ghost agent, it returns to its starting point. Ghosts can never be eaten.
+
+</p><p><b>Observations:</b> Agents can only observe an opponent agent's
+configuration (position and direction) if they or their teammate is
+within 5 squares (Manhattan distance). In addition, an agent always
+gets a noisy distance reading for each agent on the board, which can be
+used to approximately locate unobserved opponents. </p><p><b>Winning:</b> Games have a fixed length (number of agent
+moves). A game ends when either one team eats all of the opponents'
+dots or time runs out. If time runs out, then whichever team has eaten
+the most food wins. Points are only awarded for eating food.
+</p><p><b>Computation Time:</b> In online play, each agent will have only 0.5 seconds to choose an action, or the server will choose one at random for them.
+
+</p><h3>Getting Started</h3>
+
+By default, you can run a four-player game where the keyboard controls the red ghost and all other agents play offense:
+
+<pre>python capture.py</pre>
+
+The arrow keys control your character, which will change from ghost to Pacman when crossing the center line.  <strong>Note:</strong>
+controlling a ghost with the keyboard can be quite challenging, as
+ghosts must abide by specific movement rules: they cannot stop or turn
+around. Thus, if a ghost doesn't seem to be following your keyboard
+movements, check to make sure you're asking it to take a legal move.
+<p>A wealth of options are available to you:
+
+</p><pre>python capture.py --help</pre>
+
+For example, use the following command to put the first blue opponent on defense.
+
+<pre>python capture.py -2 DefensiveReflexAgent </pre>There are six
+slots for agents, where agents 1, 3 and 5 are always on the red team
+and 2, 4 and 6 on the blue team. See the section on designing agents
+for a description of the agents invoked here. Games can be played with
+any even number of agents up to 6; for the contest, we will <strong>probably</strong>
+use four agents (two from each side). Note that when you're playing the
+local version (using capture.py), you (the human) can see where all the
+agents are. The agents, however, have limited access to this knowledge
+about where agents are, as described in the rules above, and when you
+play the online version (described below) you will not be able to see
+your opponents' agents most of the time.
+<h3>Online Games</h3>In order to facilitate testing of your agents
+against others' in the class, we have set up game servers that moderate
+games played over the network. We will use this network setup to
+administer the final tournament. Your agents are chosen via <code>-1, -2,</code> and <code>-3</code>:
+
+<pre>python pacclient.py -1 DefensiveReflexAgent</pre>
+
+Look at the options with the <code>--help</code>
+option. If you want to identify yourself to the server for stats
+tracking, you should supply a name and password. If the name you supply
+is new, an account will be created for you. If it is a name that is
+already used, you must supply the correct password or the server will
+not accept your connection.
+<pre>python pacclient.py -U randomGuy -P notSoGood -1 RandomAgent -2 RandomAgent</pre>
+
+<p>Any agent that works in a local game should work equivalently in an
+online game. However, there is a real-time element to the game: you
+have a limited amount of time to choose your action at each step (0.5
+seconds plus a little leeway). The server will enforce this time limit,
+and will choose a move for you if you don't supply one in time. </p><p>You can choose from several different game scenarios by changing the <code>port</code> option (default 7226).  Here are the games available on the default server:
+	
+</p><pre>	7226: -l mediumCapture -k 4 -t 3000 -q (default)
+	7227: -l tinyCapture -k 2 -t 1000 -q
+	7228: -l officeCapture -k 4 -t 3000 -q
+	7229: -l bloxCapture -k 4 -t 3000
+	7230: -l crowdedCapture -k 6 -t 3000
+	7231: -l jumboCapture -k 6 -t 5000
+	7232: -l mediumCapture -k 4 -t 5000
+	7233: -l officeCapture -k 4 -t 3000
+	7234: -l tinyCapture -k 2 -t 1000
+</pre>
+<p>As we get closer to the contest, we may add more configurations and
+functionality for playing a specific opponent, along with harder staff
+agents. The game scenarios with -q in the line (7226, 7227, and 7228)
+allow you to play our agents. Right now, these agents aren't
+particularly bright. As
+we get closer, we'll have rooms with agents of varying levels of
+difficulty. For the rest of the channels, you will be matched up with
+the first person
+who signs on to the server for that game scenario. We will keep this
+page updated as we add more agents/etc. </p><h3>Designing Agents</h3>
+Unlike project 2, an agent now has the more complex job of trading off
+offense versus defense and effectively functioning as a ghost and a
+Pacman in a team setting. Furthermore, the limited information provided
+to your agent will likely necessitate some probabilistic tracking (like
+project 5). Finally, the added time limit of computation introduces new
+challenges.
+<p><b>Interface:</b> The <code>GameState</code> in <code>capture.py</code> should look familiar, but contains new methods like <code>getRedFood</code>,
+which gets a grid of food on the red side (note that the grid is the
+size of the board, but is only true for cells on the red side with
+food). Also, note that you can list a team's indices with <code>getRedTeamIndices</code>, or test membership with <code>isOnRedTeam</code>.  
+	
+</p><p>Finally, you can access the list of noisy distance observations via <code>getAgentDistances</code>.
+These distances are within 4 of the truth, and the noise is chosen
+uniformly at random from the range [-4, 4] (e.g., if the true distance
+is 6, then each of {2, 3, ..., 10} is chosen with probability 1/9). </p><p>To get started designing your own agent, we recommend subclassing the <code>CaptureAgent</code>
+class. This provides access to several convenience methods, and our
+included reflex agents subclass CaptureAgent as well. A few of the
+convenience methods you might benefit from are below; see the pydoc for
+more information: </p><pre>  def getFood(self, gameState):
+    """
+    Returns the food you're meant to eat. This is in the form of a matrix
+    where m[x][y]=true if there is food you can eat (based on your team) in that square.
+    """
+
+  def getFoodYouAreDefending(self, gameState):
+    """
+    Returns the food you're meant to protect (i.e., that your opponent is
+    supposed to eat). This is in the form of a matrix where m[x][y]=true if
+    there is food at (x,y) that your opponent can eat.
+    """
+    
+  def getOpponents(self, gameState):
+    """
+    Returns agent indices of your opponents. This is the list of the numbers
+    of the agents (e.g., red might be "1,3,5")
+    """
+    
+  def getTeam(self, gameState):
+    """
+    Returns agent indices of your team. This is the list of the numbers
+    of the agents (e.g., red might be "1,3,5")
+    """
+    
+  def getScore(self, gameState):
+    """
+    Returns how much you are beating the other team by in the form of a number
+    that is the difference between your score and the opponents score.  This number
+    is negative if you're losing.
+    """
+    
+  def getMazeDistance(self, pos1, pos2):
+    """
+    Returns the distance between two points; this is either the Manhattan
+    distance early in the game, or actual shortest path maze distances once
+    the computation is complete.  
+    
+    The distancer computes the shortest path between pairs of points in the
+    background, and starts using them as soon as they are ready. These are
+    not just pre-computed ahead of time because of the time limit - we don't
+    want to lose our turn because we're doing precomputations!
+    """
+
+  def getPreviousObservation(self):
+    """
+    Returns the GameState object corresponding to the last state this agent saw
+    (the observed state of the game last time this agent moved - this may not include
+    all of your opponent's agent locations exactly).
+    """
+
+  def getCurrentObservation(self):
+    """
+    Returns the GameState object corresponding this agent's current observation
+    (the observed state of the game - this may not include
+    all of your opponent's agent locations exactly).
+    """
+  
+</pre>
+
+<p><b>Baseline Agents:</b> To jumpstart your agent design, we have provided you with two respectable baseline agents.  The <code>OffensiveReflexAgent</code> moves toward food on the opposing side and tries to maximize score.  The <code>DefensiveReflexAgent</code> stays on its own side and tries to chase down invaders.
+
+</p><p>At the heart of both reflex agents is the computation of distances between locations in the maze.  We provide code in <code>distanceCalculator.py</code>
+to supply shortest path maze distances as soon as they can be computed,
+but to supply Manhattan distances until then. This approach
+demonstrates some of the techniques you might want to use when
+designing agents under time constraints (sharing information, computing
+in parallel). However, this is neither the only nor the best way to
+solve the maze distance problem. </p><p>Rather than using the distance signal (like <code>sonar.py</code>), the provided <code>DefensiveReflexAgent</code>
+locates opponents by watching for disappearing food and moving toward
+it until an opponent is sighted. Such an agent can easily be tricked.
+The GameState object provides you with noisy distances of the opposing
+agents using getAgentDistances so that you can use some of the tricks
+you learned in project 5 to better locate opponent agents.
+</p><p><b>Restrictions:</b> You are free to design any agent you want,
+and you need not use any of the code we have provided. Because the
+tournament will be run using the online architecture, you can run your
+agent from your machine using any resources or code you want; you can
+even write code in different programming languages if you so desire.
+Change pacclient.py at your own risk, though, because you don't want to
+break the network functionality. </p><h3>Contest Rules</h3>
+The layout that will be used for the final contest will be released by
+the end of November, and the final contest will take place close to the
+last day of class. <h3>Qualifying</h3>
+Qualifications are now open. To access qualifications, play on port
+7225.
+To qualify for the contest, you need to win 4 out of 5 games in a row
+against our agents (i.e., you play five games in a row and win four of
+them). This will be two agents versus two agents; our agents will
+include one offense and one defense agent. The board you will play on
+is the board that will be used for the contest in general. Your wins
+need to be repeatable - that is, if you played 8000 games and only one
+time in there won a string of 4 out of 5 games, that doesn't count.
+After winning 4 out of 5 games, please email the staff list; we'll be
+checking roughly every 24 hours to see if anyone new has qualified, but
+you'll hear back from us faster if you email us first. In this email,
+please include the email address you used as the username for your
+group. If you have any technical problems qualifying (server seems to
+be down, etc.), <em>please</em> email the staff list.
+
+<p><b>Prizes:</b> There will be prizes (in addition to the glory you
+will feel just from competing)! The extra credit prizes will be at
+least as follows: 0.5% for qualifying, and an additional 1% for coming
+in third, 2% for coming in second, and 3% for coming in first. If more
+people enter, these prizes may be increased, but they will not be
+decreased. These increases are absolute boosts to your final grade;
+that is, if you got a 50.5% overall, then just qualifying for the
+contest would bump you to 51%. Watch here for more updates as to
+whether we increase the prizes, and also what the physical prizes will
+be!
+</p><h3>Named Games</h3>By default, when you connect to the server for
+a network game, you will be paired with the first unmatched opponent
+that connects. If you would like to play with a buddy, you can organize
+a game with a specific name on the server:
+<pre>python pacclient.py -1 RandomAgent -g MyCoolGame</pre>
+
+Which will pair you only with the next player who requests "MyCoolGame"
+
+<h3>Frequently Asked Questions</h3>
+<ol>
+
+<li><h4><a name="b">Am I allowed 0.5 seconds per agent or for my entire turn?</a></h4>
+<p>
+You're allowed 0.5 seconds for each agent.
+</p>
+</li>
+<li><h4><a name="b">How do I find out how much time is left in the game?</a></h4>
+<p>There's not way from the API we've given you, but we'll guarantee
+that the time limit is 3000 moves for the contest board. Thus, if you
+look at the number of moves that have been played in your Game object,
+you can determine how many total moves you have left for the contest
+board.
+</p>
+</li>
+<li><h4><a name="b">Why can't I always ask for the legal actions of my enemies?</a></h4>
+<p>The infrastructure of the game can't always tell you what legal
+moves are possible for your enemies because you often don't know where
+your enemies are. If you can't see an enemy, the game can't tell you
+any information about that enemy.
+</p>
+</li>
+
+</ol>
+
+
+<h3>Acknowledgements</h3>We owe special thanks to Barak Michener and Ed
+Karuna for providing online networking infrastructure, improved
+graphics and debugging help. We'd also like to thank Richard Schmidt
+for his help with map design and beta testing.
+<p>
+
+<img src="contest_files/capture_the_flag2.png" height="444" width="785">
+
+</p><p> Have fun!  Please bring our attention to any problems you discover.
+</p></body></html>
