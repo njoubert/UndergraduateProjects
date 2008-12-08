@@ -18,29 +18,32 @@ distances.
 from game import Agent
 from game import Directions
 from game import Actions
+import util
 import threading, sys, time, random
 
 DISTANCE_RANGE = 5 # Must be odd
 DISTANCE_VALUES = [i - (DISTANCE_RANGE - 1)/2 for i in range(DISTANCE_RANGE)]
 
 class ApproximateAgent:
-  def __init__(self, state):
+  def __init__(self, state,enemies):
     """
     
     """
     self.trackers = [None] # Empty tracker for Pacman
-    for ghostState in state.getGhostStates():
+    self.enemies = enemies
+    for ghostState in self.enemies:
       self.trackers.append(GhostTracker(state, ghostState))
     # Start computing distances in the background; when the dc finishes,
     # it will fill in self._distances for us.
     
-  def getGhostPositionDistributions(self, state):
+  def getGhostPositionDistributions(self, state,myPos):
     distributions = []
-    for index, liveGhost in enumerate(state.getLivingGhosts()[1:]):
+    for index, liveGhost in enumerate(self.enemies):
       index += 1
       if liveGhost:
-        tracker, distance = self.trackers[index], state.ghostDistances[index]
-        tracker.observe(state.getPacmanPosition(), distance)
+        tracker, distance = self.trackers[index], state.getAgentDistances()[index]
+        if not distance == None:
+            tracker.observe(myPos, distance)
         distribution = tracker.getStateDistribution()
         distributions.append(distribution)
         tracker.elapseTime()
@@ -56,8 +59,6 @@ class ApproximateDynamicInferenceModule:
   """
   The approximate dynamic inference module should use particle filtering
   to compute the approximate belief function at each time / observation.
-  
-  The provided implementation is entirely broken and will not run.
   """
   def __init__(self, game, numParticles = 10000):
     self.game = game
@@ -68,9 +69,7 @@ class ApproximateDynamicInferenceModule:
     """
     Initialize the agent's beliefs to a prior sampling over positions.
     """
-    
-    "*** YOUR CODE HERE ***"  
-    self.particles = util.sampleMultiple(self.game.getInitialDistribution(), self.numParticles)
+    self.particles = sampleMultiple(self.game.getInitialDistribution(), self.numParticles)
     
     
   def observe(self, observation):
@@ -80,17 +79,37 @@ class ApproximateDynamicInferenceModule:
     where each particle is weighted by the observation's likelihood 
     given the state represented by that particle.
     """
-    
-    "*** YOUR CODE HERE ***"  
     weight = util.Counter()
     for particle in self.particles:
          weight[particle] = self.game.getReadingDistributionGivenGhostTuple(particle,observation[0]).getCount(observation[1])
-    
-    weight.normalize()
     if weight.totalCount() == 0:
         self.initialize()
     else:
-        self.particles = util.sampleMultiple(weight, self.numParticles)
+        weight.normalize()
+        self.particles = sampleMultiple(weight, self.numParticles)
+
+  def elapseTime(self):
+    """
+    Update beliefs to reflect the passage of a time step.
+    You will need to sample a next state for each particle.
+    """    
+    temp = []
+    for particle in self.particles:
+         temp.append(sample(self.game.getGhostTupleDistributionGivenPreviousGhostTuple(particle)))
+    self.particles = temp
+
+    
+  def getBeliefDistribution(self):
+    """
+    Return the agent's current belief (approximation) as a distribution
+    over ghost tuples.  Note that this distribution can and should be
+    sparse in the sense that many tuples may not be represented in the 
+    distribution if there are more tuples than particles.  The probability
+    over these missing tuples will be treated as zero by the GUI.
+    """
+    return listToDistribution(self.particles)
+    
+
 
 class GhostTracker:
   def __init__(self, state, ghostState):
@@ -176,10 +195,22 @@ def sampleMultiple(distribution, n):
     samples.append(keys[binarySearch(cumulativeProbs, uniform_sample)])
   return samples
   
+def binarySearch(list, value):
+  low = 0
+  high = len(list)-1
+  while True:
+    if low == high:
+      return low
+    mid = (low + high) / 2
+    if value <= list[mid]:
+      high = mid
+    elif value > list[mid]:
+      low = mid + 1
+  raise 'sampling error: bad distribution'
   
 def listToDistribution(list):
-  distribution = Counter()
+  distribution = util.Counter()
   for item in list:
     distribution.incrementCount(item, 1.0)
-  return normalize(distribution)
+  return util.normalize(distribution)
   

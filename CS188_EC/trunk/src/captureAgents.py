@@ -1,5 +1,6 @@
 from game import Agent
 import distanceCalculator
+import ParticleFilter
 from util import nearestPoint
 import random, time, util
 
@@ -249,6 +250,30 @@ class CaptureAgent(Agent):
             dists.append(dist)
           else: dists.append(util.Counter())
         self.display.updateDistributions(dists)
+
+class GreedyTrackingAgent(CaptureAgent):
+  def registerInitialState(self, gameState):
+      CaptureAgent.registerInitialState(self, gameState)
+      enemies = [gameState.getAgentState(i) for i in self.getOpponents(gameState)]
+      self.particlefilter = ParticleFilter.ApproximateAgent(gameState, enemies)   
+  def chooseAction(self, gameState):
+    distanceCalculator.waitOnDistanceCalculator(0.5)
+    myState = gameState.getAgentState(self.index)
+    myPos = myState.getPosition()
+    legal = gameState.getLegalActions(self.index)
+    distributions = self.particlefilter.getGhostPositionDistributions(gameState,myPos)
+    modes = []
+    for dist in distributions:
+      if len(dist.keys()) > 0:
+        modes.append(dist.argMax())
+    if len(modes) == 0: return random.choice(legal)
+    
+    options = []
+    for l in legal:
+      succ = gameState.generateSuccessor(self.index,l)
+      closestMode = min([self.distancer.getDistance(myPos, mode) for mode in modes]) 
+      options.append((closestMode, l))
+    return min(options)[1]
 
 class ReflexCaptureAgent(CaptureAgent):
   """
