@@ -251,17 +251,19 @@ class CaptureAgent(Agent):
           else: dists.append(util.Counter())
         self.display.updateDistributions(dists)
 
-class GreedyTrackingAgent(CaptureAgent):
+class ParticleTrackingAgent(CaptureAgent):
+  
   def registerInitialState(self, gameState):
       CaptureAgent.registerInitialState(self, gameState)
       enemies = [gameState.getAgentState(i) for i in self.getOpponents(gameState)]
       self.particlefilter = ParticleFilter.ApproximateAgent(gameState, enemies)   
+  
   def chooseAction(self, gameState):
     distanceCalculator.waitOnDistanceCalculator(0.5)
     myState = gameState.getAgentState(self.index)
     myPos = myState.getPosition()
     legal = gameState.getLegalActions(self.index)
-    distributions = self.particlefilter.getGhostPositionDistributions(gameState,myPos)
+    distributions = self.particlefilter.getEnemyPositionDistributions(gameState,myPos)
     modes = []
     for dist in distributions:
       if len(dist.keys()) > 0:
@@ -439,6 +441,10 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
   could be like.  It is not the best or only way to make
   such an agent.
   """
+  def registerInitialState(self, gameState):
+    CaptureAgent.registerInitialState(self, gameState)
+    enemies = [gameState.getAgentState(i) for i in self.getOpponents(gameState)]
+    self.particlefilter = ParticleFilter.ApproximateAgent(gameState, enemies)   
   
   def getFeatures(self, gameState):
     features = util.Counter()
@@ -457,6 +463,24 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
     if len(invaders) > 0:
       dists = [self.getMazeDistance(myPos, a.getPosition()) for a in invaders]
       features['invaderDistance'] = min(dists)
+      
+    #compute using particle filtering
+    distanceCalculator.waitOnDistanceCalculator(0.5)
+    myState = gameState.getAgentState(self.index)
+    myPos = myState.getPosition()
+    legal = gameState.getLegalActions(self.index)
+    distributions = self.particlefilter.getEnemyPositionDistributions(gameState,myPos)
+    modes = []
+    for dist in distributions:
+      if len(dist.keys()) > 0:
+        modes.append(dist.argMax())
+    if len(modes) != 0:
+        options = []
+        for l in legal:
+            succ = gameState.generateSuccessor(self.index,l)
+            closestMode = min([self.distancer.getDistance(myPos, mode) for mode in modes]) 
+            options.append((closestMode, l))
+        features['particleFilter'] = min(options)[0]
       
     # Computes distance to last food eaten
     if 'lastFoodEaten' not in dir(self): self.lastFoodEaten = []
@@ -481,5 +505,5 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
     return [(x,y) for x,y in prevFoodList if currentFoodGrid[x][y] == False]
     
   def getWeights(self, gameState):
-    return {'numInvaders': -1000, 'onDefense': 100, 'invaderDistance': -10, 'foodEatenDistance': -1, 'score':1}
+    return {'numInvaders': -1000, 'onDefense': 100, 'invaderDistance': -10, 'foodEatenDistance': -1,'particleFilter':-10 ,'score':1}
 

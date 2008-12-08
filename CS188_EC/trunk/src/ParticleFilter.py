@@ -31,18 +31,19 @@ class ApproximateAgent:
     """
     self.trackers = [None] # Empty tracker for Pacman
     self.enemies = enemies
-    for ghostState in self.enemies:
-      self.trackers.append(GhostTracker(state, ghostState))
+    for enemyState in self.enemies:
+      self.trackers.append(EnemyTracker(state, enemyState))
     # Start computing distances in the background; when the dc finishes,
     # it will fill in self._distances for us.
     
-  def getGhostPositionDistributions(self, state,myPos):
+  def getEnemyPositionDistributions(self, state,myPos):
     distributions = []
-    for index, liveGhost in enumerate(self.enemies):
+    for index, enemy in enumerate(self.enemies):
       index += 1
-      if liveGhost:
+      if enemy:
         tracker, distance = self.trackers[index], state.getAgentDistances()[index]
-        if not distance == None:
+        print distance
+        if distance != None:
             tracker.observe(myPos, distance)
         distribution = tracker.getStateDistribution()
         distributions.append(distribution)
@@ -73,15 +74,9 @@ class ApproximateDynamicInferenceModule:
     
     
   def observe(self, observation):
-    """
-    Update beliefs to reflect the given observations.
-    Observation will require that you resample from your particles, 
-    where each particle is weighted by the observation's likelihood 
-    given the state represented by that particle.
-    """
     weight = util.Counter()
     for particle in self.particles:
-         weight[particle] = self.game.getReadingDistributionGivenGhostTuple(particle,observation[0]).getCount(observation[1])
+         weight[particle] = self.game.getReadingDistributionGivenEnemyTuple(particle,observation[0]).getCount(observation[1])
     if weight.totalCount() == 0:
         self.initialize()
     else:
@@ -89,36 +84,25 @@ class ApproximateDynamicInferenceModule:
         self.particles = sampleMultiple(weight, self.numParticles)
 
   def elapseTime(self):
-    """
-    Update beliefs to reflect the passage of a time step.
-    You will need to sample a next state for each particle.
-    """    
     temp = []
     for particle in self.particles:
-         temp.append(sample(self.game.getGhostTupleDistributionGivenPreviousGhostTuple(particle)))
+         temp.append(sample(self.game.getEnemyTupleDistributionGivenPreviousEnemyTuple(particle)))
     self.particles = temp
 
     
   def getBeliefDistribution(self):
-    """
-    Return the agent's current belief (approximation) as a distribution
-    over ghost tuples.  Note that this distribution can and should be
-    sparse in the sense that many tuples may not be represented in the 
-    distribution if there are more tuples than particles.  The probability
-    over these missing tuples will be treated as zero by the GUI.
-    """
     return listToDistribution(self.particles)
     
 
 
-class GhostTracker:
-  def __init__(self, state, ghostState):
-    self.adapter = GhostbustersGameAdapter(state, ghostState)
+class EnemyTracker:
+  def __init__(self, state, enemyState):
+    self.adapter = GhostbustersGameAdapter(state, enemyState)
     self.inference = ApproximateDynamicInferenceModule(self.adapter,900)
     self.inference.initialize()
     
-  def observe(self, pacPosition, distance):
-    return self.inference.observe( (pacPosition, distance) )
+  def observe(self, myPosition, distance):
+    return self.inference.observe( (myPosition, distance) )
     
   def elapseTime(self):
     return self.inference.elapseTime()
@@ -131,29 +115,30 @@ class GhostTracker:
     return c
 
 class GhostbustersGameAdapter:
-  def __init__(self, state, ghostState):
-    self.startingGhostPosition = ghostState.getPosition()
+  def __init__(self, state, enemyState):
+    self.startingEnemyPosition = enemyState.getPosition()
     self.walls = state.data.layout.walls
 
   def getInitialDistribution(self):
     c = util.Counter()
-    c[(self.startingGhostPosition, )] = 1
+    c[(self.startingEnemyPosition, )] = 1
     return c
 
-  def getGhostTuples(self):
+  def getEnemyTuples(self):
     return [( (x,y), ) for x in range(self.walls.width) for y in range(self.walls.height)]
   
-  def getReadingDistributionGivenGhostTuple(self, shipTuple, location):
-    ghostPos = shipTuple[0]
+  def getReadingDistributionGivenEnemyTuple(self, shipTuple, location):
+    print shipTuple
+    enemyPos = shipTuple[0]
     c = util.Counter()
-    trueDistance = util.manhattanDistance(ghostPos, location)
+    trueDistance = util.manhattanDistance(enemyPos, location)
     for d in DISTANCE_VALUES:
       c.incrementCount(d + trueDistance, 1.0 / DISTANCE_RANGE)
     return c
   
-  def getGhostTupleDistributionGivenPreviousGhostTuple(self, oldGhosts):
-    ghostPos = oldGhosts[0]
-    neighbors = Actions.getLegalNeighbors(ghostPos, self.walls)
+  def getEnemyTupleDistributionGivenPreviousEnemyTuple(self, oldGhosts):
+    enemyPos = oldGhosts[0]
+    neighbors = Actions.getLegalNeighbors(enemyPos, self.walls)
     c = util.Counter()
     for n in neighbors:
       c[(n,)] = 1
