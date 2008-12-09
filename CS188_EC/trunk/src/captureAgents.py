@@ -357,6 +357,8 @@ class OffensiveReflexAgent(ReflexCaptureAgent):
     actions = gameState.getLegalActions(self.index)
     results = [self.getSuccessor(gameState, a) for a in actions]
     
+    #Hack to grab the network board.
+    #print gameState.data.layout
     
     #print "========================="
     #for i in range(gameState.getNumAgents()):
@@ -372,6 +374,15 @@ class OffensiveReflexAgent(ReflexCaptureAgent):
     return random.choice(bestActions)
     
   def myEvaluate(self, gameState):
+    """
+    I didn't like how they divided weights and features into two functions, since I want
+    to vary my weights depending on the gameState, so they're both in this one function.
+    
+    Some improvements that can be made:
+      use distance to our side as a feature when running away
+      avoid the place you last died, or prefer the opposite side of the board from where you died.
+
+    """
     features = util.Counter()
     weights = util.Counter()
     
