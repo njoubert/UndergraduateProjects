@@ -1,0 +1,3 @@
+ -Xms64m -Xmx256m
+IK1
+IK1.jar,core.jar,jama.jar,jama.jar,jama.jar,jama.jar
