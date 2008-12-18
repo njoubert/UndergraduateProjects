@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>currentDocument</key>
+	<string>index.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -38,7 +40,7 @@
 			<key>filename</key>
 			<string>index.html</string>
 			<key>lastUsed</key>
-			<date>2008-11-25T08:46:56Z</date>
+			<date>2008-12-18T18:05:06Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -56,10 +58,29 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>201</integer>
 	<key>metaData</key>
-	<dict/>
+	<dict>
+		<key>index.html</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>66</integer>
+				<key>line</key>
+				<integer>81</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>57</integer>
+		</dict>
+	</dict>
+	<key>openDocuments</key>
+	<array>
+		<string>index.html</string>
+	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{294, 114}, {1012, 835}}</string>
+	<string>{{460, 66}, {1012, 835}}</string>
 </dict>
 </plist>
