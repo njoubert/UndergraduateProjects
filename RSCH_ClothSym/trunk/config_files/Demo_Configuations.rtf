@@ -1,26 +1,90 @@
 {\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf350
 {\fonttbl\f0\fnil\fcharset0 LucidaGrande;\f1\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww18300\viewh12780\viewkind0
+\margl1440\margr1440\vieww10540\viewh14480\viewkind0
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\fs20 \cf0 Demo Command Line Arguments\
 	* use [-img imgs] to render out images for any of the demos\
 \
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Wind Demo\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 1000 -kbe .0001 -kbd .0001 -elliobj data/ground0/frame 1 -simobj data/tableCloth3k.obj .0001 1\
+\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .001 1\
+\
+./ClothSym -kbe .0001 -kbd 0.000001 -elliobj data/ground/frame 1 -simobj data/884MeshRePos.obj .01 1\
+\
+\
+---------------------------------------------------------------\
+****************************************************************************\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Table Demo\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 1000 -kbe .0001 -kbd .0001 -elliobj data/tableV1/frame 1 -simobj data/tableCloth3k.obj .0001 1 -statobj data/tableV1.obj -coll -obj objs -img imgs\
+\
+\
+---------------------------------------------------------------\
+****************************************************************************\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Cape Demo\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/ellipsoids4/frame 2419 -simobj data/cape3k.obj .005 1 -coll -dcons2 18 41 21 22 -kbe .0001 -kbd .00001\
+\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/elipsoids2/frame 2419 -simobj data/cape4k.obj .001 1 -coll -dcons2 340 604 21 22 -kbe .0001 -kbd .00001\
+\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/elipsoids2/frame 1 -simobj data/cape4k.obj .001 1 -coll -dcons2 340 604 21 22 -kbe .0001 -kbd .00001\
+---------------------------------------------------------------\
+****************************************************************************\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Ball Demo\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -ke 5 -kd 1 -kbe .1 -kbd 0 -elliobj data/ground0/frame 1 -simobj data/ball800verts.obj .001 1 -statobj data/ground0.obj -coll  -img imgs\
+\
+\
+\
+--------------------------------------------------------------\
+****************************************************************************\
+\
 ****************************************************************************
 \f1 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
 \cf0 //Friction/Collisions Tests (Press "d" to Drop Cloth)\
+	* 61 Point Mesh Collides with Table\
 	* 221 Point Mesh Collides with Table\
-	*61 Point Mesh Collides with Table
+	* 221 Point Mesh Collides with Table (Stripped Down)\
+	* 881 Point Mesh Collides with Table
 \f0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
-\cf0 ---------------------------------------------------------------
+\cf0 ---------------------------------------------------------------\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symGrid61v.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 35 30 0 5 4 5 7 6 -img imgs\
+
 \f1 \
 
-\f0 ./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 120 110 0 10 4 5 7 6\
+\f0 ./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 120 110 0 10 4 5 7 6 -img imgs\
 \
-./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symGrid61v.obj .0005 1 -statobj data/tallTable.obj -kbe .01 -kbd .001 -coll -dcons4 35 30 0 5 4 5 7 6\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .0005 1 -statobj data/tallTable.obj -coll -dcons4 120 110 0 10 4 5 7 6\
+\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.10.obj .0001 1 -statobj data/tallTable.obj -kbe .0001 -kbd .00001 -coll -dcons4 440 420 0 20  4 5 7 6 -mud 0.1 -mus .9 -img imgs\
+\
 ---------------------------------------------------------------\
 ****************************************************************************
 \f1 \
@@ -33,19 +97,19 @@
 \f0 //Moving Collisions Tests (Press "e" to see ellipsoids)\
 	* Translation Collision\
 	* Rotations Collision\
-	*Translation+Rotation Collision, \
-	*Translation+Rotation Collision  with Bend Forces\
-	*Rotation Collision with Bend Forces (Ellipsoid Stops For A while)\
+	* Translation+Rotation Collision, \
+	* Translation+Rotation Collision  with Bend Forces\
+	* Rotation Collision with Bend Forces (Ellipsoid Stops For A while)\
 ---------------------------------------------------------------
 \f1 \
 
-\f0 ./ClothSym -elliobj data/collisionTestTranslation/frame 600 -simobj data/symmetricGrid0.20.obj .001 1 -coll\
+\f0 ./ClothSym -elliobj data/collisionTestTranslation/frame 600 -simobj data/symmetricGrid0.20.obj .001 1 -coll -img imgs\
 \
-./ClothSym -elliobj data/collisionTestRotation2/frame 600 -simobj data/symmetricGrid0.20.obj .0005 1 -coll \
+./ClothSym -elliobj data/collisionTestRotation4/frame 600 -simobj data/symmetricGrid0.10.obj .005 1 -coll -img imgs\
 \
 ./ClothSym -elliobj data/collisionTestRotTrans/frame 600 -simobj data/symmetricGrid0.20.obj .001 1 -coll\
 \
-./ClothSym -elliobj data/collisionTestRotTrans/frame 600 -simobj data/symmetricGrid0.20.obj .0005 1 -coll  -kbe .01 -kbd .001\
+./ClothSym -elliobj data/collisionTestRotTrans/frame 600 -simobj data/symmetricGrid0.20.obj .0005 1 -coll  -kbe .01 -kbd .001 -img imgs\
 \
 ./ClothSym -elliobj data/collisionTestTransStop/frame 1500 -simobj data/symmetricGrid0.20.obj .0005 1 -coll  -kbe .01 -kbd .001\
 ---------------------------------------------------------------
@@ -55,6 +119,7 @@
 \f1 \
 
 \f0 \
+\
 ****************************************************************************
 \f1 \
 
@@ -66,18 +131,53 @@
 	
 \f1 * 221 Point Mesh ("real time")\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
-\cf0          * 221 Point Mesh ("high quality")
+\cf0          * 221 Point Mesh ("high quality")\
+         * 881 Point Mesh ("high quality")\
+         * 221 Point Mesh ("stripped down")
 \f0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 \cf0 ---------------------------------------------------------------\
 ./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symGrid61v.obj .005 1 -coll -dcons3 30 32 35  20 21  22\
 \
-./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symGrid61v.obj .002 1 -coll -dcons3 30 32 35  20 21  22 -kbe .01 -kbd .001 \
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symGrid61v.obj .002 1 -coll -dcons3 30 32 35  20 21  22 -kbe .01 -kbd .001 -img imgs\
 \
 ./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .001 1 -coll -dcons3 110 115 120  20 21  22\
 \
-./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .0005 1 -coll -dcons3 110 115 120  20 21  22 -kbe .01 -kbd .001 \
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .0005 1 -coll -dcons3 110 115 120  20 21  22 -kbe .01 -kbd .001 -img imgs\
+\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.10.obj .00001 1 -coll -dcons3 420 430 440  20 21  22 -kbe .01 -kbd .001 -img imgs\
+\
+./ClothSym -elliobj data/elipsoids2/frame 2500 -simobj data/symmetricGrid0.20.obj .005 1 -dcons3 110 115 120  20 21  22\
+\
+./ClothSym -elliobj data/ellipsoids3/frame 2419 -simobj data/symmetricGrid0.20.obj .001 1 -coll -dcons2 110 120 21 22\
 ---------------------------------------------------------------\
+****************************************************************************\
+\
+\
+****************************************************************************
+\f1 \
+
+\f0 //Mouse Forces \
+	* 221 Point Mesh\
+	* 841 Point Mesh\
+---------------------------------------------------------------\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.20.obj .002 1 -kbe .01 -kbd .001 -img imgs\
+\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/symmetricGrid0.10.obj .001 1 -kbe .01 -kbd .001 -img imgs\
+---------------------------------------------------------------\
+****************************************************************************\
+\
+\
+****************************************************************************
+\f1 \
+
+\f0 //Rest Angles\
+	* NEED GOOD TEST MESH\
+---------------------------------------------------------------\
+./ClothSym -elliobj data/ellis4table/frame 2 -simobj data/tallTable.obj .002 1\
+---------------------------------------------------------------\
+****************************************************************************\
+\
 \
 ****************************************************************************
 \f1 \
