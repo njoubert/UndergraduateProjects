@@ -16,16 +16,19 @@
 #define DEFAULT_KD 5
 #define DEFAULT_KBE 0.1
 #define DEFAULT_KBD 0.01
+#define DEFAULT_KCOLL 1000
 
 //#define DEFAULT_COLL_HACK 1.0
 
-#define DEFAULT_MUS 0.4
-#define DEFAULT_MUD 0.6
+#define DEFAULT_MUS 0.0
+#define DEFAULT_MUD 0.0
 
 //#define DEFAULT_GAMMA 0.64
 //#define DEFAULT_GAMMA 0.9
 #define DEFAULT_GAMMA 1.0
 #define DEFAULT_BETA 0.25
+
+#define DEFAULT_WIND 0 0 0
 
 
 #define SPARSE_MATRIX LargeMat3Matrix

@@ -29,6 +29,7 @@ public:
     //-----------------------------------------
 	//UPDATING AND ACCESSING STATE FOR SOLVER
 	void loadStateFromMesh();
+	void loadMeshFromState();
 	LARGE_VECTOR* getX();
 	LARGE_VECTOR* getV();
 	LARGE_VECTOR* getA();
@@ -49,7 +50,10 @@ public:
 	void calculateForcePartials(ImplicitSolver* solver);
 	void applyConstraints(Solver*, vector<Constraint*> *);
 	void applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions);
-
+	void calculateWindForces(LARGE_VECTOR*, SPARSE_MATRIX*, int);
+	void bendForceJacobian(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
+			TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge,
+			 SPARSE_MATRIX* JV, SPARSE_MATRIX* JP);
 	//-----------------------------------------
 
 	void takeStep(Solver*, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);

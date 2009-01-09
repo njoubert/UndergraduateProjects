@@ -121,7 +121,7 @@ private:
  */
 class AniElliModel : public Model {
 public:
-	AniElliModel(vector < vector <mat4> >);
+	AniElliModel(std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >);
     ~AniElliModel();
     void advance(double);
     double getTimeStep();
@@ -132,6 +132,9 @@ public:
     int getSize();
 
     //FOR COLLISIONS
+    vec3 calcAngularVel(int i, vec3 Xc_world);
+    vec3 calculateAngularVelocity(int, vec3);
+    mat4 calculateRotationMatrix(int i);
     vec3 getOrigin(int i);
     vec3 getPastOrigin(int i);
     vec3 getFutureOrigin(int i);
@@ -142,7 +145,9 @@ public:
     vec3 getPointInPast(int i, vec3 x_WorldSpace_3);
 
     //FOR FRICTION
-    vec3 getNormal(int j, vec4 X_elli_4);
+    vec3 getNormal(int j, vec4 );
+    vec3 getNormal(int j, vec3 );
+    void setNormal(vec3, vec3);
     double getMu_s();
     double getMu_d();
 
@@ -155,8 +160,11 @@ private:
 	string _filename; //the template filename from which to iterate.
 	unsigned int _count;
 	vector < vector <mat4> > _ellipsoids;
+	vector < vector <vec3> > _elliRots;
 	vector<vec3> _takeConst;
 	double _timeStep;
+	vector < vec3 > _normalPos;
+	vector < vec3 > _normalDir;
 
 	//Collision Variables
 	vec4 _origin;

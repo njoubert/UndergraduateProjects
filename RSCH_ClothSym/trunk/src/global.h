@@ -71,12 +71,21 @@ extern int LEAD1;
 extern int LEAD2;
 extern int LEAD3;
 extern int LEAD4;
+extern int HIERARCHY1;
+extern int HIERARCHY2;
+extern int HIERARCHY3;
+extern int HIERARCHY4;
 
 extern float KBe;
 extern float KBd;
 
+extern float Kcoll;
+
 extern float MUs;
 extern float MUd;
+
+extern vec3 WIND;
+extern bool isWIND;
 
 extern float COLL_VEL_HAXX;
 

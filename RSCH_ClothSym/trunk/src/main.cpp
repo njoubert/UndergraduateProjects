@@ -174,10 +174,10 @@ void printUsage() {
     cout
             << "      {[-statobj input.obj] | [-simobj input.obj timestep mass] | [-simOFF input.obj timestep mass] | [-aniobj inputXXX.obj] | [-elliobj input framecount]}"
             << endl;
-    cout << "      {[-dcons4 FollowPoint1 FollowPoint2 FollowPoint3 FollowPoint4 LeadPoint1 LeadPoint2 LeadPoint3 LeadPoint4] |" << endl;
-    cout << "      [-dcons3 FollowPoint1 FollowPoint2 FollowPoint3  LeadPoint1 LeadPoint2 LeadPoint3 ] |" << endl;
-    cout << "      [-dcons2 FollowPoint1 FollowPoint2 LeadPoint1 LeadPoint2 ] |" << endl;
-    cout << "      [-dcons1 FollowPoint1  LeadPoint1] }" << endl;
+    cout << "      {[-dcons4 FollowPoint1 FollowPoint2 FollowPoint3 FollowPoint4 LeadEllipse1 LeadEllipse2 LeadEllipse3 LeadEllipse4 HierarchyEllipse1 HierarchyEllipse2 HierarchyEllipse3 HierarchyEllipse4] |" << endl;
+    cout << "      [-dcons3 FollowPoint1 FollowPoint2 FollowPoint3  LeadEllipse1 LeadEllipse2 LeadEllipse3 HierarchyEllipse1 HierarchyEllipse2 HierarchyEllipse3] |" << endl;
+    cout << "      [-dcons2 FollowPoint1 FollowPoint2 LeadEllipse1 LeadEllipse2 HierarchyEllipse1 HierarchyEllipse2] |" << endl;
+    cout << "      [-dcons1 FollowPoint1  LeadEllipse1 HierarchyEllipse1] }" << endl;
     cout << "      [-coll]" << endl;
     cout << "      [-kbe KBe(float)]" << endl;
     cout << "      [-kbd KBd(float)]" << endl;
@@ -234,6 +234,9 @@ int parseCommandLine(int argc, char *argv[]) {
                 TriangleMesh* mesh = parser.parseOBJ(filename);
                 world.loadSimModel(mesh, TIMESTEP, MASS);
                 hasOBJ = true;
+                DYNAMIC_CONSTRAINTS = false;
+                STATIC_CONSTRAINTS = true;
+                cam.dynamicConstraints = false;
             }
             else {
                 malformedArg = true;
@@ -248,7 +251,7 @@ int parseCommandLine(int argc, char *argv[]) {
                 OFFParser parser;
                 TriangleMesh* mesh = parser.parse(filename);
                 string objfilename = filename + ".obj";
-                mesh->exportAsOBJ(objfilename, true);
+                mesh->exportAsOBJ(objfilename);
                 world.loadSimModel(mesh, TIMESTEP, MASS);
                 hasOBJ = true;
             }
@@ -294,21 +297,26 @@ int parseCommandLine(int argc, char *argv[]) {
 			cam.collisions = true;
 
 		} else if (!strcmp(argv[i], "-dcons1")) {
-			if (isThereMore(i, argc, 2)) {
+			if (isThereMore(i, argc, 3)) {
 				FOLLOW1 = atoi(argv[++i]);
 				LEAD1 = atoi(argv[++i]);
+				HIERARCHY1 = atoi(argv[++i]);
 				DYNAMIC_CONSTRAINTS = true;
+				STATIC_CONSTRAINTS = false;
 				cam.dynamicConstraints = true;
 			} else {
 				malformedArg = true;
 			}
 
 		} else if (!strcmp(argv[i], "-dcons2")) {
-			if (isThereMore(i, argc, 4)) {
+			if (isThereMore(i, argc, 6)) {
 				FOLLOW1 = atoi(argv[++i]);
 				FOLLOW2 = atoi(argv[++i]);
 				LEAD1 = atoi(argv[++i]);
 				LEAD2 = atoi(argv[++i]);
+				HIERARCHY1 = atoi(argv[++i]);
+				HIERARCHY2 = atoi(argv[++i]);
+				STATIC_CONSTRAINTS = false;
 				DYNAMIC_CONSTRAINTS = true;
 				cam.dynamicConstraints = true;
 			} else {
@@ -316,13 +324,17 @@ int parseCommandLine(int argc, char *argv[]) {
 			}
 
 		} else if (!strcmp(argv[i], "-dcons3")) {
-			if (isThereMore(i, argc, 4)) {
+			if (isThereMore(i, argc, 9)) {
 				FOLLOW1 = atoi(argv[++i]);
 				FOLLOW2 = atoi(argv[++i]);
 				FOLLOW3 = atoi(argv[++i]);
 				LEAD1 = atoi(argv[++i]);
 				LEAD2 = atoi(argv[++i]);
 				LEAD3 = atoi(argv[++i]);
+				HIERARCHY1 = atoi(argv[++i]);
+				HIERARCHY2 = atoi(argv[++i]);
+				HIERARCHY3 = atoi(argv[++i]);
+				STATIC_CONSTRAINTS = false;
 				DYNAMIC_CONSTRAINTS = true;
 				cam.dynamicConstraints = true;
 			} else {
@@ -330,7 +342,7 @@ int parseCommandLine(int argc, char *argv[]) {
 			}
 
 		} else if (!strcmp(argv[i], "-dcons4")) {
-			if (isThereMore(i, argc, 8)) {
+			if (isThereMore(i, argc, 12)) {
 				FOLLOW1 = atoi(argv[++i]);
 				FOLLOW2 = atoi(argv[++i]);
 				FOLLOW3 = atoi(argv[++i]);
@@ -339,6 +351,11 @@ int parseCommandLine(int argc, char *argv[]) {
 				LEAD2 = atoi(argv[++i]);
 				LEAD3 = atoi(argv[++i]);
 				LEAD4 = atoi(argv[++i]);
+				HIERARCHY1 = atoi(argv[++i]);
+				HIERARCHY2 = atoi(argv[++i]);
+				HIERARCHY3 = atoi(argv[++i]);
+				HIERARCHY4 = atoi(argv[++i]);
+				STATIC_CONSTRAINTS = false;
 				DYNAMIC_CONSTRAINTS = true;
 				cam.dynamicConstraints = true;
 			} else {
@@ -396,6 +413,16 @@ int parseCommandLine(int argc, char *argv[]) {
 			} else {
 				malformedArg = true;
 			}
+		} else if (!strcmp(argv[i], "-wind")) {
+
+			if (isThereMore(i, argc, 3)) {
+				WIND[0] = atof(argv[++i]);
+				WIND[1] = atof(argv[++i]);
+				WIND[2] = atof(argv[++i]);
+				isWIND = true;
+			} else {
+				malformedArg = true;
+			}
 		} else if (!strcmp(argv[i], "-img")) {
 
             if (isThereMore(i, argc, 1)) {
@@ -405,7 +432,24 @@ int parseCommandLine(int argc, char *argv[]) {
                 malformedArg = true;
             }
 
-        } else if (!strcmp(argv[i], "-cg")) {
+        } else if (!strcmp(argv[i], "-obj")) {
+
+            if (isThereMore(i, argc, 1)) {
+                std::string dirname = std::string(argv[++i]);
+                world.inializeExportSim(dirname, cam.inverseFPS);
+            } else {
+                malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-kcoll")) {
+
+			if (isThereMore(i, argc, 1)) {
+				Kcoll = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-cg")) {
 
             if (isThereMore(i, argc, 2)) {
             	MAX_CG_ITER = atoi(argv[++i]);
@@ -488,7 +532,7 @@ void init(void) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
     glShadeModel(GL_SMOOTH);
-    Material::clearGLcolors();
+    glClearColor(0.7, 0.7, 0.7, 0.0);
 
     GLfloat global_ambient[] = {.1f, .1f, .1f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
@@ -513,9 +557,9 @@ void init(void) {
     glEnable(GL_LIGHT1);
 
     //Material:
-    GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-    GLfloat mat_diffuse[] = { 0.5, 0.5, 0.5, 1.0 };
-    GLfloat mat_specular[] = { 0.1, 0.1, 0.1, 1.0 };
+    GLfloat mat_ambient[] = { 0.0, 0.1, 0.6, 1.0 };
+    GLfloat mat_diffuse[] = { 0.0, 0.1, 0.6, 1.0 };
+    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_shininess[] = { 50.0 };
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
@@ -619,28 +663,41 @@ void drawParameters() {
     }
 	if (FRICTION_FORCES) {
 		sprintf(s2, "Friction Forces: Enabled");
-		renderBitmapString(250, cam._h - 75, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 75, (void *) Font, s2);
 		sprintf(s2, "Mu Static: %4.2f", MUs);
-		renderBitmapString(250, cam._h - 60, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 60, (void *) Font, s2);
 		sprintf(s2, "Mu Dynamic: %4.2f", MUd);
-		renderBitmapString(250, cam._h - 45, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 45, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Friction Forces: Disabled");
-		renderBitmapString(250, cam._h - 75, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 75, (void *) Font, s2);
+	}
+	if (isWIND) {
+		sprintf(s2, "Wind Forces: Enabled");
+		renderBitmapString(5, cam._h - 30, (void *) Font, s2);
+		sprintf(s2, "Velocity: %4.4f", WIND[0]);
+		renderBitmapString(5, cam._h - 15, (void *) Font, s2);
+		sprintf(s2, " %4.4f", WIND[1]);
+		renderBitmapString(140, cam._h - 15, (void *) Font, s2);
+		sprintf(s2, " %4.4f", WIND[2]);
+		renderBitmapString(200, cam._h - 15, (void *) Font, s2);
+	} else {
+		sprintf(s2, "Wind Forces: Disabled");
+		renderBitmapString(5, cam._h - 30, (void *) Font, s2);
 	}
 	if (COLLISIONS) {
 		sprintf(s2, "Collisions: Enabled");
-		renderBitmapString(250, cam._h - 30, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 30, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Collisions: Disabled");
-		renderBitmapString(250, cam._h - 30, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 30, (void *) Font, s2);
 	}
 	if (DYNAMIC_CONSTRAINTS) {
 		sprintf(s2, "Moving Constraints: Enabled");
-		renderBitmapString(250, cam._h - 15, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 15, (void *) Font, s2);
 	} else {
 		sprintf(s2, "Moving Constraints: Disabled");
-		renderBitmapString(250, cam._h - 15, (void *) Font, s2);
+		renderBitmapString(300, cam._h - 15, (void *) Font, s2);
 	}
 }
 //FPS CALCULATION VARIABLES
@@ -744,7 +801,7 @@ void myframemove() {
 
 		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w,
 				cam._h);
-
+		world.exportSim(1, world.getTime(), false, cam.inverseFPS);
 		world.advance(cam.inverseFPS);
 
 		profiler.frametimers.switchToTimer("postRedisplay");
@@ -773,7 +830,7 @@ void myMousePress(int button, int state, int x, int y) {
                 //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
                 if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
                 	//cout<<"mouse Position World Space-> x: "<<ox*(1/cam.getZoom())<<"   y: "<<oy*(1/cam.getZoom())<<"   z: "<<0<<endl;
-                	world.enableMouseForce(vec3(ox,oy,0));
+                	world.enableMouseForce(vec3(ox*5,oy*5,0));
                     //sys->enableMouseForce(vec3(ox,oy,0));
                 }
                 else
@@ -806,7 +863,7 @@ void myMouseMove(int x, int y) {
                 //cout<<"mouse position Screen Space-> x: "<<x<<"   y: "<<y<<endl;
                 if (GL_TRUE == gluUnProject(x, view[3]-y, z, modelview, proj, view, &ox, &oy, &oz)) {
                 	//cout<<"mouse Position World Space-> x: "<<ox<<"   y: "<<oy<<"   z: "<<oz<<endl;
-                	world.updateMouseForce(vec3(ox,oy,0));
+                	world.updateMouseForce(vec3(ox*5,5*oy,0));
                 }
                 else
                 	cout<<"gluUnProject Returned False"<<endl;
@@ -832,7 +889,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    cam._w = 800;
+    cam._w = 600;
     cam._h = 600;
 
     //Create Window:

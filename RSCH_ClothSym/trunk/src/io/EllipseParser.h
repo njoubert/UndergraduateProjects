@@ -27,9 +27,10 @@ using namespace std;
 class ellipseParser {
 public:
 	ellipseParser();
-	vector < vector <mat4> > parseEllipsoids(string, int);
+	std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >
+		parseEllipsoids(string, int);
 private:
-	mat4 parseLine(string);
+	std::pair< std::pair< bool, mat4 >, std::pair< bool, vec3 > > parseLine(string);
 };
 //*/
 

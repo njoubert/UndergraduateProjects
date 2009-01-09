@@ -38,29 +38,29 @@ void Material::makeDefaultColor() {
 }
 
 void Material::makeSimColor() {
-    mat_diffuse[0] = 255.0f / 255.0f;
-    mat_diffuse[1] = 255.0f / 255.0f;
-    mat_diffuse[2] = 255.0f / 255.0f;
+    mat_diffuse[0] = 20.0f / 255.0f;
+    mat_diffuse[1] = 225.0f / 255.0f;
+    mat_diffuse[2] = 20.0f / 255.0f;
     mat_diffuse[3] = 1.0f;
-    mat_ambient[0] = 255.0f / 255.0f;
-    mat_ambient[1] = 255.0f / 255.0f;
-    mat_ambient[2] = 255.0f / 255.0f;
+    mat_ambient[0] = 24.5f / 255.0f;
+    mat_ambient[1] = 22.5f / 255.0f;
+    mat_ambient[2] = 24.0f / 255.0f;
     mat_ambient[3] = 1.0f;
 }
 
 void Material::makeStatColor() {
-    mat_diffuse[0] = 60.0f / 255.0f;
-    mat_diffuse[1] = 60.0f / 255.0f;
-    mat_diffuse[2] = 80.0f / 255.0f;
+    mat_diffuse[0] = 100.0f / 255.0f;
+    mat_diffuse[1] = 100.0f / 255.0f;
+    mat_diffuse[2] = 100.0f / 255.0f;
     mat_diffuse[3] = 1.0f;
     mat_ambient[0] = 8.5f / 255.0f;
     mat_ambient[1] = 8.5f / 255.0f;
     mat_ambient[2] = 10.2f / 255.0f;
     mat_ambient[3] = 1.0f;
     mat_shininess[0] = 20;
-    mat_specular[0] = 0.8f;
-    mat_specular[1] = 0.8f;
-    mat_specular[2] = 0.8f;
+    mat_specular[0] = 5.8f;
+    mat_specular[1] = 5.8f;
+    mat_specular[2] = 5.8f;
     mat_specular[3] = 1.0f;
     /*    mat_diffuse[0] = 85.0f / 255.0f;
     mat_diffuse[1] = 85.0f / 255.0f;
@@ -78,9 +78,6 @@ void Material::setGLcolors() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
-}
-void Material::clearGLcolors() {
-	glClearColor(0.7, 0.7, 0.7, 0.0);
 }
 
 float Material::getKe() {

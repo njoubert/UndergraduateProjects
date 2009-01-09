@@ -43,6 +43,9 @@ public:
 
     vec3 getFocusPoint();
 
+    void inializeExportSim(string directory, double inverseFPS);
+    void exportSim(int simNum, double time, bool JustDoIt, double inverseFPS);
+
     void enableMouseForce(vec3);
     void disableMouseForce();
     bool isMouseEnabled();
@@ -55,6 +58,13 @@ private:
     vector<StatModel*> _statmodels;
     vector<Model*> _models;
     double _time;
+
+    //For Obj Output
+    int _frameCount;
+    double _lastTime;
+    bool _doObjOutput;
+    string _objOutDir;
+
     bool _displayListsValid;
     int _displayListsIndex;
 };

@@ -92,8 +92,8 @@ bool World::loadEllipseModel(string filename, int numFrames) {
     cout << "Parsing and Loading EllipseModel..." << endl;
 
     ellipseParser parser;
-    vector<vector<mat4> > ellipsoids = parser.parseEllipsoids(filename,
-            numFrames);
+    std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >
+		ellipsoids = parser.parseEllipsoids(filename, numFrames);
     /*	DEBUG FOR PARSER
      for(int i = 0; i < 21; i++) {
      cout<<endl<<endl<<"Frame: "<<i+1<<endl;
@@ -115,32 +115,34 @@ bool World::loadEllipseModel(string filename, int numFrames) {
  */
 bool World::createVertexToAnimatedEllipseContraint() {
 	vector<int> LeadEllipsoids;
-	if(LEAD1 != -1)
+	if (LEAD1 != -1)
 		LeadEllipsoids.push_back(LEAD1);
-	if(LEAD2 != -1)
-			LeadEllipsoids.push_back(LEAD2);
-	if(LEAD3 != -1)
-			LeadEllipsoids.push_back(LEAD3);
-	if(LEAD4 != -1)
-			LeadEllipsoids.push_back(LEAD4);
+	if (LEAD2 != -1)
+		LeadEllipsoids.push_back(LEAD2);
+	if (LEAD3 != -1)
+		LeadEllipsoids.push_back(LEAD3);
+	if (LEAD4 != -1)
+		LeadEllipsoids.push_back(LEAD4);
 
-	//LeadEllipsoids.push_back(3);
-	//LeadEllipsoids.push_back(4);
+	vector<int> hierarchyEllipsoids;
+	if (HIERARCHY1 != -1)
+		hierarchyEllipsoids.push_back(HIERARCHY1);
+	if (HIERARCHY2 != -1)
+		hierarchyEllipsoids.push_back(HIERARCHY2);
+	if (HIERARCHY3 != -1)
+		hierarchyEllipsoids.push_back(HIERARCHY3);
+	if (HIERARCHY4 != -1)
+		hierarchyEllipsoids.push_back(HIERARCHY4);
 
-	vector<int>	FollowVertices;
-	//FollowVertices.push_back(110);
-	//FollowVertices.push_back(120);
-	//FollowVertices.push_back(30);
-	//FollowVertices.push_back(35);
-	if(FOLLOW1 != -1)
+	vector<int> FollowVertices;
+	if (FOLLOW1 != -1)
 		FollowVertices.push_back(FOLLOW1);
-	if(FOLLOW2 != -1)
-			FollowVertices.push_back(FOLLOW2);
-	if(FOLLOW3 != -1)
-			FollowVertices.push_back(FOLLOW3);
-	if(FOLLOW4 != -1)
-			FollowVertices.push_back(FOLLOW4);
-
+	if (FOLLOW2 != -1)
+		FollowVertices.push_back(FOLLOW2);
+	if (FOLLOW3 != -1)
+		FollowVertices.push_back(FOLLOW3);
+	if (FOLLOW4 != -1)
+		FollowVertices.push_back(FOLLOW4);
 
 	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
 
@@ -161,21 +163,23 @@ bool World::createVertexToAnimatedEllipseContraint() {
 					new VertexToAnimatedEllipseConstraint();
 			constraint->setLead(leadModel, ellipsoidNr);
 			constraint->setFollow(v);
+			constraint->setHierarchy(hierarchyEllipsoids[i]);
 
 			followModel->registerConstraint(constraint);
 
-			cout<<"Created Dynamic Constraint: Mesh Vertex: "<<FollowVertices[i]
-				<<" is connected to Ellipsoid "<<LeadEllipsoids[i]<<endl;
+			cout << "Created Dynamic Constraint: Mesh Vertex: "
+					<< FollowVertices[i] << " is connected to Ellipsoid "
+					<< LeadEllipsoids[i] << endl;
 			//followModel->applyInitialConstraints();
 			//cout<<"Dynamic Constraint Initialized."<<endl;
 		}
 
 	}
 
-	cout<<FollowVertices.size()<< " Dynamic Constraints Created."<<endl;
+	cout << FollowVertices.size() << " Dynamic Constraints Created." << endl;
 	STATIC_CONSTRAINTS = false;
 	DYNAMIC_CONSTRAINTS = true;
-    return true;
+	return true;
 }
 
 bool World::createVertexToAnimatedEllipseCollisions() {
@@ -201,9 +205,9 @@ bool World::createFixedVertexContraints() {
 		cout << "Checking for Fixed Constraints" << endl;
 		SimModel* simModel = (SimModel*) _models[1];
 		TriangleMesh* mesh = simModel->getMesh();
-		for (unsigned int i = 0; i < mesh->countVertices(); i++) {
+		for (int i = 0; i < mesh->countVertices(); i++) {
 			TriangleMeshVertex* v = mesh->getVertex(i);
-			if (v->isPinned()) {
+			if (v->getConstaint()) {
 				FixedConstraint* constraint = new FixedConstraint();
 				constraint->setFollow(v);
 				simModel->registerConstraint(constraint);
@@ -242,21 +246,48 @@ vec3 World::getFocusPoint() {
 	//return focusModel->getConstraintPos(0);
 }
 
+void World::inializeExportSim(string directory, double inverseFPS) {
+        cout << "Saving .objs to directory " << directory << endl;
+        _objOutDir = directory;
+        if (_objOutDir[_objOutDir.size()-1] != '/')
+        	_objOutDir.append("/");
+        _doObjOutput = true;
+        _lastTime = -1 - inverseFPS;
+}
+void World::exportSim(int simNum, double time, bool JustDoIt, double inverseFPS) {
+	if (_models.size() > 1) {
+		if (!_doObjOutput)
+		            return;
+		        if (time >= _lastTime + inverseFPS || JustDoIt)
+		            _lastTime = time;
+		        else
+		            return;
+
+		        _frameCount++;
+		                stringstream filename(stringstream::in | stringstream::out);
+		                filename << _objOutDir << "sym";
+		                filename << std::setfill('0') << setw(6) << _frameCount << ".obj";
+		                cout << "Save obj " << _frameCount << " at "<< setprecision(3) << time <<"s ..." << endl;
+
+				//Export Model
+				SimModel* simModel = (SimModel*) _models[simNum];
+				simModel->getMesh()->exportAsOBJ(filename.str());
+
+			}
+}
+
 void World::enableMouseForce(vec3 mPos) {
 	SimModel* simModel = (SimModel*) _models[1];
 	simModel->enableMouseForce(mPos);
 }
-
 void World::disableMouseForce() {
 	SimModel* simModel = (SimModel*) _models[1];
 	simModel->disableMouseForce();
 }
-
 void World::updateMouseForce(vec3 new_mPos) {
 	SimModel* simModel = (SimModel*) _models[1];
 	simModel->updateMouseForce(new_mPos);
 }
-
 bool World::isMouseEnabled() {
 	SimModel* simModel = (SimModel*) _models[1];
 	return simModel->isMouseEnabled();

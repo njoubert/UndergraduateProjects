@@ -24,12 +24,13 @@ float Ke = DEFAULT_KS;
 float Kd = DEFAULT_KD;
 float KBe = DEFAULT_KBE;
 float KBd = DEFAULT_KBD;
+float Kcoll = DEFAULT_KCOLL;
 
 bool BEND_FORCES = false;
 bool FRICTION_FORCES = false;
 bool COLLISIONS = false;
 
-bool STATIC_CONSTRAINTS = true;
+bool STATIC_CONSTRAINTS = false;
 bool DYNAMIC_CONSTRAINTS = false;
 int FOLLOW1 = -1;
 int FOLLOW2 = -1;
@@ -39,9 +40,17 @@ int LEAD1 = -1;
 int LEAD2 = -1;
 int LEAD3 = -1;
 int LEAD4 = -1;
+int HIERARCHY1 = -1;
+int HIERARCHY2 = -1;
+int HIERARCHY3 = -1;
+int HIERARCHY4 = -1;
 
 float MUs = DEFAULT_MUS;
 float MUd = DEFAULT_MUD;
+
+vec3 WIND(0);
+
+bool isWIND = false;
 
 float COLL_VEL_HAXX = 1; //Multiplies the velocity term, higher than one will result in cloth being ahead of lead object
 

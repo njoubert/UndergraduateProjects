@@ -27,13 +27,21 @@ ellipseParser::ellipseParser() {
 
 }
 
-vector < vector <mat4> > ellipseParser::parseEllipsoids(string filename, int numFrames) {
+std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >
+	ellipseParser::parseEllipsoids(string filename, int numFrames) {
+
     //printInfo("Parsing Scene File " << filename);
 	char line[10024];
     char fullFileName[50];
     string rootFileName = filename.c_str();
+    std::pair<  vector < vector <mat4> > , vector < vector <vec3> > > elliData;
+    std::pair< std::pair< bool, mat4 >, std::pair< bool, vec3 > > elliDataTemp;
+
     std::vector < std::vector <mat4> > myEllipsoidFrames;
     std::vector<mat4> myEllipsoidFrame;
+
+    std::vector < std::vector <vec3> > myEllipsoidRots;
+    std::vector<vec3> myEllipsoidRot;
     ifstream inFile;
 
     cout<<"Number of Frames: "<<numFrames<<endl<<endl;
@@ -54,11 +62,16 @@ vector < vector <mat4> > ellipseParser::parseEllipsoids(string filename, int num
 
     		}
     		else {
-    			myEllipsoidFrame.push_back(parseLine(string(line)));
+    			elliDataTemp = parseLine(string(line));
+    			if(elliDataTemp.first.first)
+    				myEllipsoidFrame.push_back(elliDataTemp.first.second);
+    			else
+    				myEllipsoidRot.push_back(elliDataTemp.second.second);
     		}
     	}
     	inFile.close();
     	myEllipsoidFrames.push_back(myEllipsoidFrame);
+    	myEllipsoidRots.push_back(myEllipsoidRot);
     	/*
     	//for(int j = 0; j < 20; j++) {
     		cout<<myEllipsoidFrame[20]<<endl;
@@ -66,16 +79,35 @@ vector < vector <mat4> > ellipseParser::parseEllipsoids(string filename, int num
     	//}
     	//*/
 		myEllipsoidFrame.erase(myEllipsoidFrame.begin(),myEllipsoidFrame.end());
+		myEllipsoidRot.erase(myEllipsoidRot.begin(),myEllipsoidRot.end());
     }
     parseDebug("Ellipsoid Parser exiting...");
+/*
+    for(int i = 0; i < myEllipsoidFrames.size(); i++) {
+    		cout<<"Frame: "<<i<<endl;
+    		for(int j = 0; j < myEllipsoidFrames[i].size(); j++) {
+    			cout<<"Ellipsoid: "<<j<<endl;
+    			cout<<"Matrix Transformation: "<<myEllipsoidFrames[i][j]<<endl;
+    			cout<<"Rotation Angles (Scalars): "<<myEllipsoidRots[i][j]<<endl;
+    		}
+    		cout<<endl;
+    	}
+    	cout<<endl;
+*/
 
-    return myEllipsoidFrames;
+    elliData.first = myEllipsoidFrames;
+    elliData.second = myEllipsoidRots;
+    return elliData;
 }
 
 
-mat4 ellipseParser::parseLine(string line) {
+std::pair< std::pair< bool, mat4 >, std::pair< bool, vec3 > > ellipseParser::parseLine(string line) {
     string operand;
+    std::pair< std::pair< bool, mat4 >, std::pair< bool, vec3 > > lineData;
     mat4 transform;
+    vec3 rotAngles;
+    lineData.first.first = false;
+    lineData.second.first = false;
 
     parseDebug("Parsing Line: " << line);
     if (line.empty()) {
@@ -98,8 +130,12 @@ mat4 ellipseParser::parseLine(string line) {
 			  transform[1][0] >> transform[1][1] >> transform[1][2] >> transform[1][3] >>
 			  transform[2][0] >> transform[2][1] >> transform[2][2] >> transform[2][3] >>
 			  transform[3][0] >> transform[3][1] >> transform[3][2] >> transform[3][3];
-    }
-    else {
+        lineData.first.first = true;
+    } else if (operand.compare("rotAnglesXYZ:") == 0) {
+
+        ss >> rotAngles[0] >> rotAngles[1] >> rotAngles[2];
+        lineData.second.first = true;
+    } else {
         cout << "Unknown operand in scene file, skipping line: " << operand << endl;
         exit(1);
     }
@@ -110,6 +146,10 @@ mat4 ellipseParser::parseLine(string line) {
         exit(1);
     }
     //cout<<"transform: "<<transform<<endl<<endl;
-    return transform;
+
+
+    lineData.first.second = transform;
+    lineData.second.second = rotAngles;
+    return lineData;
 }
 //*/

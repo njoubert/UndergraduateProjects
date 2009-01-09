@@ -61,11 +61,8 @@ void StatModel::draw() {
 
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->getTrianglesBeginIterator();
-    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
-        _mesh->getTrianglesEndIterator();
-
-    while (it != it_end) {
+        _mesh->triangles.begin();
+    while (it != _mesh->triangles.end()) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();
@@ -143,11 +140,9 @@ void SimModel::draw() {
     vec3 a, b, c, na, nb, nc;
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->getTrianglesBeginIterator();
-    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
-        _mesh->getTrianglesEndIterator();
+        _mesh->triangles.begin();
 
-    while (it != it_end) {
+    while (it != _mesh->triangles.end()) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();
@@ -233,11 +228,8 @@ void AniModel::draw() {
 
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
-        _mesh->getTrianglesBeginIterator();
-    std::vector< TriangleMeshTriangle* >::const_iterator it_end =
-        _mesh->getTrianglesEndIterator();
-
-    while (it != it_end) {
+        _mesh->triangles.begin();
+    while (it != _mesh->triangles.end()) {
         vertices = (*it)->getVertices();
 
         a = vertices[0]->getX();
@@ -266,9 +258,22 @@ void AniModel::draw() {
  *
  *------------------------------------------------*/
 
-AniElliModel::AniElliModel(vector < vector <mat4> > ellipsoids) {
-	_ellipsoids = ellipsoids;
-
+AniElliModel::AniElliModel(std::pair<  vector < vector <mat4> > , vector < vector <vec3> > > ellipsoids) {
+	_ellipsoids = ellipsoids.first;
+	_elliRots = ellipsoids.second;
+	cout<<"Loaded Rotation Data for Angular Velocity: "<<_elliRots.size()<<endl;
+/*
+	for(int i = 0; i < _elliRots.size(); i++) {
+		cout<<"Frame: "<<i<<endl;
+		for(int j = 0; j < _elliRots[i].size(); j++) {
+		cout<<"Ellipsoid: "<<j<<endl;
+		cout<<"Matrix Transformation: "<<_ellipsoids[i][j]<<endl;
+		cout<<"Rotation Angles (Scalars): "<<_elliRots[i][j]<<endl;
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+//*/
 	/* PARSER DEBUG
 	for(unsigned int i = 0; i < ellipsoids.size(); i++) {
 		cout<<endl<<endl<<"Frame: "<<i+1<<endl<<endl;
@@ -303,6 +308,9 @@ void AniElliModel::advance(double netTime) {
 		}
 	else
 		_count = 0;
+
+	_normalPos.clear();
+	_normalDir.clear();
 	profiler.frametimers.switchToGlobal();
 }
 
@@ -311,8 +319,32 @@ double AniElliModel::getTimeStep() {
 }
 
 vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
-	//Get Position Were Collision Occurs
+	//Get Position Were normal is
+	mat4 elliTransform = getEllipsoid(j);
+
+//	X_elli_4 = X_elli_4 / sqrt(X_elli_4[0] * X_elli_4[0] + X_elli_4[1]
+//			* X_elli_4[1] + X_elli_4[2] * X_elli_4[2]);
+//	X_elli_4[3] = 1;
+
+	X_elli_4[3] = 0;
+	vec3 Xc(X_elli_4 * elliTransform.inverse().transpose(), VW);
+	Xc.normalize();
+
+	return Xc;
+}
+
+vec3 AniElliModel::getNormal(int j, vec3 Xc_world) {
+	//DOES NOT GIVE CORRECT NORMAL
 		mat4 elliTransform = getEllipsoid(j);
+
+		vec4 Xc_world_4;
+		for(int i = 0; i < 3; i++)
+			Xc_world_4[i]= Xc_world[i];
+		Xc_world_4[3] = 1;
+		vec4 X_elli_4(elliTransform.inverse() * Xc_world_4);
+
+		X_elli_4 = X_elli_4 / sqrt(X_elli_4[0] * X_elli_4[0] + X_elli_4[1]
+					* X_elli_4[1] + X_elli_4[2] * X_elli_4[2]);
 
 		X_elli_4[3] = 0;
 		vec3 Xc(elliTransform.inverse().transpose() * X_elli_4, VW);
@@ -321,15 +353,17 @@ vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
 		return Xc;
 }
 
+void AniElliModel::setNormal(vec3 pos, vec3 dir) { _normalPos.push_back(pos);
+													_normalDir.push_back(dir); }
+
 void AniElliModel::draw() {
 
     _material->setGLcolors();
 
-
 	if (DRAWELLIPSOIDS) {
 		//*
 		for (unsigned int i = 0; i < _ellipsoids[_count].size(); i++) {
-
+//*
 			glPushMatrix();
 
 			GLdouble m[16];
@@ -343,11 +377,23 @@ void AniElliModel::draw() {
 			//exit(1);
 			glMultMatrixd(m);
 			glutSolidSphere(1, 100, 100);
-
 			glPopMatrix();
 		}
 	}
 //*/
+/*
+			for (int i = 0; i < _normalPos.size(); i++) {
+				vec3 pos1 = _normalPos[i];
+				vec3 pos2 = _normalPos[i] + 1 * _normalDir[i];
+				glBegin(GL_QUADS);
+					glVertex3f(pos1[0] - 0.05, pos1[1], pos1[2]);
+					glVertex3f(pos1[0] + 0.05, pos1[1], pos1[2]);
+					glVertex3f(pos2[0] + 0.05, pos2[1], pos2[2]);
+					glVertex3f(pos2[0] - 0.05, pos2[1], pos2[2]);
+				glEnd();
+			}
+//*/
+
 }
 
 mat4 AniElliModel::getEllipsoid(int Indx) { return _ellipsoids[_count][Indx]; }
@@ -355,6 +401,156 @@ mat4 AniElliModel::getEllipsoid(int Indx) { return _ellipsoids[_count][Indx]; }
 int AniElliModel::getSize() { return _ellipsoids[_count].size(); }
 
 //FOR COLLISIONS
+
+vec3 AniElliModel::calcAngularVel(int i, vec3 Xc) {
+	//	CurrentTime: Xc -> position of collision, 				Xo -> point of ellipsoid origin (should be center of mass)
+	//	FutureTime: Xc_f -> position of collision in future, 	Xo_f -> point of future ellipsoid origin (should be center of mass)
+	//	PastTime: Xc_p -> position of collision in past, 		Xo_f -> point of past ellipsoid origin (should be center of mass)
+//	cout<<"1"<<endl;
+
+
+	//Get Current Future and Past Ellipsoid Transformations
+	mat4 ElliTransformCurrent = _ellipsoids[_count][i];
+	mat4 ElliTransformFuture;
+	mat4 ElliTransformPast;
+	vec3 ElliRots = _elliRots[_count][i];
+	vec3 ElliRotsFuture, ElliRotsPast;
+	//cout<<"Size of Ellis: "<<_ellipsoids[_count].size()<<endl;
+	//cout<<"Frame: "<<_count<<"elli: "<<i<<endl;
+	//cout<<"elliRotsOrgin: " <<_elliRots[_count][i]<<endl;
+	//cout<<"elliRots: "<<ElliRots<<endl;
+	if (_count == _ellipsoids.size() - 1) {
+		ElliTransformFuture = _ellipsoids[0][i];
+		ElliRotsFuture = _elliRots[0][i];
+	}
+	else {
+		ElliTransformFuture = _ellipsoids[_count + 1][i];
+		ElliRotsFuture = _elliRots[_count + 1][i];
+	}
+
+	if (_count == 0) {
+		ElliTransformPast = _ellipsoids[_ellipsoids.size()-1][i];
+		ElliRotsPast = _elliRots[_elliRots.size()-1][i];
+	}
+	else {
+		ElliTransformPast = _ellipsoids[_count - 1][i];
+		ElliRotsPast = _elliRots[_count - 1][i];
+	}
+
+	//Determine Angular Velocity
+	//cout<<"Future: "<<ElliRotsFuture<< " - "<<"Past: "<<ElliRotsPast<<endl;
+	vec3 W = (ElliRotsFuture - ElliRotsPast)/(2*_timeStep)*(3.1415/180);
+	//cout<<"W: "<<W<<endl;
+
+
+	vec3 Xo = getOrigin(i);
+	vec3 r = (Xc - Xo);
+//	cout<<"Xo: "<<Xo<<" Xc: "<<Xc<<endl;
+//	cout<<"r: "<<r<<endl;
+	vec3 Wtan = W ^ r;
+//	cout<<"tangental velocity: " << Wtan << endl;
+
+	return Wtan;
+
+
+}
+
+mat4 AniElliModel::calculateRotationMatrix(int i) {
+	//	CurrentTime: Xc -> position of collision, 				Xo -> point of ellipsoid origin (should be center of mass)
+	//	FutureTime: Xc_f -> position of collision in future, 	Xo_f -> point of future ellipsoid origin (should be center of mass)
+	//	PastTime: Xc_p -> position of collision in past, 		Xo_f -> point of past ellipsoid origin (should be center of mass)
+
+
+	//Get Current Future and Past Ellipsoid Transformations
+	mat4 ElliTransformCurrent = _ellipsoids[_count][i];
+	mat4 ElliTransformFuture;
+	if (_count == _ellipsoids.size() - 1)
+		ElliTransformFuture = _ellipsoids[0][i];
+	else
+		ElliTransformFuture = _ellipsoids[_count + 1][i];
+	mat4 ElliTransformPast;
+	if (_count == 0)
+		ElliTransformPast = _ellipsoids[_ellipsoids.size()-1][i];
+	else
+		ElliTransformPast = _ellipsoids[_count - 1][i];
+/*
+	cout<<"ElliTransformFuture: "<<ElliTransformFuture.transpose()<<endl;
+	cout<<ElliTransformFuture[0][0]<<" "<<ElliTransformFuture[0][1]<<" "<<ElliTransformFuture[0][2]<<" "<<ElliTransformFuture[0][3]<<endl;
+	cout<<ElliTransformFuture[1][0]<<" "<<ElliTransformFuture[1][1]<<" "<<ElliTransformFuture[1][2]<<" "<<ElliTransformFuture[1][3]<<endl;
+	cout<<ElliTransformFuture[2][0]<<" "<<ElliTransformFuture[2][1]<<" "<<ElliTransformFuture[2][2]<<" "<<ElliTransformFuture[2][3]<<endl;
+	cout<<ElliTransformFuture[3][0]<<" "<<ElliTransformFuture[3][1]<<" "<<ElliTransformFuture[3][2]<<" "<<ElliTransformFuture[3][3]<<endl;
+	cout<<"ElliTransformPast: "<<ElliTransformFuture<<endl;
+*/
+	mat4 RotationMatrix = ElliTransformFuture - ElliTransformPast;
+
+
+	return RotationMatrix;
+
+}
+
+vec3 AniElliModel::calculateAngularVelocity(int i, vec3 Xc_world) {
+	//	CurrentTime: Xc -> position of collision, 				Xo -> point of ellipsoid origin (should be center of mass)
+	//	FutureTime: Xc_f -> position of collision in future, 	Xo_f -> point of future ellipsoid origin (should be center of mass)
+	//	PastTime: Xc_p -> position of collision in past, 		Xo_f -> point of past ellipsoid origin (should be center of mass)
+//	cout<<"1"<<endl;
+	vec4 Xc_world_4;
+	for(int p = 0; p < 3; p++)
+		Xc_world_4[p] = Xc_world[p];
+	Xc_world_4[3] = 1;
+//	cout<<"2"<<endl;
+
+	//Get Current Future and Past Ellipsoid Transformations
+	mat4 ElliTransformCurrent = _ellipsoids[_count][i];
+	mat4 ElliTransformFuture;
+	if (_count == _ellipsoids.size() - 1)
+		ElliTransformFuture = _ellipsoids[0][i];
+	else
+		ElliTransformFuture = _ellipsoids[_count + 1][i];
+	mat4 ElliTransformPast;
+	if (_count == 0)
+		ElliTransformPast = _ellipsoids[_ellipsoids.size()-1][i];
+	else
+		ElliTransformPast = _ellipsoids[_count - 1][i];
+//	cout<<"3"<<endl;
+
+	//Get into Space of Current, Future and Past Ellipsoids
+	vec4 Xc_f_4 = Xc_world_4 * ElliTransformFuture.inverse();
+	vec4 Xc_p_4 = Xc_world_4 * ElliTransformPast.inverse();
+	vec4 Xc_4 = Xc_world_4 * ElliTransformCurrent.inverse();
+//	cout<<"4"<<endl;
+
+	//Drop Homogenious Coordinate
+	vec3 Xo(0, 0, 0);
+	double elliTimeStep = getTimeStep();
+	//Xc_f_4 = Xc_f_4/Xc_f_4[3];
+	//Xc_p_4 = Xc_f_4/Xc_f_4[3];
+	//Xc_4 = Xc_4/Xc_4[3];
+	vec3 Xc_f(Xc_f_4, VW);
+	vec3 Xc_p(Xc_p_4, VW);
+	vec3 Xc(Xc_4, VW);
+//	cout<<"5"<<endl;
+
+	//Determine Angular Velocity
+	vec3 r = (Xc - Xo), r_p = (Xc_p - Xo), r_f = (Xc_f - Xo);
+	vec3 Vr = (r_f - r_p) / (2 * elliTimeStep);
+	vec3 W = (r ^ Vr) / (r.length() * r.length());
+//	cout<<"W sphereSpace: "<<W<<endl;
+	vec3 Wtan = W ^ r;
+//	vec3 Wtan = W;
+//	cout<<"6"<<endl;
+
+	//Convert to world space
+	vec4 Wtan_4;
+	for (int p = 0; p < 3; p++)
+		Wtan_4[p] = Wtan[p];
+	Wtan_4[3] = 1;
+	vec3 Wtan_world(ElliTransformCurrent.inverse().transpose() * Wtan_4, VW);
+	//vec3 Wtan_world(ElliTransformCurrent.inverse() * Wtan_4, VW);
+	//cout<<"7"<<endl;
+
+	return Wtan_world;
+
+}
 
 vec3 AniElliModel::getOrigin(int i) {
 	vec4 origin(0); origin[1] = 1;
@@ -447,12 +643,26 @@ vec4 AniElliModel::convertPoint2ElliSpace(int j, vec3 X_world_3) {
 vec3 AniElliModel::getPointInsideElli2Surface(int j, vec4 X_elli_4) {
 	//Get Position Were Collision Occurs
 	mat4 elliTransform = getEllipsoid(j);
+	vec3 X_elli_3;
 
+	for (int k = 0; k < 3; k++)
+		X_elli_3[k] = X_elli_4[k];
+	X_elli_3 = X_elli_3 / sqrt(X_elli_3[0] * X_elli_3[0] + X_elli_3[1] * X_elli_3[1] + X_elli_3[2]* X_elli_3[2]);
+	for (int k = 0; k < 3; k++)
+		X_elli_4[k] = X_elli_3[k];
+
+	X_elli_4[3] = 1;
+	vec4 Xc_4 = X_elli_4 * elliTransform;
+	vec3 Xc;
+	for (int k = 0; k < 3; k++)
+		Xc[k] = Xc_4[k];
+/*
 	X_elli_4 = X_elli_4 / sqrt(X_elli_4[0] * X_elli_4[0] + X_elli_4[1] * X_elli_4[1] + X_elli_4[2]* X_elli_4[2]);
 	X_elli_4[3] = 1;
 
 	vec4 Xc_4 = X_elli_4 * elliTransform;
 	vec3 Xc(Xc_4, VW);
+//*/
 
 	return Xc;
 }

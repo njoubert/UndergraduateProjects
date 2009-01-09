@@ -1483,6 +1483,17 @@ inline void swap(mat4& a, mat4& b) {
 
 /****************************************************************
  *																*
+ *	      			 Mathematica Functions          			*
+ *																*
+ ****************************************************************/
+inline mat3 List(vec3 v0, vec3 v1, vec3 v2) { return mat3(v0, v1, v2); }
+inline vec3 List(double s0, double s1, double s2) { return vec3(s0, s1, s2); }
+//inline double Abs(double value) { return abs(value); }
+inline double Power(double value, double exp) { return pow(value, exp); }
+inline double Sqrt(double value) { return sqrt(value); }
+
+/****************************************************************
+ *																*
  *	       2D functions and 3D functions						*
  *																*
  ****************************************************************/

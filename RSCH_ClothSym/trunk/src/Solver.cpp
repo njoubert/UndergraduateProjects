@@ -274,9 +274,15 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
 
     //Apply constraints to points right here.
-    sys->applyConstraints(this, constraints);
-    //Apply Collisions
- //   sys->applyCollisions(this, collisions);
+	//*
+    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+		for (unsigned int i = 0; i < constraints->size(); i++)
+			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
+	}
+	//*/
+    //sys->loadMeshFromState();
+    //sys->applyConstraints(this, constraints);
+
 
     //Compute _JP, _JV, _f
 
@@ -285,13 +291,14 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateForcePartials(this);
     if(COLLISIONS)
     	sys->calculateCollisionDamping(this, _JV, collisions);
+
     //sys->calculateDampingToLimitStrain(this, _JV, 10);
 
-
-    //sys->applyCollisions(this, collisions);
+//    if(COLLISIONS)
+//    	sys->applyCollisions(this, collisions);
 
     //Apply constraints to points right here.
-    sys->applyConstraints(this, constraints);
+    //sys->applyConstraints(this, constraints);
 
 }
 
@@ -339,10 +346,10 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 	}
 
     //Force Velocities to be Determined by Collisions
-//    if(COLLISIONS)
-//    	(*collisions)[0]->applyConstraintToSolverMatrices(A,b);
+  //  if(COLLISIONS)
+   // 	(*collisions)[0]->applyConstraintToSolverMatrices(A,b);
 
-	sys->applyMouseConst2Matrices(A, b);
+	//sys->applyMouseConst2Matrices(A, b);
 
 	profiler.frametimers.switchToTimer("CG solving");
     //delV = b/A
@@ -365,16 +372,27 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*_delx) += *_y;
     profiler.frametimers.switchToGlobal();
 
+	/*
+     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+		for (unsigned int i = 0; i < constraints->size(); i++)
+			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
+	}
+	//*/
+    //if(COLLISIONS)
+     	//sys->applyCollisions(this, collisions);
+
     //Update x, y new delx, delv
     LARGE_VECTOR* _xTMP = sys->getX();
     LARGE_VECTOR* _vTMP = sys->getV();
     (*_xTMP) += (*_delx);
     (*_vTMP) += (*_delv);
 
-    //Apply constraints to points right here.
-     sys->applyConstraints(this, constraints);
 
-//     sys->applyCollisions(this, collisions);
+
+    //Apply constraints to points right here.
+     //sys->applyConstraints(this, constraints);
+
+
 
     profiler.frametimers.switchToTimer("update");
 
