@@ -18,24 +18,52 @@ World::~World() {
 
 void World::advance(double netTime) {
     //Find the duration of a single step for each model
-/*
+//*
     //Sort the list of updates from longest duration to shortest duration
 	Model* tempModel;
-	for (int i = 0; i < _models.size()-1; i++) {
-	  for (int j = 0; j < _models.size()-1-i; j++)
-	    if (_models[j+1]->getTimeStep() > _models[j]->getTimeStep()) {
-	    	tempModel = _models[j];
-	      _models[j] = _models[j+1];
-	      _models[j+1] = tempModel;
+	vector <int> modelIndex;
+	vector<double> modelTsteps;
+	double tempTstep;
+	for(int i = 0; i < _models.size(); i++)
+		modelIndex.push_back(i);
+	for(int k = 0; k < _models.size(); k++)
+		modelTsteps.push_back(_models[k]->getTimeStep());
+
+	//for(int j = 0 ; j < _models.size(); j++)
+		//cout<<modelTsteps[j]<<" ";
+	//cout<<endl;
+
+	for (int i = 0; i < modelTsteps.size()-1; i++) {
+	  for (int j = 0; j < modelTsteps.size()-1-i; j++)
+	    if (modelTsteps[j+1] > modelTsteps[j]) {
+	    	tempTstep = modelTsteps[j];
+	    	modelTsteps[j] = modelTsteps[j+1];
+	    	modelTsteps[j+1] = tempTstep;
 	  }
 	}
+	//for(int j = 0 ; j < _models.size(); j++)
+		//cout<<modelTsteps[j]<<" ";
+	//cout<<endl;
+
+	for(int i = 0; i < _models.size(); i++)
+		for(int j = 0; j < _models.size(); j++)
+			if(modelTsteps[i] == _models[j]->getTimeStep())
+				modelIndex[i] = j;
+
+
+		//cout<<"Greatest to Smallest "<<_models[modelIndex[0]]->getTimeStep()<<" "<<_models[modelIndex[1]]->getTimeStep()<<" "<<_models[modelIndex[2]]->getTimeStep()<<endl;
+
 	//
 //*/
 	//The Simple Version, Assuming only one dependency (cloth on ellipsoids)
-	int stepSize = int(netTime / _models[0]->getTimeStep());
-	for (int i = 0; i < stepSize; i++) {
-		for (unsigned int j = 0; j < _models.size(); j++)
-			_models[j]->advance(_models[0]->getTimeStep());
+	int numSteps = int(netTime / _models[modelIndex[0]]->getTimeStep());
+	for (int i = 0; i < numSteps; i++) {
+		for (unsigned int j = 0; j < _models.size(); j++) {
+			cout<<"Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
+			//enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
+			_models[j]->advance(_models[modelIndex[0]]->getTimeStep());
+		}
+		cout<<endl;
 	}
 
     _time += netTime;
@@ -56,7 +84,8 @@ void World::draw() {
     }
 
     for (unsigned int j = 0; j < _models.size(); j++)
-        _models[j]->draw();
+        if(DRAWMODELS[j])
+        	_models[j]->draw();
 }
 
 bool World::loadStatModel(string filename) {
@@ -109,6 +138,21 @@ bool World::loadEllipseModel(string filename, int numFrames) {
     return true;
 }
 
+bool World::enableMeshCorrection(int lowQmodelIndex, int highQmodelIndex) {
+	SimModel* lowQmodel = (SimModel*) _models[lowQmodelIndex];
+	SimModel* highQmodel = (SimModel*) _models[highQmodelIndex];
+	//cout<<"Testing Correction Mesh..."<<endl;
+		//cout<<"		"<<highQmodel->getMesh()->getVertex(300)<<endl;
+	lowQmodel->registerHighQmodel(highQmodel->getMesh());
+	return true;
+}
+
+bool World::disableMeshCorrection(int lowQmodelIndex) {
+	SimModel* lowQmodel = (SimModel*) _models[lowQmodelIndex];
+	lowQmodel->nullHighQmodel();
+	return true;
+}
+
 /**
  * Magic happens here to load in constraints somehow...
  * TODO: Parse this from a file or something..
@@ -147,8 +191,9 @@ bool World::createVertexToAnimatedEllipseContraint() {
 	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
 
 		if (_models.size() > 1) {
+			for(int j = 1; j < _models.size(); j++) {
 			//Get the model I want to constrain
-			SimModel* followModel = (SimModel*) _models[1];
+			SimModel* followModel = (SimModel*) _models[j];
 			//Get the vertex on this model you want to constrain (the Follow):
 			TriangleMeshVertex* v = followModel->getMesh()->getVertex(
 					FollowVertices[i]);
@@ -172,6 +217,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 					<< LeadEllipsoids[i] << endl;
 			//followModel->applyInitialConstraints();
 			//cout<<"Dynamic Constraint Initialized."<<endl;
+			}
 		}
 
 	}
@@ -184,8 +230,9 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
 bool World::createVertexToAnimatedEllipseCollisions() {
 	//COLISIONS (can be thought of as "Collision Constraints")
-		if (_models.size() > 1) {
-			SimModel* collisionModel = (SimModel*) _models[1];
+	if (_models.size() > 1) {
+		for (int i = 1; i < _models.size(); i++) {
+			SimModel* collisionModel = (SimModel*) _models[i];
 			TriangleMesh* collisionMesh = collisionModel->getMesh();
 
 			AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
@@ -197,7 +244,8 @@ bool World::createVertexToAnimatedEllipseCollisions() {
 			collisionConstraint->setCollisionEllipsoids(collisionEllipsoids);
 			collisionModel->registerCollision(collisionConstraint);
 		}
-		return true;
+	}
+	return true;
 }
 
 bool World::createFixedVertexContraints() {
@@ -272,7 +320,6 @@ void World::exportSim(int simNum, double time, bool JustDoIt, double inverseFPS)
 				//Export Model
 				SimModel* simModel = (SimModel*) _models[simNum];
 				simModel->getMesh()->exportAsOBJ(filename.str());
-
 			}
 }
 

@@ -117,11 +117,15 @@ void SimModel::advance(double netTime) {
     //Loading state happens on object creation.
 
     int stepsToTake = floor(netTime / _timeStep);
-    for (int i = 0; i < stepsToTake; i++)
+    for (int i = 0; i < stepsToTake; i++) {
+        cout<<"Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
+    }
     double timeLeft = netTime - stepsToTake*_timeStep;
-    if (timeLeft > 0)
+    if (timeLeft > 0) {
+        cout<<"Model "<<_timeStep<<" Took Roundoff Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
+    }
 
 }
 
@@ -181,6 +185,16 @@ void SimModel::registerCollision(VertexToEllipseCollision* c) {
     _collisions.push_back(c);
 }
 
+void SimModel::registerHighQmodel(TriangleMesh* cMesh) {
+	//cout<<"Testing Correction Mesh..."<<endl;
+		//cout<<"		"<<cMesh->getVertex(300)<<endl;
+
+	_system->setHighQmesh(cMesh);
+}
+
+void SimModel::nullHighQmodel() {
+	_system->setHighQmesh(NULL);
+}
 
 /*-------------------------------------------------
  *
@@ -282,9 +296,9 @@ AniElliModel::AniElliModel(std::pair<  vector < vector <mat4> > , vector < vecto
 			}
 	}
 	//*/
-	_count = -1;
+	_count = 0;
 	advance(0);
-	_timeStep = .01;
+	_timeStep = 1.0/120.0;
 
 	_muS = .6;
 	//_muD = 20.4;
@@ -301,13 +315,24 @@ AniElliModel::~AniElliModel() {
 void AniElliModel::advance(double netTime) {
     profiler.frametimers.switchToTimer("AniEliModel::advance");
 
-	if(_count < _ellipsoids.size()-1){
-			//cout<<"Drawing Frame: "<<_count+1<<endl;
-			//cout<<_ellipsoids[_count].size()<<" ellipsoids"<<endl;
-	    _count++;
-		}
-	else
-		_count = 0;
+    int stepsToTake = floor(netTime / _timeStep);
+        for (int i = 0; i < stepsToTake; i++) {
+        	cout<<"Ellipsoids Model Took 1 Step "<<_timeStep<<"s"<<endl;
+        	if(_count < _ellipsoids.size()-1)
+        	    _count++;
+        	else
+        		_count = 0;
+        }
+        double timeLeft = netTime - stepsToTake*_timeStep;
+        if (timeLeft > 0) {
+        	cout<<"Ellipsoids Model Took 1 Step (Roundoff) "<<_timeStep<<"s"<<endl;
+        	if(_count < _ellipsoids.size()-1)
+        	    _count++;
+        	else
+        		_count = 0;
+        }
+
+
 
 	_normalPos.clear();
 	_normalDir.clear();
@@ -376,7 +401,7 @@ void AniElliModel::draw() {
 				}
 			//exit(1);
 			glMultMatrixd(m);
-			glutSolidSphere(1, 100, 100);
+			glutSolidSphere(.75, 10, 10);
 			glPopMatrix();
 		}
 	}
@@ -395,6 +420,8 @@ void AniElliModel::draw() {
 //*/
 
 }
+
+int AniElliModel::getFrameCount(){ return _count; }
 
 mat4 AniElliModel::getEllipsoid(int Indx) { return _ellipsoids[_count][Indx]; }
 

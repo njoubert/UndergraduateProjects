@@ -146,24 +146,38 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 	vec4 ElliCenter = origin * ElliTransform;
 
 	int cVertex = _follow->getIndex();
-	(*Y)[cVertex] = vec3(ElliCenter, VW) - (*X)[cVertex];
+
 
 	vec3 vf = _lead->getFutureOrigin(_leadIndex);
 	vec3 vp = _lead->getPastOrigin(_leadIndex);
 	double t = 2 * _lead->getTimeStep();
 	vec3 v = (vf - vp) / t;
-	//cout<<"hierarchy Ellipse: "<<_hierarchyIndex<<endl;
+
 	vec3 va = _lead->calcAngularVel(_hierarchyIndex, vec3(ElliCenter, VW));
-	//cout<<"va: "<<va<<endl;
-	(*V)[cVertex] = v + va;
+	//vec3 va = _lead->calcAngularVel(_leadIndex, vec3(ElliCenter, VW));
+	//cout<<"Ellipsoid: 								"<<index<<endl;
+	//cout<<"Frame: 			 		 				"<<_lead->getFrameCount()<<endl;
+	//cout<<"Tangental from angular Velocity (Mag):   "<<va.length()<<endl;
+	//cout<<"Tangental from angular Velocity (Dir):   "<<va<<endl;
+	//cout<<"Tangental from linear Velocity (Mag):	"<<v.length()<<endl;
+	//cout<<"Tangental from linear Velocity (dir):	"<<v<<endl;
+	//cout<<endl;
+	//if(va.length() > 50.0)
+	//	exit(0);
+	//va = vec3(0);
+	//cout<<"lead Ellipse: "<<_leadIndex<<endl;
+	//cout<<"hierarchy Ellipse: "<<_hierarchyIndex<<endl;
+	//cout<<"va: "<<va<<endl<<endl;
 
-	//vec3 Va(0);
-	//vec3 Va = _lead->calcAngularVel(index, vec3(ElliCenter, VW));
+	//All these must be updated
+	(*Y)[cVertex] = vec3(ElliCenter, VW) - (*X)[cVertex];
+	_follow->getX() = vec3(ElliCenter, VW);
+	//(*X)[cVertex] = vec3(ElliCenter, VW);  Don't uncomment this line unless you like explosions
 
-	//TODO: What the FUck is this... uncomment the two lines below
-	//cout<<"cVertex: "<<cVertex<<" # of Vertices: "<<_mesh->countVertices()<<endl;
-	//_mesh->getVertex(cVertex)->getvX() = v;
-	_vel = v + va;
+	(*V)[cVertex] = v;// + va;
+	_follow->getvX() = v;// + va;
+	_vel = v;// + va;
+
 	//cout<<"GOT HERE"<<endl;
 	//for(int i = 0; i < 3; i++)
 	//	_follow->getX()[i] = ElliCenter[i];
@@ -175,7 +189,6 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 	//Update the sparse matrices to honor this constraint
 	int cVertex = _follow->getIndex();
 	A->zeroRowCol(cVertex, cVertex, true);
-	//TODO: Should this be taking the ellipse speed into account?
 	(*b)[cVertex] = _vel;//vec3(0,0,0);//
 }
 /*
@@ -229,6 +242,13 @@ void VertexToEllipseCollision::applyConstraintToSolverMatrices(
 		A->zeroRowCol(_collisionIndices[i], _collisionIndices[i], true);
 		//TODO: Should this be taking the ellipse speed into account?
 		(*b)[_collisionIndices[i]] = _collisionVelocities[i];
+		//cout<<"Modified Solver For Collisions"<<endl;
+		if(_mesh->getVertex(_collisionIndices[i])->getvX().length() != _collisionVelocities[i].length()) {
+		cout<<"Vertex: "<<_collisionIndices[i]<<" State  has a velocity of  : "<<_mesh->getVertex(_collisionIndices[i])->getvX()<<endl;
+		cout<<"Vertex: "<<_collisionIndices[i]<<" Solver has a velocity of  : "<<_collisionVelocities[i]<<endl;
+		cout<<endl;
+		}
+
 	}
 	_collisionIndices.clear();
 	_collisionVelocities.clear();
@@ -466,6 +486,41 @@ vec3 VertexToEllipseCollision::f_friction(vec3 Vt, double Mu) {
 	return f;
 }
 
+void VertexToEllipseCollision::applyPosVelChangeCollision(double timeStep, LARGE_VECTOR* Y, LARGE_VECTOR* X, LARGE_VECTOR* V) {
+	for (int i = 0; i < _mesh->countVertices(); i++) {
+		for (int j = 0; j < _ellipsoids->getSize(); j++) {
+			TriangleMeshVertex* Vert = _mesh->getVertex(i);
+			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j,Vert->getX());
+
+			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace)) {
+				//cout<<"colision detected"<<endl;
+
+				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+
+				vec3 v(0);
+				v = (Xc - Vert->getX()) / timeStep;
+
+				//cout<<"Vertex: "<<i<<" had a velocity of      : "<<_mesh->getVertex(i)->getvX().length()<<endl;
+				//cout<<"Vertex: "<<i<<" now has a velocity of  : "<<v.length()<<endl;
+				//cout<<endl;
+
+				//START: ALL THESE MUST BE UPDATED
+				cout<<(Xc - Vert->getX()).length()<<endl;
+				if((Xc - Vert->getX()).length() > 0.1) {
+					cout<<"Modified State for Collisions"<<endl;
+				(*Y)[i] = Xc - (*X)[i];
+				_mesh->getVertex(i)->getX() = Xc;
+				(*V)[i] = v;
+				_mesh->getVertex(i)->getvX() = v;
+				_collisionIndices.push_back(i); //4 Solver Matrices
+				_collisionVelocities.push_back(v); //4 Solver Matrices
+				}
+				//END: UPDATING STATE AND SOLVER
+			}
+		}
+	}
+}
+
 void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 		SPARSE_MATRIX* JV, LARGE_VECTOR* F) {
 	//cout<<"calling applyDampedCollisions---------------------"<<endl;
@@ -480,25 +535,32 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				//*
 				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j,
 						Xc_elliSpace);
-				vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
-				vec3 Xo_p = _ellipsoids->getPastOrigin(j);
+
+
+				//vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
+				//vec3 Xo_p = _ellipsoids->getPastOrigin(j);
+				vec3 Xc_f = _ellipsoids->getPointInFuture(j, Xc);
+				vec3 Xc_p = _ellipsoids->getPointInPast(j, Xc);
 				double elliTimeStep = _ellipsoids->getTimeStep();
 
-				//	V0 = Linear Velocity, W = Angular Velocity, Velli = Total Velocity of Ellipsoid
-				vec3 Vo = (Xo_f - Xo_p) / (2 * elliTimeStep);
+				//	V0 = Velocity of Ellipsoid
+				vec3 Vo = (Xc_f - Xc_p) / (2 * elliTimeStep);
 
-				vec3 Va(0);
-				Va = _ellipsoids->calcAngularVel(j, Xc);
+				//vec3 Va(0);
+				//Va = _ellipsoids->calcAngularVel(j, Xc);
 
-				//if(j == 21 || j == 22)
-					//cout<<"va of Elli: "<<j<<" is: "<<Va<<endl;
-
-				vec3 vb = Vo + Va;
-				//		cout<<"Linear Velocity = "<<Vo<<endl;
-				//		cout<<"Angular Velocity = "<<Va<<endl;
-				//		cout<<"Total Velocity = "<<Velli<<endl;
-				//		cout<<"Percent Angular = "<<( Va.length()/(Vo.length()+Va.length()) )*100<<endl;
-
+				vec3 vb = Vo ;
+				/*
+				if(Va.length() > 0){
+						cout<<"Frame: "<<_ellipsoids->getFrameCount()<<endl;
+						cout<<"Ellipsoid: " << j << endl;
+						cout<<"Linear Velocity = 	"<<Vo<<endl;
+						cout<<"Angular Velocity = 	"<<Va<<endl;
+						cout<<"Total Velocity = 	"<<vb<<endl;
+						cout<<"Percent Angular = 	"<<( Va.length()/(Vo.length()+Va.length()) )*100<<endl;
+						cout<<endl;
+					}
+				//*/
 
 				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
 				//_ellipsoids->setNormal(Xc, n);
@@ -513,11 +575,6 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				//cout<<"Vrel: "<<Vrel<<endl;
 				//cout<<"Vn: "<<Vn<<endl;
 				//cout<<"Vt: "<<Vt<<endl;
-				//cout<<"Log[20] "<<log(20)<<endl;
-				//cout<<"4^2.162 "<<pow(4,2.162)<<endl<<endl;
-				//if (n[0] < 0 || n[1] < 0 || n[2] < 0)
-				//	cout << "n: " << n << endl;
-				//cout << "(-4)^.5 " << pow(-4, .5) << endl;
 
 				double mu = MUd;
 				//cout << "mu: " << mu << endl;

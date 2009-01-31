@@ -84,6 +84,11 @@ extern float Kcoll;
 extern float MUs;
 extern float MUd;
 
+extern vector<bool> DRAWMODELS;
+
+extern int LOWQINDEX;
+extern int HIGHQINDEX;
+
 extern vec3 WIND;
 extern bool isWIND;
 

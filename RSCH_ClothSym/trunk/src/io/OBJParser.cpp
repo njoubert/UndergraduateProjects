@@ -19,8 +19,6 @@
 
 OBJParser::OBJParser() {
     vertexCount = 0;
-    vertexNormalCount = 0;
-    vertexTextureCount = 0;
 }
 
 /**
@@ -46,16 +44,9 @@ TriangleMesh* OBJParser::parseOBJ(string filename) {
 
     myMesh->setGlobalMassPerParticle(1.0 / vertexCount);
 
-    assert(vertexCount == myMesh->countVertices());
-    assert(vertexNormalCount == myMesh->countNormalVertices());
-    assert(vertexTextureCount == myMesh->countTextureVertices());
-
     inFile.close();
     parseDebug("Parser exiting...");
-    cout << "Parsed an OBJ mesh with " << myMesh->countVertices() << " vertices, "
-		<< vertexNormalCount << " vertex normals, " << vertexTextureCount << " texture vertices, "
-		<< myMesh->countTriangles() << " triangles." << endl;
-    myMesh->exportAsOBJ("OBJPARSER_DEFEXPORT.obj", true);
+    cout << "Parsed an OBJ mesh with " << myMesh->countVertices() << " vertices, " << myMesh->countTriangles() << " triangles." << endl;
     return myMesh;
 }
 
@@ -89,7 +80,7 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
             //cout << "reading MORE! " << args;
             if (args.compare("fixed") == 0) {
                 parseDebug("Constraining particle " << i);
-                myMesh->getVertex(i)->setPinned(true);
+                myMesh->getVertex(i)->setConstraint(true);
                 cout<<"Fixed Point Found in OBJ"<<endl;
             }
         }
@@ -100,19 +91,18 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
     }
     else if (operand.compare("vn") == 0) {
 
-        double x, y, z;
-        ss >>x >>y >>z;
-        myMesh->createVertexNormal(x,y,z);
-        parseDebug("Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer index.");
-        vertexNormalCount++;
+        //double x, y, z;
+        //ss >>x >>y >>z;
+        //vertexNormalBuffer.push_back(new Vector3d(x,y,z));
+        //printDebug(3, "Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer.");
+
     }
     else if (operand.compare("vt") == 0) {
 
-        double u, v;
-        ss >>u >>v;
-        myMesh->createVertexTexture(u, v);
-        parseDebug("Parsed Vertex Texture input to ("<<u<<","<<v<<") into vertice normals buffer index.")
-        vertexTextureCount++;
+        //double x, y, z;
+        //ss >>x >>y >>z;
+        //vertexNormalBuffer.push_back(new Vector3d(x,y,z));
+        //printDebug(3, "Parsed Vertex Normal input to ("<<x<<","<<y<<","<<z<<") into vertice normals buffer.");
 
     }
     else if (operand.compare("m") == 0) {
@@ -120,49 +110,68 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
     }
     else if (operand.compare("f") == 0) {
 
+    	if (line.find("//") != string::npos) {
+
+            int v1, v2, v3;
+            int n1 = -1, n2 = -1, n3 = -1;
+            ss >>v1;
+            assert(ss.peek() == '/');
+            ss.get();
+            assert(ss.peek() == '/');
+            ss.get();
+            //if next is not space
+                ss >>n1;
+
+            ss >>v2;
+            assert(ss.peek() == '/');
+            ss.get();
+            assert(ss.peek() == '/');
+            ss.get();
+            //if next is not space
+                    ss >>n2;
+
+            ss >>v3;
+            assert(ss.peek() == '/');
+            ss.get();
+            assert(ss.peek() == '/');
+            ss.get();
+            //if next is not space
+                ss >>n3;
+
+            myMesh->createTriangle(v1-1,v2-1,v3-1);
+
+    	} else if (line.find("/") != string::npos) {
+
     	    int v1, v2, v3;
             int n1 = -1, n2 = -1, n3 = -1;
             int t1 = -1, t2 = -1, t3 = -1;
-            bool hasNormals = false;
-            bool hasTextures = false;
-
             ss >>v1;
-            if (ss.peek() == '/') {
-				ss.get();
-				if (ss.peek() != '/') {
-					hasTextures = true;
-					ss >> t1;
-				}
-				if (ss.peek() == '/') {
-					ss.get();
-					hasNormals = true;
-					ss >> n1;
-				}
-            }
+            assert(ss.peek() == '/');
+            ss.get();
+            //if next is not space
+            ss >>n1;
+            //if next is not space
+            assert(ss.peek() == '/');
+            ss.get();
+            ss >>t1;
 
             ss >>v2;
-            if (ss.peek() == '/') {
-				ss.get();
-				if (ss.peek() != '/') {
-					ss >> t2;
-				}
-				if (ss.peek() == '/') {
-					ss.get();
-					ss >> n2;
-				}
-            }
+            assert(ss.peek() == '/');
+            ss.get();
+            ss >>n2;
+            assert(ss.peek() == '/');
+            ss.get();
+            ss >>t2;
 
             ss >>v3;
-            if (ss.peek() == '/') {
-				ss.get();
-				if (ss.peek() != '/') {
-					ss >> t3;
-				}
-				if (ss.peek() == '/') {
-					ss.get();
-					ss >> n3;
-				}
-            }
+            assert(ss.peek() == '/');
+            ss.get();
+            //if next is not space
+            ss >>n3;
+            //if next is not space
+            assert(ss.peek() == '/');
+            ss.get();
+            ss >>t3;
 
 
             if (v1 < 0)
@@ -171,14 +180,18 @@ bool OBJParser::parseLine(string line, TriangleMesh *myMesh) {
                 v2 = vertexCount + v2 + 1;
             if (v3 < 0)
                 v3 = vertexCount + v3 + 1;
+            //cout << "New triangle " << v1 << " " << v2 << " " << v3 << " out of " << vertexCount << endl;
+            myMesh->createTriangle(v1-1,v2-1,v3-1);
 
-            int t = myMesh->createTriangle(v1-1,v2-1,v3-1);
 
-            TriangleMeshTriangle* tr = myMesh->getTriangle(t);
-            if (hasNormals)
-            	tr->setVerticeNormals(myMesh, n1-1, n2-1, n3-1);
-            if (hasTextures)
-            	tr->setVerticeTexture(myMesh, t1-1, t2-1, t3-1);
+    	} else {
+
+            int v1, v2, v3;
+            ss >>v1 >>v2 >>v3;
+            myMesh->createTriangle(v1-1, v2-1, v3-1);
+
+    	}
+
 
     } else {
         cout << "Unknown operand in scene file, skipping line: " << operand << endl;

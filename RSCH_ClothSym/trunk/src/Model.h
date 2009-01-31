@@ -75,6 +75,8 @@ public:
     void registerConstraint(Constraint*);
     void applyInitialConstraints();
     void registerCollision(VertexToEllipseCollision*);
+    void registerHighQmodel(TriangleMesh*);
+    void nullHighQmodel();
 
     void enableMouseForce(vec3);
     void updateMouseForce(vec3);
@@ -126,6 +128,9 @@ public:
     void advance(double);
     double getTimeStep();
     void draw();
+
+    //Utility
+    int getFrameCount();
 
     //FOR CONSTRAINTS
     mat4 getEllipsoid(int Indx);

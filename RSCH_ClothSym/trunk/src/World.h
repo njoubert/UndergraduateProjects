@@ -35,6 +35,9 @@ public:
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
 
+    bool enableMeshCorrection(int, int);
+    bool disableMeshCorrection(int);
+
     bool createVertexToAnimatedEllipseContraint();
     bool createFixedVertexContraints();
     bool createVertexToAnimatedEllipseCollisions();

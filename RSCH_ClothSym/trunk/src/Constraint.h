@@ -92,7 +92,8 @@ public:
     void applyCollisionToMesh(LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y );
     vec3 f_dampCollision(vec3 vPoint, double Kcd);
     vec3 f_friction(vec3 V, double Mu);
-    void applyDampedCollisions(double , SPARSE_MATRIX* , LARGE_VECTOR* );
+    void applyDampedCollisions(double , SPARSE_MATRIX* , LARGE_VECTOR*);
+    void applyPosVelChangeCollision(double, LARGE_VECTOR* Y, LARGE_VECTOR* X, LARGE_VECTOR* V);
 private:
 	vector <int> _collisionIndices;
 	vector <vec3> _collisionVelocities;

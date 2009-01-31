@@ -54,8 +54,6 @@ class TriangleMesh;
 class TriangleMeshTriangle;
 class TriangleMeshEdge;
 class TriangleMeshVertex;
-class TriangleMeshVertexTexture;
-class TriangleMeshVertexNormal;
 class EdgesIterator;
 
 ostream& operator <<(ostream& s, const TriangleMeshVertex* v);
@@ -73,63 +71,37 @@ public:
      * Creates a new vertex at position (x,y,z) with no velocity or force on it.
      */
     TriangleMeshVertex(double x, double y, double z, int i);
-    vec3 & getX();
-    vec3 & getXdot();
-    vec3 & getXdotdot();
-	vec3 & getU();
-    double getm();
-    void setm(double);
-
-
-	int getIndex();
-
-    vec3 getNormal();
-    bool isPinned();
-    void setPinned(bool);
-
-    int countEdges();
     void addToEdge(TriangleMeshEdge* edge);
+    vec3 & getX();
+    vec3 & getU();
+    vec3 & getvX();
+    double getm();
 
-    std::vector<TriangleMeshEdge*>::const_iterator getEdgesBeginIterator();
-    std::vector<TriangleMeshEdge*>::const_iterator getEdgesEndIterator();
+    int getIndex();
+
+    void setm(double);
+    vec3 getNormal();
+    bool & getConstaint();
+    void setConstraint(bool);
+    vec3 & getF();
+    void setF(vec3);
+    void clearF();
 
     friend ostream& operator <<(ostream&, const TriangleMeshVertex*);
 
+    int edgesSize();
+    std::vector<TriangleMeshEdge*>::const_iterator getEdgesBeginIterator();
+    std::vector<TriangleMeshEdge*>::const_iterator getEdgesEndIterator();
+
 private:
-    vec3 _X;     		//Position
-    vec3 _Xdot;    		//Velocity
-    vec3 _Xdotdot;    	//Acceleration
-    double _m;			//Mass
-
-    vec3 _U;    	//Original Position from OBJ.
-    bool _hasvn;
-    bool _hasvt;
-
-    int _index;		//Index for this vertex in range [0, mesh.countVertices()-1]
-    bool _pinned;
-
-    std::vector<TriangleMeshEdge*> _edges; //Parents. Can have many edges per vertex.
-};
-
-class TriangleMeshVertexTexture {
-public:
-	TriangleMeshVertexTexture(double, double, int);
-	vec2 & getvt();
-	int getIndex();
-private:
-    vec2 _vt;		//Texture Coordinate from OBJ file.
+    bool _fixed;
+    vec3 F;		//Force
+    vec3 X;     //Position
+    vec3 U;     //Original Position
+    vec3 vX;    //Velocity
+    double m;
     int _index;
-};
-
-
-class TriangleMeshVertexNormal {
-public:
-	TriangleMeshVertexNormal(double, double, double, int);
-	vec3 & getvn();
-	int getIndex();
-private:
-    vec3 _vn;		//Normal from OBJ file.
-    int _index;
+    std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
 };
 
 /**
@@ -153,7 +125,6 @@ public:
     double getRestLength();
     double getRestAngle();
     void setRestAngle(double);
-
     int addParentTriangle(TriangleMeshTriangle*);
     bool isPartOfTwoTriangles();
     bool setParentTriangle(int, TriangleMeshTriangle*);
@@ -164,10 +135,10 @@ public:
     friend ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
 
 private:
-    TriangleMeshTriangle* _triangles[2];    //PARENTS
-    TriangleMeshVertex* _vertices[2];    	//CHILDREN
-    float _rl;								//Rest Length
-    float _theta0;							//Rest Angle
+    TriangleMeshTriangle* triangles[2];   //PARENTS
+    TriangleMeshVertex* vertices[2];    //CHILDREN
+    float rl;							//Rest Length
+    float theta0;						//Rest Angle
 };
 
 /**
@@ -195,23 +166,11 @@ public:
     friend ostream& operator <<(ostream&, const TriangleMeshTriangle*);
     TriangleMeshEdge** getEdges();
     TriangleMeshVertex** getVertices();
-    TriangleMeshVertexTexture** getVerticeTextures();
-    TriangleMeshVertexNormal** getVerticeNormals();
-
-    void setVerticeTexture(TriangleMesh* callingMesh, int, int, int);
-    void setVerticeNormals(TriangleMesh* callingMesh, int, int, int);
-
-    bool hasVerticeTexture();
-    bool hasVerticeNormals();
 
 private:
-    TriangleMesh* _myParent;
-    TriangleMeshEdge* _edges[3];
-    TriangleMeshVertex* _vertices[3]; //order dictates normal
-    bool _hasvt;
-    bool _hasvn;
-    TriangleMeshVertexTexture* _verticetextures[3]; //order dictates normal
-    TriangleMeshVertexNormal* _verticenormals[3]; //order dictates normal
+    TriangleMesh* myParent;
+    TriangleMeshEdge* edges[3];
+    TriangleMeshVertex* vertices[3]; //order dictates normal
 };
 
 /**
@@ -227,8 +186,6 @@ public:
      * @return an index for the new vertex.
      */
     int createVertex(double, double, double);
-    int createVertexTexture(double, double);
-    int createVertexNormal(double, double, double);
 
     /**
      * Creates a new triangle with the given vertex indices.
@@ -239,12 +196,8 @@ public:
 
     TriangleMeshTriangle* getTriangle(int i);
     TriangleMeshVertex* getVertex(int i);
-    TriangleMeshVertexTexture* getVertexTexture(int i);
-    TriangleMeshVertexNormal* getVertexNormal(int i);
-    unsigned int countVertices();
-    unsigned int countTextureVertices();
-    unsigned int countNormalVertices();
-    unsigned int countTriangles();
+    int countVertices();
+    int countTriangles();
     void setGlobalMassPerParticle(double);
 
     /**
@@ -261,19 +214,18 @@ public:
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesBeginIterator();
     std::vector<TriangleMeshTriangle*>::const_iterator getTrianglesEndIterator();
 
-    void exportAsOBJ(string filename, bool);
+    void exportAsOBJ(string filename);
 
+public:
     void applyNaturalOrdering(TriangleMeshVertex** v1, TriangleMeshVertex** v2, int*, int*);
 
-private:
-	void dumpVertexToFile(ofstream &, TriangleMeshTriangle*, int, bool);
+public:
     //TODO: Write a comment on how the hell this datastructure actually looks...
-
-    std::vector< TriangleMeshTriangle* > _triangles;
-    std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > _vertices;
-    std::vector< TriangleMeshVertexTexture* > _verticetextures;
-    std::vector< TriangleMeshVertexNormal* > _verticenormals;
-    friend class EdgesIterator;
+    /**
+     *
+     */
+    std::vector< TriangleMeshTriangle* > triangles;
+    std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > > vertices;
 
 };
 
@@ -306,38 +258,38 @@ public:
 private:
     bool findFirst() {
         _currentVertex = _currentEdgeOnVertex = 0;
-        while (mesh->_vertices[_currentVertex].second->empty() &&
-                    _currentVertex < mesh->_vertices.size()) {
+        while (mesh->vertices[_currentVertex].second->empty() &&
+                    _currentVertex < mesh->vertices.size()) {
             _currentVertex++;
         }
-        if (mesh->_vertices[_currentVertex].second->empty())
+        if (mesh->vertices[_currentVertex].second->empty())
             return false; //Couldnt find any edges...
-        _current = mesh->_vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
+        _current = mesh->vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
         return true;
     }
 
     bool findNext() {
-        if (_currentVertex >= mesh->_vertices.size())
+        if (_currentVertex >= mesh->vertices.size())
             return false;
-        if (_currentEdgeOnVertex < mesh->_vertices[_currentVertex].second->size()-1) {
+        if (_currentEdgeOnVertex < mesh->vertices[_currentVertex].second->size()-1) {
             _currentEdgeOnVertex = _currentEdgeOnVertex + 1;
             //cout << "Moving to next edge on same vertex..." << _currentEdgeOnVertex << endl;
 
-        } else if (_currentVertex < mesh->_vertices.size()-1) {
+        } else if (_currentVertex < mesh->vertices.size()-1) {
             _currentEdgeOnVertex = 0;
             //cout << "Moving to next vertex..." << _currentVertex << " to ";
             do  {
                 _currentVertex++;
-            } while (_currentVertex < mesh->_vertices.size() &&
-                    mesh->_vertices[_currentVertex].second->empty());
+            } while (_currentVertex < mesh->vertices.size() &&
+                    mesh->vertices[_currentVertex].second->empty());
             //cout << _currentVertex << endl;
-            if (_currentVertex >= mesh->_vertices.size() ||
-                    mesh->_vertices[_currentVertex].second->empty())
+            if (_currentVertex >= mesh->vertices.size() ||
+                    mesh->vertices[_currentVertex].second->empty())
                 return false; //Couldnt find any edges...
         } else {
             return false;
         }
-        _current = mesh->_vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
+        _current = mesh->vertices[_currentVertex].second->at(_currentEdgeOnVertex).second;
         return true;
 
     }

@@ -44,6 +44,10 @@ SPARSE_MATRIX* Solver::getJV() {
     return _JV;
 }
 
+LARGE_VECTOR* Solver::getY() {
+    return _y;
+}
+
 /******************************************************************************
  *                                                                             *
  *                 ImplicitSolver                                              *
@@ -243,6 +247,7 @@ NewmarkSolver::NewmarkSolver(TriangleMesh* mesh, int n):
     A = new SPARSE_MATRIX(n,n,sparsePattern,false);
 	b = new LARGE_VECTOR(n);
 	t1 = new LARGE_VECTOR(n);
+	_bmod = new LARGE_VECTOR(n);
 	_gamma = GAMMA;
 	cout<<"		Done Creating Sparse Matrices and Large Vectors for Newmark Solver."<<endl;
 }
@@ -261,7 +266,7 @@ LARGE_VECTOR* NewmarkSolver::getZ() {
 }
 
 void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
 	//Zero our current data structures
     _JP->zeroValues();
     _JV->zeroValues();
@@ -271,7 +276,9 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     _z->zeroValues();
     //_delx->zeroValues(); //dont do this since delx is set from delv
     A->zeroValues();
+    _bmod->zeroValues();
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
+    correctMesh = false;
 
     //Apply constraints to points right here.
 	//*
@@ -286,11 +293,35 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
 
     //Compute _JP, _JV, _f
 
+
+
+    //Doesn't work very well, it's odd that constraining the solver matrix doesn't do much to help
+   // if(COLLISIONS)
+    	//sys->calculatePosVelCollisionChange(this, timeStep, collisions);
+
+    /*
+        int strainCount  = 0;
+        bool isOverStrain = true;
+        while( (isOverStrain == true) && (strainCount < 30) ) {
+    		isOverStrain = sys->calcStrainLimitJacobi(this, _y, timeStep);
+    		strainCount++;
+        }
+      //  if(strainCount > 10)
+      //  exit(1);
+      	cout<<"iterations: "<<strainCount<<endl;
+    //*/
+    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, timeStep);
+
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
     sys->calculateForcePartials(this);
+
     if(COLLISIONS)
     	sys->calculateCollisionDamping(this, _JV, collisions);
+
+
+
+
 
     //sys->calculateDampingToLimitStrain(this, _JV, 10);
 
@@ -317,8 +348,9 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 		vector<VertexToEllipseCollision*> *collisions) {
     profiler.frametimers.switchToTimer("calculating matrices");
 
-    //b = h*f + g*h^2*v*JP  + g*h*y*JP;
+
     (*_JV) *= (timeStep*_gamma);            //JV = g*h*JV
+    //b = h*f + g*h^2*v*JP  + g*h*y*JP;
     (*_JP) *= (timeStep*_gamma);   			//JP = g*h*JP
     (*_JP).postMultiply(*_y, *t1);			//t1 = g*h*y*JP
     (*_JP) *= (timeStep);   				//JP = g*h^2*JP
@@ -327,7 +359,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*b) += (*_f);							//b = h*f + g*h^2*v*JP
     (*b) += (*t1);							//b = h*f + g*h^2*v*JP + g*h*y*JP
     //(*_z) *= _gamma;
-    (*b) += (*_z);
+    //(*b) += (*_z);
 
     //TODO: Should y also be factored into the newmark portion of the integrator?
     //TODO: Should I apply constraints that include this y? ATM: NO!
@@ -339,11 +371,24 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*A) -= (*_JP);
 
     //Apply constraints (filter):
-    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+    if ((DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)) {
 		for (unsigned int i = 0; i < constraints->size(); i++) {
 			(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
 		}
 	}
+
+   /*//Doesn't work very well, this should improve stability more but it does not. BUG?
+    if(COLLISIONS) {
+    	for (unsigned int i = 0; i < collisions->size(); i++) {
+    		(*collisions)[i]->applyConstraintToSolverMatrices(A, b);
+    	}
+    }
+    //*/
+
+
+    if(correctMesh)
+    	sys->correctSolverMatrices(A, b);
+    //sys->strainLimitSolverMatrices(A, b);
 
     //Force Velocities to be Determined by Collisions
   //  if(COLLISIONS)
@@ -382,11 +427,14 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
      	//sys->applyCollisions(this, collisions);
 
     //Update x, y new delx, delv
+
     LARGE_VECTOR* _xTMP = sys->getX();
     LARGE_VECTOR* _vTMP = sys->getV();
     (*_xTMP) += (*_delx);
     (*_vTMP) += (*_delv);
 
+
+    //sys->correctWithStrainLimit(this, _y, timeStep);
 
 
     //Apply constraints to points right here.

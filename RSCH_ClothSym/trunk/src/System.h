@@ -30,6 +30,7 @@ public:
 	//UPDATING AND ACCESSING STATE FOR SOLVER
 	void loadStateFromMesh();
 	void loadMeshFromState();
+	void setHighQmesh(TriangleMesh* cMesh);
 	LARGE_VECTOR* getX();
 	LARGE_VECTOR* getV();
 	LARGE_VECTOR* getA();
@@ -45,12 +46,21 @@ public:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
 	void calculateCollisionDamping(Solver*, SPARSE_MATRIX*, vector<VertexToEllipseCollision*> *);
+	void calculatePosVelCollisionChange(Solver*, double, vector<VertexToEllipseCollision*> *);
 	void calculateDampingToLimitStrain(Solver*, SPARSE_MATRIX*, double Kld);
+
+	bool strainLimitSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
+	bool calcStrainLimitJacobi(Solver*, LARGE_VECTOR*, double);
+
 	void calculateForcePartials(NewmarkSolver*);
 	void calculateForcePartials(ImplicitSolver* solver);
 	void applyConstraints(Solver*, vector<Constraint*> *);
 	void applyCollisions(Solver* solver, vector<VertexToEllipseCollision*> *collisions);
 	void calculateWindForces(LARGE_VECTOR*, SPARSE_MATRIX*, int);
+
+	bool correctWithMeshSync(Solver*, LARGE_VECTOR*, LARGE_VECTOR*, double);
+	bool correctSolverMatrices(SPARSE_MATRIX*,LARGE_VECTOR*);
+
 	void bendForceJacobian(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
 			TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge,
 			 SPARSE_MATRIX* JV, SPARSE_MATRIX* JP);
@@ -84,6 +94,7 @@ public:
 
 private:
     TriangleMesh* mesh;
+    TriangleMesh* _cMesh;	//Correction Mesh: Pulls data from this mesh to correct unstable data in the regular mesh
     LARGE_VECTOR* _x;
     LARGE_VECTOR* _v;
     LARGE_VECTOR* _a;
@@ -94,6 +105,8 @@ private:
     Material* _mat;
     TriangleMeshVertex* mouseSelected;
     vec3 mouseP;
+    vector<bool>_correctedIndices;
+    vector<bool>_strainCorrectedIndices;
 
     LARGE_VECTOR* _x0;
     LARGE_VECTOR* _v0;

@@ -20,13 +20,13 @@ void printStateOfMesh(TriangleMesh &myMesh, bool showInside) {
      * ***********************************/
 
     std::vector< std::pair < TriangleMeshVertex*, std::vector< std::pair< int, TriangleMeshEdge* > > * > >::const_iterator vert_it =
-        myMesh._vertices.begin();
+        myMesh.vertices.begin();
 
-    cout << "Vertices size=" << myMesh._vertices.size();
+    cout << "Vertices size=" << myMesh.vertices.size();
     if (showInside)
         cout << " contains:" << endl;
     int eCount = 0;
-    while (vert_it != myMesh._vertices.end()) {
+    while (vert_it != myMesh.vertices.end()) {
         if (showInside)
             cout << " " << (*vert_it).first;
 
@@ -62,11 +62,11 @@ void printStateOfMesh(TriangleMesh &myMesh, bool showInside) {
      * ***********************************/
 
     vector< TriangleMeshTriangle* >::const_iterator tri_it =
-            myMesh._triangles.begin();
-    cout << "Triangles size=" << myMesh._triangles.size();
+            myMesh.triangles.begin();
+    cout << "Triangles size=" << myMesh.triangles.size();
     if (showInside) {
         cout << " contains:" << endl;
-        while (tri_it != myMesh._triangles.end()) {
+        while (tri_it != myMesh.triangles.end()) {
             cout << "  triangle (" << (*tri_it)->getEdges()[0] << "," << (*tri_it)->getEdges()[1] << "," << (*tri_it)->getEdges()[2] << ")" << endl;
             tri_it++;
         }

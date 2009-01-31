@@ -48,6 +48,11 @@ int HIERARCHY4 = -1;
 float MUs = DEFAULT_MUS;
 float MUd = DEFAULT_MUD;
 
+vector<bool> DRAWMODELS;
+
+int LOWQINDEX = -1;
+int HIGHQINDEX = -1;
+
 vec3 WIND(0);
 
 bool isWIND = false;
