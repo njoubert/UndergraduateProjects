@@ -1,12 +1,79 @@
 {\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf350
 {\fonttbl\f0\fnil\fcharset0 LucidaGrande;\f1\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww10540\viewh14480\viewkind0
+\margl1440\margr1440\vieww10920\viewh10580\viewkind0
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\fs20 \cf0 Demo Command Line Arguments\
 	* use [-img imgs] to render out images for any of the demos\
 \
+\
+****************************************************************************\
+//RealTime!!!!!!!!!!\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -ke 5 -kd .1 -kcoll 10000 -elliobj data/ellipsoids4/frame 2419 -simobj data/cape3k_v2.obj .01 .1 -dcons2 18 36 21 22 1 0 -coll\
+\
+****************************************************************************\
+//Testing Dynamic Constraints\
+\
+//Linear\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -elliobj data/test_dcons_linear/frame 81 -simobj data/symmetricGrid0.25.obj .001 1 -dcons2 72 80 1 0 0 0\
+\
+//Linear2\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -elliobj data/test_dcons_linear2/frame 360 -simobj data/symmetricGrid0.10unfixed.obj .001 1 -dcons2 420 440 0 1 0 0\
+\
+//LinearSlow\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -elliobj data/test_dcons_linearSlow/frame 360 -simobj data/symmetricGrid0.10unfixed.obj .02 1 -dcons2 420 440 0 1 0 0\
+\
+\
+//Perfect Test Case\
+/ClothSym -gamma 1.0 -cg 200 1e-5 -elliobj data/test_dcons_linear2/frame 360 -simobj data/symmetricGrid0.20.obj .01 1 -dcons2 110 120 0 1 0 0\
+\
+//LargeMesh\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -elliobj data/test_dcons_linearSlow/frame 360 -simobj data/symmetricGrid0.05.obj .0054 1 -dcons2 1640 1680 0 1 0 0\
+\
+---------------------------------------------------------------\
+\
+****************************************************************************\
+\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Rigid Bend Forces\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 1000 -kbe .01 -kbd .001 -elliobj data/tableV1/frame 1 -simobj data/tableCloth3k.obj .001 1 -statobj data/tableV1.obj -coll\
+\
+\
+---------------------------------------------------------------\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Syncronize\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 1000 -kbe .0001 -kbd .0001 -elliobj data/tableV1/frame 1 -simobj data/tableCloth3k.obj .01 1 -simobj data/tableCloth3k.obj .001 1 -statobj data/tableV1.obj -coll -cmesh 1 2\
+\
+./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/ellipsoids4/frame 500 -simobj data/cape3k_v2.obj .01 1 -simobj data/cape3k_v2.obj .01 1 -coll -dcons2 18 36 21 22 1 0 -cmesh 1 2\
+\
+---------------------------------------------------------------\
+\
+****************************************************************************
+\f1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 //Bridson Friction Ball\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 1000 -kbe .0001 -kbd .0001 -elliobj data/
+\fs24 friction_ellis
+\fs20 /frame 25 -simobj data/tableCloth3k.obj .01 1 -statobj data/
+\fs24 frictionball_stat
+\fs20 .obj -coll\
+\
+\
+---------------------------------------------------------------\
+****************************************************************************\
 \
 ****************************************************************************
 \f1 \
@@ -41,9 +108,11 @@
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
 \cf0 //Cape Demo\
 \
+./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/ellipsoids4/frame 2419 -simobj data/cape3k_v2.obj .01 1 -coll -dcons2 18 36 21 22 1 0\
+\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/ellipsoids4/frame 2419 -simobj data/cape3k.obj .005 1 -coll -dcons2 18 41 21 22 -kbe .0001 -kbd .00001\
+\f0 \cf0 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/ellipsoids4/frame 2419 -simobj data/cape3k.obj .01 1 -coll -dcons2 18 41 21 22 1 0 -kbe .0001 -kbd .00001\
 \
 ./ClothSym -gamma 1.0 -cg 200 1e-5 -kcoll 10000 -elliobj data/elipsoids2/frame 2419 -simobj data/cape4k.obj .001 1 -coll -dcons2 340 604 21 22 -kbe .0001 -kbd .00001\
 \
