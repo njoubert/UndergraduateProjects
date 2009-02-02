@@ -43,7 +43,7 @@ StatModel::~StatModel() {
 }
 
 
-void StatModel::advance(double netTime) {
+void StatModel::advance(double netTime, double globalTime, double futureTimeStep) {
 	return;
 }
 
@@ -113,17 +113,17 @@ SimModel::~SimModel() {
 	delete _solver;
 }
 
-void SimModel::advance(double netTime) {
+void SimModel::advance(double netTime, double globalTime, double futureTimeStep) {
     //Loading state happens on object creation.
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-        cout<<"			Model "<<_timeStep<<" Took Step"<<endl;
+        cout<<"Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
-        cout<<"			Model "<<_timeStep<<" Took Roundoff Step"<<endl;
+        cout<<"Model "<<_timeStep<<" Took Roundoff Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
 
@@ -207,7 +207,6 @@ AniModel::AniModel(string filename) {
 	_count = 0;
 	_mesh = NULL;
 	_timeStep = 0.04; //TODO: Read from file.
-	advance(0);
 
 }
 
@@ -215,7 +214,7 @@ AniModel::~AniModel() {
 
 }
 
-void AniModel::advance(double netTime) {
+void AniModel::advance(double netTime, double globalTime, double futureTimeStep) {
     if (_mesh != NULL)
 	    delete _mesh;
     OBJParser parser;
@@ -297,8 +296,8 @@ AniElliModel::AniElliModel(std::pair<  vector < vector <mat4> > , vector < vecto
 	}
 	//*/
 	_count = 0;
-	advance(0);
 	_timeStep = 1.0/120.0;
+	_loops = 0;
 
 	_muS = .6;
 	//_muD = 20.4;
@@ -312,12 +311,43 @@ AniElliModel::~AniElliModel() {
 
 }
 
-void AniElliModel::advance(double netTime) {
+void AniElliModel::advance(double netTime, double globalTime, double futureTimeStep) {
     profiler.frametimers.switchToTimer("AniEliModel::advance");
 
+//*
+    int totalFrames = _ellipsoids.size()-1;
+    unsigned int frameNumber = floor( (globalTime/_timeStep) - _loops*totalFrames);
+    int futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
+
+    if(frameNumber < _ellipsoids.size()-1){
+    	_pastCount = _count;
+    	_count = frameNumber;
+    	if(futureFrameNumber < _ellipsoids.size()-1)
+    		_futureCount = futureFrameNumber;
+    	else
+    		_futureCount = _ellipsoids.size()-1;
+    }
+    else {
+    	_pastCount = 0;
+    	_count = 0;
+    	_loops++;
+    	futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
+     	_futureCount = 0;
+    }
+    _elliTime[0] = (_pastCount + _loops*totalFrames)*_timeStep;
+    _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;
+    _elliTime[2] = (_futureCount + _loops*totalFrames)*_timeStep;
+
+        cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
+        <<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
+        <<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
+
+//*/
+
+/*
     int stepsToTake = floor(netTime / _timeStep);
         for (int i = 0; i < stepsToTake; i++) {
-        	cout<<"			Ellipsoids Model Took 1 Step "<<_timeStep<<"s"<<endl;
+        	cout<<"Ellipsoids Model Took 1 Step "<<_timeStep<<"s"<<endl;
         	if(_count < _ellipsoids.size()-1)
         	    _count++;
         	else
@@ -325,13 +355,15 @@ void AniElliModel::advance(double netTime) {
         }
         double timeLeft = netTime - stepsToTake*_timeStep;
         if (timeLeft > 0) {
-        	cout<<"			Ellipsoids Model Took 1 Step (Roundoff) "<<_timeStep<<"s"<<endl;
+        	cout<<"Ellipsoids Model Took 1 Step (Roundoff) "<<_timeStep<<"s"<<endl;
         	if(_count < _ellipsoids.size()-1)
         	    _count++;
         	else
         		_count = 0;
         }
+        cout<<"Ellipsoid Model is on FRAME: "<<_count<<". Global Time is: "<<globalTime<<". The FRAMERATE is: "<<(_count)/globalTime<<"FPS."<<endl;
 
+//*/
 
 
 	_normalPos.clear();
@@ -342,6 +374,8 @@ void AniElliModel::advance(double netTime) {
 double AniElliModel::getTimeStep() {
 	return _timeStep;
 }
+
+
 
 vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
 	//Get Position Were normal is
@@ -422,6 +456,10 @@ void AniElliModel::draw() {
 }
 
 int AniElliModel::getFrameCount(){ return _count; }
+
+double AniElliModel::getElliTimePast(){	return _elliTime[0];}
+double AniElliModel::getElliTimeCurrent(){	return _elliTime[1];}
+double AniElliModel::getElliTimeFuture(){	return _elliTime[2];}
 
 mat4 AniElliModel::getEllipsoid(int Indx) { return _ellipsoids[_count][Indx]; }
 
@@ -608,8 +646,9 @@ vec3 AniElliModel::getFutureOrigin(int i) {
 
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	if (_count == _ellipsoids.size() - 1)
-		ElliTransform = _ellipsoids[0][i];
+		ElliTransform = _ellipsoids[_count][i];
 	else
+		//ElliTransform = _ellipsoids[_futureCount][i];
 		ElliTransform = _ellipsoids[_count + 1][i];
 	ElliCenter_4 = origin * ElliTransform;
 	//cout<<"Future Transform: "<<ElliTransform<<endl;
@@ -630,8 +669,9 @@ vec3 AniElliModel::getPastOrigin(int i) {
 
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	if (_count == 0)
-		ElliTransform = _ellipsoids[_ellipsoids.size()-1][i];
+		ElliTransform = _ellipsoids[_count][i];
 	else
+		//ElliTransform = _ellipsoids[_pastCount][i];
 		ElliTransform = _ellipsoids[_count - 1][i];
 	ElliCenter_4 = origin * ElliTransform;
 	//cout<<"Past Transform: "<<ElliTransform<<endl;

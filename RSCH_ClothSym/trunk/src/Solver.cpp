@@ -286,7 +286,7 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
 	//*
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
-			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
+			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y, timeStep);
 	}
 	//*/
     //sys->loadMeshFromState();

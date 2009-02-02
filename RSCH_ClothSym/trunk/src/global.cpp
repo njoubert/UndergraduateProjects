@@ -10,6 +10,8 @@
 Timer fpstimer;
 Profiler profiler;
 
+double TIME = 0.0;
+
 float GAMMA = DEFAULT_GAMMA;
 float BETA = DEFAULT_BETA;
 

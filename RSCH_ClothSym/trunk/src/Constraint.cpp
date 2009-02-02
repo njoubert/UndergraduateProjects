@@ -58,7 +58,7 @@ FixedConstraint::FixedConstraint() {
 }
 
 void FixedConstraint::applyConstraintToPoints(LARGE_VECTOR* x, LARGE_VECTOR* v,
-		LARGE_VECTOR* y) {
+		LARGE_VECTOR* y, double timeStep) {
 	//Update the sparse matrices to honor this constraint
 }
 
@@ -80,7 +80,7 @@ FixedBaraffConstraint::FixedBaraffConstraint() {
 }
 
 void FixedBaraffConstraint::applyConstraintToPoints(LARGE_VECTOR* x,
-		LARGE_VECTOR* v, LARGE_VECTOR* y) {
+		LARGE_VECTOR* v, LARGE_VECTOR* y, double timeStep) {
 	//Update the sparse matrices to honor this constraint
 }
 
@@ -114,7 +114,7 @@ VertexToAnimatedVertexConstraint::VertexToAnimatedVertexConstraint() {
 }
 
 void VertexToAnimatedVertexConstraint::applyConstraintToPoints(LARGE_VECTOR* x,
-		LARGE_VECTOR* v, LARGE_VECTOR* y) {
+		LARGE_VECTOR* v, LARGE_VECTOR* y, double timeStep) {
 
 }
 
@@ -134,54 +134,78 @@ VertexToAnimatedEllipseConstraint::VertexToAnimatedEllipseConstraint() {
 }
 
 void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
-		LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y) {
+		LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y, double timeStep) {
 	//Move the follow's points to the same position as the lead's points.
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	vec4 origin(0);
 	origin[3] = 1;
-	origin[1] = 1.3;
+	//origin[1] = -1.3;
+	//origin[2] = -1.3;
+	//origin[0] = -1.3;
 	int index = _leadIndex;
 	mat4 ElliTransform(0);
 	ElliTransform = _lead->getEllipsoid(index);
-	vec4 ElliCenter = origin * ElliTransform;
+	//vec4 ElliCenter = origin * ElliTransform;
 
 	int cVertex = _follow->getIndex();
 
+	double elliTimeStep = _lead->getTimeStep();
+	double elliTime[3];
+	//elliTime[0] = _lead->getElliTimePast();
+	elliTime[0] = _lead->getElliTimeCurrent()-elliTimeStep;
+	elliTime[1] = _lead->getElliTimeCurrent();
+	//elliTime[2] = _lead->getElliTimeFuture();
+	elliTime[2] = _lead->getElliTimeCurrent() + elliTimeStep;
+	if(abs((elliTime[2]-elliTime[0]) - 2*elliTimeStep) > 0.0001)
+		cout<<"WTF: "<<elliTime[2]-elliTime[0]<<" != "<<2*elliTimeStep<<endl;
 
-	vec3 vf = _lead->getFutureOrigin(_leadIndex);
-	vec3 vp = _lead->getPastOrigin(_leadIndex);
-	double t = 2 * _lead->getTimeStep();
-	vec3 v = (vf - vp) / t;
 
-	vec3 va = _lead->calcAngularVel(_hierarchyIndex, vec3(ElliCenter, VW));
-	//vec3 va = _lead->calcAngularVel(_leadIndex, vec3(ElliCenter, VW));
-	//cout<<"Ellipsoid: 								"<<index<<endl;
-	//cout<<"Frame: 			 		 				"<<_lead->getFrameCount()<<endl;
-	//cout<<"Tangental from angular Velocity (Mag):   "<<va.length()<<endl;
-	//cout<<"Tangental from angular Velocity (Dir):   "<<va<<endl;
-	//cout<<"Tangental from linear Velocity (Mag):	"<<v.length()<<endl;
-	//cout<<"Tangental from linear Velocity (dir):	"<<v<<endl;
-	//cout<<endl;
-	//if(va.length() > 50.0)
-	//	exit(0);
-	//va = vec3(0);
-	//cout<<"lead Ellipse: "<<_leadIndex<<endl;
-	//cout<<"hierarchy Ellipse: "<<_hierarchyIndex<<endl;
-	//cout<<"va: "<<va<<endl<<endl;
+	vec3 xf = _lead->getFutureOrigin(_leadIndex);
+	vec3 xp = _lead->getPastOrigin(_leadIndex);
+	vec3 x0 = _lead->getOrigin(_leadIndex);
+	vec3 x0prime, v;
+
+	if((TIME - elliTime[1]) < -0.0000000001) {
+		x0prime = x0 + (TIME-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
+		//v = (x0 - x0prime)/(elliTime[0] - TIME);
+		v = (x0 - xp)/(elliTime[1] - elliTime[0]);
+		//cout<<"Case1: "<<"xp: "<<xp<<" x0': "<<x0prime<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
+		cout<<"Case1: "<<"time Difference: "<<(elliTime[0] - TIME)<<" Position Difference: "<<(x0 - x0prime).length()<<" |v|: "<<v.length()<<endl;
+		cout<<"I'm surprised it ever went into this loop because the ellipsoid frame is floored in the advance function of model.cpp"<<endl;
+		exit(1);
+	}
+	else if((TIME - elliTime[1]) > 0.0000000001) {
+		x0prime = x0 + (TIME - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
+		//x0prime = x0;
+		v = (xf - x0)/(elliTime[2] - elliTime[1]);
+		//v = (xf - x0)/(timeStep);
+		//v = (xf - xp)/(elliTime[2] - elliTime[0]);
+		//v = (x0prime - x0)/(TIME - elliTime[1]);
+		//cout<<"Case2: "<<"xp: "<<xp<<" x0: "<<x0<<" x0': "<<x0prime<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
+		cout<<"Case2: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<(xf - x0).length()<<" |v|: "<<v.length()<<endl;
+
+	}
+	else {
+		x0prime = x0;
+		v = (xf - x0)/(elliTime[2] - elliTime[1]);
+		//v = (xf - x0)/(timeStep);
+		//v = (xf-xp)/(elliTime[2] - elliTime[0]);
+
+		cout<<"Case3: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<((xf - x0)).length()<<" |v|: "<<v.length()<<endl;
+
+		//cout<<"Case3: "<<"xp: "<<xp<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
+	}
 
 	//All these must be updated
-	(*Y)[cVertex] = vec3(ElliCenter, VW) - (*X)[cVertex];
-	_follow->getX() = vec3(ElliCenter, VW);
+	(*Y)[cVertex] = x0prime - (*X)[cVertex];
+	_follow->getX() = x0prime;
 	//(*X)[cVertex] = vec3(ElliCenter, VW);  Don't uncomment this line unless you like explosions
 
-	(*V)[cVertex] = v;// + va;
-	_follow->getvX() = v;// + va;
+	(*V)[cVertex] = v;
+	_follow->getvX() = v;
 	_vel = v;// + va;
 
-	//cout<<"GOT HERE"<<endl;
-	//for(int i = 0; i < 3; i++)
-	//	_follow->getX()[i] = ElliCenter[i];
-	//cout<<"Follow Vertex is now "<<_follow->getX()<<endl;
+
 }
 
 void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
@@ -191,33 +215,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 	A->zeroRowCol(cVertex, cVertex, true);
 	(*b)[cVertex] = _vel;//vec3(0,0,0);//
 }
-/*
- void VertexToAnimatedEllipseConstraint::applyConstraintsToState(LARGE_VECTOR* X, LARGE_VECTOR* Y, LARGE_VECTOR* V) {
- //Move the follow's points to the same position as the lead's points.
- //Get Ellipsoid Position From Ellipsoid Transformation
- vec4 origin(0);
- origin[3] = 1;
- origin[1] = 1.3;
- int index = _leadIndex;
- mat4 ElliTransform(0);
- ElliTransform = _lead->getEllipsoid(index);
- vec4 ElliCenter = origin * ElliTransform;
 
- int cVertex = _follow->getIndex();
- //(*X)[cVertex] = vec3(ElliCenter, VW);
- (*Y)[cVertex] = vec3(ElliCenter, VW) - (*X)[cVertex];
- vec3 vf = _lead->getFutureOrigin(_leadIndex);
- vec3 vp = _lead->getPastOrigin(_leadIndex);
- double t = 2*_lead->getTimeStep();
- vec3 v = (vf-vp)/t;
- (*V)[cVertex] = v;
- _vel = v;
- //cout<<"GOT HERE"<<endl;
- //for(int i = 0; i < 3; i++)
- //	_follow->getX()[i] = ElliCenter[i];
- //cout<<"Follow Vertex is now "<<_follow->getX()<<endl;
- }
- */
 /****************************************************************
  *                                                               *
  *               VertexToEllipseCollision		                *
@@ -229,7 +227,7 @@ VertexToEllipseCollision::VertexToEllipseCollision() {
 }
 
 void VertexToEllipseCollision::applyConstraintToPoints(LARGE_VECTOR* X,
-		LARGE_VECTOR* V, LARGE_VECTOR* y) {
+		LARGE_VECTOR* V, LARGE_VECTOR* y, double timeStep) {
 	//Move the follow's points to the same position as the lead's points.
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	cout << "This Should not be called" << endl;
@@ -543,7 +541,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				vec3 Xc_p = _ellipsoids->getPointInPast(j, Xc);
 				double elliTimeStep = _ellipsoids->getTimeStep();
 
-				//	V0 = Velocity of Ellipsoid
+				//	V0 = Velocity of Point on Ellipsoid
 				vec3 Vo = (Xc_f - Xc_p) / (2 * elliTimeStep);
 
 				//vec3 Va(0);

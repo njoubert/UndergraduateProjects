@@ -44,6 +44,8 @@
 extern Timer fpstimer;
 extern Profiler profiler;
 
+extern double TIME;
+
 extern float GAMMA;
 extern float BETA;
 

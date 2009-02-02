@@ -922,8 +922,8 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	cam._w = 600;
-	cam._h = 600;
+	cam._w = 1280;
+	cam._h = 720;
 
 	//Create Window:
 	glutInit(&argc, argv);

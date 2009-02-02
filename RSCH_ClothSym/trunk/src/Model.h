@@ -38,7 +38,7 @@ public:
     Model();
     Model(Material*);
     virtual ~Model();
-    virtual void advance(double)=0;
+    virtual void advance(double, double, double)=0;
     virtual void draw()=0;
 	virtual double getTimeStep()=0;
 protected:
@@ -53,7 +53,7 @@ class StatModel : public Model {
 public:
     StatModel(TriangleMesh*);
     ~StatModel();
-    void advance(double);
+    void advance(double, double, double);
     double getTimeStep();
     void draw();
 
@@ -68,7 +68,7 @@ class SimModel : public Model {
 public:
     SimModel(TriangleMesh*, System*, Solver*, Material*, double);
     ~SimModel();
-    void advance(double);
+    void advance(double, double, double);
     double getTimeStep();
     void draw();
     TriangleMesh* getMesh() const;
@@ -99,7 +99,7 @@ class AniModel : public Model {
 public:
     AniModel(string);
     ~AniModel();
-    void advance(double);
+    void advance(double, double, double);
      double getTimeStep();
     void draw();
 
@@ -125,16 +125,20 @@ class AniElliModel : public Model {
 public:
 	AniElliModel(std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >);
     ~AniElliModel();
-    void advance(double);
+    void advance(double, double, double);
     double getTimeStep();
     void draw();
 
     //Utility
     int getFrameCount();
+    double getElliTimePast();
+    double getElliTimeCurrent();
+    double getElliTimeFuture();
 
     //FOR CONSTRAINTS
     mat4 getEllipsoid(int Indx);
     int getSize();
+
 
     //FOR COLLISIONS
     vec3 calcAngularVel(int i, vec3 Xc_world);
@@ -164,10 +168,15 @@ private:
 private:
 	string _filename; //the template filename from which to iterate.
 	unsigned int _count;
+	int _pastCount;
+	int _futureCount;
+	double _elliTime[3];
 	vector < vector <mat4> > _ellipsoids;
 	vector < vector <vec3> > _elliRots;
 	vector<vec3> _takeConst;
 	double _timeStep;
+	int _loops;
+	int _syncMod;
 	vector < vec3 > _normalPos;
 	vector < vec3 > _normalDir;
 
