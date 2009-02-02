@@ -90,6 +90,10 @@ public:
     inline mat3 dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb, double rl, float Kd);
     mat3 dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd);
 
+    //Utilities
+    vector<double> getPosError();
+    vector<double> getVelError();
+    int getErrorInd();
 
 
 private:
@@ -107,6 +111,11 @@ private:
     vec3 mouseP;
     vector<bool>_correctedIndices;
     vector<bool>_strainCorrectedIndices;
+
+    //Keep Track of Error Data
+    vector<double>_posError;
+    vector<double>_velError;
+    int _errorInd;
 
     LARGE_VECTOR* _x0;
     LARGE_VECTOR* _v0;

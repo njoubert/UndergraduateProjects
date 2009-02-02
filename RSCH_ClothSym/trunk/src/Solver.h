@@ -63,16 +63,20 @@ private:
 	LARGE_VECTOR* b;
 	LARGE_VECTOR* t1;
 };
-/*
+//*
 class ExplicitSolver: public Solver {
 public:
 	ExplicitSolver(TriangleMesh*, int);
     ~ExplicitSolver();
-    void calculateState(System* sys);
-    void solve(System* sys,
-            double timeStep);
+    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double timeStep);
+    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *);
+private:
+	DEFAULT_CG cg;
+    LARGE_VECTOR* _xTMP;
+    LARGE_VECTOR* _vTMP;
+    SPARSE_MATRIX* _M;
 };
-*/
+//*/
 class NewmarkSolver: public Solver {
 public:
 	NewmarkSolver(TriangleMesh*, int);

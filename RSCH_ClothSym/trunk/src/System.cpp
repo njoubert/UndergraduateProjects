@@ -20,6 +20,13 @@ cout<<"			Creating System"<<endl;
 		_correctedIndices.push_back(false);
 	for(int l = 0; l < m->countVertices(); l++)
 		_strainCorrectedIndices.push_back(false);
+//*
+	for(int h = 0; h < 2500; h++) {
+		_posError.push_back(-1.0);
+		_velError.push_back(-1.0);
+	}
+	_errorInd = -1;
+	//*/
 //*/
 
 	cout << "		Creating Sparse Mass Matrix..." << endl;
@@ -903,6 +910,10 @@ bool System::calcStrainLimitJacobi(Solver* solver, LARGE_VECTOR* y,
 	return isOverStrained;
 }
 
+vector<double> System::getPosError(){ return _posError; }
+vector<double> System::getVelError(){ return _velError; }
+int System::getErrorInd(){ return _errorInd; }
+
 bool System::correctSolverMatrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	for (int i = 0; i < mesh->countVertices(); i++) {
 		if (_correctedIndices[i] == true) {
@@ -930,7 +941,35 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 	//bool isOverStrained = false;
 	vec3 maxStrain;
 
+	int totalVertsi = mesh->countVertices();
+	float totalVerts = float(mesh->countVertices());
+	//*
+	double positionDiff = 0;
+	double velocityDiff = 0;
+		for(int i = 0; i < totalVertsi; i++) {
+			positionDiff += abs(mesh->getVertex(i)->getX()[0] - _cMesh->getVertex(i)->getX()[0]);
+			positionDiff += abs(mesh->getVertex(i)->getX()[1] - _cMesh->getVertex(i)->getX()[1]);
+			positionDiff += abs(mesh->getVertex(i)->getX()[2] - _cMesh->getVertex(i)->getX()[2]);
+
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[0] - _cMesh->getVertex(i)->getvX()[0]);
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[1] - _cMesh->getVertex(i)->getvX()[1]);
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[2] - _cMesh->getVertex(i)->getvX()[2]);
+		}
+
+		if(_errorInd > 2498)
+			_errorInd = 0;
+		else
+			_errorInd++;
+
+		_posError[_errorInd] = positionDiff/totalVerts;
+		_velError[_errorInd] = velocityDiff/totalVerts;
+		if(_posError[_errorInd] > 0.01 || _velError[_errorInd] > 0.1) {
+		cout<<"					Average Error Between POSITIONS in Slave and Master Meshes: "<<_posError[_errorInd]<<endl;
+		cout<<"					Average Error Between VELOCITIES in Slave and Master Meshes: "<<_velError[_errorInd]<<endl;
+		}
+		//*/
 //*
+
 	do {
 		a = (*edg_it)->getVertex(0);
 		b = (*edg_it)->getVertex(1);
@@ -1011,14 +1050,13 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 	} while (edg_it.next());
 
 	int replacedVertCount = 0;
-	int totalVerts = mesh->countVertices();
-	for(int i = 0; i < totalVerts; i++)
+	for(int i = 0; i < totalVertsi; i++)
 		if(_correctedIndices[i]==true) {
 			replacedVertCount++;
-			_correctedIndices[i] = false;
+			//_correctedIndices[i] = false;
 		}
 	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
-	cout<<"				Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
+	cout<<"					Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
 	cout<<endl;
 
 	return true;

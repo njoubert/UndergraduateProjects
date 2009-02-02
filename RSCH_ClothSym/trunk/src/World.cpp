@@ -60,9 +60,9 @@ void World::advance(double netTime) {
 	double StepOfTimeStep = netTime/numSteps;
 	cout<<"A step of: "<<netTime<<" will be broken up into "<<numSteps<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
 	for (int i = 0; i < numSteps; i++) {
-		cout<<"Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
+		cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 		for (unsigned int j = 0; j < _models.size(); j++) {
-			cout<<"Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
+			cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
 			//enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
 			_models[j]->advance(_models[modelIndex[0]]->getTimeStep(), _time, StepOfTimeStep);
 
@@ -114,6 +114,7 @@ bool World::loadSimModel(TriangleMesh* mesh, double timeStep, float mass) {
     Model* model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
             new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, timeStep);
     _models.push_back(model);
+    cout<<"Finished Loading Sim Model"<<endl;
     return true;
 }
 

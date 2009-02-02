@@ -8,6 +8,7 @@
 #define DEFAULT_TIMESTEP	0.02
 #define DEFAULT_SYSTEM	System
 #define DEFAULT_SOLVER	NewmarkSolver
+//#define DEFAULT_SOLVER	ExplicitSolver
 #define DEFAULT_MATERIAL Material
 
 #define DEFAULT_MASS 1.0

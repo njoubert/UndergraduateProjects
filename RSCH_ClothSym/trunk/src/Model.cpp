@@ -118,12 +118,12 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-        cout<<"Model "<<_timeStep<<" Took Step"<<endl;
+        cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
-        cout<<"Model "<<_timeStep<<" Took Roundoff Step"<<endl;
+        cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
 
@@ -167,6 +167,69 @@ void SimModel::draw() {
 
         it++;
     }
+//*
+    if(_system->getErrorInd() > 0) {
+    	vector<double> posError = _system->getPosError();
+    	vector<double> velError = _system->getVelError();
+    	int ErrorCount = _system->getErrorInd();
+    	float x1, x2;
+    	glBegin(GL_LINES);
+			glVertex3f(-4, -1.5, 1);
+			glVertex3f(4, -1.5, 1);
+    	glEnd();
+    	glBegin(GL_LINES);
+			glVertex3f(-4, -1.5, 1);
+    		glVertex3f(-4, 0, 1);
+        glBegin(GL_LINES);
+    		for(int i = 0; i < ErrorCount-1; i++){
+    			x1 = float(i)/100 - 4;
+    			x2 = float(i+1)/100 - 4;
+    			//x1 = TIME - 4;
+    			//x2 = TIME + _timeStep - 4;
+    			glVertex3f(x1,-1.5+posError[i]*3,1);
+    			glVertex3f(x2,-1.5+posError[i+1]*3,1);
+    		}
+        glEnd();
+    	/*
+    	glBegin(GL_LINES);
+			glVertex3f(-2, 2, 0);
+			glVertex3f(0, 2, 0);
+    	glEnd();
+    	glBegin(GL_LINES);
+			glVertex3f(-2, 2, 0);
+    		glVertex3f(-2, 3, 0);
+    	glEnd();
+    	glBegin(GL_LINES);
+			glVertex3f(-2, 0.5, 0);
+			glVertex3f(0, 0.5, 0);
+    	glEnd();
+    	glBegin(GL_LINES);
+			glVertex3f(-2, 0.5, 0);
+    		glVertex3f(-2, 1.5, 0);
+    	glEnd();
+
+    	glBegin(GL_LINES);
+			for(int i = 0; i < ErrorCount-1; i++){
+				x1 = float(i)/100 - 2;
+				x2 = float(i+1)/100 - 2;
+				//cout<<x<<endl;
+				glVertex3f(x1,2+posError[i]*3,0);
+				glVertex3f(x2,2+posError[i+1]*3,0);
+			}
+    	glEnd();
+
+    	glBegin(GL_LINES);
+			for(int i = 0; i < ErrorCount-1; i++){
+				x1 = float(i)/100 - 2;
+				x2 = float(i+1)/100 - 2;
+				//cout<<x<<endl;
+				glVertex3f(x1,0.5+velError[i]*.1,0);
+				glVertex3f(x2,0.5+velError[i+1]*.1,0);
+			}
+    	glEnd();
+    	//*/
+    }
+    //*/
 }
 
 TriangleMesh* SimModel::getMesh() const {
@@ -338,9 +401,11 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;
     _elliTime[2] = (_futureCount + _loops*totalFrames)*_timeStep;
 
-        cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
-        <<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
-        <<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
+        //cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
+       //<<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
+        //<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
+
+        cout<<"				Ellipsoid Model is on FRAME: "<<_count<<". ElliTime is: "<<_elliTime[1]<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
 
 //*/
 

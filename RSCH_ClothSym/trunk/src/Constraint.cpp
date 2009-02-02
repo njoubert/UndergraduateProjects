@@ -182,7 +182,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 		//v = (xf - xp)/(elliTime[2] - elliTime[0]);
 		//v = (x0prime - x0)/(TIME - elliTime[1]);
 		//cout<<"Case2: "<<"xp: "<<xp<<" x0: "<<x0<<" x0': "<<x0prime<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
-		cout<<"Case2: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<(xf - x0).length()<<" |v|: "<<v.length()<<endl;
+		//cout<<"Case2: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<(xf - x0).length()<<" |v|: "<<v.length()<<endl;
 
 	}
 	else {
@@ -191,7 +191,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 		//v = (xf - x0)/(timeStep);
 		//v = (xf-xp)/(elliTime[2] - elliTime[0]);
 
-		cout<<"Case3: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<((xf - x0)).length()<<" |v|: "<<v.length()<<endl;
+		//cout<<"Case3: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<((xf - x0)).length()<<" |v|: "<<v.length()<<endl;
 
 		//cout<<"Case3: "<<"xp: "<<xp<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
 	}

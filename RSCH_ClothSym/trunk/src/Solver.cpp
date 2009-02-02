@@ -191,35 +191,40 @@ void ImplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double
  *                 ExplicitSolver                                              *
  *                                                                             *
  *******************************************************************************/
-/*
-ExplicitSolver::ExplicitSolver(TriangleMesh* mesh, int n) : Solver(mesh, n) {
+//*
+ExplicitSolver::ExplicitSolver(TriangleMesh* mesh, int n):
+    Solver(mesh, n), cg(n)  {
 }
 
 ExplicitSolver::~ExplicitSolver() {
 
 }
 
-void ExplicitSolver::calculateState(System* sys) {
-    sys->calculateInternalForces();
-    sys->calculateExternalForces();
+void ExplicitSolver::calculateState(System* sys, vector<Constraint*> *constraints,
+		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
+	_f->zeroValues();
+	_delx->zeroValues();
+	_delv->zeroValues();
+
+	sys->calculateInternalForces(this);
+    sys->calculateExternalForces(this);
 }
 
-void ExplicitSolver::solve(System* sys, double timeStep,
-        int pointIndex, TriangleMeshVertex* point) {
-
-	vec3 deltaV = (timeStep ) * point->getF() / (double) point->getm();
-    vec3 deltaX = timeStep * (point->getvX() + deltaV);
+void ExplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
+		vector<VertexToEllipseCollision*> *collisions) {
 
 
-    //if (sys->getT() > 0.1) {
-    //    cout << "deltaV=" << deltaV << endl;
-    //    cout << "deltaX=" << deltaX << endl;
-    //    cout << "F=" << point->getF() << endl;
-    //  cout << "vX=" << point->getvX() << endl;
-    //   exit(1);
-    //}
+	for(int i = 0; i < _f->size(); i++) {
+	 (*_delv)[i] = (timeStep ) * (*_f)[i] / (*sys->getM())(i,i)[0][0];
+     (*_delx)[i] = timeStep * ((*_delv)[i]);
+	}
 
-    point->clearF();
+
+
+    LARGE_VECTOR* _xTMP = sys->getX();
+    LARGE_VECTOR* _vTMP = sys->getV();
+    (*_xTMP) += (*_delx);
+    (*_vTMP) += (*_delv);
 
     //Contraints set in OBJ file
     //if (point->getConstaint() == identity2D())
@@ -229,7 +234,7 @@ void ExplicitSolver::solve(System* sys, double timeStep,
     //----------------------------------------------------
     //return make_pair(deltaX, deltaV);
 }
-*/
+//*/
 
 /******************************************************************************
  *                                                                             *
@@ -387,13 +392,10 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     //*/
 
 
-    //if(correctMesh)
-    	//sys->correctSolverMatrices(A, b);
-    //sys->strainLimitSolverMatrices(A, b);
+    if(correctMesh)
+    	sys->correctSolverMatrices(A, b);
 
-    //Force Velocities to be Determined by Collisions
-  //  if(COLLISIONS)
-   // 	(*collisions)[0]->applyConstraintToSolverMatrices(A,b);
+    //sys->strainLimitSolverMatrices(A, b);
 
 	//sys->applyMouseConst2Matrices(A, b);
 
@@ -402,12 +404,6 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
     profiler.frametimers.switchToGlobal();
 
-    //(*_z) *= (1/_gamma);
-    //(*_delv) += (*_z);
-
- //   for (int i = 0; i < collisions->size(); i++) {
- //   	(*collisions)[i]->changeDelvToAvoidCollisions(_delv, timeStep, this);
- //   }
 
     profiler.frametimers.switchToTimer("calculating matrices");
     //delX = h*(v + g*delV) + y;
