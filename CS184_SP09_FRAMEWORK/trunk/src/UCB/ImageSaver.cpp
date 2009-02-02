@@ -24,7 +24,7 @@ namespace UCB {
 
     void ImageSaver::saveFrame(int w, int h) {
         _frameCount++;
-        stringstream filename(stringstream::in | stringstream::out);
+		std::stringstream filename(stringstream::in | stringstream::out);
         filename << _imgOutDir << _prefix;
         filename << std::setfill('0') << setw(6) << _frameCount << ".bmp";
         cout << "Save frame " << _frameCount << endl;

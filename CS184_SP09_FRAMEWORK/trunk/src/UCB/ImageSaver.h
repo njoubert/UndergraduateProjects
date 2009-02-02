@@ -9,12 +9,14 @@
 #define IMAGESAVER_H_
 
 #include <sstream>
-#include "Image.h"
 #include <iomanip>
+#include "Image.h"
 #include "global.h"
 
 namespace UCB {
 
+	using namespace std;
+	
     #define BPP 24
 
     class ImageSaver {
