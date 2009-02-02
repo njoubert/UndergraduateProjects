@@ -944,52 +944,68 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 		double rl = RL.length();
 		bool pipeOverstrained = false;
 		double strain = (pa - pb).length() - rl;
-		double strainPercent = (abs(strain) / rl) * 100;
+		double strainPercent = (strain / rl) * 100;
 
 		//cout<<strainPercent<<endl;
-		//cout << "tester: " << _cMesh->getVertex(0)->getX() << endl;
-	//	if (_cMesh->getVertex(ia)->getX()[0] != mesh->getVertex(ia)->getX()[0])
-			//cout << "something is wrong " <<ia<<" "<<ib<< endl;
-	//	if (_cMesh->getVertex(ib)->getX()[0] != mesh->getVertex(ib)->getX()[0])
-			//cout<<"Something is wrong "<<ia<<" "<<ib<< endl;
-		//cout<<"High Quality Mesh: "<<_cMesh->getVertex(889)->getX()<<endl;
-		//cout<<"Low Quality Mesh: "<<mesh->getVertex(889)->getX()<<endl<<endl;
-
-		//*
-//		if (strainPercent > 1.0) {
-			//cout<<"strainPercent: "<<strainPercent<<endl;
-//			if ((ia == 36) || (ia == 18)) {
-//				pipeOverstrained = false;
-//			} else if ((ib == 36) || (ib == 18)) {
-//				pipeOverstrained = false;
-//			} else {
-		if (_correctedIndices[ia] == false) {
-			_correctedIndices[ia] = true;
-			(*y)[ia] = _cMesh->getVertex(ia)->getX() - (*_x)[ia];
-			mesh->getVertex(ia)->getX() = _cMesh->getVertex(ia)->getX();
-			(*_v)[ia] = _cMesh->getVertex(ia)->getvX();
-			mesh->getVertex(ia)->getvX() = _cMesh->getVertex(ia)->getvX();
-		}
-		if (_correctedIndices[ib] == false) {
-			_correctedIndices[ib] = true;
-			(*y)[ib] = _cMesh->getVertex(ib)->getX() - (*_x)[ib];
-			mesh->getVertex(ib)->getX() = _cMesh->getVertex(ib)->getX();
-			(*_v)[ib] = _cMesh->getVertex(ib)->getvX();
-			mesh->getVertex(ib)->getvX() = _cMesh->getVertex(ib)->getvX();
-		}
-		//}
-
-			pipeOverstrained = true;
-//		}
-		//*/
 
 		/*
+		if (_cMesh->getVertex(ia)->getX()[0] != mesh->getVertex(ia)->getX()[0])
+			cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ib)->getX()[0] != mesh->getVertex(ib)->getX()[0])
+			cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ia)->getvX()[0] != mesh->getVertex(ia)->getvX()[0])
+			cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ib)->getvX()[0] != mesh->getVertex(ib)->getvX()[0])
+			cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+		//*/
+
+		//*
+//		if (abs(strainPercent) > .000000000000010) {
+			//cout<<"strainPercent: "<<strainPercent<<endl;
+			//			if ((ia == 36) || (ia == 18)) {
+			//				pipeOverstrained = false;
+			//			} else if ((ib == 36) || (ib == 18)) {
+			//				pipeOverstrained = false;
+			//			} else {
+			if (_correctedIndices[ia] == false) {
+				_correctedIndices[ia] = true;
+				//(*y)[ia] = _cMesh->getVertex(ia)->getX() - (*_x)[ia];
+				(*_x)[ia] = _cMesh->getVertex(ia)->getX();
+				mesh->getVertex(ia)->getX() = _cMesh->getVertex(ia)->getX();
+				(*_v)[ia] = _cMesh->getVertex(ia)->getvX();
+				mesh->getVertex(ia)->getvX() = _cMesh->getVertex(ia)->getvX();
+			}
+			if (_correctedIndices[ib] == false) {
+				_correctedIndices[ib] = true;
+				//(*y)[ib] = _cMesh->getVertex(ib)->getX() - (*_x)[ib];
+				(*_x)[ib] = _cMesh->getVertex(ib)->getX();
+				mesh->getVertex(ib)->getX() = _cMesh->getVertex(ib)->getX();
+				(*_v)[ib] = _cMesh->getVertex(ib)->getvX();
+				mesh->getVertex(ib)->getvX() = _cMesh->getVertex(ib)->getvX();
+			}
+	//		pipeOverstrained = true;
+//		}
+
+		//*/
+
+			//*
+			if (_cMesh->getVertex(ia)->getX()[0] != mesh->getVertex(ia)->getX()[0])
+				cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ib)->getX()[0] != mesh->getVertex(ib)->getX()[0])
+				cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ia)->getvX()[0] != mesh->getVertex(ia)->getvX()[0])
+				cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ib)->getvX()[0] != mesh->getVertex(ib)->getvX()[0])
+				cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+			//*/
+
+		//*
 		 if(pipeOverstrained) {
-		 cout<<"before pa-pb: "<<savepapb<<endl;
-		 cout<<"Edge Between Vert: "<<ia<<" and Vert: "<<ib<<endl;
-		 cout<<"strainPercent Before; " << strainPercent << endl;
-		 cout<<"strainPercent After: "<< (abs((pa - pb).length() - rl) / rl) * 100<<endl;
-		 cout<<"is pa - pb: "<<(pa-pb).length()<<" =  rl: "<<rl<<" ?"<<endl;
+			 double strainPercentAfter = (((mesh->getVertex(ia)->getX() - mesh->getVertex(ib)->getX() ).length() - rl) / rl) * 100;
+			 if(abs(strainPercentAfter) > abs(strainPercent)) {
+				 cout<<"strainPercent Before; " << strainPercent << endl;
+				 cout<<"strainPercent After: "<< strainPercentAfter <<endl;
+			 }
 		 }
 		 //*/
 	} while (edg_it.next());
@@ -997,10 +1013,13 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 	int replacedVertCount = 0;
 	int totalVerts = mesh->countVertices();
 	for(int i = 0; i < totalVerts; i++)
-		if(_correctedIndices[i]==true)
+		if(_correctedIndices[i]==true) {
 			replacedVertCount++;
+			_correctedIndices[i] = false;
+		}
 	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
-	cout<<"Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
+	cout<<"				Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
+	cout<<endl;
 
 	return true;
 }

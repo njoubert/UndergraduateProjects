@@ -57,15 +57,16 @@ void World::advance(double netTime) {
 //*/
 	//The Simple Version, Assuming only one dependency (cloth on ellipsoids)
 	int numSteps = int(netTime / _models[modelIndex[0]]->getTimeStep());
+
 	for (int i = 0; i < numSteps; i++) {
+		//cout<<"Taking step "<<i<<" out of "<<numSteps<<" steps of size: "<<_models[modelIndex[0]]->getTimeStep()<<" each"<<endl;
 		for (unsigned int j = 0; j < _models.size(); j++) {
-			cout<<"Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
-			//enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
+			cout<<"		Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
 			_models[j]->advance(_models[modelIndex[0]]->getTimeStep());
 		}
 		cout<<endl;
 	}
-
+//exit(1);
     _time += netTime;
 }
 

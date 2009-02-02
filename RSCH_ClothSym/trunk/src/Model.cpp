@@ -118,12 +118,12 @@ void SimModel::advance(double netTime) {
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-        cout<<"Model "<<_timeStep<<" Took Step"<<endl;
+        cout<<"			Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
-        cout<<"Model "<<_timeStep<<" Took Roundoff Step"<<endl;
+        cout<<"			Model "<<_timeStep<<" Took Roundoff Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
 
@@ -317,7 +317,7 @@ void AniElliModel::advance(double netTime) {
 
     int stepsToTake = floor(netTime / _timeStep);
         for (int i = 0; i < stepsToTake; i++) {
-        	cout<<"Ellipsoids Model Took 1 Step "<<_timeStep<<"s"<<endl;
+        	cout<<"			Ellipsoids Model Took 1 Step "<<_timeStep<<"s"<<endl;
         	if(_count < _ellipsoids.size()-1)
         	    _count++;
         	else
@@ -325,7 +325,7 @@ void AniElliModel::advance(double netTime) {
         }
         double timeLeft = netTime - stepsToTake*_timeStep;
         if (timeLeft > 0) {
-        	cout<<"Ellipsoids Model Took 1 Step (Roundoff) "<<_timeStep<<"s"<<endl;
+        	cout<<"			Ellipsoids Model Took 1 Step (Roundoff) "<<_timeStep<<"s"<<endl;
         	if(_count < _ellipsoids.size()-1)
         	    _count++;
         	else

@@ -280,6 +280,8 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
     correctMesh = false;
 
+    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, timeStep);
+
     //Apply constraints to points right here.
 	//*
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
@@ -310,7 +312,6 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
       //  exit(1);
       	cout<<"iterations: "<<strainCount<<endl;
     //*/
-    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, timeStep);
 
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
@@ -386,8 +387,8 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     //*/
 
 
-    if(correctMesh)
-    	sys->correctSolverMatrices(A, b);
+    //if(correctMesh)
+    	//sys->correctSolverMatrices(A, b);
     //sys->strainLimitSolverMatrices(A, b);
 
     //Force Velocities to be Determined by Collisions
