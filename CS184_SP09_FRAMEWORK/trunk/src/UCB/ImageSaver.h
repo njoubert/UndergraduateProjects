@@ -5,8 +5,8 @@
  *      Author: njoubert
  */
 
-#ifndef IMAGESAVER_H_
-#define IMAGESAVER_H_
+#ifndef UCBIMAGESAVER_H_
+#define UCBIMAGESAVER_H_
 
 #include <sstream>
 #include <iomanip>
@@ -42,4 +42,4 @@ namespace UCB {
     };
 
 }
-#endif /* IMAGESAVER_H_ */
+#endif /* UCBIMAGESAVER_H_ */

@@ -5,17 +5,9 @@
  *      Author: njoubert
  */
 
-#ifndef GLOBAL_H_
-#define GLOBAL_H_
+#ifndef UCBGLOBAL_H_
+#define UCBGLOBAL_H_
 
 #define UCBPrint(title, msg) std::cout << "UCB::" << title << " - " << msg << std::endl;
 
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#endif
-
-#endif /* GLOBAL_H_ */
+#endif /* UCBGLOBAL_H_ */

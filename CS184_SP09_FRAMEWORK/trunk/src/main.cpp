@@ -1,23 +1,4 @@
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cmath>
-
-//Include our math library
-#include <algebra3.h>
-//Include our Image Saving library.
-#include "UCB/ImageSaver.h"
-
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#endif
-
-using namespace std;
-
+#include "main.h"
 
 //****************************************************
 // Some Classes

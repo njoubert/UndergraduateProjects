@@ -11,7 +11,7 @@ LIBRARY := -L./lib/ \
     -lGL -lGLU -lm -lstdc++
 
 FRAMEWORK := -framework GLUT -framework OpenGL
-
+MACROS := -DOSX
 #Basic Stuff -----------------------------
 
 CC := gcc

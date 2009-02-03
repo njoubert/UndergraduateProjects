@@ -5,8 +5,8 @@
  *      Author: njoubert
  */
 
-#ifndef IMAGE_H_
-#define IMAGE_H_
+#ifndef UCBIMAGE_H_
+#define UCBIMAGE_H_
 
 #include <string>
 #include <fstream>
@@ -64,4 +64,4 @@ public:
 };
 
 }
-#endif /* IMAGE_H_ */
+#endif /* UCBIMAGE_H_ */
