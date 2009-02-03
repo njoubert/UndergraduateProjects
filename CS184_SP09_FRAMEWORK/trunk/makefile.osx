@@ -27,5 +27,7 @@ $(TARGET): $(OBJECTS)
 	
 default: $(TARGET)
 
+all: default
+
 clean:
 	/bin/rm -f $(OBJECTS) $(TARGET)
