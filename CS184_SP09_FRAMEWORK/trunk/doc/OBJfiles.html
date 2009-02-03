@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>CS184 AS1</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Niels Joubert">
+	<!-- Date: 2009-01-22 -->
+	
+	<style>
+	body {
+		
+		#font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	}
+	.container {
+		max-width: 900px;
+		margin: 5px;
+	}
+	.sourceExp {
+		padding: 0 0 0 0px;
+	}
+	h2 {
+		border: black 1px solid;
+		padding: 4px;
+	}
+	.box {
+		border: red 1px dotted;
+		padding: 4px;
+	}
+	#applet {
+		padding: 60px 60px 60px 60px;
+		margin: 0px;
+		font-family: verdana, geneva, arial, helvetica, sans-serif; 
+		font-size: 11px; 
+		background-color: #ddddcc;
+	}
+	.tabled {
+		padding: 10px;
+	}
+	</style>
+	
+</head>
+<body>
+
+<div class="container">
+	
+	<p>
+		<h1>OBJs and Extended-OBJs for CS184</h1>
+	</p>
+	
+	<p>
+		<b>DUE DATE: Thursday February 12th, 11:00pm</b>
+	</p>
+	<!-- ------------------------------------------------------------------------------------ -->	
+	<p>
+		<h2>Aim</h2>
+		
+		<ul>
+			<li></li>
+		</ul>
+	
+	</p>
+	
+	<!-- ------------------------------------------------------------------------------------ -->	
+	
+	<p>
+		<h2>User Interaction</h2>
+
+	</p>
+	
+	<!-- ------------------------------------------------------------------------------------ -->	
+	
+	<p>
+		<h2>Terminology and Conventions</h2>
+
+	</p>
+	
+	<!-- ------------------------------------------------------------------------------------ -->
+	
+	<p>
+		<h2>Minimum Specifications</h2>
+	</p>
+	
+	<!-- ------------------------------------------------------------------------------------ -->	
+	
+	<p>	
+		<h2>Submission</h2>
+		To submit this project, all of the following needs to be done by the deadline:
+		<ul>
+			<li>Submit using the <i>submit as1</i> command on the INST machines:
+				<ul>
+					<li>Submit your working code</li>
+					<li><b>TWO</b> example OBJ files and accompanying <b>Screen Capture Images</b> of your program displaying the polygons you are submitting. In these screen captures we want to see the actual borders of the window running on your machine, not just a cropped image of the polygon.</li>
+					<li>README.txt file describing the platform you compiled your code on. This should be one of [Mac, Linux, Solaris, Windows].</li>
+				</ul>
+			</li>
+			<li>Put on your class website, on a separate page dedicated to AS1:
+				<ul>
+					<li>The two screen captures of your program's display</li>
+					<li>The two OBJ files you generated.</li>
+				</ul>
+			</li>
+		</ul>
+	</p>
+
+	<!-- ------------------------------------------------------------------------------------ -->
+	
+	<p>
+		<h2>Framework</h2>
+		
+		<p>
+		Download the framework for all platforms <a href="as1_v1.zip">here</a>.	
+		</p>
+		
+		We will be using the same core components throughout this course for all the projects, thus you can start to familiarize yourself with them now. They are:
+		<ul>
+			<li>OpenGL</li>
+			<li>Matrix and Vector library (algebra3.h)</li>
+			<li>OBJ parser (not necessary and not included for this project)</li>
+			<li>Platform-dependent framework bundle</li>
+			<li>C++ Standard Template Library for basic data structures (linked to project through header files)</li>
+		</ul>
+		C++ is a platform-dependent language, thus we will do our best to maintain and release multiple copies of our framework for Windows (Microsoft development environment), Macintosh OSX, Linux and Solaris. <font color="red">If you are having compilation issues, please ask the GSIs!</font> Getting the framework to compile should be very simple, thus ask (preferably in person with the compilation environment available on your laptop).
+	</p>
+	
+	<p>
+		Our framework, following the layout of most C and C++ based projects, contains:
+		<br>
+		<table class="sourceExp" cellpadding=0 cellspacing=2>
+			<tr>
+				<td><code>./</code></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>&nbsp src/</code></td>
+				<td>&nbsp &nbsp &nbsp Contains all the source code for your project.</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp &nbsp &nbsp main.cpp</code></td>
+				<td>&nbsp &nbsp &nbsp Main source code file.</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp include/</code></td>
+				<td>&nbsp &nbsp &nbsp Contains header files of third party code.</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp &nbsp &nbsp algebra3.h</code></td>
+				<td>&nbsp &nbsp &nbsp Matrix and vector library</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp lib/</code></td>
+				<td>&nbsp &nbsp &nbsp Contains binary files of third party code.</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp makefile</code></td>
+				<td>&nbsp &nbsp &nbsp Specifies building instructions in gmake-compatible format</td>
+			</tr>
+		</table>
+		<p>
+			<h3>Coding</h3>
+			Place your source code in the <code>src</code> directory, starting with <code>main.cpp</code>.
+			You can create more files to organize your source code, even going so far as to follow the Java convention of creating a separate file for each class (in this case <code>.h</code> and <code>.cpp</code>).
+			<br>
+			<br>
+			There exists a plethora of tools for C++ authoring. Windows users tend to use the Visual Studio environment, which we recommend (download legally for free <a href="https://www.dreamspark.com/default.aspx">here</a> or <a href="http://msdnaa.eecs.berkeley.edu/">here</a>). Vim, Emacs and Nedit are all popular text editors used for programming, while Eclipse, Xcode and KDevelop are IDE-based environments that assist greatly in programming.
+		</p>
+		<p>
+			<h3>Complitation</h3>
+			<table cellspacing=5 cellpadding=5 width=700 class="tabled">
+				<tr>
+					<td>Windows</td>
+					<td>&nbsp</td>
+					<td>You can either install Cygwin and its associated packages (compilers and GLUT) and follow a linux-like approach, or you can <a href="https://www.dreamspark.com/default.aspx">download Microsoft Visual Studio</a> (<a href="http://msdnaa.eecs.berkeley.edu/">alternative link</a>) to use for development (probably an easier option for windows users).
+						<br><br>
+						<b>For Visual Studio:</b> Open the .sln file and press F5 to Build Solution. If you are using Visual Studio Express 2005, you should either install the platform sdk (<a href="http://www.microsoft.com/express/2005/platformsdk/default.aspx">instructions</a>) or (preferably) upgrade to Express 2008 or a full version of Visual Studio for free.</td>
+				</tr>
+				<tr>
+					<td>Mac OSX</td>
+					<td>&nbsp</td>
+					<td>You need to install the <a href="http://developer.apple.com/mac/">Xcode developer toolkit</a> from Apple. Register for a free account. From here you can use your favorite editor and compile from the terminal using the same approach as Solaris. Compile with <code>gmake -f <i>makefile.osx</i></code></td>
+				</tr>
+				<tr>
+					<td>Linux</td>
+					<td>&nbsp</td>
+					<td>You need to install gcc (or similar compiler), the standard c++ libraries, and GLUT. On an aptitude-based system (Debian, Ubuntu), you can accomplish this by installing the <code>build-essential</code> and <code>freeglut</code> package. You can now follow the same instructions as on Solaris.</td>
+				</tr>
+				<tr>
+					<td>Solaris</td>
+					<td>&nbsp</td>
+					<td>Assuming you are on one of the instructional machines, you should be able to compile immediately by running <code>gmake -f <i>makefile</i></code></td>
+				</tr>				
+			</table>
+			
+		</p>
+	</p>
+	
+	<!-- ------------------------------------------------------------------------------------ -->	
+	
+	<p>
+		<h2><a name="tips">Implementation Tips</a></h2>
+	 The Bible of OpenGL programming comes in the form of two books known as the <a href="http://fly.cc.fer.hr/~unreal/theredbook/" target="_blank">Red Book</a> (The OpenGL Programming Guide) and the <a href="http://www.glprogramming.com/blue/" target="_blank">Blue Book</a> (The OpenGL Reference Manual). Older editions of this book is available online for free, and luckily not much has changed in the standard of OpenGL.
+	<br>
+	<br>
+	<font color="red">READ the code given in <code>main.cpp</code>!</font> It already contains templates of some incredibly useful OpenGL functions. It demonstrates the basic layout, and how to create classes.
+	<p>
+		<h3>OpenGL Concepts and Suggested Methods:</h3>
+		You will be using GLUT, an OpenGL windowing system, and basic OpenGL.
+		<ul>
+			<li><b>Keyboard and Mouse Capture (using GLUT):</b>
+			<ul>
+				<li><code>glutKeyboardFunc(myKeyboardFunc);</code></li>
+				<li><code>glutMouseFunc(myMouseFunc);</code></li>
+			</ul>	
+			</li>
+			<li><b>2D Drawing</b>
+				<ul>
+					<li><code>glBegin(int mode)</code> and <code>glEnd()</code> to control drawing.</li>
+					<li><code>glVertex2f(float x, float y)</code> to define a vertex. The effect depends on the mode specified in glBegin.</li>
+				</ul>
+			</li>
+			
+		</ul>
+		
+	</p>
+	
+	<p>
+		<h3>C++ Concepts in this project</h3>
+		You will find this project quite simple if you use some good C++ organization of your code. You should consider the following suggestions:
+		
+		<ul>
+			<li><b>Classes and Objects:</b>
+				<ul>
+					<li>Consider defining a Polygon class to store the vertices as they are added.</li>
+					<li>Consider giving the Polygon class a method to draw itself.</li>
+					<li>Consider giving the Polygon class a method to add vertices to itself.</li>
+					<li>Consider giving the Polygon a method to write an OBJ file from itself.</li>
+					<li>Consider defining a Vertex class to store the vertex data.</li>
+					<li>Consider writing accessor functions for the Vertex class' coordinates</li>
+				</ul>
+			</li>
+			<li><b>References (or, pointers in disguise):</b>
+				<ul>
+					<li>Consider keeping a reference to a temporary vertex object, created when the user depressed the left mouse button.</li>
+					<li>Consider passing a reference of the temporary vertex object to the polygon object when the user releases the left mouse button, and have the Polygon class deal with adding it to the polygon.
+				</ul>
+			</li>
+			<li><b>Event Driven Programming:</b><br>
+				Event Driven programming makes the flow of the program depend on events outside of the program's control. OpenGL employs this approach to link your program to OpenGL. You will write functions ("event handlers") that should respond to specific events, and register these functions with, in our case, OpenGL.
+				<ul>
+					<li>You have to write methods that respond to events from OpenGL. This is already partially in the given framework.</li>
+					<li>Consider capturing the mouse events using GLUT (explained in this section).</li>
+					<li>Consider having the mouse events update a temporary vertex object and/or the polygon object.</li>
+					
+				</ul>
+			</li>
+			<li>
+				<b>System Calls:</b>
+				<ul>
+					<li>Consider using the <code>ofstream</code> class for File I/O as demonstrated in <a href="http://www.functionx.com/cpp/articles/filestreaming.htm">this</a> example.
+				</ul>
+			</li>
+			<li><b>Libraries:</b>
+				<ul>
+					<li>Consider using the <a href="http://www.cplusplus.com/reference/stl/vector/", target="_blank">STL <code>vector</code> class</a> to store a list of vertices. Vectors are highly preferred over using arrays!</li>
+					<li>Consider using our 2D vector class to store the coordinates of vertices. This will get you up and running with the supplied libraries.</li>
+				</ul>
+			</li>
+		</ul>
+	</p>
+	
+	<p>
+		<h3>OBJ Files</h3>
+		This is your first taste of the beautifully simple OBJ file format. OBJ files are ASCII files, with a command per line. you need to be concerned with the following commands for this project:
+		
+		<table border=0 cellspacing=0 cellpadding=0>
+			<tr>
+				<td><code>v <i>x</i> <i>y</i></code></td>
+				<td>Define a vertex at coordinates (x,y).<br>
+					It is customary to have coordinates have a range of [-1, +1] in OBJ files.</td>
+			</tr>
+			<tr>
+				<td><code>f <i>v1</i> ... <i>vn</i></code></td>
+				<td>Define a face with vertices <i>v1</i> through <i>vn</i><br>
+					<i>vi</i> refers to the index of a vertex, where vertices are indexed from 1 in the order they appear in the file.</td>
+			</tr>
+		</table>
+		Thus an example OBJ for a rectangle should look something like the following:<br><br>
+		<code>
+			# OBJ file:<br>
+			v -0.5 0.5<br>
+			v -0.5 -0.5<br>
+			v 0.5 -0.5<br>
+			v 0.5 0.5<br>
+			f 1 2 3 4<br>
+		</code>
+		<br>
+		More OBJ File specifications can be found <a href="http://local.wasp.uwa.edu.au/~pbourke/dataformats/obj/">here</a>, various examples <a href="http://www.fileformat.info/format/wavefrontobj/">here</a>, programs and sample files <a href="http://people.scs.fsu.edu/~burkardt/data/obj/obj.html">here</a> and a MAN-page-like reference page by Martin Reddy <a href="http://www.martinreddy.net/gfx/3d/OBJ.spec">here</a><br>
+	</p>
+	
+	</p>
+
+	<!-- ------------------------------------------------------------------------------------ -->
+	
+	<p>
+		<h2><a name="example">Example Implementation</a></h2>
+
+	</p>
+	
+</div>
+
+</body>
+</html>

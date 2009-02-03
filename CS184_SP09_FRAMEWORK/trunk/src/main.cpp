@@ -53,6 +53,8 @@ Polygon polygon;
 Vertex * tempVertex;
 UCB::ImageSaver * imgSaver;
 
+float offs = 0.2;
+
 //-------------------------------------------------------------------------------
 void display()
 {
@@ -64,11 +66,11 @@ void display()
 
 	// draw some lines
     glBegin(GL_LINE_STRIP);
-	glVertex2f(-0.5,0.5);
-	glVertex2f(-0.5,-0.5);
-	glVertex2f(0.5,-0.5);
-	glVertex2f(0.5,0.5);
-	glVertex2f(-0.5,0.5);
+	glVertex2f(-offs,offs);
+	glVertex2f(-offs,-offs);
+	glVertex2f(offs,-offs);
+	glVertex2f(offs,offs);
+	glVertex2f(-offs,offs);
     glEnd();
 
 	//Now that we've drawn on the buffer, swap the drawing buffer and the displaying buffer.
@@ -115,6 +117,8 @@ void myMouseFunc( int button, int state, int x, int y ) {
 
 		cout << "Mouseclick at " << xPos << "," << yPos << "." << endl;
 
+		offs *= 1.05;
+		
 		glutPostRedisplay();
 	}
 
