@@ -12,7 +12,7 @@ SOURCES := $(wildcard ./src/UCB/*.cpp) $(wildcard ./src/*.cpp)
 #Libraries -------------------------------
 
 #Check for OSX. Works on 10.5 (and 10.4 but untested)
-ifeq ($(shell sw_vers | grep Mac | awk '{ print $$2}'),Mac)
+ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
 	#Assume Mac
 	INCLUDE := -I./include/ -I/usr/X11/include
 	LIBRARY := -L./lib/ \
