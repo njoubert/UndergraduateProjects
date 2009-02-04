@@ -38,17 +38,15 @@ CC := gcc
 CXX := g++
 CXXFLAGS := -g -Wall -O3 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY)
-TERMCOLOR := \x1b[1;34m
-TERMRESET := \x1b[0m
 #-----------------------------------------
 %.o : %.cpp
-	@echo "$(TERMCOLOR)Compiling .cpp to .o for $(PLATFORM) Platform: $(TERMRESET) $<" 
+	@echo "Compiling .cpp to .o for $(PLATFORM) Platform:  $<" 
 	@$(CXX) -c -Wall $(CXXFLAGS) $< -o $@
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
 $(TARGET): $(OBJECTS)
-	@echo "$(TERMCOLOR)Linking .o files into: $(TERMRESET) $(TARGET)"
+	@echo "Linking .o files into:  $(TARGET)"
 	@$(CXX) $(LDFLAGS) $(OBJECTS) -o $(TARGET)
 	
 default: $(TARGET) 
@@ -56,7 +54,7 @@ default: $(TARGET)
 all: default
 
 clean:
-	@echo "$(TERMCOLOR)Removing compiled files: $(TERMRESET) $<" 
+	@echo "Removing compiled files:  $<" 
 	/bin/rm -f $(OBJECTS) $(TARGET)
 
 
