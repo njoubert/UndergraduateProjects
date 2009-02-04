@@ -37,9 +37,9 @@ void Image::setPixel(int x, int y, unsigned char r, unsigned char g,
 bool Image::getPixel(int x, int y, unsigned char* r, unsigned char* g,
         unsigned char* b) {
     int pos = absolutePosition(x, y);
-    *r = pixels[pos].r;
-    *g = pixels[pos].g;
-    *b = pixels[pos].b;
+    *r = (unsigned char) pixels[pos].r;
+    *g = (unsigned char) pixels[pos].g;
+    *b = (unsigned char) pixels[pos].b;
     return true;
 }
 
