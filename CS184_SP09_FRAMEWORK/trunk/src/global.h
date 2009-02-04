@@ -8,11 +8,14 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
-#define IMPLEMENT_ME(file,line)    cout << "METHOD NEEDS TO BE IMPLEMENTED AT " << file << ":" << line << endl;
+#define IMPLEMENT_ME(file,line)    cout << "METHOD NEEDS TO BE IMPLEMENTED AT " << file << ":" << line << endl; exit(1);
 
-#include <vector>
+#include <string>
+#include <sstream>
 #include <iostream>
 #include <fstream>
+
+#include <vector>
 #include <cmath>
 
 #ifdef OSX

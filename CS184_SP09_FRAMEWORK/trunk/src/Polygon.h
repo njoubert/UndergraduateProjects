@@ -21,12 +21,6 @@ public:
     /* Draws the given polygon, linearly interpolated at t in interval [0,1] */
     void draw(int t);
 
-
-    /* Draws a rubber band from the last vertex to the given vertex
-     * if this polygon holds vertices. */
-    void drawRubberBand(Vertex * v);
-
-
     /* Adds a vertex to the end of this polygon */
     void addVertex(Vertex * v);
 

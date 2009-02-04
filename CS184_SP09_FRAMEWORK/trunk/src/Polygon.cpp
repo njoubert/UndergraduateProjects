@@ -27,15 +27,7 @@ void Polygon::draw() {
     glBegin(GL_LINE_STRIP);
     for (vector<Vertex *>::iterator it = _vertices.begin(); it != _vertices.end(); it++)
         glVertex2d((*it)->getPos()[0],(*it)->getPos()[1]);
-    glEnd();
-}
-
-void Polygon::drawRubberBand(Vertex * v) {
-    if (0 == _vertices.size())
-        return;
-    glBegin(GL_LINES);
-        glVertex2d(_vertices.back()->getPos()[0],_vertices.back()->getPos()[1]);
-        glVertex2d(v->getPos()[0],v->getPos()[1]);
+    glVertex2d(_vertices[0]->getPos()[0],_vertices[0]->getPos()[1]);
     glEnd();
 }
 

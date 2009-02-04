@@ -13,7 +13,9 @@ Vertex::Vertex(): _startPos(0.0,0.0), _endPos(0.0,0.0) {
 }
 
 Vertex::Vertex(vec2 p): _startPos(p), _endPos(0.0,0.0) {
-    // TODO Auto-generated constructor stub
+
+}
+Vertex::Vertex(double x, double y): _startPos(x,y), _endPos(0.0,0.0) {
 
 }
 

@@ -16,7 +16,7 @@ public:
 // Global Variables
 //****************************************************
 Viewport viewport;
-Polygon polygon;
+Polygon * polygon;
 Vertex * tempVertex;
 UCB::ImageSaver * imgSaver;
 
@@ -35,20 +35,15 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);					// indicate we are specifying camera transformations
 	glLoadIdentity();							// make sure transformation is "zero'd"
 
-	// draw some lines
+	// draw cursor
     glBegin(GL_LINES);
-    glVertex2f(viewport.mousePos[0]-0.03, viewport.mousePos[1]);
-    glVertex2f(viewport.mousePos[0]+0.03, viewport.mousePos[1]);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2f(viewport.mousePos[0], viewport.mousePos[1]-0.03);
-    glVertex2f(viewport.mousePos[0], viewport.mousePos[1]+0.03);
+        glVertex2f(viewport.mousePos[0]-0.03, viewport.mousePos[1]);
+        glVertex2f(viewport.mousePos[0]+0.03, viewport.mousePos[1]);
+        glVertex2f(viewport.mousePos[0], viewport.mousePos[1]-0.03);
+        glVertex2f(viewport.mousePos[0], viewport.mousePos[1]+0.03);
     glEnd();
 
-    polygon.draw();
-
-    if (tempVertex != NULL)
-        polygon.drawRubberBand(tempVertex);
+    polygon->draw();
 
 	//Now that we've drawn on the buffer, swap the drawing buffer and the displaying buffer.
 	glutSwapBuffers();
@@ -113,17 +108,25 @@ void myMouseFunc( int button, int state, int x, int y ) {
 
 	if ( button==GLUT_LEFT_BUTTON && state==GLUT_DOWN ) {
 		cout << "Mouseclick at " << viewCoords[0] << "," << viewCoords[1] << "." << endl;
-		tempVertex = new Vertex(viewCoords);
+
+		//YOUR CODE HERE
+		//possible do something with the tempVertex?
+
 	}
 
 	if ( button==GLUT_LEFT_BUTTON && state==GLUT_UP ) {
-        //Add a vertex to the polygon.
-	    polygon.addVertex(tempVertex);
-	    tempVertex = NULL;
+
+	   //YOUR CODE HERE
+	    //Possibly do something with the tempVertex?
+
 	}
 
 	if ( button==GLUT_RIGHT_BUTTON && state==GLUT_DOWN ) {
 	    //Save a window capture to disk as a BITMAP file.
+
+	    //YOUR CODE HERE
+
+	    //Move this somewhere more convenient!
 	    imgSaver->saveFrame(viewport.w, viewport.h);
 	}
 
@@ -169,9 +172,18 @@ int main(int argc,char** argv) {
 	viewport.w = 600;
 	viewport.h = 600;
 
+	if (argc < 2) {
+	    cout << "USAGE: morph poly.obj" << endl;
+	    exit(1);
+	}
+
 	//Initialize the screen capture class to save BMP captures
 	//in the current directory, with the prefix "morph"
 	imgSaver = new UCB::ImageSaver("./", "morph");
+
+	//Parse the OBJ file.
+	OBJParser parser;
+	polygon = parser.parseOBJ(argv[1]);
 
 	//Create OpenGL Window
 	glutInitWindowSize(viewport.w,viewport.h);

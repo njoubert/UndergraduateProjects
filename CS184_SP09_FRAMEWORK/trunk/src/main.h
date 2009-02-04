@@ -13,6 +13,6 @@
 #include "global.h"
 
 #include "Polygon.h"
-
+#include "OBJParser.h"
 
 #endif /* MAIN_H_ */

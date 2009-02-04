@@ -14,6 +14,7 @@ class Vertex {
 public:
     Vertex();
     Vertex(vec2 p);
+    Vertex(double x, double y);
     virtual ~Vertex();
 
     /* Returns the position vector of this Vertex. */
