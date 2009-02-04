@@ -15,7 +15,6 @@ OBJParser::OBJParser(): _vertices() {
  * Parses an OBJ file containing one face. Returns NULL if unsuccessfull.
  */
 Polygon * OBJParser::parseOBJ(string filename) {
-    char line[4096];
 
     std::cout << "Parsing OBJ file " << filename << std::endl;
 
@@ -27,8 +26,9 @@ Polygon * OBJParser::parseOBJ(string filename) {
         return NULL;
     }
     while (inFile.good()) {
-        inFile.getline(line, 1023);
-        if (!_parseLine(string(line), poly)) {
+        string line;
+        getline(inFile, line);
+        if (!_parseLine(line, poly)) {
             std::cout << "Failed to parse OBJ file." << std::endl;
             delete poly;
             return NULL;
@@ -53,14 +53,14 @@ bool OBJParser::_parseLine(string line, Polygon * poly) {
     //printDebug(4, " Operand: " << operand);
     if (operand[0] == '#') {
         return true;
-    } else if (operand.compare("v") == 0) {
+    } else if (operand == "v") {
 
         double x, y;
         ss >>x >>y;
         _vertices.push_back(new Vertex(x,y));
 
     }
-    else if (operand.compare("f") == 0) {
+    else if (operand == "f") {
 
         while (!ss.eof()) {
             int i;

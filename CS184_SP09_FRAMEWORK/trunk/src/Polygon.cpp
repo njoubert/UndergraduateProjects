@@ -18,6 +18,9 @@ Polygon::~Polygon() {
     // TODO Auto-generated destructor stub
     // This is where you free any pointers this class is holding on to.
 
+    for (vector<Vertex *>::iterator it = _vertices.begin(); it != _vertices.end(); it++)
+        free (*it);
+
     //YOUR CODE HERE IF NECESSARY
 }
 

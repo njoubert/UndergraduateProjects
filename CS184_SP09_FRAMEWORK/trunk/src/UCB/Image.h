@@ -25,12 +25,12 @@ namespace UCB {
  */
 class Image {
 public:
-    typedef struct pixel {
+    struct pixel {
          double b;
          double g;
          double r;
          int sampleCount;
-    } pixel;
+    };
     int w;
     int h;
     pixel* pixels; //This will be a linear array of pixels, row by row from top to bottom
