@@ -396,6 +396,8 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     	_loops++;
     	futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
      	_futureCount = 0;
+     	cout<<"Exited at end of Ellipsoid sequence so obj export doesnt get overwritten"<<endl;
+     	exit(1);
     }
     _elliTime[0] = (_pastCount + _loops*totalFrames)*_timeStep;
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;

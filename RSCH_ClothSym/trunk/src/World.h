@@ -31,7 +31,7 @@ public:
 
     // Loads up a new module from disk.
     bool loadStatModel(string);
-    bool loadSimModel(TriangleMesh*, double, float);
+    bool loadSimModel(TriangleMesh*, double, float, string);
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
 

@@ -62,7 +62,7 @@ void World::advance(double netTime) {
 	for (int i = 0; i < numSteps; i++) {
 		cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 		for (unsigned int j = 0; j < _models.size(); j++) {
-			cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
+			cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take "<<ceil(_models[modelIndex[0]]->getTimeStep()/_models[j]->getTimeStep())<<" steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
 			//enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
 			_models[j]->advance(_models[modelIndex[0]]->getTimeStep(), _time, StepOfTimeStep);
 
@@ -104,14 +104,22 @@ bool World::loadStatModel(string filename) {
     return true;
 }
 
-bool World::loadSimModel(TriangleMesh* mesh, double timeStep, float mass) {
+bool World::loadSimModel(TriangleMesh* mesh, double timeStep, float mass, string solver) {
     mesh->setGlobalMassPerParticle(mass/mesh->countVertices());
     MESHSIZE = mesh->countVertices();
     if (mesh == NULL)
         return false;
     Material* mat = new DEFAULT_MATERIAL();
     mat->makeSimColor();
-    Model* model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
+    Model* model;
+    if(solver == "newmark")
+    	model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
+            new NewmarkSolver(mesh, mesh->countVertices()), mat, timeStep);
+    else if(solver == "explicit")
+    	model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
+            new ExplicitSolver(mesh, mesh->countVertices()), mat, timeStep);
+    else
+    	model = new SimModel(mesh, new DEFAULT_SYSTEM(mesh, mat),
             new DEFAULT_SOLVER(mesh, mesh->countVertices()), mat, timeStep);
     _models.push_back(model);
     cout<<"Finished Loading Sim Model"<<endl;

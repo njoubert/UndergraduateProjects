@@ -243,7 +243,43 @@ int parseCommandLine(int argc, char *argv[]) {
 				MASS = atof(argv[++i]);
 				OBJParser parser;
 				TriangleMesh* mesh = parser.parseOBJ(filename);
-				world.loadSimModel(mesh, TIMESTEP, MASS);
+				world.loadSimModel(mesh, TIMESTEP, MASS, "default");
+				hasOBJ = true;
+				DYNAMIC_CONSTRAINTS = false;
+				STATIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = false;
+				DRAWMODELS.push_back(true);
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-simobj_new")) {
+
+			if (isThereMore(i, argc, 3)) {
+				std::string filename = std::string(argv[++i]);
+				TIMESTEP = atof(argv[++i]);
+				MASS = atof(argv[++i]);
+				OBJParser parser;
+				TriangleMesh* mesh = parser.parseOBJ(filename);
+				world.loadSimModel(mesh, TIMESTEP, MASS, "newmark");
+				hasOBJ = true;
+				DYNAMIC_CONSTRAINTS = false;
+				STATIC_CONSTRAINTS = true;
+				cam.dynamicConstraints = false;
+				DRAWMODELS.push_back(true);
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-simobj_exp")) {
+
+			if (isThereMore(i, argc, 3)) {
+				std::string filename = std::string(argv[++i]);
+				TIMESTEP = atof(argv[++i]);
+				MASS = atof(argv[++i]);
+				OBJParser parser;
+				TriangleMesh* mesh = parser.parseOBJ(filename);
+				world.loadSimModel(mesh, TIMESTEP, MASS, "explicit");
 				hasOBJ = true;
 				DYNAMIC_CONSTRAINTS = false;
 				STATIC_CONSTRAINTS = true;
@@ -263,7 +299,7 @@ int parseCommandLine(int argc, char *argv[]) {
 				TriangleMesh* mesh = parser.parse(filename);
 				string objfilename = filename + ".obj";
 				mesh->exportAsOBJ(objfilename);
-				world.loadSimModel(mesh, TIMESTEP, MASS);
+				world.loadSimModel(mesh, TIMESTEP, MASS, "default");
 				hasOBJ = true;
 				DRAWMODELS.push_back(true);
 			}
@@ -558,6 +594,7 @@ void processKeys(unsigned char key, int x, int y) {
 //-------------------------------------------------------------------------------
 //
 void init(void) {
+	cout<<"Simulation with Display at: "<<1/cam.inverseFPS<<"FPS."<<endl;
 	if (DYNAMIC_CONSTRAINTS)
 		world.createVertexToAnimatedEllipseContraint();
 	else
@@ -836,7 +873,7 @@ void myframemove() {
 
 		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w,
 				cam._h);
-		world.exportSim(1, world.getTime(), false, cam.inverseFPS);
+		world.exportSim(1, world.getTime(), true, cam.inverseFPS);
 		world.advance(cam.inverseFPS);
 
 		profiler.frametimers.switchToTimer("postRedisplay");
