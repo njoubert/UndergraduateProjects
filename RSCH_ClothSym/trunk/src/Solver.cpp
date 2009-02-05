@@ -213,28 +213,44 @@ void ExplicitSolver::calculateState(System* sys, vector<Constraint*> *constraint
 void ExplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
 		vector<VertexToEllipseCollision*> *collisions) {
 
+	sys->correctExplicitlyWithMeshSync(this, _y, _y, timeStep);
 
 	for(int i = 0; i < _f->size(); i++) {
 	 (*_delv)[i] = (timeStep ) * (*_f)[i] / (*sys->getM())(i,i)[0][0];
-     (*_delx)[i] = timeStep * ((*_delv)[i]);
+	 //DUMP SOME ENERGY!!!! THIS THING IS BLOWING UP BIGGER THAN YO MAMMA
+	      (*_delv)[i] = EDAMP*(*_delv)[i];
+     (*_delx)[i] = timeStep * ((*sys->getV())[i] + (*_delv)[i]);
+
+		 /*//DEBUG
+		 if(i == 458) {
+			 cout<<"Timestep: "<<timeStep<<endl;
+			 cout<<"Acceleration: "<<(*_f)[i] / (*sys->getM())(i,i)[0][0]<<endl;
+			 cout<<"Change in Velocity: "<<(*_delv)[i]<<endl;
+			cout<<"Change in Position: "<<(*_delx)[i]<<endl;
+		 }
+		 //*/
 	}
 
+    if(COLLISIONS)
+    	for (unsigned int i = 0; i < (*collisions).size(); i++)
+    		(*collisions)[i]->applyExplicitConstraints(sys->getX(), sys->getV());
+
+    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)
+ 		for (unsigned int i = 0; i < constraints->size(); i++)
+ 			(*constraints)[i]->applyExplicitConstraints(sys->getX(), sys->getV());
 
 
+
+     //cout<<"Before: "<<(*sys->getX())[458]<<endl;
+     //cout<<"Before: "<<(*sys->getV())[458]<<endl;
     LARGE_VECTOR* _xTMP = sys->getX();
     LARGE_VECTOR* _vTMP = sys->getV();
-    (*_xTMP) += (*_delx);
-    (*_vTMP) += (*_delv);
-
-    //Contraints set in OBJ file
-    //if (point->getConstaint() == identity2D())
-      //  return make_pair(vec3(0,0,0), vec3(0,0,0)); //Lame contraints for explicit
-
-    //cout << "Forces on particle " << pointIndex << " is (" << F[0] << ", " << F[1] << ", " << F[2] << ")" << endl;
-    //----------------------------------------------------
-    //return make_pair(deltaX, deltaV);
+    (*sys->getX()) += (*_delx);
+    (*sys->getV()) += (*_delv);
+    //cout<<"After: "<<(*sys->getX())[458]<<endl;
+    //cout<<"After: "<<(*sys->getV())[458]<<endl;
 }
-//*/
+
 
 /******************************************************************************
  *                                                                             *
@@ -281,42 +297,17 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     _z->zeroValues();
     //_delx->zeroValues(); //dont do this since delx is set from delv
     A->zeroValues();
-    _bmod->zeroValues();
+    _bmod->zeroValues();	//This whole _bmod experiment has past it's life span and needs to die, please delete
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
     correctMesh = false;
 
+
     correctMesh = sys->correctWithMeshSync(this, _y, _bmod, timeStep);
 
-    //Apply constraints to points right here.
-	//*
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
 			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y, timeStep);
 	}
-	//*/
-    //sys->loadMeshFromState();
-    //sys->applyConstraints(this, constraints);
-
-
-    //Compute _JP, _JV, _f
-
-
-
-    //Doesn't work very well, it's odd that constraining the solver matrix doesn't do much to help
-   // if(COLLISIONS)
-    	//sys->calculatePosVelCollisionChange(this, timeStep, collisions);
-
-    /*
-        int strainCount  = 0;
-        bool isOverStrain = true;
-        while( (isOverStrain == true) && (strainCount < 30) ) {
-    		isOverStrain = sys->calcStrainLimitJacobi(this, _y, timeStep);
-    		strainCount++;
-        }
-      //  if(strainCount > 10)
-      //  exit(1);
-      	cout<<"iterations: "<<strainCount<<endl;
-    //*/
 
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
@@ -324,18 +315,6 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
 
     if(COLLISIONS)
     	sys->calculateCollisionDamping(this, _JV, collisions);
-
-
-
-
-
-    //sys->calculateDampingToLimitStrain(this, _JV, 10);
-
-//    if(COLLISIONS)
-//    	sys->applyCollisions(this, collisions);
-
-    //Apply constraints to points right here.
-    //sys->applyConstraints(this, constraints);
 
 }
 
@@ -414,30 +393,30 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     (*_delx) += *_y;
     profiler.frametimers.switchToGlobal();
 
-	/*
+	/*//Could also constrain at end of timestep like nuttapong
      if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
 			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
 	}
 	//*/
-    //if(COLLISIONS)
-     	//sys->applyCollisions(this, collisions);
 
-    //Update x, y new delx, delv
+    /*//DEBGUG
+	int i = 458;
+	cout<<"Timestep: "<<timeStep<<endl;
+	cout<<"Acceleration: "<<((*_f)[i] / (*sys->getM())(i,i)[0][0])/timeStep<<endl;
+	cout<<"Change in Velocity: "<<(*_delv)[i]<<endl;
+	cout<<"Change in Position: "<<(*_delx)[i]<<endl;
+    cout<<"Before: "<<(*sys->getX())[458]<<endl;
+    cout<<"Before: "<<(*sys->getV())[458]<<endl;
+	//*/
 
     LARGE_VECTOR* _xTMP = sys->getX();
     LARGE_VECTOR* _vTMP = sys->getV();
     (*_xTMP) += (*_delx);
     (*_vTMP) += (*_delv);
 
-
-    //sys->correctWithStrainLimit(this, _y, timeStep);
-
-
-    //Apply constraints to points right here.
-     //sys->applyConstraints(this, constraints);
-
-
+	//cout<<"After: "<<(*sys->getX())[458]<<endl;
+	//cout<<"After: "<<(*sys->getV())[458]<<endl;
 
     profiler.frametimers.switchToTimer("update");
 

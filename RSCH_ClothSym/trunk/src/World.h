@@ -35,8 +35,9 @@ public:
     bool loadAniModel(string);
     bool loadEllipseModel(string, int);
 
-    bool enableMeshCorrection(int, int);
-    bool disableMeshCorrection(int);
+    bool initializeMeshSyncing(int, int);
+    bool enableMeshSyncing(int, int);
+    bool disableMeshSyncing(int);
 
     bool createVertexToAnimatedEllipseContraint();
     bool createFixedVertexContraints();
@@ -67,6 +68,9 @@ private:
     double _lastTime;
     bool _doObjOutput;
     string _objOutDir;
+
+    //For Syncing
+    int _syncCounter;
 
     bool _displayListsValid;
     int _displayListsIndex;

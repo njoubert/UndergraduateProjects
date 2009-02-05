@@ -118,12 +118,12 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-        cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
+        //cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
-        cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
+        //cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
 
@@ -171,6 +171,7 @@ void SimModel::draw() {
     if(_system->getErrorInd() > 0) {
     	vector<double> posError = _system->getPosError();
     	vector<double> velError = _system->getVelError();
+    	vector<double> timeOfError 	= _system->getTimeOfError();
     	int ErrorCount = _system->getErrorInd();
     	float x1, x2;
     	glBegin(GL_LINES);
@@ -182,12 +183,12 @@ void SimModel::draw() {
     		glVertex3f(-4, 0, 1);
         glBegin(GL_LINES);
     		for(int i = 0; i < ErrorCount-1; i++){
-    			x1 = float(i)/100 - 4;
-    			x2 = float(i+1)/100 - 4;
-    			//x1 = TIME - 4;
-    			//x2 = TIME + _timeStep - 4;
-    			glVertex3f(x1,-1.5+posError[i]*3,1);
-    			glVertex3f(x2,-1.5+posError[i+1]*3,1);
+    			//x1 = float(i)/100 - 4;
+    			//x2 = float(i+1)/100 - 4;
+    			x1 = timeOfError[i] - 4;
+    			x2 = timeOfError[i+1] - 4;
+    			glVertex3f(x1,-1.5+posError[i]*5,1);
+    			glVertex3f(x2,-1.5+posError[i+1]*5,1);
     		}
         glEnd();
     	/*
@@ -257,6 +258,10 @@ void SimModel::registerHighQmodel(TriangleMesh* cMesh) {
 
 void SimModel::nullHighQmodel() {
 	_system->setHighQmesh(NULL);
+}
+
+void SimModel::initializeSyncTimes() {
+	_system->initializeSyncTimes();
 }
 
 /*-------------------------------------------------
@@ -396,8 +401,12 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     	_loops++;
     	futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
      	_futureCount = 0;
-     	cout<<"Exited at end of Ellipsoid sequence so obj export doesnt get overwritten"<<endl;
-     	exit(1);
+
+     	if(EXITONLASTFRAME){
+     		cout<<"Exited at end of Ellipsoid sequence so obj export doesnt get overwritten"<<endl;
+     		exit(1);
+     	}
+
     }
     _elliTime[0] = (_pastCount + _loops*totalFrames)*_timeStep;
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;

@@ -88,8 +88,12 @@ extern float MUd;
 
 extern vector<bool> DRAWMODELS;
 
+extern bool EXITONLASTFRAME;
+
 extern int LOWQINDEX;
 extern int HIGHQINDEX;
+extern double SYNCSTEP;
+extern double EDAMP;
 
 extern vec3 WIND;
 extern bool isWIND;

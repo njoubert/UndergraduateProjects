@@ -347,14 +347,23 @@ int parseCommandLine(int argc, char *argv[]) {
 			cam.collisions = true;
 
 		} else if (!strcmp(argv[i], "-cmesh")) {
-			if (isThereMore(i, argc, 2)) {
+			if (isThereMore(i, argc, 3)) {
 				LOWQINDEX = atoi(argv[++i]);
 				HIGHQINDEX = atoi(argv[++i]);
-				world.enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
+				SYNCSTEP = atof(argv[++i]);
+				//cout<<"SYNC STEP HAS BEEN SET TO: "<<SYNCSTEP<<endl;
+				world.initializeMeshSyncing(LOWQINDEX, HIGHQINDEX);
 			} else {
 				malformedArg = true;
 			}
 
+		} else if (!strcmp(argv[i], "-edamp")) {
+
+			if (isThereMore(i, argc, 1)) {
+				EDAMP = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
 		} else if (!strcmp(argv[i], "-dcons1")) {
 			if (isThereMore(i, argc, 3)) {
 				FOLLOW1 = atoi(argv[++i]);

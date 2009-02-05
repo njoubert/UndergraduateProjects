@@ -59,6 +59,7 @@ public:
 	void calculateWindForces(LARGE_VECTOR*, SPARSE_MATRIX*, int);
 
 	bool correctWithMeshSync(Solver*, LARGE_VECTOR*, LARGE_VECTOR*, double);
+	bool correctExplicitlyWithMeshSync(Solver*, LARGE_VECTOR*, LARGE_VECTOR*, double);
 	bool correctSolverMatrices(SPARSE_MATRIX*,LARGE_VECTOR*);
 
 	void bendForceJacobian(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
@@ -93,7 +94,9 @@ public:
     //Utilities
     vector<double> getPosError();
     vector<double> getVelError();
+    vector<double> getTimeOfError();
     int getErrorInd();
+    void initializeSyncTimes();
 
 
 private:
@@ -115,7 +118,10 @@ private:
     //Keep Track of Error Data
     vector<double>_posError;
     vector<double>_velError;
+    vector<double>_timeOfError;
     int _errorInd;
+    double _syncCounter;
+    double _syncStep;
 
     LARGE_VECTOR* _x0;
     LARGE_VECTOR* _v0;

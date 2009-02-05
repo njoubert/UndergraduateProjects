@@ -24,8 +24,10 @@ cout<<"			Creating System"<<endl;
 	for(int h = 0; h < 2500; h++) {
 		_posError.push_back(-1.0);
 		_velError.push_back(-1.0);
+		_timeOfError.push_back(-1.0);
 	}
 	_errorInd = -1;
+
 	//*/
 //*/
 
@@ -202,6 +204,12 @@ void System::setHighQmesh(TriangleMesh* cMesh) {
 //	cout<<"Testing Correction Mesh..."<<endl;
 //	TriangleMesh* test = _cMesh;
 //	cout<<"test: "<<test->getVertex(0)->getX()<<endl;
+}
+
+void System::initializeSyncTimes() {
+	_syncStep = SYNCSTEP;
+	_syncCounter = _syncStep;
+	cout<<"SYNCSTEP IS: "<<SYNCSTEP<<" syncCOUNTER is inialized to "<<_syncCounter<<endl;
 }
 
 LARGE_VECTOR* System::getX() {
@@ -912,6 +920,7 @@ bool System::calcStrainLimitJacobi(Solver* solver, LARGE_VECTOR* y,
 
 vector<double> System::getPosError(){ return _posError; }
 vector<double> System::getVelError(){ return _velError; }
+vector<double> System::getTimeOfError(){ return _timeOfError; }
 int System::getErrorInd(){ return _errorInd; }
 
 bool System::correctSolverMatrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
@@ -929,9 +938,12 @@ bool System::correctSolverMatrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 		LARGE_VECTOR* bmod, double timeStep) {
 
-	if(_cMesh == NULL) {
+	if(_cMesh == NULL || TIME < _syncCounter) {
 		return false;
 	}
+	else
+		_syncCounter += _syncStep;
+	cout<<"SYNCED AT TIME: "<<TIME<<"S"<<endl;
 
 	LARGE_VECTOR* f = solver->getf();
 	vec3 F0(0, 0, 0);
@@ -963,6 +975,7 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 
 		_posError[_errorInd] = positionDiff/totalVerts;
 		_velError[_errorInd] = velocityDiff/totalVerts;
+		_timeOfError[_errorInd] = TIME;
 		if(_posError[_errorInd] > 0.01 || _velError[_errorInd] > 0.1) {
 		cout<<"					Average Error Between POSITIONS in Slave and Master Meshes: "<<_posError[_errorInd]<<endl;
 		cout<<"					Average Error Between VELOCITIES in Slave and Master Meshes: "<<_velError[_errorInd]<<endl;
@@ -1054,6 +1067,148 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 		if(_correctedIndices[i]==true) {
 			replacedVertCount++;
 			//_correctedIndices[i] = false;
+		}
+	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
+	cout<<"					Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
+	cout<<endl;
+
+	return true;
+}
+
+bool System::correctExplicitlyWithMeshSync(Solver* solver, LARGE_VECTOR* y,
+		LARGE_VECTOR* bmod, double timeStep) {
+	//cout<<"TIME IS: "<<TIME<<"		SYNC AT TIME: "<<_syncCounter<<endl;
+	if(_cMesh == NULL || TIME < _syncCounter) {
+		return false;
+	}
+	else
+		_syncCounter += _syncStep;
+	cout<<"SYNCED AT TIME: "<<TIME<<"S"<<endl;
+
+
+	int totalVertsi = mesh->countVertices();
+	float totalVerts = float(mesh->countVertices());
+	//*
+	double positionDiff = 0;
+	double velocityDiff = 0;
+		for(int i = 0; i < totalVertsi; i++) {
+			positionDiff += abs(mesh->getVertex(i)->getX()[0] - _cMesh->getVertex(i)->getX()[0]);
+			positionDiff += abs(mesh->getVertex(i)->getX()[1] - _cMesh->getVertex(i)->getX()[1]);
+			positionDiff += abs(mesh->getVertex(i)->getX()[2] - _cMesh->getVertex(i)->getX()[2]);
+
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[0] - _cMesh->getVertex(i)->getvX()[0]);
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[1] - _cMesh->getVertex(i)->getvX()[1]);
+			velocityDiff += abs(mesh->getVertex(i)->getvX()[2] - _cMesh->getVertex(i)->getvX()[2]);
+		}
+
+		if(_errorInd > 2498)
+			_errorInd = 0;
+		else
+			_errorInd++;
+
+		_posError[_errorInd] = positionDiff/totalVerts;
+		_velError[_errorInd] = velocityDiff/totalVerts;
+		_timeOfError[_errorInd] = TIME;
+		//if(_posError[_errorInd] > 0.01 || _velError[_errorInd] > 0.1) {
+		cout<<"					Average Error Between POSITIONS in Slave and Master Meshes: "<<_posError[_errorInd]<<endl;
+		cout<<"					Average Error Between VELOCITIES in Slave and Master Meshes: "<<_velError[_errorInd]<<endl;
+
+	LARGE_VECTOR* f = solver->getf();
+	vec3 F0(0, 0, 0);
+	TriangleMeshVertex *a, *b, *ca, *cb;
+	int ia, ib;
+	EdgesIterator edg_it = mesh->getEdgesIterator();
+	//bool isOverStrained = false;
+	vec3 maxStrain;
+
+		//}
+		//*/
+//*
+
+	do {
+		a = (*edg_it)->getVertex(0);
+		b = (*edg_it)->getVertex(1);
+		ia = a->getIndex();
+		ib = b->getIndex();
+		vec3 pa = a->getX();
+		vec3 pb = b->getX();
+		vec3 Ua = a->getU();
+		vec3 Ub = b->getU();
+		vec3 RL = Ua - Ub;
+		double rl = RL.length();
+		bool pipeOverstrained = false;
+		double strain = (pa - pb).length() - rl;
+		double strainPercent = (strain / rl) * 100;
+
+		//cout<<strainPercent<<endl;
+
+		/*
+		if (_cMesh->getVertex(ia)->getX()[0] != mesh->getVertex(ia)->getX()[0])
+			cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ib)->getX()[0] != mesh->getVertex(ib)->getX()[0])
+			cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ia)->getvX()[0] != mesh->getVertex(ia)->getvX()[0])
+			cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+		if (_cMesh->getVertex(ib)->getvX()[0] != mesh->getVertex(ib)->getvX()[0])
+			cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+		//*/
+
+		//*
+//		if (abs(strainPercent) > .000000000000010) {
+			//cout<<"strainPercent: "<<strainPercent<<endl;
+			//			if ((ia == 36) || (ia == 18)) {
+			//				pipeOverstrained = false;
+			//			} else if ((ib == 36) || (ib == 18)) {
+			//				pipeOverstrained = false;
+			//			} else {
+			if (_correctedIndices[ia] == false) {
+				_correctedIndices[ia] = true;
+				//(*y)[ia] = _cMesh->getVertex(ia)->getX() - (*_x)[ia];
+				(*_x)[ia] = _cMesh->getVertex(ia)->getX();
+				mesh->getVertex(ia)->getX() = _cMesh->getVertex(ia)->getX();
+				(*_v)[ia] = _cMesh->getVertex(ia)->getvX();
+				mesh->getVertex(ia)->getvX() = _cMesh->getVertex(ia)->getvX();
+			}
+			if (_correctedIndices[ib] == false) {
+				_correctedIndices[ib] = true;
+				//(*y)[ib] = _cMesh->getVertex(ib)->getX() - (*_x)[ib];
+				(*_x)[ib] = _cMesh->getVertex(ib)->getX();
+				mesh->getVertex(ib)->getX() = _cMesh->getVertex(ib)->getX();
+				(*_v)[ib] = _cMesh->getVertex(ib)->getvX();
+				mesh->getVertex(ib)->getvX() = _cMesh->getVertex(ib)->getvX();
+			}
+	//		pipeOverstrained = true;
+//		}
+
+		//*/
+
+			//*
+			if (_cMesh->getVertex(ia)->getX()[0] != mesh->getVertex(ia)->getX()[0])
+				cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ib)->getX()[0] != mesh->getVertex(ib)->getX()[0])
+				cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ia)->getvX()[0] != mesh->getVertex(ia)->getvX()[0])
+				cout << "Meshes Not the Same " <<ia<<" "<<ib<< endl;
+			if (_cMesh->getVertex(ib)->getvX()[0] != mesh->getVertex(ib)->getvX()[0])
+				cout<<"Meshes Not the Same "<<ia<<" "<<ib<< endl;
+			//*/
+
+		//*
+		 if(pipeOverstrained) {
+			 double strainPercentAfter = (((mesh->getVertex(ia)->getX() - mesh->getVertex(ib)->getX() ).length() - rl) / rl) * 100;
+			 if(abs(strainPercentAfter) > abs(strainPercent)) {
+				 cout<<"strainPercent Before; " << strainPercent << endl;
+				 cout<<"strainPercent After: "<< strainPercentAfter <<endl;
+			 }
+		 }
+		 //*/
+	} while (edg_it.next());
+
+	int replacedVertCount = 0;
+	for(int i = 0; i < totalVertsi; i++)
+		if(_correctedIndices[i]==true) {
+			replacedVertCount++;
+			_correctedIndices[i] = false;
 		}
 	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
 	cout<<"					Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
@@ -1178,9 +1333,7 @@ void System::applyConstraints(Solver* solver, vector<Constraint*> *constraints) 
 
 void System::applyCollisions(Solver* solver,
 		vector<VertexToEllipseCollision*> *collisions) {
-	for (unsigned int i = 0; i < collisions->size(); i++)
-		(*collisions)[i]->applyCollisionToMesh(_x, _v,
-				((NewmarkSolver*) solver)->getY());
+
 }
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints, vector<
 		VertexToEllipseCollision*> *collisions, double timeStep) {

@@ -75,8 +75,11 @@ public:
     void registerConstraint(Constraint*);
     void applyInitialConstraints();
     void registerCollision(VertexToEllipseCollision*);
+
+    //Mesh Syncing
     void registerHighQmodel(TriangleMesh*);
     void nullHighQmodel();
+    void initializeSyncTimes();
 
     void enableMouseForce(vec3);
     void updateMouseForce(vec3);

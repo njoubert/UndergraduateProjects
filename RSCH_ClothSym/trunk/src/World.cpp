@@ -9,6 +9,7 @@
 
 World::World() {
     _time = 0;
+    _syncCounter = 0;
     _displayListsValid = false;
 }
 
@@ -63,12 +64,23 @@ void World::advance(double netTime) {
 		cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 		for (unsigned int j = 0; j < _models.size(); j++) {
 			cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take "<<ceil(_models[modelIndex[0]]->getTimeStep()/_models[j]->getTimeStep())<<" steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
-			//enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
+			/*
+			if(STEPSBEFORESYNC != -1 && j == LOWQINDEX){
+				if(_syncCounter%STEPSBEFORESYNC == 0) {
+					cout<<"SYNCED AT TIME: "<<_time<<endl;
+					enableMeshCorrection(LOWQINDEX, HIGHQINDEX);
+				}
+				else
+					disableMeshCorrection(LOWQINDEX);
+			}
+			//*/
 			_models[j]->advance(_models[modelIndex[0]]->getTimeStep(), _time, StepOfTimeStep);
 
 		}
 		_time += StepOfTimeStep;
 		TIME = _time;
+		_syncCounter++;
+
 		cout<<endl;
 	}
 
@@ -153,16 +165,28 @@ bool World::loadEllipseModel(string filename, int numFrames) {
     return true;
 }
 
-bool World::enableMeshCorrection(int lowQmodelIndex, int highQmodelIndex) {
+bool World::initializeMeshSyncing(int lowQmodelIndex, int highQmodelIndex) {
 	SimModel* lowQmodel = (SimModel*) _models[lowQmodelIndex];
 	SimModel* highQmodel = (SimModel*) _models[highQmodelIndex];
 	//cout<<"Testing Correction Mesh..."<<endl;
 		//cout<<"		"<<highQmodel->getMesh()->getVertex(300)<<endl;
 	lowQmodel->registerHighQmodel(highQmodel->getMesh());
+	lowQmodel->initializeSyncTimes();
+
 	return true;
 }
 
-bool World::disableMeshCorrection(int lowQmodelIndex) {
+bool World::enableMeshSyncing(int lowQmodelIndex, int highQmodelIndex) {
+	SimModel* lowQmodel = (SimModel*) _models[lowQmodelIndex];
+	SimModel* highQmodel = (SimModel*) _models[highQmodelIndex];
+	//cout<<"Testing Correction Mesh..."<<endl;
+		//cout<<"		"<<highQmodel->getMesh()->getVertex(300)<<endl;
+	lowQmodel->registerHighQmodel(highQmodel->getMesh());
+
+	return true;
+}
+
+bool World::disableMeshSyncing(int lowQmodelIndex) {
 	SimModel* lowQmodel = (SimModel*) _models[lowQmodelIndex];
 	lowQmodel->nullHighQmodel();
 	return true;
