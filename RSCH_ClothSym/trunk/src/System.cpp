@@ -977,8 +977,10 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 		_velError[_errorInd] = velocityDiff/totalVerts;
 		_timeOfError[_errorInd] = TIME;
 		if(_posError[_errorInd] > 0.01 || _velError[_errorInd] > 0.1) {
+			if(DEBUG) {
 		cout<<"					Average Error Between POSITIONS in Slave and Master Meshes: "<<_posError[_errorInd]<<endl;
 		cout<<"					Average Error Between VELOCITIES in Slave and Master Meshes: "<<_velError[_errorInd]<<endl;
+			}
 		}
 		//*/
 //*
@@ -1069,8 +1071,10 @@ bool System::correctWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 			//_correctedIndices[i] = false;
 		}
 	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
+	if(DEBUG){
 	cout<<"					Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
 	cout<<endl;
+	}
 
 	return true;
 }
@@ -1110,8 +1114,10 @@ bool System::correctExplicitlyWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 		_velError[_errorInd] = velocityDiff/totalVerts;
 		_timeOfError[_errorInd] = TIME;
 		//if(_posError[_errorInd] > 0.01 || _velError[_errorInd] > 0.1) {
+		if(DEBUG){
 		cout<<"					Average Error Between POSITIONS in Slave and Master Meshes: "<<_posError[_errorInd]<<endl;
 		cout<<"					Average Error Between VELOCITIES in Slave and Master Meshes: "<<_velError[_errorInd]<<endl;
+		}
 
 	LARGE_VECTOR* f = solver->getf();
 	vec3 F0(0, 0, 0);
@@ -1211,8 +1217,10 @@ bool System::correctExplicitlyWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 			_correctedIndices[i] = false;
 		}
 	float percentReplaced = float((float(replacedVertCount)/float(totalVerts))*100);
+	if(DEBUG) {
 	cout<<"					Percent of Slave Mesh Replaced: "<<percentReplaced<<"%"<<endl;
 	cout<<endl;
+	}
 
 	return true;
 }

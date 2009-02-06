@@ -44,6 +44,8 @@
 extern Timer fpstimer;
 extern Profiler profiler;
 
+extern bool DEBUG;
+
 extern double TIME;
 
 extern float GAMMA;

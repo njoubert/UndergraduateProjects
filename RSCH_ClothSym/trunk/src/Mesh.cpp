@@ -15,7 +15,7 @@
 
 TriangleMeshVertex::TriangleMeshVertex(double x, double y, double z, int i):
     F(0,0,0), X(x,y,z), U(x,y,z),vX(0,0,0), _index(i), edges() {
-    _fixed = false;
+    _fixed = false, _dynamicConstIndex = -1;
 
 }
 
@@ -47,6 +47,10 @@ vec3 TriangleMeshVertex::getNormal() {
 bool & TriangleMeshVertex::getConstaint() { return _fixed; }
 
 void TriangleMeshVertex::setConstraint(bool fixed) { _fixed = fixed; }
+
+int TriangleMeshVertex::getDynamicConstraint() { return _dynamicConstIndex; }
+
+void TriangleMeshVertex::setDynamicConstraint(int EllipsoidIndex) { _dynamicConstIndex = EllipsoidIndex; }
 
 vec3 & TriangleMeshVertex::getF() { return F; }
 

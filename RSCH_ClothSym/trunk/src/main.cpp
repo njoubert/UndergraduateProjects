@@ -220,6 +220,7 @@ int parseCommandLine(int argc, char *argv[]) {
 			if (isThereMore(i, argc, 1)) {
 				++i;
 				Debug::DEBUG = atoi(argv[i]);
+				DEBUG = true;
 			} else {
 				malformedArg = true;
 			}
@@ -880,7 +881,7 @@ void myframemove() {
 
 		profiler.frametimers.Start();
 
-		imagesaver.saveFrame(world.getTime(), false, cam.inverseFPS, cam._w,
+		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w,
 				cam._h);
 		world.exportSim(1, world.getTime(), true, cam.inverseFPS);
 		world.advance(cam.inverseFPS);

@@ -126,7 +126,7 @@ private:
  */
 class AniElliModel : public Model {
 public:
-	AniElliModel(std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >);
+	AniElliModel(vector < vector <mat4> >);
     ~AniElliModel();
     void advance(double, double, double);
     double getTimeStep();

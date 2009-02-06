@@ -12,6 +12,8 @@ Profiler profiler;
 
 double TIME = 0.0;
 
+bool DEBUG = false;
+
 float GAMMA = DEFAULT_GAMMA;
 float BETA = DEFAULT_BETA;
 

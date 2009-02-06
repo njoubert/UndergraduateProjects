@@ -39,6 +39,7 @@ public:
     bool enableMeshSyncing(int, int);
     bool disableMeshSyncing(int);
 
+    bool createVertexToAnimatedEllipseContraints(vector < vector < std::pair < int, int > > >);
     bool createVertexToAnimatedEllipseContraint();
     bool createFixedVertexContraints();
     bool createVertexToAnimatedEllipseCollisions();

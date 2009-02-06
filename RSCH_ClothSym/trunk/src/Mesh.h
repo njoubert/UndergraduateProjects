@@ -83,6 +83,8 @@ public:
     vec3 getNormal();
     bool & getConstaint();
     void setConstraint(bool);
+    int getDynamicConstraint();
+    void setDynamicConstraint(int);
     vec3 & getF();
     void setF(vec3);
     void clearF();
@@ -95,6 +97,7 @@ public:
 
 private:
     bool _fixed;
+    int _dynamicConstIndex;
     vec3 F;		//Force
     vec3 X;     //Position
     vec3 U;     //Original Position

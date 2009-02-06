@@ -339,9 +339,10 @@ void AniModel::draw() {
  *
  *------------------------------------------------*/
 
-AniElliModel::AniElliModel(std::pair<  vector < vector <mat4> > , vector < vector <vec3> > > ellipsoids) {
-	_ellipsoids = ellipsoids.first;
-	_elliRots = ellipsoids.second;
+AniElliModel::AniElliModel(vector < vector <mat4> > ellipsoids) {
+	_ellipsoids = ellipsoids;
+
+	//_elliRots = ellipsoids.second;
 	cout<<"Loaded Rotation Data for Angular Velocity: "<<_elliRots.size()<<endl;
 /*
 	for(int i = 0; i < _elliRots.size(); i++) {
@@ -415,7 +416,7 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
         //cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
        //<<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
         //<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
-
+    if(DEBUG)
         cout<<"				Ellipsoid Model is on FRAME: "<<_count<<". ElliTime is: "<<_elliTime[1]<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
 
 //*/

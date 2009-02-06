@@ -59,11 +59,14 @@ void World::advance(double netTime) {
 
 	int numSteps = floor(netTime / _models[modelIndex[0]]->getTimeStep());
 	double StepOfTimeStep = netTime/numSteps;
-	cout<<"A step of: "<<netTime<<" will be broken up into "<<numSteps<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
+	if(DEBUG)
+		cout<<"A step of: "<<netTime<<" will be broken up into "<<numSteps<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
 	for (int i = 0; i < numSteps; i++) {
-		cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
+		if(DEBUG)
+			cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 		for (unsigned int j = 0; j < _models.size(); j++) {
-			cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take "<<ceil(_models[modelIndex[0]]->getTimeStep()/_models[j]->getTimeStep())<<" steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
+			if(DEBUG)
+				cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take "<<ceil(_models[modelIndex[0]]->getTimeStep()/_models[j]->getTimeStep())<<" steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
 			/*
 			if(STEPSBEFORESYNC != -1 && j == LOWQINDEX){
 				if(_syncCounter%STEPSBEFORESYNC == 0) {
@@ -80,8 +83,8 @@ void World::advance(double netTime) {
 		_time += StepOfTimeStep;
 		TIME = _time;
 		_syncCounter++;
-
-		cout<<endl;
+		if(DEBUG)
+			cout<<endl;
 	}
 
     //_time += netTime;
@@ -148,7 +151,7 @@ bool World::loadEllipseModel(string filename, int numFrames) {
     cout << "Parsing and Loading EllipseModel..." << endl;
 
     ellipseParser parser;
-    std::pair<  vector < vector <mat4> > , vector < vector <vec3> > >
+    std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > > > >
 		ellipsoids = parser.parseEllipsoids(filename, numFrames);
     /*	DEBUG FOR PARSER
      for(int i = 0; i < 21; i++) {
@@ -159,8 +162,8 @@ bool World::loadEllipseModel(string filename, int numFrames) {
      }
      //*/
 
-    Model* model = new AniElliModel(ellipsoids);
-    _models.push_back(model);
+   // Model* model = new AniElliModel(ellipsoids.first);
+    //_models.push_back(model);
     cout << "Done Parsing and loading EllipseModel." << endl;
     return true;
 }
@@ -196,6 +199,46 @@ bool World::disableMeshSyncing(int lowQmodelIndex) {
  * Magic happens here to load in constraints somehow...
  * TODO: Parse this from a file or something..
  */
+bool World::createVertexToAnimatedEllipseContraints(vector < vector < std::pair < int, int > > > constraints) {
+	vector<int> LeadEllipsoids;
+	vector<int> FollowVertices;
+	for(unsigned int i = 0; i < constraints[0].size(); i++) {		//Modify constraints[0] with another for loop if you want time varying constraints
+		LeadEllipsoids.push_back(constraints[0][i].second);
+		FollowVertices.push_back(constraints[0][i].first);
+	}
+
+	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
+
+			if (_models.size() > 1) {
+				for(int j = 1; j < _models.size(); j++) {	//Ellipsoid Model Should be Last so j = 1; j <_models.size() -1; j++
+				//Get the model I want to constrain
+				SimModel* followModel = (SimModel*) _models[j];
+				//Get the vertex on this model you want to constrain (the Follow):
+				TriangleMeshVertex* v = followModel->getMesh()->getVertex(FollowVertices[i]);
+
+				//Get the model I want to constrain against
+				AniElliModel* leadModel = (AniElliModel*) _models[0];
+				//Get the index of the Ellipsoid you want to constrain to (the Lead)
+				int ellipsoidNr = LeadEllipsoids[i];
+
+				//Set up the constraint
+				VertexToAnimatedEllipseConstraint* constraint = new VertexToAnimatedEllipseConstraint();
+				constraint->setLead(leadModel, ellipsoidNr);
+				constraint->setFollow(v);
+
+				followModel->registerConstraint(constraint);
+
+				cout << "Created Dynamic Constraint: Mesh Vertex: "
+						<< FollowVertices[i] << " is connected to Ellipsoid "
+						<< LeadEllipsoids[i] << endl;
+				//followModel->applyInitialConstraints();
+				//cout<<"Dynamic Constraint Initialized."<<endl;
+				}
+			}
+
+		}
+}
+
 bool World::createVertexToAnimatedEllipseContraint() {
 	vector<int> LeadEllipsoids;
 	if (LEAD1 != -1)
