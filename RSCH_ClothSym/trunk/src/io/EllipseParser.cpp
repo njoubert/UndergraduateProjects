@@ -28,7 +28,7 @@ ellipseParser::ellipseParser() {
 }
 
 std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > > > >
-	ellipseParser::parseEllipsoids(string filename, int numFrames) {
+	ellipseParser::parseEllipsoids(string filename, int numFrames, int startFrame) {
 
     //printInfo("Parsing Scene File " << filename);
 	char line[10024];
@@ -48,7 +48,7 @@ std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > 
     ifstream inFile;
 
     cout<<"Number of Frames: "<<numFrames<<endl<<endl;
-    for(int i = 0; i < numFrames; i++) {
+    for(int i = startFrame; i < numFrames; i++) {
 
     	//cout<<"i= "<<i+1<<" out of "<<numFrames<<" frames."<<endl;
     	//cout<<"Root Filename: "<<rootFileName.c_str()<<endl;
@@ -95,17 +95,17 @@ std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > 
     for(int i = 0; i < 1; i++) {
     		cout<<"Frame: "<<i<<endl;
     		for(int j = 0; j < myEllipsoidFrames[i].size(); j++) {
-    			cout<<"Ellipsoid: "<<j<<endl;
-    			cout<<"Matrix Transformation: "<<myEllipsoidFrames[i][j]<<endl;
+    			//cout<<"Ellipsoid: "<<j<<endl;
+    			//cout<<"Matrix Transformation: "<<myEllipsoidFrames[i][j]<<endl;
     		}
-    		cout<<endl;
+    		//cout<<endl;
     		for(int k = 0; k < myEllipsoidConsts[i].size(); k++) {
-    		    cout<<"Ellipsoid: "<<k<<endl;
-    		    cout<<"Dynamic Constraint Vetex: "<<myEllipsoidConsts[i][k].first<<" To Ellipsoid: "<<myEllipsoidConsts[i][k].second<<endl;
+    		    //cout<<"Constraint: "<<k<<endl;
+    		    //cout<<"Dynamic Constraint Vetex: "<<myEllipsoidConsts[i][k].first<<" To Ellipsoid: "<<myEllipsoidConsts[i][k].second<<endl;
     		}
-    		cout<<endl;
+    		//cout<<endl;
     	}
-    	cout<<endl;
+    	//cout<<endl;
 //*/
 
     elliData.first = myEllipsoidFrames;
@@ -145,10 +145,12 @@ std::pair< std::pair< bool, mat4 >, std::pair< bool, int > > ellipseParser::pars
         if(constraintIdentifier[0] == 'v') {
         	char dynConstInd_char[constraintIdentifier.size()-1];
         	for(int i = 1; i < constraintIdentifier.size(); i++)
-        		dynConstInd_char[i] = constraintIdentifier.c_str()[i];
+        		dynConstInd_char[i-1] = constraintIdentifier.c_str()[i];
+        	//cout<<"Constraint Identifier: "<<constraintIdentifier<<endl;
+        	//cout<<"Converted to Char: "<<dynConstInd_char<<endl;
         	dynConstInd = atoi(dynConstInd_char);
         	lineData.second.first = true;
-        	cout<<"Dynamic Constraint Found for Vertex: "<<dynConstInd<<endl;//<<" and Ellipsoid: "<<<<endl;
+        	//cout<<"Dynamic Constraint Found for Vertex: "<<dynConstInd<<endl;//<<" and Ellipsoid: "<<<<endl;
         }
         else
         	lineData.second.first = false;

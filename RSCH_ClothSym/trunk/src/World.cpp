@@ -56,17 +56,36 @@ void World::advance(double netTime) {
 
 	//
 //*/
-
+	//_models[modelIndex[0]]->getTimeStep() = model with biggest time step
 	int numSteps = floor(netTime / _models[modelIndex[0]]->getTimeStep());
 	double StepOfTimeStep = netTime/numSteps;
+	double durationSoFar = 0;
+	double timeStepDuration = 0;
 	if(DEBUG)
 		cout<<"A step of: "<<netTime<<" will be broken up into "<<numSteps<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
-	for (int i = 0; i < numSteps; i++) {
+	for (int i = 0; i < numSteps+1; i++) {
 		if(DEBUG)
 			cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
+
+		/* THIS SECTION TAKES CARE OF ROUNDOFF TIMESTEPS.
+		 * INVARIANT: End of outer loop simulates forward in time for _exactly_ the netTime amount. */
+		timeStepDuration = _models[modelIndex[0]]->getTimeStep();
+		double netTimeLeft = netTime - durationSoFar;
+		if (netTimeLeft +0.000000000001 < StepOfTimeStep) {
+			if (netTimeLeft == 0) {
+				if (DEBUG)
+					cout << "    -- Did not need to take an extra roundoff step" << endl;
+				break;
+			}
+			//Change the next timeStep to take a step of the correct duration
+			//to bring us to the end of the global timestep.
+			timeStepDuration = netTimeLeft;
+			cout << "    -- Taking extra roundoff step of duration " << timeStepDuration << "s, where current stepCount is " << i << " of " << numSteps << endl;
+		}
+
 		for (unsigned int j = 0; j < _models.size(); j++) {
 			if(DEBUG)
-				cout<<"			Model: "<<j<<" w/ timeStep: "<<_models[j]->getTimeStep()<<" must take "<<ceil(_models[modelIndex[0]]->getTimeStep()/_models[j]->getTimeStep())<<" steps to fufill "<<_models[modelIndex[0]]->getTimeStep()<<"s"<<endl;
+				cout<<"			Model: "<<j<<" w/ timeStep: "<<timeStepDuration<<" must take "<<ceil(timeStepDuration/_models[j]->getTimeStep())<<" steps to fufill "<<timeStepDuration<<"s"<<endl;
 			/*
 			if(STEPSBEFORESYNC != -1 && j == LOWQINDEX){
 				if(_syncCounter%STEPSBEFORESYNC == 0) {
@@ -77,15 +96,17 @@ void World::advance(double netTime) {
 					disableMeshCorrection(LOWQINDEX);
 			}
 			//*/
-			_models[j]->advance(_models[modelIndex[0]]->getTimeStep(), _time, StepOfTimeStep);
+			_models[j]->advance(timeStepDuration, _time, StepOfTimeStep);
 
 		}
 		_time += StepOfTimeStep;
+		durationSoFar += StepOfTimeStep;
 		TIME = _time;
 		_syncCounter++;
 		if(DEBUG)
 			cout<<endl;
 	}
+
 
     //_time += netTime;
 }
@@ -147,12 +168,12 @@ bool World::loadAniModel(string filename) {
     return true;
 }
 
-bool World::loadEllipseModel(string filename, int numFrames) {
+bool World::loadEllipseModel(string filename, int numFrames, int startFrame) {
     cout << "Parsing and Loading EllipseModel..." << endl;
 
     ellipseParser parser;
     std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > > > >
-		ellipsoids = parser.parseEllipsoids(filename, numFrames);
+		ellipsoids = parser.parseEllipsoids(filename, numFrames, startFrame);
     /*	DEBUG FOR PARSER
      for(int i = 0; i < 21; i++) {
      cout<<endl<<endl<<"Frame: "<<i+1<<endl;
@@ -162,8 +183,9 @@ bool World::loadEllipseModel(string filename, int numFrames) {
      }
      //*/
 
-   // Model* model = new AniElliModel(ellipsoids.first);
-    //_models.push_back(model);
+	Model* model = new AniElliModel(ellipsoids.first);
+    _models.push_back(model);
+    createVertexToAnimatedEllipseContraints(ellipsoids.second);
     cout << "Done Parsing and loading EllipseModel." << endl;
     return true;
 }
@@ -208,16 +230,14 @@ bool World::createVertexToAnimatedEllipseContraints(vector < vector < std::pair 
 	}
 
 	for (unsigned int i = 0; i < FollowVertices.size(); i++) {
-
-			if (_models.size() > 1) {
-				for(int j = 1; j < _models.size(); j++) {	//Ellipsoid Model Should be Last so j = 1; j <_models.size() -1; j++
+				for(int j = 0; j < _models.size()-1; j++) {	//Ellipsoid Model Should be Last so j = 1; j <_models.size() -1; j++
 				//Get the model I want to constrain
 				SimModel* followModel = (SimModel*) _models[j];
 				//Get the vertex on this model you want to constrain (the Follow):
 				TriangleMeshVertex* v = followModel->getMesh()->getVertex(FollowVertices[i]);
 
 				//Get the model I want to constrain against
-				AniElliModel* leadModel = (AniElliModel*) _models[0];
+				AniElliModel* leadModel = (AniElliModel*) _models[_models.size()-1];
 				//Get the index of the Ellipsoid you want to constrain to (the Lead)
 				int ellipsoidNr = LeadEllipsoids[i];
 
@@ -234,9 +254,10 @@ bool World::createVertexToAnimatedEllipseContraints(vector < vector < std::pair 
 				//followModel->applyInitialConstraints();
 				//cout<<"Dynamic Constraint Initialized."<<endl;
 				}
-			}
-
+			STATIC_CONSTRAINTS = false;
+			DYNAMIC_CONSTRAINTS = true;
 		}
+	return true;
 }
 
 bool World::createVertexToAnimatedEllipseContraint() {
@@ -274,6 +295,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
 		if (_models.size() > 1) {
 			for(int j = 1; j < _models.size(); j++) {
+				cout<<"Creating Dynamic Constraints Manually (by use of command line)"<<endl;
 			//Get the model I want to constrain
 			SimModel* followModel = (SimModel*) _models[j];
 			//Get the vertex on this model you want to constrain (the Follow):
@@ -304,7 +326,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 
 	}
 
-	cout << FollowVertices.size() << " Dynamic Constraints Created." << endl;
+	cout << FollowVertices.size() << " Dynamic Constraints Manually Created." << endl;
 	STATIC_CONSTRAINTS = false;
 	DYNAMIC_CONSTRAINTS = true;
 	return true;
@@ -405,19 +427,20 @@ void World::exportSim(int simNum, double time, bool JustDoIt, double inverseFPS)
 			}
 }
 
+//MOUSE FORCES ARE CURRENTLY DEPENDENT ON WHICH MODEL IS FIRST SO I DISABLED THEM
 void World::enableMouseForce(vec3 mPos) {
-	SimModel* simModel = (SimModel*) _models[1];
+	SimModel* simModel = (SimModel*) _models[0];
 	simModel->enableMouseForce(mPos);
 }
 void World::disableMouseForce() {
-	SimModel* simModel = (SimModel*) _models[1];
+	SimModel* simModel = (SimModel*) _models[0];
 	simModel->disableMouseForce();
 }
 void World::updateMouseForce(vec3 new_mPos) {
-	SimModel* simModel = (SimModel*) _models[1];
+	SimModel* simModel = (SimModel*) _models[0];
 	simModel->updateMouseForce(new_mPos);
 }
 bool World::isMouseEnabled() {
-	SimModel* simModel = (SimModel*) _models[1];
+	SimModel* simModel = (SimModel*) _models[0];
 	return simModel->isMouseEnabled();
 }

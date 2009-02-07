@@ -118,13 +118,15 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-        //cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
+    	if(DEBUG)
+    		cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
         _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
-        //cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
-        _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
+        if(DEBUG)
+        	cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
+        _system->takeStep(_solver, &_constraints, &_collisions, timeLeft);
     }
 
 }
@@ -367,6 +369,9 @@ AniElliModel::AniElliModel(vector < vector <mat4> > ellipsoids) {
 	_count = 0;
 	_timeStep = 1.0/120.0;
 	_loops = 0;
+	_elliTime[0] = 0;
+	_elliTime[1] = 0;
+	_elliTime[2] = 0;
 
 	_muS = .6;
 	//_muD = 20.4;
@@ -413,7 +418,7 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;
     _elliTime[2] = (_futureCount + _loops*totalFrames)*_timeStep;
 
-        //cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
+        //\\cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
        //<<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
         //<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
     if(DEBUG)

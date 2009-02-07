@@ -33,7 +33,7 @@ public:
     bool loadStatModel(string);
     bool loadSimModel(TriangleMesh*, double, float, string);
     bool loadAniModel(string);
-    bool loadEllipseModel(string, int);
+    bool loadEllipseModel(string, int, int);
 
     bool initializeMeshSyncing(int, int);
     bool enableMeshSyncing(int, int);

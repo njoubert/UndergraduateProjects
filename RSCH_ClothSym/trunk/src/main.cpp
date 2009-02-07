@@ -333,10 +333,11 @@ int parseCommandLine(int argc, char *argv[]) {
 
 		} else if (!strcmp(argv[i], "-elliobj")) {
 
-			if (isThereMore(i, argc, 2)) {
+			if (isThereMore(i, argc, 3)) {
 				std::string filename = std::string(argv[++i]);
 				int numFrames = atoi(argv[++i]);
-				world.loadEllipseModel(filename, numFrames);
+				int startFrame = atoi(argv[++i]);
+				world.loadEllipseModel(filename, numFrames, startFrame);
 				hasOBJ = true;
 				DRAWMODELS.push_back(true);
 			} else {
@@ -790,6 +791,8 @@ int GLframe = 0, GLtime, GLtimebase = 0;
 // This function draws the actual world using OpenGL.
 //
 void display(void) {
+
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (cam.follow)
@@ -878,7 +881,6 @@ void myframemove() {
 			fpstimer.Stop();
 			fpstimer.Start();
 		}
-
 		profiler.frametimers.Start();
 
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w,
@@ -896,8 +898,8 @@ void myframemove() {
 //-------------------------------------------------------------------------------
 //
 void myMousePress(int button, int state, int x, int y) {
-
-	//*
+	//MOUSE FORCES ARE CURRENTLY DEPENDENT ON WHICH MODEL IS FIRST SO I DISABLED THEM
+	/*
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && glutGetModifiers()
 			== GLUT_ACTIVE_SHIFT) {
 		//Find the point
@@ -919,17 +921,17 @@ void myMousePress(int button, int state, int x, int y) {
 		} else
 			cout << "gluUnProject Returned False" << endl;
 	} else {
+		//*/
 		cam.mousepress(button, state, x, y);
 		world.disableMouseForce();
-	}
-	//*/
+	//}
 }
 
 //-------------------------------------------------------------------------------
 //
 void myMouseMove(int x, int y) {
-
-	//*
+	//MOUSE FORCES ARE CURRENTLY DEPENDENT ON WHICH MODEL IS FIRST SO I DISABLED THEM
+	/*
 	if (world.isMouseEnabled()) {
 		//Find the point
 		float z = 0.5;
@@ -949,8 +951,9 @@ void myMouseMove(int x, int y) {
 		} else
 			cout << "gluUnProject Returned False" << endl;
 	} else
+		//*/
 		cam.mousemotion(x, y);
-	//*/
+
 }
 
 //-------------------------------------------------------------------------------

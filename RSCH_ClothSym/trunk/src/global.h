@@ -47,6 +47,7 @@ extern Profiler profiler;
 extern bool DEBUG;
 
 extern double TIME;
+extern double INTERSTEPTIME;
 
 extern float GAMMA;
 extern float BETA;

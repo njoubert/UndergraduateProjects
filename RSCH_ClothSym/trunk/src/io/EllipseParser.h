@@ -28,7 +28,7 @@ class ellipseParser {
 public:
 	ellipseParser();
 	std::pair<  vector < vector <mat4> > , vector < vector < std::pair < int, int > > > >
-		parseEllipsoids(string, int);
+		parseEllipsoids(string, int, int);
 private:
 	std::pair< std::pair< bool, mat4 >, std::pair< bool, int > > parseLine(string);
 };

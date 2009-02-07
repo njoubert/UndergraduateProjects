@@ -158,7 +158,6 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 	mat4 ElliTransform(0);
 	ElliTransform = _lead->getEllipsoid(index);
 	//vec4 ElliCenter = origin * ElliTransform;
-
 	int cVertex = _follow->getIndex();
 
 	double elliTimeStep = _lead->getTimeStep();
