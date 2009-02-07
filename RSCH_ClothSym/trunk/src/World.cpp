@@ -62,27 +62,12 @@ void World::advance(double netTime) {
 	double durationSoFar = 0;
 	double timeStepDuration = 0;
 	if(DEBUG)
-		cout<<"A step of: "<<netTime<<" will be broken up into "<<numSteps<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
-	for (int i = 0; i < numSteps+1; i++) {
+		cout<<"A step of: "<<netTime<<" will be broken up into "<<netTime / _models[modelIndex[0]]->getTimeStep()<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
+	for (int i = 0; i < numSteps; i++) {
 		if(DEBUG)
-			cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
+			cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" duration so far is : "<<durationSoFar<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 
-		/* THIS SECTION TAKES CARE OF ROUNDOFF TIMESTEPS.
-		 * INVARIANT: End of outer loop simulates forward in time for _exactly_ the netTime amount. */
 		timeStepDuration = _models[modelIndex[0]]->getTimeStep();
-		double netTimeLeft = netTime - durationSoFar;
-		if (netTimeLeft +0.000000000001 < StepOfTimeStep) {
-			if (netTimeLeft == 0) {
-				if (DEBUG)
-					cout << "    -- Did not need to take an extra roundoff step" << endl;
-				break;
-			}
-			//Change the next timeStep to take a step of the correct duration
-			//to bring us to the end of the global timestep.
-			timeStepDuration = netTimeLeft;
-			cout << "    -- Taking extra roundoff step of duration " << timeStepDuration << "s, where current stepCount is " << i << " of " << numSteps << endl;
-		}
-
 		for (unsigned int j = 0; j < _models.size(); j++) {
 			if(DEBUG)
 				cout<<"			Model: "<<j<<" w/ timeStep: "<<timeStepDuration<<" must take "<<ceil(timeStepDuration/_models[j]->getTimeStep())<<" steps to fufill "<<timeStepDuration<<"s"<<endl;
@@ -99,8 +84,31 @@ void World::advance(double netTime) {
 			_models[j]->advance(timeStepDuration, _time, StepOfTimeStep);
 
 		}
+
+
+		/* THIS SECTION TAKES CARE OF ROUNDOFF TIMESTEPS.
+		 * INVARIANT: End of outer loop simulates forward in time for _exactly_ the netTime amount. */
+
+
+		durationSoFar += timeStepDuration;
+		double netTimeLeft = netTime - durationSoFar;
+		if (netTimeLeft +0.000000000000001 < StepOfTimeStep) {
+			if (netTimeLeft == 0) {
+				if (DEBUG)
+					cout << "    -- Did not need to take an extra roundoff step  netTimeLeft: "<<netTimeLeft<<" StepOfTimeStep "<<StepOfTimeStep << endl;
+				//break;
+			}
+			//Change the next timeStep to take a step of the correct duration
+			//to bring us to the end of the global timestep.
+			else {
+				timeStepDuration = netTimeLeft;
+				cout << "    -- Taking extra roundoff step of duration " << timeStepDuration << "s, where current stepCount is " << i << " of " << numSteps << endl;
+				for (unsigned int j = 0; j < _models.size(); j++)
+					_models[j]->advance(timeStepDuration, _time, StepOfTimeStep);
+			}
+		}
+
 		_time += StepOfTimeStep;
-		durationSoFar += StepOfTimeStep;
 		TIME = _time;
 		_syncCounter++;
 		if(DEBUG)

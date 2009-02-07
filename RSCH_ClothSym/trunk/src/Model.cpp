@@ -100,7 +100,7 @@ SimModel::SimModel(TriangleMesh* mesh,
 		_timeStep = DEFAULT_TIMESTEP;
 	else
 		_timeStep = timeStep;
-
+	_localTime = 0;
 
     //Load x, vx from mesh into system:
     _system->loadStateFromMesh();
@@ -118,16 +118,20 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
-    	if(DEBUG)
-    		cout<<"				Model "<<_timeStep<<" Took Step"<<endl;
-        _system->takeStep(_solver, &_constraints, &_collisions, _timeStep);
+        _system->takeStep(_solver, &_constraints, &_collisions, _timeStep, _localTime);
+        _localTime += _timeStep;
+        if(DEBUG)
+        	cout<<"				Model "<<_timeStep<<" Took Step to local time:"<<_localTime<<endl;
     }
     double timeLeft = netTime - stepsToTake*_timeStep;
     if (timeLeft > 0) {
+        _system->takeStep(_solver, &_constraints, &_collisions, timeLeft, _localTime);
+        _localTime += timeLeft;
         if(DEBUG)
-        	cout<<"				Model "<<_timeStep<<" Took Roundoff Step"<<endl;
-        _system->takeStep(_solver, &_constraints, &_collisions, timeLeft);
+        	cout<<"				Model "<<_timeStep<<" Took Roundoff Step to local time: "<<_localTime<<endl;
     }
+    cout<<"				Local Time: "<<_localTime<<" = "<<" Global Time: "<<TIME<<endl;
+
 
 }
 
@@ -390,6 +394,7 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
 
 //*
     int totalFrames = _ellipsoids.size()-1;
+    //Sets what frame number to be on
     unsigned int frameNumber = floor( (globalTime/_timeStep) - _loops*totalFrames);
     int futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
 
@@ -414,6 +419,7 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
      	}
 
     }
+    //Sets Current, Future, Past Time of Ellipsoids
     _elliTime[0] = (_pastCount + _loops*totalFrames)*_timeStep;
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;
     _elliTime[2] = (_futureCount + _loops*totalFrames)*_timeStep;

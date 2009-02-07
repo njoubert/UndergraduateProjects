@@ -1344,13 +1344,12 @@ void System::applyCollisions(Solver* solver,
 
 }
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints, vector<
-		VertexToEllipseCollision*> *collisions, double timeStep) {
+		VertexToEllipseCollision*> *collisions, double timeStep, double localTime) {
 
 	profiler.frametimers.switchToTimer("calculateState");
 	//Calculate the current derivatives and forces
-	solver->calculateState(this, constraints, collisions, timeStep); //evalDeriv function
+	solver->calculateState(this, constraints, collisions, localTime); //evalDeriv function
 	profiler.frametimers.switchToGlobal();
-
 	//Run the solver to populate delx, delv
 	solver->solve(this, constraints, timeStep, collisions);
 

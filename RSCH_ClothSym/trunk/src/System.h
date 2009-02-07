@@ -67,7 +67,7 @@ public:
 			 SPARSE_MATRIX* JV, SPARSE_MATRIX* JP);
 	//-----------------------------------------
 
-	void takeStep(Solver*, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
+	void takeStep(Solver*, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double, double);
 
 	void enableMouseForce(vec3 mousePosition);
 	void updateMouseForce(vec3 mousePosition);

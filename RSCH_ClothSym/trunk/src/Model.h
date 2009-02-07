@@ -91,6 +91,7 @@ private:
     System* _system;
     TriangleMesh* _mesh;
     double _timeStep;
+    double _localTime;
     vector<Constraint*> _constraints;
     vector<VertexToEllipseCollision*> _collisions;
 };

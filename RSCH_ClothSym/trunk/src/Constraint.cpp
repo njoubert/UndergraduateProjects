@@ -69,7 +69,7 @@ void FixedConstraint::applyConstraintToSolverMatrices(SPARSE_MATRIX* A,
 	(*b)[cVertex] = vec3(0, 0, 0);
 }
 
-void FixedConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V) {
+void FixedConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double localTime) {
 
 }
 
@@ -107,7 +107,7 @@ void FixedBaraffConstraint::applyMassMod(SPARSE_MATRIX* M) {
 	}
 }
 
-void FixedBaraffConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V) {
+void FixedBaraffConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double) {
 
 }
 
@@ -131,7 +131,7 @@ void VertexToAnimatedVertexConstraint::applyConstraintToSolverMatrices(
 
 }
 
-void VertexToAnimatedVertexConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V) {
+void VertexToAnimatedVertexConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double) {
 
 }
 
@@ -146,7 +146,7 @@ VertexToAnimatedEllipseConstraint::VertexToAnimatedEllipseConstraint() {
 }
 
 void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
-		LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y, double timeStep) {
+		LARGE_VECTOR* X, LARGE_VECTOR* V, LARGE_VECTOR* Y, double localTime) {
 	//Move the follow's points to the same position as the lead's points.
 	//Get Ellipsoid Position From Ellipsoid Transformation
 	vec4 origin(0);
@@ -176,22 +176,21 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 	vec3 x0 = _lead->getOrigin(_leadIndex);
 	vec3 x0prime, v;
 
-	if((TIME - elliTime[1]) < -0.0000000001) {
-		x0prime = x0 + (TIME-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
-		//v = (x0 - x0prime)/(elliTime[0] - TIME);
+	if((localTime - elliTime[1]) < -0.0000000001) {
+		x0prime = x0 + (localTime-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
+		//v = (x0 - x0prime)/(elliTime[0] - localTime);
 		v = (x0 - xp)/(elliTime[1] - elliTime[0]);
 		//cout<<"Case1: "<<"xp: "<<xp<<" x0': "<<x0prime<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
-		cout<<"Case1: "<<"time Difference: "<<(elliTime[0] - TIME)<<" Position Difference: "<<(x0 - x0prime).length()<<" |v|: "<<v.length()<<endl;
-		cout<<"I'm surprised it ever went into this loop because the ellipsoid frame is floored in the advance function of model.cpp"<<endl;
-		exit(1);
+		//cout<<"Case1: "<<"time Difference: "<<(elliTime[0] - localTime)<<" Position Difference: "<<(x0 - x0prime).length()<<" |v|: "<<v.length()<<endl;
+		//cout<<"I'm surprised it ever went into this loop because the ellipsoid frame is floored in the advance function of model.cpp"<<endl;
 	}
-	else if((TIME - elliTime[1]) > 0.0000000001) {
-		x0prime = x0 + (TIME - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
+	else if((localTime - elliTime[1]) > 0.0000000001) {
+		x0prime = x0 + (localTime - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
 		//x0prime = x0;
 		v = (xf - x0)/(elliTime[2] - elliTime[1]);
 		//v = (xf - x0)/(timeStep);
 		//v = (xf - xp)/(elliTime[2] - elliTime[0]);
-		//v = (x0prime - x0)/(TIME - elliTime[1]);
+		//v = (x0prime - x0)/(localTime - elliTime[1]);
 		//cout<<"Case2: "<<"xp: "<<xp<<" x0: "<<x0<<" x0': "<<x0prime<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
 		//cout<<"Case2: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<(xf - x0).length()<<" |v|: "<<v.length()<<endl;
 
@@ -227,7 +226,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 	(*b)[cVertex] = _vel;//vec3(0,0,0);//
 }
 
-void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V) {
+void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double localTime) {
 
 		int cVertex = _follow->getIndex();
 
@@ -247,12 +246,12 @@ void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(LARGE_VECTOR* X
 		vec3 x0 = _lead->getOrigin(_leadIndex);
 		vec3 x0prime, v;
 
-		if((TIME - elliTime[1]) < -0.0000000001) {
-			x0prime = x0 + (TIME-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
+		if((localTime - elliTime[1]) < -0.0000000001) {
+			x0prime = x0 + (localTime-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
 			v = (x0 - xp)/(elliTime[1] - elliTime[0]);
 		}
-		else if((TIME - elliTime[1]) > 0.0000000001) {
-			x0prime = x0 + (TIME - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
+		else if((localTime - elliTime[1]) > 0.0000000001) {
+			x0prime = x0 + (localTime - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
 			v = (xf - x0)/(elliTime[2] - elliTime[1]);
 		}
 		else {
@@ -269,9 +268,9 @@ void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(LARGE_VECTOR* X
 }
 
 /****************************************************************
- *                                                               *
+ *                                                              *
  *               VertexToEllipseCollision		                *
- *                                                               *
+ *                                                              *
  ****************************************************************/
 
 VertexToEllipseCollision::VertexToEllipseCollision() {
@@ -313,7 +312,7 @@ vec3 VertexToEllipseCollision::f_friction(vec3 Vt, double Mu) {
 	return f;
 }
 
-void VertexToEllipseCollision::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V) {
+void VertexToEllipseCollision::applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double localTime) {
 	for (int i = 0; i < _mesh->countVertices(); i++) {
 		for (int j = 0; j < _ellipsoids->getSize(); j++) {
 			TriangleMeshVertex* Vert = _mesh->getVertex(i);

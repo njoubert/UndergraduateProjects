@@ -29,7 +29,7 @@ public:
     virtual void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*)=0;
     //virtual void applyConstraintsToState(LARGE_VECTOR* X, LARGE_VECTOR* Y, LARGE_VECTOR* V)=0;
     //virtual void applyCollisionToMesh(LARGE_VECTOR*, LARGE_VECTOR*, LARGE_VECTOR*)=0;
-    virtual void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V)=0;
+    virtual void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double)=0;
     void setLead(AniElliModel*, int);
     void setFollow(TriangleMeshVertex*);
     void setHierarchy(int);
@@ -54,7 +54,7 @@ class FixedConstraint : public Constraint {
 public:
     FixedConstraint();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*, LARGE_VECTOR*, double);
-    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
+    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
@@ -62,7 +62,7 @@ class FixedBaraffConstraint : public Constraint {
 public:
     FixedBaraffConstraint();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*,LARGE_VECTOR*, double);
-    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
+    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
     void applyMassMod(SPARSE_MATRIX*);
 };
@@ -71,7 +71,7 @@ class VertexToAnimatedVertexConstraint : public Constraint {
 public:
     VertexToAnimatedVertexConstraint();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*,LARGE_VECTOR*, double);
-    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
+    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
 };
 
@@ -81,7 +81,7 @@ public:
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*,LARGE_VECTOR*, double);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
     void applyConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
-    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
+    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
 private:
 	vec3 _vel;
 };
@@ -91,7 +91,7 @@ public:
 	VertexToEllipseCollision();
     void applyConstraintToPoints(LARGE_VECTOR*,LARGE_VECTOR*,LARGE_VECTOR*, double);
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
-    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
+    void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
 
     vec3 f_dampCollision(vec3 vPoint, double Kcd);
     vec3 f_friction(vec3 V, double Mu);

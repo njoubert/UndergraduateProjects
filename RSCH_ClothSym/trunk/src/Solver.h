@@ -83,8 +83,8 @@ public:
     ~NewmarkSolver();
     LARGE_VECTOR* getY();
     LARGE_VECTOR* getZ();
-    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double timeStep);
-    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *);
+    void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
+    void solve(System* sys,vector<Constraint*> *, double , vector<VertexToEllipseCollision*> *);
 
     vec3 calculateNewVelocity(vec3 v0, vec3 delv);
     vec3 calculateNewPosition(vec3 x0, vec3 v0, vec3 delv, double h);

@@ -233,11 +233,11 @@ void ExplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double
 
     if(COLLISIONS)
     	for (unsigned int i = 0; i < (*collisions).size(); i++)
-    		(*collisions)[i]->applyExplicitConstraints(sys->getX(), sys->getV());
+    		(*collisions)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeStep);
 
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)
  		for (unsigned int i = 0; i < constraints->size(); i++)
- 			(*constraints)[i]->applyExplicitConstraints(sys->getX(), sys->getV());
+ 			(*constraints)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeStep);
 
 
 
@@ -287,7 +287,7 @@ LARGE_VECTOR* NewmarkSolver::getZ() {
 }
 
 void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints,
-		vector<VertexToEllipseCollision*> *collisions, double timeStep) {
+		vector<VertexToEllipseCollision*> *collisions, double localTime) {
 	//Zero our current data structures
     _JP->zeroValues();
     _JV->zeroValues();
@@ -302,11 +302,11 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     correctMesh = false;
 
 
-    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, timeStep);
+    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, localTime);
 
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
-			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y, timeStep);
+			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y, localTime);
 	}
 
     sys->calculateInternalForces(this);
