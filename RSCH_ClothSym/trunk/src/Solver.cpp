@@ -104,7 +104,7 @@ void ImplicitSolver::calculateState(System* sys, vector<Constraint*> *constraint
 }
 
 void ImplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisions, double timeLeft) {
 
 	profiler.frametimers.switchToTimer("calculating matrices");
 
@@ -211,9 +211,20 @@ void ExplicitSolver::calculateState(System* sys, vector<Constraint*> *constraint
 }
 
 void ExplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisions, double timeLeft) {
 
-	sys->correctExplicitlyWithMeshSync(this, _y, _y, timeStep);
+
+
+
+    if(COLLISIONS)
+    	for (unsigned int i = 0; i < (*collisions).size(); i++)
+    		(*collisions)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeLeft);
+
+    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)
+ 		for (unsigned int i = 0; i < constraints->size(); i++)
+ 			(*constraints)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeLeft);
+
+    sys->correctExplicitlyWithMeshSync(this, _y, _y, timeStep);
 
 	for(int i = 0; i < _f->size(); i++) {
 	 (*_delv)[i] = (timeStep ) * (*_f)[i] / (*sys->getM())(i,i)[0][0];
@@ -231,13 +242,6 @@ void ExplicitSolver::solve(System* sys, vector<Constraint*> *constraints, double
 		 //*/
 	}
 
-    if(COLLISIONS)
-    	for (unsigned int i = 0; i < (*collisions).size(); i++)
-    		(*collisions)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeStep);
-
-    if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)
- 		for (unsigned int i = 0; i < constraints->size(); i++)
- 			(*constraints)[i]->applyExplicitConstraints(sys->getX(), sys->getV(), timeStep);
 
 
 
@@ -330,7 +334,7 @@ vec3 NewmarkSolver::calculateNewDelv(vec3 v0, vec3 vnew, double h) {
 }
 
 void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisions, double timeLeft) {
     profiler.frametimers.switchToTimer("calculating matrices");
 
 
@@ -423,7 +427,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 }
 
 void BaraffNewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double timeStep,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisionsdouble, double timeLeft) {
 //UNFINISHED
 
     profiler.frametimers.switchToTimer("calculating matrices");

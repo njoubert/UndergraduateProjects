@@ -25,7 +25,7 @@ public:
     virtual ~Solver();
     virtual void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double timeStep)=0;
     virtual void solve(System* sys,vector<Constraint*> *constraints,
-            double timeStep, vector<VertexToEllipseCollision*> *) = 0;
+            double timeStep, vector<VertexToEllipseCollision*> *, double) = 0;
     LARGE_VECTOR* getDelx();
     LARGE_VECTOR* getDelv();
     LARGE_VECTOR* getf();
@@ -50,7 +50,7 @@ public:
     void calculateState(System* sys, vector<Constraint*> *constraints,
     		vector<VertexToEllipseCollision*> *collisions);
     void solve(System* sys, vector<Constraint*> *constraints, double timeStep,
-    		vector<VertexToEllipseCollision*> *collisions);
+    		vector<VertexToEllipseCollision*> *collisions, double);
     LARGE_VECTOR* getY();
 private:
     DEFAULT_CG cg;
@@ -69,7 +69,7 @@ public:
 	ExplicitSolver(TriangleMesh*, int);
     ~ExplicitSolver();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double timeStep);
-    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *);
+    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *, double);
 private:
 	DEFAULT_CG cg;
     LARGE_VECTOR* _xTMP;
@@ -84,7 +84,7 @@ public:
     LARGE_VECTOR* getY();
     LARGE_VECTOR* getZ();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
-    void solve(System* sys,vector<Constraint*> *, double , vector<VertexToEllipseCollision*> *);
+    void solve(System* sys,vector<Constraint*> *, double , vector<VertexToEllipseCollision*> *, double);
 
     vec3 calculateNewVelocity(vec3 v0, vec3 delv);
     vec3 calculateNewPosition(vec3 x0, vec3 v0, vec3 delv, double h);
@@ -115,7 +115,7 @@ public:
     SPARSE_MATRIX* getJV();
     LARGE_VECTOR* getY();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *);
-    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *);
+    void solve(System* sys,vector<Constraint*> *constraints,double timeStep, vector<VertexToEllipseCollision*> *, double);
 private:
     DEFAULT_CG cg;
 	float _gamma;

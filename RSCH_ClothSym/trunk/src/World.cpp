@@ -102,7 +102,8 @@ void World::advance(double netTime) {
 			//to bring us to the end of the global timestep.
 			else {
 				timeStepDuration = netTimeLeft;
-				cout << "    -- Taking extra roundoff step of duration " << timeStepDuration << "s, where current stepCount is " << i << " of " << numSteps << endl;
+				if(DEBUG)
+					cout << "    -- Taking extra roundoff step of duration " << timeStepDuration << "s, where current stepCount is " << i << " of " << numSteps << endl;
 				for (unsigned int j = 0; j < _models.size(); j++)
 					_models[j]->advance(timeStepDuration, _time, StepOfTimeStep);
 			}
@@ -343,11 +344,11 @@ bool World::createVertexToAnimatedEllipseContraint() {
 bool World::createVertexToAnimatedEllipseCollisions() {
 	//COLISIONS (can be thought of as "Collision Constraints")
 	if (_models.size() > 1) {
-		for (int i = 1; i < _models.size(); i++) {
+		for (int i = 0; i < _models.size()-1; i++) {
 			SimModel* collisionModel = (SimModel*) _models[i];
 			TriangleMesh* collisionMesh = collisionModel->getMesh();
 
-			AniElliModel* collisionEllipsoids = (AniElliModel*) _models[0];
+			AniElliModel* collisionEllipsoids = (AniElliModel*) _models[_models.size()-1];
 
 			VertexToEllipseCollision* collisionConstraint =
 					new VertexToEllipseCollision();

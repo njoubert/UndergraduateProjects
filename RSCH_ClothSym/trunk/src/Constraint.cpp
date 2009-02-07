@@ -392,9 +392,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace)) {
 				//cout<<"colision detected"<<endl;
 				//*
-				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j,
-						Xc_elliSpace);
-
+				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
 
 				//vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
 				//vec3 Xo_p = _ellipsoids->getPastOrigin(j);

@@ -1351,7 +1351,7 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints, vector<
 	solver->calculateState(this, constraints, collisions, localTime); //evalDeriv function
 	profiler.frametimers.switchToGlobal();
 	//Run the solver to populate delx, delv
-	solver->solve(this, constraints, timeStep, collisions);
+	solver->solve(this, constraints, timeStep, collisions, localTime);
 
 	profiler.frametimers.switchToTimer("writeback mesh");
 	//Write back to mesh

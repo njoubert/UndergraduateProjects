@@ -130,7 +130,8 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
         if(DEBUG)
         	cout<<"				Model "<<_timeStep<<" Took Roundoff Step to local time: "<<_localTime<<endl;
     }
-    cout<<"				Local Time: "<<_localTime<<" = "<<" Global Time: "<<TIME<<endl;
+    if(DEBUG)
+		cout<<"				Local Time: "<<_localTime<<" = "<<" Global Time: "<<TIME<<endl;
 
 
 }
