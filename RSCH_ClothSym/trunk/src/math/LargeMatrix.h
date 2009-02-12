@@ -62,7 +62,7 @@ public:
 #endif
 
 #ifdef ENABLE_OMP
-	omp_set_num_threads(8);
+	omp_set_num_threads(ENABLE_OMP);
 #endif
 
         mat3 toInsert(0);
@@ -350,8 +350,12 @@ public:
     LargeVec3Vector & preMultiply(LargeVec3Vector & in, LargeVec3Vector & out, bool clearOutFirst) {
         if (clearOutFirst)
             out.zeroValues();
+	/*
+
+//Unfortunately my cool trick for doing preMultiply doesn't parallelize as easily.
+//We're not using this at the moment, but it's worth working on this if necessary in the future.
 #ifdef ENABLE_OMP
-      #pragma omp parallel
+      #pragma omp parallel 
       {
 	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
 	int id = omp_get_thread_num();
@@ -365,16 +369,20 @@ public:
 	}
       }
 #else
+	*/
         for (int iOutRow=0; iOutRow < _rowCount; iOutRow++) {
             _rowData[iOutRow]->preMultiply(in, out, iOutRow);
         }
+	/*
 #endif
+	*/
 	return out;
     }
     LargeVec3Vector & postMultiply(LargeVec3Vector & in, LargeVec3Vector & out) {
 #ifdef ENABLE_OMP
       #pragma omp parallel
       {
+	cout << "We are running threads: " << omp_get_num_threads() << endl;
 	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
 	int id = omp_get_thread_num();
 	int st = id * blockSize;
