@@ -7,7 +7,7 @@ SOURCES := $(wildcard ./src/*.cpp) \
     $(wildcard ./src/math/*.cpp) \
     $(wildcard ./src/connectors/*.cpp) 
     
-#Necessary declerations follow:
+#Necessary declarations follow:
 INCLUDE := 
 LIBRARY := 
 FRAMEWORK :=
@@ -16,7 +16,8 @@ PLATFORM :=
     
 #Options --------------------------------
     
-USEFREEIMAGE := false    
+USEFREEIMAGE := false
+#ENABLE_OMP := 8	# enables and specifies the number of threads to use.    
 MACROS += -DPERFORMANCEHAXX
 MACROS += -DCATCHERRORS
 
@@ -60,8 +61,14 @@ endif
 CC := gcc
 CXX := g++
 MACROS += -D$(PLATFORM)
-CXXFLAGS := -g -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
+CXXFLAGS := -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS)
+
+ifdef ENABLE_OMP
+	MACROS += -DENABLE_OMP=$(ENABLE_OMP)
+	CXXFLAGS += -fopenmp
+	LDFLAGS += -fopenmp
+endif
 
 #-----------------------------------------------------------------------------
 

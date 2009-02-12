@@ -35,7 +35,7 @@
 #include "LargeVector.h"
 
 #ifdef ENABLE_OMP
-#include <omp.h>
+    #include <omp.h>
 #endif
 
 class LargeMat3Matrix;
@@ -350,12 +350,12 @@ public:
     LargeVec3Vector & preMultiply(LargeVec3Vector & in, LargeVec3Vector & out, bool clearOutFirst) {
         if (clearOutFirst)
             out.zeroValues();
-	/*
 
-//Unfortunately my cool trick for doing preMultiply doesn't parallelize as easily.
-//We're not using this at the moment, but it's worth working on this if necessary in the future.
+	/*
+    //Unfortunately my cool trick for doing preMultiply doesn't parallelize as easily.
+    //We're not using this at the moment, but it's worth working on this if necessary in the future.
 #ifdef ENABLE_OMP
-      #pragma omp parallel 
+      #pragma omp parallel
       {
 	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
 	int id = omp_get_thread_num();
@@ -365,14 +365,16 @@ public:
 	for (int iOutRow = st; iOutRow <= en; iOutRow++) {
 	  for (unsigned int i = 0; i < _rowData[iOutRow]->_sparseIndices.size(); i++) {
 	    out[_rowData[iOutRow]->_sparseIndices[i]] += _rowData[iOutRow]->_sparseElements[i] * in[iOutRow];
-	  }      
+	  }
 	}
       }
 #else
 	*/
+
         for (int iOutRow=0; iOutRow < _rowCount; iOutRow++) {
             _rowData[iOutRow]->preMultiply(in, out, iOutRow);
         }
+
 	/*
 #endif
 	*/
@@ -382,19 +384,18 @@ public:
 #ifdef ENABLE_OMP
       #pragma omp parallel
       {
-	cout << "We are running threads: " << omp_get_num_threads() << endl;
-	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
-	int id = omp_get_thread_num();
-	int st = id * blockSize;
-	int en = min(((id+1) * blockSize)-1, _rowCount -1);
-        for (int iOutRow=st; iOutRow <= en; iOutRow++) {
-	    out[iOutRow] = vec3(0,0,0);
-	    for (unsigned int i = 0; i < _rowData[iOutRow]->_sparseIndices.size(); i++) {
-	      out[iOutRow] += _rowData[iOutRow]->_sparseElements[i] * in[_rowData[iOutRow]->_sparseIndices[i]];
-	    }
 
+          int blockSize = ceil((double) _rowCount / omp_get_num_threads());
+          int id = omp_get_thread_num();
+          int st = id * blockSize;
+          int en = min(((id+1) * blockSize)-1, _rowCount -1);
+          for (int iOutRow=st; iOutRow <= en; iOutRow++) {
+              out[iOutRow] = vec3(0,0,0);
+              for (unsigned int i = 0; i < _rowData[iOutRow]->_sparseIndices.size(); i++) {
+                  out[iOutRow] += _rowData[iOutRow]->_sparseElements[i] * in[_rowData[iOutRow]->_sparseIndices[i]];
+              }
+          }
 
-        }
       }
 #else
         for (int iOutRow=0; iOutRow < _rowCount; iOutRow++) {
