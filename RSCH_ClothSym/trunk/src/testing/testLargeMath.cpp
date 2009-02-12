@@ -251,14 +251,14 @@ void testMatrixVectorMultiply() {
     cout << "Lets do 2000 vector-matrix multiplies......" << endl;
     Timer timer;
     timer.Start();
-    /*
+
      for (int i = 0; i < 1000; i++) {
      //cout << "Lets to a premultiply:" << endl;
      BIG.preMultiply(BIGin, BIGout, true);
      //cout << "Lets do a postmultiply:" << endl;
      BIG.postMultiply(BIGin, BIGout);
      }
-     // */
+     //
     cout << " >>> Done in " << timer.Stop() << " s" << endl;
 }
 
@@ -280,7 +280,8 @@ void testSimpleCG() {
     cout << "Ax = b with A of all identities, b of all 5. Expect x to be all 5." << endl;
     cout << "Running simpleCG." << endl;
     timer.Start();
-    simpleCG(A1, b1, x1, 500, 0.0001);
+    SimpleCG solver(b1.size());
+    solver.solve(A1, b1, x1, 500, 0.0001);
     cout << "Done with simpleCG in " << timer.Stop() << " seconds." << endl;
     printResult("Result x1: " << x1);
 
@@ -344,7 +345,8 @@ void testSimpleCG() {
     LargeVec3Vector x2(b2.size(), 0);
     cout << "Running simpleCG." << endl;
     timer.Start();
-    int iter = simpleCG(A2, b2, x2, 100, 0.00000001);
+    SimpleCG solver2(b2.size());
+    int iter = solver2.solve(A2, b2, x2, 100, 0.00000001);
     cout << "Done with simpleCG in " << iter <<" steps, taking " << timer.Stop() << " seconds." << endl;
     printResult("Result x2: " << x2);
 
@@ -364,8 +366,8 @@ int main(int argc, char *argv[]) {
 
     testMatrixVectorMultiply();
 
-    printCategory("SIMPLE CONJUGATE GRADIENT ITERATIVE SOLVER");
-    testSimpleCG();
+    //printCategory("SIMPLE CONJUGATE GRADIENT ITERATIVE SOLVER");
+    //testSimpleCG();
 
     cout << "TEST DONE" << endl;
 }

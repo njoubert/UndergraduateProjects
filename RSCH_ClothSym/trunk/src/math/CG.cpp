@@ -68,7 +68,7 @@ int SimpleCG::solve(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & 
 
 
     //Calculate statistics on efficiency.
-    profiler.profileNewCGIteration(i);
+    //wprofiler.profileNewCGIteration(i);
     return i;
 }
 
@@ -130,7 +130,7 @@ int ModifiedCG::solve(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector 
 
 
     //Calculate statistics on efficiency.
-    profiler.profileNewCGIteration(i);
+    //profiler.profileNewCGIteration(i);
     return i;
 }
 
@@ -198,6 +198,6 @@ int PreconditionedCG::solve(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3V
 
 
     //Calculate statistics on efficiency.
-    profiler.profileNewCGIteration(i);
+    //profiler.profileNewCGIteration(i);
     return i;
 }
