@@ -312,7 +312,7 @@ bool World::createVertexToAnimatedEllipseContraint() {
 					FollowVertices[i]);
 
 			//Get the model I want to constrain against
-			AniElliModel* leadModel = (AniElliModel*) _models[0];
+			AniElliModel* leadModel = (AniElliModel*) _models[_models.size()-1];
 			//Get the index of the Ellipsoid you want to constrain to (the Lead)
 			int ellipsoidNr = LeadEllipsoids[i];
 
@@ -364,7 +364,7 @@ bool World::createVertexToAnimatedEllipseCollisions() {
 bool World::createFixedVertexContraints() {
 	if (STATIC_CONSTRAINTS) {
 		cout << "Checking for Fixed Constraints" << endl;
-		SimModel* simModel = (SimModel*) _models[1];
+		SimModel* simModel = (SimModel*) _models[0];
 		TriangleMesh* mesh = simModel->getMesh();
 		for (int i = 0; i < mesh->countVertices(); i++) {
 			TriangleMeshVertex* v = mesh->getVertex(i);
@@ -414,6 +414,9 @@ void World::inializeExportSim(string directory, double inverseFPS) {
         	_objOutDir.append("/");
         _doObjOutput = true;
         _lastTime = -1 - inverseFPS;
+
+        _ellipsoidsSyncFile.open ("ellipsoidsSyncData.txt");
+
 }
 void World::exportSim(int simNum, double time, bool JustDoIt, double inverseFPS) {
 	if (_models.size() > 1) {
@@ -433,7 +436,13 @@ void World::exportSim(int simNum, double time, bool JustDoIt, double inverseFPS)
 				//Export Model
 				SimModel* simModel = (SimModel*) _models[simNum];
 				simModel->getMesh()->exportAsOBJ(filename.str());
+				AniElliModel* elliModel = (AniElliModel*) _models[_models.size()-1];
+				_ellipsoidsSyncFile <<elliModel->getFrameCount()<<endl;
 			}
+}
+
+void World::apocalypse_EndOfTheClothAge() {
+	_ellipsoidsSyncFile.close();
 }
 
 //MOUSE FORCES ARE CURRENTLY DEPENDENT ON WHICH MODEL IS FIRST SO I DISABLED THEM

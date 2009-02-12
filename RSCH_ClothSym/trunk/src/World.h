@@ -51,6 +51,8 @@ public:
     void inializeExportSim(string directory, double inverseFPS);
     void exportSim(int simNum, double time, bool JustDoIt, double inverseFPS);
 
+    void apocalypse_EndOfTheClothAge();
+
     void enableMouseForce(vec3);
     void disableMouseForce();
     bool isMouseEnabled();
@@ -69,6 +71,7 @@ private:
     double _lastTime;
     bool _doObjOutput;
     string _objOutDir;
+    ofstream _ellipsoidsSyncFile;
 
     //For Syncing
     int _syncCounter;

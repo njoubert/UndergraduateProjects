@@ -524,7 +524,7 @@ void AniElliModel::draw() {
 				}
 			//exit(1);
 			glMultMatrixd(m);
-			glutSolidSphere(.75, 10, 10);
+			glutSolidSphere(.95, 10, 10);
 			glPopMatrix();
 		}
 	}

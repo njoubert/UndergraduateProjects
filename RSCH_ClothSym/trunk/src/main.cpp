@@ -885,7 +885,7 @@ void myframemove() {
 
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w,
 				cam._h);
-		world.exportSim(1, world.getTime(), true, cam.inverseFPS);
+		world.exportSim(0, world.getTime(), true, cam.inverseFPS);
 		world.advance(cam.inverseFPS);
 
 		profiler.frametimers.switchToTimer("postRedisplay");
@@ -960,6 +960,7 @@ void myMouseMove(int x, int y) {
 //
 void closeMe(int code) {
 	printStats();
+	world.apocalypse_EndOfTheClothAge();
 	exit(code);
 }
 

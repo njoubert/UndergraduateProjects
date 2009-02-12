@@ -306,7 +306,7 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     correctMesh = false;
 
 
-    correctMesh = sys->correctWithMeshSync(this, _y, _bmod, localTime);
+    //correctMesh = sys->correctWithMeshSync(this, _y, _bmod, localTime);
 
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
@@ -375,8 +375,8 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     //*/
 
 
-    if(correctMesh)
-    	sys->correctSolverMatrices(A, b);
+    //if(correctMesh)
+    	//sys->correctSolverMatrices(A, b);
 
     //sys->strainLimitSolverMatrices(A, b);
 
