@@ -15,6 +15,8 @@
 
 #include "../math/CG.h"
 
+#include <omp.h>
+
 using namespace std;
 
 void testVector() {
@@ -248,15 +250,15 @@ void testMatrixVectorMultiply() {
     LargeVec3Vector BIGin(1000, 2);
     LargeVec3Vector BIGout(1000);
 
-    cout << "Lets do 2000 vector-matrix multiplies......" << endl;
+    cout << "Lets do 8000 vector-matrix multiplies......" << endl;
     Timer timer;
     timer.Start();
 
-     for (int i = 0; i < 1000; i++) {
-     //cout << "Lets to a premultiply:" << endl;
-     BIG.preMultiply(BIGin, BIGout, true);
+     for (int i = 0; i < 8000; i++) {
+       //cout << "Lets to a premultiply:" << endl;
+       //BIG.preMultiply(BIGin, BIGout, true);
      //cout << "Lets do a postmultiply:" << endl;
-     BIG.postMultiply(BIGin, BIGout);
+          BIG.postMultiply(BIGin, BIGout);
      }
      //
     cout << " >>> Done in " << timer.Stop() << " s" << endl;
@@ -357,6 +359,9 @@ void testSimpleCG() {
 }
 
 int main(int argc, char *argv[]) {
+
+
+    omp_set_num_threads(8);
 
     printCategory("TEST LARGE VECTOR");
     testVector();

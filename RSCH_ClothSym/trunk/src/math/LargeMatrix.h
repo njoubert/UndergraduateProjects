@@ -34,6 +34,10 @@
 #include "algebra3.h"
 #include "LargeVector.h"
 
+#ifdef ENABLE_OMP
+#include <omp.h>
+#endif
+
 class LargeMat3Matrix;
 class LargeMat3MatrixRow;
 
@@ -55,6 +59,10 @@ public:
         _sparseElements(0), _sparseIndices(0), _colLength(cols), ZERO(0) {
 #else
         _sparseElements(sparsityPattern.size()), _sparseIndices(sparsityPattern.size()), _colLength(cols), ZERO(0) {
+#endif
+
+#ifdef ENABLE_OMP
+	omp_set_num_threads(8);
 #endif
 
         mat3 toInsert(0);
@@ -215,7 +223,7 @@ public:
     }
     friend ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
 
-private:
+public:
     std::vector<mat3> _sparseElements;
     std::vector<int> _sparseIndices; //We probably want some kind of fast lookup too.
     int _colLength; //The theoretical amount of cols in this row.
@@ -342,15 +350,49 @@ public:
     LargeVec3Vector & preMultiply(LargeVec3Vector & in, LargeVec3Vector & out, bool clearOutFirst) {
         if (clearOutFirst)
             out.zeroValues();
+#ifdef ENABLE_OMP
+      #pragma omp parallel
+      {
+	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
+	int id = omp_get_thread_num();
+	int st = id * blockSize;
+	int en = min(((id+1) * blockSize)-1, _rowCount -1);
+	//cout << "I am thread number " << id << endl;
+	for (int iOutRow = st; iOutRow <= en; iOutRow++) {
+	  for (unsigned int i = 0; i < _rowData[iOutRow]->_sparseIndices.size(); i++) {
+	    out[_rowData[iOutRow]->_sparseIndices[i]] += _rowData[iOutRow]->_sparseElements[i] * in[iOutRow];
+	  }      
+	}
+      }
+#else
         for (int iOutRow=0; iOutRow < _rowCount; iOutRow++) {
             _rowData[iOutRow]->preMultiply(in, out, iOutRow);
         }
-        return out;
+#endif
+	return out;
     }
     LargeVec3Vector & postMultiply(LargeVec3Vector & in, LargeVec3Vector & out) {
+#ifdef ENABLE_OMP
+      #pragma omp parallel
+      {
+	int blockSize = ceil((double) _rowCount / omp_get_num_threads());
+	int id = omp_get_thread_num();
+	int st = id * blockSize;
+	int en = min(((id+1) * blockSize)-1, _rowCount -1);
+        for (int iOutRow=st; iOutRow <= en; iOutRow++) {
+	    out[iOutRow] = vec3(0,0,0);
+	    for (unsigned int i = 0; i < _rowData[iOutRow]->_sparseIndices.size(); i++) {
+	      out[iOutRow] += _rowData[iOutRow]->_sparseElements[i] * in[_rowData[iOutRow]->_sparseIndices[i]];
+	    }
+
+
+        }
+      }
+#else
         for (int iOutRow=0; iOutRow < _rowCount; iOutRow++) {
             _rowData[iOutRow]->postMultiply(in, out, iOutRow);
         }
+#endif
         return out;
     }
     ostream & outAsMatlab(ostream & s) {
