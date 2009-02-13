@@ -21,7 +21,7 @@ FRAMEWORK := #-framework GLUT -framework OpenGL
 
 CC := gcc
 CXX := g++
-MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' #-DENABLE_OMP -DCATCH_ERRORS
+MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' -DCATCH_ERRORS -DENABLE_OMP=8
 CXXFLAGS := -O2 -fmessage-length=0 -fopenmp $(INCLUDE) $(MACROS)
 LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS) -fopenmp
 

@@ -250,17 +250,19 @@ void testMatrixVectorMultiply() {
     LargeVec3Vector BIGin(1000, 2);
     LargeVec3Vector BIGout(1000);
 
-    cout << "Lets do 8000 vector-matrix multiplies......" << endl;
+    cout << "Lets do 2000 vector-matrix postmultiplies......" << endl;
     Timer timer;
     timer.Start();
-
-     for (int i = 0; i < 8000; i++) {
-       //cout << "Lets to a premultiply:" << endl;
-       //BIG.preMultiply(BIGin, BIGout, true);
-     //cout << "Lets do a postmultiply:" << endl;
-          BIG.postMultiply(BIGin, BIGout);
+     for (int i = 0; i < 2000; i++) {
+       BIG.postMultiply(BIGin, BIGout);
      }
-     //
+    cout << " >>> Done in " << timer.Stop() << " s" << endl;
+
+    cout << "Lets do 2000 vector-matrix premultiplies......" << endl;
+    timer.Start();
+     for (int i = 0; i < 2000; i++) {
+       BIG.preMultiply(BIGin, BIGout, true);
+     }
     cout << " >>> Done in " << timer.Stop() << " s" << endl;
 }
 
@@ -360,9 +362,6 @@ void testSimpleCG() {
 
 int main(int argc, char *argv[]) {
 
-
-    omp_set_num_threads(8);
-
     printCategory("TEST LARGE VECTOR");
     testVector();
 
@@ -371,8 +370,8 @@ int main(int argc, char *argv[]) {
 
     testMatrixVectorMultiply();
 
-    //printCategory("SIMPLE CONJUGATE GRADIENT ITERATIVE SOLVER");
-    //testSimpleCG();
+    printCategory("SIMPLE CONJUGATE GRADIENT ITERATIVE SOLVER");
+    testSimpleCG();
 
     cout << "TEST DONE" << endl;
 }
