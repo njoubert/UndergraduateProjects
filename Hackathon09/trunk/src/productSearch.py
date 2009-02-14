@@ -12,19 +12,23 @@ def parsePriceStr(priceStr):
 def filterResults(listOfNames, name, threshold):
     if len(listOfNames) != 0:
 #        print 'in filterResults'
-#        print name
-        resultList = listOfNames[:]
-        base = name.split(" ")
+        base = name.lower().split(" ")
+        base.sort()
         distances = {}
-        for fullname in resultList:
-            comp = fullname.split(" ")
-            distances[fullname] = editdistance(comp, base)
+        for fullname in listOfNames:
+            comp = fullname.lower().split(" ")
+            comp.sort()
+            distances[fullname] = editdistance(comp[0:len(base)], base)
         x = distances.values()
         x.sort()
-        median = x[int(len(x)/2)]
-        for fullname in resultList:
-            if (distances[fullname] >= median+threshold):
-                 listOfNames.remove(fullname)
+        median = min(x[int(len(x)/2)], float(sum(x))/len(x))
+        print "median: " + str(median)
+        resultList = []
+        for fullname in listOfNames:
+            print str(distances[fullname]) + ": " + fullname
+            if (distances[fullname] <= median+threshold):
+                 resultList.append(fullname)
+        return resultList
         
 def editdistance(words1, words2):
 #    print "words1: " + str(words1)
@@ -90,7 +94,8 @@ def getGoogleProductData(baseName, upc, numResults=30):
             
     # filter item list
     itemNames = [x[0] for x in itemList]
-    filterResults(itemNames, baseName, 1)
+    itemNames = filterResults(itemNames, baseName, 1)
+    print itemNames
     
     # item := [product name, merchant, price]
     if len(itemList) > 0:
@@ -171,7 +176,7 @@ class localDataParser(HTMLParser):
         sumPrice = 0.0
         minIndex = -1
         validNames = self.products[:]
-        filterResults(validNames, product_name, 1)
+        validNames = filterResults(validNames, product_name, 1)
         numProducts = 0
         for i in range(len(self.products)):
             if self.products[i] in validNames:
