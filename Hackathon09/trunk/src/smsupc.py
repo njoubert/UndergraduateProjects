@@ -2,6 +2,7 @@ import sys
 import re
 import productSearch
 import myclickatell
+import ratingParser
 
 
 def massagePrice(price):
@@ -57,11 +58,11 @@ for upc in smsList:
     response = ""
     avgPrice = 0
     
-    baseName = productSearch.getProductName(upc)
-    print baseName
-    if baseName != None:
-        # local
-        if len(location) > 0:
+    # local
+    baseName = None
+    if len(location) > 0:
+        baseName = productSearch.getProductName(upc)
+        if baseName != None:
             localData = productSearch.localDataParser().getLocalProductData(baseName, location)
             avgPrice = localData[0]
             if len(localData) > 0:
@@ -74,6 +75,7 @@ for upc in smsList:
     
     # online    
     googleData = productSearch.getGoogleProductData(baseName, upc, numGoogleResults)
+    item = None
     if googleData != None:
         validOnline = True
         item = googleData[0]
@@ -88,10 +90,16 @@ for upc in smsList:
     # send sms
     if validLocal or validOnline:
         response += "Avg: $" + str(massagePrice(avgPrice)) + "\n"
+        useName = baseName
+        if baseName == None:
+            useName = item[0]   
+        rating = ratingParser.getRating(useName)
+        if len(rating) > 0:
+            response += rating + "/5\n"
         response += upc
         print "---------------------------"
         print response
-        c.sendMsg(phoneNumber, response)
+#        c.sendMsg(phoneNumber, response)
     else:
         failList.append(upc)
 
@@ -101,5 +109,5 @@ if len(failList) > 0:
         response += upc + ": No Results\n"
     print "---------------------"
     print response
-    c.sendMsg(phoneNumber, response)
+#    c.sendMsg(phoneNumber, response)
     
