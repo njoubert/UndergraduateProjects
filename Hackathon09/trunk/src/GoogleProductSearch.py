@@ -1,7 +1,3 @@
-import re
-import cgi
-import gdata.base.service
-import gdata.service
 try:
     from xml.etree import ElementTree
 except ImportError:
