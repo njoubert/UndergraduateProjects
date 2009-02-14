@@ -6,6 +6,9 @@ myclickatell.py
 
 Created by Niels Joubert on 2009-02-14.
 Copyright (c) 2009 __MyCompanyName__. All rights reserved.
+
+USAGE: import Clickatell from myclickatell
+
 """
 
 import urllib
