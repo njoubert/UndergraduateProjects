@@ -16,10 +16,13 @@ class LocalResultsGrabber(HTMLParser):
     html = ""
     ready = False
     ready2 = False
+    titleClassReady = False
+    titleReady = False
     dataready = False
     priceready = False
     startTag = ""
-    results = {}
+    results = []
+    products = []
     stores = []
     prices = []
     numResults = -1
@@ -37,6 +40,12 @@ class LocalResultsGrabber(HTMLParser):
   
     def handle_starttag(self, tag, attrs):
         self.startTag = self.get_starttag_text()
+        if tag == 'div':
+            if ('itemTitleDescription' in self.startTag):
+                self.titleClassReady = True
+        if tag == 'a':
+            if (self.titleClassReady == True):
+                self.titleReady = True
         if tag == 'strong':
             if (self.ready == False):
                 self.ready = True
@@ -47,6 +56,22 @@ class LocalResultsGrabber(HTMLParser):
         if tag == 'p':
             if self.ready2 == True:
                 self.priceready = True
+
+    def handle_data(self, data):
+        if self.titleReady == True:
+            self.products.append(data)
+            self.titleReady = False
+            self.titleClassReady = False
+        if self.dataready == True and '<a ' in self.startTag and 'class' not in self.startTag:
+            self.stores.append(data)
+            self.dataready = False
+            self.ready = False
+        if self.priceready == True:
+            if 'span' in self.startTag and 'id' in self.startTag:
+                print data
+                self.prices.append(str(data)[1:])
+                self.ready2 = False
+                self.priceready = False
   
     def processLocalResults(self):
         try:
@@ -59,43 +84,41 @@ class LocalResultsGrabber(HTMLParser):
             self.feed(self.html)
         except:
             print ''
+        print str(self.products) + ' length: ' + str(len(self.products))
         print str(self.stores) + ' length: ' + str(len(self.stores))
         print str(self.prices) + ' length: ' + str(len(self.prices))
-        for i in range(len(self.stores)):
-            self.results[str(self.stores[i])] = str(self.prices[i])
-        newresults = {}
         minPrice = 100000.0
-        minKey = None
-        count = 0
-        self.numResults = min(self.numResults, len(self.results))
-        for i in range(self.numResults):            
-            for key in self.results.keys():
-                nprice = str(self.results.get(key))[1:]
-                print 'nprice: ' + nprice
-                if (float(nprice) < float(minPrice)):
-                    minKey = key
-                    minPrice = nprice
-            priceObj = self.results.get(minKey)
-            newresults[minKey] = str(priceObj)[1:]
-            self.results.pop(minKey)
-            minPrice = 100000.0
-            minKey = None
-        self.results = newresults
+        minIndex = -1
+        for i in range(len(self.prices)):
+            nprice = self.prices[i]
+            if (float(nprice) < float(minPrice)):
+                print 'blah'
+                minIndex = i
+                minPrice = nprice
+        self.results = [self.products[minIndex], self.stores[minIndex], self.prices[minIndex]]
+        
+#        for i in range(len(self.stores)):
+#            self.results[str(self.stores[i])] = str(self.prices[i])
+#        newresults = {}
+#        minKey = None
+#        count = 0
+#        self.numResults = min(self.numResults, len(self.results))
+#        for i in range(self.numResults):            
+#            for key in self.results.keys():
+#                nprice = str(self.results.get(key))[1:]
+#                print 'nprice: ' + nprice
+#                if (float(nprice) < float(minPrice)):
+#                    minKey = key
+#                    minPrice = nprice
+#            priceObj = self.results.get(minKey)
+#            newresults[minKey] = str(priceObj)[1:]
+#            self.results.pop(minKey)
+#            minPrice = 100000.0
+#            minKey = None
+#        self.results = newresults
        
     def getResults(self):
         return self.results
       
-    def handle_data(self, data):
-        if self.dataready == True and '<a ' in self.startTag and 'class' not in self.startTag:
-            self.stores.append(data)
-            self.dataready = False
-            self.ready = False
-        if self.priceready == True:
-            if 'span' in self.startTag and 'id' in self.startTag:
-                print data
-                self.prices.append(data)
-                self.ready2 = False
-                self.priceready = False
-
 grabber = LocalResultsGrabber("Western Digital 500GB passport", "Plano", 1)
 print grabber.getResults()
