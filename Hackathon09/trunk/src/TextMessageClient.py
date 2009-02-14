@@ -71,5 +71,5 @@ tm = TextMessageClient()
 text = tm.createTextMessageResult("CANON 24to105mm lens 4 USMawefawefeaergaergeagreargeargeargeargeargaorhgaeroigheargoiheargoiahergoeagh", 8.23523432, 10.0, "324.23", "302.12", "Best Buy", "288.83", "canon.com")
 print "Length: " + str(len(text))
 print text  
-result = tm.receiveTextMessage("987342234567 wefwef")
+result = tm.receiveTextMessage("987342234567 987342457567")
 print result
