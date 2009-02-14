@@ -22,7 +22,7 @@ def getProductName(upc):
     return name
 
 # returns: google product item, or None if none exist
-def getGoogleProduct(upc, results=30):
+def getGoogleProductData(upc, results=30):
     gb_client = gdata.base.service.GBaseService() 
     gb_client.ClientLogin('hackathon09@gmail.com', 'hackathonyozio');
     q = gdata.base.service.BaseQuery() 
@@ -50,11 +50,13 @@ def getGoogleProduct(upc, results=30):
     # item := [product name, merchant, price]
     if len(itemList) > 0:
         minPriceItem = itemList[0]
+        sum = 0
         for item in itemList:
             itemPrice = item[2]
+            sum += itemPrice
             if itemPrice < minPriceItem[2]:
                 minPriceItem = item
-        return minPriceItem
+        return [minPriceItem, float(sum)/len(itemList)]
     return None
 
 
@@ -63,4 +65,4 @@ testCases = ["", "2", "410000039144", "013803050844"]
 for upc in testCases:
     name = getProductName(upc)
     print "Product name from upc: " + str(name)
-    print "Cheapest item: " + str(getGoogleProduct(upc, 30))
+    print "Cheapest item: " + str(getGoogleProductData(upc, 30))
