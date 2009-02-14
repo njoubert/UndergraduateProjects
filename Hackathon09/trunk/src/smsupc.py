@@ -16,14 +16,14 @@ def massageName(name, limit):
     return newName
 
 # TODO: argument checking
-#phoneNumber = sys.argv[1]
-#sms = sys.argv[2]
+phoneNumber = sys.argv[1]
+sms = sys.argv[2]
 
 # Test cases
-phoneNumber = "fake"
+#phoneNumber = "fake"
 #sms = "2               410000039144 013803050844"
 #sms = "san francisco 2              410000039144 013803050844"
-sms = "013803050844"
+#sms = "013803050844"
 
 smsList = [x for x in sms.split(" ") if len(x) > 0]
 locationList = []
