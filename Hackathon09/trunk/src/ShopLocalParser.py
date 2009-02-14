@@ -11,7 +11,7 @@ import atom
 import gdata.base
 from urllib2 import urlopen
 
-class UPCGrabber(HTMLParser):
+class LocalResultsGrabber(HTMLParser):
     BASE_URL = "http://www.shoplocal.com/"
     SEARCH_QUERY = "/searchlocal.aspx?searchtext="
     product_name = ""
@@ -66,20 +66,8 @@ class UPCGrabber(HTMLParser):
                 print data
                 self.ready2 = False
                 self.priceready = False
-#        print self.html
-#        m = re.search(self.REGEX_DESCRIPTION, self.html)
-#        if m != None:
-#            startPos = m.start() + len(self.REGEX_DESCRIPTION)
-#            print 'start: ' + str(startPos)
-#            print 'end: ' + m.end()
-#            self.html = self.html[startPos:]
-#        n = re.search(self.REGEX_DESCRIPTION2, self.html)
-#        if n != None:
-#            endPos = n.start()
-#            print 'end: ' + str(endPos)
-#            self.description = self.html[:endPos]
 
-grabber = UPCGrabber()
+grabber = LocalResultsGrabber()
 grabber.setProduct("Western Digital 250GB external")
 grabber.setLocation("San Francisco")
 print grabber.product_name
