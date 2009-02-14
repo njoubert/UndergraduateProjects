@@ -1,7 +1,6 @@
 import sys
 import re
 import productSearch
-import ShopLocalParser
 import myclickatell
 
 
@@ -10,9 +9,9 @@ def massagePrice(price):
     if (price > 20):
         return int(round(float(price)))
     
-def massageName(name):
-    newName = str(name)[0:25]
-    if len(name) > 25:
+def massageName(name, limit):
+    newName = str(name)[0:limit]
+    if len(name) > limit:
         newName += "..."
     return newName
 
@@ -42,7 +41,7 @@ for upc in smsList:
     
     validLocal = False
     validOnline = False
-    response = upc + ":\n"
+    response = upc + "\n"
     avgPrice = 0
     
     # local
@@ -53,7 +52,7 @@ for upc in smsList:
             avgPrice = localData[0]
             if len(localData) > 0:
                 validLocal = True
-                response += "Local: " + massageName(localData[1]) + " - $" + str(massagePrice(localData[3])) + " at " + massageName(localData[2]) + "\n"
+                response += "Local: " + massageName(localData[1], 25) + " $" + str(massagePrice(localData[3])) + " at " + massageName(localData[2], 15) + "\n"
             else:
                 response += "Local: No Results\n"
         else:
@@ -67,17 +66,16 @@ for upc in smsList:
         avgPrice += googleData[1]
         if validLocal:
             avgPrice /= 2
-        response += "Online: " + massageName(item[0]) + " - $" + str(massagePrice(item[2])) + " at " + massageName(item[1]) + "\n"
+        response += "Web: " + massageName(item[0], 25) + " $" + str(massagePrice(item[2])) + " at " + massageName(item[1], 15) + "\n"
     else:
-        response += "Online: No Results\n"
+        response += "Web: No Results\n"
     
     # send sms
     if validLocal or validOnline:
-        print"---------------------"
         response += "Avg: $" + str(massagePrice(avgPrice))
+        print "---------------------------"
         print response
-        print len(response)
-#        c.sendMsg(phoneNumber, response)
+        c.sendMsg(phoneNumber, response)
     else:
         failList.append(upc)
 
@@ -87,5 +85,5 @@ if len(failList) > 0:
         response += upc + ": No Results\n"
     print "---------------------"
     print response
-#    c.sendMsg(phoneNumber, response)
+    c.sendMsg(phoneNumber, response)
     
