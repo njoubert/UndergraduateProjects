@@ -1,11 +1,4 @@
 import gdata.base.service
-try:
-    from xml.etree import ElementTree
-except ImportError:
-    from elementtree import ElementTree
-import atom
-import gdata.base
-from urllib2 import urlopen
 
 def getGoogleProduct(upc, results=30):
     gb_client = gdata.base.service.GBaseService() 
