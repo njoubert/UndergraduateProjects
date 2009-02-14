@@ -52,6 +52,10 @@ double StatModel::getTimeStep() {
 }
 
 void StatModel::draw() {
+	//if(WIREFRAME)
+			//_material->makeStatWireframeColor();
+		//else
+			//_material->makeStatColor();
 
     //Make the Static Objects Blue
     _material->setGLcolors();
@@ -115,6 +119,8 @@ SimModel::~SimModel() {
 
 void SimModel::advance(double netTime, double globalTime, double futureTimeStep) {
     //Loading state happens on object creation.
+	for(int i = 0; i < _mesh->countVertices(); i++)
+	    	_mesh->getVertex(i)->detectedCollision() = false;
 
     int stepsToTake = floor(netTime / _timeStep);
     for (int i = 0; i < stepsToTake; i++) {
@@ -146,13 +152,19 @@ void SimModel::disableMouseForce() { _system->disableMouseForce(); }
 bool SimModel::isMouseEnabled() { return _system->isMouseEnabled(); }
 
 void SimModel::draw() {
+	//if(WIREFRAME)
+	//	glDisable(GL_LIGHTING);
+	//else
+	//	glEnable(GL_LIGHTING);
+
     _material->setGLcolors();
 
-    vec3 a, b, c, na, nb, nc;
+    vec3 a, b, c, na, nb, nc, n, p1, p2, d;
     TriangleMeshVertex** vertices;
     std::vector< TriangleMeshTriangle* >::const_iterator it =
         _mesh->triangles.begin();
 
+    //Draws the Mesh
     while (it != _mesh->triangles.end()) {
         vertices = (*it)->getVertices();
 
@@ -163,6 +175,10 @@ void SimModel::draw() {
         c = vertices[2]->getX();
         nc = vertices[2]->getNormal();
 
+        if(vertices[0]->detectedCollision() || vertices[1]->detectedCollision() || vertices[2]->detectedCollision()) {
+        	_material->makeCollisionColor();
+			_material->setGLcolors();
+        }
         glBegin(GL_TRIANGLES);
             glNormal3f( na[0], na[1], na[2]);
             glVertex3f(a[0],a[1],a[2]);
@@ -172,9 +188,54 @@ void SimModel::draw() {
             glVertex3f(c[0],c[1],c[2]);
         glEnd();
 
+        if(vertices[0]->detectedCollision() || vertices[1]->detectedCollision() || vertices[2]->detectedCollision()) {
+            _material->makeSimColor();
+        	_material->setGLcolors();
+        }
+
         it++;
     }
+
+    if (DRAWNORMALS) {
+		glLineWidth(3);
+		for (int i = 0; i < _mesh->countVertices(); i++) {
+			if (_mesh->getVertex(i)->detectedCollision()) {
+				_material->makeNormalsColor();
+				_material->setGLcolors();
+				n = _mesh->getVertex(i)->getNormalAtCollisionPt();
+				p1 = _mesh->getVertex(i)->getX();
+				p2 = p1 + .1 * n;
+				glBegin(GL_LINES);
+				glVertex3f(p1[0], p1[1], p1[2]);
+				glVertex3f(p2[0], p2[1], p2[2]);
+				glEnd();
+				_material->makeSimColor();
+				_material->setGLcolors();
+			}
+		}
+		glLineWidth(DEFAULT_LINE_WIDTH);
+	}
+
+	if (DRAWMESHDIFF) {
+		glLineWidth(3);
+		for (int i = 0; i < _mesh->countVertices(); i++) {
+			_material->makeMeshDiffColor();
+			_material->setGLcolors();
+			d = _mesh->getVertex(i)->getMeshDiff();
+			p1 = _mesh->getVertex(i)->getX();
+			p2 = p1 - 1*d;
+			glBegin(GL_LINES);
+			glVertex3f(p1[0], p1[1], p1[2]);
+			glVertex3f(p2[0], p2[1], p2[2]);
+			glEnd();
+			_material->makeSimColor();
+			_material->setGLcolors();
+		}
+		glLineWidth(DEFAULT_LINE_WIDTH);
+	}
+
 //*
+    //Draws Graph of Mesh Difference between Master and Slave
     if(_system->getErrorInd() > 0) {
     	vector<double> posError = _system->getPosError();
     	vector<double> velError = _system->getVelError();
@@ -188,6 +249,7 @@ void SimModel::draw() {
     	glBegin(GL_LINES);
 			glVertex3f(-4, -1.5, 1);
     		glVertex3f(-4, 0, 1);
+    	glEnd();
         glBegin(GL_LINES);
     		for(int i = 0; i < ErrorCount-1; i++){
     			//x1 = float(i)/100 - 4;
@@ -198,44 +260,7 @@ void SimModel::draw() {
     			glVertex3f(x2,-1.5+posError[i+1]*5,1);
     		}
         glEnd();
-    	/*
-    	glBegin(GL_LINES);
-			glVertex3f(-2, 2, 0);
-			glVertex3f(0, 2, 0);
-    	glEnd();
-    	glBegin(GL_LINES);
-			glVertex3f(-2, 2, 0);
-    		glVertex3f(-2, 3, 0);
-    	glEnd();
-    	glBegin(GL_LINES);
-			glVertex3f(-2, 0.5, 0);
-			glVertex3f(0, 0.5, 0);
-    	glEnd();
-    	glBegin(GL_LINES);
-			glVertex3f(-2, 0.5, 0);
-    		glVertex3f(-2, 1.5, 0);
-    	glEnd();
 
-    	glBegin(GL_LINES);
-			for(int i = 0; i < ErrorCount-1; i++){
-				x1 = float(i)/100 - 2;
-				x2 = float(i+1)/100 - 2;
-				//cout<<x<<endl;
-				glVertex3f(x1,2+posError[i]*3,0);
-				glVertex3f(x2,2+posError[i+1]*3,0);
-			}
-    	glEnd();
-
-    	glBegin(GL_LINES);
-			for(int i = 0; i < ErrorCount-1; i++){
-				x1 = float(i)/100 - 2;
-				x2 = float(i+1)/100 - 2;
-				//cout<<x<<endl;
-				glVertex3f(x1,0.5+velError[i]*.1,0);
-				glVertex3f(x2,0.5+velError[i+1]*.1,0);
-			}
-    	glEnd();
-    	//*/
     }
     //*/
 }
@@ -475,6 +500,7 @@ vec3 AniElliModel::getNormal(int j, vec4 X_elli_4) {
 //	X_elli_4[3] = 1;
 
 	X_elli_4[3] = 0;
+	//X_elli_4.normalize();
 	vec3 Xc(X_elli_4 * elliTransform.inverse().transpose(), VW);
 	Xc.normalize();
 
@@ -506,6 +532,11 @@ void AniElliModel::setNormal(vec3 pos, vec3 dir) { _normalPos.push_back(pos);
 
 void AniElliModel::draw() {
 
+	//if(WIREFRAME)
+		//	_material->makeEllipsoidWireframeColor();
+		//else
+		//	_material->makeEllipsoidColor();
+
     _material->setGLcolors();
 
 	if (DRAWELLIPSOIDS) {
@@ -524,7 +555,7 @@ void AniElliModel::draw() {
 				}
 			//exit(1);
 			glMultMatrixd(m);
-			glutSolidSphere(.95, 10, 10);
+			glutSolidSphere(1, 10, 10);
 			glPopMatrix();
 		}
 	}

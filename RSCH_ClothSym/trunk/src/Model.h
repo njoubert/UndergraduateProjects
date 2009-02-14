@@ -171,6 +171,7 @@ private:
 
 private:
 	string _filename; //the template filename from which to iterate.
+	int _startFrame;
 	unsigned int _count;
 	int _pastCount;
 	int _futureCount;

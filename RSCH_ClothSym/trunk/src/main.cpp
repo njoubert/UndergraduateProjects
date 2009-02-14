@@ -11,7 +11,7 @@ class Camera {
 public:
 	Camera() {
 		_fovy = 30;
-		_zNear = 1;
+		_zNear = 0.1;
 		_zFar = 10000;
 
 		_zoom = 10.0f;
@@ -24,6 +24,7 @@ public:
 
 		_Buttons[0] = _Buttons[1] = _Buttons[2] = 0;
 
+		hiddenWireFrame = false;
 		wireFrame = false;
 		showGrid = true;
 		paused = true;
@@ -156,6 +157,7 @@ private:
 public:
 	int _w, _h;
 	bool wireFrame;
+	bool hiddenWireFrame;
 	bool showGrid;
 	double lastTime;
 	double inverseFPS;
@@ -196,6 +198,7 @@ void printUsage() {
 	cout << "      [-mus MUs(float)]" << endl;
 	cout << "      [-mud MUd(float)]" << endl;
 	cout << "      [-d i] " << endl;
+	cout << "      [-cmesh slave master amountOfTimeBeforeSync] " << endl;
 	cout << "      [-img directory] " << endl;
 	cout << "      [-cg max_iter(float) err_res(float)] " << endl;
 	cout << "      [-gamma value(float)] " << endl;
@@ -347,6 +350,24 @@ int parseCommandLine(int argc, char *argv[]) {
 		} else if (!strcmp(argv[i], "-coll")) {
 			COLLISIONS = true;
 			cam.collisions = true;
+
+		} else if (!strcmp(argv[i], "-playallframes")) {
+			if (isThereMore(i, argc, 1)) {
+				PLAYALLFRAMES = true;
+				BIGGESTTIMESTEP = atof(argv[++i]);
+				cout<<"PLay all frames; "<<PLAYALLFRAMES<<endl;
+			} else {
+				malformedArg = true;
+			}
+
+		} else if (!strcmp(argv[i], "-discolljacob")) {
+			USECOLLJACOBIAN = false;
+
+		} else if (!strcmp(argv[i], "-encolljacob")) {
+			USECOLLJACOBIAN = true;
+
+		} else if (!strcmp(argv[i], "-static")) {
+			OVERRIDE_DYNAMIC_CONSTRAINTS = true;
 
 		} else if (!strcmp(argv[i], "-cmesh")) {
 			if (isThereMore(i, argc, 3)) {
@@ -562,8 +583,13 @@ void processSpecialKeys(int key, int x, int y) {
 void processKeys(unsigned char key, int x, int y) {
 	cam.keypress(key, x, y);
 	switch (key) {
-	case 'v':
+	case 'w':
+		WIREFRAME = true;
 		cam.wireFrame = !cam.wireFrame;
+		break;
+	case 'h':
+		HIDDEN = true;
+		cam.hiddenWireFrame = !cam.hiddenWireFrame;
 		break;
 	case 'p':
 		cam.paused = !cam.paused;
@@ -573,6 +599,12 @@ void processKeys(unsigned char key, int x, int y) {
 		break;
 	case 'f':
 		cam.follow = !cam.follow;
+		break;
+	case 'm':
+		DRAWMESHDIFF = !DRAWMESHDIFF;
+		break;
+	case 'n':
+		DRAWNORMALS = !DRAWNORMALS;
 		break;
 	case 'd':
 		DYNAMIC_CONSTRAINTS = !DYNAMIC_CONSTRAINTS;
@@ -624,6 +656,12 @@ void init(void) {
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 
 	glEnable(GL_NORMALIZE);
+
+	//Antialiasing
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
 	//Lights:
 	GLfloat ambient[] = { .1f, .1f, .1f };
@@ -791,72 +829,88 @@ int GLframe = 0, GLtime, GLtimebase = 0;
 // This function draws the actual world using OpenGL.
 //
 void display(void) {
-
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (cam.follow)
-		cam.setFocusedView(world.getFocusPoint());
-	else
-		cam.setView();
-
-	if (cam.wireFrame) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	} else {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthFunc(GL_LESS);
+	int i = 1;
+	if (cam.hiddenWireFrame) {
+		i = 0;
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	}
+	for (int i = 0; i < 2; i++) {
 
-	glPushMatrix();
+		if (cam.follow)
+			cam.setFocusedView(world.getFocusPoint());
+		else
+			cam.setView();
 
-	glDisable(GL_LIGHTING);
-	White();
-	glColor3f(1.0f, 1.0f, 1.0f);
-	if (cam.showGrid) {
-		// draw grid
-		glBegin(GL_LINES);
-		for (int i = -10; i <= 10; ++i) {
-			glVertex3f(i, 0, -10);
-			glVertex3f(i, 0, 10);
-
-			glVertex3f(10, 0, i);
-			glVertex3f(-10, 0, i);
+		if (cam.hiddenWireFrame && i == 1) {
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			glDepthFunc(GL_LEQUAL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glLineWidth(DEFAULT_LINE_WIDTH);
+		} else if(cam.wireFrame) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glLineWidth(DEFAULT_LINE_WIDTH);
+		} else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
-		glEnd();
+
+		glPushMatrix();
+
+		glDisable(GL_LIGHTING);
+		White();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		if (cam.showGrid) {
+			// draw grid
+			glLineWidth(DEFAULT_LINE_WIDTH);
+			glBegin(GL_LINES);
+			for (int i = -10; i <= 10; ++i) {
+				glVertex3f(i, 0, -10);
+				glVertex3f(i, 0, 10);
+
+				glVertex3f(10, 0, i);
+				glVertex3f(-10, 0, i);
+			}
+			glEnd();
+		}
+		Pink();
+
+		glEnable(GL_LIGHTING);
+
+		//Draw the world!
+		world.draw();
+
+		glPopMatrix();
+
+		glDisable(GL_LIGHTING);
+		//---------OPENGL FRAMERATE-----------------//
+		//*
+		//FPS CALCULATOR
+		GLframe++;
+		GLtime = glutGet(GLUT_ELAPSED_TIME);
+		if (GLtime - GLtimebase > 1000) {
+			sprintf(s, "FPS:%4.2f", GLframe * 1000.0 / (GLtime - GLtimebase));
+			//cout<<"FPS: "<<GLframe*1000.0/(GLtime-GLtimebase)<<endl;
+			GLtimebase = GLtime;
+			GLframe = 0;
+		}
+
+		//CODE TO RENDER A BITMAP
+		glColor3f(1.0f, 1.0f, 1.0f);
+		setOrthographicProjection();
+		glPushMatrix();
+		glLoadIdentity();
+		renderBitmapString(cam._w - 100, 15, (void *) Font, s);
+		drawParameters();
+		glPopMatrix();
+		resetPerspectiveProjection();
+		//*/
+		//-----------------------------------------------
+		glEnable(GL_LIGHTING);
+
+
 	}
-	Pink();
-	glEnable(GL_LIGHTING);
-
-	//Draw the world!
-	world.draw();
-
-	glPopMatrix();
-
-	glDisable(GL_LIGHTING);
-	//---------OPENGL FRAMERATE-----------------//
-	//*
-	//FPS CALCULATOR
-	GLframe++;
-	GLtime = glutGet(GLUT_ELAPSED_TIME);
-	if (GLtime - GLtimebase > 1000) {
-		sprintf(s, "FPS:%4.2f", GLframe * 1000.0 / (GLtime - GLtimebase));
-		//cout<<"FPS: "<<GLframe*1000.0/(GLtime-GLtimebase)<<endl;
-		GLtimebase = GLtime;
-		GLframe = 0;
-	}
-
-	//CODE TO RENDER A BITMAP
-	glColor3f(1.0f, 1.0f, 1.0f);
-	setOrthographicProjection();
-	glPushMatrix();
-	glLoadIdentity();
-	renderBitmapString(cam._w - 100, 15, (void *) Font, s);
-	drawParameters();
-	glPopMatrix();
-	resetPerspectiveProjection();
-	//*/
-	//-----------------------------------------------
-	glEnable(GL_LIGHTING);
-
 	glFlush();
 	glutSwapBuffers();
 }
@@ -875,7 +929,9 @@ void reshape(int w, int h) {
 void myframemove() {
 
 	if (!cam.paused) {
-		if (fpstimer.Elapsed() < cam.inverseFPS) {
+
+		//TODO: THIS FRAME RATE CLAMP IS A LITTLE BUGED ITS CUTS AT AROUND 48FPS instead of 24
+		if (fpstimer.Elapsed() < cam.inverseFPS && PLAYALLFRAMES == false) {
 			return;
 		} else {
 			fpstimer.Stop();
@@ -883,10 +939,15 @@ void myframemove() {
 		}
 		profiler.frametimers.Start();
 
-		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w,
-				cam._h);
+		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
 		world.exportSim(0, world.getTime(), true, cam.inverseFPS);
-		world.advance(cam.inverseFPS);
+		if(PLAYALLFRAMES) {
+			world.advance(BIGGESTTIMESTEP);
+		}
+		else {
+			world.advance(cam.inverseFPS);
+		}
+
 
 		profiler.frametimers.switchToTimer("postRedisplay");
 		glutPostRedisplay();

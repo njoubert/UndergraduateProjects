@@ -31,6 +31,7 @@ float Kd = DEFAULT_KD;
 float KBe = DEFAULT_KBE;
 float KBd = DEFAULT_KBD;
 float Kcoll = DEFAULT_KCOLL;
+bool USECOLLJACOBIAN = true;
 
 bool BEND_FORCES = false;
 bool FRICTION_FORCES = false;
@@ -38,6 +39,7 @@ bool COLLISIONS = false;
 
 bool STATIC_CONSTRAINTS = false;
 bool DYNAMIC_CONSTRAINTS = false;
+bool OVERRIDE_DYNAMIC_CONSTRAINTS = false;
 int FOLLOW1 = -1;
 int FOLLOW2 = -1;
 int FOLLOW3 = -1;
@@ -68,5 +70,12 @@ bool isWIND = false;
 float COLL_VEL_HAXX = 1; //Multiplies the velocity term, higher than one will result in cloth being ahead of lead object
 
 bool DRAWELLIPSOIDS = false;
+bool WIREFRAME = false;
+bool HIDDEN = false;
+bool DRAWNORMALS = true;
+bool DRAWMESHDIFF = true;
+
+bool PLAYALLFRAMES = false;
+double BIGGESTTIMESTEP = 0.01;
 
 bool EXITONLASTFRAME = false;

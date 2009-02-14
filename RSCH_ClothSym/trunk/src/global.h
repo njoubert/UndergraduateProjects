@@ -68,6 +68,7 @@ extern bool COLLISIONS;
 
 extern bool STATIC_CONSTRAINTS;
 extern bool DYNAMIC_CONSTRAINTS;
+extern bool OVERRIDE_DYNAMIC_CONSTRAINTS;
 extern int FOLLOW1;
 extern int FOLLOW2;
 extern int FOLLOW3;
@@ -104,6 +105,13 @@ extern bool isWIND;
 extern float COLL_VEL_HAXX;
 
 extern bool DRAWELLIPSOIDS;
+extern bool WIREFRAME;
+extern bool HIDDEN;
+extern bool DRAWNORMALS;
+extern bool DRAWMESHDIFF;
+extern bool USECOLLJACOBIAN;
+extern bool PLAYALLFRAMES;
+extern double BIGGESTTIMESTEP;
 
 #define PI 3.14159265
 

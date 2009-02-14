@@ -18,6 +18,7 @@ World::~World() {
 }
 
 void World::advance(double netTime) {
+	cout<<"Advance has Been Called"<<endl;
     //Find the duration of a single step for each model
 //*
     //Sort the list of updates from longest duration to shortest duration
@@ -194,7 +195,8 @@ bool World::loadEllipseModel(string filename, int numFrames, int startFrame) {
 
 	Model* model = new AniElliModel(ellipsoids.first);
     _models.push_back(model);
-    createVertexToAnimatedEllipseContraints(ellipsoids.second);
+    if(!OVERRIDE_DYNAMIC_CONSTRAINTS)
+    	createVertexToAnimatedEllipseContraints(ellipsoids.second);
     cout << "Done Parsing and loading EllipseModel." << endl;
     return true;
 }

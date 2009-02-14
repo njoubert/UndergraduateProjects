@@ -47,6 +47,100 @@ void Material::makeSimColor() {
     mat_ambient[2] = 24.0f / 255.0f;
     mat_ambient[3] = 1.0f;
 }
+/*
+void Material::makeEllipsoidColor() {
+    mat_diffuse[0] = 0.1f;
+    mat_diffuse[1] = 0.1f;
+    mat_diffuse[2] = 0.9f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 0.1f;
+    mat_ambient[1] = 0.1f;
+    mat_ambient[2] = 0.1f;
+    mat_ambient[3] = 1.0f;
+    mat_shininess[0] = 50;
+    mat_specular[0] = 0.6f;
+    mat_specular[1] = 0.6f;
+    mat_specular[2] = 0.6f;
+    mat_specular[3] = 1.0f;
+}
+
+
+void Material::makeSimWireframeColor() {
+    mat_diffuse[0] = 20.0f / 255.0f;
+    mat_diffuse[1] = 225.0f / 255.0f;
+    mat_diffuse[2] = 20.0f / 255.0f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 24.5f / 255.0f;
+    mat_ambient[1] = 22.5f / 255.0f;
+    mat_ambient[2] = 24.0f / 255.0f;
+    mat_ambient[3] = 1.0f;
+}
+
+void Material::makeEllipsoidWireframeColor() {
+    mat_diffuse[0] = 0.1f;
+    mat_diffuse[1] = 0.1f;
+    mat_diffuse[2] = 0.9f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 0.1f;
+    mat_ambient[1] = 0.1f;
+    mat_ambient[2] = 0.1f;
+    mat_ambient[3] = 1.0f;
+    mat_shininess[0] = 50;
+    mat_specular[0] = 0.6f;
+    mat_specular[1] = 0.6f;
+    mat_specular[2] = 0.6f;
+    mat_specular[3] = 1.0f;
+}
+
+void Material::makeStatWireframeColor() {
+    mat_diffuse[0] = 100.0f / 255.0f;
+    mat_diffuse[1] = 100.0f / 255.0f;
+    mat_diffuse[2] = 100.0f / 255.0f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 8.5f / 255.0f;
+    mat_ambient[1] = 8.5f / 255.0f;
+    mat_ambient[2] = 10.2f / 255.0f;
+    mat_ambient[3] = 1.0f;
+    mat_shininess[0] = 20;
+    mat_specular[0] = 5.8f;
+    mat_specular[1] = 5.8f;
+    mat_specular[2] = 5.8f;
+    mat_specular[3] = 1.0f;
+}
+*/
+
+void Material::makeCollisionColor() {
+    mat_diffuse[0] = 255.0f / 255.0f;
+    mat_diffuse[1] = 20.0f / 255.0f;
+    mat_diffuse[2] = 20.0f / 255.0f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 255.0f / 255.0f;
+    mat_ambient[1] = 10.0f / 255.0f;
+    mat_ambient[2] = 10.0f / 255.0f;
+    mat_ambient[3] = 1.0f;
+}
+
+void Material::makeNormalsColor() {
+    mat_diffuse[0] = 0.0f / 255.0f;
+    mat_diffuse[1] = 0.0f / 255.0f;
+    mat_diffuse[2] = 0.0f / 255.0f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 255.0f / 255.0f;
+    mat_ambient[1] = 10.0f / 255.0f;
+    mat_ambient[2] = 255.0f / 255.0f;
+    mat_ambient[3] = 1.0f;
+}
+
+void Material::makeMeshDiffColor() {
+    mat_diffuse[0] = 0.0f / 255.0f;
+    mat_diffuse[1] = 0.0f / 255.0f;
+    mat_diffuse[2] = 0.0f / 255.0f;
+    mat_diffuse[3] = 1.0f;
+    mat_ambient[0] = 255.0f / 255.0f;
+    mat_ambient[1] = 255.0f / 255.0f;
+    mat_ambient[2] = 255.0f / 255.0f;
+    mat_ambient[3] = 1.0f;
+}
 
 void Material::makeStatColor() {
     mat_diffuse[0] = 100.0f / 255.0f;
@@ -72,6 +166,8 @@ void Material::makeStatColor() {
     mat_ambient[3] = 1.0f;
 */
 }
+
+
 
 void Material::setGLcolors() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);

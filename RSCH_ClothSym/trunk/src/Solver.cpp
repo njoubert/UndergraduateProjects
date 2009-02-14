@@ -305,8 +305,8 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     //b->zeroValues();      //dont do this since b is set from postmultiply JP and v
     correctMesh = false;
 
-
     //correctMesh = sys->correctWithMeshSync(this, _y, _bmod, localTime);
+    sys->calculateMeshDifference();
 
     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
 		for (unsigned int i = 0; i < constraints->size(); i++)
@@ -318,7 +318,7 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateForcePartials(this);
 
     if(COLLISIONS)
-    	sys->calculateCollisionDamping(this, _JV, collisions);
+    	sys->calculateCollisionDamping(this, _JV, collisions, localTime);
 
 }
 

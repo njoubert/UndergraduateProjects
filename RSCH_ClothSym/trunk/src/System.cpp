@@ -31,6 +31,16 @@ cout<<"			Creating System"<<endl;
 	//*/
 //*/
 
+	//TAKES VALUE FROM GLOBALS FOR COLLISION DAMPING
+	_Kcoll = Kcoll;
+	_USECOLLJACOBIAN = USECOLLJACOBIAN;
+
+	//THIS INITIALIZES THE VALUES FOR DRAWING COLLISION DETECTION
+	 for(int i = 0; i < m->countVertices(); i++)
+		 m->getVertex(i)->detectedCollision() = false;
+	 for(int i = 0; i < m->countVertices(); i++)
+		 m->getVertex(i)->setMeshDiff(vec3(0));
+
 	cout << "		Creating Sparse Mass Matrix..." << endl;
 	int n = m->countVertices();
 	vector<vector<int> > sparsePattern =
@@ -1225,12 +1235,28 @@ bool System::correctExplicitlyWithMeshSync(Solver* solver, LARGE_VECTOR* y,
 	return true;
 }
 
+bool System::calculateMeshDifference() {
+	//cout<<"TIME IS: "<<TIME<<"		SYNC AT TIME: "<<_syncCounter<<endl;
+	if(_cMesh == NULL || TIME < _syncCounter) {
+		return false;
+	}
+	else
+		_syncCounter += _syncStep;
+	cout<<"SYNCED AT TIME: "<<TIME<<"S"<<endl;
+
+		for(int i = 0; i < mesh->countVertices(); i++) {
+			mesh->getVertex(i)->setMeshDiff(mesh->getVertex(i)->getX() - _cMesh->getVertex(i)->getX());
+		}
+
+	return true;
+}
+
 void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV,
-		vector<VertexToEllipseCollision*> *collisions) {
+		vector<VertexToEllipseCollision*> *collisions, double localTime) {
 	LARGE_VECTOR* F = solver->getf();
 
 	for (unsigned int i = 0; i < (*collisions).size(); i++)
-		(*collisions)[i]->applyDampedCollisions(Kcoll, JV, F);
+		(*collisions)[i]->applyDampedCollisions(_Kcoll, JV, F, localTime, _USECOLLJACOBIAN);
 }
 
 void System::calculatePosVelCollisionChange(Solver* solver, double timeStep,

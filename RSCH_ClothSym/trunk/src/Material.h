@@ -20,6 +20,9 @@ public:
 
     void makeDefaultColor();
     void makeSimColor();
+    void makeCollisionColor();
+    void makeNormalsColor();
+    void makeMeshDiffColor();
     void makeStatColor();
     void setGLcolors();
 

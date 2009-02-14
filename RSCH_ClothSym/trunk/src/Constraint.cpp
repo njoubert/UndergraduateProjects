@@ -381,7 +381,7 @@ void VertexToEllipseCollision::applyPosVelChangeCollision(double timeStep, LARGE
 }
 
 void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
-		SPARSE_MATRIX* JV, LARGE_VECTOR* F) {
+		SPARSE_MATRIX* JV, LARGE_VECTOR* F, double localTime, bool use_collision_jacobian) {
 	//cout<<"calling applyDampedCollisions---------------------"<<endl;
 	for (int i = 0; i < _mesh->countVertices(); i++) {
 		for (int j = 0; j < _ellipsoids->getSize(); j++) {
@@ -389,24 +389,50 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j,
 					Vert->getX());
 
-			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace)) {
+			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace) && Vert->getDynamicConstraint() != -1 && !Vert->getConstaint()) {
 				//cout<<"colision detected"<<endl;
 				//*
-				vec3 Xc = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+				Vert->detectedCollision() = true;
+				//vec3 Xc_surf = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+				//vec3 n(0,0,-1);
+				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
+				//vec3 n = (Xc_surf - x0).normalize();
+				Vert->setNormalAtCollisionPt(n);
+
+				//cout<<"Index: "<<Vert->getIndex()<<"i: "<<i<<endl;
 
 				//vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
 				//vec3 Xo_p = _ellipsoids->getPastOrigin(j);
-				vec3 Xc_f = _ellipsoids->getPointInFuture(j, Xc);
-				vec3 Xc_p = _ellipsoids->getPointInPast(j, Xc);
+				vec3 x0 = Vert->getX();
+				vec3 xf = _ellipsoids->getPointInFuture(j, x0);
+				vec3 xp = _ellipsoids->getPointInPast(j, x0);
 				double elliTimeStep = _ellipsoids->getTimeStep();
+				double elliTime[3];
+				elliTime[1] = _ellipsoids->getElliTimeCurrent();
+				elliTime[0] = _ellipsoids->getElliTimeCurrent()-elliTimeStep;
+				elliTime[2] = _ellipsoids->getElliTimeCurrent()+elliTimeStep;
+
+				vec3 x0prime, v;
+				if((localTime - elliTime[1]) < -0.0000000001) {
+					x0prime = x0 + (localTime-elliTime[0])*((x0 - xp)/(elliTime[1]- elliTime[0]));
+					v = (x0 - xp)/(elliTime[1] - elliTime[0]);
+				}
+				else if((localTime - elliTime[1]) > 0.0000000001) {
+					x0prime = x0 + (localTime - elliTime[1])*((xf - x0)/(elliTime[2]- elliTime[1]));
+					v = (xf - x0)/(elliTime[2] - elliTime[1]);
+				}
+				else {
+					x0prime = x0;
+					v = (xf - x0)/(elliTime[2] - elliTime[1]);
+				}
 
 				//	V0 = Velocity of Point on Ellipsoid
-				vec3 Vo = (Xc_f - Xc_p) / (2 * elliTimeStep);
+				//vec3 Vo = (Xc_f - Xc_p) / (2 * elliTimeStep);
 
 				//vec3 Va(0);
 				//Va = _ellipsoids->calcAngularVel(j, Xc);
 
-				vec3 vb = Vo ;
+				vec3 vb = v;
 				/*
 				if(Va.length() > 0){
 						cout<<"Frame: "<<_ellipsoids->getFrameCount()<<endl;
@@ -419,10 +445,18 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					}
 				//*/
 
-				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
+
+
+
+				//if(n.length() != 1 && Xc_elliSpace[0] == 0) {
+				//if(n[2] < 0) {
+				//cout<<"Collision Point(World Space): "<<x0<<", Collision Point (Local Space): "<<Xc_elliSpace<<endl;
+				//cout<<"Normal Length Is: "<<n.length()<<"  Normal is: "<<n<<endl;
+				//exit(1);
+				//}
 				//_ellipsoids->setNormal(Xc, n);
-				vec3 v = Vert->getvX();
-				vec3 Vrel = v - vb;
+				vec3 vp = Vert->getvX();
+				vec3 Vrel = vp - vb;
 				vec3 Vn = (Vrel * n) * n;
 
 				vec3 t = ((n ^ Vrel) ^ n).normalize();
@@ -442,40 +476,54 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					vec3 dampingForce = f_dampCollision(Vn, Kcd);
 					(*F)[i] += dampingForce;
 
+					//vec3 f = -Kcd * Vn;
+					//(*F)[i] += f;
+
+					mat3 jv(0);
+
+								int vIndex = Vert->getIndex();
+								//*
+								//Jacobian For Damping in Normal Direction
+								jv[0][0] = -Kcd * n[0] * n[0];
+								jv[0][1] = -Kcd * n[0] * n[1];
+								jv[0][2] = -Kcd * n[0] * n[2];
+								jv[1][0] = -Kcd * n[0] * n[1];
+								jv[1][1] = -Kcd * n[1] * n[1];
+								jv[1][2] = -Kcd * n[1] * n[2];
+								jv[2][0] = -Kcd * n[0] * n[2];
+								jv[2][1] = -Kcd * n[1] * n[2];
+								jv[2][2] = -Kcd * n[2] * n[2];
+								//cout<<"Normal: "<<n<<"  Kcd: "<<Kcd<<endl;
+								//cout<<"Jacobian: "<<jv<<endl;
+								if(use_collision_jacobian)
+									(*JV)(vIndex, vIndex) += jv;
+
+								//*/
+				}
+/*
 					if (MUd > 0.000000001) {
-						//cout<<"Calc Friction"<<endl;
+						cout<<"Calc Friction"<<endl;
 						vec3 frictionForce = f_friction(Vt, MUd);
 						//cout<<"Friction Force "<<frictionForce<<endl;
 						(*F)[i] += frictionForce;
 					}
-
-					double vl = v.length();
+//*/
+					//double vl = v.length();
 					//cout<<vl<<endl;
 					//cout<<MUs<<endl;
+/*
 					if(vl > -0.1 && vl < 0.1 && MUs > 0.000000001) {
 						vec3 staticFriction = - MUs * (*F)[i];
 						(*F)[i] += staticFriction;
 						cout<<"Static Friction Applied: "<<staticFriction<<endl;
 					}
+//*/
 
-					mat3 jv(0);
 
-					//*
-					//Jacobian For Damping in Normal Direction
-					jv[0][0] = -Kcd * n[0] * n[0];
-					jv[0][1] = -Kcd * n[0] * n[1];
-					jv[0][2] = -Kcd * n[0] * n[2];
-					jv[1][0] = -Kcd * n[0] * n[1];
-					jv[1][1] = -Kcd * n[1] * n[1];
-					jv[1][2] = -Kcd * n[1] * n[2];
-					jv[2][0] = -Kcd * n[0] * n[2];
-					jv[2][1] = -Kcd * n[1] * n[2];
-					jv[2][2] = -Kcd * n[2] * n[2];
-					(*JV)(i, i) += jv;
-					//*/
+/*
 					//Jacobian For Damping in Tangental Direction ("Friction")
 					if (MUd > 0.000000001) {
-						//cout<<"calc Fric Jacobian"<<endl;
+						cout<<"calc Dynamic Friction Jacobian"<<endl;
 						jv[0][0] = -MUd * t[0] * t[0];
 						jv[0][1] = -MUd * t[0] * t[1];
 						jv[0][2] = -MUd * t[0] * t[2];
@@ -488,10 +536,12 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 						(*JV)(i, i) += jv;
 					}
 					if(vl > -0.1 && vl < 0.1 && MUs > 0.000000001) {
+						cout<<"calc Static Friction Jacobian"<<endl;
 						jv[0][0] = -MUs;
 						jv[1][1] = -MUs;
 						jv[2][2] = -MUs;
 					}
+//*/
 					//Various Old Jacobians
 					/*
 					 jv[0][0] = -mu*pow(n[0],1+v[0]-vb[0])*pow(pow(n[0],v[0]-vb[0]),-1+n[0])*log(n[0]);
@@ -513,7 +563,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					 //*/
 
 
-				}
+
 
 			}
 		}

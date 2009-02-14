@@ -76,6 +76,11 @@ public:
     vec3 & getU();
     vec3 & getvX();
     double getm();
+    vec3 getNormalAtCollisionPt();
+    void setNormalAtCollisionPt(vec3);
+    vec3 getMeshDiff();
+    void setMeshDiff(vec3);
+    bool & detectedCollision();
 
     int getIndex();
 
@@ -105,6 +110,11 @@ private:
     double m;
     int _index;
     std::vector<TriangleMeshEdge*> edges; //Parents. Can have many edges per vertex.
+
+    //For Drawing Stuff
+    bool _detectedCollision;
+    vec3 _normalAtCollisionPt;
+    vec3 _meshDiff;
 };
 
 /**

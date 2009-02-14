@@ -45,7 +45,7 @@ public:
 	//CALCULATE STATE FOR SOLVER:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
-	void calculateCollisionDamping(Solver*, SPARSE_MATRIX*, vector<VertexToEllipseCollision*> *);
+	void calculateCollisionDamping(Solver*, SPARSE_MATRIX*, vector<VertexToEllipseCollision*> *, double);
 	void calculatePosVelCollisionChange(Solver*, double, vector<VertexToEllipseCollision*> *);
 	void calculateDampingToLimitStrain(Solver*, SPARSE_MATRIX*, double Kld);
 
@@ -61,6 +61,7 @@ public:
 	bool correctWithMeshSync(Solver*, LARGE_VECTOR*, LARGE_VECTOR*, double);
 	bool correctExplicitlyWithMeshSync(Solver*, LARGE_VECTOR*, LARGE_VECTOR*, double);
 	bool correctSolverMatrices(SPARSE_MATRIX*,LARGE_VECTOR*);
+	bool calculateMeshDifference();
 
 	void bendForceJacobian(TriangleMeshTriangle* A, TriangleMeshTriangle* B,
 			TriangleMeshVertex* a, TriangleMeshVertex* b, TriangleMeshEdge* edge,
@@ -127,6 +128,8 @@ private:
     LARGE_VECTOR* _v0;
     int _nrCollTests;
     int _maxNrCollTests;
+    float _Kcoll;
+    bool _USECOLLJACOBIAN;
 };
 
 #endif /* SYSTEM_H_ */

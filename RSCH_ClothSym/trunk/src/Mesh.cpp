@@ -31,6 +31,29 @@ void TriangleMeshVertex::setm(double mass) { m = mass; }
 
 int TriangleMeshVertex::getIndex() { return _index; }
 
+bool & TriangleMeshVertex::detectedCollision() { return _detectedCollision;}
+
+vec3 TriangleMeshVertex::getNormalAtCollisionPt() {
+	if(_detectedCollision)
+		return _normalAtCollisionPt;
+	else {
+		cout<<"Asked to get a normal at pt that did not have a collision! (6,6,6 is the mark of the devil)"<<endl;
+		return vec3(6, 6, 6);
+	}
+}
+
+void TriangleMeshVertex::setNormalAtCollisionPt(vec3 n) {
+	if(_detectedCollision)
+		_normalAtCollisionPt = n;
+	else {
+		cout<<"Asked to set a normal at pt that did not have a collision! (6,6,6 is the mark of the devil)"<<endl;
+	}
+}
+
+vec3 TriangleMeshVertex::getMeshDiff() { return _meshDiff; }
+
+void TriangleMeshVertex::setMeshDiff(vec3 mDiff) { _meshDiff = mDiff; }
+
 vec3 TriangleMeshVertex::getNormal() {
     std::vector<TriangleMeshEdge*>::const_iterator it =
         getEdgesBeginIterator();

@@ -40,4 +40,6 @@
 
 #define DEFAULT_CG SimpleCG
 
+#define DEFAULT_LINE_WIDTH 2
+
 #endif /* DEFAULTS */
