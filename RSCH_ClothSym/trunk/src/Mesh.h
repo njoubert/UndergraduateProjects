@@ -88,8 +88,8 @@ public:
     vec3 getNormal();
     bool & getConstaint();
     void setConstraint(bool);
-    int getDynamicConstraint();
-    void setDynamicConstraint(int);
+    int getDynamicConstraint();			//Not Currently Used
+    void setDynamicConstraint(int);		//Not Currentlly Used
     vec3 & getF();
     void setF(vec3);
     void clearF();

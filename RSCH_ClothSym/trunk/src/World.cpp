@@ -257,6 +257,8 @@ bool World::createVertexToAnimatedEllipseContraints(vector < vector < std::pair 
 				constraint->setLead(leadModel, ellipsoidNr);
 				constraint->setFollow(v);
 
+				v->setConstraint(true);
+
 				followModel->registerConstraint(constraint);
 
 				cout << "Created Dynamic Constraint: Mesh Vertex: "

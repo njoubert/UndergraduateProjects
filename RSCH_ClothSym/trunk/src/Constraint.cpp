@@ -389,7 +389,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 			vec4 Xc_elliSpace = _ellipsoids->convertPoint2ElliSpace(j,
 					Vert->getX());
 
-			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace) && Vert->getDynamicConstraint() != -1 && !Vert->getConstaint()) {
+			if (_ellipsoids->isPointInsideElli(j, Xc_elliSpace) && !Vert->getConstaint()) {
 				//cout<<"colision detected"<<endl;
 				//*
 				Vert->detectedCollision() = true;

@@ -112,6 +112,7 @@ extern bool DRAWMESHDIFF;
 extern bool USECOLLJACOBIAN;
 extern bool PLAYALLFRAMES;
 extern double BIGGESTTIMESTEP;
+extern bool WRITEALLFRAMES;
 
 #define PI 3.14159265
 

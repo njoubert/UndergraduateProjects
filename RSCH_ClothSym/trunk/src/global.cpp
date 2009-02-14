@@ -77,5 +77,6 @@ bool DRAWMESHDIFF = true;
 
 bool PLAYALLFRAMES = false;
 double BIGGESTTIMESTEP = 0.01;
+bool WRITEALLFRAMES = false;
 
 bool EXITONLASTFRAME = false;

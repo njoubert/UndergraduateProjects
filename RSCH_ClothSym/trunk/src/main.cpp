@@ -600,6 +600,9 @@ void processKeys(unsigned char key, int x, int y) {
 	case 'f':
 		cam.follow = !cam.follow;
 		break;
+	case 'r':
+		WRITEALLFRAMES = !WRITEALLFRAMES;
+			break;
 	case 'm':
 		DRAWMESHDIFF = !DRAWMESHDIFF;
 		break;
@@ -927,6 +930,9 @@ void reshape(int w, int h) {
 // Calculates the next frame of the world.
 //
 void myframemove() {
+
+	if(WRITEALLFRAMES)
+		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
 
 	if (!cam.paused) {
 
