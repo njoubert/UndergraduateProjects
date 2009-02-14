@@ -4,8 +4,9 @@ from urllib2 import urlopen
 import gdata.base.service
 
 def parsePriceStr(priceStr):
-    match = re.match("^[0-9\.]+", str(priceStr))
+    match = re.search("[0-9]+[,]?[0-9\.]*", "".join(str(priceStr).split(",")))
     return float(match.group(0))
+
 
 # returns: name of product, or None if none exist
 def getProductName(upc):
@@ -42,14 +43,15 @@ def getGoogleProductData(upc, numResults=30):
 
     itemList = []
     for entry in feed.entry:
-        i = 0
+        validUPC = False
+        hasPrice = False
         for attribute in entry.item_attributes:
             if attribute.name == "upc" and attribute.text == upc:
-                i+=1
+                validUPC = True
             if attribute.name == "price":
                 price = attribute.text
-                i+=1
-        if i == 2:
+                hasPrice = True
+        if validUPC and hasPrice:
             itemList.append([entry.title.text, entry.author[0].name.text, price])
 
     # item := [product name, merchant, price]
@@ -66,6 +68,7 @@ def getGoogleProductData(upc, numResults=30):
                 minPrice = itemPrice
         return [minPriceItem, float(sum)/len(itemList)]
     return None
+
 
 class localDataParser(HTMLParser):
     BASE_URL = "http://www.shoplocal.com/"
@@ -84,7 +87,7 @@ class localDataParser(HTMLParser):
 
     def __init__(self):
         HTMLParser.__init__(self)
-        print 'Parser Created'
+#        print 'Parser Created'
             
     def handle_starttag(self, tag, attrs):
         self.startTag = self.get_starttag_text()
@@ -110,8 +113,8 @@ class localDataParser(HTMLParser):
             self.dataready = False
             self.ready = False
         if self.priceready == True and 'span' in self.startTag and 'id' in self.startTag:
-            print data
-            self.prices.append(str(data)[1:])
+#            print data
+            self.prices.append(str(data))
             self.ready2 = False
             self.priceready = False
   
@@ -131,7 +134,7 @@ class localDataParser(HTMLParser):
         for i in range(len(self.prices)):
             nprice = self.prices[i]
             sumPrice += parsePriceStr(nprice)
-            if (float(nprice) < float(minPrice)):
+            if (parsePriceStr(nprice) < parsePriceStr(minPrice)):
                 minIndex = i
                 minPrice = nprice
         if len(self.prices) != 0:
@@ -141,12 +144,12 @@ class localDataParser(HTMLParser):
         return [avg_price, self.products[minIndex], self.stores[minIndex], parsePriceStr(self.prices[minIndex])]
        
 # Testing
-testCases = ["", "2", "410000039144", "013803050844"]
+#testCases = ["", "2", "410000039144", "013803050844"]
 #for upc in testCases:
 #    name = getProductName(upc)
 #    print "Product name from upc: " + str(name)
 #    print "Cheapest item: " + str(getGoogleProductData(upc, 30))
     
 # Testing2
-p = localDataParser()
-print p.getLocalProductData("Western Digital 250GB External", "San Francisco")
+#p = localDataParser()
+#print p.getLocalProductData("Western Digital 250GB External", "San Francisco")
