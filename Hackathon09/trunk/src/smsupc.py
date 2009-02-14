@@ -3,6 +3,7 @@ import re
 import productSearch
 import myclickatell
 import ratingParser
+import zipcodeParser
 
 
 def massagePrice(price):
@@ -25,10 +26,12 @@ sms = sys.argv[2]
 # Test cases
 #phoneNumber = "fake"
 #sms = "2               410000039144 013803050844"
-#sms = "san francisco 2              410000039144 013803050844"
+#sms = "san francisco 2       35       410000039144 013803050844 763649005828"
 #sms = "818094000017"
+#sms = "013803050844"
 
 smsList = [x for x in sms.split(" ") if len(x) > 0]
+location = None
 locationList = []
 for i in range(len(smsList)):
     if re.match("[a-zA-Z]+", smsList[i]):
@@ -36,16 +39,14 @@ for i in range(len(smsList)):
         locationList.append(smsList[i])
     else:
         break
-    
 if len(locationList) == 0 and len(smsList[0]) == 5:
-    # TODO: handle zip code
-    print "HANDLE ZIP CODE!!!!"
-    pass
-
-smsList = smsList[len(locationList):]
-location = " ".join(locationList)
+    location = zipcodeParser.getCity(smsList[0])
+    smsList.pop(0)
+else:
+    smsList = smsList[len(locationList):]
+    location = " ".join(locationList)
+    
 print location
-print smsList
 
 c = myclickatell.Clickatell("njoubert", "rsd887", "3076162")
 # not actually number of results returned, but number considered
@@ -59,13 +60,14 @@ for upc in smsList:
     avgPrice = 0
     
     # local
-    baseName = None
+    baseName = productSearch.getProductName(upc)
+    if baseName != None:
+        print "base name:  " + baseName
     if len(location) > 0:
-        baseName = productSearch.getProductName(upc)
         if baseName != None:
             localData = productSearch.localDataParser().getLocalProductData(baseName, location)
-            avgPrice = localData[0]
-            if len(localData) > 0:
+            if localData != None:
+                avgPrice = localData[0]
                 validLocal = True
                 response += "Local: " + massageName(localData[1], 25) + " $" + str(massagePrice(localData[3])) + " at " + massageName(localData[2], 15) + "\n"
             else:
@@ -94,12 +96,12 @@ for upc in smsList:
         if baseName == None:
             useName = item[0]   
         rating = ratingParser.getRating(useName)
-        if len(rating) > 0:
+        if rating != None and len(rating) > 0:
             response += rating + "/5\n"
         response += upc
         print "---------------------------"
         print response
-#        c.sendMsg(phoneNumber, response)
+        c.sendMsg(phoneNumber, response)
     else:
         failList.append(upc)
 
@@ -109,5 +111,5 @@ if len(failList) > 0:
         response += upc + ": No Results\n"
     print "---------------------"
     print response
-#    c.sendMsg(phoneNumber, response)
+    c.sendMsg(phoneNumber, response)
     

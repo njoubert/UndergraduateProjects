@@ -28,4 +28,4 @@ def getRating(product_name):
     r = rateParser(product_name)
     return r.rating
 
-print getRating("Learning Java")
+#print getRating("Learning Java")

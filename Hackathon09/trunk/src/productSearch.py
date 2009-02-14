@@ -22,10 +22,10 @@ def filterResults(listOfNames, name, threshold):
         x = distances.values()
         x.sort()
         median = min(x[int(len(x)/2)], float(sum(x))/len(x))
-        print "median: " + str(median)
+#        print "median: " + str(median)
         resultList = []
         for fullname in listOfNames:
-            print str(distances[fullname]) + ": " + fullname
+#            print str(distances[fullname]) + ": " + fullname
             if (distances[fullname] <= median+threshold):
                  resultList.append(fullname)
         return resultList
@@ -131,6 +131,19 @@ class localDataParser(HTMLParser):
 
     def __init__(self):
         HTMLParser.__init__(self)
+        self.BASE_URL = "http://www.shoplocal.com/"
+        self.SEARCH_QUERY = "/searchlocal.aspx?searchtext="
+        self.html = ""
+        self.ready = False
+        self.ready2 = False
+        self.titleClassReady = False
+        self.titleReady = False
+        self.dataready = False
+        self.priceready = False
+        self.startTag = ""
+        self.products = []
+        self.stores = []
+        self.prices = []
 #        print 'Parser Created'
             
     def handle_starttag(self, tag, attrs):
@@ -176,6 +189,7 @@ class localDataParser(HTMLParser):
         sumPrice = 0.0
         minIndex = -1
         validNames = self.products[:]
+        print validNames
         validNames = filterResults(validNames, product_name, 1)
         numProducts = 0
         for i in range(len(self.products)):
@@ -189,7 +203,7 @@ class localDataParser(HTMLParser):
         if len(self.prices) != 0:
             avg_price = sumPrice / numProducts
         if minIndex == -1:
-            return [avg_price, "", "", 0.0]
+            return None
         return [avg_price, self.products[minIndex], self.stores[minIndex], parsePriceStr(self.prices[minIndex])]
 
 #file = open("C:/text.txt",'w')

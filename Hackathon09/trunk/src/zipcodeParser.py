@@ -35,4 +35,4 @@ def getCity(zipcode):
     r = rateParser(zipcode)
     return r.city
 
-print getCity("94018")
+#print getCity("94018")
