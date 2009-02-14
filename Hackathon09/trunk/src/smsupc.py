@@ -16,22 +16,32 @@ def massageName(name, limit):
     return newName
 
 # TODO: argument checking
-#phoneNumber = sys.argv[1]
-#sms = sys.argv[2]
-phoneNumber = "fake"
-#sms = "2               410000039144 013803050844"
-sms = "berkeley 2               410000039144 013803050844"
-smsList = [x for x in sms.split(" ") if len(x) > 0]
+phoneNumber = sys.argv[1]
+sms = sys.argv[2]
 
-location = None
-if re.match("[a-zA-Z]+", smsList[0]):
-    # handle city name
-    location = smsList[0]
-    smsList.pop(0)
-elif len(smsList[0]) == 5:
+# Test cases
+#phoneNumber = "fake"
+#sms = "2               410000039144 013803050844"
+#sms = "san francisco 2              410000039144 013803050844"
+
+smsList = [x for x in sms.split(" ") if len(x) > 0]
+locationList = []
+for i in range(len(smsList)):
+    if re.match("[a-zA-Z]+", smsList[i]):
+        # handle city name
+        locationList.append(smsList[i])
+    else:
+        break
+    
+if len(locationList) == 0:
     # TODO: handle zip code
-    location = None
-    smsList.pop(0)
+    print "HANDLE ZIP CODE!!!!"
+    pass
+
+smsList = smsList[len(locationList):]
+location = " ".join(locationList)
+print location
+print smsList
 
 c = myclickatell.Clickatell("njoubert", "rsd887", "3076162")
 # not actually number of results returned, but number considered
@@ -41,11 +51,11 @@ for upc in smsList:
     
     validLocal = False
     validOnline = False
-    response = upc + "\n"
+    response = ""
     avgPrice = 0
     
     # local
-    if location != None:
+    if len(location) > 0:
         baseName = productSearch.getProductName(upc)
         if baseName != None:
             localData = productSearch.localDataParser().getLocalProductData(baseName, location)
@@ -72,7 +82,8 @@ for upc in smsList:
     
     # send sms
     if validLocal or validOnline:
-        response += "Avg: $" + str(massagePrice(avgPrice))
+        response += "Avg: $" + str(massagePrice(avgPrice)) + "\n"
+        response += upc
         print "---------------------------"
         print response
         c.sendMsg(phoneNumber, response)
