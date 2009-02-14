@@ -1,4 +1,5 @@
 import re
+from HTMLParser import HTMLParser
 from urllib2 import urlopen
 import gdata.base.service
 
@@ -66,10 +67,86 @@ def getGoogleProductData(upc, numResults=30):
         return [minPriceItem, float(sum)/len(itemList)]
     return None
 
+class localDataParser(HTMLParser):
+    BASE_URL = "http://www.shoplocal.com/"
+    SEARCH_QUERY = "/searchlocal.aspx?searchtext="
+    html = ""
+    ready = False
+    ready2 = False
+    titleClassReady = False
+    titleReady = False
+    dataready = False
+    priceready = False
+    startTag = ""
+    products = []
+    stores = []
+    prices = []
 
+    def __init__(self):
+        HTMLParser.__init__(self)
+        print 'Parser Created'
+            
+    def handle_starttag(self, tag, attrs):
+        self.startTag = self.get_starttag_text()
+        if tag == 'div'and 'itemTitleDescription' in self.startTag:
+                self.titleClassReady = True
+        if tag == 'a' and self.titleClassReady == True:
+                self.titleReady = True
+        if tag == 'strong' and self.ready == False:
+                self.ready = True
+                self.ready2 = True
+        if tag == 'a' and self.ready == True:
+                self.dataready = True
+        if tag == 'p' and self.ready2 == True:
+                self.priceready = True
+
+    def handle_data(self, data):
+        if self.titleReady == True:
+            self.products.append(data)
+            self.titleReady = False
+            self.titleClassReady = False
+        if self.dataready == True and '<a ' in self.startTag and 'class' not in self.startTag:
+            self.stores.append(data)
+            self.dataready = False
+            self.ready = False
+        if self.priceready == True and 'span' in self.startTag and 'id' in self.startTag:
+            print data
+            self.prices.append(str(data)[1:])
+            self.ready2 = False
+            self.priceready = False
+  
+    def getLocalProductData(self, product_name, location):
+        product_name = product_name.replace(' ', '%20');
+        avg_price = 0.0
+        location = location.replace(' ', '+')
+        try:
+            req = urlopen(self.BASE_URL+location+self.SEARCH_QUERY+product_name)
+            self.html = req.read()
+            self.feed(self.html)
+        except:
+            print ''
+        minPrice = 100000.0
+        sumPrice = 0.0
+        minIndex = -1
+        for i in range(len(self.prices)):
+            nprice = self.prices[i]
+            sumPrice += parsePriceStr(nprice)
+            if (float(nprice) < float(minPrice)):
+                minIndex = i
+                minPrice = nprice
+        if len(self.prices) != 0:
+            avg_price = sumPrice / len(self.prices)
+        if minIndex == -1:
+            return [avg_price, "", "", 0.0]
+        return [avg_price, self.products[minIndex], self.stores[minIndex], parsePriceStr(self.prices[minIndex])]
+       
 # Testing
 testCases = ["", "2", "410000039144", "013803050844"]
-for upc in testCases:
-    name = getProductName(upc)
-    print "Product name from upc: " + str(name)
-    print "Cheapest item: " + str(getGoogleProductData(upc, 30))
+#for upc in testCases:
+#    name = getProductName(upc)
+#    print "Product name from upc: " + str(name)
+#    print "Cheapest item: " + str(getGoogleProductData(upc, 30))
+    
+# Testing2
+p = localDataParser()
+print p.getLocalProductData("Western Digital 250GB External", "San Francisco")
