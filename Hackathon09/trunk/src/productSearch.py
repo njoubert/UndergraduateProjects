@@ -2,6 +2,10 @@ import re
 from urllib2 import urlopen
 import gdata.base.service
 
+def parsePriceStr(priceStr):
+    match = re.match("^[0-9\.]+", str(priceStr))
+    return float(match.group(0))
+
 # returns: name of product, or None if none exist
 def getProductName(upc):
     BASE_URL = "http://www.upcdatabase.com/item/"
@@ -22,13 +26,13 @@ def getProductName(upc):
     return name
 
 # returns: google product item, or None if none exist
-def getGoogleProductData(upc, results=30):
+def getGoogleProductData(upc, numResults=30):
     gb_client = gdata.base.service.GBaseService() 
     gb_client.ClientLogin('hackathon09@gmail.com', 'hackathonyozio');
     q = gdata.base.service.BaseQuery() 
     q.feed = '/base/feeds/snippets'
     q['start-index'] = '1'
-    q['max-results'] = str(results)
+    q['max-results'] = str(numResults)
     q.bq = str(upc)
     try:
         feed = gb_client.QuerySnippetsFeed(q.ToUri())
@@ -50,12 +54,15 @@ def getGoogleProductData(upc, results=30):
     # item := [product name, merchant, price]
     if len(itemList) > 0:
         minPriceItem = itemList[0]
-        sum = 0
+        minPrice = parsePriceStr(minPriceItem[2])
+        sum = 0.0
         for item in itemList:
-            itemPrice = item[2]
+            itemPrice = parsePriceStr(item[2])
+            item[2] = itemPrice
             sum += itemPrice
-            if itemPrice < minPriceItem[2]:
+            if itemPrice < minPrice:
                 minPriceItem = item
+                minPrice = itemPrice
         return [minPriceItem, float(sum)/len(itemList)]
     return None
 
