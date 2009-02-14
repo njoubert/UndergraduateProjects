@@ -1,3 +1,4 @@
+import gdata.service
 try:
     from xml.etree import ElementTree
 except ImportError:
