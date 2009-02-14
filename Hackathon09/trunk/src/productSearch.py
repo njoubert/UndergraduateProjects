@@ -1,4 +1,6 @@
 import re
+import sys
+import getopt
 from HTMLParser import HTMLParser
 from urllib2 import urlopen
 import gdata.base.service
@@ -142,7 +144,18 @@ class localDataParser(HTMLParser):
         if minIndex == -1:
             return [avg_price, "", "", 0.0]
         return [avg_price, self.products[minIndex], self.stores[minIndex], parsePriceStr(self.prices[minIndex])]
-       
+
+#file = open("C:/text.txt",'w')
+#ar = sys.argv
+#file.write("KAKKKKKKKKKKKK")
+#file.write("\n")
+#file.write(str(len(ar)))
+#file.write("\n")
+#for i in ar:
+#    file.write(str(i))
+#    file.write("\n")
+#file.close()
+#    
 # Testing
 #testCases = ["", "2", "410000039144", "013803050844"]
 #for upc in testCases:
