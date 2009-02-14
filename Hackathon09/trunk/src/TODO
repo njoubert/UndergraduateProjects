@@ -1,0 +1,2 @@
+!HIGH - Add extra filtering to shop local
+LOW - Clean up shop local code. Perhaps just have a function to call instead of having to instantiate a class and calling a method.
