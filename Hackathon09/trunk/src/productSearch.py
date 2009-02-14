@@ -9,6 +9,38 @@ def parsePriceStr(priceStr):
     match = re.search("[0-9]+[,]?[0-9\.]*", "".join(str(priceStr).split(",")))
     return float(match.group(0))
 
+def filterResults(listOfNames, name, threshold):
+    if len(listOfNames) != 0:
+#        print 'in filterResults'
+#        print name
+        resultList = listOfNames[:]
+        base = name.split(" ")
+        distances = {}
+        for fullname in resultList:
+            comp = fullname.split(" ")
+            distances[fullname] = editdistance(comp, base)
+        x = distances.values()
+        x.sort()
+        median = x[int(len(x)/2)]
+        for fullname in resultList:
+            if (distances[fullname] >= median+threshold):
+                 listOfNames.remove(fullname)
+        
+def editdistance(words1, words2):
+#    print "words1: " + str(words1)
+#    print "words2: " + str(words2)
+    if (words1 == words2): 
+        return 0
+    if (len(words1) == 0):
+        return len(words2)
+    elif (len(words2) == 0):
+        return len(words1)
+      
+    costL = 1 + editdistance(words1[1:], words2[:])
+    costR = 1 + editdistance(words1[:], words2[1:])
+    costM = int(words1[0] != words2[0]) + editdistance(words1[1:], words2[1:])
+    
+    return min(costL, costR, costM)
 
 # returns: name of product, or None if none exist
 def getProductName(upc):
@@ -30,7 +62,7 @@ def getProductName(upc):
     return name
 
 # returns: google product item, or None if none exist
-def getGoogleProductData(upc, numResults=30):
+def getGoogleProductData(baseName, upc, numResults=30):
     gb_client = gdata.base.service.GBaseService() 
     gb_client.ClientLogin('hackathon09@gmail.com', 'hackathonyozio');
     q = gdata.base.service.BaseQuery() 
@@ -55,19 +87,24 @@ def getGoogleProductData(upc, numResults=30):
                 hasPrice = True
         if validUPC and hasPrice:
             itemList.append([entry.title.text, entry.author[0].name.text, price])
-
+            
+    # filter item list
+    itemNames = [x[0] for x in itemList]
+    filterResults(itemNames, baseName, 1)
+    
     # item := [product name, merchant, price]
     if len(itemList) > 0:
         minPriceItem = itemList[0]
         minPrice = parsePriceStr(minPriceItem[2])
         sum = 0.0
         for item in itemList:
-            itemPrice = parsePriceStr(item[2])
-            item[2] = itemPrice
-            sum += itemPrice
-            if itemPrice < minPrice:
-                minPriceItem = item
-                minPrice = itemPrice
+            if item[0] in itemNames:
+                itemPrice = parsePriceStr(item[2])
+                item[2] = itemPrice
+                sum += itemPrice
+                if itemPrice < minPrice:
+                    minPriceItem = item
+                    minPrice = itemPrice
         return [minPriceItem, float(sum)/len(itemList)]
     return None
 
@@ -121,26 +158,31 @@ class localDataParser(HTMLParser):
             self.priceready = False
   
     def getLocalProductData(self, product_name, location):
-        product_name = product_name.replace(' ', '%20');
+        n_product_name = product_name.replace(' ', '%20');
         avg_price = 0.0
-        location = location.replace(' ', '+')
+        n_location = location.replace(' ', '+')
         try:
-            req = urlopen(self.BASE_URL+location+self.SEARCH_QUERY+product_name)
+            req = urlopen(self.BASE_URL+n_location+self.SEARCH_QUERY+n_product_name)
             self.html = req.read()
             self.feed(self.html)
         except:
-            print ''
+            pass
         minPrice = 100000.0
         sumPrice = 0.0
         minIndex = -1
-        for i in range(len(self.prices)):
-            nprice = self.prices[i]
-            sumPrice += parsePriceStr(nprice)
-            if (parsePriceStr(nprice) < parsePriceStr(minPrice)):
-                minIndex = i
-                minPrice = nprice
+        validNames = self.products[:]
+        filterResults(validNames, product_name, 1)
+        numProducts = 0
+        for i in range(len(self.products)):
+            if self.products[i] in validNames:
+                nprice = self.prices[i]
+                sumPrice += parsePriceStr(nprice)
+                if (parsePriceStr(nprice) < parsePriceStr(minPrice)):
+                    minIndex = i
+                    minPrice = nprice
+                    numProducts += 1
         if len(self.prices) != 0:
-            avg_price = sumPrice / len(self.prices)
+            avg_price = sumPrice / numProducts
         if minIndex == -1:
             return [avg_price, "", "", 0.0]
         return [avg_price, self.products[minIndex], self.stores[minIndex], parsePriceStr(self.prices[minIndex])]
