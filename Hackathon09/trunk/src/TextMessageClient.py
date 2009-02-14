@@ -1,5 +1,8 @@
+import re
+
 class TextMessageClient():
     MAX_TEXT_LENGTH = 160
+    count = 0
     
     def __init__(self):
         print 'client created'
@@ -20,7 +23,8 @@ class TextMessageClient():
         string = ""
         string += " (" + finalRating + "/5) "
         string += "Avg: $" + str(self.massagePrice(average_price)) + ". "
-        string += "Local: $" + str(self.massagePrice(local_price)) + " at " + local_source[0:20] + ". "
+        if (local_source != ""):
+            string += "Local: $" + str(self.massagePrice(local_price)) + " at " + local_source[0:20] + ". "
         string += "Online: $" + str(self.massagePrice(online_price)) + " at " + online_source[0:20] + " "
         
         endlength = len(string)
@@ -37,19 +41,35 @@ class TextMessageClient():
             return int(round(float(price)))
         else:
             return roundingPoint % price
-            
+    
+    def parseUPC(self, number):
+        return (re.match("[0-9]", number) != None and len(number) >= 8 and len(number) <= 13)
+    
     def receiveTextMessage(self, message):
+        successes = []
+        city = ""
+        zip = -1
+        errormessage = ""
         tm = message.split(" ")
-#        [UPC]...[UPC]
-
-
-
-#        [City] [State] [UPC]...[UPC]
-
-
-
+        for i in range(len(tm)):
+            text = tm[i]
+            isUPC = self.parseUPC(text)
+            if not isUPC and i == 0:
+                if re.match("[a-zA-Z]", text) != None:
+                    city = text
+                elif len(text) == 5:
+                    zip = text
+                else:
+                    errormessage += "ERROR: cannot parse " + text + "."
+            elif isUPC:
+                successes.append((text, city))
+            else:
+                errormessage += "ERRROR: cannot parse " + text + "."
+        return (successes[:], errormessage)
 
 tm = TextMessageClient()
 text = tm.createTextMessageResult("CANON 24to105mm lens 4 USMawefawefeaergaergeagreargeargeargeargeargaorhgaeroigheargoiheargoiahergoeagh", 8.23523432, 10.0, "324.23", "302.12", "Best Buy", "288.83", "canon.com")
 print "Length: " + str(len(text))
 print text  
+result = tm.receiveTextMessage("987342234567 wefwef")
+print result
