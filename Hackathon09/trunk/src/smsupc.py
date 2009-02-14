@@ -87,7 +87,7 @@ for upc in smsList:
         response += upc
         print "---------------------------"
         print response
-#        c.sendMsg(phoneNumber, response)
+        c.sendMsg(phoneNumber, response)
     else:
         failList.append(upc)
 
@@ -97,5 +97,5 @@ if len(failList) > 0:
         response += upc + ": No Results\n"
     print "---------------------"
     print response
-#    c.sendMsg(phoneNumber, response)
+    c.sendMsg(phoneNumber, response)
     
