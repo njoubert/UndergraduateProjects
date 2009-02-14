@@ -1,2 +1,0 @@
-Hackathon 09 SMS App
-Indeed
