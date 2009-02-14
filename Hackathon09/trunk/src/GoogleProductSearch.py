@@ -1,4 +1,4 @@
-import gdata.service
+import gdata.base.service
 try:
     from xml.etree import ElementTree
 except ImportError:
