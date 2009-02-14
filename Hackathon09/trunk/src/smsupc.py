@@ -5,9 +5,11 @@ import myclickatell
 
 
 def massagePrice(price):
-    roundingPoint = "%.2f"
     if (price > 20):
         return int(round(float(price)))
+    else:
+        roundingPoint = "%.2f"
+        return roundingPoint % price
     
 def massageName(name, limit):
     newName = str(name)[0:limit]
@@ -16,14 +18,14 @@ def massageName(name, limit):
     return newName
 
 # TODO: argument checking
-phoneNumber = sys.argv[1]
-sms = sys.argv[2]
+#phoneNumber = sys.argv[1]
+#sms = sys.argv[2]
 
 # Test cases
-#phoneNumber = "fake"
+phoneNumber = "fake"
 #sms = "2               410000039144 013803050844"
 #sms = "san francisco 2              410000039144 013803050844"
-#sms = "013803050844"
+sms = "818094000017"
 
 smsList = [x for x in sms.split(" ") if len(x) > 0]
 locationList = []
@@ -56,6 +58,7 @@ for upc in smsList:
     avgPrice = 0
     
     baseName = productSearch.getProductName(upc)
+    print baseName
     if baseName != None:
         # local
         if len(location) > 0:
@@ -69,17 +72,18 @@ for upc in smsList:
         else:
             response += "Local: No Results\n"
     
-        # online    
-        googleData = productSearch.getGoogleProductData(baseName, upc, numGoogleResults)
-        if googleData != None:
-            validOnline = True
-            item = googleData[0]
-            avgPrice += googleData[1]
-            if validLocal:
-                avgPrice /= 2
-            response += "Web: " + massageName(item[0], 25) + " $" + str(massagePrice(item[2])) + " at " + massageName(item[1], 15) + "\n"
-        else:
-            response += "Web: No Results\n"
+    # online    
+    googleData = productSearch.getGoogleProductData(baseName, upc, numGoogleResults)
+    if googleData != None:
+        validOnline = True
+        item = googleData[0]
+        avgPrice += googleData[1]
+        if validLocal:
+            avgPrice /= 2
+
+        response += "Web: " + massageName(item[0], 25) + " $" + str(massagePrice(item[2])) + " at " + massageName(item[1], 15) + "\n"
+    else:
+        response += "Web: No Results\n"
     
     # send sms
     if validLocal or validOnline:
@@ -87,7 +91,7 @@ for upc in smsList:
         response += upc
         print "---------------------------"
         print response
-        c.sendMsg(phoneNumber, response)
+#        c.sendMsg(phoneNumber, response)
     else:
         failList.append(upc)
 
@@ -97,5 +101,5 @@ if len(failList) > 0:
         response += upc + ": No Results\n"
     print "---------------------"
     print response
-    c.sendMsg(phoneNumber, response)
+#    c.sendMsg(phoneNumber, response)
     

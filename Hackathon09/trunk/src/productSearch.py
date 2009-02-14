@@ -92,10 +92,10 @@ def getGoogleProductData(baseName, upc, numResults=30):
         if validUPC and hasPrice:
             itemList.append([entry.title.text, entry.author[0].name.text, price])
             
-    # filter item list
     itemNames = [x[0] for x in itemList]
-    itemNames = filterResults(itemNames, baseName, 1)
-    print itemNames
+    # filter item list
+    if baseName != None:
+        itemNames = filterResults(itemNames, baseName, 1)
     
     # item := [product name, merchant, price]
     if len(itemList) > 0:
