@@ -628,7 +628,7 @@ void System::applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 }
 
 void System::calculateWindForces(LARGE_VECTOR* f, SPARSE_MATRIX* JV, int i) {
-
+	cout<<"Wind Being Calculated"<<endl;
 	double Kv = .001;
 	//vec3 u(0.0, 0.00, 0.01);
 	vec3 u(WIND);
@@ -724,6 +724,25 @@ void System::calculateExternalForces(Solver* solver) {
 		(*f)[i] += (gravity * a->getm() += f_mouse(a));
 		if(isWIND)
 			calculateWindForces(f, solver->getJV(), i);
+	/*
+		if(i == 300) {
+			vec3 n(0,0,1);
+			double Kcd = 10000;
+			(*f)[300] += (a->getvX()*n)*n*-Kcd;
+			SPARSE_MATRIX* JV = solver->getJV();
+			mat3 jv(0);
+			jv[0][0] = -Kcd * n[0] * n[0];
+			jv[0][1] = -Kcd * n[0] * n[1];
+			jv[0][2] = -Kcd * n[0] * n[2];
+			jv[1][0] = -Kcd * n[0] * n[1];
+			jv[1][1] = -Kcd * n[1] * n[1];
+			jv[1][2] = -Kcd * n[1] * n[2];
+			jv[2][0] = -Kcd * n[0] * n[2];
+			jv[2][1] = -Kcd * n[1] * n[2];
+			jv[2][2] = -Kcd * n[2] * n[2];
+			(*JV)(300, 300) += jv;
+		}
+		//*/
 	}
 }
 

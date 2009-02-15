@@ -58,17 +58,20 @@ void World::advance(double netTime) {
 	//
 //*/
 	//_models[modelIndex[0]]->getTimeStep() = model with biggest time step
-	int numSteps = floor(netTime / _models[modelIndex[0]]->getTimeStep());
+	double biggestTimeStep = _models[modelIndex[0]]->getTimeStep();
+	if(PLAYALLFRAMES)
+		biggestTimeStep = BIGGESTTIMESTEP;
+	int numSteps = floor(netTime / biggestTimeStep);
 	double StepOfTimeStep = netTime/numSteps;
 	double durationSoFar = 0;
 	double timeStepDuration = 0;
 	if(DEBUG)
-		cout<<"A step of: "<<netTime<<" will be broken up into "<<netTime / _models[modelIndex[0]]->getTimeStep()<<" steps based on that "<<_models[modelIndex[0]]->getTimeStep()<<" is the largest timestep"<<endl;
+		cout<<"A step of: "<<netTime<<" will be broken up into "<<netTime / biggestTimeStep<<" steps based on that "<<biggestTimeStep<<" is the largest timestep"<<endl;
 	for (int i = 0; i < numSteps; i++) {
 		if(DEBUG)
 			cout<<"		Time is now: "<<_time<<" netTime is: "<<netTime<<" duration so far is : "<<durationSoFar<<" numSteps: "<<i+1<<" out of "<<numSteps<<endl;
 
-		timeStepDuration = _models[modelIndex[0]]->getTimeStep();
+		timeStepDuration = biggestTimeStep;
 		for (unsigned int j = 0; j < _models.size(); j++) {
 			if(DEBUG)
 				cout<<"			Model: "<<j<<" w/ timeStep: "<<timeStepDuration<<" must take "<<ceil(timeStepDuration/_models[j]->getTimeStep())<<" steps to fufill "<<timeStepDuration<<"s"<<endl;

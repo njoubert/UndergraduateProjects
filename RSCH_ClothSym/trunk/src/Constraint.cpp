@@ -393,7 +393,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				//cout<<"colision detected"<<endl;
 				//*
 				Vert->detectedCollision() = true;
-				//vec3 Xc_surf = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+				vec3 Xc_surf = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
 				//vec3 n(0,0,-1);
 				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
 				//vec3 n = (Xc_surf - x0).normalize();
@@ -473,17 +473,31 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				//damping force only applied if moving into ellipse.
 				if ((Vn * n) < 0) {
 					//	cout << "woo apply damping forces! n= g" << n << " Vn=" << Vn << endl;
+					int vIndex = Vert->getIndex();
 					vec3 dampingForce = f_dampCollision(Vn, Kcd);
 					(*F)[i] += dampingForce;
+					mat3 jv1(0);
+					double Kr = 1;
+					vec3 nt(0,0,1);
+					vec3 force = Kr*n;
+					//(*F)[i] += force;//(Xc_surf - x0);
+					cout<<"FORCE: "<<dampingForce<<endl;
+					jv1[0][0] = 0;
+					jv1[0][1] = 0;
+					jv1[0][2] = 0;
+					jv1[1][0] = 0;
+					jv1[1][1] = 0;
+					jv1[1][2] = 0;
+					jv1[2][0] = 0;
+					jv1[2][1] = 0;
+					jv1[2][2] = 0;
+					//(*JP)(vIndex, vIndex) += jv1;
 
-					//vec3 f = -Kcd * Vn;
-					//(*F)[i] += f;
 
 					mat3 jv(0);
 
-								int vIndex = Vert->getIndex();
-								//*
-								//Jacobian For Damping in Normal Direction
+					//*
+					//Jacobian For Damping in Normal Direction
 								jv[0][0] = -Kcd * n[0] * n[0];
 								jv[0][1] = -Kcd * n[0] * n[1];
 								jv[0][2] = -Kcd * n[0] * n[2];

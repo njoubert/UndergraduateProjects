@@ -387,6 +387,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
     profiler.frametimers.switchToGlobal();
 
+    //(*_delv)[300][2] *= 0.0001;
 
     profiler.frametimers.switchToTimer("calculating matrices");
     //delX = h*(v + g*delV) + y;

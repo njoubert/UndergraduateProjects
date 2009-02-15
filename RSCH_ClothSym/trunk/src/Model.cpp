@@ -424,6 +424,9 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     unsigned int frameNumber = floor( (globalTime/_timeStep) - _loops*totalFrames);
     int futureFrameNumber = floor( ((globalTime+futureTimeStep)/_timeStep) - _loops*totalFrames);
 
+    if(netTime < _timeStep)
+    	_count = _startFrame;
+
     if(frameNumber < _ellipsoids.size()-1){
     	_pastCount = _count;
     	_count = frameNumber;
@@ -450,7 +453,7 @@ void AniElliModel::advance(double netTime, double globalTime, double futureTimeS
     _elliTime[1] = (_count + _loops*totalFrames)*_timeStep;
     _elliTime[2] = (_futureCount + _loops*totalFrames)*_timeStep;
 
-        //\\cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
+        //cout<<"Ellipsoid Model is on FRAME: "<<_count<<" It's Future Frame is: "<<_futureCount<<" It's Past Frame was "<<_pastCount
        //<<". Global Time is: "<<globalTime<<". ElliTime is: "<<_elliTime[1]
         //<<". The FRAMERATE is: "<<(_count + _loops*totalFrames)/globalTime<<"FPS."<<endl;
     if(DEBUG)
