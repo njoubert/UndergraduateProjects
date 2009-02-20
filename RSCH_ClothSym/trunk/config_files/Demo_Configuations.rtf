@@ -7,20 +7,29 @@
 \f0\fs20 \cf0 Demo Command Line Arguments\
 	* use [-img imgs] to render out images for any of the demos\
 \
+****************************************************************************\
+-cg 200 10e-5 -kbe 0.00001 -kbd 0.00001 -kcoll 10e3 -kcr 10e6 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 2419 -30 -img imgs\
+\
+\
 ****************************************************************************
 \f1 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
 \cf0 //Tests What the Hell is This Bug\
+./ClothSym -kcoll 100 -discolljacob -simobj data/cape1k_v1.obj 0.00001 1 -kcoll 100 -encolljacob -simobj data/cape1k_v1.obj 0.00001 1 -elliobj data/ellipsoids/frame -29 -30 -coll -cmesh 0 1 0.01 -img imgs\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
-\f0 \cf0 ./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 10 -discolljacob -simobj data/cape1k_v1.obj 0.000011 1 -kcoll 10 -discolljacob -simobj data/cape1k_v1.obj 0.0001 1 -elliobj data/ellipsoids/frame 200 -30 -coll -cmesh 0 1 0.01 -playallframes 0.01\
+\f0 \cf0 \
 \
-./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 10 -discolljacob -simobj data/cape1k_v1.obj 0.001 1 -kcoll 100 -discolljacob -simobj data/cape1k_v1.obj 0.0001 1 -elliobj data/ellipsoids/frame 200 -30 -coll -cmesh 0 1 0.01 -playallframes 0.01\
+//Compare Different timeSteps (0.0001 vs 0.001), WITHOUT Jacobian, Same Collision Damping Constant = 10\
+./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.0001 1 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 900 -30 -coll -cmesh 0 1 0.01 -img imgs\
 \
+//Compare Different timeSteps (0.0001 vs 0.001), WITH Jacobian, Same Collision Damping Constant = 10000\
+./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.0001 1 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 900 -30 -coll -cmesh 0 1 0.01 -img imgs\
 \
+//Compare With/Without Jacobian, Same Collision Damping Constant = 100, explicit must take smaller timeStep (0.00001 vs 0.001)\
+./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 100 -discolljacob -simobj data/cape1k_v1.obj 0.00001 1 -kcoll 100 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 200 -30 -coll -cmesh 0 1 0.01 -playallframes 0.01\
 \
-./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 10000 -discolljacob -simobj data/cape1k_v1.obj 0.00001 1 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 200 -30 -coll -cmesh 0 1 0.01 -playallframes 0.01\
-\
+//Compare High Damping Collision Constant(10^9) VS. Low Damping Collision Constant (10^4), WITH Jacobian\
 ./ClothSym  -kbe 0.00001 -kbd 0.00001 -kcoll 1000000000 -encolljacob -simobj data/cape1k_v1.obj 0.0001 1 -kcoll 10000 -encolljacob -simobj data/cape1k_v1.obj 0.001 1 -elliobj data/ellipsoids/frame 200 -30 -coll -cmesh 0 1 0.01 -playallframes 0.01\
 \
 ---------------------------------------------------------------\
