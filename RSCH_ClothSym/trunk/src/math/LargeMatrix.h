@@ -421,6 +421,22 @@ public:
     }
     friend ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
 
+    ostream & outAsMatlabDataFile(ostream & s) {
+            s << "Matrix Dimensions: " << _rowCount << " X " << _colCount << endl;
+            for (int rowi = 0; rowi < _rowCount; rowi++) {
+                for (int i = 0; i < 3; i++) {
+                    for (int coli = 0; coli < _colCount; coli++) {
+                        s << (*_rowData[rowi])[coli][i][0] << " ";
+                        s << (*_rowData[rowi])[coli][i][1] << " ";
+                        s << (*_rowData[rowi])[coli][i][2] << " ";
+                    }
+                    s << endl;
+                }
+            }
+            return s;
+        }
+    friend ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
+
 private:
     std::vector<LargeMat3MatrixRow*> _rowData;
     int _rowCount; //The total amount of actual rows.
