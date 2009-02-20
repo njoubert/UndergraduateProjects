@@ -31,6 +31,7 @@ float Kd = DEFAULT_KD;
 float KBe = DEFAULT_KBE;
 float KBd = DEFAULT_KBD;
 float Kcoll = DEFAULT_KCOLL;
+float Kcr = 0;
 bool USECOLLJACOBIAN = true;
 
 bool BEND_FORCES = false;
@@ -78,5 +79,8 @@ bool DRAWMESHDIFF = true;
 bool PLAYALLFRAMES = false;
 double BIGGESTTIMESTEP = 0.01;
 bool WRITEALLFRAMES = false;
+
+bool WRITEFILEANDEXIT = false;
+bool DRAWCOLLISIONS = false;
 
 bool EXITONLASTFRAME = false;

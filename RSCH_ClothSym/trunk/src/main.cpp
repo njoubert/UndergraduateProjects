@@ -539,6 +539,14 @@ int parseCommandLine(int argc, char *argv[]) {
 				malformedArg = true;
 			}
 
+		} else if (!strcmp(argv[i], "-kcr")) {
+
+			if (isThereMore(i, argc, 1)) {
+				Kcr = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
+
 		} else if (!strcmp(argv[i], "-cg")) {
 
 			if (isThereMore(i, argc, 2)) {
@@ -614,6 +622,12 @@ void processKeys(unsigned char key, int x, int y) {
 		break;
 	case 'e':
 		DRAWELLIPSOIDS = !DRAWELLIPSOIDS;
+		break;
+	case 'c':
+		DRAWCOLLISIONS = !DRAWCOLLISIONS;
+		break;
+	case ';':
+		WRITEFILEANDEXIT = !WRITEFILEANDEXIT;
 		break;
 	case '1':
 		DRAWMODELS[0] = !DRAWMODELS[0];

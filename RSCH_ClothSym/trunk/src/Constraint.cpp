@@ -394,6 +394,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				//*
 				Vert->detectedCollision() = true;
 				vec3 Xc_surf = _ellipsoids->getPointInsideElli2Surface(j, Xc_elliSpace);
+				vec3 x0 = Vert->getX();
 				//vec3 n(0,0,-1);
 				vec3 n = _ellipsoids->getNormal(j, Xc_elliSpace);
 				//vec3 n = (Xc_surf - x0).normalize();
@@ -403,7 +404,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 
 				//vec3 Xo_f = _ellipsoids->getFutureOrigin(j);
 				//vec3 Xo_p = _ellipsoids->getPastOrigin(j);
-				vec3 x0 = Vert->getX();
+
 				vec3 xf = _ellipsoids->getPointInFuture(j, x0);
 				vec3 xp = _ellipsoids->getPointInPast(j, x0);
 				double elliTimeStep = _ellipsoids->getTimeStep();
@@ -475,13 +476,15 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					//	cout << "woo apply damping forces! n= g" << n << " Vn=" << Vn << endl;
 					int vIndex = Vert->getIndex();
 					vec3 dampingForce = f_dampCollision(Vn, Kcd);
+					//vec3 dampingForce = -Kcd*Vrel;
 					(*F)[i] += dampingForce;
 					mat3 jv1(0);
-					double Kr = 1;
-					vec3 nt(0,0,1);
-					vec3 force = Kr*n;
-					//(*F)[i] += force;//(Xc_surf - x0);
-					cout<<"FORCE: "<<dampingForce<<endl;
+					//Kcr = 1;
+					vec3 nt(0, 0, 1);
+					vec3 exitForce = Kcr * n * (Xc_surf - x0).length();
+					(*F)[i] += exitForce;//(Xc_surf - x0);
+					//cout << "Damping Force: " << dampingForce<< endl;
+					//cout << "Exit Force: "<< exitForce << endl;
 					jv1[0][0] = 0;
 					jv1[0][1] = 0;
 					jv1[0][2] = 0;
@@ -497,24 +500,29 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					mat3 jv(0);
 
 					//*
-					//Jacobian For Damping in Normal Direction
-								jv[0][0] = -Kcd * n[0] * n[0];
-								jv[0][1] = -Kcd * n[0] * n[1];
-								jv[0][2] = -Kcd * n[0] * n[2];
-								jv[1][0] = -Kcd * n[0] * n[1];
-								jv[1][1] = -Kcd * n[1] * n[1];
-								jv[1][2] = -Kcd * n[1] * n[2];
-								jv[2][0] = -Kcd * n[0] * n[2];
-								jv[2][1] = -Kcd * n[1] * n[2];
-								jv[2][2] = -Kcd * n[2] * n[2];
-								//cout<<"Normal: "<<n<<"  Kcd: "<<Kcd<<endl;
-								//cout<<"Jacobian: "<<jv<<endl;
-								if(use_collision_jacobian)
-									(*JV)(vIndex, vIndex) += jv;
+					 //Jacobian For Damping in Normal Direction
+					 jv[0][0] = -Kcd * n[0] * n[0];
+					 jv[0][1] = -Kcd * n[0] * n[1];
+					 jv[0][2] = -Kcd * n[0] * n[2];
+					 jv[1][0] = -Kcd * n[0] * n[1];
+					 jv[1][1] = -Kcd * n[1] * n[1];
+					 jv[1][2] = -Kcd * n[1] * n[2];
+					 jv[2][0] = -Kcd * n[0] * n[2];
+					 jv[2][1] = -Kcd * n[1] * n[2];
+					 jv[2][2] = -Kcd * n[2] * n[2];
+					 //cout<<"Normal: "<<n<<"  Kcd: "<<Kcd<<endl;
+					 //cout<<"Jacobian: "<<jv<<endl;
 
-								//*/
+					 //*/
+					/*
+					jv[0][0] = -Kcd;
+					jv[1][1] = -Kcd;
+					jv[2][2] = -Kcd;
+					//*/
+					 if(use_collision_jacobian)
+								 (*JV)(vIndex, vIndex) += jv;
 				}
-/*
+				/*
 					if (MUd > 0.000000001) {
 						cout<<"Calc Friction"<<endl;
 						vec3 frictionForce = f_friction(Vt, MUd);

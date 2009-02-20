@@ -176,8 +176,15 @@ void SimModel::draw() {
         nc = vertices[2]->getNormal();
 
         if(vertices[0]->detectedCollision() || vertices[1]->detectedCollision() || vertices[2]->detectedCollision()) {
+        	if(DRAWCOLLISIONS) {
         	_material->makeCollisionColor();
 			_material->setGLcolors();
+        	}
+        }
+        else {
+
+        	_material->makeSimColor();
+        	_material->setGLcolors();
         }
         glBegin(GL_TRIANGLES);
             glNormal3f( na[0], na[1], na[2]);
@@ -189,8 +196,8 @@ void SimModel::draw() {
         glEnd();
 
         if(vertices[0]->detectedCollision() || vertices[1]->detectedCollision() || vertices[2]->detectedCollision()) {
-            _material->makeSimColor();
-        	_material->setGLcolors();
+        		_material->makeSimColor();
+				_material->setGLcolors();
         }
 
         it++;
@@ -558,7 +565,7 @@ void AniElliModel::draw() {
 				}
 			//exit(1);
 			glMultMatrixd(m);
-			glutSolidSphere(1, 10, 10);
+			glutSolidSphere(1, 100, 100);
 			glPopMatrix();
 		}
 	}

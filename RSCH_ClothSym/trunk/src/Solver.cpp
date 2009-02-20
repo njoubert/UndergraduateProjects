@@ -290,6 +290,32 @@ LARGE_VECTOR* NewmarkSolver::getZ() {
     return _z;
 }
 
+void NewmarkSolver::writeSparseMatrix2File(string fileName, SPARSE_MATRIX* M) {
+	ofstream outFile (fileName.c_str());
+
+	M->outAsMatlabDataFile(outFile);
+
+	cout<<"Wrote Sparse Matrix to Matlab Formatted Data File"<<endl;
+
+	outFile.close();
+	WRITEFILEANDEXIT = false;
+	//exit(1);
+
+}
+
+void NewmarkSolver::writeLargeVector2File(string fileName, LARGE_VECTOR* M) {
+	ofstream outFile (fileName.c_str());
+
+	outFile << "Columb Vector of Size: "<<M->size()<<endl;
+	for(int i = 0; i < M->size(); i++)
+		for(int j = 0; j < 3; j++)
+			outFile << (*M)[i][j]<<endl;
+
+	cout<<"Wrote Large Matrix to Matlab Formatted Data File"<<endl;
+
+	outFile.close();
+}
+
 void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints,
 		vector<VertexToEllipseCollision*> *collisions, double localTime) {
 	//Zero our current data structures
@@ -381,12 +407,16 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     //sys->strainLimitSolverMatrices(A, b);
 
 	//sys->applyMouseConst2Matrices(A, b);
-
 	profiler.frametimers.switchToTimer("CG solving");
     //delV = b/A
     cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
+	if(WRITEFILEANDEXIT) {
+		writeLargeVector2File("b.txt", b);
+		writeLargeVector2File("x.txt", _delv);
+		writeSparseMatrix2File("A.txt", A);
+	}
     profiler.frametimers.switchToGlobal();
-
+    //cout<<"Gamma: "<<_gamma<<" CG ITER: "<<MAX_CG_ITER<<" CG RES: "<<MAX_CG_ERR<<endl;
     //(*_delv)[300][2] *= 0.0001;
 
     profiler.frametimers.switchToTimer("calculating matrices");
@@ -464,11 +494,13 @@ void BaraffNewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, d
 	}
 
 	sys->applyMouseConst2Matrices(A, b);
-
+	//write2File("test", A);
+	//WriteLargeVector2File(B);
 	profiler.frametimers.switchToTimer("CG solving");
     //delV = b/A
     cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
     profiler.frametimers.switchToGlobal();
+    //WriteLargeVector2File(_delv);
 
     profiler.frametimers.switchToTimer("calculating matrices");
     //delX = h*(v + g*delV) + y;

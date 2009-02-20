@@ -90,6 +90,9 @@ public:
     vec3 calculateNewPosition(vec3 x0, vec3 v0, vec3 delv, double h);
     vec3 calculateNewDelv(vec3 v0, vec3 vnew, double h);
 
+    //Utility
+    void writeSparseMatrix2File(string, SPARSE_MATRIX*);
+    void writeLargeVector2File(string, LARGE_VECTOR*);
 
 private:
     DEFAULT_CG cg;

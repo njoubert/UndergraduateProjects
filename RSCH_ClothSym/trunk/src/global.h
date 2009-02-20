@@ -86,6 +86,7 @@ extern float KBe;
 extern float KBd;
 
 extern float Kcoll;
+extern float Kcr;
 
 extern float MUs;
 extern float MUd;
@@ -113,6 +114,9 @@ extern bool USECOLLJACOBIAN;
 extern bool PLAYALLFRAMES;
 extern double BIGGESTTIMESTEP;
 extern bool WRITEALLFRAMES;
+extern bool WRITEFILEANDEXIT;
+
+extern bool DRAWCOLLISIONS;
 
 #define PI 3.14159265
 
