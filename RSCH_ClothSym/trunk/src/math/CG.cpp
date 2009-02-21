@@ -64,7 +64,8 @@ int SimpleCG::solve(LargeMat3Matrix & A, LargeVec3Vector & b, LargeVec3Vector & 
         d += r;
         i++;
     }
-    //cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<<deln<<endl;
+    if(i > 150 || i < 2)
+    	cout<<"Conjugate Gradient Converged at iteration "<<i<<" with a residual of "<< sqrt(deln/del0) <<endl;
 
 
     //Calculate statistics on efficiency.
