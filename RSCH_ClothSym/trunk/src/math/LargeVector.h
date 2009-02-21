@@ -17,7 +17,7 @@
 #include <iostream>
 #include "algebra3.h"
 
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
     #include <omp.h>
 #endif
 
@@ -25,8 +25,8 @@ class LargeVec3Vector {
 public:
     LargeVec3Vector(int n) :
         _size(n), _elements(n) {
-#ifdef ENABLE_OMP
-	omp_set_num_threads(ENABLE_OMP);
+#ifdef ENABLE_OMP_V
+	omp_set_num_threads(ENABLE_OMP_V);
 #endif
 
     }
@@ -36,7 +36,7 @@ public:
 
     LargeVec3Vector(const LargeVec3Vector & v) :
         _size(v.size()), _elements(v.size()) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) v.size() / omp_get_num_threads());
@@ -59,7 +59,7 @@ public:
     }
 
     void zeroValues() {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -87,7 +87,7 @@ public:
     }
 
     LargeVec3Vector & operator =(LargeVec3Vector const &v) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -95,7 +95,7 @@ public:
         int st = id * blockSize;
         int en = min(((id+1) * blockSize)-1, _size -1);
         for (int i=st; i <= en; i++) {
-            _elements[i] = v[1];
+            _elements[i] = v[i];
         }
 	}
 #else
@@ -106,7 +106,7 @@ public:
         return *this;
     }
     LargeVec3Vector & operator +=(LargeVec3Vector const &v) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -125,7 +125,7 @@ public:
         return *this;
     }
     LargeVec3Vector & operator -=(LargeVec3Vector const &v) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -144,7 +144,7 @@ public:
     	return *this;
     }
     LargeVec3Vector & operator *=(double v) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -163,7 +163,7 @@ public:
     	return *this;
     }
     LargeVec3Vector & operator /=(double v) {
-#ifdef ENABLE_OMP
+#ifdef ENABLE_OMP_V
 	#pragma omp parallel
 	{
         int blockSize = ceil((double) _size / omp_get_num_threads());
@@ -183,24 +183,9 @@ public:
     }
     double Dot(LargeVec3Vector const &v) {
         double ret = 0;
-#ifdef ENABLE_OMP
-	#pragma omp parallel
-	{
-        int blockSize = ceil((double) v.size() / omp_get_num_threads());
-        int id = omp_get_thread_num();
-        int st = id * blockSize;
-        int en = min(((id+1) * blockSize)-1, v.size() -1);
-        double myret = 0; //temporary return value per thread.
-        for (int i=st; i <= en; i++) {
-        	myret += (_elements[i] * v._elements[i]);
-        }
-        ret += myret;
-	}
-#else
         for (int i = 0; i < _size; i++) {
             ret += (_elements[i] * v._elements[i]);
         }
-#endif
         return ret;
     }
 
