@@ -21,7 +21,7 @@ CXXFLAGS :=
 USEFREEIMAGE := false
 ENABLE_OMP := 8	# enables and specifies the number of threads to use.    
 MACROS += -DPERFORMANCEHAXX
-MACROS += -DCATCHERRORS
+MACROS += -DCATCHERRORS -DNO_OPENGL_DISPLAY
 
 #========================================================================
 #========================================================================
