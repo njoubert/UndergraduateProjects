@@ -663,6 +663,8 @@ void init(void) {
 	if (cam.collisions)
 		world.createVertexToAnimatedEllipseCollisions();
 
+#ifndef NO_OPENGL_DISPLAY
+
 	glEnable(GL_LIGHTING);
 	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
@@ -708,6 +710,7 @@ void init(void) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
 
 	glEnable(GL_DEPTH_TEST);
+#endif
 }
 
 //-------------------------------------------------------------------------------
@@ -945,21 +948,24 @@ void reshape(int w, int h) {
 //
 void myframemove() {
 
+  cout << "starting" << endl;
+
+#ifndef NO_OPENGL_DISPLAY
 	if(WRITEALLFRAMES)
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
 
 	if (!cam.paused) {
-
 		//TODO: THIS FRAME RATE CLAMP IS A LITTLE BUGED ITS CUTS AT AROUND 48FPS instead of 24
 		if (fpstimer.Elapsed() < cam.inverseFPS && PLAYALLFRAMES == false) {
-			return;
+		  return;
 		} else {
 			fpstimer.Stop();
 			fpstimer.Start();
 		}
 		profiler.frametimers.Start();
-
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
+#endif		
+		cout << "fuck ya!" << endl;
 		world.exportSim(0, world.getTime(), true, cam.inverseFPS);
 		if(PLAYALLFRAMES) {
 			world.advance(BIGGESTTIMESTEP);
@@ -970,10 +976,15 @@ void myframemove() {
 
 
 		profiler.frametimers.switchToTimer("postRedisplay");
+#ifndef NO_OPENGL_DISPLAY
 		glutPostRedisplay();
-
+#endif
 		profiler.frametimers.Stop();
+
+#ifndef NO_OPENGL_DISPLAY
 	}
+#endif
+
 }
 
 //-------------------------------------------------------------------------------
@@ -1057,18 +1068,26 @@ int main(int argc, char *argv[]) {
 	cam._w = 1280;
 	cam._h = 720;
 
+#ifndef NO_OPENGL_DISPLAY
 	//Create Window:
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(cam._w, cam._h);
 	glutCreateWindow("ClothSym");
-
+	cout << "OpenGL Window Defined." << endl;
+#endif
 	//Initialize Settings:
 	init();
 
 	fpstimer.Start();
 
 	//Set up callbacks:
+#ifdef NO_OPENGL_DISPLAY
+	for(int i = 0; i < 2000; i++) {
+	  cout << "f " << i << endl;
+	  myframemove();
+	}
+#else
 	glutIdleFunc(myframemove);
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
@@ -1078,6 +1097,7 @@ int main(int argc, char *argv[]) {
 	glutMotionFunc(myMouseMove);
 
 	glutMainLoop();
+#endif
 
 	return 0;
 }

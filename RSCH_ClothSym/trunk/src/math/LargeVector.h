@@ -25,7 +25,6 @@ class LargeVec3Vector {
 public:
     LargeVec3Vector(int n) :
         _size(n), _elements(n) {
-
 #ifdef ENABLE_OMP
 	omp_set_num_threads(ENABLE_OMP);
 #endif
