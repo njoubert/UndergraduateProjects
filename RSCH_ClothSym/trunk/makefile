@@ -19,9 +19,9 @@ CXXFLAGS :=
 #Options --------------------------------
     
 USEFREEIMAGE := false
-ENABLE_OMP := 8	# enables and specifies the number of threads to use.    
+#ENABLE_OMP := 4	# enables and specifies the number of threads to use.    
 MACROS += -DPERFORMANCEHAXX
-MACROS += -DCATCHERRORS -DNO_OPENGL_DISPLAY
+MACROS += -DCATCHERRORS
 
 #========================================================================
 #========================================================================
@@ -60,17 +60,17 @@ endif
 
 #Basic Config -----------------------------------------------------------------
 
-ifdef ENABLE_OMP
-	MACROS += -DENABLE_OMP=$(ENABLE_OMP)
-	CXXFLAGS += -fopenmp
-	LDFLAGS += -fopenmp
-endif
-
 CC := gcc
 CXX := g++
 MACROS += -D$(PLATFORM)
 CXXFLAGS += -Wall -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
 LDFLAGS += $(FRAMEWORK) $(LIBRARY) $(MACROS)
+
+ifdef ENABLE_OMP
+	MACROS += -DENABLE_OMP=$(ENABLE_OMP)
+	CXXFLAGS += -fopenmp
+	LDFLAGS += -fopenmp
+endif
 
 #-----------------------------------------------------------------------------
 
