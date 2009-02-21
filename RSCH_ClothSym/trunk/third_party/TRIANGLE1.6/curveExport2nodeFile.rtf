@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 ArialMT;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 LucidaGrande;
+}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww22480\viewh15120\viewkind0
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf0 \
+		\{\
+			//Exporter from maya to .node file for Triangle\
+			//BEFORE EXPORT: 1. draw curve the xz plane, 2. rebuild curve with a high number of cps ("control points") and check the "linear" box\
+			//Written by Sebastian Burke\
+\
+			\
+			
+\f1\fs26 // construct the full path to a file\
+      	    		$filename = ("/Users/silversatin/Documents/Fall_2008/CS299/Models/
+\f2\fs24 Cape/
+\f1\fs26 capeOutline.node");\
+             		// open the file for writing\
+             		$file = 
+\i `fopen $filename "w"`
+\i0 ;
+\f0\fs24 \
+			\
+			// get a list of all curves in the scene\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 				$curves = `ls -sl`;\
+\
+				// loop through each curve\
+				for( $curve in $curves )\
+				\{\
+				// print the name of the curve\
+				print( "exporting "+$curve + "... \\n" );\
+				\}\
+\
+\pard\pardeftab720\ql\qnatural
+\cf0 			//	attach a curve info node to the curve\
+			string $infoNode = 
+\i `createNode curveInfo`
+\i0 ;\
+			connectAttr ($curve +".worldSpace")  ($infoNode+".inputCurve");\
+				\
+			// Curve Degree\
+			int $degree = eval("getAttr " + $curve + ".degree");\
+\
+			// Curve Spans\
+			int $spans = eval("getAttr "+$curve+".spans");\
+\
+			// Output Headig\
+			
+\f2\fs26 fprint $file
+\f0\fs24  ("# .node File Exported From a Maya Mel Script \\n");\
+\pard\pardeftab720\ql\qnatural
+
+\f2\fs26 \cf0 			fprint $file
+\f0\fs24  ("# Written by Sebastian Burke \\n");\
+		\
+			//	output the cv count\
+			int $numCVs = $spans + $degree;\
+			
+\f2\fs26 fprint $file
+\f0\fs24  ($numCVs+" 2"+"\\n");\
+		\
+			//	output all cvs \
+			for($i=0;$i<$numCVs;$i++)\
+			\{\
+				float $cv[]   = 
+\i `pointPosition -l ( $curve + ".cp["+$i+"]" )`
+\i0 ;\
+	\
+				
+\f2\fs26 fprint $file
+\f0\fs24 ($i+" "+$cv[0]+" "+$cv[2]+"\\n");\
+			\}\
+			// delete the curve info node\
+			delete $infoNode;\
+\
+			
+\f1\fs26 // close the file\
+        			fclose $file;
+\f0\fs24 \
+		\}}
