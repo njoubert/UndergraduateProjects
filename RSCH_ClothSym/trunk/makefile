@@ -29,6 +29,8 @@ MACROS += -DCATCHERRORS
     
 #Platform Dependent Libs and Incs --------------------------------------------
 
+#### THIS NEEDS TO CHANGE TO INCLUDE PARALLEL BUILD OPTIONS!
+
 #Check for OSX. Works on 10.5 (and 10.4 but untested)
 #This line still kicks out an annoying error on Solaris.
 ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
