@@ -948,8 +948,6 @@ void reshape(int w, int h) {
 //
 void myframemove() {
 
-  cout << "starting" << endl;
-
 #ifndef NO_OPENGL_DISPLAY
 	if(WRITEALLFRAMES)
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
@@ -965,7 +963,7 @@ void myframemove() {
 		profiler.frametimers.Start();
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
 #endif		
-		cout << "fuck ya!" << endl;
+		
 		world.exportSim(0, world.getTime(), true, cam.inverseFPS);
 		if(PLAYALLFRAMES) {
 			world.advance(BIGGESTTIMESTEP);
