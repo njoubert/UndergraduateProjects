@@ -45,7 +45,7 @@ public:
 	//CALCULATE STATE FOR SOLVER:
 	void calculateInternalForces(Solver*);
 	void calculateExternalForces(Solver*);
-	void calculateCollisionDamping(Solver*, SPARSE_MATRIX*, vector<VertexToEllipseCollision*> *, double);
+	void calculateCollisionDamping(Solver*, SPARSE_MATRIX*, SPARSE_MATRIX*, vector<VertexToEllipseCollision*> *, double);
 	void calculatePosVelCollisionChange(Solver*, double, vector<VertexToEllipseCollision*> *);
 	void calculateDampingToLimitStrain(Solver*, SPARSE_MATRIX*, double Kld);
 

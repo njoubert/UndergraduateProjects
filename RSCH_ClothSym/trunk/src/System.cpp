@@ -628,8 +628,8 @@ void System::applyMouseConst2Matrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 }
 
 void System::calculateWindForces(LARGE_VECTOR* f, SPARSE_MATRIX* JV, int i) {
-	cout<<"Wind Being Calculated"<<endl;
-	double Kv = .001;
+	//cout<<"Wind Being Calculated"<<endl;
+	double Kv = KDRAG;
 	//vec3 u(0.0, 0.00, 0.01);
 	vec3 u(WIND);
 	//cout<<"u; "<<u<<endl;
@@ -1270,14 +1270,6 @@ bool System::calculateMeshDifference() {
 	return true;
 }
 
-void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JV,
-		vector<VertexToEllipseCollision*> *collisions, double localTime) {
-	LARGE_VECTOR* F = solver->getf();
-
-	for (unsigned int i = 0; i < (*collisions).size(); i++)
-		(*collisions)[i]->applyDampedCollisions(_Kcoll, JV, F, localTime, _USECOLLJACOBIAN);
-}
-
 void System::calculatePosVelCollisionChange(Solver* solver, double timeStep,
 		vector<VertexToEllipseCollision*> *collisions) {
 
@@ -1329,6 +1321,14 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 
 	} while (edg_it.next());
 
+}
+
+void System::calculateCollisionDamping(Solver* solver, SPARSE_MATRIX* JP, SPARSE_MATRIX* JV,
+		vector<VertexToEllipseCollision*> *collisions, double localTime) {
+	LARGE_VECTOR* F = solver->getf();
+
+	for (unsigned int i = 0; i < (*collisions).size(); i++)
+		(*collisions)[i]->applyDampedCollisions(_Kcoll, JP, JV, F, localTime, _USECOLLJACOBIAN);
 }
 
 void System::calculateForcePartials(ImplicitSolver* solver) {

@@ -342,9 +342,10 @@ void NewmarkSolver::calculateState(System* sys, vector<Constraint*> *constraints
     sys->calculateInternalForces(this);
     sys->calculateExternalForces(this);
     sys->calculateForcePartials(this);
-
     if(COLLISIONS)
-    	sys->calculateCollisionDamping(this, _JV, collisions, localTime);
+    	sys->calculateCollisionDamping(this, _JP, _JV, collisions, localTime);
+
+
 
 }
 

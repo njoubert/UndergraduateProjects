@@ -65,7 +65,7 @@ double SYNCSTEP = -1;
 double EDAMP = 1;
 
 vec3 WIND(0);
-
+double KDRAG;
 bool isWIND = false;
 
 float COLL_VEL_HAXX = 1; //Multiplies the velocity term, higher than one will result in cloth being ahead of lead object

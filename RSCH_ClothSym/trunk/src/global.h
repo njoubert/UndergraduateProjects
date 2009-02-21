@@ -102,6 +102,7 @@ extern double EDAMP;
 
 extern vec3 WIND;
 extern bool isWIND;
+extern double KDRAG;
 
 extern float COLL_VEL_HAXX;
 

@@ -18,7 +18,7 @@ World::~World() {
 }
 
 void World::advance(double netTime) {
-	cout<<"Advance has Been Called"<<endl;
+	//cout<<"Advance has Been Called"<<endl;
     //Find the duration of a single step for each model
 //*
     //Sort the list of updates from longest duration to shortest duration

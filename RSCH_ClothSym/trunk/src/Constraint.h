@@ -96,7 +96,7 @@ public:
     vec3 f_dampCollision(vec3 vPoint, double Kcd);
     vec3 f_friction(vec3 V, double Mu);
 
-    void applyDampedCollisions(double , SPARSE_MATRIX* , LARGE_VECTOR*, double localTime, bool);
+    void applyDampedCollisions(double , SPARSE_MATRIX* ,SPARSE_MATRIX*, LARGE_VECTOR*, double localTime, bool);
     void applyPosVelChangeCollision(double, LARGE_VECTOR* Y, LARGE_VECTOR* X, LARGE_VECTOR* V);
 private:
 	vector <int> _collisionIndices;

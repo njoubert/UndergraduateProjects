@@ -505,10 +505,11 @@ int parseCommandLine(int argc, char *argv[]) {
 			}
 		} else if (!strcmp(argv[i], "-wind")) {
 
-			if (isThereMore(i, argc, 3)) {
+			if (isThereMore(i, argc, 4)) {
 				WIND[0] = atof(argv[++i]);
 				WIND[1] = atof(argv[++i]);
 				WIND[2] = atof(argv[++i]);
+				KDRAG = atof(argv[++i]);
 				isWIND = true;
 			} else {
 				malformedArg = true;
