@@ -86,6 +86,47 @@ cout<<"			Creating System"<<endl;
 	 (*_I)(i,i) = mat3(identity2D());
 
 	 //*/
+	//Check Edge Lengths and Decrease the short ones
+	EdgesIterator edgs = mesh->getEdgesIterator();
+	double averageRL = 0;
+	double maxRL = 0;
+	double minRL = 10e10;
+	double edgeCounter = 0;
+	do {
+		TriangleMeshVertex* v1 = (*edgs)->getVertex(0);
+		TriangleMeshVertex* v2 = (*edgs)->getVertex(1);
+		if((*edgs)->getRestLength() > maxRL)
+			maxRL = (*edgs)->getRestLength();
+		if((*edgs)->getRestLength() < minRL)
+			minRL = (*edgs)->getRestLength();
+
+
+		averageRL += (*edgs)->getRestLength();
+		edgeCounter++;
+		//cout<<"Edge: "<<v1->getIndex()<<" - "<<v2->getIndex()<<" Rest Length: "<<(*edgs)->getRestLength()<<endl;
+	} while (edgs.next());
+	averageRL /= edgeCounter;
+	cout<<"REST LENGTH - Average: "<<averageRL<<" Max: "<<maxRL<<" Min: "<<minRL<<" Range: "<<maxRL - minRL;
+
+	edgs = mesh->getEdgesIterator();
+	double squaredDiff, aveDiffs = 0, standardDev;
+	do {
+		squaredDiff = (averageRL - (*edgs)->getRestLength())*(averageRL - (*edgs)->getRestLength());
+		aveDiffs += squaredDiff;
+	} while (edgs.next());
+	standardDev = sqrt(aveDiffs/edgeCounter);
+	cout<<" Standard Dev: "<<standardDev<<endl;
+
+	double newMinRL = 10e10;
+	edgs = mesh->getEdgesIterator();
+	do {
+		if((*edgs)->getRestLength() < averageRL - standardDev)
+			(*edgs)->setRestLength(averageRL - standardDev);
+		if((*edgs)->getRestLength() < newMinRL)
+			newMinRL = (*edgs)->getRestLength();
+	} while (edgs.next());
+	cout<<"Rest Lengths Floored at a minimum of "<<newMinRL<< " -- Should be: "<<averageRL - standardDev<<endl;
+
 	bool REST_ANGLES = true;
 	if (REST_ANGLES) {
 		//*******************GET REST ANGLE AND STORE IT IN MESH************************************

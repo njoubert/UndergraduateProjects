@@ -115,6 +115,8 @@ TriangleMeshEdge::TriangleMeshEdge(TriangleMesh* callingMesh, int v1,int v2) {
 
 double TriangleMeshEdge::getRestLength() { return rl; }
 
+void TriangleMeshEdge::setRestLength(double edgeRestLength) { this->rl = edgeRestLength; }
+
 double TriangleMeshEdge::getRestAngle() { return theta0; }
 
 void TriangleMeshEdge::setRestAngle(double theta) { this->theta0 = theta; }

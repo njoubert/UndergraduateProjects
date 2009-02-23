@@ -136,6 +136,7 @@ public:
      * @return -1 if fail, else the indice of the given parent in this edge.
      */
     double getRestLength();
+    void setRestLength(double);
     double getRestAngle();
     void setRestAngle(double);
     int addParentTriangle(TriangleMeshTriangle*);
@@ -146,6 +147,8 @@ public:
     TriangleMeshVertex* getVertex(int);
     TriangleMeshVertex* getOtherVertex(TriangleMeshVertex*);
     friend ostream& operator <<(ostream& s, const TriangleMeshEdge* e);
+
+
 
 private:
     TriangleMeshTriangle* triangles[2];   //PARENTS
