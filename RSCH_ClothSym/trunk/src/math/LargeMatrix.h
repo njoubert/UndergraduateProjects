@@ -155,7 +155,7 @@ public:
     mat3 operator[](int c) const {
         int ind = getSparseIndexForEntry(c);
         if (ind < 0) {
-            return ZERO;
+        	return ZERO;
         } else {
             return _sparseElements[ind];
         }
@@ -283,6 +283,10 @@ public:
         for (int i = 0; i < _rowCount; i++)
             _rowData[i]->zeroValues();
     }
+    /**
+     * Fills in the outCol vector with the values of the column that is being zero'd,
+     * except for the row r, which will have a value of 0 in outCol.
+     */
     void zeroRowCol(int r, int c, bool setIntersectionToOne) {
 #ifdef CATCHERRORS
         if ((r > _rowCount) || (c >= _colCount)) {
@@ -292,11 +296,16 @@ public:
         mat3 zero(0);
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
-            if (_rowData[r]->isNonZero(i))
-                (*_rowData[r])[i] = zero;
+            if (_rowData[i]->isNonZero(c))
+                (*_rowData[i])[c] = zero;
         }
-        if (setIntersectionToOne)
-            (*this)(r,c) = identity2D();
+        if (setIntersectionToOne) {
+        	if (_rowData[r]->getSparseIndexForEntry(c) < 0) {
+        		cout << __FILE__ << "::" << __LINE__ << ": ATTEMPTED TO WRITE DATA TO SPARSE ELEMENT!\n" << endl;
+        	} else {
+        		(*this)(r,c) = identity2D();
+        	}
+        }
     }
     void insertMatrixIntoDenserMatrix(LargeMat3Matrix const &m) {
         for (int i = 0; i < m._rowCount; i++)
