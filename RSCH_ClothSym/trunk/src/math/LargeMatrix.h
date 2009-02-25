@@ -283,10 +283,6 @@ public:
         for (int i = 0; i < _rowCount; i++)
             _rowData[i]->zeroValues();
     }
-    /**
-     * Fills in the outCol vector with the values of the column that is being zero'd,
-     * except for the row r, which will have a value of 0 in outCol.
-     */
     void zeroRowCol(int r, int c, bool setIntersectionToOne) {
 #ifdef CATCHERRORS
         if ((r > _rowCount) || (c >= _colCount)) {
@@ -300,13 +296,53 @@ public:
                 (*_rowData[i])[c] = zero;
         }
         if (setIntersectionToOne) {
+
         	if (_rowData[r]->getSparseIndexForEntry(c) < 0) {
         		cout << __FILE__ << "::" << __LINE__ << ": ATTEMPTED TO WRITE DATA TO SPARSE ELEMENT!\n" << endl;
         	} else {
         		(*this)(r,c) = identity2D();
         	}
+
         }
     }
+    /**
+     * Zero's the rows and cols in the r row and c col, and modifies the b vector to
+     * take into account the change in this system.
+     * This function should be used on the A matrix in Ax=b, and given b and the value k
+     * that x_i should be. It sets both A and b correctly.
+     *
+     * Returns true on success.
+     * b needs to be the same length as this matrix.
+     */
+    bool constrainSystem(int r, int c, LargeVec3Vector & b, vec3 k) {
+#ifdef CATCHERRORS
+        if ((r > _rowCount) || (c >= _colCount)) {
+            cout << __FILE__ << "::" << __LINE__ << ": SPARSE MATRIX DIMESIONS OUT OF RANGE\n" << endl;
+        }
+#endif
+       if (b.size() != getColSize()) {
+    	   cout << __FILE__ << "::" << __LINE__ << ": VECTOR AND MATRIX DIMENSIONS DOES NOT MATCH!\n" << endl;
+    	   return false;
+       }
+       if (_rowData[r]->getSparseIndexForEntry(c) < 0) {
+    	   cout << __FILE__ << "::" << __LINE__ << ": ATTEMPTED TO WRITE DATA TO SPARSE ELEMENT!\n" << endl;
+    	   return false;
+       }
+
+        mat3 zero(0);
+        _rowData[r]->zeroValues();
+        for (int i = 0; i < _rowCount; i++) {
+            if (_rowData[i]->isNonZero(c)) {
+                b[i] -= (*_rowData[i])[c]*k; //careful, order is important. M*v
+            	(*_rowData[i])[c] = zero;
+            }
+        }
+
+        //now enforce constraint
+      	(*this)(r,c) = identity2D();
+      	b[r] = k;
+    }
+
     void insertMatrixIntoDenserMatrix(LargeMat3Matrix const &m) {
         for (int i = 0; i < m._rowCount; i++)
             (*(_rowData[i])).insertRowIntoDenserRow(*(m._rowData[i]));

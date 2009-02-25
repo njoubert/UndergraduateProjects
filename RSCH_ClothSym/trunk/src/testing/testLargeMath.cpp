@@ -15,8 +15,6 @@
 
 #include "../math/CG.h"
 
-#include <omp.h>
-
 using namespace std;
 
 void testVector() {
@@ -190,6 +188,67 @@ void testMatrixVectorMultiply() {
     M1.outAsMatlab(cout);
     cout << endl;
 
+    M1.zeroRowCol(3,0,true);
+
+    M1.outAsMatlab(cout);
+    cout << endl;
+
+
+    //------------------------------------------
+    //Testing constrainSystem
+
+    cout << "=========================" << endl;
+    cout << "Testing constrainSystem" << endl;
+
+    cout << "Creating a not-very-arbitrary sparse matrix pattern." << endl;
+	vector<vector<int> > spCS(3);
+	spCS[0].push_back(0);
+	spCS[0].push_back(1);
+	spCS[0].push_back(2);
+	spCS[1].push_back(0);
+	spCS[1].push_back(1);
+	spCS[1].push_back(2);
+	spCS[2].push_back(0);
+	spCS[2].push_back(1);
+	spCS[2].push_back(2);
+
+	LargeMat3Matrix M1CS(3, 3, spCS, true);
+	cout << "Creating matrix." << endl;
+	M1CS(0, 0) = 1*identity2D();
+	M1CS(0, 1) = 1*identity2D();
+	M1CS(0, 2) = 0*identity2D();
+	M1CS(1, 0) = 0*identity2D();
+	M1CS(1, 1) = 2*identity2D();
+	M1CS(1, 2) = 1*identity2D();
+	M1CS(2, 0) = 0*identity2D();
+	M1CS(2, 1) = 1*identity2D();
+	M1CS(2, 2) = 3*identity2D();
+
+	M1CS.outAsMatlab(cout);
+	cout << endl;
+	LargeVec3Vector bCS(3);
+	bCS[0] = vec3(2,2,2);
+	bCS[1] = vec3(2,2,2);
+	bCS[2] = vec3(7,7,7);
+
+	cout << bCS << endl;
+
+	vec3 k(-0.2,-0.2,-0.2);
+	M1CS.constrainSystem(1,1,bCS,k);
+
+	cout << endl;
+	cout << "ConstrainSystem run!" << endl;
+	M1CS.outAsMatlab(cout);
+	cout << endl;
+
+	cout << "COMPUTED: " << bCS << endl;
+	printResult("EXPECTED: (| 2.8 2.8 2.8 |,| -0.2 -0.2 -0.2 |,| 7.2 7.2 7.2 |)" << endl);
+
+	return;
+
+
+    //------------------------------------------
+
     cout << "Creating a not-very-random vector." << endl;
     LargeVec3Vector in3(6);
     in3[0] = vec3(1, 2, 3);
@@ -217,6 +276,9 @@ void testMatrixVectorMultiply() {
     cout
             << "EXPECTED: (| 5280 5280 5280 |,| -1110 -1110 -1110 |,| 2574 2574 2574 |,| -962 -962 -962 |,| 0 0 0 |,| 0 0 0 |)"
             << endl;
+
+
+
     //Now we need to do some big ones...
     srand(10); //Fix a seed for now.
     cout << "Creating a sparsity pattern for a 1000x1000 matrix." << endl;
@@ -266,6 +328,7 @@ void testMatrixVectorMultiply() {
     cout << " >>> Done in " << timer.Stop() << " s" << endl;
 }
 
+/*
 void testSimpleCG() {
 
     Timer timer;
@@ -359,7 +422,7 @@ void testSimpleCG() {
 
 
 }
-
+*/
 int main(int argc, char *argv[]) {
 
     printCategory("TEST LARGE VECTOR");
@@ -371,7 +434,7 @@ int main(int argc, char *argv[]) {
     testMatrixVectorMultiply();
 
     printCategory("SIMPLE CONJUGATE GRADIENT ITERATIVE SOLVER");
-    testSimpleCG();
+    //testSimpleCG();
 
     cout << "TEST DONE" << endl;
 }
