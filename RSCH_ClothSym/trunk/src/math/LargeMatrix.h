@@ -334,15 +334,7 @@ public:
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
             if (_rowData[i]->isNonZero(c)) {
-                mat3 m = (*_rowData[i])[c]; //careful, order is important. M*v
-                //cout << "Matrix " << i << "," << c << ": "<< endl << m << endl;
-                //cout << "Force Velocity: " << k << endl;
-                //cout << "Before:" << b[i] << endl;
-                for(int j = 0; j < 3; j++) {
-                	subtractConstraints = -m[j][0]*k[0] - m[j][1]*k[1] - m[j][2]*k[2];
-                	//b[i][j] += subtractConstraints;
-                }
-                //cout << "After: " << b[i] << endl;
+                b[i] -= (*_rowData[i])[c]*k; //careful, order is important. M*v
                 (*_rowData[i])[c] = zero;
             }
         }
