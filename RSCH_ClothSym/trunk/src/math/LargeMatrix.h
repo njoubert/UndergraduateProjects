@@ -319,7 +319,6 @@ public:
         if ((r > _rowCount) || (c >= _colCount)) {
             cout << __FILE__ << "::" << __LINE__ << ": SPARSE MATRIX DIMESIONS OUT OF RANGE\n" << endl;
         }
-#endif
        if (b.size() != getColSize()) {
     	   cout << __FILE__ << "::" << __LINE__ << ": VECTOR AND MATRIX DIMENSIONS DOES NOT MATCH!\n" << endl;
     	   return false;
@@ -328,19 +327,33 @@ public:
     	   cout << __FILE__ << "::" << __LINE__ << ": ATTEMPTED TO WRITE DATA TO SPARSE ELEMENT!\n" << endl;
     	   return false;
        }
-
+#endif
+       //cout << "============ k=" << k << endl;
         mat3 zero(0);
+        double subtractConstraints;
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
             if (_rowData[i]->isNonZero(c)) {
-                b[i] -= (*_rowData[i])[c]*k; //careful, order is important. M*v
-            	(*_rowData[i])[c] = zero;
+                mat3 m = (*_rowData[i])[c]; //careful, order is important. M*v
+                //cout << "Matrix " << i << "," << c << ": "<< endl << m << endl;
+                //cout << "Force Velocity: " << k << endl;
+                //cout << "Before:" << b[i] << endl;
+                for(int j = 0; j < 3; j++) {
+                	subtractConstraints = -m[j][0]*k[0] - m[j][1]*k[1] - m[j][2]*k[2];
+                	//b[i][j] += subtractConstraints;
+                }
+                //cout << "After: " << b[i] << endl;
+                (*_rowData[i])[c] = zero;
             }
         }
 
         //now enforce constraint
       	(*this)(r,c) = identity2D();
       	b[r] = k;
+    }
+
+    bool constrainSystem(int r, int c, LargeVec3Vector * b, vec3 k) {
+    	return constrainSystem(r,c,*b,k);
     }
 
     void insertMatrixIntoDenserMatrix(LargeMat3Matrix const &m) {

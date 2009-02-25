@@ -59,14 +59,43 @@ FixedConstraint::FixedConstraint() {
 
 void FixedConstraint::applyConstraintToPoints(LARGE_VECTOR* x, LARGE_VECTOR* v,
 		LARGE_VECTOR* y, double timeStep) {
+/*
+	int cVertex = _follow->getIndex();
+	double vx = 1.1, vy = 1.1, vz = -1.1;
+	//cout<<int(TIME)%2<<endl;
+	if(int(TIME)%2 > 0) {
+		vx = -1.1*vx;
+		vy = -1.1*vy;
+		vz = -1.1*vz;
+	}
+	vec3 vel = vec3(vx,vy,vz);
+	cout<<vel<<endl;
+	(*y)[cVertex] = (vel*timeStep) - (*x)[cVertex];
+	_follow->getX() = vel*timeStep;
+	//(*X)[cVertex] = vec3(ElliCenter, VW);  Don't uncomment this line unless you like explosions
+
+	(*v)[cVertex] = vel;
+	_follow->getvX() = vel;
+	//*/
 	//Update the sparse matrices to honor this constraint
 }
 
 void FixedConstraint::applyConstraintToSolverMatrices(SPARSE_MATRIX* A,
 		LARGE_VECTOR* b) {
 	int cVertex = _follow->getIndex();
-	A->zeroRowCol(cVertex, cVertex, true);
-	(*b)[cVertex] = vec3(0, 0, 0);
+	/*
+
+	double x = 1.1, y = 1.1, z = -1.1;
+	//cout<<int(TIME)%2<<endl;
+	if(int(TIME)%2 > 0) {
+		x = -1.1*x;
+		y = -1.1*y;
+		z = -1.1*z;
+	}
+//*/
+
+	vec3 zero(0);
+	A->constrainSystem(cVertex,cVertex,b,zero);
 }
 
 void FixedConstraint::applyExplicitConstraints(LARGE_VECTOR* X,
@@ -225,8 +254,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 		SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	//Update the sparse matrices to honor this constraint
 	int cVertex = _follow->getIndex();
-	A->zeroRowCol(cVertex, cVertex, true);
-	(*b)[cVertex] = _vel;//vec3(0,0,0);//
+	A->constrainSystem(cVertex,cVertex,b,_vel);
 }
 
 void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(
@@ -292,9 +320,8 @@ void VertexToEllipseCollision::applyConstraintToSolverMatrices(
 		SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	//Update the sparse matrices to honor this constraint
 	for (unsigned int i = 0; i < _collisionIndices.size(); i++) {
-		A->zeroRowCol(_collisionIndices[i], _collisionIndices[i], true);
-		//TODO: Should this be taking the ellipse speed into account?
-		(*b)[_collisionIndices[i]] = _collisionVelocities[i];
+		A->constrainSystem(_collisionIndices[i], _collisionIndices[i], b, _collisionVelocities[i]);
+
 		//cout<<"Modified Solver For Collisions"<<endl;
 		if (_mesh->getVertex(_collisionIndices[i])->getvX().length()
 				!= _collisionVelocities[i].length()) {

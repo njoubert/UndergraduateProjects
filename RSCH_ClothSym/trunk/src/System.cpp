@@ -120,12 +120,12 @@ cout<<"			Creating System"<<endl;
 	double newMinRL = 10e10;
 	edgs = mesh->getEdgesIterator();
 	do {
-		if((*edgs)->getRestLength() < averageRL - standardDev)
-			(*edgs)->setRestLength(averageRL - standardDev);
+		//if((*edgs)->getRestLength() < averageRL - standardDev)
+			//(*edgs)->setRestLength(averageRL - standardDev);
 		if((*edgs)->getRestLength() < newMinRL)
 			newMinRL = (*edgs)->getRestLength();
 	} while (edgs.next());
-	cout<<"Rest Lengths Floored at a minimum of "<<newMinRL<< " -- Should be: "<<averageRL - standardDev<<endl;
+	//cout<<"Rest Lengths Floored at a minimum of "<<newMinRL<< " -- Should be: "<<averageRL - standardDev<<endl;
 
 	bool REST_ANGLES = true;
 	if (REST_ANGLES) {
@@ -891,8 +891,7 @@ bool System::strainLimitSolverMatrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	for (int i = 0; i < mesh->countVertices(); i++) {
 		if(_strainCorrectedIndices[i]) {
 			cout<<" Vertex: "<<i<<"'s Velocity is: "<<(*b)[i]<<endl;
-			A->zeroRowCol(i, i, true);
-			(*b)[i] = (*_v)[i];
+			A->constrainSystem(i, i, b, (*_v)[i]);
 			_strainCorrectedIndices[i] = false;
 			cout<<" Vertex: "<<i<<"'s Velocity to: "<<(*_v)[i]<<endl;
 		}
@@ -996,8 +995,7 @@ int System::getErrorInd(){ return _errorInd; }
 bool System::correctSolverMatrices(SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	for (int i = 0; i < mesh->countVertices(); i++) {
 		if (_correctedIndices[i] == true) {
-			A->zeroRowCol(i, i, true);
-			(*b)[i] = _cMesh->getVertex(i)->getvX();
+			A->constrainSystem(i, i, b, _cMesh->getVertex(i)->getvX());
 			_correctedIndices[i] = false;
 		}
 		//else

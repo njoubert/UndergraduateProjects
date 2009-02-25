@@ -7,23 +7,22 @@ PLATFORM := OSX
 #PLATFORM := _WIN32
 #PLATFORM := _POSIX
 #Libraries -------------------------------
+FRAMEWORK := -framework GLUT -framework OpenGL
 
-FRAMEWORK := #-framework GLUT -framework OpenGL
-
-
-        PLATFORM := _POSIX
-        INCLUDE := -I./include/ -I/usr/X11R6/include -I/sw/include \
-                -I/usr/sww/include -I/usr/sww/pkg/Mesa/include
-        LIBRARY := -L./lib/ -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib \
-                -L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib -lglut -lGLU -lGL -lX11
+INCLUDE := -I./include/ \
+    -I/usr/X11/include
+    
+LIBRARY := -L./lib/ \
+    -L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
+    -lGL -lGLU -lm -lstdc++
 
 #Basic Stuff -----------------------------
 
 CC := gcc
 CXX := g++
-MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' -DCATCH_ERRORS -DENABLE_OMP=8
-CXXFLAGS := -O2 -fmessage-length=0 -fopenmp $(INCLUDE) $(MACROS)
-LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS) -fopenmp
+MACROS := -D$(PLATFORM) -D'COMPLEX=std::complex<double>' -DCATCH_ERRORS #-DENABLE_OMP=8
+CXXFLAGS := -O2 -fmessage-length=0 $(INCLUDE) $(MACROS)
+LDFLAGS := $(FRAMEWORK) $(LIBRARY) $(MACROS) #-fopenmp
 
 #-----------------------------------------
 OBJECTS = $(SOURCES:.cpp=.o)

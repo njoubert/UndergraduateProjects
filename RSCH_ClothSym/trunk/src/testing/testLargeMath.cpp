@@ -208,41 +208,40 @@ void testMatrixVectorMultiply() {
 	spCS[1].push_back(0);
 	spCS[1].push_back(1);
 	spCS[1].push_back(2);
-	spCS[2].push_back(0);
-	spCS[2].push_back(1);
-	spCS[2].push_back(2);
 
-	LargeMat3Matrix M1CS(3, 3, spCS, true);
-	cout << "Creating matrix." << endl;
-	M1CS(0, 0) = 1*identity2D();
-	M1CS(0, 1) = 1*identity2D();
-	M1CS(0, 2) = 0*identity2D();
-	M1CS(1, 0) = 0*identity2D();
-	M1CS(1, 1) = 2*identity2D();
-	M1CS(1, 2) = 1*identity2D();
-	M1CS(2, 0) = 0*identity2D();
-	M1CS(2, 1) = 1*identity2D();
-	M1CS(2, 2) = 3*identity2D();
+	LargeMat3Matrix M1CS(2, 2, spCS, true);
+	cout << "Original A Matrix:" << endl;
+	M1CS(0, 0) = mat3(vec3(3,2,1), vec3(4,5,2), vec3(1,2,1));
+	M1CS(0, 1) = mat3(vec3(4,1,1), vec3(3,2,1), vec3(3,2,3));
+	M1CS(1, 0) = mat3(vec3(1,3,1), vec3(2,1,3), vec3(5,3,1));
+	M1CS(1, 1) = mat3(vec3(5,3,2), vec3(2,4,4), vec3(2,2,1));
+
 
 	M1CS.outAsMatlab(cout);
 	cout << endl;
-	LargeVec3Vector bCS(3);
-	bCS[0] = vec3(2,2,2);
-	bCS[1] = vec3(2,2,2);
-	bCS[2] = vec3(7,7,7);
-
+	LargeVec3Vector bCS(2);
+	bCS[0] = vec3(2,2,7);
+	bCS[1] = vec3(5,3,1);
+	cout<<"Original b Vector: "<<endl;
 	cout << bCS << endl;
 
-	vec3 k(-0.2,-0.2,-0.2);
+	vec3 k(6, 6, 6);
 	M1CS.constrainSystem(1,1,bCS,k);
 
 	cout << endl;
-	cout << "ConstrainSystem run!" << endl;
+	cout << "New A Matrix" << endl;
 	M1CS.outAsMatlab(cout);
 	cout << endl;
 
-	cout << "COMPUTED: " << bCS << endl;
-	printResult("EXPECTED: (| 2.8 2.8 2.8 |,| -0.2 -0.2 -0.2 |,| 7.2 7.2 7.2 |)" << endl);
+	cout << "New b Vector: " <<endl;
+	cout << bCS << endl;
+	printResult("EXPECTED: (| -34 -34 -41 |,| 6 6 6 |)" << endl);
+
+	LargeVec3Vector xCS(bCS.size(), 0);
+	SimpleCG solver(bCS.size());
+	    solver.solve(M1CS, bCS, xCS, 200, 10e5);
+	cout << "Solution to System: "<<endl;
+	cout << xCS << endl;
 
 	return;
 
