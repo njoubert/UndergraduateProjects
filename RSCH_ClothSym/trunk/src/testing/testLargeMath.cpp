@@ -217,11 +217,17 @@ void testMatrixVectorMultiply() {
 	M1CS(1, 1) = mat3(vec3(5,3,2), vec3(2,4,4), vec3(2,2,1));
 
 
+	//-------- make a copy for the next test
+	LargeMat3Matrix M2CS(2,2,spCS,true);
+	M2CS = M1CS;
+	//--------
+
 	M1CS.outAsMatlab(cout);
 	cout << endl;
 	LargeVec3Vector bCS(2);
 	bCS[0] = vec3(2,2,7);
 	bCS[1] = vec3(5,3,1);
+	LargeVec3Vector bCS2(bCS);
 	cout<<"Original b Vector: "<<endl;
 	cout << bCS << endl;
 
@@ -237,11 +243,37 @@ void testMatrixVectorMultiply() {
 	cout << bCS << endl;
 	printResult("EXPECTED: (| -34 -34 -41 |,| 6 6 6 |)" << endl);
 
-	LargeVec3Vector xCS(bCS.size(), 0);
-	SimpleCG solver(bCS.size());
-	    solver.solve(M1CS, bCS, xCS, 200, 10e5);
-	cout << "Solution to System: "<<endl;
-	cout << xCS << endl;
+//	LargeVec3Vector xCS(bCS.size(), 0);
+//	SimpleCG solver(bCS.size());
+//	    solver.solve(M1CS, bCS, xCS, 20000, 10e-5);
+//	cout << "Solution to System: "<<endl;
+//	cout << xCS << endl;
+
+	cout << "=========================" << endl;
+	cout << "Testing zeroRowCol" << endl;
+
+	M2CS.outAsMatlab(cout);
+
+	cout << "Original b Vector:" << endl;
+	cout << bCS2 << endl;
+
+	// DO THE ZEROWING
+	M2CS.removeRowCol(1,1,bCS2,k);
+
+	cout << endl;
+	cout << "New A Matrix" << endl;
+	M2CS.outAsMatlab(cout);
+	cout << endl;
+
+	cout << "New b Vector: " <<endl;
+	cout << bCS2 << endl;
+	printResult("EXPECTED: (| -34 -34 -41 |)" << endl);
+
+//	LargeVec3Vector xCS2(bCS2.size(), 0);
+//	SimpleCG solver2(bCS2.size());
+//	    solver2.solve(M2CS, bCS2, xCS2, 20000, 10e-5);
+//	cout << "Solution to System: "<<endl;
+//	cout << xCS2 << endl;
 
 	return;
 

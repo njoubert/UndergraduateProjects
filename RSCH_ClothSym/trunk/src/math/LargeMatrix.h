@@ -139,6 +139,20 @@ public:
         for (unsigned int i = 0; i < _sparseElements.size(); i++)
             _sparseElements[i] = zero;
     }
+    void removeCol(int c) {
+    	if (isNonZero(c)) {
+			int index = getSparseIndexForEntry(c);
+			vector<mat3>::iterator Eit = _sparseElements.begin();
+			vector<int>::iterator Iit = _sparseIndices.begin();
+			for (int i = 0; i != index; i++) {
+				Eit++;
+				Iit++;
+			}
+			_sparseElements.erase(Eit);
+			_sparseIndices.erase(Iit);
+    	}
+		_colLength--;
+    }
     void insertRowIntoDenserRow(LargeMat3MatrixRow const &r) {
         for (unsigned int i = 0; i < r._sparseElements.size(); i++) {
             (*this)[r._sparseIndices[i]] = r._sparseElements[i];
@@ -254,6 +268,7 @@ public:
             _rowData[i] = new LargeMat3MatrixRow(cols, sparsityPattern[i], insertIdentity);
         }
     }
+
     virtual ~LargeMat3Matrix() {
         for (int i = 0; i < _rowCount; i++) {
             delete _rowData[i];
@@ -328,9 +343,7 @@ public:
     	   return false;
        }
 #endif
-       //cout << "============ k=" << k << endl;
         mat3 zero(0);
-        double subtractConstraints;
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
             if (_rowData[i]->isNonZero(c)) {
@@ -342,11 +355,61 @@ public:
         //now enforce constraint
       	(*this)(r,c) = identity2D();
       	b[r] = k;
+
+      	return true;
     }
 
     bool constrainSystem(int r, int c, LargeVec3Vector * b, vec3 k) {
     	return constrainSystem(r,c,*b,k);
     }
+
+    /**
+     * This is an extremely slow method that rebuilds the matrix without the specified row and column. It
+     * is a counterpart to the constrainSystem methods that attempts to do the same thing, but
+     * with removing rows and cols rather than zeroing out rows and columns.
+     */
+   bool removeRowCol(int r, int c, LargeVec3Vector & b, vec3 k) {
+#ifdef CATCHERRORS
+        if ((r > _rowCount) || (c >= _colCount)) {
+            cout << __FILE__ << "::" << __LINE__ << ": SPARSE MATRIX DIMESIONS OUT OF RANGE\n" << endl;
+        }
+       if (b.size() != getColSize()) {
+    	   cout << __FILE__ << "::" << __LINE__ << ": VECTOR AND MATRIX DIMENSIONS DOES NOT MATCH!\n" << endl;
+    	   return false;
+       }
+       if (_rowData[r]->getSparseIndexForEntry(c) < 0) {
+    	   cout << __FILE__ << "::" << __LINE__ << ": ATTEMPTED TO WRITE DATA TO SPARSE ELEMENT!\n" << endl;
+    	   return false;
+       }
+#endif
+        for (int i = 0; i < _rowCount; i++) {
+            if (_rowData[i]->isNonZero(c)) {
+                b[i] -= (*_rowData[i])[c]*k; //careful, order is important. M*v
+            }
+        }
+        b[r] = k;
+
+        //remove the column
+        for (int i = 0; i < _rowCount; i++)
+        	_rowData[i]->removeCol(c);
+        _colCount--;
+
+        //remove the row
+        vector<LargeMat3MatrixRow*>::iterator it = _rowData.begin();
+        for (int i = 0; i != r; i++)
+        	it++;	//zomg this is fucking lame. c++ sux
+        delete *it;
+        _rowData.erase(it);
+        _rowCount--;
+
+        b.removeElement(r);
+
+        return true;
+    }
+
+   bool removeRowCol(int r, int c, LargeVec3Vector * b, vec3 k) {
+	   return removeRowCol(r,c,*b,k);
+   }
 
     void insertMatrixIntoDenserMatrix(LargeMat3Matrix const &m) {
         for (int i = 0; i < m._rowCount; i++)
@@ -485,7 +548,6 @@ public:
             }
             return s;
         }
-    friend ostream & operator <<(ostream & s, const LargeMat3Matrix &m);
 
 private:
     std::vector<LargeMat3MatrixRow*> _rowData;

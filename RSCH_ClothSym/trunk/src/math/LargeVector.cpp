@@ -14,7 +14,7 @@ ostream & operator <<(ostream & s, const LargeVec3Vector &v) {
     for (int i = 0; i < v.size() - 1; i++) {
         s << v[i] << ",";
     }
-    if (v.size() > 1)
+    if (v.size() > 0)
         s << v[v.size() - 1];
     s << ")";
     return s;

@@ -76,6 +76,15 @@ public:
 #endif
     }
 
+    void removeElement(int index) {
+    	vector<vec3>::iterator it = _elements.begin();
+    	int i = 0;
+    	for (; i != index; i++)
+    		it++;	//LAME!
+    	_elements.erase(it);
+    	_size--;
+    }
+
     vec3 & operator[](int n) {
     	return _elements[n];
     }
