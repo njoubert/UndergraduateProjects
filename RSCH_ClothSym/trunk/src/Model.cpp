@@ -119,6 +119,9 @@ SimModel::~SimModel() {
 
 void SimModel::advance(double netTime, double globalTime, double futureTimeStep) {
     //Loading state happens on object creation.
+	 if(DEBUG)
+			cout<<"				Local Time: "<<_localTime<<" = "<<" Global Time: "<<TIME<<endl;
+
 	for(int i = 0; i < _mesh->countVertices(); i++)
 	    	_mesh->getVertex(i)->detectedCollision() = false;
 
@@ -136,8 +139,6 @@ void SimModel::advance(double netTime, double globalTime, double futureTimeStep)
         if(DEBUG)
         	cout<<"				Model "<<_timeStep<<" Took Roundoff Step to local time: "<<_localTime<<endl;
     }
-    if(DEBUG)
-		cout<<"				Local Time: "<<_localTime<<" = "<<" Global Time: "<<TIME<<endl;
 
 
 }

@@ -47,6 +47,8 @@ void Constraint::setCollisionEllipsoids(AniElliModel* ellipsoids) {
 	_ellipsoids = ellipsoids;
 }
 
+vec3 Constraint::getVel() { return _vel; }
+
 /****************************************************************
  *                                                               *
  *               FixedConstraint                                 *
@@ -207,37 +209,26 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 	vec3 xp = _lead->getPastOrigin(_leadIndex);
 	vec3 x0 = _lead->getOrigin(_leadIndex);
 	vec3 x0prime, v;
-
+//*
 	if ((localTime - elliTime[1]) < -0.0000000001) {
 		x0prime = x0 + (localTime - elliTime[0]) * ((x0 - xp) / (elliTime[1]
 				- elliTime[0]));
-		//v = (x0 - x0prime)/(elliTime[0] - localTime);
 		v = (x0 - xp) / (elliTime[1] - elliTime[0]);
-		//cout<<"Case1: "<<"xp: "<<xp<<" x0': "<<x0prime<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
-		//cout<<"Case1: "<<"time Difference: "<<(elliTime[0] - localTime)<<" Position Difference: "<<(x0 - x0prime).length()<<" |v|: "<<v.length()<<endl;
-		//cout<<"I'm surprised it ever went into this loop because the ellipsoid frame is floored in the advance function of model.cpp"<<endl;
 	} else if ((localTime - elliTime[1]) > 0.0000000001) {
 		x0prime = x0 + (localTime - elliTime[1]) * ((xf - x0) / (elliTime[2]
 				- elliTime[1]));
-		//x0prime = x0;
 		v = (xf - x0) / (elliTime[2] - elliTime[1]);
-		//v = (xf - x0)/(timeStep);
-		//v = (xf - xp)/(elliTime[2] - elliTime[0]);
-		//v = (x0prime - x0)/(localTime - elliTime[1]);
-		//cout<<"Case2: "<<"xp: "<<xp<<" x0: "<<x0<<" x0': "<<x0prime<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
-		//cout<<"Case2: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<(xf - x0).length()<<" |v|: "<<v.length()<<endl;
-
 	} else {
 		x0prime = x0;
 		v = (xf - x0) / (elliTime[2] - elliTime[1]);
-		//v = (xf - x0)/(timeStep);
-		//v = (xf-xp)/(elliTime[2] - elliTime[0]);
-
-		//cout<<"Case3: "<<"time Difference: "<<(elliTime[2] - elliTime[1])<<" Position Difference: "<<((xf - x0)).length()<<" |v|: "<<v.length()<<endl;
-
-		//cout<<"Case3: "<<"xp: "<<xp<<" x0: "<<x0<<" xf: "<<xf<<" |v|: "<<v.length()<<" v: "<<v<<" vert: "<<cVertex<<endl;
 	}
-
+//*/
+	x0prime = x0;
+	v = (xf - x0) / (elliTime[2] - elliTime[1]);
+	//cout << "Position of Constraint: " << x0prime << endl;
+	//cout << "Velocity of Constraint (Vector: " << v << endl;
+	//cout << "Velocity of Constraint (Mag): " << v.length() << endl;
+	//x0prime =
 	//All these must be updated
 	(*Y)[cVertex] = x0prime - (*X)[cVertex];
 	_follow->getX() = x0prime;
@@ -245,7 +236,7 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToPoints(
 
 	(*V)[cVertex] = v;
 	_follow->getvX() = v;
-	_vel = v;// + va;
+	_vel = v;
 
 
 }
@@ -254,8 +245,19 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 		SPARSE_MATRIX* A, LARGE_VECTOR* b) {
 	//Update the sparse matrices to honor this constraint
 	int cVertex = _follow->getIndex();
-	A->constrainSystem(cVertex,cVertex,b,_vel);
+	/*
+	if(TIME > 10.01)
+		A->constrainSystem2(cVertex,cVertex,b,_vel);
+	else
+	//*/
+	if(REDUCEDSYSTEM)
+		A->removeRowCol(cVertex,cVertex,b,_vel);
+	else
+		A->constrainSystem(cVertex,cVertex,b,_vel);
+
 }
+
+
 
 void VertexToAnimatedEllipseConstraint::applyExplicitConstraints(
 		LARGE_VECTOR* X, LARGE_VECTOR* V, double localTime) {

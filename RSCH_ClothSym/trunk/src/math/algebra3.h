@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include <limits.h>
 
 // this line defines a new type: pointer to a function which returns a
 // double and takes as argument a double
@@ -318,6 +319,7 @@ public:
     mat3 transpose() const; // transpose
     mat3 inverse() const; // inverse
     mat3& apply(V_FCT_PTR fct); // apply a func. to each element
+    ostream& printAvgStdDev(ostream & s) const;
 
     // friends
 
@@ -1222,6 +1224,43 @@ inline mat3& mat3::apply(V_FCT_PTR fct) {
     v[VY].apply(fct);
     v[VZ].apply(fct);
     return *this;
+}
+
+inline ostream& mat3::printAvgStdDev(ostream & s) const {
+	double val = 0;
+	double avg = 0;
+	double count = 1;
+	double max = -9999999;//DBL_MIN;
+
+	double min = 99999999;//DBL_MAX;
+	//CALCULATE THE AVERAGE:
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			val = (*this)[i][j];
+			avg += val;
+			count++;
+
+			if (val > max)
+				max = val;
+			if (val < min)
+				min = val;
+		}
+	}
+	avg /= count;
+
+	double squaredDiff = 0, aveDiffs = 0;
+	//CALCULATE THE STDDEV:
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			val = (*this)[i][j];
+			squaredDiff = (avg - val);
+			squaredDiff *= squaredDiff;
+			aveDiffs += squaredDiff;
+		}
+	}
+	double stdDev = sqrt(aveDiffs/count);
+	s << "{AVG: " << avg << ", STDDEV: " << stdDev << ", MAX: " << max << ", MIN: " << min << "}";
+	return s;
 }
 
 // FRIENDS

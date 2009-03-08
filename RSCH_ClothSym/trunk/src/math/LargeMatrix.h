@@ -256,6 +256,7 @@ public:
         for (int i = 0; i < rows; i++) {
             _rowData[i] = new LargeMat3MatrixRow(cols);
         }
+        _matrixScale = 1;
     }
     LargeMat3Matrix(int rows, int cols, vector< vector<int> > sparsityPattern, bool insertIdentity) :
         _rowData(rows), _rowCount(rows), _colCount(cols), ZERO(0) {
@@ -267,6 +268,7 @@ public:
         for (int i = 0; i < rows; i++) {
             _rowData[i] = new LargeMat3MatrixRow(cols, sparsityPattern[i], insertIdentity);
         }
+        _matrixScale = 1;
     }
 
     virtual ~LargeMat3Matrix() {
@@ -320,6 +322,7 @@ public:
 
         }
     }
+
     /**
      * Zero's the rows and cols in the r row and c col, and modifies the b vector to
      * take into account the change in this system.
@@ -347,22 +350,146 @@ public:
         _rowData[r]->zeroValues();
         for (int i = 0; i < _rowCount; i++) {
             if (_rowData[i]->isNonZero(c)) {
-                b[i] -= (*_rowData[i])[c]*k; //careful, order is important. M*v
+                //careful, order is important. M*v
                 (*_rowData[i])[c] = zero;
             }
         }
 
         //now enforce constraint
-      	(*this)(r,c) = identity2D();
-      	b[r] = k;
+        //updateConstraintIntersectionValue does not need to be called every step this could be called periodically elsewhere
+        //updateConstraintIntersectionValue();
+      	(*this)(r,c) = identity2D()*_matrixScale;
+      	b[r] = k*_matrixScale;
 
       	return true;
     }
+
+    bool printAvgStdDevMinMax() {
+		mat3 m;
+		double val = 0;
+		double avg = 0;
+		double count = 1;
+		double max = -10e10;
+		double min = 10e10;
+		double avgOfBlocks = 0;
+		double avgOfStdDev = 0;
+		double squaredDiff = 0, aveDiffs = 0;
+		double valAbs = 0;
+		double avgAbs = 0;
+		double maxAbs = 10e-30;
+		double minAbs = 10e10;
+		double avgOfBlocksAbs = 0;
+		double avgOfStdDevAbs = 0;
+		double blockCounter = 0;
+		double squaredDiffAbs = 0, aveDiffsAbs = 0;
+		for (int i = 0; i < _rowCount; i++) {
+			for (int j = 0; j < _colCount; j++) {
+				if (_rowData[i]->isNonZero(j)) {
+					m = (*_rowData[i])[j];
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							val = m[i][j];
+							valAbs = fabs(val);
+							avg += val;
+							avgAbs += valAbs;
+							count++;
+
+							if (val > max)
+								max = val;
+							if (val < min)
+								min = val;
+
+							if (valAbs > maxAbs)
+								maxAbs = valAbs;
+							if (valAbs < minAbs && valAbs > 0)
+								minAbs = valAbs;
+						}
+					}
+					avg /= count;
+					avgAbs /= count;
+
+					squaredDiff = 0;
+					aveDiffs = 0;
+					squaredDiffAbs = 0;
+					aveDiffsAbs = 0;
+					//CALCULATE THE STDDEV:
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							val = m[i][j];
+							valAbs = fabs(val);
+							squaredDiff = (avg - val);
+							squaredDiff *= squaredDiff;
+							aveDiffs += squaredDiff;
+
+							squaredDiffAbs = (avgAbs - valAbs);
+							squaredDiffAbs *= squaredDiffAbs;
+							aveDiffsAbs += squaredDiffAbs;
+						}
+					}
+					double stdDev = sqrt(aveDiffs / count);
+					double stdDevAbs = sqrt(aveDiffsAbs / count);
+
+					avgOfBlocks += avg;
+					avgOfStdDev += stdDev;
+					avgOfBlocksAbs += avgAbs;
+					avgOfStdDevAbs += stdDevAbs;
+					blockCounter++;
+				}
+			}
+		}
+		avgOfBlocks /= blockCounter;
+		avgOfStdDev /= blockCounter;
+		avgOfBlocksAbs /= blockCounter;
+		avgOfStdDevAbs /= blockCounter;
+		cout << "{REAL ANALYSIS ->     AVG: " << avgOfBlocks << ", STDDEV: " << avgOfStdDev
+				<< ", MAX: " << max << ", MIN: " << min << "}" << endl;
+		cout << "{ABSOLUTE ANALYSIS -> AVG: " << avgOfBlocksAbs << ", STDDEV: " << avgOfStdDevAbs
+						<< ", MAX: " << maxAbs << ", MIN: " << minAbs << "}" << endl;
+	}
 
     bool constrainSystem(int r, int c, LargeVec3Vector * b, vec3 k) {
     	return constrainSystem(r,c,*b,k);
     }
 
+    bool updateConstraintIntersectionValue() {
+		double avg = 0;
+		double count = 0;
+		mat3 m;
+    	for (int i = 0; i < _rowCount; i++) {
+			for (int j = 0; j < _colCount; j++) {
+				if (_rowData[i]->isNonZero(j)) {
+					m = (*_rowData[i])[j];
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							avg += m[i][j];
+						    count++;
+						}
+					}
+				}
+			}
+		}
+    	avg /= count;
+//*
+    	//Round the average to nearest decimal place so CG has easier time solving
+    	double decimalCount = 1;
+    	if(avg < 1)
+    		while(avg < 1) {
+    			avg *= 10;
+    			decimalCount *= 10;
+    		}
+    	else
+    		while(avg > 1) {
+    			avg /= 10;
+    			decimalCount /= 10;
+    		}
+    	avg = floor(avg);
+    	if(decimalCount > 0)
+    		avg /= decimalCount;
+    	else
+    		avg *= -1*decimalCount;
+//*/
+    	_matrixScale = avg;
+	}
     /**
      * This is an extremely slow method that rebuilds the matrix without the specified row and column. It
      * is a counterpart to the constrainSystem methods that attempts to do the same thing, but
@@ -554,6 +681,7 @@ private:
     int _rowCount; //The total amount of actual rows.
     int _colCount; //The total amount of theoretical cols.
     mat3 ZERO;
+    double _matrixScale;
 };
 
 ostream & operator <<(ostream & s, const LargeMat3Matrix &m);

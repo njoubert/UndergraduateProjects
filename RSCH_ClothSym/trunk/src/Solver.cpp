@@ -47,6 +47,9 @@ SPARSE_MATRIX* Solver::getJV() {
 LARGE_VECTOR* Solver::getY() {
     return _y;
 }
+LARGE_VECTOR* Solver::getDelVred() {
+    return delv_reduced;
+}
 
 /******************************************************************************
  *                                                                             *
@@ -290,6 +293,10 @@ LARGE_VECTOR* NewmarkSolver::getZ() {
     return _z;
 }
 
+LARGE_VECTOR* NewmarkSolver::getDelVred() {
+    return delv_reduced;
+}
+
 void NewmarkSolver::writeSparseMatrix2File(string fileName, SPARSE_MATRIX* M) {
 	ofstream outFile (fileName.c_str());
 
@@ -383,15 +390,14 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
     //A = M - g*h*JV - g*h^2*JP;
     A->insertMatrixIntoDenserMatrix(*(sys->getM()));
     //A->insertMatrixIntoDenserMatrix(*(sys->getModM()));
-    (*A) -= (*_JV);
-    (*A) -= (*_JP);
+	(*A) -= (*_JV);
+	(*A) -= (*_JP);
 
-    //Apply constraints (filter):
-    if ((DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS)) {
-		for (unsigned int i = 0; i < constraints->size(); i++) {
+
+	if ((DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS))
+		for (unsigned int i = 0; i < constraints->size(); i++)
 			(*constraints)[i]->applyConstraintToSolverMatrices(A, b);
-		}
-	}
+
 
    /*//Doesn't work very well, this should improve stability more but it does not. BUG?
     if(COLLISIONS) {
@@ -409,52 +415,68 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 
 	//sys->applyMouseConst2Matrices(A, b);
 	profiler.frametimers.switchToTimer("CG solving");
-    //delV = b/A
-    cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
-	if(WRITEFILEANDEXIT) {
-		writeLargeVector2File("b.txt", b);
-		writeLargeVector2File("x.txt", _delv);
-		writeSparseMatrix2File("A.txt", A);
+	//delV = b/A
+
+	double cgIterations;
+	cgIterations = cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
+
+	A->printAvgStdDevMinMax();
+	//cout<<"Change in velocity for vertex: 9"<<(*_delv)[9]<<endl;
+
+/*
+	if(cgIterations < 7)
+		MAX_CG_ERR /= 2;
+	if(cgIterations > 300)
+		MAX_CG_ERR *= 2;
+	//if(MAX_CG_ERR < 10e-10)
+		//MAX_CG_ERR = 10e-10;
+//*/
+	//cout<<"CG Took "<<cgIterations<<" Iterations. CG Residul is now: "<< MAX_CG_ERR<<endl;
+
+	if (WRITEFILEANDEXIT) {
+		// if(TIME > 1 && TIME < 1.01) {
+		cout << "Writing Out Files at TIME: " << TIME << endl;
+		writeLargeVector2File("b_Ref.txt", b);
+		writeLargeVector2File("x_Ref.txt", _delv);
+		writeSparseMatrix2File("A_Ref.txt", A);
+		exit(1);
 	}
-    profiler.frametimers.switchToGlobal();
-    //cout<<"Gamma: "<<_gamma<<" CG ITER: "<<MAX_CG_ITER<<" CG RES: "<<MAX_CG_ERR<<endl;
-    //(*_delv)[300][2] *= 0.0001;
+	profiler.frametimers.switchToGlobal();
+	//cout<<"Gamma: "<<_gamma<<" CG ITER: "<<MAX_CG_ITER<<" CG RES: "<<MAX_CG_ERR<<endl;
+	//(*_delv)[300][2] *= 0.0001;
 
-    profiler.frametimers.switchToTimer("calculating matrices");
-    //delX = h*(v + g*delV) + y;
-    (*_delx) = (*_delv);
-    (*_delx) *= (_gamma);
-    (*_delx) += *(sys->getV());
-    (*_delx) *= timeStep;
-    (*_delx) += *_y;
-    profiler.frametimers.switchToGlobal();
+		profiler.frametimers.switchToTimer("calculating matrices");
+		//delX = h*(v + g*delV) + y;
+		(*_delx) = (*_delv);
+		(*_delx) *= (_gamma);
+		(*_delx) += *(sys->getV());
+		(*_delx) *= timeStep;
+		(*_delx) += *_y;
+		profiler.frametimers.switchToGlobal();
+		/*//Could also constrain at end of timestep like nuttapong
+		 if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
+		 for (unsigned int i = 0; i < constraints->size(); i++)
+		 (*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
+		 }
+		 //*/
+		/*//DEBGUG
+		 int i = 458;
+		 cout<<"Timestep: "<<timeStep<<endl;
+		 cout<<"Acceleration: "<<((*_f)[i] / (*sys->getM())(i,i)[0][0])/timeStep<<endl;
+		 cout<<"Change in Velocity: "<<(*_delv)[i]<<endl;
+		 cout<<"Change in Position: "<<(*_delx)[i]<<endl;
+		 cout<<"Before: "<<(*sys->getX())[458]<<endl;
+		 cout<<"Before: "<<(*sys->getV())[458]<<endl;
+		 //*/
+		LARGE_VECTOR* _xTMP = sys->getX();
+		LARGE_VECTOR* _vTMP = sys->getV();
+		(*_xTMP) += (*_delx);
+		(*_vTMP) += (*_delv);
 
-	/*//Could also constrain at end of timestep like nuttapong
-     if (DYNAMIC_CONSTRAINTS || STATIC_CONSTRAINTS) {
-		for (unsigned int i = 0; i < constraints->size(); i++)
-			(*constraints)[i]->applyConstraintToPoints(sys->getX(), sys->getV(), _y);
-	}
-	//*/
+		//cout<<"After: "<<(*sys->getX())[458]<<endl;
+		//cout<<"After: "<<(*sys->getV())[458]<<endl;
 
-    /*//DEBGUG
-	int i = 458;
-	cout<<"Timestep: "<<timeStep<<endl;
-	cout<<"Acceleration: "<<((*_f)[i] / (*sys->getM())(i,i)[0][0])/timeStep<<endl;
-	cout<<"Change in Velocity: "<<(*_delv)[i]<<endl;
-	cout<<"Change in Position: "<<(*_delx)[i]<<endl;
-    cout<<"Before: "<<(*sys->getX())[458]<<endl;
-    cout<<"Before: "<<(*sys->getV())[458]<<endl;
-	//*/
-
-    LARGE_VECTOR* _xTMP = sys->getX();
-    LARGE_VECTOR* _vTMP = sys->getV();
-    (*_xTMP) += (*_delx);
-    (*_vTMP) += (*_delv);
-
-	//cout<<"After: "<<(*sys->getX())[458]<<endl;
-	//cout<<"After: "<<(*sys->getV())[458]<<endl;
-
-    profiler.frametimers.switchToTimer("update");
+		profiler.frametimers.switchToTimer("update");
 
 }
 

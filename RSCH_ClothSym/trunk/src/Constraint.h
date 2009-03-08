@@ -34,6 +34,7 @@ public:
     void setFollow(TriangleMeshVertex*);
     void setHierarchy(int);
     TriangleMeshVertex* getFollow();
+    vec3 getVel();
 
     //COLLISION
     void setCollisionMesh(TriangleMesh* mesh);
@@ -44,6 +45,7 @@ public:
     int _leadIndex;
     int _hierarchyIndex;
     TriangleMeshVertex* _follow;
+    vec3 _vel;
 
     //FOR COLLISIONS
     TriangleMesh* _mesh;
@@ -82,8 +84,8 @@ public:
     void applyConstraintToSolverMatrices(SPARSE_MATRIX*, LARGE_VECTOR*);
     void applyConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V);
     void applyExplicitConstraints(LARGE_VECTOR* X, LARGE_VECTOR* V, double);
+
 private:
-	vec3 _vel;
 };
 
 class VertexToEllipseCollision : public Constraint {

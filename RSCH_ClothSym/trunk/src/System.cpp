@@ -111,7 +111,8 @@ cout<<"			Creating System"<<endl;
 	edgs = mesh->getEdgesIterator();
 	double squaredDiff, aveDiffs = 0, standardDev;
 	do {
-		squaredDiff = (averageRL - (*edgs)->getRestLength())*(averageRL - (*edgs)->getRestLength());
+		squaredDiff = (averageRL - (*edgs)->getRestLength());
+		squaredDiff *= squaredDiff;
 		aveDiffs += squaredDiff;
 	} while (edgs.next());
 	standardDev = sqrt(aveDiffs/edgeCounter);
@@ -570,27 +571,49 @@ void System::bendForceJacobian(TriangleMeshTriangle* A,
 }
 
 inline mat3 System::dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks) {
+	/* Jacobian Check with Matlab File "springsJacobCheck.nb"
+	pa[0] = 0.2523, pa[1] = -0.2352, pa[2] = 0.5933;
+	pb[0] = -1.52, pb[1] = -1.2, pb[2] = .01;
+	rl = .987, Ks = 100;
+	//*/
 	mat3 I = identity2D();
 	vec3 l = pa - pb;
 	double L = l.length();
 	mat3 oProd = outerProduct(l, l);
 	double lDOT = l * l;
-	return -Ks * ((1 - (rl / L)) * (I - (oProd / lDOT)) + (oProd / lDOT));
+	mat3 jacob = -Ks * ((1 - (rl / L)) * (I - (oProd / lDOT)) + (oProd / lDOT));
+	//cout<<"dfdx_spring: " <<endl<<jacob<<endl;
+	return jacob;
 }
 inline mat3 System::dfdx_damp(vec3 & pa, vec3 & pb, vec3 & va, vec3 & vb,
 		double rl, float Kd) {
+	/* Jacobian Check with Matlab File "springsJacobCheck.nb"
+	pa[0] = 0.2523, pa[1] = -0.2352, pa[2] = 0.5933;
+	va[0] = 1.623, va[1] = 1.572, va[2] = -1.573;
+	pb[0] = -1.52, pb[1] = -1.2, pb[2] = .01;
+	vb[0] = 2, vb[1] = -2, vb[2] = 5.2;
+	rl = .987, Kd = 1;
+	//*/
 	mat3 I = identity2D();
 	vec3 P = pa - pb;
 	vec3 V = va - vb;
-	return -Kd * ((outerProduct(P, V) / (P * P)) + (2 * ((-P * V) / ((P * P)
+	mat3 jacob = -Kd * ((outerProduct(P, V) / (P * P)) + (2 * ((-P * V) / ((P * P)
 			* (P * P))) * outerProduct(P, P)) + (((P * V) / (P * P)) * I));
+	//cout<<"dfdx_damp: "<<endl<<jacob<<endl;
+	return jacob;
 }
 mat3 System::dfdv_damp(vec3 & pa, vec3 & pb, double rl, double Kd) {
+	/* Jacobian Check with Matlab File "springsJacobCheck.nb"
+	pa[0] = 0.2523, pa[1] = -0.2352, pa[2] = 0.5933;
+	pb[0] = -1.52, pb[1] = -1.2, pb[2] = .01;
+	rl = .987, Kd = 1;
+	//*/
 	mat3 I = identity2D();
 	vec3 l = pa - pb;
 	mat3 oProd = outerProduct(l, l);
 	double lDOT = l * l;
 	mat3 RETURN = -Kd * (oProd / lDOT);
+	//cout<<"dfdv_damp: "<<endl<<RETURN<<endl;
 	return RETURN;
 }
 
@@ -807,6 +830,18 @@ void System::calculateInternalForces(Solver* solver) {
 		double rl = RL.length();
 		F0 = f_spring(pa, pb, rl, _mat->getKe()) + f_damp(pa, pb, va, vb, rl,
 				_mat->getKd());
+
+		/* Jacobian Check with Matlab File "springsJacobCheck.nb"
+			pa[0] = 0.2523, pa[1] = -0.2352, pa[2] = 0.5933;
+			va[0] = 1.623, va[1] = 1.572, va[2] = -1.573;
+			pb[0] = -1.52, pb[1] = -1.2, pb[2] = .01;
+			vb[0] = 2, vb[1] = -2, vb[2] = 5.2;
+			rl = .987;
+			double Ks = 100;
+			double Kd = 1;
+			cout<<"f_spring: "<<f_spring(pa, pb, rl, Ks)<<endl;
+			cout<<"f_damp: "<<f_damp(pa, pb, va, vb, rl,Kd)<<endl;
+			//*/
 
 		//Calculate Bend Forces if they are to be calculated
 		if (BEND_FORCES)
@@ -1341,10 +1376,24 @@ void System::calculateForcePartials(NewmarkSolver* solver) {
 		vec3 RL = Ua - Ub;
 		double rl = RL.length();
 
-		JP_fa_xa = dfdx_damp(pa, pb, va, vb, rl, _mat->getKd()) + dfdx_spring(
-				pa, pb, rl, _mat->getKe());
-		JV_fa_xa = dfdv_damp(pa, pb, rl, _mat->getKd());
+		mat3 t1, t2;
 
+		t1 = dfdx_damp(pa, pb, va, vb, rl, _mat->getKd());
+		t2 = dfdx_spring(
+				pa, pb, rl, _mat->getKe());
+
+		JP_fa_xa = t1 + t2;
+		JV_fa_xa = dfdv_damp(pa, pb, rl, _mat->getKd());
+/*
+		cout << "DAMPING JACOBIAN WRT POSITION: ";
+		t1.printAvgStdDev(cout) << endl;
+		cout << "ELASTIC JACOBIAN WRT POSITION: ";
+		t2.printAvgStdDev(cout) << endl;
+		cout << "NET JACOBIAN WRT POSITION: ";
+		JP_fa_xa.printAvgStdDev(cout) << endl;
+		cout << "NET JACOBIAN WRT VELOCITY: ";
+		JV_fa_xa.printAvgStdDev(cout) << endl;
+//*/
 		(*JP)(ia, ia) += JP_fa_xa;
 		(*JP)(ia, ib) += -1 * JP_fa_xa;
 		(*JP)(ib, ia) += -1 * JP_fa_xa;
@@ -1428,7 +1477,8 @@ void System::applyCollisions(Solver* solver,
 
 }
 void System::takeStep(Solver* solver, vector<Constraint*> *constraints, vector<
-		VertexToEllipseCollision*> *collisions, double timeStep, double localTime) {
+		VertexToEllipseCollision*> *collisions, double timeStep,
+		double localTime) {
 
 	profiler.frametimers.switchToTimer("calculateState");
 	//Calculate the current derivatives and forces
@@ -1440,10 +1490,16 @@ void System::takeStep(Solver* solver, vector<Constraint*> *constraints, vector<
 	profiler.frametimers.switchToTimer("writeback mesh");
 	//Write back to mesh
 	TriangleMeshVertex* v;
+	LARGE_VECTOR* delVel = solver->getDelVred();
+	LARGE_VECTOR* y = solver->getY();
+
+	vec3 constVel;
 	for (unsigned int i = 0; i < mesh->vertices.size(); i++) {
 		v = mesh->getVertex(i);
+
 		v->getX() = (*_x)[i];
 		v->getvX() = (*_v)[i];
+
 		//_correctedIndices[i]= false;
 		//_strainCorrectedIndices[i] = false;
 	}

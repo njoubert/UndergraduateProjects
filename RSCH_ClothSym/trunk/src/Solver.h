@@ -32,6 +32,7 @@ public:
     SPARSE_MATRIX* getJP();
     SPARSE_MATRIX* getJV();
     LARGE_VECTOR* getY();
+    LARGE_VECTOR* getDelVred();
 
 protected:
 	TriangleMesh* _mesh;
@@ -41,6 +42,7 @@ protected:
 	SPARSE_MATRIX* _JP;
     SPARSE_MATRIX* _JV;
     LARGE_VECTOR* _y;
+    LARGE_VECTOR* delv_reduced;
 };
 
 class ImplicitSolver: public Solver {
@@ -83,6 +85,7 @@ public:
     ~NewmarkSolver();
     LARGE_VECTOR* getY();
     LARGE_VECTOR* getZ();
+    LARGE_VECTOR* getDelVred();
     void calculateState(System* sys, vector<Constraint*> *, vector<VertexToEllipseCollision*> *, double);
     void solve(System* sys,vector<Constraint*> *, double , vector<VertexToEllipseCollision*> *, double);
 
@@ -108,6 +111,9 @@ private:
 
     LARGE_VECTOR* _xTMP;
     LARGE_VECTOR* _vTMP;
+
+    LARGE_VECTOR* b_reduced;
+    SPARSE_MATRIX* A_reduced;
 };
 
 class BaraffNewmarkSolver: public Solver {
