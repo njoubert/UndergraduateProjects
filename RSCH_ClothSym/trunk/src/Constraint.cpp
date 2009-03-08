@@ -250,10 +250,8 @@ void VertexToAnimatedEllipseConstraint::applyConstraintToSolverMatrices(
 		A->constrainSystem2(cVertex,cVertex,b,_vel);
 	else
 	//*/
-	if(REDUCEDSYSTEM)
-		A->removeRowCol(cVertex,cVertex,b,_vel);
-	else
-		A->constrainSystem(cVertex,cVertex,b,_vel);
+
+	A->constrainSystem(cVertex,cVertex,b,_vel);
 
 }
 
