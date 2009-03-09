@@ -623,11 +623,11 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 					//cout<<"Got Through Checks A-OK"<<endl;
 					//cout<<(*JP)(vIndex, vIndex)<<endl;
 //*/
-				}
 
-				/*
+
+				//*
 				 if (MUd > 0.000000001) {
-				 cout<<"Calc Friction"<<endl;
+				 //cout<<"Calc Friction"<<endl;
 				 vec3 frictionForce = f_friction(Vt, MUd);
 				 //cout<<"Friction Force "<<frictionForce<<endl;
 				 (*F)[i] += frictionForce;
@@ -644,10 +644,10 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				 }
 				 //*/
 
-				/*
+				//*
 				 //Jacobian For Damping in Tangental Direction ("Friction")
 				 if (MUd > 0.000000001) {
-				 cout<<"calc Dynamic Friction Jacobian"<<endl;
+				 //cout<<"calc Dynamic Friction Jacobian"<<endl;
 				 jv[0][0] = -MUd * t[0] * t[0];
 				 jv[0][1] = -MUd * t[0] * t[1];
 				 jv[0][2] = -MUd * t[0] * t[2];
@@ -659,6 +659,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				 jv[2][2] = -MUd * t[2] * t[2];
 				 (*JV)(i, i) += jv;
 				 }
+				 /*
 				 if(vl > -0.1 && vl < 0.1 && MUs > 0.000000001) {
 				 cout<<"calc Static Friction Jacobian"<<endl;
 				 jv[0][0] = -MUs;
@@ -685,6 +686,7 @@ void VertexToEllipseCollision::applyDampedCollisions(double Kcd,
 				 jv_temp[2][2] = -mu*n[2]*pow(n[2],(v[2]-vb[2])*n[2])*log(n[2]);
 				 cout<<endl<<jv_temp<<endl;
 				 //*/
+				}
 
 			}
 		}

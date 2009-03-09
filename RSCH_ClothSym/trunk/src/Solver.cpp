@@ -420,7 +420,7 @@ void NewmarkSolver::solve(System* sys, vector<Constraint*> *constraints, double 
 	double cgIterations;
 	cgIterations = cg.solve((*A), (*b), (*_delv), MAX_CG_ITER, MAX_CG_ERR);
 
-	A->printAvgStdDevMinMax();
+	//A->printAvgStdDevMinMax();
 	//cout<<"Change in velocity for vertex: 9"<<(*_delv)[9]<<endl;
 
 /*
