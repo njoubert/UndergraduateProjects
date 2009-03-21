@@ -27,6 +27,7 @@ float MASS = DEFAULT_MASS;
 int MESHSIZE;
 
 float Ke = DEFAULT_KS;
+float Ks_comp = DEFAULT_KS;
 float Kd = DEFAULT_KD;
 float KBe = DEFAULT_KBE;
 float KBd = DEFAULT_KBD;

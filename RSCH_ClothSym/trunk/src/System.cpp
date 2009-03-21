@@ -319,8 +319,11 @@ vec3 System::f_spring(vec3 & pa, vec3 & pb, double rl, double Ks) {
 	double e = .0000001;
 	if (L < rl + e && L > rl - e)
 		L = rl;
-
-	vec3 f = -Ks * (l / L) * (L - rl);
+	vec3 f;
+	if(rl > L)
+		f = -(Ks_comp) * (l / L) * (L - rl);
+	else
+		f = -Ks * (l / L) * (L - rl);
 
 	return f;
 }
@@ -581,7 +584,11 @@ inline mat3 System::dfdx_spring(vec3 & pa, vec3 & pb, double rl, double Ks) {
 	double L = l.length();
 	mat3 oProd = outerProduct(l, l);
 	double lDOT = l * l;
-	mat3 jacob = -Ks * ((1 - (rl / L)) * (I - (oProd / lDOT)) + (oProd / lDOT));
+	mat3 jacob;
+	if(rl > L)
+		jacob = -(Ks_comp) * ((1 - (rl / L)) * (I - (oProd / lDOT)) + (oProd / lDOT));
+	else
+		jacob = -Ks * ((1 - (rl / L)) * (I - (oProd / lDOT)) + (oProd / lDOT));
 	//cout<<"dfdx_spring: " <<endl<<jacob<<endl;
 	return jacob;
 }

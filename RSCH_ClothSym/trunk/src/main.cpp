@@ -464,6 +464,13 @@ int parseCommandLine(int argc, char *argv[]) {
 			} else {
 				malformedArg = true;
 			}
+		} else if (!strcmp(argv[i], "-kecomp")) {
+
+			if (isThereMore(i, argc, 1)) {
+				Ks_comp = atof(argv[++i]);
+			} else {
+				malformedArg = true;
+			}
 		} else if (!strcmp(argv[i], "-kd")) {
 
 			if (isThereMore(i, argc, 1)) {
@@ -963,8 +970,8 @@ void myframemove() {
 		}
 		profiler.frametimers.Start();
 		imagesaver.saveFrame(world.getTime(), true, cam.inverseFPS, cam._w, cam._h);
-#endif		
-		
+#endif
+
 		world.exportSim(0, world.getTime(), true, cam.inverseFPS);
 		if(PLAYALLFRAMES) {
 			world.advance(BIGGESTTIMESTEP);

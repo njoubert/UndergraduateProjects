@@ -60,6 +60,7 @@ extern float MASS;
 extern int MESHSIZE;
 
 extern float Ke;
+extern float Ks_comp;
 extern float Kd;
 
 extern bool BEND_FORCES;
