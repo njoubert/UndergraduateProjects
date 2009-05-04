@@ -234,7 +234,7 @@ To prove to you that the new position and velocity makes no sense given that the
 Start with position $[p_x, p_y]$ and velocity $[v_x, v_y]$ where, in our case, $v_x = 0$. Take timestep $h$:
 \begin{enumerate}
 	\item $v' = [v_x + h*F_{sx}/m,\; v_y]$ where $v_y$ stays the same since the force is along the x axis.
-	\item $p' = [p_x + hv'_x,\; p_y + hv'_y]$
+	\item $p' = [p_x + hv_x,\; p_y + hv_y] = [p_x,\; p_y + hv_y]$
 \end{enumerate}
 Notice the length of $v'$ is greater than the length of $v$, and that $p'$ does not fulfill the constraint that $\parallel p'\parallel = $ radius. The explicit integrator thus adds energy to the system, which violates the first law of thermodynamics.
 \end{proof}
@@ -273,7 +273,7 @@ We would like to do better than our previous method by not overestimating the ar
 \begin{figure}[htp]
     \centering
     \includegraphics[scale=0.6]{explicitEuler2.pdf}
-    \caption{Explicit Euler integration versus Implicit Euler integration. Notice that the area using the force at the end of the timestep does \emph{not} overestimate the change in velocity - the area under the force curve.}
+    \caption{Explicit Euler integration versus Implicit Euler integration. Notice that Implicit uses the force at the future position while Explicit uses the force at the current position.}
 	\label{explicitimplicitEuler}
 \end{figure}
 
@@ -341,6 +341,7 @@ At first glance, equation \ref{bwdEulerstep} looks just like the forward Euler s
 A fully implicit integrator uses a scheme such as Newton's Method to find the value of the derivative of $\dot{x_i}$ from the value that we can calculate, $\dot{x_{i-1}}$. More specifically, we have a function that gives us the derivative of our variable: $\dot{x} = \vec{F}(x)$, where this function depends on the current $x$.\footnote{This is the definition of an ordinary differential equation}. This function tends to be nonlinear, and we can use several rootfinding techniques to find the value of $\vec{F}(x)$ at some future $x$. 
 
 \paragraph{}
+
 If you look at what we've just done, you'll notice that we've chosen the next position in such a way that the force on that point brings you there from the previous position. This is where you see why it's called backwards Euler - the force is such that if you run the simulation \emph{backwards}, you can use the force on $x_i$ to move directly to $x_{i-1}$. Intuitively, this presents a reasoning for why we're interested in this integration scheme. There is \underline{no way} that $x_i$ can spiral off to some crazy value, it has to go to such a position that the force on it ``makes sense'' - that the force allows you to get back to where you were. Specifically, Implicit Euler is \textbf{unconditionally stable} on continuous, smooth functions.
 
 \paragraph{}
@@ -374,7 +375,7 @@ Here we present two other ways of analyzing the advantages of a implicit integra
 
 \subsubsection{Energy-level Reasoning}
 
-We can approach the fully implicit integrator on an energy level to understand why it's a better approach for simulation than the explicit integrator. The second law of thermodynamics state that ``entropy increases over time'' - that is, kinetic and potential energy is dissipated through friction and collisions into heat, sound and so forth. Thus we \emph{expect} our system to lose energy. If we integrate the energy curve (and energy is related to force) our implicit integrator will always underestimate the energy in the system, and we will dissipate energy. This is \emph{more} physically correct than adding energy, since we expect the second law of thermodynamics to hold. By dissipating energy we introduce some global \textbf{damping}, which is preferred over adding energy since we expect energy to dissipate in our system anyway, and having a simulation damp out is much better than having a simulation become unstable and blow up.
+We can approach the fully implicit integrator on an energy level to understand why it's a better approach for simulation than the explicit integrator. The second law of thermodynamics state that ``entropy increases over time'' - that is, kinetic and potential energy is dissipated through friction and collisions into heat, sound and so forth. Thus we \emph{expect} our system to lose energy. If we integrate the energy curve (and energy is related to force) our implicit integrator will always underestimate the energy in the system, and we will dissipate energy. This is \emph{more} physically correct than adding energy, since we expect the second law of thermodynamics to hold. By dissipating energy we introduce some global \textbf{damping}, which is preferred over adding energy since we expect energy to dissipate in our system anyway, and having a simulation damp out is much better than having a simulation become unstable and blow up. This shows why the implicit integrator's solution is plausible.
 
 \subsubsection{Low-Pass Filter Reasoning}
 
