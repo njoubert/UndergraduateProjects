@@ -1,0 +1,416 @@
+%
+%  untitled
+%
+%  Created by Niels Joubert on 2009-04-30.
+%  Copyright (c) 2009 __MyCompanyName__. All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+\addtolength{\topmargin}{-0.2in}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{url}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+
+\usepackage[pdftex,
+	pdfauthor={Niels Joubert},
+	pdftitle={An Introduction to Simulation, Lagrangian simulation of spring-mass systems},
+	pdfsubject={Work by Niels Joubert}, 
+	pdfkeywords={Niels Joubert, 2009-04-30, simulation, Lagrangian simulation of spring-mass systems},
+	colorlinks
+]{hyperref}
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+
+\title{An Introduction to Simulation \\
+{\large Lagrangian simulation of spring-mass systems}}
+
+%\title{}
+\author{ Niels Joubert }
+
+\date{2009-04-30}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+\begin{abstract}
+Simulation of physical phenomenon - so-called Physically Based Animation - is of crucial interest in the Computer Graphics community, since it enables the creation of effects beyond the ability of artists to fake, and interactions beyond scripted or baked behavior. The believability and realism of environments and interactions are hugely affected by robust, accurate physical simulation. Thanks to Nuttapong Chentanez, Sebastian Burke, James Andrews, Daniel Ritchie and Dr. Carlo Sequin for their help in preparing these notes.
+\end{abstract}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Problem Setup \& Intuitive Explanation}
+
+Consider a snapshot of a ball being thrown into the air. At any point in time, the movement, or \textbf{dynamics}, of the ball is characterized by what we call it's \textbf{state}. If we could freeze-frame the world and look at the dynamics of the ball, we could identify its state as its mass, its position in space and the velocity it is moving at. Given this snapshot in time, Newton's Three Laws of Motion explain how the object moves.
+
+\begin{enumerate}
+	\item Items remain in their current state of motion unless a force is applied to it.
+	\item The relationship between the force on an object and its acceleration is given by $F = ma$.
+	\item For every force on an object, the object exerts an equal and opposite force back.
+\end{enumerate}
+
+So, if we un-freeze the world, Newton's first law states that we expect the ball to keep moving in the direction it's currently moving. Of course we know that gravity is a constant force between objects and the earth, so the ball feels this force. Newton's second law relates this constant force to how the ball accelerates. Specifically:
+\begin{equation}
+	\vec{a} = \frac{\vec{F}}{m}
+\end{equation}
+Thus, the acceleration of the ball depends on the force, scaled down by the mass. Intuitively, a large boulder is a lot harder to push around than a soccerball.
+
+\paragraph{}
+
+Let's consider the ball. \textbf{At any point in time}, the ball's state consists of its velocity, position and mass. Our environment (the world) also applies a force to it - in our case, this force is just gravity. Given all this, we want to calculate how the ball moves.   
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{fallingball.pdf}
+    \caption{The state $\vec{u}$ of and the force $\vec{F}_g$ on a falling ball.}
+\end{figure}
+
+We also consider another interesting setup. Rather than a ball just falling under gravity, let's consider a ball being dropped, but the ball is connected to the ceiling with a spring. 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{fallingspringball.pdf}
+    \caption{The state $\vec{x}$ of and the forces $\vec{F}_g$ and $\vec{F}_s$ on a falling ball.}
+\end{figure}
+
+How does this object move? We need to know how to calculate the net force on the objects at the current point in time to set up $F = ma$, which we will discuss in Modeling the System. We also want to know how to compute the state at the next point in time, which we will discuss in Solving the System.
+
+
+
+\section{Modeling the System - Calculating Forces}
+
+We model our system as a vector of positions and velocities: $\vec{u} = \{\vec{x}, \vec{v}\}$. The first step in simulation is to find $\vec{F}$ so that we can relate the forces on an object to how it's movement is changing. We want to set up the equation $\vec{a} = \frac{\vec{F}}{m}$. As a reminder, the $\vec{F}$ we want to calculate is the \textbf{total force} on the object, so we sum all the forces together.
+
+\subsection{Gravity}
+
+In the simple case of gravity, this is really easy. Gravity is a constant force, always equal to $\vec{F}_g = (0,-9.8,0)m$ where $-y$ points towards the earth and $m$ is the mass of the object.
+ 
+\subsection{Springs \& Hook's Law}
+
+Springs do not exert a constant force. Consider a rubber band. If you hold it between your hands without stretching it, you feel no force. As you move your hands apart to stretch out the band, you feel increasing resistance from the rubber band. We want to capture this behavior, so we need to know both how the force scales with extension of the spring, and what the rest length of the spring is:
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{spring1.pdf}
+    \caption{A spring at rest length, and the same spring extended beyond rest length, causing forces attempting to pull its endpoints back to rest length.}
+\end{figure}
+
+The direction of the force is along the spring itself - that is, it is along the vector between the two endpoints. The magnitude of the force is given by hook's law, which states that the force is proportional to the linear extention from the rest length $rl$:
+
+\begin{equation}
+	\fbox{$-\vec{F}_{ab} = \vec{F}_{ba} = \vec{F}_s = k_s((\vec{b} - \vec{a}) - rl)$}
+\end{equation}
+
+So we have now calculated the net force on a ball hanging from the ceiling by a spring. Gravity is pulling down by $(0,-9.8,0)$ and the spring is pulling back up by $k_s(\vec{b} - \vec{a})$ where $\vec{b}$ is the ball's position and $\vec{a}$ is the attachment point to the ceiling.
+
+\paragraph{}
+
+As an additional note, we usually model springs to have not only an \textbf{elastic} force as we've already described, but to also have a \textbf{damping} force that resists changes in velocity. This models such phenomenon as shock absorbers, and in fact most of the spring-like objects around you also experience some damping effects. This damping is \textbf{local} to the two particles connected by a spring. The full spring equation (for a zero-length spring) becomes:
+\begin{eqnarray}
+	\vec{l} = \vec{b} - \vec{a} \\
+	\vec{F}_s = \left[k_s(\vec{l} - rl) + k_s\frac{\dot{l} \cdot \vec{l}}{\vec{\left|l\right|}}\right]
+\end{eqnarray}
+
+\pagebreak
+
+\section{Solving the System}
+
+We know where the ball currently is (it's state) and we know the forces on it. Let's say the current time is $t$ and we want to know where the ball will be some $h$ amount of time later. We call this value $h$ the \textbf{timestep}, and we use the terminology ``taking a timestep'' to mean moving forward in time by $h$ amount. 
+
+\subsection{Moving forward in time}
+
+We know the current velocity and position of the ball, and we find the acceleration through Newton's Second Law. How do we find the velocity and position of the ball after $h$ time? Given the system's state $u_t$ how do we find $u_{t+h}$ First, let me remind you of the relationship between position, velocity and acceleration:
+
+\begin{eqnarray}
+	\text{velocity } v = \mathbf{\dot{x}} = \frac{dx}{dt} = \text{instantaneous change in of position}\\
+	\text{acceleration } a = \mathbf{\ddot{x}} = \frac{dv}{dt} = \frac{d^2x}{dt^2} = \text{instantaneous change in velocity}
+\end{eqnarray}
+
+\paragraph{}
+
+Let's make an assumption to help us solve this problem. We know that the forces on the object is causing it to accelerate. Let's assume all the acceleration is applied immediately, at the current time. For the duration of the timestep, then, the velocity remains constant:
+
+\paragraph{}
+
+\textbf{Assumption 1:} \emph{Assume the acceleration is constant over the timestep, so we can apply the total acceleration immediately, then use this new constant velocity over the course of the timestep.}
+
+\paragraph{}
+
+\textbf{What is the new velocity after we apply the acceleration?} 
+\begin{eqnarray}
+	\Delta v = h a = h \frac{dv}{dt}\\
+	v_{t+h} = v_{t} + \Delta v \\
+	\therefore \fbox{$v_{t+h} = v_t + ha$} \label{velupdate}
+\end{eqnarray}
+
+We would like to take the current velocity, and add the change in velocity caused by acceleration. Well, acceleration does tell us how velocity changes, and acceleration is in units of ``change in velocity'' per time unit. Since the acceleration is \emph{per time unit} we need to somehow account for the fact that we might be taking a timestep that is not the length of just one time unit. So we scale acceleration by the length of our timestep $h$, and we get something in units of ``change in velocity'' for the length of this timestep. The units match, and we can add this change in velocity to the current velocity to get the new velocity.
+
+\paragraph{}
+
+\textbf{What about the new position?} 
+\begin{eqnarray}
+	\Delta x = h v_t \\
+	x_{t + h} = x_t + \Delta x \\
+	\therefore \fbox{$x_{t + h} = x_t + h v_t$} \label{posupdate} %Flip these with the words
+\end{eqnarray}
+Well, since velocity is now constant throughout the duration of the timestep, you should be able to guess how to find the new position. For example, a ball at position 0 moving at 5 meters per second, will be at position 5 after the first second, position 10 after the second second. Why? Because it moved at 5 meters per second for 2 seconds, it will be 10 meters from the original position. Do you use the velocity at the beginning or the end of the timestep? It doesn't really matter, it turns out, since assumption 1 is an approximation of what is really going on in both cases.
+
+\subsection{Stability Issues}
+
+What does assumption 1 do to our simulation? Consider the approximation we made when we assumed that \emph{acceleration is applied instantly} - we assumed that any change in both the \underline{magnitude} and the \underline{direction} of the velocity happens instantly, and then we \emph{traveled at a constant speed in a straight line} for the rest of the timestep! Why does this not work? The ball dropping might not be the most obvious example, so let's consider a ball attached to a spring, swinging around a fixed point:\footnote{If this example seems contrived, consider a satellite moving around the earth - it works exactly like this.}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.5]{circleball.pdf}
+	\label{circleballfig}
+    \caption{A ball rotating around a point. The spring force $\vec{F}_s$ pulls inward while velocity moved tangential to the path (perpendicular to the radius)}
+\end{figure}
+
+If we ask where the ball is after a timestep of length $h$, using our previous method, we'll calculate that the net force changes the velocity to point more towards the center, and we'll move the ball in a straight line defined by the direction of the velocity vector. But since we're moving along a straight line, you won't end up on the expected path! Even worse, the velocity will now be larger! Over time, the distance from the center to the ball will increase, so the spring would have extended, and the spring force $\vec{F}_s$ will be larger. We say that we've made an \emph{error} in our approximation of the ball's position. This error will compound as we keep moving, every time getting larger and larger, until the position is completely wrong.
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.7]{goingunstable.pdf}
+    \caption{As the ball rotates, the position is moved along a straight line and the velocity is not correctly updated, causing our approximation of the ball to spiral out of control rather than follow the circular path.}
+\end{figure}
+
+\pagebreak
+
+\subsubsection{Proving Instability}
+
+To prove to you that the new position and velocity makes no sense given that the ball should be moving in a circle, I'll sketch out the calculations for the new velocity and position and show that the velocity is increasing. To do this we'll work with figure 4 and the $x$ and $y$ components of position $p$ and velocity $v$:
+
+\begin{proof}[Prove instability]
+Start with position $[p_x, p_y]$ and velocity $[v_x, v_y]$ where, in our case, $v_x = 0$. Take timestep $h$:
+\begin{enumerate}
+	\item $v' = [v_x + h*F_{sx}/m,\; v_y]$ where $v_y$ stays the same since the force is along the x axis.
+	\item $p' = [p_x + hv'_x,\; p_y + hv'_y]$
+\end{enumerate}
+Notice the length of $v'$ is greater than the length of $v$, and that $p'$ does not fulfill the constraint that $\parallel p'\parallel = $ radius. The explicit integrator thus adds energy to the system, which violates the first law of thermodynamics.
+\end{proof}
+
+\subsection{Integration Methods}
+
+\subsubsection{Explicit Euler}
+
+We've been concerned with finding the new position and velocity of an object given its current position, velocity and acceleration. We also know that acceleration and velocity is the first and second derivative of position. So to find a new position and velocity, what we really want to do is \textbf{integrate} velocity and acceleration:
+\begin{eqnarray}
+	\vec{v}_{t+h} = \vec{v}_t + \int_t^{t+h}\dot{v} \;\;\;\;\;\;\;\;\; 	\vec{x}_{t+h} = \vec{x}_t + \int_t^{t+h}\dot{x}
+\end{eqnarray}
+
+What we've done so far is to say that the integral is equal to the timestep duration $h$ times the (constant) value of the function we're integrating at the current point in time. We can visually graph that as approximating the graph with a rectangle of width $h$ and height taken from the value of the function we're integrating:
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.7]{explicitEuler.pdf}
+    \caption{Explicit Euler integration. Notice the area difference between the curve and the rectangle.}
+	\label{EulerOvershootGraph}
+\end{figure}
+
+This kind of integration is called \textbf{Explicit Euler integration}, and is the simplest form of numerical integration you'll find. It transforms an integral into a multiplication, using the value of the function at the beginning of the timestep to approximate the area.\footnote{Notice that this method is the same as those Reimann Sums you calculated back in calculus class.}
+
+\begin{equation}
+	\fbox{$
+	\vec{v}_t + \int_t^{t+h}\dot{v} \;\;\; \longrightarrow \;\;\; \vec{v}_t + ((t+h) - t)\dot{v}
+	$}
+\end{equation}
+
+\pagebreak
+\subsubsection{Implicit Euler}
+
+We would like to do better than our previous method by not overestimating the area as badly. Here I will suggest that we use the force at the \emph{end} of the timestep. Notice that this underestimates the area, and thus I don't add energy. Let's be precise in the force we're looking for: Let's find a \emph{future position} such that the force on the object at that position is such that this force will take me from where I am now to this new position. (See the appendix for a mathematical explanation of this statement.)
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{explicitEuler2.pdf}
+    \caption{Explicit Euler integration versus Implicit Euler integration. Notice that the area using the force at the end of the timestep does \emph{not} overestimate the change in velocity - the area under the force curve.}
+	\label{explicitimplicitEuler}
+\end{figure}
+
+To do this, what we want to know is the force in the future. In figure \ref{explicitimplicitEuler}, we want to calculate the ``Future force'' from the current force and the current state. Calculating this future force seems like circular logic - to get the future force, don't I need the future position, and if we had that, why are we bothering with integration? Luckily, we \emph{can} accurately find \emph{or} approximate the future force! 
+
+\paragraph{}
+
+\textbf{Why does this formulation work any better than our previous integrator?} Let's consider our simple ball-spring system and attempt to move it 100 years into the future, then move back in time to our current position. Explicit Euler will apply 100 years worth of acceleration and move off in a straight line at some ridiculous speed, ending up at a completely nonphysical place. Our spring force is now absurdly large, and things only get worse from here. Implicit Euler, on the other hand, finds the future position such that the force there can move me between my current and this future position. This is equivalent to saying ``find me a position so that, if we move back in time by applying the negated acceleration, we get back to the starting positon''. (Take some time to absorb that statement). What position would this be? The further we move away, the larger the force becomes on the mass, thus no far away point (such as the position produces by Explicit Euler) can satisfy this statement. A position close to the rest length of the spring can satisfy this statement since it will have a small force on it. So even though we're moving 100 years into the future in a single timestep, we have such a small acceleration that, if we move back from that position using the acceleration at that position, we can get back to where we were initially. This reasoning shows you that implicit Euler is \textbf{unconditionally stable}.
+
+\subsubsection{Semi-Implicit Euler}
+
+What's the big problem here? \textbf{We don't know what the force in the future is!} But we solved the same problem when we discussed Inverse Kinematics. We have to make an approximation, and to do so we use the first order Taylor expansion to \textbf{linearize} the force equation. This linearized version of the implicit integrator is known as a \textbf{Semi-Implicit Euler Integrator}. Our approximation states that you can fit a straight line to the force curve, and move along this line to approximate the force in the future. The slope of this line is defined by the derivative of the force function, as shown in figure \ref{semiimplicitfig}.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.6]{semiEuler.pdf}
+    \caption{Using the Taylor expansion to approximate the force in the future.}
+	\label{semiimplicitfig}
+\end{figure}
+
+
+\section{Appendix}
+
+\subsection{Explicit and (Semi) Implicit Euler Integration Derivation}
+
+We want to integrate an ordinary differential equation of the form:
+\begin{equation}
+	\dot{x} = f(x)
+\end{equation}
+
+I present here one possible derivation of the implicit and explicit Euler integration schemes, and make the approximation of implicit integration to find semi-implicit integration. Both of these schemes start with the following observation:
+
+\paragraph{}
+\textbf{Observation 1:} \emph{The derivative of a function can be discretized by looking at the future or the past.}
+\paragraph{}
+In mathematical terms, using subscripts to indicate the discretized time value, we can write the derivative at a point as being either of the following:
+\begin{eqnarray}
+	\dot{x_i} \approx \frac{x_{i+1} - x_i}{h} \;&\text{Forward Euler} \label{fwdEuler}\\
+	\dot{x_i} \approx \frac{x_{i} - x_{i-1}}{h} \;&\text{Backwards Euler} \label{bwdEuler}
+\end{eqnarray}
+
+But let's say that we \textbf{have} the derivative, and we're interested in these discretized points, $x_i$, $x_{i-1}$ and $x_{i+1}$. We will now derive the formula to get the ``next'' $x$ value from the ``current'' $x$ value for both the Forward and Backward cases. As a note, Forward Euler and Explicit Euler is considered to be the same, as is Backward Euler and Implicit Euler.
+
+\subsubsection{Explicit Euler / Forward Euler}
+
+For this case, we are at $x_i$ and we want to move to $x_{i+1}$, so we rewrite equation \ref{fwdEuler}:
+\begin{eqnarray}
+	\dot{x_i} \approx \frac{x_{i+1} - x_i}{h} \\
+	\therefore x_{i+1} \approx x_{i} + h\dot{x_i} \label{fwdEulerstep}
+\end{eqnarray}
+Notice how equation \ref{fwdEulerstep} is the same as equation \ref{posupdate} and \ref{velupdate} we came up with when we were originally attempting to calculate new velocities and positions given the acceleration (recall acceleration is the derivative of velocity, thus we were solving the differential equation $\dot{v}$ = $\frac{\vec{F}}{m}$ given by Newton's Second Law). Thus we need to do no more work to show that forward Euler approximates the next position based on all the information we already have at the current position.
+
+\subsubsection{Implicit \& Semi-Implicit Euler / Backward Euler}
+
+For the case of equation \ref{bwdEuler}, we are currently at $x_{i-1}$ and want to move to $x_i$. We start by rewriting equation \ref{bwdEuler}:
+\begin{eqnarray}
+	\dot{x_i} \approx \frac{x_{i} - x_{i-1}}{h} \\
+	\therefore x_i \approx x_{i-1} + h\dot{x_i} \label{bwdEulerstep}
+\end{eqnarray}
+
+At first glance, equation \ref{bwdEulerstep} looks just like the forward Euler step in equation \ref{fwdEulerstep}. The critical difference is that the derivative of the function, $\dot{x_i}$, is at time $i$ but we're still at time $i-1$ in our simulation. Calculating the derivative of, say, velocity at the current time is easy - that's what Newton's Second Law gives us. But how do we calculate the derivative of a function in the future?
+
+\paragraph{}
+
+A fully implicit integrator uses a scheme such as Newton's Method to find the value of the derivative of $\dot{x_i}$ from the value that we can calculate, $\dot{x_{i-1}}$. More specifically, we have a function that gives us the derivative of our variable: $\dot{x} = \vec{F}(x)$, where this function depends on the current $x$.\footnote{This is the definition of an ordinary differential equation}. This function tends to be nonlinear, and we can use several rootfinding techniques to find the value of $\vec{F}(x)$ at some future $x$. 
+
+\paragraph{}
+If you look at what we've just done, you'll notice that we've chosen the next position in such a way that the force on that point brings you there from the previous position. This is where you see why it's called backwards Euler - the force is such that if you run the simulation \emph{backwards}, you can use the force on $x_i$ to move directly to $x_{i-1}$. Intuitively, this presents a reasoning for why we're interested in this integration scheme. There is \underline{no way} that $x_i$ can spiral off to some crazy value, it has to go to such a position that the force on it ``makes sense'' - that the force allows you to get back to where you were. Specifically, Implicit Euler is \textbf{unconditionally stable} on continuous, smooth functions.
+
+\paragraph{}
+
+Unfortunately, finding $\vec{F}(x_i)$ is computationally prohibitive. Since we usually don't want to spend the extra time in calculating a precise value for $\dot{x_i}$, the future value of the derivative of our variable, we use the \textbf{Taylor Series} to make an approximation of our function. Making this approximation will give us the equations for a \textbf{Semi-Implicit Integrator}, which we will now derive from equation \ref{bwdEulerstep}:
+\begin{eqnarray}
+	x_i \approx x_{i-1} + h\dot{x_i} \\
+	\therefore x_i \approx x_{i-1} + h\vec{F}(x)
+\end{eqnarray}
+We now apply a first order Taylor expansion to $\vec{F}(x_{i-1})$ to find $(x_i)$, keeping in mind that $\vec{F}$ is a vector, thus it's partial is a \textbf{Jacobian Matrix}:
+\begin{equation}
+	\vec{F}(x_i) \approx \vec{F}(x_{i-1}) + \frac{\partial \vec{F}(x_{i-1})}{\partial x}(x_i - x_{i-1})
+\end{equation}
+And substitute this expansion into the backwards Euler equation and solve for $x_i$:
+\begin{eqnarray}
+	x_i & \approx & x_{i-1} + h\left[ \vec{F}(x_{i-1}) + \frac{\partial \vec{F}(x_{i-1})}{\partial x}(x_i - x_{i-1}) \right] \\
+	x_i & \approx & x_{i-1} + h\vec{F}(x_{i-1}) + hx_i\frac{\partial \vec{F}(x_{i-1})}{\partial x} - hx_{i-1}\frac{\partial \vec{F}(x_{i-1})}{\partial x} \\
+	x_i - hx_i\frac{\partial \vec{F}(x_{i-1})}{\partial x} & \approx & x_{i-1} - hx_{i-1}\frac{\partial \vec{F}(x_{i-1})}{\partial x} + h\vec{F}(x_{i-1}) \\
+	x_i\left[ I - h\frac{\partial \vec{F}(x_{i-1})}{\partial x} \right] & \approx & x_{i-1} \left[ I - h\frac{\partial \vec{F}(x_{i-1})}{\partial x} \right] + h\vec{F}(x_{i-1})\\
+	x_i & \approx & x_{i-1} + h\vec{F}(x_{i-1})\left[ I - h\frac{\partial \vec{F}(x_{i-1})}{\partial x} \right]^{-1} \label{semiimplEuler}
+\end{eqnarray}
+What we've done is derived a formula for $x$ at time $i$ using the values we can find at time $i-1$. This is, naturally, just an approximation, so we've lost the property of being \textbf{unconditionally stable}, but it will still be far better than our initial Explicit Euler equation, allowing us to take bigger timesteps.
+
+\paragraph{}
+
+Notice the derivative we take in equation \ref{semiimplEuler}: $\frac{\partial \vec{F}(x_{i-1})}{\partial x}$. This is a \textbf{Jacobian}, since it contains \textbf{all the first order partial derivatives of this function with respect to its independent variables}. This comes from the Taylor expansion's first order term, which we can intuitively explain. We currently have all the information at time $i-1$, and we find the derivative of the function at this time, and move along it in a straight line to get to to the approximate value of the function at a time in the future. To create a straight line, we need a slope. A slope is simply a derivative, and the Jacobian contains all the necessary derivatives to create this ``straight line'' along which we move to find the future value of the function $\vec{F}$. The Jacobian forms a matrix that encodes the change in force on each coordinate of each mass with respect to the change in position of each coordinate of each other mass. As you can imagine, for most of the masses, this value is 0 - the force on most masses is \underline{not} affected by the movement of other points. A spring is an example of a coupling between points that causes nonzero entries in the Jacobian.\footnote{For more explanation of the Jacobian, see my course notes on Inverse Kinematics, http://njoubert.com/teaching/}
+
+\subsection{Implicit versus Explicit}
+
+Here we present two other ways of analyzing the advantages of a implicit integrator over an explicit integrator.
+
+\subsubsection{Energy-level Reasoning}
+
+We can approach the fully implicit integrator on an energy level to understand why it's a better approach for simulation than the explicit integrator. The second law of thermodynamics state that ``entropy increases over time'' - that is, kinetic and potential energy is dissipated through friction and collisions into heat, sound and so forth. Thus we \emph{expect} our system to lose energy. If we integrate the energy curve (and energy is related to force) our implicit integrator will always underestimate the energy in the system, and we will dissipate energy. This is \emph{more} physically correct than adding energy, since we expect the second law of thermodynamics to hold. By dissipating energy we introduce some global \textbf{damping}, which is preferred over adding energy since we expect energy to dissipate in our system anyway, and having a simulation damp out is much better than having a simulation become unstable and blow up.
+
+\subsubsection{Low-Pass Filter Reasoning}
+
+We will not cover this approach in detail in these notes, but it is interesting to note that you can show that Semi-Implicit Euler is equal to a low pass filtered version if Explicit Euler by writing the change in position as a sum of the explicit change in position and a Jacobian times the implicit change in position, and factoring the Jacobian matrix into a filter term:
+\begin{eqnarray}
+	\vec{F}(x_{t+h}) \approx \vec{F}(x_t) + h\frac{\partial\vec{F}(x_t)}{\partial x} \\
+	\therefore \Delta x \approx \frac{h}{M}\vec{F}(x_t) + \frac{h}{M}\frac{\partial\vec{F}(x_t)}{\partial x} \\
+	\text{Let } J = \frac{\partial\vec{F}(x_t)}{\partial x} \\
+	\therefore \Delta x = \Delta x_{\text{explicit}} + J \Delta x_{\text{implicit}} \\
+	\therefore \Delta x_{\text{implicit}} = \left(I - J\right)^{-1}\Delta x_{\text{explicit}}
+\end{eqnarray}
+
+If you look at the change in position as a vibration, then $(I - J)^{-1}$ acts as a low-pass filter, removing high frequency changes in position.
+
+\subsection{Error in Explicit Euler Integration}
+
+We initially said that our simple forward Euler integration scheme will give us an incorrect answer to the future position. How big is this error? We can use the Taylor expansion to quantify the error. The full Taylor Expansion states that:
+\begin{equation}
+	\vec{F}(x) = \sum_{0}^{\infty}\frac{\vec{F}^{(n)}(a)}{n!}(x-a)^n
+\end{equation}
+We truncate this equation at $n=1$ to get the forward Euler equation:
+\begin{equation}
+	\vec{F}(x_{i+1}) \approx \vec{F}(x_i) + \dot{\vec{F}}(x_i)(x_{i+1}-x_i)
+\end{equation}
+Thus the error is completely contained in all the higher order terms of the Taylor expansion:
+\begin{equation}
+	\text{error}(\vec{F}(x)) = \sum_{2}^{\infty}\frac{\vec{F}^{(n)}(a)}{n!}(x-a)^n
+\end{equation}
+Since the error is dominated by the first term, there's plenty of integration schemes that also attempt to provide for the second term. It is important to note that implicit Euler integration's error magnitude is \emph{the same} ad the explicit Euler integrator, but it \underline{underestimates} rather than \emph{overestimates} the integral. More sophisticated integration schemes are available, each with their own properties. Remember, always apply the right tool for the job, regardless of how the tool is viewed!
+
+\section{References}
+Much of this material was adapted from the following sources:
+\begin{itemize}
+\item Physically Based Modeling, Online SIGGRAPH 2001 course notes, http://www.pixar.com/companyinfo/research/pbm2001/ 
+\item Implicit Integration - the linear case. http://www.mech.gla.ac.uk/~peterg/software/MTT/examples/Simulation\_rep/node89.html
+\item Large Steps in Cloth Simulation, Baraff & Witkin, Siggraph 1998
+\end{itemize}
+
+\end{document}
