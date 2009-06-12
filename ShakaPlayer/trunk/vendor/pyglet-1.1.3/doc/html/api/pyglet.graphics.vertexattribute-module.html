@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pyglet.graphics.vertexattribute</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://www.pyglet.org/">pyglet API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pyglet-module.html">pyglet</a>&nbsp;.&nbsp;<a href="pyglet.graphics-module.html">graphics</a>&nbsp;.&nbsp;vertexattribute
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pyglet.graphics.vertexattribute</h1>
+<p>Access byte arrays as arrays of vertex attributes.</p>
+<p>Use <a href="pyglet.graphics.vertexattribute-module.html#create_attribute" class="link">create_attribute</a> to create an attribute accessor given a simple format
+string.  Alternatively, the classes may be constructed directly.</p>
+<div class="rst-section">
+<h1 class="heading"><a id="rst-attribute-format-strings" name="rst-attribute-format-strings">Attribute format strings</a></h1>
+<p>An attribute format string specifies the format of a vertex attribute.  Format
+strings are accepted by the <a href="pyglet.graphics.vertexattribute-module.html#create_attribute" class="link">create_attribute</a> function as well as most
+methods in the pyglet.graphics module.</p>
+<p>Format strings have the following (BNF) syntax:</p>
+<pre class="py-doctest">
+attribute ::= ( name | index <span class="py-string">'g'</span> <span class="py-string">'n'</span>? ) count type</pre>
+<p><tt class="rst-docutils literal"><span class="pre">name</span></tt> describes the vertex attribute, and is one of the following
+constants for the predefined attributes:</p>
+<dl class="rst-docutils">
+<dt><tt class="rst-docutils literal"><span class="pre">c</span></tt></dt>
+<dd>Vertex color</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">e</span></tt></dt>
+<dd>Edge flag</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">f</span></tt></dt>
+<dd>Fog coordinate</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">n</span></tt></dt>
+<dd>Normal vector</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">s</span></tt></dt>
+<dd>Secondary color</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">t</span></tt></dt>
+<dd>Texture coordinate</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">v</span></tt></dt>
+<dd>Vertex coordinate</dd>
+</dl>
+<p>You can alternatively create a generic indexed vertex attribute by
+specifying its index in decimal followed by the constant <tt class="rst-docutils literal"><span class="pre">g</span></tt>.  For
+example, <tt class="rst-docutils literal"><span class="pre">0g</span></tt> specifies the generic vertex attribute with index 0.
+If the optional constant <tt class="rst-docutils literal"><span class="pre">n</span></tt> is present after the <tt class="rst-docutils literal"><span class="pre">g</span></tt>, the
+attribute is normalised to the range <tt class="rst-docutils literal"><span class="pre">[0,</span> <span class="pre">1]</span></tt> or <tt class="rst-docutils literal"><span class="pre">[-1,</span> <span class="pre">1]</span></tt> within
+the range of the data type.</p>
+<p><tt class="rst-docutils literal"><span class="pre">count</span></tt> gives the number of data components in the attribute.  For
+example, a 3D vertex position has a count of 3.  Some attributes
+constrain the possible counts that can be used; for example, a normal
+vector must have a count of 3.</p>
+<p><tt class="rst-docutils literal"><span class="pre">type</span></tt> gives the data type of each component of the attribute.  The
+following types can be used:</p>
+<dl class="rst-docutils">
+<dt><tt class="rst-docutils literal"><span class="pre">b</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLbyte</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">B</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLubyte</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">s</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLshort</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">S</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLushort</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">i</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLint</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">I</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLuint</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">f</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLfloat</span></tt></dd>
+<dt><tt class="rst-docutils literal"><span class="pre">d</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">GLdouble</span></tt></dd>
+</dl>
+<p>Some attributes constrain the possible data types; for example,
+normal vectors must use one of the signed data types.  The use of
+some data types, while not illegal, may have severe performance
+concerns.  For example, the use of <tt class="rst-docutils literal"><span class="pre">GLdouble</span></tt> is discouraged,
+and colours should be specified with <tt class="rst-docutils literal"><span class="pre">GLubyte</span></tt>.</p>
+<p>Whitespace is prohibited within the format string.</p>
+<p>Some examples follow:</p>
+<dl class="rst-docutils">
+<dt><tt class="rst-docutils literal"><span class="pre">v3f</span></tt></dt>
+<dd>3-float vertex position</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">c4b</span></tt></dt>
+<dd>4-byte colour</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">1eb</span></tt></dt>
+<dd>Edge flag</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">0g3f</span></tt></dt>
+<dd>3-float generic vertex attribute 0</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">1gn1i</span></tt></dt>
+<dd>Integer generic vertex attribute 1, normalized to [-1, 1]</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">2gn4B</span></tt></dt>
+<dd>4-byte generic vertex attribute 2, normalized to [0, 1] (because
+the type is unsigned)</dd>
+</dl>
+</div>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+        <h2>Classes</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.AbstractAttribute-class.html" class="summary-name">AbstractAttribute</a>
+<div class="summary-description">Abstract accessor for an attribute in a mapped buffer.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.ColorAttribute-class.html" class="summary-name">ColorAttribute</a>
+<div class="summary-description">Color vertex attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.EdgeFlagAttribute-class.html" class="summary-name">EdgeFlagAttribute</a>
+<div class="summary-description">Edge flag attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.FogCoordAttribute-class.html" class="summary-name">FogCoordAttribute</a>
+<div class="summary-description">Fog coordinate attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.NormalAttribute-class.html" class="summary-name">NormalAttribute</a>
+<div class="summary-description">Normal vector attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.SecondaryColorAttribute-class.html" class="summary-name">SecondaryColorAttribute</a>
+<div class="summary-description">Secondary color attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.TexCoordAttribute-class.html" class="summary-name">TexCoordAttribute</a>
+<div class="summary-description">Texture coordinate attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.VertexAttribute-class.html" class="summary-name">VertexAttribute</a>
+<div class="summary-description">Vertex coordinate attribute.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.graphics.vertexattribute.GenericAttribute-class.html" class="summary-name">GenericAttribute</a>
+<div class="summary-description">Generic vertex attribute, used by shader programs.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+        <h2>Functions</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pyglet.graphics.vertexattribute-module.html#interleave_attributes" class="summary-sig-name">interleave_attributes</a>(<span class="summary-sig-arg">attributes</span>)</span>
+<div class="summary-description">Interleave attribute offsets.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pyglet.graphics.vertexattribute-module.html#serialize_attributes" class="summary-sig-name">serialize_attributes</a>(<span class="summary-sig-arg">count</span>,
+        <span class="summary-sig-arg">attributes</span>)</span>
+<div class="summary-description">Serialize attribute offsets.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a href="pyglet.graphics.vertexattribute.AbstractAttribute-class.html" class="link">AbstractAttribute</a></span>
+    </td><td class="summary">
+        <span class="summary-sig"><a href="pyglet.graphics.vertexattribute-module.html#create_attribute" class="summary-sig-name">create_attribute</a>(<span class="summary-sig-arg">format</span>)</span>
+<div class="summary-description">Create a vertex attribute description from a format string.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+        <h2>Function Details</h2>
+<table class="details">
+</table>
+<a name="interleave_attributes"></a>
+<div class=" detail">
+  <h3>interleave_attributes</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">interleave_attributes</span>(<span class="sig-arg">attributes</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>Interleave attribute offsets.</p>
+<p>Adjusts the offsets and strides of the given attributes so that
+they are interleaved.  Alignment constraints are respected.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><dl class="parameters">
+        <dt><span class="pname">attributes</span> : <span class='ptype'>sequence of <a href="pyglet.graphics.vertexattribute.AbstractAttribute-class.html" class="link">AbstractAttribute</a></span></dt>
+        <dd>Attributes to interleave in-place.</dd>
+    </dl></dd>
+  </dl>
+  </div>
+</div>
+<a name="serialize_attributes"></a>
+<div class=" detail">
+  <h3>serialize_attributes</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">serialize_attributes</span>(<span class="sig-arg">count</span>,
+        <span class="sig-arg">attributes</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>Serialize attribute offsets.</p>
+<p>Adjust the offsets of the given attributes so that they are
+packed serially against each other for <code class="link">count</code> vertices.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><dl class="parameters">
+        <dt><span class="pname">count</span> : <span class='ptype'>int</span></dt>
+        <dd>Number of vertices.</dd>
+        <dt><span class="pname">attributes</span> : <span class='ptype'>sequence of <a href="pyglet.graphics.vertexattribute.AbstractAttribute-class.html" class="link">AbstractAttribute</a></span></dt>
+        <dd>Attributes to serialze in-place.</dd>
+    </dl></dd>
+  </dl>
+  </div>
+</div>
+<a name="create_attribute"></a>
+<div class=" detail">
+  <h3>create_attribute</h3>
+  <div class="detail-signature">
+    <span class="sig"><span class="sig-name">create_attribute</span>(<span class="sig-arg">format</span>)</span>
+    </div>
+  <div class="detail-description">
+  <p>Create a vertex attribute description from a format string.</p>
+<p>The initial stride and offset of the attribute will be 0.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><dl class="parameters">
+        <dt><span class="pname">format</span> : <span class='ptype'>str</span></dt>
+        <dd>Attribute format string.  See the module summary for details.</dd>
+    </dl></dd>
+    <dt>Returns: <a href="pyglet.graphics.vertexattribute.AbstractAttribute-class.html" class="link">AbstractAttribute</a></dt>
+  </dl>
+  </div>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://www.pyglet.org/">pyglet API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pyglet-module.html">pyglet</a>&nbsp;.&nbsp;<a href="pyglet.graphics-module.html">graphics</a>&nbsp;.&nbsp;vertexattribute
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sun Mar 22 20:15:38 2009
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

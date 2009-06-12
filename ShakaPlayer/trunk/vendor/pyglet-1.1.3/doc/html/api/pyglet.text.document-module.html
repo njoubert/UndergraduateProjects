@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pyglet.text.document</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://www.pyglet.org/">pyglet API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pyglet-module.html">pyglet</a>&nbsp;.&nbsp;<a href="pyglet.text-module.html">text</a>&nbsp;.&nbsp;document
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pyglet.text.document</h1>
+<p>Formatted and unformatted document interfaces used by text layout.</p>
+<div class="rst-section">
+<h1 class="heading"><a id="rst-abstract-representation" name="rst-abstract-representation">Abstract representation</a></h1>
+<p>Styled text in pyglet is represented by one of the <a href="pyglet.text.document.AbstractDocument-class.html" class="link">AbstractDocument</a> classes,
+which manage the state representation of text and style independently of how
+it is loaded or rendered.</p>
+<p>A document consists of the document text (a Unicode string) and a set of
+named style ranges.  For example, consider the following (artificial)
+example:</p>
+<pre class="py-doctest">
+0    5   10   15   20
+The cat sat on the mat.
++++++++        +++++++    <span class="py-string">&quot;bold&quot;</span>
+            ++++++      <span class="py-string">&quot;italic&quot;</span></pre>
+<p>If this example were to be rendered, &quot;The cat&quot; and &quot;the mat&quot; would be in bold,
+and &quot;on the&quot; in italics.  Note that the second &quot;the&quot; is both bold and italic.</p>
+<p>The document styles recorded for this example would be <tt class="rst-docutils literal"><span class="pre">&quot;bold&quot;</span></tt> over ranges
+(0-7, 15-22) and <tt class="rst-docutils literal"><span class="pre">&quot;italic&quot;</span></tt> over range (12-18).  Overlapping styles are
+permitted; unlike HTML and other structured markup, the ranges need not be
+nested.</p>
+<p>The document has no knowledge of the semantics of <tt class="rst-docutils literal"><span class="pre">&quot;bold&quot;</span></tt> or <tt class="rst-docutils literal"><span class="pre">&quot;italic&quot;</span></tt>,
+it stores only the style names.  The pyglet layout classes give meaning to
+these style names in the way they are rendered; but you are also free to
+invent your own style names (which will be ignored by the layout classes).
+This can be useful to tag areas of interest in a document, or maintain
+references back to the source material.</p>
+<p>As well as text, the document can contain arbitrary elements represented by
+<a href="pyglet.text.document.InlineElement-class.html" class="link">InlineElement</a>.  An inline element behaves like a single character in the
+documented, but can be rendered by the application.</p>
+</div>
+<div class="rst-section">
+<h1 class="heading"><a id="rst-paragraph-breaks" name="rst-paragraph-breaks">Paragraph breaks</a></h1>
+<p>Paragraph breaks are marked with a &quot;newline&quot; character (U+0010).  The Unicode
+paragraph break (U+2029) can also be used.</p>
+<p>Line breaks (U+2028) can be used to force a line break within a paragraph.</p>
+<p>See Unicode recommendation UTR #13 for more information:
+<a class="rst-reference" href="http://unicode.org/reports/tr13/tr13-5.html" target="_top">http://unicode.org/reports/tr13/tr13-5.html</a>.</p>
+</div>
+<div class="rst-section">
+<h1 class="heading"><a id="rst-document-classes" name="rst-document-classes">Document classes</a></h1>
+<p>Any class implementing <a href="pyglet.text.document.AbstractDocument-class.html" class="link">AbstractDocument</a> provides a an interface to a
+document model as described above.  In theory a structured document such as
+HTML or XML could export this model, though the classes provided by pyglet
+implement only unstructured documents.</p>
+<p>The <a href="pyglet.text.document.UnformattedDocument-class.html" class="link">UnformattedDocument</a> class assumes any styles set are set over the entire
+document.  So, regardless of the range specified when setting a <tt class="rst-docutils literal"><span class="pre">&quot;bold&quot;</span></tt>
+style attribute, for example, the entire document will receive that style.</p>
+<p>The <a href="pyglet.text.document.FormattedDocument-class.html" class="link">FormattedDocument</a> class implements the document model directly, using
+the <a href="pyglet.text.runlist.RunList-class.html" class="link">RunList</a> class to represent style runs efficiently.</p>
+</div>
+<div class="rst-section">
+<h1 class="heading"><a id="rst-style-attributes" name="rst-style-attributes">Style attributes</a></h1>
+<p>The following character style attribute names are recognised by pyglet:</p>
+<dl class="rst-docutils">
+<dt><tt class="rst-docutils literal"><span class="pre">font_name</span></tt></dt>
+<dd>Font family name, as given to pyglet.font.load.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">font_size</span></tt></dt>
+<dd>Font size, in points.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">bold</span></tt></dt>
+<dd>Boolean.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">italic</span></tt></dt>
+<dd>Boolean.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">underline</span></tt></dt>
+<dd>4-tuple of ints in range (0, 255) giving RGBA underline color, or None
+(default) for no underline.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">kerning</span></tt></dt>
+<dd>Additional space to insert between glyphs, in points.  Defaults to 0.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">baseline</span></tt></dt>
+<dd>Offset of glyph baseline from line baseline, in points.  Positive values
+give a superscript, negative values give a subscript.  Defaults to 0.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">color</span></tt></dt>
+<dd>4-tuple of ints in range (0, 255) giving RGBA text color</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">background_color</span></tt></dt>
+<dd>4-tuple of ints in range (0, 255) giving RGBA text background color; or
+<tt class="rst-docutils literal"><span class="pre">None</span></tt> for no background fill.</dd>
+</dl>
+<p>The following paragraph style attribute names are recognised by pyglet.  Note
+that paragraph styles are handled no differently from character styles by the
+document: it is the application's responsibility to set the style over an
+entire paragraph, otherwise results are undefined.</p>
+<dl class="rst-docutils">
+<dt><tt class="rst-docutils literal"><span class="pre">align</span></tt></dt>
+<dd><tt class="rst-docutils literal"><span class="pre">left</span></tt> (default), <tt class="rst-docutils literal"><span class="pre">center</span></tt> or <tt class="rst-docutils literal"><span class="pre">right</span></tt>.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">indent</span></tt></dt>
+<dd>Additional horizontal space to insert before the first</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">leading</span></tt></dt>
+<dd>Additional space to insert between consecutive lines within a paragraph,
+in points.  Defaults to 0.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">line_spacing</span></tt></dt>
+<dd>Distance between consecutive baselines in a paragraph, in points.
+Defaults to <tt class="rst-docutils literal"><span class="pre">None</span></tt>, which automatically calculates the tightest line
+spacing for each line based on the font ascent and descent.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">margin_left</span></tt></dt>
+<dd>Left paragraph margin, in pixels.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">margin_right</span></tt></dt>
+<dd>Right paragraph margin, in pixels.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">margin_top</span></tt></dt>
+<dd>Margin above paragraph, in pixels.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">margin_bottom</span></tt></dt>
+<dd>Margin below paragraph, in pixels.  Adjacent margins do not collapse.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">tab_stops</span></tt></dt>
+<dd>List of horizontal tab stops, in pixels, measured from the left edge of
+the text layout.  Defaults to the empty list.  When the tab stops
+are exhausted, they implicitly continue at 50 pixel intervals.</dd>
+<dt><tt class="rst-docutils literal"><span class="pre">wrap</span></tt></dt>
+<dd>Boolean.  If True (the default), text wraps within the width of the layout.</dd>
+</dl>
+<p>Other attributes can be used to store additional style information within the
+document; it will be ignored by the built-in text classes.</p>
+<p>All style attributes (including those not present in a document) default to
+<tt class="rst-docutils literal"><span class="pre">None</span></tt> (including the so-called &quot;boolean&quot; styles listed above).  The meaning
+of a <tt class="rst-docutils literal"><span class="pre">None</span></tt> style is style- and application-dependent.</p>
+</div>
+
+<div class="fields">      <p><strong>Since:</strong>
+        pyglet 1.1
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+        <h2>Classes</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.text.document.InlineElement-class.html" class="summary-name">InlineElement</a>
+<div class="summary-description">Arbitrary inline element positioned within a formatted document.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.text.document.AbstractDocument-class.html" class="summary-name">AbstractDocument</a>
+<div class="summary-description">Abstract document interface used by all pyglet.text classes.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.text.document.UnformattedDocument-class.html" class="summary-name">UnformattedDocument</a>
+<div class="summary-description">A document having uniform style over all text.</div>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="pyglet.text.document.FormattedDocument-class.html" class="summary-name">FormattedDocument</a>
+<div class="summary-description">Simple implementation of a document that maintains text formatting.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CONSTANTS ==================== -->
+<a name="section-Constants"></a>
+        <h2>Constants</h2>
+<table class="summary">
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="STYLE_INDETERMINATE"></a><span class="summary-name">STYLE_INDETERMINATE</span> = <code title="'indeterminate'"><code class="variable-quote">'</code><code class="variable-string">indeterminate</code><code class="variable-quote">'</code></code>
+<div class="summary-description">The style attribute takes on multiple values in the document.</div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar">
+  <tr valign="middle">
+  <!-- Project homepage -->
+      <!--<th class="navbar" 
+            ><a class="navbar" target="_top" href="http://www.pyglet.org/">pyglet API reference</a></th>-->
+
+  <!-- Tree link -->
+      <th><a
+        href="module-tree.html">Trees</a></th>
+
+  <!-- Index link -->
+      <th><a
+        href="identifier-index.html">Indices</a></th>
+
+  <!-- Breadcrumbs -->
+      <th class="navbar-breadcrumbs">
+        <span class="breadcrumbs">
+          <a href="pyglet-module.html">pyglet</a>&nbsp;.&nbsp;<a href="pyglet.text-module.html">text</a>&nbsp;.&nbsp;document
+        </span>
+      </th>
+
+      <th class="navbar last">
+        <a href="javascript:toggleFrames()">Toggle&nbsp;frames</a>
+      </th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sun Mar 22 20:15:39 2009
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

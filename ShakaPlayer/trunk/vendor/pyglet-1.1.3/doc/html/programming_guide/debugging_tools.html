@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title>Debugging tools</title>
+<link rel="stylesheet" href="doc.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<div class="navigation navigation-header container">
+<span class="previous">Previous: <a class="reference" href="saving_user_preferences.html" title="Saving user preferences">Saving user preferences</a></span><span class="next">Next: <a class="reference" href="debugging_opengl.html" title="Debugging OpenGL">Debugging OpenGL</a></span><span class="breadcrumbs"><a class="reference" href="index.html" title="Programming Guide">Programming Guide</a> » Debugging tools</span></div>
+<h1 class="title">Debugging tools</h1>
+<p>pyglet includes a number of debug paths that can be enabled during or before
+application startup.  These were primarily developed to aid in debugging
+pyglet itself, however some of them may also prove useful for understanding
+and debugging pyglet applications.</p>
+<p>Each debug option is a key in the <a class="reference apilink" href="../api/pyglet-module.html#options ">pyglet.options</a> dictionary.  Options can be
+set directly on the dictionary before any other modules are imported:</p>
+<pre class="py-doctest">
+<span class="py-keyword">import</span> pyglet
+pyglet.options[<span class="py-string">'debug_gl'</span>] = False</pre>
+<p>They can also be set with environment variables before pyglet is imported.
+The corresponding environment variable for each option is the string
+<tt class="docutils literal"><span class="pre">PYGLET_</span></tt> prefixed to the uppercase option key.  For example, the
+environment variable for <tt class="docutils literal"><span class="pre">debug_gl</span></tt> is <tt class="docutils literal"><span class="pre">PYGLET_DEBUG_GL</span></tt>.  Boolean options
+are set or unset with <tt class="docutils literal"><span class="pre">1</span></tt> and <tt class="docutils literal"><span class="pre">0</span></tt> values.</p>
+<p>A summary of the debug environment variables appears in the table below.</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Option</th>
+<th class="head">Environment variable</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">debug_font</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_FONT</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_gl</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_GL</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_gl_trace</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_GL_TRACE</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_gl_trace_args</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_GL_TRACE_ARGS</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_graphics_batch</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_GRAPHICS_BATCH</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_lib</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_LIB</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_media</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_MEDIA</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_trace</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_TRACE</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_trace_args</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_TRACE_ARGS</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_trace_depth</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_TRACE_DEPTH</span></tt></td>
+<td>int</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_win32</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_WIN32</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">debug_x11</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_DEBUG_X11</span></tt></td>
+<td>bool</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">graphics_vbo</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">PYGLET_GRAPHICS_VBO</span></tt></td>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>The <tt class="docutils literal"><span class="pre">debug_media</span></tt> and <tt class="docutils literal"><span class="pre">debug_font</span></tt> options are used to debug the
+<tt class="docutils literal"><span class="pre">pyglet.media</span></tt> and <tt class="docutils literal"><span class="pre">pyglet.font</span></tt> modules, respectively.  Their behaviour
+is platform-dependent and useful only for pyglet developers.</p>
+<p>The remaining debug options are detailed below.</p>
+<div class="navigation navigation-footer container">
+<span class="previous">Previous: <a class="reference" href="saving_user_preferences.html" title="Saving user preferences">Saving user preferences</a></span><span class="next">Next: <a class="reference" href="debugging_opengl.html" title="Debugging OpenGL">Debugging OpenGL</a></span><span class="breadcrumbs"><a class="reference" href="index.html" title="Programming Guide">Programming Guide</a> » Debugging tools</span></div>
+</div>
+</body>
+</html>
