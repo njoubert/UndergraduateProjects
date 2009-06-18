@@ -15,6 +15,9 @@ def init():
     logging.debug("ShakaPlayer launched.")
     
 def driverloop():
+    
+    
+    
     sMusic.foo()
     clip1 = sMusic.Playback.DiskAudio()
     clip1.loadPath("../examples/08 - The Life.flac")
