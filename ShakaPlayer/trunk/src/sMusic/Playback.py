@@ -9,23 +9,25 @@ import sCodec
 import pyglet
 import os
 
-MEDIAHANDLERS = [DiskAudio]
-
-def loadMediaFromDisk(path):
-    root, ext = os.path.splitext(path)
-    for h in MEDIAHANDLERS:
-        if python
-
 class Audio:
     ''' Represents a single audio file '''
     
-    def findPlayer(self):
-        pass
+    def canHandle(self, path):
+        return False
+    canHandle = classmethod(canHandle)
     
     def play(self):
         pass
-
-class DiskAudio(Audio):
+    
+class PygletAudio(Audio):
+    
+    def canHandle(self, path):
+        try:
+            pyglet.media.load(path)
+            return True
+        except:
+            return False
+    canHandle = classmethod(canHandle)
     
     def __init__(self, filepath):
         self.path = filepath
@@ -36,6 +38,5 @@ class DiskAudio(Audio):
         player.queue(self.source)
         player.play()
 
-        
         
         

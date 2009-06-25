@@ -7,7 +7,6 @@ import os
 import sys
 import logging
 import sMusic
-import sMusic.Playback
 import pyglet
 
 def init():
@@ -15,16 +14,13 @@ def init():
     logging.debug("ShakaPlayer launched.")
     
 def driverloop():
+    clip1 = sMusic.loadMediaFromDisk("../examples/08 - The Life.flac")
     
-    
-    
-    sMusic.foo()
-    clip1 = sMusic.Playback.DiskAudio()
-    clip1.loadPath("../examples/08 - The Life.flac")
     clip1.play()
-    clip2 = sMusic.Playback.DiskAudio()
-    clip2.loadPath("../examples/08 - The Life.flac")
-    clip2.play()
+    try:
+        clip2 = sMusic.loadMediaFromDisk("../examples/mac prices.txt")
+    except:
+        print "No handler for a text file!"
     pyglet.app.run()
 
 if __name__ == '__main__':
