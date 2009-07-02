@@ -1,0 +1,92 @@
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (2.5ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (2.3ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProjects (20090702090541)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "projects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255) NOT NULL, "description" varchar(255) NOT NULL, "visible" boolean DEFAULT 't', "completed" boolean DEFAULT 'f', "priority" float DEFAULT 0.5, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090702090541')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("projects")[0m
+
+
+Processing ProjectsController#index (for 127.0.0.1 at 2009-07-02 02:06:58) [GET]
+  [4;36;1mProject Load (0.4ms)[0m   [0;1mSELECT * FROM "projects" [0m
+Rendering template within layouts/projects
+Rendering projects/index
+Completed in 33ms (View: 29, DB: 0) | 200 OK [http://0.0.0.0/projects]
+
+
+Processing ProjectsController#new (for 127.0.0.1 at 2009-07-02 02:07:00) [GET]
+Rendering template within layouts/projects
+Rendering projects/new
+Completed in 12ms (View: 7, DB: 0) | 200 OK [http://0.0.0.0/projects/new]
+
+
+Processing ProjectsController#create (for 127.0.0.1 at 2009-07-02 02:08:11) [POST]
+  Parameters: {"commit"=>"Create", "project"=>{"completed"=>"0", "visible"=>"1", "name"=>"ProjectManager", "priority"=>"0.5", "description"=>"A simple webapp to manage the many projects of a technologist. Aimed at collecting ALL the projects rather than an authoritative source on one project."}, "authenticity_token"=>"tKt/FLhHESXisOvPrBbIMnHK7eTY6EW+NJ48WrUFDgM="}
+  [4;35;1mProject Create (0.5ms)[0m   [0mINSERT INTO "projects" ("name", "visible", "completed", "updated_at", "priority", "description", "created_at") VALUES('ProjectManager', 't', 'f', '2009-07-02 09:08:11', 0.5, 'A simple webapp to manage the many projects of a technologist. Aimed at collecting ALL the projects rather than an authoritative source on one project.', '2009-07-02 09:08:11')[0m
+Redirected to http://0.0.0.0:3000/projects/1
+Completed in 19ms (DB: 0) | 302 Found [http://0.0.0.0/projects]
+
+
+Processing ProjectsController#show (for 127.0.0.1 at 2009-07-02 02:08:11) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mProject Load (0.2ms)[0m   [0;1mSELECT * FROM "projects" WHERE ("projects"."id" = 1) [0m
+Rendering template within layouts/projects
+Rendering projects/show
+Completed in 10ms (View: 5, DB: 0) | 200 OK [http://0.0.0.0/projects/1]
+
+
+Processing ProjectsController#index (for 127.0.0.1 at 2009-07-02 02:08:13) [GET]
+  [4;35;1mProject Load (0.5ms)[0m   [0mSELECT * FROM "projects" [0m
+Rendering template within layouts/projects
+Rendering projects/index
+Completed in 8ms (View: 4, DB: 0) | 200 OK [http://0.0.0.0/projects]
+
+
+Processing ProjectsController#index to xml (for 127.0.0.1 at 2009-07-02 02:08:17) [GET]
+  [4;36;1mProject Load (0.5ms)[0m   [0;1mSELECT * FROM "projects" [0m
+Completed in 53ms (View: 49, DB: 0) | 200 OK [http://0.0.0.0/projects.xml]
+
+
+Processing ProjectsController#index to xml (for 127.0.0.1 at 2009-07-02 02:08:21) [GET]
+  [4;35;1mProject Load (0.5ms)[0m   [0mSELECT * FROM "projects" [0m
+Completed in 11ms (View: 7, DB: 1) | 200 OK [http://0.0.0.0/projects.xml]
+
+
+Processing ProjectsController#index (for 127.0.0.1 at 2009-07-02 09:31:38) [GET]
+  [4;36;1mProject Load (2.6ms)[0m   [0;1mSELECT * FROM "projects" [0m
+Rendering template within layouts/projects
+Rendering projects/index
+Completed in 150ms (View: 48, DB: 3) | 200 OK [http://0.0.0.0/projects]
+
+
+Processing ProjectsController#show (for 127.0.0.1 at 2009-07-02 09:31:39) [GET]
+  Parameters: {"id"=>"1"}
+  [4;35;1mProject Load (0.4ms)[0m   [0mSELECT * FROM "projects" WHERE ("projects"."id" = 1) [0m
+Rendering template within layouts/projects
+Rendering projects/show
+Completed in 33ms (View: 4, DB: 0) | 200 OK [http://0.0.0.0/projects/1]
+
+
+Processing ProjectsController#index (for 127.0.0.1 at 2009-07-02 09:31:41) [GET]
+  [4;36;1mProject Load (2.0ms)[0m   [0;1mSELECT * FROM "projects" [0m
+Rendering template within layouts/projects
+Rendering projects/index
+Completed in 34ms (View: 9, DB: 2) | 200 OK [http://0.0.0.0/projects]
