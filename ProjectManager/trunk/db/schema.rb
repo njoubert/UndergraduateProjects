@@ -9,7 +9,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090703023348) do
+ActiveRecord::Schema.define(:version => 20090703072537) do
+
+  create_table "categories", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "color_id",   :default => 1
+  end
+
+  add_index "categories", ["color_id"], :name => "index_categories_on_color_id"
+
+  create_table "categories_projects", :id => false, :force => true do |t|
+    t.integer "project_id"
+    t.integer "category_id"
+  end
+
+  add_index "categories_projects", ["category_id"], :name => "index_categories_projects_on_category_id"
+  add_index "categories_projects", ["project_id", "category_id"], :name => "index_categories_projects_on_project_id_and_category_id", :unique => true
+
+  create_table "colors", :force => true do |t|
+    t.string   "title"
+    t.integer  "red",        :default => 255
+    t.integer  "green",      :default => 255
+    t.integer  "blue",       :default => 255
+    t.float    "alpha",      :default => 1.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "projects", :force => true do |t|
     t.string   "name",                           :null => false
@@ -19,6 +46,9 @@ ActiveRecord::Schema.define(:version => 20090703023348) do
     t.float    "priority",    :default => 0.5
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "color_id"
   end
+
+  add_index "projects", ["color_id"], :name => "index_projects_on_color_id"
 
 end

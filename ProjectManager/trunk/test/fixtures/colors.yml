@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  red: 1.5
+  green: 1.5
+  blue: 1.5
+  alpha: 1.5
+
+two:
+  title: MyString
+  red: 1.5
+  green: 1.5
+  blue: 1.5
+  alpha: 1.5

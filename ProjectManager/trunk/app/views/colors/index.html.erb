@@ -1,0 +1,31 @@
+<h1>Listing colors</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Red</th>
+    <th>Green</th>
+    <th>Blue</th>
+    <th>Alpha</th>
+	<th>Example</th>
+  </tr>
+
+<% @colors.each do |color| %>
+  <tr>
+    <td><%=h color.title %></td>
+    <td><%=h color.red %></td>
+    <td><%=h color.green %></td>
+    <td><%=h color.blue %></td>
+    <td><%=h color.alpha %></td>
+	<td bgcolor=<%= color.HTMLString %>>&nbsp &nbsp &nbsp &nbsp</td>
+    <td><%= link_to 'Show', color %></td>
+    <td><%= link_to 'Edit', edit_color_path(color) %></td>
+    <td><%= link_to 'Destroy', color, :confirm => 'Are you sure?', :method => :delete %></td>
+	
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New color', new_color_path %>

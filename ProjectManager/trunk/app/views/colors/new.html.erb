@@ -1,0 +1,31 @@
+<h1>New color</h1>
+
+<% form_for(@color) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :red %><br />
+    <%= f.text_field :red %>
+  </p>
+  <p>
+    <%= f.label :green %><br />
+    <%= f.text_field :green %>
+  </p>
+  <p>
+    <%= f.label :blue %><br />
+    <%= f.text_field :blue %>
+  </p>
+  <p>
+    <%= f.label :alpha %><br />
+    <%= f.text_field :alpha %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', colors_path %>
