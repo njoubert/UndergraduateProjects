@@ -1,8 +1,9 @@
 class Color < ActiveRecord::Base
-  has_many :projects
-  has_many :categories
+  has_many :projects, :dependent => :nullify
+  has_many :categories, :dependent => :nullify
   
   validates_presence_of :title, :red, :green, :blue
+  validates_uniqueness_of :title
   validates_length_of :title, :minimum => 2
   validates_numericality_of :red, :only_integer => true, :greater_than_or_equal_to  => 0, :less_than_or_equal_to => 255
   validates_numericality_of :green, :only_integer => true, :greater_than_or_equal_to  => 0, :less_than_or_equal_to => 255

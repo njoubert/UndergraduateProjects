@@ -19,3 +19,15 @@ virtual host
 
 === Capistrano setup
 
+
+===================================
+TODO:
+------
+
+== AUTH
+
+http://www.robertsosinski.com/2008/02/23/simple-and-restful-authentication-for-ruby-on-rails/
+- Admins can do all. ONLY they can do all. Admin?
+- Hide projects if it is hidden and it does not belong to the logged-in user
+
+

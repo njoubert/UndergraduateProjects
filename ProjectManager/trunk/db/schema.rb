@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090703072537) do
+ActiveRecord::Schema.define(:version => 20090704081326) do
 
   create_table "categories", :force => true do |t|
     t.string   "title"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(:version => 20090703072537) do
     t.datetime "updated_at"
   end
 
+  create_table "people", :force => true do |t|
+    t.string   "name"
+    t.string   "salt"
+    t.string   "encrypted_password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "admin",              :default => false
+    t.string   "email"
+  end
+
   create_table "projects", :force => true do |t|
     t.string   "name",                           :null => false
     t.string   "description",                    :null => false
@@ -50,5 +60,13 @@ ActiveRecord::Schema.define(:version => 20090703072537) do
   end
 
   add_index "projects", ["color_id"], :name => "index_projects_on_color_id"
+
+  create_table "sessions", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "ip_address"
+    t.string   "path"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

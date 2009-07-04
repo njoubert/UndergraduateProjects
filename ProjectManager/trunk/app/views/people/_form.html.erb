@@ -1,0 +1,18 @@
+<% form_for @person do |f| %>
+	
+	<label for="person_name">Name:</label><br />
+	<%= f.text_field :name %><br />
+	
+	<label for="person_password">Password</label><br />
+	<%= f.password_field :password %><br />
+	
+	<label for="person_password_confirmation">Password confirmation</label><br />
+	<%= f.password_field :password_confirmation %><br />
+	
+	<label for="person_email">Email address</label><br />
+	<%= f.text_field :email %><br />
+	
+	<%= f.check_box :admin %><label for="person_admin">Admin status</label><br />
+	
+	<%= submit_tag "Submit" %>
+<% end %>

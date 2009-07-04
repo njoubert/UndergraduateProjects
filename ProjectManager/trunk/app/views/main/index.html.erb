@@ -1,0 +1,8 @@
+<h1>Projects</h1>
+<p>Here are all the projects I have worked on, am working on, or want to attempt to do.</p>
+
+<p><%= link_to "Projects", projects_path%>, <%= link_to "Categories", categories_path%>, <%= link_to "Colors", colors_path%></p>
+
+<% if @user %>
+<p><%= link_to "People", people_path %></p>
+<% end %>

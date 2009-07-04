@@ -1,0 +1,13 @@
+<% for person in @people %>
+
+	<%= link_to person.name, person %><% if @user.admin %> | 
+	<%= link_to 'Edit', edit_person_path(person) %> | 
+	<%= link_to 'Destroy', person, :confirm => 'Are you sure?', :method => :delete %> <% end %>
+	<br/>
+
+<% end %>
+<br />
+<% if @user.admin %>
+<%= link_to 'New person', new_person_path %>
+<% end %>
+
