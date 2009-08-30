@@ -1,0 +1,39 @@
+#Hi everyone. This is a test.
+#Amnd s
+
+#so is
+#  this
+#
+
+max_cg_interations = 200   #And here is all that is left.
+min_cg_error = 10e-10 
+ke = 30 
+kecomp = 50 
+kd = 1 
+kcoll = 10e3 
+krbcoll = 40
+timestep = 0.01 
+
+#Here is the symbols:
+
+[simmodel] {
+	name = "Cloth Cloak nellius 5000" #This will be perfectly preserved.
+	file = data/square3kq30.obj 
+	timestep = 0.0001 
+	lambda = 400 
+	mu = 200 
+	
+	[integrator] {
+		type = NEWMARK 
+	}
+	
+	[rigidbody] {
+		name = "Block" 
+		
+		[integrator] {
+			type = RIGIDBODY 
+		}
+		
+	}
+	
+}
