@@ -15,7 +15,10 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 
-    // Override point for customization after application launch
+	
+	/*
+	 Here we make the rootNavController the visible controller when we launch.
+	 */
 	[window addSubview:rootNavController.view];
     [window makeKeyAndVisible];
 }
