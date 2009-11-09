@@ -655,3 +655,258 @@ setting person's group memberships to inactive
   [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
   [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
   [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.9ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.9ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (55.3ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.0ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (1.1ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.0ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.0ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.4ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.3ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.2ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+no group, making association
+  [4;36;1mGroupMembership Create (0.8ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 05:36:46', '2009-11-09 05:36:46', 2, 49, 't')[0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (1.0ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.7ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+Setting a person's group memberships to inactive.
+  [4;36;1mGroupMembership Load (0.4ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mGroupMembership Update (1.1ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 05:37:12', "active" = 'f' WHERE "id" = 7[0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.2ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.8ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Create (0.5ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 05:37:26', '2009-11-09 05:37:26', 2, 49, 't')[0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (1.0ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.6ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.9ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.7ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Create (0.5ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 05:38:09', '2009-11-09 05:38:09', 2, 49, 't')[0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.4ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.9ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.5ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.8ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 05:39:02', '2009-11-09 05:39:02', 1, 49, 't')[0m
+  [4;35;1mPerson Load (1.4ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.4ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.4ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.1ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.7ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (1.0ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.1ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.3ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.8ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mGroupMembership Load (1.9ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (2.0ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.3ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.7ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.5ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.5ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.7ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mGroupMembership Update (0.5ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 05:41:13', "active" = 'f' WHERE "id" = 10[0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near ",": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 49, active = 't') [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near ",": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 49, active = 't') [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near ",": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 49, active = 't') [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near "&": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 49 && active = 't') [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near "active": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 49 active = 't') [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.2ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 & active = 't') [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.4ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.3ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;36;1mPerson Load (2.5ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.2ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.4ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;36;1mGroupMembership Update (0.5ms)[0m   [0;1mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 05:43:00', "active" = 'f' WHERE "id" = 9[0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.4ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.4ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.3ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (1.3ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49) [0m
+  [4;35;1mGroupMembership Update (0.9ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 05:43:22', "active" = 'f' WHERE "id" = 8[0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.4ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroupMembership Load (1.8ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (0.6ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 52) [0m
+  [4;36;1mGroupMembership Load (0.0ms)[0m   [0;1mSQLite3::SQLException: near ",": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 52, active = 't') [0m
+  [4;35;1mGroupMembership Load (0.0ms)[0m   [0mSQLite3::SQLException: near "active": syntax error: SELECT * FROM "group_memberships" WHERE (person_id = 52 active = 't') [0m
+  [4;36;1mGroupMembership Load (0.3ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 52 & active = 't') [0m
+  [4;35;1mGroupMembership Load (0.7ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 52 and active = 't') [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.2ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+no group, making association
+  [4;35;1mGroupMembership Create (0.5ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:23:26', '2009-11-09 06:23:26', 1, 49, 't')[0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+Setting a person's group memberships to inactive.
+  [4;36;1mGroupMembership Load (0.4ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mGroupMembership Update (0.3ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 06:23:38', "active" = 'f' WHERE "id" = 11[0m
+no group, making association
+  [4;36;1mGroupMembership Create (0.5ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:23:38', '2009-11-09 06:23:38', 2, 49, 't')[0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.7ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.8ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.7ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Create (0.9ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:24:00', '2009-11-09 06:24:00', 1, 49, 't')[0m
+  [4;36;1mPerson Load (1.0ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.2ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroupMembership Load (2.5ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (2.3ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (2.9ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Delete all (3.0ms)[0m   [0mDELETE FROM "group_memberships" WHERE ("id" IN (13)) [0m
+  [4;36;1mGroupMembership Load (2.2ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.6ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.1ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (0.7ms)[0m   [0mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;36;1mGroupMembership Load (0.4ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mGroupMembership Create (0.5ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:24:52', '2009-11-09 06:24:52', 1, 49, 't')[0m
+  [4;36;1mPerson Load (1.4ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroupMembership Load (2.4ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+Checking for unique active!
+  [4;36;1mPerson Load (0.5ms)[0m   [0;1mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;35;1mGroupMembership Load (0.5ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mGroupMembership Create (0.5ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:26:32', '2009-11-09 06:26:32', 2, 49, 't')[0m
+  [4;35;1mGroupMembership Load (0.9ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mGroupMembership Load (1.6ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+Checking for unique active!
+  [4;35;1mPerson Load (0.6ms)[0m   [0mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;36;1mGroupMembership Load (4.8ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mGroupMembership Create (0.7ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 06:28:20', '2009-11-09 06:28:20', 1, 49, 't')[0m
+Checking for unique active!
+  [4;36;1mGroupMembership Load (1.1ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+Checking for unique active!
+  [4;36;1mPerson Load (0.5ms)[0m   [0;1mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;35;1mGroupMembership Load (0.8ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+Checking for unique active!
+  [4;36;1mGroupMembership Load (0.9ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (1.0ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.6ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.9ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+Setting a person's group memberships to inactive.
+  [4;36;1mGroupMembership Load (2.0ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+Checking for unique active!
+  [4;35;1mPerson Load (0.5ms)[0m   [0mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;36;1mGroupMembership Load (0.7ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.2ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+Checking for unique active!
+  [4;35;1mPerson Load (1.3ms)[0m   [0mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;36;1mGroupMembership Load (0.7ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT count(*) AS count_all FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT count(*) AS count_all FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.9ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.6ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.9ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.1ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.7ms)[0m   [0mSELECT * FROM "people" [0m
+Checking for unique active!
+  [4;36;1mPerson Load (0.9ms)[0m   [0;1mSELECT * FROM "people" WHERE ("people"."id" = 49) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mGroupMembership Load (2.7ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Delete all (1.7ms)[0m   [0mDELETE FROM "group_memberships" WHERE ("id" IN ('--- :all
+')) [0m
+  [4;36;1mGroupMembership Load (3.1ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Delete all (2.6ms)[0m   [0mDELETE FROM "group_memberships" WHERE 1=1[0m
+  [4;36;1mGroupMembership Load (0.3ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m

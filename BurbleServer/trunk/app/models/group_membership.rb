@@ -5,4 +5,14 @@ class GroupMembership < ActiveRecord::Base
   belongs_to :person
   belongs_to :group
   
+  validate :unique_active?
+  
+  def unique_active?
+    logger.warn "Checking for unique active!"
+    currentActive = GroupMembership.count(:all, :conditions => ["person_id = ? and active = ?", person.id, true])
+    if (currentActive != 0)
+      errors.add("Person must have only one active group.")
+    end
+  end
+  
 end

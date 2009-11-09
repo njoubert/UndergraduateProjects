@@ -19,6 +19,7 @@ We need a system for having a list of friends on your phone, and only some of th
 
 What is the system to bring a friend into the app? Many people have the same friend, if he comes online how do we make those friendship associations correctly?
 
+NOTE: Doing person.group = g will UPDATE the person's group. Doing group.people << p will ERROR if the person has a group.
 
 x- Create a new person 
 x- Set a person's group
@@ -39,7 +40,7 @@ A group is a collection of people for some duration of time. A group becomes ina
 x- Create a group
 x- See active members of the group
 x- See all members of the group
-- Add members to a group with the correct logic of their group being updated.
+x- Add members to a group with the correct logic of their group being updated.
 
 === Waypoint:
 Waypoints are associated with a user that created them and a group that the user was in.
@@ -50,5 +51,5 @@ x- Get the details of a waypoint
 
 
 === Invite:
-Invite a user to use this app.
+
 
