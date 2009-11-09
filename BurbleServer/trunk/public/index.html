@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Ruby on Rails: Welcome aboard</title>
+    <title>BurbleServer: Welcome aboard</title>
     <style type="text/css" media="screen">
       body {
         margin: 0;
@@ -180,92 +180,46 @@
     </style>
     <script type="text/javascript" src="javascripts/prototype.js"></script>
     <script type="text/javascript" src="javascripts/effects.js"></script>
-    <script type="text/javascript">
-      function about() {
-        if (Element.empty('about-content')) {
-          new Ajax.Updater('about-content', 'rails/info/properties', {
-            method:     'get',
-            onFailure:  function() {Element.classNames('about-content').add('failure')},
-            onComplete: function() {new Effect.BlindDown('about-content', {duration: 0.25})}
-          });
-        } else {
-          new Effect[Element.visible('about-content') ? 
-            'BlindUp' : 'BlindDown']('about-content', {duration: 0.25});
-        }
-      }
-      
-      window.onload = function() {
-        $('search-text').value = '';
-        $('search').onsubmit = function() {
-          $('search-text').value = 'site:rubyonrails.org ' + $F('search-text');
-        }
-      }
-    </script>
+ 
   </head>
   <body>
     <div id="page">
       <div id="sidebar">
         <ul id="sidebar-items">
           <li>
-            <form id="search" action="http://www.google.com/search" method="get">
-              <input type="hidden" name="hl" value="en" />
-              <input type="text" id="search-text" name="q" value="site:rubyonrails.org " />
-              <input type="submit" value="Search" /> the Rails site
-            </form>
-          </li>
-        
-          <li>
-            <h3>Join the community</h3>
-            <ul class="links">
-              <li><a href="http://www.rubyonrails.org/">Ruby on Rails</a></li>
-              <li><a href="http://weblog.rubyonrails.org/">Official weblog</a></li>
-              <li><a href="http://wiki.rubyonrails.org/">Wiki</a></li>
-            </ul>
-          </li>
-          
-          <li>
-            <h3>Browse the documentation</h3>
-            <ul class="links">
-              <li><a href="http://api.rubyonrails.org/">Rails API</a></li>
-              <li><a href="http://stdlib.rubyonrails.org/">Ruby standard library</a></li>
-              <li><a href="http://corelib.rubyonrails.org/">Ruby core</a></li>
-              <li><a href="http://guides.rubyonrails.org/">Rails Guides</a></li>
-            </ul>
-          </li>
+			<b>Current Database Stats: </b>
+			<p> As Talib Kweli said: "It'll be finished when it's finished!"</p>
+		  </li>
+
         </ul>
       </div>
 
       <div id="content">
         <div id="header">
-          <h1>Welcome aboard</h1>
-          <h2>You&rsquo;re riding Ruby on Rails!</h2>
-        </div>
-
-        <div id="about">
-          <h3><a href="rails/info/properties" onclick="about(); return false">About your application&rsquo;s environment</a></h3>
-          <div id="about-content" style="display: none"></div>
+          <h1>Welcome to Burble</h1>
+          <h2>Group Organization Simplified</h2>
         </div>
         
         <div id="getting-started">
-          <h1>Getting started</h1>
-          <h2>Here&rsquo;s how to get rolling:</h2>
+          <h1>Here's what's up</h1>
+          <h2>You landed on our web page, so how come there's not more here?</h2>
           
-          <ol>          
+          <ul>          
             <li>
-              <h2>Use <tt>script/generate</tt> to create your models and controllers</h2>
-              <p>To see all available options, run it without parameters.</p>
+              <h2>We're an iPhone app!</h2>
+              <p>The main purpose of this site is to serve content to users of our iPhone app.</p>
             </li>
             
             <li>
-              <h2>Set up a default route and remove or rename this file</h2>
-              <p>Routes are set up in config/routes.rb.</p>
+              <h2>We haven't launched yet!</h2>
+              <p>We're hard at work hacking, designing, user-studying, prototyping and other fun stuff. We'll be up by December 2009! Just in time for holiday traveling.</p>
             </li>
 
             <li>
-              <h2>Create your database</h2>
-              <p>Run <tt>rake db:migrate</tt> to create your database. If you're not using SQLite (the default), edit <tt>config/database.yml</tt> with your username and password.</p>
+              <h2>Yep, this is for school!</h2>
+              <p>We're a bunch of Stanford students working on this for our <a href="http://hci.stanford.edu/cs147/">HCI class</a>, but we do plan to keep things running once the semester is done! '</p>
             </li>
-          </ol>
+          </ul> -Niels, Chris, Jon and Janelle
         </div>
       </div>
       
