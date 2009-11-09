@@ -1,0 +1,657 @@
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (2.6ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (2.6ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "people" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "guid" varchar(255) NOT NULL, "name" varchar(255) NOT NULL, "number" varchar(255), "email" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE INDEX "index_people_on_guid" ON "people" ("guid")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108205127')[0m
+Migrating to CreateFriendships (20091108205132)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "friendships" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "friend_id" integer NOT NULL) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE INDEX "index_friendships_on_person_id" ON "friendships" ("person_id")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mCREATE INDEX "index_friendships_on_friend_id" ON "friendships" ("friend_id")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108205132')[0m
+Migrating to CreateWaypoints (20091108213756)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "waypoints" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "group_id" integer, "name" varchar(255), "description" varchar(255), "latitude" float NOT NULL, "longitude" float NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108213756')[0m
+Migrating to CreateGroups (20091108213800)
+  [4;35;1mSQL (0.7ms)[0m   [0mCREATE TABLE "groups" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108213800')[0m
+Migrating to CreateGroupMemberships (20091108214831)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "group_memberships" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "group_id" integer NOT NULL, "active" boolean DEFAULT 't', "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: index index_friendships_on_person_id already exists: CREATE INDEX "index_friendships_on_person_id" ON "friendships" ("person_id")[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+Migrating to CreateFriendships (20091108205132)
+Migrating to CreateWaypoints (20091108213756)
+Migrating to CreateGroups (20091108213800)
+Migrating to CreateGroupMemberships (20091108214831)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "group_memberships" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "group_id" integer NOT NULL, "active" boolean DEFAULT 't', "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE INDEX "index_group_memberships_on_person_id" ON "group_memberships" ("person_id")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mCREATE INDEX "index_group_memberships_on_group_id" ON "group_memberships" ("group_id")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108214831')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("group_memberships")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_group_memberships_on_group_id')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_group_memberships_on_person_id')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("groups")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_list("people")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_people_on_guid')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("waypoints")[0m
+  [4;36;1mPerson Load (0.5ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.2ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+Migrating to CreateFriendships (20091108205132)
+Migrating to CreateWaypoints (20091108213756)
+Migrating to CreateGroups (20091108213800)
+Migrating to CreateGroupMemberships (20091108214831)
+Migrating to AddPeopleData (20091108220329)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mPerson Delete all (0.5ms)[0m   [0mDELETE FROM "people" WHERE 1=1[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+Migrating to CreateFriendships (20091108205132)
+Migrating to CreateWaypoints (20091108213756)
+Migrating to CreateGroups (20091108213800)
+Migrating to CreateGroupMemberships (20091108214831)
+Migrating to AddPeopleData (20091108220329)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mPerson Delete all (0.5ms)[0m   [0mDELETE FROM "people" WHERE 1=1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108220329')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.9ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("group_memberships")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_group_memberships_on_group_id')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_group_memberships_on_person_id')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("groups")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_list("people")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_people_on_guid')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("waypoints")[0m
+  [4;36;1mPerson Load (0.3ms)[0m   [0;1mSELECT * FROM "people" WHERE ("people"."id" = 0) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Delete all (2.4ms)[0m   [0;1mDELETE FROM "people" WHERE 1=1[0m
+  [4;35;1mPerson Create (0.7ms)[0m   [0mINSERT INTO "people" ("name", "number", "created_at", "guid", "updated_at", "email") VALUES('b', NULL, '2009-11-08 22:05:14', 'a', '2009-11-08 22:05:14', NULL)[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to AddPeopleData (20091108220329)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mPerson Delete all (0.6ms)[0m   [0mDELETE FROM "people" WHERE 1=1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20091108220329'[0m
+  [4;35;1mSQL (0.7ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("group_memberships")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_group_memberships_on_group_id')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_group_memberships_on_person_id')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("groups")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_list("people")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_people_on_guid')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("waypoints")[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateGroupMemberships (20091108214831)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.9ms)[0m   [0mDROP TABLE "group_memberships"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20091108214831'[0m
+  [4;35;1mSQL (1.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("groups")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_list("people")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_people_on_guid')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("waypoints")[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+Migrating to CreateFriendships (20091108205132)
+Migrating to CreateWaypoints (20091108213756)
+Migrating to CreateGroups (20091108213800)
+Migrating to CreateGroupMemberships (20091108214831)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "group_memberships" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "group_id" integer NOT NULL, "active" boolean DEFAULT 't', "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE INDEX "index_group_memberships_on_person_id" ON "group_memberships" ("person_id")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE INDEX "index_group_memberships_on_group_id" ON "group_memberships" ("group_id")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108214831')[0m
+Migrating to AddPeopleData (20091108220329)
+  [4;35;1mPerson Delete all (0.4ms)[0m   [0mDELETE FROM "people" WHERE 1=1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091108220329')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("group_memberships")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_group_memberships_on_group_id')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_group_memberships_on_person_id')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("groups")[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("people")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_people_on_guid')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("waypoints")[0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (0.3ms)[0m   [0;1mSELECT "people".* FROM "people" INNER JOIN "friendships" ON "people".id = "friendships".friend_id WHERE (("friendships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.4ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.7ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (43.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mFriendship Create (0.5ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 57)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(57, 49)[0m
+  [4;36;1mFriendship Create (0.4ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 58)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(58, 49)[0m
+  [4;36;1mFriendship Create (0.7ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 50)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(50, 49)[0m
+  [4;36;1mFriendship Create (0.7ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 51)[0m
+  [4;35;1mFriendship Create (0.4ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(51, 49)[0m
+  [4;36;1mFriendship Create (0.6ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 52)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(52, 49)[0m
+  [4;36;1mFriendship Create (0.7ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 53)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(53, 49)[0m
+  [4;36;1mFriendship Create (0.6ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 54)[0m
+  [4;35;1mFriendship Create (0.4ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(54, 49)[0m
+  [4;36;1mFriendship Create (0.7ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 55)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(55, 49)[0m
+  [4;36;1mFriendship Create (0.7ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(49, 56)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(56, 49)[0m
+  [4;36;1mFriendship Create (1.1ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(50, 51)[0m
+  [4;35;1mFriendship Create (0.6ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(51, 50)[0m
+  [4;36;1mFriendship Create (0.5ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(50, 56)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(56, 50)[0m
+  [4;36;1mFriendship Create (0.5ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(51, 56)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(56, 51)[0m
+  [4;36;1mFriendship Create (0.6ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(52, 53)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(53, 52)[0m
+  [4;36;1mFriendship Create (0.6ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(52, 54)[0m
+  [4;35;1mFriendship Create (0.6ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(54, 52)[0m
+  [4;36;1mFriendship Create (0.9ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(53, 54)[0m
+  [4;35;1mFriendship Create (0.6ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(54, 53)[0m
+  [4;36;1mFriendship Create (0.6ms)[0m   [0;1mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(57, 58)[0m
+  [4;35;1mFriendship Create (0.5ms)[0m   [0mINSERT INTO "friendships" ("person_id", "friend_id") VALUES(58, 57)[0m
+  [4;36;1mPerson Load (0.9ms)[0m   [0;1mSELECT "people".* FROM "people" INNER JOIN "friendships" ON "people".id = "friendships".friend_id WHERE (("friendships".person_id = 58)) [0m
+  [4;35;1mPerson Load (0.9ms)[0m   [0mSELECT "people".* FROM "people" INNER JOIN "friendships" ON "people".id = "friendships".friend_id WHERE (("friendships".person_id = 57)) [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT "people".* FROM "people" INNER JOIN "friendships" ON "people".id = "friendships".friend_id WHERE (("friendships".person_id = 52)) [0m
+  [4;35;1mSQL (0.8ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mGroup Create (0.6ms)[0m   [0;1mINSERT INTO "groups" ("name", "created_at", "updated_at", "description") VALUES('Snowbrdrs', '2009-11-08 22:14:56', '2009-11-08 22:14:56', NULL)[0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.0ms)[0m   [0mSQLite3::SQLException: no such column: true: SELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_membership.active == true))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.0ms)[0m   [0mSQLite3::SQLException: no such column: true: SELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_membership.active == true))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.4ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (58.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Load (0.2ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (1.3ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.3ms)[0m   [0mSELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (0.0ms)[0m   [0;1mSQLite3::SQLException: no such column: true: SELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active == true))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.0ms)[0m   [0mSQLite3::SQLException: no such column: TRUE: SELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active == TRUE))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.3ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.3ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.5ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-08 22:23:41', '2009-11-08 22:23:41', 1, 49, 't')[0m
+  [4;35;1mPerson Load (0.6ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.5ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-08 22:23:43', '2009-11-08 22:23:43', 1, 50, 't')[0m
+  [4;35;1mPerson Load (0.8ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.7ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-08 22:23:45', '2009-11-08 22:23:45', 1, 51, 't')[0m
+  [4;35;1mPerson Load (0.9ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.5ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-08 22:23:50', '2009-11-08 22:23:50', 1, 52, 't')[0m
+  [4;35;1mPerson Load (1.3ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.0ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT count(*) AS count_all FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mGroupMembership Load (1.0ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.0ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreatePeople (20091108205127)
+Migrating to CreateFriendships (20091108205132)
+Migrating to CreateWaypoints (20091108213756)
+Migrating to CreateGroups (20091108213800)
+Migrating to CreateGroupMemberships (20091108214831)
+Migrating to AddPeopleData (20091108220329)
+Migrating to AddElevationToWaypoints (20091109013309)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mALTER TABLE "waypoints" ADD "elevation" float[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091109013309')[0m
+Migrating to CreatePositions (20091109014139)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "positions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "person_id" integer NOT NULL, "latitude" float NOT NULL, "longitude" float NOT NULL, "vaccuracy" float, "haccuracy" float, "speed" float, "elevation" float, "heading" float, "type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20091109014139')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mPRAGMA index_list("friendships")[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mPRAGMA index_info('index_friendships_on_friend_id')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_friendships_on_person_id')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mPRAGMA index_list("group_memberships")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_group_memberships_on_group_id')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_info('index_group_memberships_on_person_id')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("groups")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mPRAGMA index_list("people")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mPRAGMA index_info('index_people_on_guid')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("positions")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("waypoints")[0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.3ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.0ms)[0m   [0mSQLite3::SQLException: near "limit": syntax error: SELECT * FROM "positions" WHERE ("positions".person_id = 49 AND (limit 1)) LIMIT 1[0m
+  [4;36;1mPerson Load (2.3ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.3ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) LIMIT 1[0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.2ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.3ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.3ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.3ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) ORDER BY id DESC LIMIT 1[0m
+  [4;36;1mPerson Load (43.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.2ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Create (0.7ms)[0m   [0mINSERT INTO "positions" ("elevation", "latitude", "created_at", "updated_at", "haccuracy", "vaccuracy", "heading", "type", "person_id", "speed", "longitude") VALUES(NULL, 10.0, '2009-11-09 02:27:20', '2009-11-09 02:27:20', NULL, NULL, NULL, NULL, 49, NULL, 10.0)[0m
+  [4;36;1mPosition Load (0.7ms)[0m   [0;1mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.7ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) ORDER BY id DESC LIMIT 1[0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.6ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Create (0.8ms)[0m   [0mINSERT INTO "positions" ("elevation", "latitude", "created_at", "updated_at", "haccuracy", "vaccuracy", "heading", "type", "person_id", "speed", "longitude") VALUES(NULL, 11.0, '2009-11-09 02:28:09', '2009-11-09 02:28:09', NULL, NULL, NULL, NULL, 49, NULL, 11.0)[0m
+  [4;36;1mPosition Load (0.9ms)[0m   [0;1mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.5ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) ORDER BY id DESC LIMIT 1[0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPosition Load (0.9ms)[0m   [0mSELECT * FROM "positions" WHERE ("positions".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.3ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mPerson Load (57.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (3.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.7ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.6ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (3.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.5ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (3.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.5ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (0.6ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.4ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.2ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mGroupMembership Load (1.0ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.1ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.0ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.0ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (0.9ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.1ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (2.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (0.9ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.0ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.3ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Update (0.6ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 02:45:05', "active" = 'f' WHERE "id" = 1[0m
+  [4;36;1mGroupMembership Load (1.1ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (1.4ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active != 0))) [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active != 0))) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active != 0))) [0m
+  [4;35;1mPerson Load (3.5ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 51) AND ((group_memberships.active != 0))) [0m
+  [4;35;1mGroupMembership Load (2.7ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.2ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active == 'true'))) [0m
+  [4;36;1mPerson Load (3.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active == 'true'))) [0m
+  [4;36;1mPerson Load (8.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50)) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active == 'true'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.4ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active))) [0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.3ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active))) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50)) [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.3ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active != 0))) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (63.7ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50)) [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.2ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.3ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.2ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;35;1mGroupMembership Load (0.6ms)[0m   [0mSELECT * FROM "group_memberships" WHERE ("group_memberships".person_id = 49) [0m
+  [4;36;1mPerson Load (3.4ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (1.9ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (57.5ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (3.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Create (0.6ms)[0m   [0;1mINSERT INTO "groups" ("name", "created_at", "updated_at", "description") VALUES('bikers', '2009-11-09 03:05:39', '2009-11-09 03:05:39', 'awesomeness')[0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.3ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (4.2ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroupMembership Create (0.6ms)[0m   [0;1mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 03:05:58', '2009-11-09 03:05:58', 2, 49, 't')[0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroupMembership Load (1.2ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.3ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.1ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.7ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.3ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.1ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Load (1.1ms)[0m   [0mSELECT * FROM "group_memberships" [0m
+  [4;36;1mGroupMembership Load (1.2ms)[0m   [0;1mSELECT * FROM "group_memberships" [0m
+  [4;35;1mGroupMembership Update (0.6ms)[0m   [0mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 03:08:13', "active" = 'f' WHERE "id" = 5[0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.8ms)[0m   [0mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.3ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (57.5ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 50) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.4ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.1ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.8ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1)) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mPerson Load (1.1ms)[0m   [0;1mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 1) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.7ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.8ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.3ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.3ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroupMembership Create (0.6ms)[0m   [0mINSERT INTO "group_memberships" ("created_at", "updated_at", "group_id", "person_id", "active") VALUES('2009-11-09 03:10:52', '2009-11-09 03:10:52', 2, 49, 't')[0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (1.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT distinct groups.* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49)) [0m
+  [4;35;1mPerson Load (2.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mGroup Load (0.7ms)[0m   [0mSELECT * FROM "groups" [0m
+  [4;36;1mGroup Load (0.7ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (1.8ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mGroup Load (0.8ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.7ms)[0m   [0mSELECT distinct people.* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2)) [0m
+  [4;36;1mGroup Load (0.9ms)[0m   [0;1mSELECT * FROM "groups" [0m
+  [4;35;1mPerson Load (0.7ms)[0m   [0mSELECT "people".* FROM "people" INNER JOIN "group_memberships" ON "people".id = "group_memberships".person_id WHERE (("group_memberships".group_id = 2)) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.5ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (1.8ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.6ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.8ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.9ms)[0m   [0mSELECT * FROM "people" [0m
+setting person's group memberships to inactive
+  [4;36;1mGroupMembership Load (0.5ms)[0m   [0;1mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;35;1mPerson Load (57.9ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.5ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+setting person's group memberships to inactive
+  [4;35;1mGroupMembership Load (0.6ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mPerson Load (2.2ms)[0m   [0;1mSELECT * FROM "people" [0m
+setting person's group memberships to inactive
+  [4;35;1mGroupMembership Load (0.7ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 'f') [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mPerson Load (2.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (3.0ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.6ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+setting person's group memberships to inactive
+  [4;35;1mGroupMembership Load (0.4ms)[0m   [0mSELECT * FROM "group_memberships" WHERE (person_id = 49 and active = 't') [0m
+  [4;36;1mGroupMembership Update (0.6ms)[0m   [0;1mUPDATE "group_memberships" SET "updated_at" = '2009-11-09 03:23:26', "active" = 'f' WHERE "id" = 6[0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mGroup Load (0.4ms)[0m   [0;1mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;35;1mPerson Load (2.1ms)[0m   [0mSELECT * FROM "people" [0m
+  [4;36;1mPerson Load (2.1ms)[0m   [0;1mSELECT * FROM "people" [0m
+  [4;35;1mGroup Load (0.4ms)[0m   [0mSELECT "groups".* FROM "groups" INNER JOIN "group_memberships" ON "groups".id = "group_memberships".group_id WHERE (("group_memberships".person_id = 49) AND ((group_memberships.active = 't'))) [0m
+  [4;36;1mPerson Load (2.0ms)[0m   [0;1mSELECT * FROM "people" [0m

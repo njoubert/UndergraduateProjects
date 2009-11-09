@@ -1,0 +1,54 @@
+== Welcome to BurbleServer
+
+Purpose: Provide the global store for the Burble iPhone app.
+
+Design Principle: Keep everything GENERAL, MINIMAL and OPEN-ENDED. Processing of data should be done client-side!
+
+
+== Functionality needed:
+
+NOTE: x- indicates completed. - indicates todo.
+
+Bidirectional relationships: Make sure that this works correct!
+If special logic is used to set the group of a person, special logic is needed to add people to a group.
+
+=== Person:
+A person is someone *using* our app. We do NOT track people's friends lists server side!! That's on the iPhone! 
+
+We need a system for having a list of friends on your phone, and only some of them actually use burble. A person's friends that are users of the app have friendships in the database. A person's friends imported from Facebook, contacts, etc. that have not used the app are not on the server side. 
+
+What is the system to bring a friend into the app? Many people have the same friend, if he comes online how do we make those friendship associations correctly?
+
+
+x- Create a new person 
+x- Set a person's group
+x- Set a person's group to null
+x- Enforce only one active group when setting a group
+x- Get a person's group
+x- Keep all Group Memberships around so that you can historically see which groups you were in.
+x- Get a person's waypoints
+
+=== Position:
+A position logs where a person was at a specific point in time.
+
+x- Create a position associated with a person
+
+=== Group:
+A group is a collection of people for some duration of time. A group becomes inactive when it has no active members. The unique ID for a group is (name, created_at). Thus people can rejoin old groups.
+
+x- Create a group
+x- See active members of the group
+x- See all members of the group
+- Add members to a group with the correct logic of their group being updated.
+
+=== Waypoint:
+Waypoints are associated with a user that created them and a group that the user was in.
+x- Add a new waypoint (with a user and a group)
+x- Get the details of a waypoint
+
+=== Message:
+
+
+=== Invite:
+Invite a user to use this app.
+
