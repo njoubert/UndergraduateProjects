@@ -1,8 +1,9 @@
 set :user, 'njoubert' 
 set :domain, 'njoubert.com' 
 set :application, 'burble'
+set :svnproject, 'BurbleServer'
 
-set :repository, "svn+ssh://#{user}@#{domain}/var/svn/#{application}/trunk" 
+set :repository, "svn+ssh://#{user}@#{domain}/var/svn/#{svnproject}/trunk" 
 set :deploy_to, "/var/vhosts/#{domain}/#{application}"
 
 role :app, domain
