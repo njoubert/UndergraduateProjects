@@ -22,8 +22,8 @@ end
 after "deploy:update_code", :configure_database 
 desc "copy database.yml into the current release path" 
 task :configure_database, :roles => :app do 
-  #db_config = "/var/db/#{domain}/#{application}/config/database.yml"
-  db_config = "#{release_path}/config/database.CAPISTRANO.SERVER.yml" 
+  db_config = "/var/db/#{domain}/#{application}/config/database.yml"
+  #db_config = "#{release_path}/config/database.CAPISTRANO.SERVER.yml" 
   run "rm #{release_path}/config/database.yml"
   run "cp #{db_config} #{release_path}/config/database.yml" 
 end 
