@@ -33,6 +33,8 @@
 #   When we add a person that is active in group x to group y, an error is generated.
 #   Thus, to add a person to a group, check that the person is not currently in a group, and if he is, make him leave first.
 #   Leaving a group is as simple as setting the person's group to nil, which will call removeGroupMembership.
+#
+# Note: RELOAD groups after you change their membership!
 class Person < ActiveRecord::Base
   #friends
   has_many :friendships
