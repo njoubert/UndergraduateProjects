@@ -9,6 +9,8 @@ role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
 
+default_environment['PATH']='/usr/local/bin:/usr/bin:/bin'
+default_environment['GEM_PATH']='/usr/lib/ruby/gems/1.8'
 
 namespace :deploy do 
   task :restart do 
@@ -21,6 +23,7 @@ after "deploy:update_code", :configure_database
 desc "copy database.yml into the current release path" 
 task :configure_database, :roles => :app do 
   #db_config = "/var/db/#{domain}/#{application}/config/database.yml"
-  db_config = "#{deploy_to}/config/database.yml" 
+  db_config = "#{release_path}/config/database.CAPISTRANO.SERVER.yml" 
+  run "rm #{release_path}/config/database.yml"
   run "cp #{db_config} #{release_path}/config/database.yml" 
 end 
