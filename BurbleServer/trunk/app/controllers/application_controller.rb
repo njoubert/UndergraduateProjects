@@ -13,6 +13,8 @@ private
   #This method only does anything if its the iphone connecting, 
   #and if so it ensures that the person is sending their GUID to us, and finds that person.
   def auth_for_iphone
-    logger.info request.headers['HTTP_USER_AGENT']
+    if request.headers['HTTP_USER_AGENT'] =~ /iPhone/
+      logger.info "An iPhone just logged on!"
+    end
   end
 end
