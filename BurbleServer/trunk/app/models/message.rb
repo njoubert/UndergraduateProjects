@@ -12,8 +12,9 @@ class Message < ActiveRecord::Base
   #This allows you to set the message as read or not.
   def mark(person, read)
     mr = MessageReceiver.find(:first, :conditions => ["person_id = ? AND message_id = ?", person.id, self.id])
-    if mr == nil:
+    if mr == nil
       raise "Attempting to set read status on a message and person that doesn't exist"
+    end
     mr.read = read
     mr.save!
   end
