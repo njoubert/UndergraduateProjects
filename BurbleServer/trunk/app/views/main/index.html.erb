@@ -62,7 +62,7 @@
 
 
       #header {
-        background-image: url("images/Icon1.png");
+        background-image: url("/images/Icon1.png");
         background-repeat: no-repeat;
         background-position: top left;
         height: 64px;
@@ -188,7 +188,29 @@
         <ul id="sidebar-items">
           <li>
 			<b>Current Database Stats: </b>
-			<p> As Talib Kweli said: "It'll be finished when it's finished!"</p>
+			<p>
+			<table cellspacing=0 cellpadding=0>
+				<tr>
+					<td># of People:&nbsp</td>
+					<td><%= @personCount %></td>
+				</tr>
+				<tr>
+					<td># of Groups:&nbsp</td>
+					<td><%= @groupCount %></td>
+				</tr>
+				<tr>
+					<td># of Waypoints:&nbsp</td>
+					<td><%= @waypointCount %></td>
+				</tr>
+				<tr>
+					<td># of Positions:&nbsp</td>
+					<td><%= @positionCount %></td>
+				</tr>
+			</table>
+			</p>
+			<p>
+			As Talib Kweli said: "It'll be done when it's done!"
+			</p>
 		  </li>
 
         </ul>
