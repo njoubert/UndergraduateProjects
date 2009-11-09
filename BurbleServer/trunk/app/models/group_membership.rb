@@ -8,9 +8,8 @@ class GroupMembership < ActiveRecord::Base
   validate :unique_active?
   
   def unique_active?
-    logger.warn "Checking for unique active!"
     currentActive = GroupMembership.count(:all, :conditions => ["person_id = ? and active = ?", person.id, true])
-    if (currentActive != 0)
+    if (currentActive > 1)
       errors.add("Person must have only one active group.")
     end
   end

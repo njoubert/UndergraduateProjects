@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091109014139) do
+ActiveRecord::Schema.define(:version => 20091109154942) do
 
   create_table "friendships", :force => true do |t|
     t.integer "person_id", :null => false
@@ -33,6 +33,26 @@ ActiveRecord::Schema.define(:version => 20091109014139) do
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "message_receivers", :force => true do |t|
+    t.integer "person_id",                     :null => false
+    t.integer "message_id",                    :null => false
+    t.boolean "read",       :default => false
+  end
+
+  add_index "message_receivers", ["message_id"], :name => "index_received_messages_on_message_id"
+  add_index "message_receivers", ["person_id"], :name => "index_received_messages_on_recipient_person_id"
+
+  create_table "messages", :force => true do |t|
+    t.string   "type",          :null => false
+    t.integer  "sender_id"
+    t.text     "text"
+    t.string   "audioLocation"
+    t.integer  "waypoint_id"
+    t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
