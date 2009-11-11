@@ -36,6 +36,11 @@
 #
 # Note: RELOAD groups after you change their membership!
 class Person < ActiveRecord::Base
+  
+  validates_presence_of :guid
+  validates_presence_of :name
+  validates_uniqueness_of :guid
+  
   #friends
   has_many :friendships
   has_many :friends, :through => :friendships

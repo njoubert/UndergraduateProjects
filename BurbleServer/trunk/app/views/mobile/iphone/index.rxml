@@ -1,0 +1,5 @@
+xml.instruct! :xml, :version=>"1.0" 
+
+xml.result do
+  render :partial => "person", :object => @user, :locals => {:rootxml => xml}
+end

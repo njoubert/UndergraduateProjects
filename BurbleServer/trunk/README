@@ -2,8 +2,9 @@
 
 Purpose: Provide the global store for the Burble iPhone app.
 
-Design Principle: Keep everything GENERAL, MINIMAL and OPEN-ENDED. Processing of data should be done client-side!
-
+*** Design Principle: Keep everything GENERAL, MINIMAL and OPEN-ENDED. Processing of data should be done client-side!
+*** Design Principle: GUIDs: Never expose any other GUID than the currently active user. All other IDs are internal DB ids.
+*** Maybe we need to not depend on sessions??
 
 == Functionality needed:
 

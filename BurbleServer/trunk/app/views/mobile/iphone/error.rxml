@@ -1,0 +1,6 @@
+xml.instruct! :xml, :version=>"1.0" 
+
+xml.error do
+  xml.description(@iphoneError[:error])
+  xml.exception(@iphoneError[:exception])
+end
