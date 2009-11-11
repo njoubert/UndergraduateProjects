@@ -21,8 +21,11 @@ class MainController < ApplicationController
     else
       @beta_tester = BetaTester.new
     end
-    
+  end
   
+  def testers
+    @testers = BetaTester.all
+    render :xml => @testers
   end
   
   
