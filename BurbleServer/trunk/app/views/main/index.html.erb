@@ -48,6 +48,7 @@
       #sidebar {
         float: right;
         width: 175px;
+        padding-top: 60px;
       }
 
       #footer {
@@ -59,7 +60,6 @@
         padding-left: 75px;
         padding-right: 30px;
       }
-
 
       #header {
         background-image: url("/images/Icon1.png");
@@ -108,8 +108,7 @@
         margin: 0;
         padding: 10px;
       }
-      
-      
+
       #getting-started {
         border-top: 1px solid #ccc;
         margin-top: 25px;
@@ -176,6 +175,30 @@
       #sidebar ul.links li {
         margin-bottom: 5px;
       }
+
+	hr {
+		margin-top: 2px;
+		padding: 0px;
+		color: #ccc;
+		background-color: #ccc;
+		height: 1px;
+		border: 0px;
+	}
+	
+	  #flash {
+  	background: #FFF6BF;
+  	border-top: 2px solid #FFD324;
+  	border-bottom: 2px solid #FFD324;
+  	text-align: center;
+  	margin: 10px auto;
+  	padding: 5px 20px;
+  	}
+  	
+    .fieldWithErrors {
+      padding: 2px;
+      background-color: red;
+      display: table;
+    }
       
     </style>
     <script type="text/javascript" src="javascripts/prototype.js"></script>
@@ -187,6 +210,19 @@
       <div id="sidebar">
         <ul id="sidebar-items">
           <li>
+			<h3>Beta Tester Signup!</h3>
+			<p>We're looking for iPhone and iPod touch users to use our app before it's in the app store. Sign up!</p>
+			<% form_for :beta_tester do |form| %>
+			  <p><center><%= form.label 'Email:' %><br/><%= form.text_field :email, :size => 20 %></center> </p>
+			  <p><center><%= form.label 'Device:' %> <br/><%= form.select :device, [['iPhone', 'iPhone'],['iPod Touch','iPod Touch']] %></p>
+			  <p><center><%= submit_tag 'Sign up!' %></center></p>
+			<% end %>
+			</li>
+			
+			<br/>
+			<br/>
+			<hr>
+			<li>
 			<b>Current Database Stats: </b>
 			<p>
 			<table cellspacing=0 cellpadding=0>
@@ -209,8 +245,10 @@
 			</table>
 			</p>
 			<p>
-			As Talib Kweli said: "It'll be done when it's done!"
+			Yea it's empty. As Talib Kweli said: "It'll be done when it's done!"
 			</p>
+			
+			
 		  </li>
 
         </ul>
@@ -223,6 +261,13 @@
         </div>
         
         <div id="getting-started">
+          <% if flash.count > 0 -%>
+          <div id="flash">
+            <% flash.each do |key, value| -%>
+              <div id="flash_<%= key %>"><%=h value %></div>
+            <% end -%>
+          </div>
+          <% end -%>
           <h1>Here's what's up</h1>
           <h2>You landed on our web page, so how come there's not more here?</h2>
           
