@@ -4,7 +4,7 @@ class MainController < ApplicationController
     @groupCount = Group.count
     @waypointCount = Waypoint.count
     @positionCount = Position.count
-
+    @betaTesterCount = BetaTester.count
     if request.post?
       begin
         @beta_tester = BetaTester.new(params[:beta_tester])
