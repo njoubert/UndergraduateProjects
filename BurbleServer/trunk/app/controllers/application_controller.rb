@@ -38,6 +38,7 @@ private
   #and if so it ensures that the person is sending their GUID to us, and finds that person.
   
   def detect_iphone
-    @iphoneUser = (request.headers['HTTP_USER_AGENT'] =~ /iPhone/) or (request.user_agent =~ /(Mobile\/.+Safari)/)
+    #@iphoneUser = (request.headers['HTTP_USER_AGENT'] =~ /iPhone/) or (request.user_agent =~ /(Mobile\/.+Safari)/)
+    @iphoneUser = true
   end
 end
