@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   def ensure_only_iphone
     unless @iphoneUser
       logger.error "An iPhone-only page was accessed by a non-iPhone"
-      flash[:error] = "Must be an iPhone to access this page."
+      flash[:error] = "Must be an iPhone to access that page."
       redirect_to(:controller => "/main")
     end
     @iphoneError = Hash.new
