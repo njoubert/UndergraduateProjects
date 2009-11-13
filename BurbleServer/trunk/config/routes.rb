@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
+  # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
@@ -25,7 +25,6 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route within a namespace:
      map.namespace :mobile do |mobile|
-       # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
        mobile.resources :people, :collection => { :guid => :get }, :member => { :friends => :get, :addfriend => :get }
      end
 

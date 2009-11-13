@@ -22,10 +22,4 @@ class Friendship < ActiveRecord::Base
     end
   end
   
-  def bidirectional
-    opposite = Friendship.new
-    opposite.friend_id = person_id
-    opposite.person_id = friend_id
-    opposite.save!
-  end
 end

@@ -54,3 +54,71 @@ x- Get the details of a waypoint
 === Invite:
 
 
+
+
+
+
+
+
+
+
+====================================================================================================
+
+====================================================================================================
+
+Back End
+
+   1. [DONE] Database Access
+   2. [DONE] Person with all necessary information
+   3. [DONE] Friendship between people
+   4. [DONE] Positions for people
+   5. [DONE] Groups with names, descriptions
+   6. [DONE] Group Membership for a user.
+   7. [DONE] Enforced Single Active Group Membership for a user, track membership over time
+   8. [DONE] Waypoints associated with a person (creator) and a group (created_in)
+   9. [DONE] Messages of many types (Text, Audio, Routing Request, Group Invite)
+  10. [DONE] Messages with a single sender and many receivers, read and unread per receiver
+
+XML Protocol and Server Front-End
+
+   1. [DONE] Register new user
+   2. [DONE] Authenticate user and get details
+   3. [DONE] Modify user
+   4. [DONE] Get Friends of User
+   5. [DONE] Get Messages of User
+   6. [DONE] Send Position Data
+   7. Add Friends
+   8. Create Group
+   9. Add people to group
+  10. Send Messages
+  11. Get Waypoints
+  12. Send Waypoints
+
+iPhone Back-End
+
+   1. Register new phone with the phone's unique ID
+   2. Auth against backend if phone is already registered
+   3. Send position updates
+   4. Manage Friendslist
+   5. Manage Group
+   6. Manage Messaages
+   7. [PARTIAL] Find friends through Facebook Connect
+   8. Notifications
+
+iPhone Front-End
+
+   1. [DONE] Map Display of your location
+   2. Map Display of friends
+   3. [DONE] Different types of maps
+   4. [PARTIAL] Adding Waypoints
+   5. [DONE] Create new group
+   6. [DONE] My Group page
+   7. [DONE] Sending Messages
+   8. [DONE] Inviting to group
+   9. [DONE] Friendslist page
+  10. [PARTIAL] Individual friend details
+  11. [PARTIAL] Add Friend Page
+  12. [PARTIAL] Facebook Connect page to find friends
+  13. Feed View
+  14. Notifications of people close by
+
