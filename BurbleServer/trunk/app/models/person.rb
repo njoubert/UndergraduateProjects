@@ -49,6 +49,7 @@ class Person < ActiveRecord::Base
   has_many :sent_messages, :class_name => "Message", :foreign_key => "sender_id"
   has_many :message_receivers
   has_many :messages, :through => :message_receivers
+  has_many :latest_messages, :through => :message_receivers, :limit => 100, :source => :message, :order => "created_at DESC"
   has_many :unread_messages, :through => :message_receivers, :source => :message, :conditions => ["message_receivers.read = ?", false]
   
   #waypoints
@@ -104,6 +105,14 @@ class Person < ActiveRecord::Base
     gm.active = true
     gm.save!
     self.reload
+  end
+  
+  def is_friends_with(other_person)
+    return 0 < Friendship.count(:all, :conditions => ["person_id = ? and friend_id = ?", self.id, other_person.id])
+  end
+  
+  def paginated_messages(start, len)
+    
   end
                
 end

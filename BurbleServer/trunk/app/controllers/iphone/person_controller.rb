@@ -1,13 +1,9 @@
 class Iphone::PersonController < Iphone::AbstractIphoneController
   
-  before_filter :ensure_registered_if_iphone, :except => [:error, :new, :create]
+  before_filter :ensure_registered_if_iphone, :except => [:new, :create]
   
   def index
   end
-  
-  ####################################
-  ######## PEOPLE MANAGEMENT
-  ####################################  
   
   def new
     @person = Person.new
@@ -22,13 +18,10 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
         @person.save!
         render :xml => @person, :status => :created
       rescue Exception => ex
-        @iphoneError[:error] = "Could not create new user!"
-        @iphoneError[:exception] = ex.to_s
-        render :status => 500, :template => 'iphone/error.rxml'
+        render_error("Could not create new user!", ex)
       end
     else
-      @iphoneError[:error] = "Request not supported"
-      render :status => 500, :template => 'iphone/error.rxml'
+      render_error("Request type not supported. Expected POST.", nil)
     end
   end
 
