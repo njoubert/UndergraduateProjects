@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
         logger.error "An iPhone without a uuid in params attempted to access something!"
         @iphoneError[:error] = "User not logged in!"
         @iphoneError[:exception] = ex.to_s
-        render :status => 500, :template => 'mobile/iphone/error.rxml'
+        render :status => 500, :template => 'iphone/error.rxml'
       end
     end
   end
@@ -36,7 +36,6 @@ class ApplicationController < ActionController::Base
 private
   #This method only does anything if its the iphone connecting, 
   #and if so it ensures that the person is sending their GUID to us, and finds that person.
-  
   def detect_iphone
     #@iphoneUser = (request.headers['HTTP_USER_AGENT'] =~ /iPhone/) or (request.user_agent =~ /(Mobile\/.+Safari)/)
     @iphoneUser = true

@@ -2,7 +2,7 @@ xml.instruct!
 
 xml.result do
   
-  render :partial => "person", :object => @user, :locals => {:rootxml => xml}
+  render :partial => "iphone/person", :object => @user, :locals => {:rootxml => xml}
   
   xml.messages do
     if @messages

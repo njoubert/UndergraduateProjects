@@ -1,4 +1,4 @@
-== Welcome to BurbleServer
+h1. Welcome to BurbleServer
 
 Purpose: Provide the global store for the Burble iPhone app.
 
@@ -6,14 +6,15 @@ Purpose: Provide the global store for the Burble iPhone app.
 *** Design Principle: GUIDs: Never expose any other GUID than the currently active user. All other IDs are internal DB ids.
 *** Maybe we need to not depend on sessions??
 
-== Functionality needed:
+h2. Functionality needed:
 
 NOTE: x- indicates completed. - indicates todo.
 
 Bidirectional relationships: Make sure that this works correct!
 If special logic is used to set the group of a person, special logic is needed to add people to a group.
 
-=== Person:
+h3. Person:
+
 A person is someone *using* our app. We do NOT track people's friends lists server side!! That's on the iPhone! 
 
 We need a system for having a list of friends on your phone, and only some of them actually use burble. A person's friends that are users of the app have friendships in the database. A person's friends imported from Facebook, contacts, etc. that have not used the app are not on the server side. 
@@ -22,38 +23,39 @@ What is the system to bring a friend into the app? Many people have the same fri
 
 NOTE: Doing person.group = g will UPDATE the person's group. Doing group.people << p will ERROR if the person has a group.
 
-x- Create a new person 
-x- Set a person's group
-x- Set a person's group to null
-x- Enforce only one active group when setting a group
-x- Get a person's group
-x- Keep all Group Memberships around so that you can historically see which groups you were in.
-x- Get a person's waypoints
+* x- Create a new person 
+* x- Set a person's group
+* x- Set a person's group to null
+* x- Enforce only one active group when setting a group
+* x- Get a person's group
+* x- Keep all Group Memberships around so that you can historically see which groups you were in.
+* x- Get a person's waypoints
 
-=== Position:
+h3. Position:
+
 A position logs where a person was at a specific point in time.
 
-x- Create a position associated with a person
+* x- Create a position associated with a person
 
-=== Group:
+h3.  Group:
+
 A group is a collection of people for some duration of time. A group becomes inactive when it has no active members. The unique ID for a group is (name, created_at). Thus people can rejoin old groups.
 
-x- Create a group
-x- See active members of the group
-x- See all members of the group
-x- Add members to a group with the correct logic of their group being updated.
+* x- Create a group
+* x- See active members of the group
+* x- See all members of the group
+* x- Add members to a group with the correct logic of their group being updated.
 
-=== Waypoint:
+h3. Waypoint:
+
 Waypoints are associated with a user that created them and a group that the user was in.
-x- Add a new waypoint (with a user and a group)
-x- Get the details of a waypoint
+* x- Add a new waypoint (with a user and a group)
+* x- Get the details of a waypoint
 
-=== Message:
-
-
-=== Invite:
+h3. Message:
 
 
+h3. Invite:
 
 
 
@@ -62,11 +64,13 @@ x- Get the details of a waypoint
 
 
 
-====================================================================================================
+
 
 ====================================================================================================
 
-Back End
+====================================================================================================
+
+h3. Back End
 
    1. [DONE] Database Access
    2. [DONE] Person with all necessary information
@@ -79,7 +83,7 @@ Back End
    9. [DONE] Messages of many types (Text, Audio, Routing Request, Group Invite)
   10. [DONE] Messages with a single sender and many receivers, read and unread per receiver
 
-XML Protocol and Server Front-End
+h3. XML Protocol and Server Front-End
 
    1. [DONE] Register new user
    2. [DONE] Authenticate user and get details
@@ -94,7 +98,7 @@ XML Protocol and Server Front-End
   11. Get Waypoints
   12. Send Waypoints
 
-iPhone Back-End
+h3. iPhone Back-End
 
    1. Register new phone with the phone's unique ID
    2. Auth against backend if phone is already registered
@@ -105,7 +109,7 @@ iPhone Back-End
    7. [PARTIAL] Find friends through Facebook Connect
    8. Notifications
 
-iPhone Front-End
+h3. iPhone Front-End
 
    1. [DONE] Map Display of your location
    2. Map Display of friends
@@ -122,3 +126,20 @@ iPhone Front-End
   13. Feed View
   14. Notifications of people close by
 
+=========================
+
+h2. Navigation:
+
+* Open File ("find resouce")    => Command-T
+* Quick Outine in File          => Command-Shift-T
+* Go To Line                    => Command-L
+
+h2. Editing:
+
+* Indent/Unindent Line          => Command-[ and Command-]
+* Comment Line                  => Command-/
+* Insert Comment Banner         => Control-Shift-B
+
+h2. Refactoring:
+
+* Global find-and-replace       => Command-Shift-F
