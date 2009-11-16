@@ -11,6 +11,8 @@
 @implementation MyGroupViewController
 
 @synthesize groupTextField;
+@synthesize groupMsgTextField;
+@synthesize groupMsgRecTextField;
 @synthesize groupString;
 @synthesize myGroupView;
 @synthesize createGroupView;
@@ -22,6 +24,15 @@
 	if(theTextField == groupTextField) {
 		[groupTextField resignFirstResponder];
 	}
+	
+	if(theTextField == groupMsgTextField) {
+		[groupMsgTextField resignFirstResponder];
+	}
+	
+	if(theTextField == groupMsgRecTextField) {
+		[groupMsgRecTextField resignFirstResponder];
+	}
+	
 	return YES;
 }
 
@@ -110,6 +121,8 @@
 
 - (void)dealloc {
 	[groupTextField release];
+	[groupMsgTextField release];
+	[groupMsgRecTextField release];
 	[groupString release];
 	[myGroupView release];
 	[createGroupView release];

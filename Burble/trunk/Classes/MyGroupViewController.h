@@ -11,6 +11,8 @@
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
 	UITextField *groupTextField;
+	UITextField *groupMsgTextField;
+	UITextField *groupMsgRecTextField;
 	NSString *groupString;
 	UIView *myGroupView;
 	UIView *createGroupView;
@@ -20,6 +22,8 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *groupTextField;
+@property (nonatomic, retain) IBOutlet UITextField *groupMsgTextField;
+@property (nonatomic, retain) IBOutlet UITextField *groupMsgRecTextField;
 @property (nonatomic, copy) NSString *groupString;
 @property (nonatomic, retain) IBOutlet UIView *myGroupView;
 @property (nonatomic, retain) IBOutlet UIView *createGroupView;

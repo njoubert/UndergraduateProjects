@@ -1,0 +1,158 @@
+// !$*UTF8*$!
+{
+	1D3623250D0F684500981E51 /* Test1AppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 437}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 579}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* Test1 */ = {
+		activeExec = 0;
+		executables = (
+			44CCE70D10B20D82006ED4E7 /* Test1 */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 44CCE70D10B20D82006ED4E7 /* Test1 */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
+		codeSenseManager = 44CCE73410B20D8E006ED4E7 /* Code sense */;
+		executables = (
+			44CCE70D10B20D82006ED4E7 /* Test1 */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					833,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 280104322;
+			PBXWorkspaceStateSaveDate = 280104322;
+		};
+		perUserProjectItems = {
+			44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 44CCE73310B20D8E006ED4E7 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	44CCE70D10B20D82006ED4E7 /* Test1 */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = Test1;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	44CCE73310B20D8E006ED4E7 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	44CCE73410B20D8E006ED4E7 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* Test1AppDelegate.m */;
+		name = "Test1AppDelegate.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 579;
+		vrLoc = 0;
+	};
+	44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558010A250B9007BB25E /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 42";
+		rLen = 0;
+		rLoc = 1291;
+		rType = 0;
+		vrLen = 1114;
+		vrLoc = 0;
+	};
+	44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 26";
+		rLen = 0;
+		rLoc = 824;
+		rType = 0;
+		vrLen = 988;
+		vrLoc = 3;
+	};
+	44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 27";
+		rLen = 0;
+		rLoc = 623;
+		rType = 0;
+		vrLen = 791;
+		vrLoc = 1600;
+	};
+	DAE6558010A250B9007BB25E /* MyGroupViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 546}}";
+			sepNavSelRange = "{1291, 0}";
+			sepNavVisRange = "{0, 1114}";
+		};
+	};
+	DAE6558110A250B9007BB25E /* MyGroupViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1328, 1768}}";
+			sepNavSelRange = "{623, 0}";
+			sepNavVisRange = "{1600, 791}";
+		};
+	};
+}
