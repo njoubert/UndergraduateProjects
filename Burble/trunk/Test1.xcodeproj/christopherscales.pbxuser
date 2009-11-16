@@ -29,7 +29,7 @@
 					20,
 					833,
 					20,
-					48.16259765625,
+					48,
 					43,
 					43,
 					20,
@@ -44,14 +44,42 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 280104322;
-			PBXWorkspaceStateSaveDate = 280104322;
+			PBXConfiguration.PBXFileTableDataSource3.XCSCMDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					809,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_SCM_ColumnID,
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 280105578;
+			PBXWorkspaceStateSaveDate = 280105578;
 		};
 		perUserProjectItems = {
-			44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */;
-			44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */;
-			44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */;
-			44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */ = 44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74C10B211F1006ED4E7 = 44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74D10B211F1006ED4E7 = 44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74E10B211F1006ED4E7 = 44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */;
+			44CCE74F10B211F1006ED4E7 = 44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */;
+			44E6189110B212B7001ABCDB /* PBXTextBookmark */ = 44E6189110B212B7001ABCDB /* PBXTextBookmark */;
+			44E6189210B212B7001ABCDB /* PBXTextBookmark */ = 44E6189210B212B7001ABCDB /* PBXTextBookmark */;
+			44E6189410B212B7001ABCDB /* PBXBookmark */ = 44E6189410B212B7001ABCDB /* PBXBookmark */;
+			44E6189510B212B7001ABCDB /* PBXTextBookmark */ = 44E6189510B212B7001ABCDB /* PBXTextBookmark */;
 		};
 		sourceControlManager = 44CCE73310B20D8E006ED4E7 /* Source Control */;
 		userBuildSettings = {
@@ -93,7 +121,7 @@
 		isSCMEnabled = 0;
 		scmConfiguration = {
 			repositoryNamesForRoots = {
-				"" = "";
+				"" = njoubert.com;
 			};
 		};
 	};
@@ -141,6 +169,61 @@
 		vrLen = 791;
 		vrLoc = 1600;
 	};
+	44E6189110B212B7001ABCDB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 76";
+		rLen = 0;
+		rLoc = 1874;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 1600;
+	};
+	44E6189210B212B7001ABCDB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 44E6189310B212B7001ABCDB /* christopherscales.pbxuser */;
+		name = "christopherscales.pbxuser: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1025;
+		vrLoc = 0;
+	};
+	44E6189310B212B7001ABCDB /* christopherscales.pbxuser */ = {
+		isa = PBXFileReference;
+		name = christopherscales.pbxuser;
+		path = /Users/christopherscales/Desktop/Burble/Test1.xcodeproj/christopherscales.pbxuser;
+		sourceTree = "<absolute>";
+	};
+	44E6189410B212B7001ABCDB /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */;
+	};
+	44E6189510B212B7001ABCDB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */;
+		name = "NSDictionary-MutableDeepCopy.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 668;
+		vrLoc = 0;
+	};
+	B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 454}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 668}";
+		};
+	};
+	DAE6556A10A25042007BB25E /* MapViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1146, 1326}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 838}";
+			sepNavWindowFrame = "{{15, 215}, {750, 558}}";
+		};
+	};
 	DAE6558010A250B9007BB25E /* MyGroupViewController.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1011, 546}}";
@@ -150,9 +233,9 @@
 	};
 	DAE6558110A250B9007BB25E /* MyGroupViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1328, 1768}}";
-			sepNavSelRange = "{623, 0}";
-			sepNavVisRange = "{1600, 791}";
+			sepNavIntBoundsRect = "{{0, 0}, {1328, 1755}}";
+			sepNavSelRange = "{1874, 0}";
+			sepNavVisRange = "{1600, 788}";
 		};
 	};
 }
