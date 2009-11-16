@@ -1,727 +1,0 @@
-TTest1
-v7
-r0
-t279093929.675805
-cCheck dependencies
-cCpResource build/Release-iphoneos/Test1.app/ResourceRules.plist /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist
-cProcessInfoPlistFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Info.plist Test1-Info.plist
-cCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib
-cCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib
-cCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib
-cCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib
-cCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Icon2.png Icon2.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/103-map.png 103-map.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/map-marker.png map-marker.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/74-location.png 74-location.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/08-chat.png 08-chat.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/09-chat2.png 09-chat2.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/59-flag.png 59-flag.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chat.png 30x-Chat.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chats.png 30x-Chats.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Scanner.png 30x-Scanner.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_user.png icon_user.png
-cCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_users.png icon_users.png
-cProcessPCH /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch.gch Test1_Prefix.pch normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/main.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1AppDelegate.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MapViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MyGroupViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/GroupiesViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/FeedViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-cLd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1 normal armv6
-cGenerateDSYMFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app.dSYM /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1
-cProcessProductPackaging "/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision
-cTouch /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-cProcessProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent
-cCodeSign /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk
-c000000004ABFDAFE0000000000000110
-t1254087422
-s272
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist
-c000000004ABDB88400000000000000DD
-t1253947524
-s221
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist
-c000000004ABDB88400000000000001E5
-t1253947524
-s485
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
-c000000004ABDBA1300000000005F4900
-t1253947923
-s6244608
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/CoreLocation.framework/CoreLocation
-c000000004ABDD17F0000000000085550
-t1253953919
-s546128
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation
-c000000004ABDBDCF0000000000501370
-t1253948879
-s5247856
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c000000004ABDBDA40000000000001355
-t1253948836
-s4949
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/MapKit.framework/Headers/MKGeometry.h
-c000000004ABDD3650000000000000437
-t1253954405
-s1079
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/MapKit.framework/Headers/MKMapView.h
-c000000004ABDD363000000000000154F
-t1253954403
-s5455
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/MapKit.framework/Headers/MKTypes.h
-c000000004ABDD363000000000000018D
-t1253954403
-s397
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/MapKit.framework/Headers/MapKit.h
-c000000004ABDD364000000000000017D
-t1253954404
-s381
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/MapKit.framework/MapKit
-c000000004ABDD38100000000001CD6E0
-t1253954433
-s1890016
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
-c000000004ABDD0D10000000000000788
-t1253953745
-s1928
-
-N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/System/Library/Frameworks/UIKit.framework/UIKit
-c000000004ABDD2250000000001B3F450
-t1253954085
-s28570704
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/08-chat.png
-c0000000049724F600000000000000119
-t1232228192
-s281
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/09-chat2.png
-c0000000049724F6E0000000000000137
-t1232228206
-s311
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/103-map.png
-c000000004AA7390A00000000000001FB
-t1252473098
-s507
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chat.png
-c000000004A47F16D0000000000000F8D
-t1246228845
-s3981
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chats.png
-c000000004A47F14E0000000000000FAB
-t1246228814
-s4011
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Scanner.png
-c000000004A47F12400000000000010D6
-t1246228772
-s4310
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/59-flag.png
-c000000004AA5E4B400000000000000F9
-t1252385972
-s249
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/74-location.png
-c0000000049FE69A40000000000000125
-t1241409956
-s293
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m
-c000000004AF244100000000000000AD8
-t1257391120
-s2776
-i"MapViewController.h"
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib
-c000000004AF266F60000000000006DFA
-t1257400054
-s28154
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.h
-c000000004AF230AD0000000000000102
-t1257386157
-s258
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m
-c000000004AF22F1D00000000000006B8
-t1257385757
-s1720
-i"FeedViewController.h"
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib
-c000000004AF230EA000000000000246A
-t1257386218
-s9322
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.h
-c000000004AF2195000000000000000EF
-t1257380176
-s239
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m
-c000000004AF219500000000000000581
-t1257380176
-s1409
-i"GroupiesViewController.h"
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib
-c000000004AF21950000000000000187D
-t1257380176
-s6269
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.h
-c000000004AF2193900000000000000ED
-t1257380153
-s237
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m
-c000000004AF21939000000000000057E
-t1257380153
-s1406
-i"MyGroupViewController.h"
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib
-c000000004AF21939000000000000187A
-t1257380153
-s6266
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.h
-c000000004AF21B9F00000000000001B8
-t1257380767
-s440
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m
-c000000004AF222EF0000000000000243
-t1257382639
-s579
-i"Test1AppDelegate.h"
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Icon2.png
-c000000004AF1EDED0000000000001F5B
-t1257369069
-s8027
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib
-c000000004AF2660F0000000000007916
-t1257399823
-s30998
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MapViewController.h
-c000000004AF241300000000000000288
-t1257390384
-s648
-i<UIKit/UIKit.h>
-i<MapKit/MapKit.h>
-i<MapKit/MKTypes.h>
-i<MapKit/MKGeometry.h>
-i<MapKit/MKMapView.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Test1_Prefix.pch
-c000000004AF2141800000000000000B3
-t1257378840
-s179
-i<Foundation/Foundation.h>
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-t1257401129
-s884
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app.dSYM
-t1257401129
-s102
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/08-chat.png
-t1257401126
-s333
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/09-chat2.png
-t1257401126
-s380
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/103-map.png
-t1257401126
-s536
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chat.png
-t1257401126
-s4251
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chats.png
-t1257401126
-s4402
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Scanner.png
-t1257401126
-s5227
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/59-flag.png
-t1257401126
-s248
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/74-location.png
-t1257401126
-s351
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/FeedViewController.nib
-t1257401126
-s2228
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/GroupiesViewController.nib
-t1257401126
-s1106
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Icon2.png
-t1257401126
-s8427
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Info.plist
-t1257401121
-s658
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MainWindow.nib
-t1257401124
-s3252
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MapViewController.nib
-t1257401125
-s4371
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MyGroupViewController.nib
-t1257401126
-s1106
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/PkgInfo
-t1257401121
-s8
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/ResourceRules.plist
-t1257401122
-s485
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1
-t1257401129
-s20516
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision
-t1257401129
-s7159
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_user.png
-t1257401126
-s648
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_users.png
-t1257401126
-s859
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/map-marker.png
-t1257401126
-s282
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/FeedViewController.o
-t1257401128
-s35640
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/GroupiesViewController.o
-t1257401128
-s29492
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MapViewController.o
-t1257401128
-s43432
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MyGroupViewController.o
-t1257401128
-s29480
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1.LinkFileList
-c000000004AF26B21000000000000034A
-t1257401121
-s842
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1AppDelegate.o
-t1257401128
-s42632
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/main.o
-t1257401128
-s6668
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent
-t1257401129
-s318
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_user.png
-c000000004AA90E0A00000000000001EF
-t1252593162
-s495
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_users.png
-c000000004AA90DFD0000000000000246
-t1252593149
-s582
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m
-c000000004AF214180000000000000168
-t1257378840
-s360
-i<UIKit/UIKit.h>
-
-N/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/map-marker.png
-c000000004A890A7C00000000000000E0
-t1250495100
-s224
-
-N/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision
-c000000004AD129400000000000001BF7
-t1255221568
-s7159
-
-N/var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch.gch
-t1257401127
-s7700664
-
-NTest1-Info.plist
-c000000004AF23693000000000000038D
-t1257387667
-s909
-
-CCheck dependencies
-r0
-lSLF07#2@18"Check dependencies279093921#279093921#0(0"0(0#1#0"4300885448#0"0#
-
-CCodeSign /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-s279093929.284307
-e279093929.675763
-r1
-xCodeSign
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-lSLF07#2@41"CodeSign build/Release-iphoneos/Test1.app279093929#279093929#0(0"0(0#0#85"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app4300885448#699"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv CODESIGN_ALLOCATE /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/codesign -f -s "iPhone Developer: Niels Joubert (HUXT4884VE)" --resource-rules=/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/ResourceRules.plist --entitlements /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/FeedViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093928.480654
-e279093928.602073
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/FeedViewController.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@89"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m279093928#279093928#0(0"0(0#0#81"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m4300885448#1913"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/FeedViewController.o0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/GroupiesViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093928.394208
-e279093928.480540
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/GroupiesViewController.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@93"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m279093928#279093928#0(0"0(0#0#85"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m4300885448#1921"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/GroupiesViewController.o0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MapViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093928.236481
-e279093928.572564
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MapViewController.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@91"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m279093928#279093928#0(0"0(0#0#83"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m4300885448#1914"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MapViewController.o0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MyGroupViewController.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093928.283984
-e279093928.394099
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MyGroupViewController.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@92"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m279093928#279093928#0(0"0(0#0#84"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m4300885448#1919"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/MyGroupViewController.o0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1AppDelegate.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093927.993232
-e279093928.283870
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1AppDelegate.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@87"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m279093927#279093928#0(0"0(0#0#79"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m4300885448#1909"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/Test1AppDelegate.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1AppDelegate.o0#
-
-CCompileC build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/main.o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093927.991835
-e279093928.236195
-r1
-xCompileC
-xbuild/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/main.o
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@67"Compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m279093927#279093928#0(0"0(0#0#59"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m4300885448#1877"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -include /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/main.m -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/main.o0#
-
-CCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib
-s279093922.082929
-e279093925.456302
-r1
-xCompileXIB
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib
-lSLF07#2@43"CompileXIB Classes/../MapViewController.xib279093922#279093925#0(0"0(0#0#85"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib4300885448#535"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MapViewController.nib /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/../MapViewController.xib0#
-
-CCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib
-s279093926.029827
-e279093926.651139
-r1
-xCompileXIB
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib
-lSLF07#2@41"CompileXIB Classes/FeedViewController.xib279093926#279093926#0(0"0(0#0#83"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib4300885448#534"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/FeedViewController.nib /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/FeedViewController.xib0#
-
-CCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib
-s279093925.456824
-e279093926.059296
-r1
-xCompileXIB
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib
-lSLF07#2@45"CompileXIB Classes/GroupiesViewController.xib279093925#279093926#0(0"0(0#0#87"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib4300885448#542"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/GroupiesViewController.nib /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/GroupiesViewController.xib0#
-
-CCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib
-s279093925.065005
-e279093926.029731
-r1
-xCompileXIB
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib
-lSLF07#2@44"CompileXIB Classes/MyGroupViewController.xib279093925#279093926#0(0"0(0#0#86"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib4300885448#540"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MyGroupViewController.nib /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Classes/MyGroupViewController.xib0#
-
-CCompileXIB /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib
-s279093922.082147
-e279093925.064794
-r1
-xCompileXIB
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib
-lSLF07#2@25"CompileXIB MainWindow.xib279093922#279093925#0(0"0(0#0#67"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib4300885448#510"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/MainWindow.nib /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/MainWindow.xib0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/08-chat.png 08-chat.png
-s279093926.281447
-e279093926.331072
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/08-chat.png
-x08-chat.png
-lSLF07#2@68"CopyPNGFile build/Release-iphoneos/Test1.app/08-chat.png 08-chat.png279093926#279093926#0(0"0(0#0#64"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/08-chat.png4300885448#604"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/08-chat.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/08-chat.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/09-chat2.png 09-chat2.png
-s279093926.331171
-e279093926.367037
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/09-chat2.png
-x09-chat2.png
-lSLF07#2@70"CopyPNGFile build/Release-iphoneos/Test1.app/09-chat2.png 09-chat2.png279093926#279093926#0(0"0(0#0#65"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/09-chat2.png4300885448#606"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/09-chat2.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/09-chat2.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/103-map.png 103-map.png
-s279093926.191656
-e279093926.219660
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/103-map.png
-x103-map.png
-lSLF07#2@68"CopyPNGFile build/Release-iphoneos/Test1.app/103-map.png 103-map.png279093926#279093926#0(0"0(0#0#64"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/103-map.png4300885448#604"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/103-map.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/103-map.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chat.png 30x-Chat.png
-s279093926.425892
-e279093926.496452
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chat.png
-x30x-Chat.png
-lSLF07#2@70"CopyPNGFile build/Release-iphoneos/Test1.app/30x-Chat.png 30x-Chat.png279093926#279093926#0(0"0(0#0#65"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chat.png4300885448#606"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chat.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chat.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chats.png 30x-Chats.png
-s279093926.496553
-e279093926.578887
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chats.png
-x30x-Chats.png
-lSLF07#2@72"CopyPNGFile build/Release-iphoneos/Test1.app/30x-Chats.png 30x-Chats.png279093926#279093926#0(0"0(0#0#66"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chats.png4300885448#608"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Chats.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Chats.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Scanner.png 30x-Scanner.png
-s279093926.579102
-e279093926.714207
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Scanner.png
-x30x-Scanner.png
-lSLF07#2@76"CopyPNGFile build/Release-iphoneos/Test1.app/30x-Scanner.png 30x-Scanner.png279093926#279093926#0(0"0(0#0#68"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Scanner.png4300885448#612"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/30x-Scanner.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/30x-Scanner.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/59-flag.png 59-flag.png
-s279093926.367143
-e279093926.425789
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/59-flag.png
-x59-flag.png
-lSLF07#2@68"CopyPNGFile build/Release-iphoneos/Test1.app/59-flag.png 59-flag.png279093926#279093926#0(0"0(0#0#64"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/59-flag.png4300885448#604"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/59-flag.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/59-flag.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/74-location.png 74-location.png
-s279093926.248161
-e279093926.281350
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/74-location.png
-x74-location.png
-lSLF07#2@76"CopyPNGFile build/Release-iphoneos/Test1.app/74-location.png 74-location.png279093926#279093926#0(0"0(0#0#68"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/74-location.png4300885448#612"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/74-location.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/74-location.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Icon2.png Icon2.png
-s279093926.059397
-e279093926.191555
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Icon2.png
-xIcon2.png
-lSLF07#2@64"CopyPNGFile build/Release-iphoneos/Test1.app/Icon2.png Icon2.png279093926#279093926#0(0"0(0#0#62"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Icon2.png4300885448#600"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Icon2.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Icon2.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_user.png icon_user.png
-s279093926.651244
-e279093926.736138
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_user.png
-xicon_user.png
-lSLF07#2@72"CopyPNGFile build/Release-iphoneos/Test1.app/icon_user.png icon_user.png279093926#279093926#0(0"0(0#0#66"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_user.png4300885448#608"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_user.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_user.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_users.png icon_users.png
-s279093926.714324
-e279093926.758182
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_users.png
-xicon_users.png
-lSLF07#2@74"CopyPNGFile build/Release-iphoneos/Test1.app/icon_users.png icon_users.png279093926#279093926#0(0"0(0#0#67"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_users.png4300885448#610"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/icon_users.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/icon_users.png0#
-
-CCopyPNGFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/map-marker.png map-marker.png
-s279093926.219755
-e279093926.248053
-r1
-xCopyPNGFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/map-marker.png
-xmap-marker.png
-lSLF07#2@74"CopyPNGFile build/Release-iphoneos/Test1.app/map-marker.png map-marker.png279093926#279093926#0(0"0(0#0#67"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/map-marker.png4300885448#610"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv COPY_COMMAND /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    "/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Plug-ins/iPhoneOS Build System Support.xcplugin/Contents/Resources/copypng" -compress "" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/map-marker.png /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/map-marker.png0#
-
-CCpResource build/Release-iphoneos/Test1.app/ResourceRules.plist /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist
-s279093921.922253
-e279093922.082047
-r1
-xCpResource
-xbuild/Release-iphoneos/Test1.app/ResourceRules.plist
-x/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist
-lSLF07#2@96"Copy /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist279093921#279093922#0(0"0(0#0#91"/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist4300885448#531"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -strip-debug-symbols -resolve-src-symlinks /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/ResourceRules.plist /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app0#
-
-CGenerateDSYMFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app.dSYM /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1
-s279093929.105852
-e279093929.208952
-r1
-xGenerateDSYMFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app.dSYM
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1
-lSLF07#2@93"GenerateDSYMFile build/Release-iphoneos/Test1.app.dSYM build/Release-iphoneos/Test1.app/Test1279093929#279093929#0(0"0(0#0#91"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test14300885448#402"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1 -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app.dSYM0#
-
-CLd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1 normal armv6
-s279093928.602179
-e279093929.105745
-r1
-xLd
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1
-xnormal
-xarmv6
-lSLF07#2@96"Link /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test1279093928#279093929#0(0"0(0#0#0"4300885448#1005"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv IPHONEOS_DEPLOYMENT_TARGET 3.1.2    setenv MACOSX_DEPLOYMENT_TARGET 10.5    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -arch armv6 -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -L/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -filelist /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Objects-normal/armv6/Test1.LinkFileList -mmacosx-version-min=10.5 -dead_strip -miphoneos-version-min=3.1.2 -framework Foundation -framework UIKit -framework CoreGraphics -framework MapKit -framework CoreLocation -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Test10#
-
-CProcessInfoPlistFile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Info.plist Test1-Info.plist
-s279093921.927164
-e279093921.964252
-r1
-xProcessInfoPlistFile
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Info.plist
-xTest1-Info.plist
-lSLF07#2@24"Process Test1-Info.plist279093921#279093921#0(0"0(0#0#69"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Test1-Info.plist4300885448#616"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Test1-Info.plist -genpkginfo /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -resourcerulesfile /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/ResourceRules.plist -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/Info.plist0#
-
-CProcessPCH /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch.gch Test1_Prefix.pch normal armv6 objective-c com.apple.compilers.gcc.4_2
-s279093926.758306
-e279093927.991686
-r1
-xProcessPCH
-x/var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch.gch
-xTest1_Prefix.pch
-xnormal
-xarmv6
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@27"Precompile Test1_Prefix.pch279093926#279093927#0(0"0(0#0#69"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Test1_Prefix.pch4300885448#1761"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch armv6 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk -fvisibility=hidden -gdwarf-2 -mthumb -miphoneos-version-min=3.1.2 -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-generated-files.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-own-target-headers.hmap -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-all-target-headers.hmap -iquote /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1-project-headers.hmap -F/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/include -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources/armv6 -I/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/DerivedSources -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/Test1_Prefix.pch -o /var/folders/V1/V1+dPW4LF3Gc1kAPRpJnSE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Test1_Prefix-aaglqscnenzblyabpmfgdtodjtmd/Test1_Prefix.pch.gch0#
-
-CProcessProductPackaging "/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision" /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision
-s279093929.209061
-e279093929.250049
-r1
-xProcessProductPackaging
-x/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision
-lSLF07#2@195"ProcessProductPackaging "/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision" build/Release-iphoneos/Test1.app/embedded.mobileprovision279093929#279093929#0(0"0(0#0#110"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision4300885448#454"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    <com.apple.tools.product-pkg-utility> "/Users/njoubert/Library/MobileDevice/Provisioning Profiles/17A53902-8300-49BB-89AD-EC0147ABAFAA.mobileprovision" -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app/embedded.mobileprovision0#
-
-CProcessProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent
-s279093929.254576
-e279093929.284221
-r1
-xProcessProductPackaging
-x/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent
-lSLF07#2@173"ProcessProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent279093929#279093929#0(0"0(0#0#111"/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent4300885448#458"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    <com.apple.tools.product-pkg-utility> /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.2.sdk/Entitlements.plist -entitlements -format xml -o /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Test1.build/Release-iphoneos/Test1.build/Test1.xcent0#
-
-CTouch /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-s279093929.250128
-e279093929.254481
-r1
-xTouch
-x/Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app
-lSLF07#2@91"Touch /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app279093929#279093929#0(0"0(0#0#0"4300885448#292"    cd /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/njoubert/Dropbox/CS147/Code/HomeScreen1/Test1/build/Release-iphoneos/Test1.app0#
-
