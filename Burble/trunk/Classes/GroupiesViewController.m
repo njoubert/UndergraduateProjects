@@ -9,6 +9,7 @@
 #import "GroupiesViewController.h"
 #import "NSDictionary-MutableDeepCopy.h"
 #import "GroupiesDetailViewController.h"
+#import "Test1AppDelegate.h"
 
 @implementation GroupiesViewController
 
@@ -16,14 +17,17 @@
 @synthesize mainView;
 
 @synthesize people;
-@synthesize names;
-@synthesize keys;
+
+@synthesize names; //a dictionary
+@synthesize keys; //an array
 @synthesize table;
 @synthesize search;
-@synthesize allNames;
+@synthesize allNames; //a mutable dictionary
 
 #pragma mark -
 #pragma mark Custom Methods
+
+//REWRITE THESE to search the array
 -(void)resetSearch {
 	self.names = [self.allNames mutableDeepCopy];
 	NSMutableArray *keyArray = [[NSMutableArray alloc] init];
@@ -55,6 +59,8 @@
 	[table reloadData];
 }
 
+
+//For importing FB friends
 -(IBAction)addFriends:(id)sender {
 	self.view = addFriendView;
 }
@@ -115,7 +121,6 @@
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
 	// Release any cached data, images, etc that aren't in use.
 }
 
@@ -123,6 +128,8 @@
 	self.table = nil;
 	self.search = nil;
 	self.people = nil;
+	[childController release];
+	childController = nil;
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -138,6 +145,7 @@
 	[names release];
 	[keys release];
 	[dataManager release];
+	[childController release];
     [super dealloc];
 }
 
@@ -158,6 +166,7 @@
 	NSUInteger row = [indexPath row];
 	Person *p = [people objectAtIndex:row];
 	cell.textLabel.text = [p name];
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	return cell;
 }
 
@@ -170,8 +179,23 @@
 	return indexPath;
 }
 
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	NSString *name = cell.textLabel.text;
+	if (childController == nil) 
+		childController = [[GroupiesDetailViewController alloc] initWithNibName:@"GroupiesDetailViewController" bundle:nil];
+	//childController.message = test; //this doesn't really do anything right now
+	childController.title = name;
+	[self.navigationController pushViewController:childController animated:YES];
+	 
+}
+
+//you have to
+
 #pragma mark -
 #pragma mark Search Bar Delegate Methods
+
+//REWRITE THESE METHODS
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	NSString *searchTerm = [searchBar text];
@@ -197,7 +221,7 @@
 
 
 //handles what to do when a row is selected
-
+/*
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	NSString *test = cell.textLabel.text;
@@ -207,11 +231,8 @@
 	[message release];
 	[alert release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	//pull up new subviews here
-	//nav view controller when clicking on friend
-	//so pull up a new view and have that view be the parent nav controller
-	
 }
+*/
+	
 
 @end

@@ -125,6 +125,11 @@ static BurbleDataManager *sharedDataManager;
 	return [presistent objectForKey:@"guid"];
 }
 
+- (NSString*) getName {
+	return [presistent objectForKey:@"name"];
+}
+
+
 /*
  ================================================================================
 								CONNECTION MANAGEMENT

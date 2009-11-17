@@ -40,6 +40,13 @@
 		[alert show];
 		[alert release];
 		[message release];
+	} else if ([dataManager isRegistered]) {
+		NSString *message= [[NSString alloc] initWithFormat:@"Hi %@", [dataManager getName]];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Welcome Back!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];
 	}
 }
 

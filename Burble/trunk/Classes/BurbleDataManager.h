@@ -27,6 +27,7 @@
 - (BOOL)isFirstLaunch;
 - (BOOL)isRegistered;
 - (NSString*) getGUID;
+- (NSString*) getName;
 
 // ============= CONNECTION MANAGEMENT
 

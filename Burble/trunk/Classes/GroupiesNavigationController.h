@@ -13,4 +13,6 @@
 
 }
 
+//This is the over-arching navigation controller for Groupies. Its root view is GroupiesViewController
+
 @end

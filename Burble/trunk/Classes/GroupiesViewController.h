@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FBConnect/FBConnect.h"
 #import "GroupiesDetailViewController.h"
+#import "Test1AppDelegate.h"
 #import "BurbleDataManager.h"
 
 @interface GroupiesViewController : UIViewController 
@@ -20,11 +21,13 @@
 	UITableView *table;
 	UISearchBar *search;
 	NSArray *people;
+	
+	//fix these
 	NSDictionary *allNames;
 	NSMutableDictionary *names;
 	NSMutableArray *keys;
-	BurbleDataManager *dataManager;
 	
+	BurbleDataManager *dataManager;
 	NSArray *list; //will contain list of groupies, represents all the names to be listed on the buttons
 	GroupiesDetailViewController *childController;
 
@@ -35,9 +38,11 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) IBOutlet UISearchBar *search;
+
 @property (nonatomic, retain) NSDictionary *allNames;
 @property (nonatomic, retain) NSMutableDictionary *names;
 @property (nonatomic, retain) NSMutableArray *keys;
+
 @property (nonatomic, retain) NSArray *people;
 
 
