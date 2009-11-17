@@ -20,6 +20,12 @@
     [window makeKeyAndVisible];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application {
+	//[self saveBlogData];
+	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
+	[dataManager saveData];
+	
+}
 
 - (void)dealloc {
 	[rootNavController release];

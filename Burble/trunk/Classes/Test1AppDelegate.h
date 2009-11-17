@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BurbleDataManager.h"
 
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
