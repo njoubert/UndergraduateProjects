@@ -47,6 +47,7 @@
 		DAE6559A10A25DBC007BB25E /* Icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE6559910A25DBC007BB25E /* Icon2.png */; };
 		DAE655B410A26C38007BB25E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE655B310A26C38007BB25E /* MapKit.framework */; };
 		DAE6562010A2745E007BB25E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE6561F10A2745E007BB25E /* CoreLocation.framework */; };
+		DAF7320410B2225800D08F61 /* BurbleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF7320310B2225800D08F61 /* BurbleDataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,8 @@
 		DAE6559910A25DBC007BB25E /* Icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon2.png; sourceTree = "<group>"; };
 		DAE655B310A26C38007BB25E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DAE6561F10A2745E007BB25E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DAF7320210B2225800D08F61 /* BurbleDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BurbleDataManager.h; sourceTree = "<group>"; };
+		DAF7320310B2225800D08F61 /* BurbleDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BurbleDataManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,14 +134,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DAD736B110B220EB001077A4 /* Controller */,
+				DAD736AF10B220E6001077A4 /* Model */,
 				B8632D9110B025AC0025684E /* NSDictionary-MutableDeepCopy.h */,
 				B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */,
 				DAE6558710A250D0007BB25E /* GroupiesViewController.h */,
 				DAE6558810A250D0007BB25E /* GroupiesViewController.m */,
 				DAE6558910A250D0007BB25E /* GroupiesViewController.xib */,
-				DAE6556910A25042007BB25E /* MapViewController.h */,
-				DAE6556A10A25042007BB25E /* MapViewController.m */,
-				DAE6556B10A25042007BB25E /* MapViewController.xib */,
 				1D3623240D0F684500981E51 /* Test1AppDelegate.h */,
 				1D3623250D0F684500981E51 /* Test1AppDelegate.m */,
 				DAE6558010A250B9007BB25E /* MyGroupViewController.h */,
@@ -243,6 +245,33 @@
 			path = FBConnect;
 			sourceTree = "<group>";
 		};
+		DAD736AF10B220E6001077A4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAF7320210B2225800D08F61 /* BurbleDataManager.h */,
+				DAF7320310B2225800D08F61 /* BurbleDataManager.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		DAD736B110B220EB001077A4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DAD736B210B220F0001077A4 /* Map */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		DAD736B210B220F0001077A4 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				DAE6556910A25042007BB25E /* MapViewController.h */,
+				DAE6556A10A25042007BB25E /* MapViewController.m */,
+				DAE6556B10A25042007BB25E /* MapViewController.xib */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -330,6 +359,7 @@
 				B8E46A2310AFBCB2000A27C5 /* FBStreamDialog.m in Sources */,
 				B8E46A2410AFBCB2000A27C5 /* FBXMLHandler.m in Sources */,
 				B8632DC210B026140025684E /* NSDictionary-MutableDeepCopy.m in Sources */,
+				DAF7320410B2225800D08F61 /* BurbleDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +414,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "./**";
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.1.2;
 			};
