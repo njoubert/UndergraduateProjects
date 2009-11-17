@@ -11,12 +11,12 @@
 @implementation Test1AppDelegate
 
 @synthesize window;
-@synthesize rootNavController;
+@synthesize rootTabBarController;
+@synthesize groupiesNavigationController;
+@synthesize myGroupNavigationController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-
-    // Override point for customization after application launch
-	[window addSubview:rootNavController.view];
+	[window addSubview:rootTabBarController.view];	
     [window makeKeyAndVisible];
 }
 
@@ -28,8 +28,8 @@
 }
 
 - (void)dealloc {
-	[rootNavController release];
-    [window release];
+	[rootTabBarController release];
+    [window release];	
     [super dealloc];
 }
 

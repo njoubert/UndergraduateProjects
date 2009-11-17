@@ -8,6 +8,7 @@
 
 #import "GroupiesViewController.h"
 #import "NSDictionary-MutableDeepCopy.h"
+#import "GroupiesDetailViewController.h"
 
 @implementation GroupiesViewController
 
@@ -94,6 +95,7 @@
 	NSString *path = [[NSBundle mainBundle] pathForResource:@"groupies" ofType:@"plist"];
 	NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
 	self.allNames = dict;
+	self.title = @"Groupies";
 	[dict release];
 	[self resetSearch];
 	[table reloadData];
@@ -230,6 +232,11 @@
 	[message release];
 	[alert release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	//pull up new subviews here
+	//nav view controller when clicking on friend
+	//so pull up a new view and have that view be the parent nav controller
+	
 }
 
 @end

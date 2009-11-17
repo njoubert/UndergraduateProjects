@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FBConnect/FBConnect.h"
+#import "GroupiesDetailViewController.h"
 
 @interface GroupiesViewController : UIViewController 
 	<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
@@ -15,12 +16,14 @@
 	UIView *mainView;
 	UIView *addFriendView;
 	
-	//used to have sampleData array
 	UITableView *table;
 	UISearchBar *search;
 	NSDictionary *allNames;
 	NSMutableDictionary *names;
 	NSMutableArray *keys;
+	
+	NSArray *list; //will contain list of groupies, represents all the names to be listed on the buttons
+	GroupiesDetailViewController *childController;
 
 }
 

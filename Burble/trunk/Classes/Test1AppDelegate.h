@@ -7,14 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupiesNavigationController.h"
+#import "MyGroupNavigationController.h"
 #import "BurbleDataManager.h"
 
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-	UITabBarController *rootNavController;
+	UITabBarController *rootTabBarController;
+	GroupiesNavigationController *groupiesNavigationController;
+	MyGroupNavigationController *myGroupNavigationController;
 }
 
-@property (nonatomic, retain) IBOutlet UITabBarController *rootNavController;
+@property (nonatomic, retain) IBOutlet UITabBarController *rootTabBarController;
+@property (nonatomic, retain) IBOutlet GroupiesNavigationController *groupiesNavigationController;
+@property (nonatomic, retain) IBOutlet MyGroupNavigationController *myGroupNavigationController;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @end
