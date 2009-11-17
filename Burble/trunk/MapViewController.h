@@ -11,6 +11,8 @@
 #import <MapKit/MKTypes.h>
 #import <MapKit/MKGeometry.h>
 #import <MapKit/MKMapView.h>
+#import "BurbleDataManager.h"
+#import "RegisterViewController.h"
 
 @interface MapViewController : UIViewController {
 	MKMapView *myMap;

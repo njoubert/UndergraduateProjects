@@ -31,6 +31,24 @@
 	
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
+	if ([dataManager isFirstLaunch]) {
+		NSString *message= [[NSString alloc] initWithFormat:@"You're being registered with our backend now. Your GUID is: %@", [dataManager getGUID]];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Welcome to Burble!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];
+	}
+	//This should be higher level
+	if (![dataManager isRegistered]) {
+		RegisterViewController *registerVC = [[RegisterViewController alloc] initWithNibName:@"RegisterViewController" bundle:nil];
+		registerVC.title = @"Register now!";
+		[self.navigationController pushViewController:registerVC animated:YES];
+	}
+}
+
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

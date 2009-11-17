@@ -45,6 +45,8 @@
 		DA7107C410A29C9300DAD536 /* 30x-Scanner.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C310A29C9300DAD536 /* 30x-Scanner.png */; };
 		DA7107C710A29D6D00DAD536 /* icon_user.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C510A29D6D00DAD536 /* icon_user.png */; };
 		DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C610A29D6D00DAD536 /* icon_users.png */; };
+		DACEFEA810B3360400944021 /* MapNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACEFEA710B3360400944021 /* MapNavigationController.m */; };
+		DACEFEAE10B3365E00944021 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */; };
 		DAE6556C10A25042007BB25E /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6556A10A25042007BB25E /* MapViewController.m */; };
 		DAE6556D10A25042007BB25E /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6556B10A25042007BB25E /* MapViewController.xib */; };
 		DAE6558310A250B9007BB25E /* MyGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */; };
@@ -121,6 +123,10 @@
 		DA7107C310A29C9300DAD536 /* 30x-Scanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "30x-Scanner.png"; sourceTree = "<group>"; };
 		DA7107C510A29D6D00DAD536 /* icon_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_user.png; sourceTree = "<group>"; };
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
+		DACEFEA610B3360400944021 /* MapNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapNavigationController.h; sourceTree = "<group>"; };
+		DACEFEA710B3360400944021 /* MapNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapNavigationController.m; sourceTree = "<group>"; };
+		DACEFEAB10B3365E00944021 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		DACEFEAC10B3365E00944021 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		DAE6556910A25042007BB25E /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ../MapViewController.h; sourceTree = "<group>"; };
 		DAE6556A10A25042007BB25E /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ../MapViewController.m; sourceTree = "<group>"; };
 		DAE6556B10A25042007BB25E /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapViewController.xib; path = ../MapViewController.xib; sourceTree = "<group>"; };
@@ -245,6 +251,8 @@
 		B832F9B210B2644500F50C41 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DACEFEAB10B3365E00944021 /* RegisterViewController.h */,
+				DACEFEAC10B3365E00944021 /* RegisterViewController.m */,
 				B832F9B710B2646200F50C41 /* MyGroup */,
 				B832F9B610B2645B00F50C41 /* Feed */,
 				B832F9B510B2645600F50C41 /* Map */,
@@ -274,6 +282,8 @@
 				DAE6556910A25042007BB25E /* MapViewController.h */,
 				DAE6556A10A25042007BB25E /* MapViewController.m */,
 				DAE6556B10A25042007BB25E /* MapViewController.xib */,
+				DACEFEA610B3360400944021 /* MapNavigationController.h */,
+				DACEFEA710B3360400944021 /* MapNavigationController.m */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -430,6 +440,8 @@
 				B88C002410B2890A002BDA85 /* Group.m in Sources */,
 				B88C002710B28914002BDA85 /* Message.m in Sources */,
 				B88C002A10B2891B002BDA85 /* Position.m in Sources */,
+				DACEFEA810B3360400944021 /* MapNavigationController.m in Sources */,
+				DACEFEAE10B3365E00944021 /* RegisterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

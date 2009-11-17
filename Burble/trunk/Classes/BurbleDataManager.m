@@ -13,6 +13,8 @@
 
 static BurbleDataManager *sharedDataManager;
 
+@synthesize currentDirectoryPath;
+
 - (void)dealloc {
 	[super dealloc];
 }
@@ -22,9 +24,10 @@ static BurbleDataManager *sharedDataManager;
 +(BurbleDataManager *)sharedDataManager {
 	//	@synchronized(self)
 	{
-		if (!sharedDataManager)
+		if (!sharedDataManager) {
 			sharedDataManager = [[BurbleDataManager alloc] init];
-		
+			[sharedDataManager retain];
+		}
 		return sharedDataManager;
 	}
 }
@@ -61,24 +64,95 @@ static BurbleDataManager *sharedDataManager;
 
 - (id)init {
 	if (self = [super init]) {
-		
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];
+		self.currentDirectoryPath = documentsDirectory;
 	}
 	return self;
 }
 
+
+ /*
+ ================================================================================
+							INTERNAL STATE MANAGEMENT
+ ================================================================================
+ */
+
 #pragma mark -
+#pragma mark Internal State Management
+
+//This checks that the presistent dictionary contains all the appropriate keys, and saves it.
+//Assumes that presistent exists, and sets presistent to the value.
+- (void)checkAndSavePresistentFile {
+	NSMutableDictionary *toSave = [[NSMutableDictionary alloc] initWithDictionary:presistent];
+	if (nil == [toSave objectForKey:@"guid"]) {
+		NSString* guid = [[UIDevice currentDevice] uniqueIdentifier];
+		[toSave setValue:guid forKey:@"guid"];
+	}
+	[toSave writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
+	[presistent release];
+	presistent = toSave;
+	[toSave release];
+}
 
 //Runs after init, before anything else
 - (void)loadData {
-	
+	//attempt to load PresistentData
+	NSString *presistentFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:presistentFilePath]) {
+		presistent = [[NSDictionary alloc] initWithContentsOfFile:presistentFilePath];
+		bIsFirstLaunch = FALSE;
+	} else {
+		presistent = [[NSDictionary alloc] init];
+		[self checkAndSavePresistentFile];
+		bIsFirstLaunch = TRUE;
+	}
 }
-
+	 
 //Run right before app terminates
 - (void)saveData {
-
+	[self checkAndSavePresistentFile];
 }
 
+- (BOOL)isRegistered {
+	return (nil != [presistent objectForKey:@"name"]);
+}
+- (BOOL)isFirstLaunch {
+	return bIsFirstLaunch;
+}
+
+- (NSString*) getGUID {
+	return [presistent objectForKey:@"guid"];
+}
+
+/*
+ ================================================================================
+								CONNECTION MANAGEMENT
+ ================================================================================ 
+ */
+
 #pragma mark -
+#pragma mark Connection Management
+
+- (BOOL)login {
+	//create a request
+	
+	//send it to the server
+	
+	//check the response
+		//if not 200, error!
+	
+		
+}
+
+/*
+ ================================================================================
+								DATA CALLS
+ ================================================================================ 
+ */
+
+#pragma mark -
+#pragma mark Data Calls
 
 - (NSArray*) getFriends {
 	Person* p1 = [[Person alloc] init];
