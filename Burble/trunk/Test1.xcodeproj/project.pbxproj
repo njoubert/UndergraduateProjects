@@ -256,6 +256,7 @@
 		B832F9B210B2644500F50C41 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B8456CBD10B35CF9005EA08C /* Shared */,
 				B832F9B710B2646200F50C41 /* MyGroup */,
 				B832F9B610B2645B00F50C41 /* Feed */,
 				B832F9B510B2645600F50C41 /* Map */,
@@ -314,6 +315,13 @@
 				B86A54AB10B2740D00A946C7 /* MyGroupNavigationController.m */,
 			);
 			name = MyGroup;
+			sourceTree = "<group>";
+		};
+		B8456CBD10B35CF9005EA08C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Shared;
 			sourceTree = "<group>";
 		};
 		B873401E10B27EF400F24336 /* Model */ = {

@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -269,6 +267,7 @@
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>B873401E10B27EF400F24336</string>
 								<string>B832F9B210B2644500F50C41</string>
+								<string>B832F9B510B2645600F50C41</string>
 								<string>B832F9B410B2644E00F50C41</string>
 								<string>29B97315FDCFA39411CA2CEA</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
@@ -277,15 +276,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>31</integer>
-									<integer>29</integer>
+									<integer>26</integer>
 									<integer>25</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 244}, {332, 764}}</string>
+							<string>{{0, 222}, {332, 764}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -315,12 +313,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>GroupiesViewController.m</string>
+								<string>Position.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -328,11 +328,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>GroupiesViewController.m</string>
+										<string>Position.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8456CA510B35ADA005EA08C</string>
+										<string>B8456CC810B35D0A005EA08C</string>
 										<key>history</key>
 										<array>
 											<string>B8E46A3510AFC1D9000A27C5</string>
@@ -362,7 +362,6 @@
 											<string>B88BA78410B2076B00E832B6</string>
 											<string>B832F8B910B230A600F50C41</string>
 											<string>B832F8BB10B230A600F50C41</string>
-											<string>B832FA1B10B270C000F50C41</string>
 											<string>B832FA1D10B270C000F50C41</string>
 											<string>B86A54BC10B277EF00A946C7</string>
 											<string>B86A54BD10B277EF00A946C7</string>
@@ -376,16 +375,20 @@
 											<string>B88C002D10B28984002BDA85</string>
 											<string>B88C002E10B28984002BDA85</string>
 											<string>B88C002F10B28984002BDA85</string>
-											<string>B88C005410B33CBD002BDA85</string>
-											<string>B88C005510B33CBD002BDA85</string>
 											<string>B88C005610B33CBD002BDA85</string>
-											<string>B88C007B10B33FD2002BDA85</string>
-											<string>B88C007C10B33FD2002BDA85</string>
 											<string>B88C007D10B33FD2002BDA85</string>
 											<string>B88C008010B34012002BDA85</string>
 											<string>B88C00B610B34D5A002BDA85</string>
-											<string>B88C00FA10B35A49002BDA85</string>
-											<string>B88C00F810B35A49002BDA85</string>
+											<string>B8456CBE10B35D0A005EA08C</string>
+											<string>B8456CBF10B35D0A005EA08C</string>
+											<string>B8456CC010B35D0A005EA08C</string>
+											<string>B8456CC110B35D0A005EA08C</string>
+											<string>B8456CC210B35D0A005EA08C</string>
+											<string>B8456CC310B35D0A005EA08C</string>
+											<string>B8456CC410B35D0A005EA08C</string>
+											<string>B8456CC510B35D0A005EA08C</string>
+											<string>B8456CC610B35D0A005EA08C</string>
+											<string>B8456CC710B35D0A005EA08C</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -583,7 +586,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>B8456CB010B35ADA005EA08C</string>
+		<string>B8456CC910B35D0A005EA08C</string>
 		<string>B8456CB110B35ADA005EA08C</string>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>B83265C010A40C7B009C048E</string>
