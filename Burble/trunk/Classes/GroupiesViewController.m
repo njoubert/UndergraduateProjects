@@ -15,6 +15,7 @@
 @synthesize addFriendView;
 @synthesize mainView;
 
+@synthesize people;
 @synthesize names;
 @synthesize keys;
 @synthesize table;
@@ -92,14 +93,13 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"groupies" ofType:@"plist"];
-	NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
-	self.allNames = dict;
+	dataManager = [BurbleDataManager sharedDataManager];
+	NSArray *ar = [dataManager getFriends];
+	self.people = ar;
+	[ar release];
 	self.title = @"Groupies";
-	[dict release];
 	[self resetSearch];
-	[table reloadData];
-	[table setContentOffset:CGPointMake(0.0, 44.0) animated:NO];
+	[super viewDidLoad];
 }
 
 
@@ -122,9 +122,7 @@
 - (void)viewDidUnload {
 	self.table = nil;
 	self.search = nil;
-	self.allNames = nil;
-	self.names = nil;
-	self.keys = nil;
+	self.people = nil;
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -133,59 +131,36 @@
 - (void)dealloc {
 	[addFriendView release];
 	[mainView release];
-	
+	[people release];
 	[table release];
 	[search release];
 	[allNames release];
 	[names release];
 	[keys release];
+	[dataManager release];
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return ([keys count] > 0) ? [keys count] : 1;
-}
-
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if ([keys count] == 0)
-		return 0;
-	NSString *key= [keys objectAtIndex:section];
-	NSArray *nameSection = [names objectForKey: key];
-	return [nameSection count];
+	return [people count];
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSUInteger section = [indexPath section];
-	NSUInteger row = [indexPath row];
-	
-	NSString *key = [keys objectAtIndex:section];
-	NSArray *nameSection = [names objectForKey:key];
-	
-	static NSString *SectionsTableIdentifier = @"SectionsTableIdentifier";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SectionsTableIdentifier];
+	static NSString *PersonCell = @"PersonCell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PersonCell];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc]
-				 initWithFrame:CGRectZero reuseIdentifier:SectionsTableIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PersonCell] autorelease];
 	}
-	cell.text = [nameSection objectAtIndex:row];
+	NSUInteger row = [indexPath row];
+	Person *p = [people objectAtIndex:row];
+	cell.textLabel.text = [p name];
 	return cell;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if([keys count] == 0) 
-		return nil;
-	NSString *key= [keys objectAtIndex:section];
-	return key;
-}
-
--(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	return keys;
-}
 
 #pragma mark -
 #pragma mark Table View Delegate Methods

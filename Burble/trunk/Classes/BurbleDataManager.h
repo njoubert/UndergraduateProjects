@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Person.h"
 
 @interface BurbleDataManager : NSObject {
 
@@ -14,5 +14,7 @@
 + (BurbleDataManager *) sharedDataManager;
 - (void)loadData;
 - (void)saveData;
+
+- (NSArray*) getFriends;
 
 @end

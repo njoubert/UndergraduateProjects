@@ -20,6 +20,10 @@
 		B86A54B910B2778300A946C7 /* GroupiesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */; };
 		B86A54BA10B2778300A946C7 /* GroupiesDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */; };
 		B873402110B27F0F00F24336 /* BurbleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */; };
+		B88C002410B2890A002BDA85 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C002310B2890A002BDA85 /* Group.m */; };
+		B88C002710B28914002BDA85 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C002610B28914002BDA85 /* Message.m */; };
+		B88C002A10B2891B002BDA85 /* Position.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C002910B2891B002BDA85 /* Position.m */; };
+		B88CFFA610B27FD5002BDA85 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = B88CFFA510B27FD5002BDA85 /* Person.m */; };
 		B8E46A1B10AFBCB2000A27C5 /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1010AFBCB2000A27C5 /* FBConnectGlobal.m */; };
 		B8E46A1C10AFBCB2000A27C5 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1110AFBCB2000A27C5 /* FBDialog.m */; };
 		B8E46A1D10AFBCB2000A27C5 /* FBFeedDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1210AFBCB2000A27C5 /* FBFeedDialog.m */; };
@@ -77,6 +81,14 @@
 		B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupiesDetailViewController.xib; sourceTree = "<group>"; };
 		B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BurbleDataManager.h; sourceTree = "<group>"; };
 		B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BurbleDataManager.m; sourceTree = "<group>"; };
+		B88C002210B2890A002BDA85 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		B88C002310B2890A002BDA85 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		B88C002510B28914002BDA85 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		B88C002610B28914002BDA85 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		B88C002810B2891B002BDA85 /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		B88C002910B2891B002BDA85 /* Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Position.m; sourceTree = "<group>"; };
+		B88CFFA410B27FD5002BDA85 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		B88CFFA510B27FD5002BDA85 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		B8E46A0610AFBCB2000A27C5 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
 		B8E46A0710AFBCB2000A27C5 /* FBConnectGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnectGlobal.h; sourceTree = "<group>"; };
 		B8E46A0810AFBCB2000A27C5 /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBDialog.h; sourceTree = "<group>"; };
@@ -293,6 +305,14 @@
 			children = (
 				B873401F10B27F0F00F24336 /* BurbleDataManager.h */,
 				B873402010B27F0F00F24336 /* BurbleDataManager.m */,
+				B88CFFA410B27FD5002BDA85 /* Person.h */,
+				B88CFFA510B27FD5002BDA85 /* Person.m */,
+				B88C002210B2890A002BDA85 /* Group.h */,
+				B88C002310B2890A002BDA85 /* Group.m */,
+				B88C002510B28914002BDA85 /* Message.h */,
+				B88C002610B28914002BDA85 /* Message.m */,
+				B88C002810B2891B002BDA85 /* Position.h */,
+				B88C002910B2891B002BDA85 /* Position.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -406,6 +426,10 @@
 				B86A54AC10B2740D00A946C7 /* MyGroupNavigationController.m in Sources */,
 				B86A54B910B2778300A946C7 /* GroupiesDetailViewController.m in Sources */,
 				B873402110B27F0F00F24336 /* BurbleDataManager.m in Sources */,
+				B88CFFA610B27FD5002BDA85 /* Person.m in Sources */,
+				B88C002410B2890A002BDA85 /* Group.m in Sources */,
+				B88C002710B28914002BDA85 /* Message.m in Sources */,
+				B88C002A10B2891B002BDA85 /* Position.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

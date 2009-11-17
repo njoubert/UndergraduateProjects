@@ -66,6 +66,8 @@ static BurbleDataManager *sharedDataManager;
 	return self;
 }
 
+#pragma mark -
+
 //Runs after init, before anything else
 - (void)loadData {
 	
@@ -73,7 +75,35 @@ static BurbleDataManager *sharedDataManager;
 
 //Run right before app terminates
 - (void)saveData {
-	
+
 }
 
+#pragma mark -
+
+- (NSArray*) getFriends {
+	Person* p1 = [[Person alloc] init];
+	
+	[p1 setUid:1];
+	[p1 setName:@"Niels"];
+	
+	Person* p2 = [[Person alloc] init];
+	[p2 setUid:2];
+	[p2 setName:@"Janelle"];
+	
+	Person* p3 = [[Person alloc] init];
+	[p3 setUid:3];
+	[p3 setName:@"Chris"];
+
+	Person* p4 = [[Person alloc] init];
+	[p4 setUid:4];
+	[p4 setName:@"Jon"];
+	
+	Person* p5 = [[Person alloc] init];
+	[p5 setUid:5];
+	[p5 setName:@"Gleb"];
+
+	NSArray* a = [NSArray arrayWithObjects:p1, p2, p3, p4, p5, nil];
+	return a;
+	
+}
 @end

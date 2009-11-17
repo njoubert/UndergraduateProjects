@@ -16,6 +16,8 @@
 -(void)viewWillAppear:(BOOL)animated {
 	label.text = message;
 	[super viewWillAppear:animated];
+	//this view will have more:
+	//current group info, map page for current location, message screen, distance away, invite to group screen
 }
 
 /*
