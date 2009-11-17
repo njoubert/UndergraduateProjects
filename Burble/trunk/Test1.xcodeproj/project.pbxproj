@@ -46,7 +46,9 @@
 		DA7107C710A29D6D00DAD536 /* icon_user.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C510A29D6D00DAD536 /* icon_user.png */; };
 		DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C610A29D6D00DAD536 /* icon_users.png */; };
 		DACEFEA810B3360400944021 /* MapNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACEFEA710B3360400944021 /* MapNavigationController.m */; };
-		DACEFEAE10B3365E00944021 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */; };
+		DACEFF1510B3465A00944021 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACEFF1310B3465A00944021 /* RegisterViewController.m */; };
+		DACEFF1610B3465A00944021 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACEFF1410B3465A00944021 /* RegisterViewController.xib */; };
+		DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = DACEFF1810B3473500944021 /* Icon1_bigger.png */; };
 		DAE6556C10A25042007BB25E /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6556A10A25042007BB25E /* MapViewController.m */; };
 		DAE6556D10A25042007BB25E /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6556B10A25042007BB25E /* MapViewController.xib */; };
 		DAE6558310A250B9007BB25E /* MyGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */; };
@@ -125,8 +127,10 @@
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		DACEFEA610B3360400944021 /* MapNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapNavigationController.h; sourceTree = "<group>"; };
 		DACEFEA710B3360400944021 /* MapNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapNavigationController.m; sourceTree = "<group>"; };
-		DACEFEAB10B3365E00944021 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		DACEFEAC10B3365E00944021 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		DACEFF1210B3465A00944021 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		DACEFF1310B3465A00944021 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		DACEFF1410B3465A00944021 /* RegisterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
+		DACEFF1810B3473500944021 /* Icon1_bigger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon1_bigger.png; sourceTree = "<group>"; };
 		DAE6556910A25042007BB25E /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ../MapViewController.h; sourceTree = "<group>"; };
 		DAE6556A10A25042007BB25E /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ../MapViewController.m; sourceTree = "<group>"; };
 		DAE6556B10A25042007BB25E /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapViewController.xib; path = ../MapViewController.xib; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DACEFF1810B3473500944021 /* Icon1_bigger.png */,
 				DA7107BF10A29C2700DAD536 /* 30x-Chat.png */,
 				B8632D8310B013F10025684E /* groupies.plist */,
 				DA7107C510A29D6D00DAD536 /* icon_user.png */,
@@ -251,12 +256,13 @@
 		B832F9B210B2644500F50C41 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				DACEFEAB10B3365E00944021 /* RegisterViewController.h */,
-				DACEFEAC10B3365E00944021 /* RegisterViewController.m */,
 				B832F9B710B2646200F50C41 /* MyGroup */,
 				B832F9B610B2645B00F50C41 /* Feed */,
 				B832F9B510B2645600F50C41 /* Map */,
 				B832F9B410B2644E00F50C41 /* Groupies */,
+				DACEFF1210B3465A00944021 /* RegisterViewController.h */,
+				DACEFF1310B3465A00944021 /* RegisterViewController.m */,
+				DACEFF1410B3465A00944021 /* RegisterViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -405,6 +411,8 @@
 				DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */,
 				B8632D8410B013F10025684E /* groupies.plist in Resources */,
 				B86A54BA10B2778300A946C7 /* GroupiesDetailViewController.xib in Resources */,
+				DACEFF1610B3465A00944021 /* RegisterViewController.xib in Resources */,
+				DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,7 +449,7 @@
 				B88C002710B28914002BDA85 /* Message.m in Sources */,
 				B88C002A10B2891B002BDA85 /* Position.m in Sources */,
 				DACEFEA810B3360400944021 /* MapNavigationController.m in Sources */,
-				DACEFEAE10B3365E00944021 /* RegisterViewController.m in Sources */,
+				DACEFF1510B3465A00944021 /* RegisterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

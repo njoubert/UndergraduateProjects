@@ -27,12 +27,17 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	if (![[BurbleDataManager sharedDataManager] isRegistered]) {
+		RegisterViewController *rVC = [[[RegisterViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+		[self presentModalViewController:rVC animated:YES];
+		
+	}
     [super viewDidLoad];
 }
-*/
+
 
 /*
 // Override to allow orientations other than the default portrait orientation.

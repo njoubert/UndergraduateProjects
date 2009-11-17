@@ -41,12 +41,6 @@
 		[alert release];
 		[message release];
 	}
-	//This should be higher level
-	if (![dataManager isRegistered]) {
-		RegisterViewController *registerVC = [[RegisterViewController alloc] initWithNibName:@"RegisterViewController" bundle:nil];
-		registerVC.title = @"Register now!";
-		[self.navigationController pushViewController:registerVC animated:YES];
-	}
 }
 
 /*

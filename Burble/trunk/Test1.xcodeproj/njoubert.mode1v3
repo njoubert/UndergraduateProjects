@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -274,14 +276,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>30</integer>
-									<integer>27</integer>
-									<integer>13</integer>
+									<integer>44</integer>
+									<integer>43</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 286}, {232, 664}}</string>
+							<string>{{0, 15}, {232, 664}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -311,14 +312,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>RegisterViewController.m</string>
+								<string>Icon1_bigger.png</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +325,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RegisterViewController.m</string>
+										<string>Icon1_bigger.png</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DACEFEE110B33A3100944021</string>
+										<string>DACEFF1D10B3473C00944021</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323910B22CBA00D08F61</string>
@@ -339,17 +338,16 @@
 											<string>DAF7323F10B22CBA00D08F61</string>
 											<string>DAF7324910B22CD200D08F61</string>
 											<string>DAF7324A10B22CD200D08F61</string>
-											<string>DACEFE9810B335AB00944021</string>
-											<string>DACEFE9C10B335AB00944021</string>
-											<string>DACEFEB710B3375000944021</string>
-											<string>DACEFEBB10B3375000944021</string>
 											<string>DACEFEDB10B33A3100944021</string>
 											<string>DACEFEDC10B33A3100944021</string>
-											<string>DACEFEDD10B33A3100944021</string>
 											<string>DACEFEDE10B33A3100944021</string>
-											<string>DACEFEDF10B33A3100944021</string>
-											<string>DACEFEE010B33A3100944021</string>
-											<string>DACEFEB910B3375000944021</string>
+											<string>DACEFF0510B3460A00944021</string>
+											<string>DACEFF0610B3460A00944021</string>
+											<string>DACEFF0A10B3463F00944021</string>
+											<string>DACEFF0B10B3463F00944021</string>
+											<string>DACEFF1A10B3473C00944021</string>
+											<string>DACEFF1B10B3473C00944021</string>
+											<string>DACEFF1C10B3473C00944021</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
