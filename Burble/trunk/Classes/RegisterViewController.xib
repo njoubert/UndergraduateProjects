@@ -40,7 +40,7 @@
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUILabel" id="904787275">
+					<object class="IBUILabel" id="780866975">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{28, 155}, {263, 58}}</string>
@@ -54,7 +54,7 @@
 							<double key="NSSize">14</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<object class="NSColor" key="IBUITextColor" id="420606421">
+						<object class="NSColor" key="IBUITextColor" id="343548095">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
 						</object>
@@ -64,7 +64,7 @@
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUILineBreakMode">0</int>
 					</object>
-					<object class="IBUITextField" id="450364983">
+					<object class="IBUITextField" id="401823070">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{71, 201}, {229, 31}}</string>
@@ -89,7 +89,7 @@
 							<int key="IBUIReturnKeyType">1</int>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="367709129">
+					<object class="IBUIImageView" id="453725775">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{12, 197}, {51, 38}}</string>
@@ -103,7 +103,7 @@
 							<string key="NSResourceName">icon_user.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="982175281">
+					<object class="IBUIImageView" id="570152208">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{13, 11}, {64, 64}}</string>
@@ -121,7 +121,7 @@
 							<string key="NSResourceName">Icon1_bigger.png</string>
 						</object>
 					</object>
-					<object class="IBUILabel" id="244969963">
+					<object class="IBUILabel" id="896339944">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{95, 28}, {213, 29}}</string>
@@ -135,13 +135,13 @@
 							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<reference key="IBUITextColor" ref="420606421"/>
+						<reference key="IBUITextColor" ref="343548095"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 						<float key="IBUIMinimumFontSize">10</float>
 					</object>
-					<object class="IBUILabel" id="700175707">
+					<object class="IBUILabel" id="180909953">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{28, 75}, {264, 92}}</string>
@@ -150,7 +150,7 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="IBUIText">Use Burble to coordinate a group of people. Create a group, invite people, and share locations, messages and routing requests!</string>
-						<reference key="IBUITextColor" ref="420606421"/>
+						<reference key="IBUITextColor" ref="343548095"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -179,6 +179,22 @@
 					</object>
 					<int key="connectionID">3</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">nameField</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="401823070"/>
+					</object>
+					<int key="connectionID">14</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="401823070"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">15</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -194,12 +210,12 @@
 						<reference key="object" ref="191373211"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="982175281"/>
-							<reference ref="244969963"/>
-							<reference ref="700175707"/>
-							<reference ref="904787275"/>
-							<reference ref="450364983"/>
-							<reference ref="367709129"/>
+							<reference ref="570152208"/>
+							<reference ref="896339944"/>
+							<reference ref="180909953"/>
+							<reference ref="780866975"/>
+							<reference ref="401823070"/>
+							<reference ref="453725775"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -216,32 +232,32 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="904787275"/>
+						<reference key="object" ref="780866975"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
-						<reference key="object" ref="450364983"/>
+						<reference key="object" ref="401823070"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
-						<reference key="object" ref="367709129"/>
+						<reference key="object" ref="453725775"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
-						<reference key="object" ref="982175281"/>
+						<reference key="object" ref="570152208"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="244969963"/>
+						<reference key="object" ref="896339944"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
-						<reference key="object" ref="700175707"/>
+						<reference key="object" ref="180909953"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
@@ -291,7 +307,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">13</int>
+			<int key="maxID">15</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -299,6 +315,14 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">RegisterViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">namePressed</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">nameField</string>
+						<string key="NS.object.0">UITextField</string>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/RegisterViewController.h</string>
@@ -421,7 +445,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="784690440">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="345873362">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UIResponder.h</string>
 					</object>
@@ -453,7 +477,7 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">UIResponder</string>
 					<string key="superclassName">NSObject</string>
-					<reference key="sourceIdentifier" ref="784690440"/>
+					<reference key="sourceIdentifier" ref="345873362"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UISearchBar</string>
@@ -474,14 +498,14 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">UITextField</string>
 					<string key="superclassName">UIControl</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="99171338">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="287104859">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIView</string>
-					<reference key="sourceIdentifier" ref="99171338"/>
+					<reference key="sourceIdentifier" ref="287104859"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIView</string>

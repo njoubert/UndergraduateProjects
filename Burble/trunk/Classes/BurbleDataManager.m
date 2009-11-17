@@ -16,6 +16,7 @@ static BurbleDataManager *sharedDataManager;
 @synthesize currentDirectoryPath;
 
 - (void)dealloc {
+	[presistent release];
 	[super dealloc];
 }
 
@@ -84,15 +85,11 @@ static BurbleDataManager *sharedDataManager;
 //This checks that the presistent dictionary contains all the appropriate keys, and saves it.
 //Assumes that presistent exists, and sets presistent to the value.
 - (void)checkAndSavePresistentFile {
-	NSMutableDictionary *toSave = [[NSMutableDictionary alloc] initWithDictionary:presistent];
-	if (nil == [toSave objectForKey:@"guid"]) {
+	if (nil == [presistent objectForKey:@"guid"]) {
 		NSString* guid = [[UIDevice currentDevice] uniqueIdentifier];
-		[toSave setValue:guid forKey:@"guid"];
+		[presistent setValue:guid forKey:@"guid"];
 	}
-	[toSave writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
-	[presistent release];
-	presistent = toSave;
-	[toSave release];
+	[presistent writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
 }
 
 //Runs after init, before anything else
@@ -100,10 +97,10 @@ static BurbleDataManager *sharedDataManager;
 	//attempt to load PresistentData
 	NSString *presistentFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:presistentFilePath]) {
-		presistent = [[NSDictionary alloc] initWithContentsOfFile:presistentFilePath];
+		presistent = [[NSMutableDictionary alloc] initWithContentsOfFile:presistentFilePath];
 		bIsFirstLaunch = FALSE;
 	} else {
-		presistent = [[NSDictionary alloc] init];
+		presistent = [[NSMutableDictionary alloc] init];
 		[self checkAndSavePresistentFile];
 		bIsFirstLaunch = TRUE;
 	}
@@ -119,6 +116,12 @@ static BurbleDataManager *sharedDataManager;
 }
 - (BOOL)isFirstLaunch {
 	return bIsFirstLaunch;
+}
+
+-(BOOL)tryToRegister:(NSString *)name {
+	[presistent setValue:name forKey:@"name"];
+	[self saveData];
+	return YES;
 }
 
 - (NSString*) getGUID {

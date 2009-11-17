@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BurbleDataManager.h"
 
-
-@interface RegisterViewController : UIViewController {
-
+@interface RegisterViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate> {
+	UITextField *nameField;
 }
+
+@property (nonatomic, retain) IBOutlet UITextField *nameField;
+
+-(IBAction) namePressed;
 
 @end

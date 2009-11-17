@@ -36,6 +36,51 @@
 }
 */
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	if (textField == nameField) {
+		[textField resignFirstResponder];
+		
+		NSString *name = [[NSString alloc] initWithString:nameField.text];
+		
+		NSString *message= [[NSString alloc] initWithFormat:@"You are registering the name %@", name];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Confirm!" message:message delegate:self cancelButtonTitle:@"Wait, no!" otherButtonTitles:nil];
+		[alert addButtonWithTitle:@"Do it!"];
+		[alert show];
+		[alert release];
+		[message release];
+	}
+	return YES;
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 0) {
+		//don't do anything, he decided not to go
+	} else if (buttonIndex == 1) {
+		
+		//first pop up waiting spinner thingy
+		
+		//try to register
+		BOOL success = [[BurbleDataManager sharedDataManager] tryToRegister:nameField.text];
+		
+		//hide spinner thingy
+		
+		if (success) {
+			
+			//dismiss modal view
+			[self dismissModalViewControllerAnimated:YES];
+			
+		} else {
+			NSString *message= [[NSString alloc] initWithString:"We could not connect to our server. Check your internet connectivity!"];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			[message release];
+		}
+	}
+}
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];

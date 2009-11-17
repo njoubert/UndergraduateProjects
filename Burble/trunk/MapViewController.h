@@ -17,10 +17,12 @@
 @interface MapViewController : UIViewController {
 	MKMapView *myMap;
 	UISegmentedControl *mapTypeSegmentedControl;
+	UILabel *groupLabel;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *myMap;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mapTypeSegmentedControl;
+@property (nonatomic, retain) IBOutlet UILabel *groupLabel;
 
 
 -(IBAction)waypointButtonPressed;

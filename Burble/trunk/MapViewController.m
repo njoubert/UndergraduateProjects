@@ -12,6 +12,7 @@
 
 @synthesize myMap;
 @synthesize mapTypeSegmentedControl;
+@synthesize groupLabel;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -32,22 +33,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	if ([dataManager isFirstLaunch]) {
-		NSString *message= [[NSString alloc] initWithFormat:@"You're being registered with our backend now. Your GUID is: %@", [dataManager getGUID]];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"Welcome to Burble!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];
-	} else if ([dataManager isRegistered]) {
-		NSString *message= [[NSString alloc] initWithFormat:@"Hi %@", [dataManager getName]];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"Welcome Back!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];
-	}
+	groupLabel.text = [[NSString alloc] initWithFormat:@"%@, Join a Group!", [[BurbleDataManager sharedDataManager] getName]];
 }
 
 /*

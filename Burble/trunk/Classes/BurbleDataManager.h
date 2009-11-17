@@ -13,7 +13,7 @@
 @interface BurbleDataManager : NSObject {
 	NSString *currentDirectoryPath;					//The path where we store data. Set by init.
 	BOOL bIsFirstLaunch;								//Indicates whether this is the app's first launch
-	NSDictionary *presistent;
+	NSMutableDictionary *presistent;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -26,6 +26,9 @@
 
 - (BOOL)isFirstLaunch;
 - (BOOL)isRegistered;
+
+- (BOOL)tryToRegister:(NSString*) name;
+
 - (NSString*) getGUID;
 - (NSString*) getName;
 
