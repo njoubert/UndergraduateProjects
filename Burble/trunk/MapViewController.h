@@ -26,6 +26,8 @@
 	UIBarButtonItem *waypointButton;
 	UIBarButtonItem *cancelWaypointButton;
 	UIBarButtonItem *approveWaypointButton;
+	
+	int numOfWaypoints;
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationBar *topBar;

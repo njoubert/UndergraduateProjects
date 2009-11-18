@@ -7,19 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 #import <MapKit/MKTypes.h>
 #import <MapKit/MKGeometry.h>
+#import <MapKit/MKMapView.h>
 
-@interface Waypoint : NSObject {
+@interface Waypoint : NSObject <MKAnnotation> {
 	NSString* name;
 	NSString* description;
+	BOOL syncedWithServer;
 @public
 	BOOL iAmHere;
 	NSDate* createdAt;	
 	CLLocationCoordinate2D coordinate;
 	CLLocationDistance elevation;
 }
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription;
-
+-(NSString*) title;
+-(NSString*) subtitle;
 @end

@@ -23,7 +23,7 @@
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
 	
-	NSMutableArray* waypointsSavedThisSession;
+	NSMutableArray* locallyAddedWaypoints;
 }
 + (BurbleDataManager *) sharedDataManager;
 

@@ -10,6 +10,7 @@
 
 
 @implementation Waypoint
+@synthesize coordinate;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription; {
 	if (self = [super init]) {
@@ -17,8 +18,17 @@
 		[name retain];
 		description = [[NSString alloc] initWithString:myDescription];
 		[description retain];
+		
+		syncedWithServer = NO;
 	}
 	return self;
+}
+
+-(NSString*) title {
+	return name;
+}
+-(NSString*) subtitle {
+	return description;
 }
 
 @end

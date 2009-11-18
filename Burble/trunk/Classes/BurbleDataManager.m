@@ -82,7 +82,7 @@ static BurbleDataManager *sharedDataManager;
 		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:40] doubleValue];
 		[myLocationManager startUpdatingLocation];
 		
-		waypointsSavedThisSession = [[NSMutableArray alloc] init];
+		locallyAddedWaypoints = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -235,15 +235,15 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)addWaypoint:(Waypoint *)wP {
-	[waypointsSavedThisSession addObject:wP];
+	[locallyAddedWaypoints addObject:wP];
 }
 
 - (int)getWaypointCount {
-	return [waypointsSavedThisSession count];
+	return [locallyAddedWaypoints count];
 }
 
 - (NSArray*) getWaypoints {
-	NSArray* retVal = [[NSArray alloc] initWithArray:waypointsSavedThisSession];
+	NSArray* retVal = [[NSArray alloc] initWithArray:locallyAddedWaypoints];
 	return retVal;
 }
 
