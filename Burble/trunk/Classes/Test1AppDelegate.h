@@ -16,7 +16,14 @@
 	UITabBarController *rootTabBarController;
 	GroupiesNavigationController *groupiesNavigationController;
 	MyGroupNavigationController *myGroupNavigationController;
+	UIActivityIndicatorView *activityView;
 }
+
++(Test1AppDelegate *) sharedAppDelegate;
+
+-(void)hideActivityViewer;
+-(void)showActivityViewer;
+
 
 @property (nonatomic, retain) IBOutlet UITabBarController *rootTabBarController;
 @property (nonatomic, retain) IBOutlet GroupiesNavigationController *groupiesNavigationController;

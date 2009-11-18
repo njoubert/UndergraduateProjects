@@ -118,10 +118,12 @@ static BurbleDataManager *sharedDataManager;
 	return bIsFirstLaunch;
 }
 
+//Blocks until registered or failed.
 -(BOOL)tryToRegister:(NSString *)name {
 	[presistent setValue:name forKey:@"name"];
 	[self saveData];
 	return YES;
+	//return NO;
 }
 
 - (NSString*) getGUID {

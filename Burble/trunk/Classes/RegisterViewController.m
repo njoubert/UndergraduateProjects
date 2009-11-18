@@ -58,12 +58,11 @@
 		//don't do anything, he decided not to go
 	} else if (buttonIndex == 1) {
 		
-		//first pop up waiting spinner thingy
+		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 		
-		//try to register
 		BOOL success = [[BurbleDataManager sharedDataManager] tryToRegister:nameField.text];
 		
-		//hide spinner thingy
+		[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 		
 		if (success) {
 			
@@ -71,7 +70,7 @@
 			[self dismissModalViewControllerAnimated:YES];
 			
 		} else {
-			NSString *message= [[NSString alloc] initWithString:"We could not connect to our server. Check your internet connectivity!"];
+			NSString *message= [[NSString alloc] initWithString:@"We could not connect to our server. Check your internet connectivity!"];
 			UIAlertView *alert = [[UIAlertView alloc]
 								  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];

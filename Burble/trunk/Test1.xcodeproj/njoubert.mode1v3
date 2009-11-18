@@ -274,15 +274,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>31</integer>
-									<integer>29</integer>
-									<integer>25</integer>
+									<integer>16</integer>
+									<integer>14</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 134}, {232, 664}}</string>
+							<string>{{0, 163}, {232, 664}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -319,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.m</string>
+								<string>BurbleDataManager.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -327,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MapViewController.m</string>
+										<string>BurbleDataManager.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DACEFF9210B3666F00944021</string>
+										<string>DACEFFDD10B37BE200944021</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323910B22CBA00D08F61</string>
@@ -341,15 +340,15 @@
 											<string>DAF7324910B22CD200D08F61</string>
 											<string>DAF7324A10B22CD200D08F61</string>
 											<string>DACEFF8010B3663400944021</string>
-											<string>DACEFF8110B3663400944021</string>
-											<string>DACEFF8210B3663400944021</string>
-											<string>DACEFF8310B3663400944021</string>
-											<string>DACEFF8410B3663400944021</string>
 											<string>DACEFF8510B3663400944021</string>
 											<string>DACEFF8610B3663400944021</string>
-											<string>DACEFF8710B3663400944021</string>
-											<string>DACEFF8810B3663400944021</string>
-											<string>DACEFF8910B3663400944021</string>
+											<string>DACEFFA210B375CF00944021</string>
+											<string>DACEFFC510B37AE100944021</string>
+											<string>DACEFFCF10B37B8500944021</string>
+											<string>DACEFFD010B37B8500944021</string>
+											<string>DACEFFD110B37B8500944021</string>
+											<string>DACEFFD210B37B8500944021</string>
+											<string>DACEFFD310B37B8500944021</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -547,7 +546,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DACEFF9310B3666F00944021</string>
+		<string>DACEFFDC10B37BD000944021</string>
 		<string>DACEFF8E10B3663400944021</string>
 		<string>DACEFF8F10B3663400944021</string>
 		<string>1C78EAAD065D492600B07095</string>

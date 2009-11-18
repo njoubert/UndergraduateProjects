@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BurbleDataManager.h"
+#import "Test1AppDelegate.h"
 
 @interface RegisterViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate> {
 	UITextField *nameField;
+	UIView *activityView;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *nameField;
