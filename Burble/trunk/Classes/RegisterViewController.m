@@ -66,7 +66,6 @@
 		
 		if (success) {
 			
-			//dismiss modal view
 			[self dismissModalViewControllerAnimated:YES];
 			
 		} else {

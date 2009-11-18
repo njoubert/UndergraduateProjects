@@ -274,14 +274,15 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>16</integer>
-									<integer>14</integer>
+									<integer>31</integer>
+									<integer>29</integer>
+									<integer>25</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 163}, {232, 664}}</string>
+							<string>{{0, 87}, {232, 936}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -293,14 +294,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {249, 682}}</string>
+						<string>{{0, 0}, {249, 954}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>232</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 55 1276 723 0 0 1280 778 </string>
+						<string>1280 55 1676 995 1280 0 1680 1050 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -318,7 +319,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BurbleDataManager.m</string>
+								<string>MapViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,29 +327,31 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BurbleDataManager.m</string>
+										<string>MapViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DACEFFDD10B37BE200944021</string>
+										<string>DACE00EF10B3A4E900944021</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323910B22CBA00D08F61</string>
 											<string>DAF7323A10B22CBA00D08F61</string>
 											<string>DAF7323E10B22CBA00D08F61</string>
-											<string>DAF7323F10B22CBA00D08F61</string>
-											<string>DAF7324910B22CD200D08F61</string>
 											<string>DAF7324A10B22CD200D08F61</string>
-											<string>DACEFF8010B3663400944021</string>
-											<string>DACEFF8510B3663400944021</string>
-											<string>DACEFF8610B3663400944021</string>
-											<string>DACEFFA210B375CF00944021</string>
-											<string>DACEFFC510B37AE100944021</string>
-											<string>DACEFFCF10B37B8500944021</string>
-											<string>DACEFFD010B37B8500944021</string>
-											<string>DACEFFD110B37B8500944021</string>
-											<string>DACEFFD210B37B8500944021</string>
-											<string>DACEFFD310B37B8500944021</string>
+											<string>DACEFFE710B3873000944021</string>
+											<string>DACEFFF210B38CF100944021</string>
+											<string>DACE000010B38D3C00944021</string>
+											<string>DACE000110B38D3C00944021</string>
+											<string>DACE003510B3907E00944021</string>
+											<string>DACE003610B3907E00944021</string>
+											<string>DACE00BE10B3A00200944021</string>
+											<string>DACE00BF10B3A00200944021</string>
+											<string>DACE00DD10B3A33800944021</string>
+											<string>DACE00DE10B3A33800944021</string>
+											<string>DACE00DF10B3A33800944021</string>
+											<string>DACE00E810B3A3E700944021</string>
+											<string>DACE00E910B3A3E700944021</string>
+											<string>DACE00E010B3A33800944021</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -360,14 +363,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1022, 519}}</string>
+								<string>{{0, 0}, {1422, 791}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 55 1276 723 0 0 1280 778 </string>
+								<string>1280 55 1676 995 1280 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>519pt</string>
+							<string>791pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -380,9 +383,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 524}, {1022, 158}}</string>
+								<string>{{0, 796}, {1422, 158}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 55 1276 723 0 0 1280 778 </string>
+								<string>1280 55 1676 995 1280 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -391,7 +394,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>1022pt</string>
+					<string>1422pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -546,7 +549,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DACEFFDC10B37BD000944021</string>
 		<string>DACEFF8E10B3663400944021</string>
 		<string>DACEFF8F10B3663400944021</string>
 		<string>1C78EAAD065D492600B07095</string>
@@ -555,7 +557,7 @@
 		<string>/Users/njoubert/Code/iPhone/Burble/trunk/Test1.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 55 1276 723 0 0 1280 778 </string>
+	<string>1280 55 1676 995 1280 0 1680 1050 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

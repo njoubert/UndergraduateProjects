@@ -29,9 +29,6 @@
 
 - (BOOL)tryToRegister:(NSString*) name;
 
-- (NSString*) getGUID;
-- (NSString*) getName;
-
 // ============= CONNECTION MANAGEMENT
 
 // This checks that we're registered on the server (and create an account if it does not exist). 
@@ -40,6 +37,16 @@
 
 // ============= DATA CALLS
 
+- (NSString*) getGUID;
+- (NSString*) getName;
+
+- (int) getFriendsCount;
 - (NSArray*) getFriends;
+
+- (int) getMessagesCount;
+- (int) getUnreadMessagesCount;
+- (NSArray*) getMessages;
+- (NSArray*) getUnreadMessages;
+
 
 @end

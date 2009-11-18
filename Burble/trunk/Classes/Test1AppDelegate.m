@@ -42,7 +42,7 @@ static Test1AppDelegate *burbleApp = NULL;
 	[activityView release];
 	activityView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height)];
 	activityView.backgroundColor = [UIColor blackColor];
-	activityView.alpha = 0.4;
+	activityView.alpha = 0.8;
 	
 	UIActivityIndicatorView *activityWheel = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(window.bounds.size.width / 2 - 12, window.bounds.size.height / 2 - 12, 24, 24)];
 	activityWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;

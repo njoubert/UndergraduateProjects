@@ -13,6 +13,7 @@
 #import <MapKit/MKMapView.h>
 #import "BurbleDataManager.h"
 #import "RegisterViewController.h"
+#import "AddWaypointViewController.h"
 
 @interface MapViewController : UIViewController {
 	MKMapView *myMap;
@@ -20,6 +21,7 @@
 	UILabel *groupLabel;
 }
 
+@property (nonatomic, retain) IBOutlet UINavigationBar *topBar;
 @property (nonatomic, retain) IBOutlet MKMapView *myMap;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mapTypeSegmentedControl;
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;

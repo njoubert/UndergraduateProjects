@@ -29,6 +29,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	myMap.showsUserLocation = true;
+	self.title = @"Map View";
+	
+	//Set the button that will appear as the "Back" button on any view that is pushed on top of this navigation controller.
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
+	self.navigationItem.backBarButtonItem = backButton;
+	[backButton release];
+	
+	UIBarButtonItem *waypointButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map-marker.png"] style:UIBarButtonItemStylePlain target:self action:@selector(waypointButtonPressed)];
+	UIBarButtonItem *locateButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"74-location.png"] style:UIBarButtonItemStylePlain target:self action:@selector(locateButtonPressed)];
+	self.navigationItem.leftBarButtonItem = locateButton;
+	self.navigationItem.rightBarButtonItem = waypointButton;
 	
 }
 
@@ -45,12 +56,23 @@
 */
 
 -(IBAction)waypointButtonPressed {
+	/*
 	NSString *message= [[NSString alloc] initWithString: @"Waypoint added"];
 	UIAlertView *alert = [[UIAlertView alloc]
 						  initWithTitle: @"Waypoint" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alert show];
 	[alert release];
 	[message release];
+	*/
+	
+	
+	//UIView* overlay = [[UIView alloc] initWithFrame:myMap.frame];
+	//[overlay setOpaque:NO];
+	//[self.view addSubview:overlay];
+	
+	AddWaypointViewController *wC = [[AddWaypointViewController alloc] initWithNibName:nil bundle:nil];
+	[self.navigationController pushViewController:wC animated:YES];
+	
 }
 
 -(IBAction)selectorButtonPressed {
