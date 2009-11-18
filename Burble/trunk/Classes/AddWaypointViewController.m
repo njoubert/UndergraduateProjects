@@ -7,11 +7,14 @@
 //
 
 #import "AddWaypointViewController.h"
-
+#import "BurbleDataManager.h"
+#import "Waypoint.h"
 
 @implementation AddWaypointViewController
 
+@synthesize nameField, descField, isHereSwitch;
 
+/*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -19,32 +22,60 @@
     }
     return self;
 }
+*/
 
 
+- (void)saveW {
+	
+	
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)cancelW {
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	return YES;
+}
+
+- (IBAction)saveButtonPressed {
+	[self saveW];
+}
+
+- (IBAction) cancelButtonPressed {
+	[self cancelW];
+}
+
+- (void)setWaypointLocation:(CLLocationCoordinate2D)cStruct {
+	waypointLocation = cStruct;
+}
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	self.title = @"Save Waypoint";
-
-}
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+	NSString *name = [[BurbleDataManager sharedDataManager] getNextWaypointName];
+	self.nameField.text = name;	
 	
-	// Release any cached data, images, etc that aren't in use.
+	CLLocation *current = [[BurbleDataManager sharedDataManager] getLocation];
+	if (nil != current && 0 < current.horizontalAccuracy) {
+		CLLocation *waypCLL = [[CLLocation alloc] initWithLatitude:waypointLocation.latitude longitude:waypointLocation.longitude];
+		CLLocationDistance dist = [current getDistanceFrom:waypCLL];
+
+		if (dist < [current horizontalAccuracy]) {
+			[self.isHereSwitch setOn:YES animated:NO];
+		} else {
+			[self.isHereSwitch setOn:NO animated:NO];	
+		}
+	}
+	 
+	[super viewDidAppear:animated];
+						   
 }
 
 - (void)viewDidUnload {

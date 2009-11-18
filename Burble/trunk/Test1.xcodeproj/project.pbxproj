@@ -47,6 +47,7 @@
 		DA7107C410A29C9300DAD536 /* 30x-Scanner.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C310A29C9300DAD536 /* 30x-Scanner.png */; };
 		DA7107C710A29D6D00DAD536 /* icon_user.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C510A29D6D00DAD536 /* icon_user.png */; };
 		DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C610A29D6D00DAD536 /* icon_users.png */; };
+		DAB5E69C10B3F20300AF521B /* AddWaypointViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAB5E69B10B3F20300AF521B /* AddWaypointViewController.xib */; };
 		DACE005E10B3939500944021 /* AddWaypointViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */; };
 		DACE015610B3C4C300944021 /* AddWaypointOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE015510B3C4C300944021 /* AddWaypointOverlayView.m */; };
 		DACE023610B3E2D800944021 /* Waypoint.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE023510B3E2D800944021 /* Waypoint.m */; };
@@ -133,6 +134,7 @@
 		DA7107C310A29C9300DAD536 /* 30x-Scanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "30x-Scanner.png"; sourceTree = "<group>"; };
 		DA7107C510A29D6D00DAD536 /* icon_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_user.png; sourceTree = "<group>"; };
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
+		DAB5E69B10B3F20300AF521B /* AddWaypointViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWaypointViewController.xib; sourceTree = "<group>"; };
 		DACE005B10B3939500944021 /* AddWaypointViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWaypointViewController.h; sourceTree = "<group>"; };
 		DACE005C10B3939500944021 /* AddWaypointViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWaypointViewController.m; sourceTree = "<group>"; };
 		DACE015410B3C4C300944021 /* AddWaypointOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWaypointOverlayView.h; sourceTree = "<group>"; };
@@ -303,15 +305,16 @@
 		B832F9B510B2645600F50C41 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				DACEFEA610B3360400944021 /* MapNavigationController.h */,
+				DACEFEA710B3360400944021 /* MapNavigationController.m */,
 				DAE6556910A25042007BB25E /* MapViewController.h */,
 				DAE6556A10A25042007BB25E /* MapViewController.m */,
 				DAE6556B10A25042007BB25E /* MapViewController.xib */,
-				DACEFEA610B3360400944021 /* MapNavigationController.h */,
-				DACEFEA710B3360400944021 /* MapNavigationController.m */,
-				DACE005B10B3939500944021 /* AddWaypointViewController.h */,
-				DACE005C10B3939500944021 /* AddWaypointViewController.m */,
 				DACE015410B3C4C300944021 /* AddWaypointOverlayView.h */,
 				DACE015510B3C4C300944021 /* AddWaypointOverlayView.m */,
+				DACE005B10B3939500944021 /* AddWaypointViewController.h */,
+				DACE005C10B3939500944021 /* AddWaypointViewController.m */,
+				DAB5E69B10B3F20300AF521B /* AddWaypointViewController.xib */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				DACEFF1610B3465A00944021 /* RegisterViewController.xib in Resources */,
 				DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */,
 				B8456D4810B37C45005EA08C /* ImportFriendsViewController.xib in Resources */,
+				DAB5E69C10B3F20300AF521B /* AddWaypointViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,6 +24,6 @@
 @property (nonatomic, retain) NSString *number;
 @property (nonatomic, retain) NSString *email;
 
-
+- (NSString*) getFirstName;
 
 @end

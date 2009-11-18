@@ -8,13 +8,20 @@
 #import <Foundation/Foundation.h>
 #import "Person.h"
 #import "Waypoint.h"
+#import <MapKit/MapKit.h>
+#import <MapKit/MKTypes.h>
+#import <MapKit/MKGeometry.h>
+#import <MapKit/MKMapView.h>
 
 #define kPresistentFilename @"BurbleData.plist"
 
-@interface BurbleDataManager : NSObject {
+@interface BurbleDataManager : NSObject <CLLocationManagerDelegate> {
 	NSString *currentDirectoryPath;					//The path where we store data. Set by init.
 	BOOL bIsFirstLaunch;								//Indicates whether this is the app's first launch
 	NSMutableDictionary *presistent;
+	
+	CLLocationManager *myLocationManager;
+	CLLocation *lastKnownLocation;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -36,10 +43,17 @@
 // Doesn't actually change any internal state (unlike most login systems), rather it's a simple check that we're online.
 - (BOOL)login;	
 
-// ============= DATA CALLS
+// ============= DATA CALLS for INTERNAL STATE DATA
 
 - (NSString*) getGUID;
 - (NSString*) getName;
+- (NSString*) getFirstName;
+
+// ============= DATA CALLS for DEVICE DATA (Managed internally)
+
+- (CLLocation*) getLocation; //This returns what the device thinks is our location (not necessarily the latest Position as sent to the server)
+
+// ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
 - (int) getFriendsCount;
 - (NSArray*) getFriends;
@@ -49,7 +63,9 @@
 - (NSArray*) getMessages;
 - (NSArray*) getUnreadMessages;
 
+- (NSString*) getNextWaypointName;
 - (void)addWaypoint:(Waypoint*) wP;
+
 
 
 @end

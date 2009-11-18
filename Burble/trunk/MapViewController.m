@@ -52,7 +52,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	groupLabel.text = [[NSString alloc] initWithFormat:@"%@, Join a Group!", [[BurbleDataManager sharedDataManager] getName]];
+	groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
 }
 
 
@@ -88,10 +88,10 @@
 -(IBAction)approveWaypointButtonPressed {
 	[self removeWayPOverlay];
 	
-	//Get the center of the map - this is the coordinates of this waypoint
 	
-	//Pass it to this controller:
-	AddWaypointViewController *approveController = [[[AddWaypointViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+	AddWaypointViewController *approveController = [[[AddWaypointViewController alloc] initWithNibName:@"AddWaypointViewController" bundle:nil] autorelease];
+	CLLocationCoordinate2D centerCoordinate = [myMap centerCoordinate];
+	[approveController setWaypointLocation:centerCoordinate];
 	[self presentModalViewController:approveController animated:YES];
 	
 }
@@ -118,8 +118,8 @@
 		MKCoordinateRegion myRegion;
 		MKCoordinateSpan mySpan;
 		myRegion.center = location.coordinate;
-		mySpan.latitudeDelta = (CLLocationDegrees) 0.08;
-		mySpan.longitudeDelta = (CLLocationDegrees) 0.08;
+		mySpan.latitudeDelta = (CLLocationDegrees) 0.03;
+		mySpan.longitudeDelta = (CLLocationDegrees) 0.03;
 		myRegion.span = mySpan;
 		[myMap setRegion: myRegion animated: true];
 		

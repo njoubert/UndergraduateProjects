@@ -55,6 +55,7 @@ static BurbleDataManager *sharedDataManager;
 //automatically called on program launch
 + (void)initialize
 {
+	sharedDataManager = nil;
     static BOOL initialized = NO;
     if (!initialized) {
 		// Load any previously archived blog data
@@ -68,6 +69,18 @@ static BurbleDataManager *sharedDataManager;
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		self.currentDirectoryPath = documentsDirectory;
+		
+		CLLocationCoordinate2D locCor;
+		locCor.longitude = 0;
+		locCor.latitude = 0;
+		NSDate *d = [[NSDate alloc] init];
+		lastKnownLocation = [[CLLocation alloc] initWithCoordinate:locCor altitude:0 horizontalAccuracy:-1 verticalAccuracy:-1 timestamp:d];
+		
+		myLocationManager = [[CLLocationManager alloc] init];
+		myLocationManager.delegate = self;
+		myLocationManager.desiredAccuracy = [[NSNumber numberWithDouble:kCLLocationAccuracyBest] doubleValue];
+		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:40] doubleValue];
+		[myLocationManager startUpdatingLocation];
 	}
 	return self;
 }
@@ -126,14 +139,6 @@ static BurbleDataManager *sharedDataManager;
 	//return NO;
 }
 
-- (NSString*) getGUID {
-	return [presistent objectForKey:@"guid"];
-}
-
-- (NSString*) getName {
-	return [presistent objectForKey:@"name"];
-}
-
 
 /*
  ================================================================================
@@ -157,12 +162,48 @@ static BurbleDataManager *sharedDataManager;
 
 /*
  ================================================================================
-								DATA CALLS
+								DATA CALLS for INTERNAL DATA
  ================================================================================ 
  */
 
 #pragma mark -
-#pragma mark Data Calls
+#pragma mark Data Calls for Internal
+
+- (NSString*) getGUID {
+	return [presistent objectForKey:@"guid"];
+}
+
+- (NSString*) getName {
+	return [presistent objectForKey:@"name"];
+}
+- (NSString*) getFirstName {
+	NSArray *firstWords = [[[self getName] componentsSeparatedByString:@" "] subarrayWithRange:NSMakeRange(0,1)];
+	NSString *result = [firstWords componentsJoinedByString:@" "];
+	return result;
+}
+
+/*
+ ================================================================================
+					DATA CALLS for DEVICE DATA
+ ================================================================================ 
+ */
+#pragma mark -
+#pragma mark Data Calls for Device Data
+
+- (CLLocation*) getLocation {
+	CLLocation* retVal = [[CLLocation alloc] initWithCoordinate:lastKnownLocation.coordinate altitude:lastKnownLocation.altitude horizontalAccuracy:lastKnownLocation.horizontalAccuracy verticalAccuracy:lastKnownLocation.verticalAccuracy timestamp:lastKnownLocation.timestamp];	
+	return retVal;
+}
+
+/*
+ ================================================================================
+					DATA CALLS for SERVER MANAGED DATA (Cached locally)
+ ================================================================================ 
+ */
+
+
+#pragma mark -
+#pragma mark Data Calls for Server Data
 
 - (NSArray*) getFriends {
 	Person* p1 = [[Person alloc] init];
@@ -193,5 +234,38 @@ static BurbleDataManager *sharedDataManager;
 
 - (void)addWaypoint:(Waypoint *)wP {
 	
+}
+
+- (NSString*) getNextWaypointName {
+	NSString *retVal = [[NSString alloc] initWithString:@"Waypoint 1"];
+	return retVal;
+}
+	
+/*
+ ================================================================================
+			DELEGATE METHODS	
+ ================================================================================ 
+ */
+
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+
+	if (newLocation.horizontalAccuracy < 0) return;
+	// test the age of the location measurement to determine if the measurement is cached
+	// in most cases you will not want to rely on cached measurements
+	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
+	if (locationAge > 5.0) return;
+	// store all of the measurements, just so we can see what kind of data we might receive
+	[newLocation retain];
+	[lastKnownLocation release];
+	lastKnownLocation = newLocation;
+	//update views and shit
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	// The location "unknown" error simply means the manager is currently unable to get the location.
+	if ([error code] != kCLErrorLocationUnknown) {
+		
+	}
 }
 @end

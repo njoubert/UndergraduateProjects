@@ -24,29 +24,22 @@
 -(void) drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	//UIColor *col = [[UIColor alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
-	//CGContextSetStrokeColorWithColor(context, col);
 	CGContextSetRGBFillColor(context, 1.0, 0.0, 1.0, 1.0);
 	UIColor *lineColor = [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
 	CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
 	CGContextSetLineWidth(context, 3.0);
-
 	//left
 	CGContextMoveToPoint(context, 0, self.frame.size.height/2-1);
 	CGContextAddLineToPoint(context, self.frame.size.width/2 - 10, self.frame.size.height/2-1);
-
 	//right
 	CGContextMoveToPoint(context, self.frame.size.width/2 + 10, self.frame.size.height/2-1);
 	CGContextAddLineToPoint(context, self.frame.size.width , self.frame.size.height/2-1);
-
 	//top
 	//CGContextMoveToPoint(context, self.frame.size.width/2-1, 0);
 	//CGContextAddLineToPoint(context, self.frame.size.width/2-1, self.frame.size.height/2-36);
-
 	//bottom
 	CGContextMoveToPoint(context, self.frame.size.width/2-1, self.frame.size.height/2+10);
 	CGContextAddLineToPoint(context, self.frame.size.width/2-1, self.frame.size.height);
-
 	
 	CGContextStrokePath(context);
 	[lineColor release];

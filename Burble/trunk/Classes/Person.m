@@ -20,6 +20,12 @@
 	[super dealloc];
 }
 
+- (NSString*) getFirstName {
+	NSArray *firstWords = [[name componentsSeparatedByString:@" "] subarrayWithRange:NSMakeRange(0,1)];
+	NSString *result = [firstWords componentsJoinedByString:@" "];
+	return result;
+}
+
 #pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
