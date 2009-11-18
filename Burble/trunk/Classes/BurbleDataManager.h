@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Person.h"
+#import "Waypoint.h"
 
 #define kPresistentFilename @"BurbleData.plist"
 
@@ -47,6 +48,8 @@
 - (int) getUnreadMessagesCount;
 - (NSArray*) getMessages;
 - (NSArray*) getUnreadMessages;
+
+- (void)addWaypoint:(Waypoint*) wP;
 
 
 @end

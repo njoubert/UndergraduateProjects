@@ -190,4 +190,8 @@ static BurbleDataManager *sharedDataManager;
 	return a;
 	
 }
+
+- (void)addWaypoint:(Waypoint *)wP {
+	
+}
 @end
