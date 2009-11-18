@@ -13,6 +13,7 @@
 
 }
 
-//This is the over-arching navigation controller for Groupies. Its root view is GroupiesViewController
+//This is the over-arching navigation controller for Groupies. Its root view is GroupiesViewController.
+//We only need one navigation controller!
 
 @end

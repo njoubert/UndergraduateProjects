@@ -11,25 +11,35 @@
 #import "GroupiesDetailViewController.h"
 #import "Test1AppDelegate.h"
 
+#import "ImportFriendsViewController.h"
+
 @implementation GroupiesViewController
 
 @synthesize addFriendView;
 @synthesize mainView;
 
-@synthesize people;
-
-@synthesize names; //a dictionary
-@synthesize keys; //an array
 @synthesize table;
 @synthesize search;
+
+@synthesize people;
+
+//For old search methods
+@synthesize names; //a dictionary
+@synthesize keys; //an array
 @synthesize allNames; //a mutable dictionary
+
+@synthesize namesForSearch;
+@synthesize nameCopies;
 
 #pragma mark -
 #pragma mark Custom Methods
 
 //REWRITE THESE to search the array
 -(void)resetSearch {
-	self.names = [self.allNames mutableDeepCopy];
+	NSMutableDictionary *allNamesCopy = [self.allNames mutableDeepCopy];
+	self.names = allNamesCopy;
+	[allNamesCopy release];
+	
 	NSMutableArray *keyArray = [[NSMutableArray alloc] init];
 	[keyArray addObjectsFromArray:[[self.allNames allKeys]
 								   sortedArrayUsingSelector:@selector(compare:)]];
@@ -61,25 +71,17 @@
 
 
 //For importing FB friends
--(IBAction)addFriends:(id)sender {
-	self.view = addFriendView;
-}
 
--(IBAction)importFriends:(id)sender {
-	NSString *message= [[NSString alloc] initWithString: @"You've just imported your Facebook friends!"];
-	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle: @"Add Facebook friends" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	[message release];
-}
-
--(IBAction)backToMain:(id)sender {
-	self.view = mainView;
+-(IBAction)addFriends: (id)sender {
+	if (import == nil) 
+		import = [[ImportFriendsViewController alloc] initWithNibName:@"ImportFriendsViewController" bundle:nil];
+	//childController.message = test; //this doesn't really do anything right now
+	import.title = @"Import Groupies";
+	[self.navigationController pushViewController:import animated:YES];
 }
 
 
-
+//Sort methods to be implemented
 -(IBAction)alphaSort {
 }
 
@@ -99,12 +101,30 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	//loading up this particular user's friends
 	dataManager = [BurbleDataManager sharedDataManager];
 	NSArray *ar = [dataManager getFriends];
-	self.people = ar;
+	self.people = ar; //this is an array of people objects
 	[ar release];
 	self.title = @"Groupies";
+	
+	//copy of friends' names
+	self.namesForSearch = [[NSMutableArray alloc] init];
+	for (int i = 0; i < [people count]; i++) {
+		Person *thisPerson = [people objectAtIndex:i];
+		NSString *currentName = [thisPerson name];
+		[self.namesForSearch addObject:currentName];
+	}
+	//fill dictionary
+	NSDictionary *dict = [NSDictionary dictionaryWithObject:self.namesForSearch forKey:@"Names"];
+	self.allNames = dict;
+	
+	
 	[self resetSearch];
+	[table reloadData]; 
+	[table setContentOffset:CGPointMake(0.0, 44.0) animated:NO];
+	
+	
 	[super viewDidLoad];
 }
 
@@ -127,9 +147,13 @@
 - (void)viewDidUnload {
 	self.table = nil;
 	self.search = nil;
+	self.allNames = nil;
+	self.names= nil;
+	self.keys = nil;
+	
 	self.people = nil;
-	[childController release];
 	childController = nil;
+	import = nil;
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -138,19 +162,29 @@
 - (void)dealloc {
 	[addFriendView release];
 	[mainView release];
-	[people release];
+	
 	[table release];
 	[search release];
+	
+	[people release];
+	
 	[allNames release];
 	[names release];
 	[keys release];
+	
 	[dataManager release];
 	[childController release];
+	[import release];
+	
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
+
+//This draws our list table for all of our Groupies
+
+
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [people count];
@@ -174,6 +208,8 @@
 #pragma mark -
 #pragma mark Table View Delegate Methods
 
+//This handles what happens when Groupies cells are tapped
+
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[search resignFirstResponder];
 	return indexPath;
@@ -190,12 +226,11 @@
 	 
 }
 
-//you have to
 
 #pragma mark -
 #pragma mark Search Bar Delegate Methods
 
-//REWRITE THESE METHODS
+//REWRITE THESE METHODS, Search is buggy
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	NSString *searchTerm = [searchBar text];
@@ -219,7 +254,6 @@
 }
 
 
-
 //handles what to do when a row is selected
 /*
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -234,5 +268,4 @@
 }
 */
 	
-
 @end
