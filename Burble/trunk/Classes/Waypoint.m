@@ -11,4 +11,14 @@
 
 @implementation Waypoint
 
+-(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription; {
+	if (self = [super init]) {
+		name = [[NSString alloc] initWithString:myName];
+		[name retain];
+		description = [[NSString alloc] initWithString:myDescription];
+		[description retain];
+	}
+	return self;
+}
+
 @end

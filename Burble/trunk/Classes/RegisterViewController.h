@@ -12,11 +12,9 @@
 
 @interface RegisterViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate> {
 	UITextField *nameField;
-	UIView *activityView;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *nameField;
 
--(IBAction) namePressed;
 
 @end

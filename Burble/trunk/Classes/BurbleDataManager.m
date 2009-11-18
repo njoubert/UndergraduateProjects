@@ -81,6 +81,8 @@ static BurbleDataManager *sharedDataManager;
 		myLocationManager.desiredAccuracy = [[NSNumber numberWithDouble:kCLLocationAccuracyBest] doubleValue];
 		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:40] doubleValue];
 		[myLocationManager startUpdatingLocation];
+		
+		waypointsSavedThisSession = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -157,7 +159,7 @@ static BurbleDataManager *sharedDataManager;
 	//check the response
 		//if not 200, error!
 	
-		
+	return YES;	
 }
 
 /*
@@ -233,14 +235,26 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)addWaypoint:(Waypoint *)wP {
-	
+	[waypointsSavedThisSession addObject:wP];
+}
+
+- (int)getWaypointCount {
+	return [waypointsSavedThisSession count];
+}
+
+- (NSArray*) getWaypoints {
+	NSArray* retVal = [[NSArray alloc] initWithArray:waypointsSavedThisSession];
+	return retVal;
 }
 
 - (NSString*) getNextWaypointName {
-	NSString *retVal = [[NSString alloc] initWithString:@"Waypoint 1"];
+	NSString *retVal = [[NSString alloc] initWithFormat:@"Waypoint %d", [self getWaypointCount] + 1];
 	return retVal;
 }
-	
+- (NSString*) getNextWaypointDesc {
+	NSString *retVal = [[NSString alloc] initWithFormat:@"Placed by %@", [self getName]];
+	return retVal;
+}	
 /*
  ================================================================================
 			DELEGATE METHODS	

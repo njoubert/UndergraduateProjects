@@ -22,6 +22,8 @@
 	
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
+	
+	NSMutableArray* waypointsSavedThisSession;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -64,7 +66,10 @@
 - (NSArray*) getUnreadMessages;
 
 - (NSString*) getNextWaypointName;
+- (NSString*) getNextWaypointDesc;
 - (void)addWaypoint:(Waypoint*) wP;
+- (int)getWaypointCount;
+- (NSArray*)getWaypoints;
 
 
 

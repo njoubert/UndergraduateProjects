@@ -26,7 +26,13 @@
 
 
 - (void)saveW {
+	Waypoint* wP = [[Waypoint alloc] initWithNameAndDescription:self.nameField.text description:self.descField.text];	
+	wP->coordinate = waypointLocation;
+	wP->elevation = 0; //we dont know this at the moment.
+	wP->iAmHere = self.isHereSwitch.state;
+	[[BurbleDataManager sharedDataManager] addWaypoint:wP];
 	
+	//TODO: force a map reload
 	
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -59,8 +65,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	self.title = @"Save Waypoint";
-	NSString *name = [[BurbleDataManager sharedDataManager] getNextWaypointName];
-	self.nameField.text = name;	
+	self.nameField.text = [[BurbleDataManager sharedDataManager] getNextWaypointName];
+	self.descField.text = [[BurbleDataManager sharedDataManager] getNextWaypointDesc];
 	
 	CLLocation *current = [[BurbleDataManager sharedDataManager] getLocation];
 	if (nil != current && 0 < current.horizontalAccuracy) {

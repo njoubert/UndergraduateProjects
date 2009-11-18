@@ -25,7 +25,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Release;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphoneos3.1.2;
+		activeSDKPreference = iphonesimulator3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -310,6 +310,107 @@
 			DAB5E8A710B40FCB00AF521B /* PBXTextBookmark */ = DAB5E8A710B40FCB00AF521B /* PBXTextBookmark */;
 			DAB5E8A810B40FCB00AF521B /* PBXTextBookmark */ = DAB5E8A810B40FCB00AF521B /* PBXTextBookmark */;
 			DAB5E8A910B40FCB00AF521B /* PBXTextBookmark */ = DAB5E8A910B40FCB00AF521B /* PBXTextBookmark */;
+			DAB5E8AB10B410E400AF521B /* PBXTextBookmark */ = DAB5E8AB10B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8AC10B410E400AF521B /* PBXTextBookmark */ = DAB5E8AC10B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8AD10B410E400AF521B /* PBXTextBookmark */ = DAB5E8AD10B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8AE10B410E400AF521B /* PBXTextBookmark */ = DAB5E8AE10B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8AF10B410E400AF521B /* PBXTextBookmark */ = DAB5E8AF10B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8B010B410E400AF521B /* PBXTextBookmark */ = DAB5E8B010B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8B110B410E400AF521B /* PBXTextBookmark */ = DAB5E8B110B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8B210B410E400AF521B /* PBXTextBookmark */ = DAB5E8B210B410E400AF521B /* PBXTextBookmark */;
+			DAB5E8B310B4113300AF521B /* PBXTextBookmark */ = DAB5E8B310B4113300AF521B /* PBXTextBookmark */;
+			DAB5E8BC10B411DD00AF521B /* XCBuildMessageTextBookmark */ = DAB5E8BC10B411DD00AF521B /* XCBuildMessageTextBookmark */;
+			DAB5E8BD10B411E400AF521B /* PBXTextBookmark */ = DAB5E8BD10B411E400AF521B /* PBXTextBookmark */;
+			DAB5E8BE10B411E400AF521B /* PBXTextBookmark */ = DAB5E8BE10B411E400AF521B /* PBXTextBookmark */;
+			DAB5E8BF10B411E400AF521B /* PBXTextBookmark */ = DAB5E8BF10B411E400AF521B /* PBXTextBookmark */;
+			DAB5E8C010B411E400AF521B /* XCBuildMessageTextBookmark */ = DAB5E8C010B411E400AF521B /* XCBuildMessageTextBookmark */;
+			DAB5E8C110B411E400AF521B /* PBXTextBookmark */ = DAB5E8C110B411E400AF521B /* PBXTextBookmark */;
+			DAB5E8C410B411E400AF521B /* PBXTextBookmark */ = DAB5E8C410B411E400AF521B /* PBXTextBookmark */;
+			DAB5E8D510B4131D00AF521B /* PBXTextBookmark */ = DAB5E8D510B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8D610B4131D00AF521B /* PBXTextBookmark */ = DAB5E8D610B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8D710B4131D00AF521B /* PBXTextBookmark */ = DAB5E8D710B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8D810B4131D00AF521B /* PBXTextBookmark */ = DAB5E8D810B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8D910B4131D00AF521B /* PBXTextBookmark */ = DAB5E8D910B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DA10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DA10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DB10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DB10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DC10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DC10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DD10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DD10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DE10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DE10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8DF10B4131D00AF521B /* PBXTextBookmark */ = DAB5E8DF10B4131D00AF521B /* PBXTextBookmark */;
+			DAB5E8E010B413F700AF521B /* PBXBookmark */ = DAB5E8E010B413F700AF521B /* PBXBookmark */;
+			DAB5E8E110B4144100AF521B /* PBXTextBookmark */ = DAB5E8E110B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E210B4144100AF521B /* PBXTextBookmark */ = DAB5E8E210B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E310B4144100AF521B /* PBXTextBookmark */ = DAB5E8E310B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E410B4144100AF521B /* PBXTextBookmark */ = DAB5E8E410B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E510B4144100AF521B /* PBXTextBookmark */ = DAB5E8E510B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E810B4144100AF521B /* PBXTextBookmark */ = DAB5E8E810B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8E910B4144100AF521B /* PBXTextBookmark */ = DAB5E8E910B4144100AF521B /* PBXTextBookmark */;
+			DAB5E8EA10B4150D00AF521B /* PBXTextBookmark */ = DAB5E8EA10B4150D00AF521B /* PBXTextBookmark */;
+			DAB5E8EB10B4150D00AF521B /* PBXTextBookmark */ = DAB5E8EB10B4150D00AF521B /* PBXTextBookmark */;
+			DAB5E8EC10B4150D00AF521B /* PBXTextBookmark */ = DAB5E8EC10B4150D00AF521B /* PBXTextBookmark */;
+			DAB5E8F710B4157300AF521B /* PBXTextBookmark */ = DAB5E8F710B4157300AF521B /* PBXTextBookmark */;
+			DAB5E8F810B4157300AF521B /* PBXTextBookmark */ = DAB5E8F810B4157300AF521B /* PBXTextBookmark */;
+			DAB5E8F910B4157300AF521B /* PBXTextBookmark */ = DAB5E8F910B4157300AF521B /* PBXTextBookmark */;
+			DAB5E8FE10B4158D00AF521B /* PBXTextBookmark */ = DAB5E8FE10B4158D00AF521B /* PBXTextBookmark */;
+			DAB5E8FF10B4158D00AF521B /* PBXTextBookmark */ = DAB5E8FF10B4158D00AF521B /* PBXTextBookmark */;
+			DAB5E90010B4158D00AF521B /* PBXTextBookmark */ = DAB5E90010B4158D00AF521B /* PBXTextBookmark */;
+			DAB5E90110B415A100AF521B /* PBXTextBookmark */ = DAB5E90110B415A100AF521B /* PBXTextBookmark */;
+			DAB5E90210B415A100AF521B /* PBXTextBookmark */ = DAB5E90210B415A100AF521B /* PBXTextBookmark */;
+			DAB5E90310B415A100AF521B /* PBXTextBookmark */ = DAB5E90310B415A100AF521B /* PBXTextBookmark */;
+			DAB5E90810B415DD00AF521B /* PBXTextBookmark */ = DAB5E90810B415DD00AF521B /* PBXTextBookmark */;
+			DAB5E90910B415DD00AF521B /* PBXTextBookmark */ = DAB5E90910B415DD00AF521B /* PBXTextBookmark */;
+			DAB5E90A10B415DD00AF521B /* PBXTextBookmark */ = DAB5E90A10B415DD00AF521B /* PBXTextBookmark */;
+			DAB5E90D10B415E800AF521B /* PBXTextBookmark */ = DAB5E90D10B415E800AF521B /* PBXTextBookmark */;
+			DAB5E90E10B415E800AF521B /* PBXTextBookmark */ = DAB5E90E10B415E800AF521B /* PBXTextBookmark */;
+			DAB5E90F10B415E800AF521B /* PBXTextBookmark */ = DAB5E90F10B415E800AF521B /* PBXTextBookmark */;
+			DAB5E91710B4165E00AF521B /* PBXTextBookmark */ = DAB5E91710B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91810B4165E00AF521B /* PBXTextBookmark */ = DAB5E91810B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91910B4165E00AF521B /* PBXTextBookmark */ = DAB5E91910B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91A10B4165E00AF521B /* PBXTextBookmark */ = DAB5E91A10B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91B10B4165E00AF521B /* PBXTextBookmark */ = DAB5E91B10B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91C10B4165E00AF521B /* PBXTextBookmark */ = DAB5E91C10B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E91D10B4165E00AF521B /* PBXTextBookmark */ = DAB5E91D10B4165E00AF521B /* PBXTextBookmark */;
+			DAB5E92310B416F400AF521B /* XCBuildMessageTextBookmark */ = DAB5E92310B416F400AF521B /* XCBuildMessageTextBookmark */;
+			DAB5E92A10B4174000AF521B /* PBXTextBookmark */ = DAB5E92A10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E92B10B4174000AF521B /* PBXTextBookmark */ = DAB5E92B10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E92C10B4174000AF521B /* PBXTextBookmark */ = DAB5E92C10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E92D10B4174000AF521B /* PBXTextBookmark */ = DAB5E92D10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E92E10B4174000AF521B /* PBXTextBookmark */ = DAB5E92E10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E92F10B4174000AF521B /* PBXTextBookmark */ = DAB5E92F10B4174000AF521B /* PBXTextBookmark */;
+			DAB5E93010B4174000AF521B /* PBXTextBookmark */ = DAB5E93010B4174000AF521B /* PBXTextBookmark */;
+			DAB5E93110B4174000AF521B /* PBXTextBookmark */ = DAB5E93110B4174000AF521B /* PBXTextBookmark */;
+			DAB5E93210B4174000AF521B /* PBXTextBookmark */ = DAB5E93210B4174000AF521B /* PBXTextBookmark */;
+			DAB5E93510B4174000AF521B /* PBXTextBookmark */ = DAB5E93510B4174000AF521B /* PBXTextBookmark */;
+			DAB5E93910B417AC00AF521B /* PBXTextBookmark */ = DAB5E93910B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93A10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93A10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93B10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93B10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93C10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93C10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93D10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93D10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93E10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93E10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E93F10B417AC00AF521B /* PBXTextBookmark */ = DAB5E93F10B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94010B417AC00AF521B /* PBXTextBookmark */ = DAB5E94010B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94110B417AC00AF521B /* PBXTextBookmark */ = DAB5E94110B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94210B417AC00AF521B /* PBXTextBookmark */ = DAB5E94210B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94310B417AC00AF521B /* PBXTextBookmark */ = DAB5E94310B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94410B417AC00AF521B /* PBXTextBookmark */ = DAB5E94410B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94510B417AC00AF521B /* PBXTextBookmark */ = DAB5E94510B417AC00AF521B /* PBXTextBookmark */;
+			DAB5E94710B417D300AF521B /* PBXTextBookmark */ = DAB5E94710B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94810B417D300AF521B /* PBXTextBookmark */ = DAB5E94810B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94910B417D300AF521B /* PBXTextBookmark */ = DAB5E94910B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94A10B417D300AF521B /* PBXTextBookmark */ = DAB5E94A10B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94B10B417D300AF521B /* XCBuildMessageTextBookmark */ = DAB5E94B10B417D300AF521B /* XCBuildMessageTextBookmark */;
+			DAB5E94C10B417D300AF521B /* PBXTextBookmark */ = DAB5E94C10B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94D10B417D300AF521B /* PBXTextBookmark */ = DAB5E94D10B417D300AF521B /* PBXTextBookmark */;
+			DAB5E94E10B417D400AF521B /* PBXTextBookmark */ = DAB5E94E10B417D400AF521B /* PBXTextBookmark */;
+			DAB5E94F10B417D400AF521B /* PBXTextBookmark */ = DAB5E94F10B417D400AF521B /* PBXTextBookmark */;
+			DAB5E95010B417D400AF521B /* PBXTextBookmark */ = DAB5E95010B417D400AF521B /* PBXTextBookmark */;
+			DAB5E95310B4180500AF521B /* PBXTextBookmark */ = DAB5E95310B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95410B4180500AF521B /* PBXTextBookmark */ = DAB5E95410B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95510B4180500AF521B /* PBXTextBookmark */ = DAB5E95510B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95610B4180500AF521B /* PBXTextBookmark */ = DAB5E95610B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95710B4180500AF521B /* PBXTextBookmark */ = DAB5E95710B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95810B4180500AF521B /* PBXTextBookmark */ = DAB5E95810B4180500AF521B /* PBXTextBookmark */;
+			DAB5E95910B4180500AF521B /* PBXTextBookmark */ = DAB5E95910B4180500AF521B /* PBXTextBookmark */;
 			DACE000010B38D3C00944021 = DACE000010B38D3C00944021 /* PBXTextBookmark */;
 			DACE000110B38D3C00944021 = DACE000110B38D3C00944021 /* PBXTextBookmark */;
 			DACE000210B38D3C00944021 = DACE000210B38D3C00944021 /* PBXTextBookmark */;
@@ -650,17 +751,17 @@
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 936}}";
-			sepNavSelRange = "{752, 0}";
-			sepNavVisRange = "{226, 1700}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 1001}}";
+			sepNavSelRange = "{1949, 0}";
+			sepNavVisRange = "{387, 1672}";
 			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};
 	B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {985, 3757}}";
-			sepNavSelRange = "{7476, 0}";
-			sepNavVisRange = "{6717, 704}";
+			sepNavIntBoundsRect = "{{0, 0}, {1051, 3627}}";
+			sepNavSelRange = "{4286, 0}";
+			sepNavVisRange = "{3633, 1060}";
 			sepNavWindowFrame = "{{26, -15}, {1110, 778}}";
 		};
 	};
@@ -673,7 +774,7 @@
 	};
 	B88C002510B28914002BDA85 /* Message.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 754}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 212}";
 		};
@@ -708,8 +809,8 @@
 	};
 	B88CFFA510B27FD5002BDA85 /* Person.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 754}}";
-			sepNavSelRange = "{341, 179}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
+			sepNavSelRange = "{309, 0}";
 			sepNavVisRange = "{0, 1150}";
 		};
 	};
@@ -828,7 +929,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 43";
 		rLen = 0;
-		rLoc = 1404;
+		rLoc = 1450;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 0;
@@ -868,7 +969,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 137";
 		rLen = 0;
-		rLoc = 3840;
+		rLoc = 3904;
 		rType = 0;
 		vrLen = 1766;
 		vrLoc = 1828;
@@ -1090,7 +1191,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 25";
 		rLen = 0;
-		rLoc = 1137;
+		rLoc = 1469;
 		rType = 0;
 		vrLen = 1066;
 		vrLoc = 0;
@@ -1174,7 +1275,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 39";
 		rLen = 575;
-		rLoc = 1061;
+		rLoc = 1085;
 		rType = 0;
 		vrLen = 1875;
 		vrLoc = 614;
@@ -1204,7 +1305,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 33";
 		rLen = 0;
-		rLoc = 925;
+		rLoc = 1257;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 0;
@@ -1234,7 +1335,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 54";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1653;
 		vrLoc = 192;
@@ -1244,7 +1345,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 55";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1634;
 		vrLoc = 236;
@@ -1254,7 +1355,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 51";
 		rLen = 0;
-		rLoc = 1285;
+		rLoc = 1617;
 		rType = 0;
 		vrLen = 1634;
 		vrLoc = 236;
@@ -1274,7 +1375,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 70";
 		rLen = 0;
-		rLoc = 2148;
+		rLoc = 2539;
 		rType = 0;
 		vrLen = 1634;
 		vrLoc = 236;
@@ -1284,7 +1385,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 43";
 		rLen = 0;
-		rLoc = 988;
+		rLoc = 1320;
 		rType = 0;
 		vrLen = 1663;
 		vrLoc = 236;
@@ -1294,7 +1395,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 58";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1663;
 		vrLoc = 236;
@@ -1315,7 +1416,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 91;
+		rLoc = 97;
 		rType = 1;
 	};
 	DAB5E71010B3F76B00AF521B /* PBXTextBookmark */ = {
@@ -1323,7 +1424,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 73";
 		rLen = 0;
-		rLoc = 2148;
+		rLoc = 2539;
 		rType = 0;
 		vrLen = 394;
 		vrLoc = 1503;
@@ -1343,7 +1444,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 56";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1664;
 		vrLoc = 236;
@@ -1353,7 +1454,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 58";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1665;
 		vrLoc = 236;
@@ -1363,7 +1464,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 69";
 		rLen = 46;
-		rLoc = 2072;
+		rLoc = 2096;
 		rType = 0;
 		vrLen = 1878;
 		vrLoc = 614;
@@ -1453,7 +1554,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 47";
 		rLen = 0;
-		rLoc = 925;
+		rLoc = 1257;
 		rType = 0;
 		vrLen = 1492;
 		vrLoc = 193;
@@ -1463,7 +1564,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 53";
 		rLen = 34;
-		rLoc = 1854;
+		rLoc = 1900;
 		rType = 0;
 		vrLen = 1415;
 		vrLoc = 0;
@@ -1473,7 +1574,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 169";
 		rLen = 0;
-		rLoc = 5670;
+		rLoc = 5745;
 		rType = 0;
 		vrLen = 1023;
 		vrLoc = 3848;
@@ -1493,7 +1594,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 52";
 		rLen = 0;
-		rLoc = 973;
+		rLoc = 1306;
 		rType = 0;
 		vrLen = 1510;
 		vrLoc = 720;
@@ -1513,7 +1614,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 28";
 		rLen = 0;
-		rLoc = 711;
+		rLoc = 1043;
 		rType = 0;
 		vrLen = 1444;
 		vrLoc = 0;
@@ -1533,7 +1634,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 28";
 		rLen = 0;
-		rLoc = 711;
+		rLoc = 1043;
 		rType = 0;
 		vrLen = 1444;
 		vrLoc = 0;
@@ -1543,7 +1644,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 38";
 		rLen = 0;
-		rLoc = 925;
+		rLoc = 1257;
 		rType = 0;
 		vrLen = 1292;
 		vrLoc = 3;
@@ -1612,7 +1713,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 61";
 		rLen = 0;
-		rLoc = 1435;
+		rLoc = 1772;
 		rType = 0;
 		vrLen = 963;
 		vrLoc = 663;
@@ -1632,7 +1733,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 72";
 		rLen = 0;
-		rLoc = 2156;
+		rLoc = 2220;
 		rType = 0;
 		vrLen = 1358;
 		vrLoc = 456;
@@ -1642,7 +1743,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 72";
 		rLen = 0;
-		rLoc = 2156;
+		rLoc = 2220;
 		rType = 0;
 		vrLen = 1375;
 		vrLoc = 456;
@@ -1652,7 +1753,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 72";
 		rLen = 0;
-		rLoc = 2156;
+		rLoc = 2220;
 		rType = 0;
 		vrLen = 1375;
 		vrLoc = 456;
@@ -1712,7 +1813,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 250;
+		rLoc = 264;
 		rType = 1;
 	};
 	DAB5E79E10B4064100AF521B /* PBXTextBookmark */ = {
@@ -1720,7 +1821,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 243";
 		rLen = 0;
-		rLoc = 6576;
+		rLoc = 7059;
 		rType = 0;
 		vrLen = 645;
 		vrLoc = 5814;
@@ -1780,7 +1881,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1306;
 		vrLoc = 660;
@@ -1830,7 +1931,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 36";
 		rLen = 0;
-		rLoc = 959;
+		rLoc = 1005;
 		rType = 0;
 		vrLen = 1686;
 		vrLoc = 0;
@@ -1841,7 +1942,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 270;
+		rLoc = 284;
 		rType = 1;
 	};
 	DAB5E7B310B4066E00AF521B /* PBXTextBookmark */ = {
@@ -1849,7 +1950,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 261";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 1612;
 		vrLoc = 5249;
@@ -1860,7 +1961,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 269;
+		rLoc = 283;
 		rType = 1;
 	};
 	DAB5E7BB10B406B600AF521B /* PBXTextBookmark */ = {
@@ -1868,7 +1969,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 261";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 434;
 		vrLoc = 6427;
@@ -1888,7 +1989,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 36";
 		rLen = 0;
-		rLoc = 959;
+		rLoc = 1005;
 		rType = 0;
 		vrLen = 1685;
 		vrLoc = 0;
@@ -1908,7 +2009,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 252";
 		rLen = 0;
-		rLoc = 7204;
+		rLoc = 7687;
 		rType = 0;
 		vrLen = 1575;
 		vrLoc = 5286;
@@ -1918,7 +2019,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 258";
 		rLen = 0;
-		rLoc = 7204;
+		rLoc = 7687;
 		rType = 0;
 		vrLen = 1694;
 		vrLoc = 5302;
@@ -1928,7 +2029,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 252";
 		rLen = 0;
-		rLoc = 7204;
+		rLoc = 7687;
 		rType = 0;
 		vrLen = 1769;
 		vrLoc = 5302;
@@ -1938,7 +2039,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 225";
 		rLen = 0;
-		rLoc = 6212;
+		rLoc = 6287;
 		rType = 0;
 		vrLen = 1612;
 		vrLoc = 5247;
@@ -1968,7 +2069,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 73";
 		rLen = 0;
-		rLoc = 1983;
+		rLoc = 2374;
 		rType = 0;
 		vrLen = 1333;
 		vrLoc = 669;
@@ -1978,7 +2079,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 65";
 		rLen = 0;
-		rLoc = 1600;
+		rLoc = 1991;
 		rType = 0;
 		vrLen = 1333;
 		vrLoc = 669;
@@ -1988,7 +2089,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1305;
 		vrLoc = 669;
@@ -2008,7 +2109,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1305;
 		vrLoc = 669;
@@ -2018,7 +2119,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 67";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1318;
 		vrLoc = 688;
@@ -2028,7 +2129,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1314;
 		vrLoc = 688;
@@ -2038,7 +2139,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1314;
 		vrLoc = 688;
@@ -2048,7 +2149,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 76";
 		rLen = 0;
-		rLoc = 1982;
+		rLoc = 2373;
 		rType = 0;
 		vrLen = 1241;
 		vrLoc = 688;
@@ -2068,7 +2169,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 29";
 		rLen = 0;
-		rLoc = 833;
+		rLoc = 879;
 		rType = 0;
 		vrLen = 1590;
 		vrLoc = 338;
@@ -2078,7 +2179,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 187";
 		rLen = 0;
-		rLoc = 5422;
+		rLoc = 5497;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 4268;
@@ -2128,7 +2229,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 70";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1241;
 		vrLoc = 688;
@@ -2138,7 +2239,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 75";
 		rLen = 0;
-		rLoc = 1982;
+		rLoc = 2373;
 		rType = 0;
 		vrLen = 1290;
 		vrLoc = 764;
@@ -2148,7 +2249,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 75";
 		rLen = 32;
-		rLoc = 1949;
+		rLoc = 2340;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 764;
@@ -2158,7 +2259,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 75";
 		rLen = 0;
-		rLoc = 1948;
+		rLoc = 2339;
 		rType = 0;
 		vrLen = 1324;
 		vrLoc = 764;
@@ -2168,7 +2269,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 70";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1325;
 		vrLoc = 764;
@@ -2178,7 +2279,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 64";
 		rLen = 0;
-		rLoc = 1467;
+		rLoc = 1858;
 		rType = 0;
 		vrLen = 1325;
 		vrLoc = 764;
@@ -2188,7 +2289,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 29";
 		rLen = 0;
-		rLoc = 833;
+		rLoc = 879;
 		rType = 0;
 		vrLen = 1618;
 		vrLoc = 309;
@@ -2208,7 +2309,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 187";
 		rLen = 0;
-		rLoc = 5421;
+		rLoc = 5496;
 		rType = 0;
 		vrLen = 1660;
 		vrLoc = 3929;
@@ -2218,7 +2319,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 187";
 		rLen = 0;
-		rLoc = 5421;
+		rLoc = 5496;
 		rType = 0;
 		vrLen = 1660;
 		vrLoc = 3929;
@@ -2248,7 +2349,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 64";
 		rLen = 0;
-		rLoc = 1467;
+		rLoc = 1858;
 		rType = 0;
 		vrLen = 1307;
 		vrLoc = 782;
@@ -2258,7 +2359,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 76";
 		rLen = 0;
-		rLoc = 1948;
+		rLoc = 2339;
 		rType = 0;
 		vrLen = 1303;
 		vrLoc = 782;
@@ -2268,7 +2369,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 68";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1322;
 		vrLoc = 764;
@@ -2278,7 +2379,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 76";
 		rLen = 0;
-		rLoc = 1953;
+		rLoc = 2344;
 		rType = 0;
 		vrLen = 1385;
 		vrLoc = 764;
@@ -2288,7 +2389,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 74";
 		rLen = 0;
-		rLoc = 1944;
+		rLoc = 2335;
 		rType = 0;
 		vrLen = 1384;
 		vrLoc = 764;
@@ -2298,7 +2399,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 74";
 		rLen = 0;
-		rLoc = 1944;
+		rLoc = 2335;
 		rType = 0;
 		vrLen = 1384;
 		vrLoc = 764;
@@ -2308,7 +2409,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 260";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 690;
 		vrLoc = 6176;
@@ -2328,7 +2429,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 26";
 		rLen = 0;
-		rLoc = 752;
+		rLoc = 798;
 		rType = 0;
 		vrLen = 1674;
 		vrLoc = 252;
@@ -2347,7 +2448,7 @@
 		isa = PBXTextBookmark;
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		rLen = 0;
-		rLoc = 64;
+		rLoc = 70;
 		rType = 1;
 	};
 	DAB5E83F10B40B6300AF521B /* PBXTextBookmark */ = {
@@ -2365,7 +2466,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 64";
 		rLen = 0;
-		rLoc = 1467;
+		rLoc = 1858;
 		rType = 0;
 		vrLen = 1321;
 		vrLoc = 834;
@@ -2375,7 +2476,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 64";
 		rLen = 0;
-		rLoc = 1467;
+		rLoc = 1858;
 		rType = 0;
 		vrLen = 1324;
 		vrLoc = 831;
@@ -2385,7 +2486,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 260";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 686;
 		vrLoc = 6155;
@@ -2412,7 +2513,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 261";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 350;
 		vrLoc = 6325;
@@ -2432,7 +2533,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 56";
 		rLen = 0;
-		rLoc = 1280;
+		rLoc = 1612;
 		rType = 0;
 		vrLen = 1324;
 		vrLoc = 831;
@@ -2442,7 +2543,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 26";
 		rLen = 0;
-		rLoc = 752;
+		rLoc = 798;
 		rType = 0;
 		vrLen = 1673;
 		vrLoc = 252;
@@ -2462,7 +2563,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 26";
 		rLen = 0;
-		rLoc = 752;
+		rLoc = 798;
 		rType = 0;
 		vrLen = 1673;
 		vrLoc = 252;
@@ -2482,7 +2583,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 193";
 		rLen = 0;
-		rLoc = 5405;
+		rLoc = 5480;
 		rType = 0;
 		vrLen = 1605;
 		vrLoc = 4616;
@@ -2492,7 +2593,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 26";
 		rLen = 0;
-		rLoc = 752;
+		rLoc = 798;
 		rType = 0;
 		vrLen = 1700;
 		vrLoc = 226;
@@ -2502,7 +2603,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 193";
 		rLen = 0;
-		rLoc = 5405;
+		rLoc = 5480;
 		rType = 0;
 		vrLen = 1133;
 		vrLoc = 0;
@@ -2512,7 +2613,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 195";
 		rLen = 0;
-		rLoc = 5421;
+		rLoc = 5496;
 		rType = 0;
 		vrLen = 1677;
 		vrLoc = 4338;
@@ -2542,7 +2643,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 259";
 		rLen = 0;
-		rLoc = 7170;
+		rLoc = 7653;
 		rType = 0;
 		vrLen = 1628;
 		vrLoc = 5817;
@@ -2552,7 +2653,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 270";
 		rLen = 0;
-		rLoc = 7476;
+		rLoc = 7959;
 		rType = 0;
 		vrLen = 350;
 		vrLoc = 6750;
@@ -2642,7 +2743,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 260";
 		rLen = 0;
-		rLoc = 7170;
+		rLoc = 7653;
 		rType = 0;
 		vrLen = 1584;
 		vrLoc = 5898;
@@ -2662,7 +2763,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 69";
 		rLen = 0;
-		rLoc = 1790;
+		rLoc = 2181;
 		rType = 0;
 		vrLen = 1335;
 		vrLoc = 833;
@@ -2672,10 +2773,1010 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 70";
 		rLen = 0;
-		rLoc = 1832;
+		rLoc = 2223;
 		rType = 0;
 		vrLen = 1322;
 		vrLoc = 831;
+	};
+	DAB5E8AB10B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 29";
+		rLen = 0;
+		rLoc = 818;
+		rType = 0;
+		vrLen = 1521;
+		vrLoc = 458;
+	};
+	DAB5E8AC10B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 239";
+		rLen = 0;
+		rLoc = 6368;
+		rType = 0;
+		vrLen = 1347;
+		vrLoc = 5718;
+	};
+	DAB5E8AD10B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE015410B3C4C300944021 /* AddWaypointOverlayView.h */;
+		name = "AddWaypointOverlayView.h: 10";
+		rLen = 0;
+		rLoc = 199;
+		rType = 0;
+		vrLen = 255;
+		vrLoc = 0;
+	};
+	DAB5E8AE10B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023510B3E2D800944021 /* Waypoint.m */;
+		name = "Waypoint.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 190;
+		vrLoc = 0;
+	};
+	DAB5E8AF10B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 46";
+		rLen = 0;
+		rLoc = 1306;
+		rType = 0;
+		vrLen = 1362;
+		vrLoc = 286;
+	};
+	DAB5E8B010B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005B10B3939500944021 /* AddWaypointViewController.h */;
+		name = "AddWaypointViewController.h: 11";
+		rLen = 26;
+		rLoc = 203;
+		rType = 0;
+		vrLen = 888;
+		vrLoc = 0;
+	};
+	DAB5E8B110B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 10";
+		rLen = 0;
+		rLoc = 196;
+		rType = 0;
+		vrLen = 215;
+		vrLoc = 0;
+	};
+	DAB5E8B210B410E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 15";
+		rLen = 0;
+		rLoc = 412;
+		rType = 0;
+		vrLen = 286;
+		vrLoc = 0;
+	};
+	DAB5E8B310B4113300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 383;
+		rType = 0;
+		vrLen = 402;
+		vrLoc = 0;
+	};
+	DAB5E8BC10B411DD00AF521B /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected specifier-qualifier-list before 'CLLocationCoordinate2D'";
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 18;
+		rType = 1;
+	};
+	DAB5E8BD10B411E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 68";
+		rLen = 26;
+		rLoc = 1337;
+		rType = 0;
+		vrLen = 1906;
+		vrLoc = 909;
+	};
+	DAB5E8BE10B411E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023510B3E2D800944021 /* Waypoint.m */;
+		name = "Waypoint.m: 17";
+		rLen = 0;
+		rLoc = 459;
+		rType = 0;
+		vrLen = 331;
+		vrLoc = 0;
+	};
+	DAB5E8BF10B411E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558E10A250FB007BB25E /* FeedViewController.h */;
+		name = "FeedViewController.h: 13";
+		rLen = 0;
+		rLoc = 222;
+		rType = 0;
+		vrLen = 275;
+		vrLoc = 0;
+	};
+	DAB5E8C010B411E400AF521B /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected specifier-qualifier-list before 'CLLocationCoordinate2D'";
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 18;
+		rType = 1;
+	};
+	DAB5E8C110B411E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 18";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 424;
+		vrLoc = 0;
+	};
+	DAB5E8C410B411E400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 18";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 424;
+		vrLoc = 0;
+	};
+	DAB5E8D510B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002510B28914002BDA85 /* Message.h */;
+		name = "Message.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 0;
+	};
+	DAB5E8D610B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE015410B3C4C300944021 /* AddWaypointOverlayView.h */;
+		name = "AddWaypointOverlayView.h: 10";
+		rLen = 0;
+		rLoc = 199;
+		rType = 0;
+		vrLen = 255;
+		vrLoc = 0;
+	};
+	DAB5E8D710B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 13";
+		rLen = 29;
+		rLoc = 279;
+		rType = 0;
+		vrLen = 1661;
+		vrLoc = 0;
+	};
+	DAB5E8D810B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 68";
+		rLen = 26;
+		rLoc = 1337;
+		rType = 0;
+		vrLen = 1882;
+		vrLoc = 933;
+	};
+	DAB5E8D910B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023510B3E2D800944021 /* Waypoint.m */;
+		name = "Waypoint.m: 21";
+		rLen = 0;
+		rLoc = 476;
+		rType = 0;
+		vrLen = 485;
+		vrLoc = 0;
+	};
+	DAB5E8DA10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
+		name = "FeedViewController.m: 40";
+		rLen = 292;
+		rLoc = 1075;
+		rType = 0;
+		vrLen = 1569;
+		vrLoc = 144;
+	};
+	DAB5E8DB10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005B10B3939500944021 /* AddWaypointViewController.h */;
+		name = "AddWaypointViewController.h: 11";
+		rLen = 26;
+		rLoc = 203;
+		rType = 0;
+		vrLen = 888;
+		vrLoc = 0;
+	};
+	DAB5E8DC10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 45";
+		rLen = 0;
+		rLoc = 1306;
+		rType = 0;
+		vrLen = 1458;
+		vrLoc = 693;
+	};
+	DAB5E8DD10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 15";
+		rLen = 11;
+		rLoc = 289;
+		rType = 0;
+		vrLen = 505;
+		vrLoc = 0;
+	};
+	DAB5E8DE10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 20";
+		rLen = 0;
+		rLoc = 412;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8DF10B4131D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8E010B413F700AF521B /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+	};
+	DAB5E8E110B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 20";
+		rLen = 0;
+		rLoc = 412;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8E210B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 35";
+		rLen = 0;
+		rLoc = 1043;
+		rType = 0;
+		vrLen = 1518;
+		vrLoc = 90;
+	};
+	DAB5E8E310B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 26";
+		rLen = 25;
+		rLoc = 746;
+		rType = 0;
+		vrLen = 1591;
+		vrLoc = 388;
+	};
+	DAB5E8E410B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 238";
+		rLen = 0;
+		rLoc = 6368;
+		rType = 0;
+		vrLen = 1347;
+		vrLoc = 5718;
+	};
+	DAB5E8E510B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 246";
+		rLen = 0;
+		rLoc = 6446;
+		rType = 0;
+		vrLen = 1220;
+		vrLoc = 5631;
+	};
+	DAB5E8E810B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E8E910B4144100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8EA10B4150D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 249";
+		rLen = 0;
+		rLoc = 6565;
+		rType = 0;
+		vrLen = 1581;
+		vrLoc = 5883;
+	};
+	DAB5E8EB10B4150D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E8EC10B4150D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8F710B4157300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 235";
+		rLen = 0;
+		rLoc = 6283;
+		rType = 0;
+		vrLen = 1589;
+		vrLoc = 5902;
+	};
+	DAB5E8F810B4157300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E8F910B4157300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E8FE10B4158D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 270";
+		rLen = 0;
+		rLoc = 7580;
+		rType = 0;
+		vrLen = 1689;
+		vrLoc = 6114;
+	};
+	DAB5E8FF10B4158D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E90010B4158D00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E90110B415A100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 270";
+		rLen = 0;
+		rLoc = 7580;
+		rType = 0;
+		vrLen = 1689;
+		vrLoc = 6114;
+	};
+	DAB5E90210B415A100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1301;
+		vrLoc = 729;
+	};
+	DAB5E90310B415A100AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E90810B415DD00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 232";
+		rLen = 0;
+		rLoc = 6272;
+		rType = 0;
+		vrLen = 1573;
+		vrLoc = 5962;
+	};
+	DAB5E90910B415DD00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E90A10B415DD00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E90D10B415E800AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 232";
+		rLen = 0;
+		rLoc = 6272;
+		rType = 0;
+		vrLen = 1573;
+		vrLoc = 5962;
+	};
+	DAB5E90E10B415E800AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E90F10B415E800AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E91710B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 226";
+		rLen = 0;
+		rLoc = 6127;
+		rType = 0;
+		vrLen = 1528;
+		vrLoc = 4904;
+	};
+	DAB5E91810B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556910A25042007BB25E /* MapViewController.h */;
+		name = "MapViewController.h: 10";
+		rLen = 111;
+		rLoc = 168;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 0;
+	};
+	DAB5E91910B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
+		name = "FeedViewController.m: 40";
+		rLen = 292;
+		rLoc = 1075;
+		rType = 0;
+		vrLen = 1632;
+		vrLoc = 82;
+	};
+	DAB5E91A10B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 56";
+		rLen = 0;
+		rLoc = 2317;
+		rType = 0;
+		vrLen = 2375;
+		vrLoc = 143;
+	};
+	DAB5E91B10B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 56";
+		rLen = 0;
+		rLoc = 2317;
+		rType = 0;
+		vrLen = 2530;
+		vrLoc = 143;
+	};
+	DAB5E91C10B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 70";
+		rLen = 0;
+		rLoc = 2012;
+		rType = 0;
+		vrLen = 1296;
+		vrLoc = 729;
+	};
+	DAB5E91D10B4165E00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E92310B416F400AF521B /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Control reaches end of non-void function";
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 162;
+		rType = 1;
+	};
+	DAB5E92A10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 30";
+		rLen = 0;
+		rLoc = 794;
+		rType = 0;
+		vrLen = 2532;
+		vrLoc = 143;
+	};
+	DAB5E92B10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEA610B3360400944021 /* MapNavigationController.h */;
+		name = "MapNavigationController.h: 12";
+		rLen = 0;
+		rLoc = 240;
+		rType = 0;
+		vrLen = 312;
+		vrLoc = 0;
+	};
+	DAB5E92C10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEA710B3360400944021 /* MapNavigationController.m */;
+		name = "MapNavigationController.m: 29";
+		rLen = 1;
+		rLoc = 733;
+		rType = 0;
+		vrLen = 1568;
+		vrLoc = 187;
+	};
+	DAB5E92D10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 254";
+		rLen = 19;
+		rLoc = 6736;
+		rType = 0;
+		vrLen = 1640;
+		vrLoc = 5857;
+	};
+	DAB5E92E10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 69";
+		rLen = 0;
+		rLoc = 1949;
+		rType = 0;
+		vrLen = 1607;
+		vrLoc = 458;
+	};
+	DAB5E92F10B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
+		name = "RegisterViewController.m: 15";
+		rLen = 0;
+		rLoc = 250;
+		rType = 0;
+		vrLen = 1584;
+		vrLoc = 1281;
+	};
+	DAB5E93010B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
+		name = "RegisterViewController.h: 14";
+		rLen = 0;
+		rLoc = 356;
+		rType = 0;
+		vrLen = 455;
+		vrLoc = 0;
+	};
+	DAB5E93110B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
+		name = "RegisterViewController.h: 18";
+		rLen = 0;
+		rLoc = 423;
+		rType = 0;
+		vrLen = 430;
+		vrLoc = 0;
+	};
+	DAB5E93210B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E93510B4174000AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 162";
+		rLen = 0;
+		rLoc = 4286;
+		rType = 0;
+		vrLen = 1006;
+		vrLoc = 3685;
+	};
+	DAB5E93910B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
+		name = "RegisterViewController.h: 18";
+		rLen = 0;
+		rLoc = 423;
+		rType = 0;
+		vrLen = 430;
+		vrLoc = 0;
+	};
+	DAB5E93A10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 69";
+		rLen = 0;
+		rLoc = 1949;
+		rType = 0;
+		vrLen = 1601;
+		vrLoc = 458;
+	};
+	DAB5E93B10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 251";
+		rLen = 0;
+		rLoc = 6701;
+		rType = 0;
+		vrLen = 1484;
+		vrLoc = 5852;
+	};
+	DAB5E93C10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88CFFA410B27FD5002BDA85 /* Person.h */;
+		name = "Person.h: 27";
+		rLen = 0;
+		rLoc = 594;
+		rType = 0;
+		vrLen = 626;
+		vrLoc = 0;
+	};
+	DAB5E93D10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88CFFA510B27FD5002BDA85 /* Person.m */;
+		name = "Person.m: 21";
+		rLen = 0;
+		rLoc = 309;
+		rType = 0;
+		vrLen = 1150;
+		vrLoc = 0;
+	};
+	DAB5E93E10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556910A25042007BB25E /* MapViewController.h */;
+		name = "MapViewController.h: 10";
+		rLen = 111;
+		rLoc = 168;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 0;
+	};
+	DAB5E93F10B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 73";
+		rLen = 0;
+		rLoc = 2553;
+		rType = 0;
+		vrLen = 1757;
+		vrLoc = 2675;
+	};
+	DAB5E94010B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE015510B3C4C300944021 /* AddWaypointOverlayView.m */;
+		name = "AddWaypointOverlayView.m: 43";
+		rLen = 0;
+		rLoc = 1590;
+		rType = 0;
+		vrLen = 1653;
+		vrLoc = 0;
+	};
+	DAB5E94110B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005B10B3939500944021 /* AddWaypointViewController.h */;
+		name = "AddWaypointViewController.h: 11";
+		rLen = 26;
+		rLoc = 203;
+		rType = 0;
+		vrLen = 888;
+		vrLoc = 0;
+	};
+	DAB5E94210B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 37";
+		rLen = 0;
+		rLoc = 1069;
+		rType = 0;
+		vrLen = 1374;
+		vrLoc = 0;
+	};
+	DAB5E94310B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 69";
+		rLen = 0;
+		rLoc = 1856;
+		rType = 0;
+		vrLen = 1441;
+		vrLoc = 1091;
+	};
+	DAB5E94410B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E94510B417AC00AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 162";
+		rLen = 0;
+		rLoc = 4286;
+		rType = 0;
+		vrLen = 1015;
+		vrLoc = 3633;
+	};
+	DAB5E94710B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 313;
+		vrLoc = 197;
+	};
+	DAB5E94810B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 162";
+		rLen = 0;
+		rLoc = 5080;
+		rType = 0;
+		vrLen = 161;
+		vrLoc = 5277;
+	};
+	DAB5E94910B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
+		name = "GroupiesViewController.m: 271";
+		rLen = 0;
+		rLoc = 7502;
+		rType = 0;
+		vrLen = 569;
+		vrLoc = 6938;
+	};
+	DAB5E94A10B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 285";
+		rLen = 0;
+		rLoc = 7960;
+		rType = 0;
+		vrLen = 453;
+		vrLoc = 7508;
+	};
+	DAB5E94B10B417D300AF521B /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Property 'nameField' requires the method 'setNameField:' to be defined - use @synthesize, @dynamic or provide a method implementation";
+		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 101;
+		rType = 1;
+	};
+	DAB5E94C10B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
+		name = "RegisterViewController.m: 102";
+		rLen = 0;
+		rLoc = 2860;
+		rType = 0;
+		vrLen = 219;
+		vrLoc = 2641;
+	};
+	DAB5E94D10B417D300AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 98";
+		rLen = 25;
+		rLoc = 3320;
+		rType = 0;
+		vrLen = 560;
+		vrLoc = 3427;
+	};
+	DAB5E94E10B417D400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 59";
+		rLen = 0;
+		rLoc = 1471;
+		rType = 0;
+		vrLen = 1443;
+		vrLoc = 1091;
+	};
+	DAB5E94F10B417D400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E95010B417D400AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 162";
+		rLen = 0;
+		rLoc = 4286;
+		rType = 0;
+		vrLen = 1060;
+		vrLoc = 3633;
+	};
+	DAB5E95310B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
+		name = "AddWaypointViewController.m: 35";
+		rLen = 0;
+		rLoc = 1025;
+		rType = 0;
+		vrLen = 1470;
+		vrLoc = 0;
+	};
+	DAB5E95410B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 69";
+		rLen = 0;
+		rLoc = 1949;
+		rType = 0;
+		vrLen = 1672;
+		vrLoc = 387;
+	};
+	DAB5E95510B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 246";
+		rLen = 0;
+		rLoc = 6530;
+		rType = 0;
+		vrLen = 1798;
+		vrLoc = 6167;
+	};
+	DAB5E95610B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACEFEA610B3360400944021 /* MapNavigationController.h */;
+		name = "MapNavigationController.h: 12";
+		rLen = 0;
+		rLoc = 240;
+		rType = 0;
+		vrLen = 312;
+		vrLoc = 0;
+	};
+	DAB5E95710B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 56";
+		rLen = 0;
+		rLoc = 2317;
+		rType = 0;
+		vrLen = 2435;
+		vrLoc = 81;
+	};
+	DAB5E95810B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DACE023410B3E2D800944021 /* Waypoint.h */;
+		name = "Waypoint.h: 19";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 510;
+		vrLoc = 0;
+	};
+	DAB5E95910B4180500AF521B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 162";
+		rLen = 0;
+		rLoc = 4286;
+		rType = 0;
+		vrLen = 1060;
+		vrLoc = 3633;
 	};
 	DACE000010B38D3C00944021 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -2772,7 +3873,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 67";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2088;
 		rType = 0;
 		vrLen = 1179;
 		vrLoc = 1636;
@@ -2782,7 +3883,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 72";
 		rLen = 0;
-		rLoc = 2136;
+		rLoc = 2160;
 		rType = 0;
 		vrLen = 1155;
 		vrLoc = 1636;
@@ -2792,7 +3893,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 69";
 		rLen = 0;
-		rLoc = 2099;
+		rLoc = 2123;
 		rType = 0;
 		vrLen = 1155;
 		vrLoc = 1636;
@@ -2940,16 +4041,16 @@
 	DACE005B10B3939500944021 /* AddWaypointViewController.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
-			sepNavSelRange = "{720, 0}";
+			sepNavSelRange = "{203, 26}";
 			sepNavVisRange = "{0, 888}";
 			sepNavWindowFrame = "{{604, 0}, {1110, 778}}";
 		};
 	};
 	DACE005C10B3939500944021 /* AddWaypointViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 1209}}";
-			sepNavSelRange = "{1832, 0}";
-			sepNavVisRange = "{831, 1322}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 1313}}";
+			sepNavSelRange = "{1025, 0}";
+			sepNavVisRange = "{0, 1470}";
 			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};
@@ -3248,7 +4349,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 69";
 		rLen = 0;
-		rLoc = 2099;
+		rLoc = 2123;
 		rType = 0;
 		vrLen = 1714;
 		vrLoc = 1118;
@@ -3268,7 +4369,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 27";
 		rLen = 0;
-		rLoc = 1282;
+		rLoc = 1614;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3278,7 +4379,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 27";
 		rLen = 0;
-		rLoc = 1255;
+		rLoc = 1587;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3318,7 +4419,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 33";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3338,7 +4439,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 32";
 		rLen = 0;
-		rLoc = 1992;
+		rLoc = 2383;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3388,7 +4489,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 30";
 		rLen = 0;
-		rLoc = 1324;
+		rLoc = 1656;
 		rType = 0;
 		vrLen = 1365;
 		vrLoc = 90;
@@ -3408,7 +4509,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 31";
 		rLen = 0;
-		rLoc = 1602;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1420;
 		vrLoc = 35;
@@ -3418,7 +4519,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 32";
 		rLen = 0;
-		rLoc = 1992;
+		rLoc = 2383;
 		rType = 0;
 		vrLen = 1417;
 		vrLoc = 35;
@@ -3588,7 +4689,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 31";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3598,7 +4699,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 31";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3658,7 +4759,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 24";
 		rLen = 0;
-		rLoc = 1193;
+		rLoc = 1525;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3872,7 +4973,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 69";
 		rLen = 0;
-		rLoc = 2099;
+		rLoc = 2123;
 		rType = 0;
 		vrLen = 1581;
 		vrLoc = 1260;
@@ -3882,7 +4983,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 24";
 		rLen = 0;
-		rLoc = 1193;
+		rLoc = 1525;
 		rType = 0;
 		vrLen = 1455;
 		vrLoc = 0;
@@ -3942,7 +5043,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 30";
 		rLen = 0;
-		rLoc = 1345;
+		rLoc = 1677;
 		rType = 0;
 		vrLen = 1407;
 		vrLoc = 48;
@@ -4245,7 +5346,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 30";
 		rLen = 0;
-		rLoc = 1345;
+		rLoc = 1677;
 		rType = 0;
 		vrLen = 1407;
 		vrLoc = 48;
@@ -4355,7 +5456,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 30";
 		rLen = 0;
-		rLoc = 1345;
+		rLoc = 1677;
 		rType = 0;
 		vrLen = 1420;
 		vrLoc = 35;
@@ -4475,7 +5576,7 @@
 		comments = "'myMap' undeclared (first use in this function)";
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		rLen = 0;
-		rLoc = 78;
+		rLoc = 84;
 		rType = 1;
 	};
 	DACE01E410B3CF9500944021 /* PBXTextBookmark */ = {
@@ -4483,7 +5584,7 @@
 		fRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */;
 		name = "AddWaypointViewController.m: 30";
 		rLen = 0;
-		rLoc = 1464;
+		rLoc = 1774;
 		rType = 0;
 		vrLen = 441;
 		vrLoc = 590;
@@ -4660,16 +5761,16 @@
 	};
 	DACE023410B3E2D800944021 /* Waypoint.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 754}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 214}";
+			sepNavIntBoundsRect = "{{0, 0}, {1051, 650}}";
+			sepNavSelRange = "{346, 0}";
+			sepNavVisRange = "{0, 510}";
 		};
 	};
 	DACE023510B3E2D800944021 /* Waypoint.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 754}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 190}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
+			sepNavSelRange = "{476, 0}";
+			sepNavVisRange = "{0, 485}";
 		};
 	};
 	DACEFE5710B29BEB00944021 /* User.h */ = {
@@ -4702,7 +5803,7 @@
 	};
 	DACEFEA610B3360400944021 /* MapNavigationController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 751}}";
 			sepNavSelRange = "{240, 0}";
 			sepNavVisRange = "{0, 312}";
 		};
@@ -4711,7 +5812,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1336, 884}}";
 			sepNavSelRange = "{733, 1}";
-			sepNavVisRange = "{189, 1566}";
+			sepNavVisRange = "{187, 1568}";
 		};
 	};
 	DACEFEAB10B3365E00944021 /* RegisterViewController.h */ = {
@@ -4723,8 +5824,8 @@
 		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1336, 728}}";
-			sepNavSelRange = "{233, 0}";
-			sepNavVisRange = "{0, 478}";
+			sepNavSelRange = "{423, 0}";
+			sepNavVisRange = "{0, 430}";
 		};
 	};
 	DACEFEAC10B3365E00944021 /* RegisterViewController.m */ = {
@@ -4735,9 +5836,10 @@
 		path = /Users/njoubert/Code/iPhone/Burble/trunk/Classes/RegisterViewController.m;
 		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 1222}}";
-			sepNavSelRange = "{2072, 46}";
-			sepNavVisRange = "{614, 1878}";
+			sepNavIntBoundsRect = "{{0, 0}, {978, 1417}}";
+			sepNavSelRange = "{2860, 0}";
+			sepNavVisRange = "{2641, 219}";
+			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};
 	DACEFEB710B3375000944021 /* PBXTextBookmark */ = {
@@ -4815,7 +5917,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 28";
 		rLen = 0;
-		rLoc = 1001;
+		rLoc = 1047;
 		rType = 0;
 		vrLen = 1052;
 		vrLoc = 27;
@@ -4825,7 +5927,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 92";
 		rLen = 0;
-		rLoc = 2799;
+		rLoc = 2863;
 		rType = 0;
 		vrLen = 1412;
 		vrLoc = 1630;
@@ -4835,7 +5937,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 144";
 		rLen = 0;
-		rLoc = 4138;
+		rLoc = 4202;
 		rType = 0;
 		vrLen = 788;
 		vrLoc = 3119;
@@ -4845,7 +5947,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 28";
 		rLen = 0;
-		rLoc = 1001;
+		rLoc = 1047;
 		rType = 0;
 		vrLen = 1047;
 		vrLoc = 27;
@@ -4855,7 +5957,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 133";
 		rLen = 0;
-		rLoc = 3975;
+		rLoc = 4039;
 		rType = 0;
 		vrLen = 755;
 		vrLoc = 2826;
@@ -4925,7 +6027,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 16";
 		rLen = 0;
-		rLoc = 424;
+		rLoc = 448;
 		rType = 0;
 		vrLen = 1146;
 		vrLoc = 3;
@@ -5025,7 +6127,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 16";
 		rLen = 0;
-		rLoc = 424;
+		rLoc = 448;
 		rType = 0;
 		vrLen = 1092;
 		vrLoc = 3;
@@ -5035,7 +6137,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 19";
 		rLen = 0;
-		rLoc = 591;
+		rLoc = 615;
 		rType = 0;
 		vrLen = 1061;
 		vrLoc = 0;
@@ -5079,8 +6181,8 @@
 		isa = PBXTextBookmark;
 		comments = "Passing argument 1 of 'initWithFormat:' from incompatible pointer type";
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
-		rLen = 1;
-		rLoc = 54;
+		rLen = 0;
+		rLoc = 55;
 		rType = 1;
 	};
 	DACEFF7710B3662E00944021 /* PBXTextBookmark */ = {
@@ -5108,7 +6210,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 64";
 		rLen = 0;
-		rLoc = 1930;
+		rLoc = 1954;
 		rType = 0;
 		vrLen = 1061;
 		vrLoc = 0;
@@ -5187,8 +6289,8 @@
 		isa = PBXTextBookmark;
 		comments = "Passing argument 1 of 'initWithFormat:' from incompatible pointer type";
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
-		rLen = 1;
-		rLoc = 54;
+		rLen = 0;
+		rLoc = 55;
 		rType = 1;
 	};
 	DACEFF8A10B3663400944021 /* PBXTextBookmark */ = {
@@ -5226,7 +6328,7 @@
 		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
 		name = "RegisterViewController.h: 14";
 		rLen = 0;
-		rLoc = 379;
+		rLoc = 356;
 		rType = 0;
 		vrLen = 449;
 		vrLoc = 0;
@@ -5236,7 +6338,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 91";
 		rLen = 0;
-		rLoc = 2490;
+		rLoc = 2514;
 		rType = 0;
 		vrLen = 733;
 		vrLoc = 2108;
@@ -5246,7 +6348,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 94";
 		rLen = 0;
-		rLoc = 2490;
+		rLoc = 2514;
 		rType = 0;
 		vrLen = 413;
 		vrLoc = 2428;
@@ -5256,7 +6358,7 @@
 		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
 		name = "RegisterViewController.h: 14";
 		rLen = 0;
-		rLoc = 379;
+		rLoc = 356;
 		rType = 0;
 		vrLen = 449;
 		vrLoc = 0;
@@ -5266,7 +6368,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 83";
 		rLen = 0;
-		rLoc = 2490;
+		rLoc = 2514;
 		rType = 0;
 		vrLen = 843;
 		vrLoc = 1986;
@@ -5326,7 +6428,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1150;
 		vrLoc = 1634;
@@ -5336,7 +6438,7 @@
 		fRef = DACEFEAB10B3365E00944021 /* RegisterViewController.h */;
 		name = "RegisterViewController.h: 14";
 		rLen = 0;
-		rLoc = 379;
+		rLoc = 356;
 		rType = 0;
 		vrLen = 449;
 		vrLoc = 0;
@@ -5366,7 +6468,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1148;
 		vrLoc = 1634;
@@ -5406,7 +6508,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 73";
 		rLen = 0;
-		rLoc = 2190;
+		rLoc = 2214;
 		rType = 0;
 		vrLen = 1178;
 		vrLoc = 1637;
@@ -5446,7 +6548,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 125";
 		rLen = 0;
-		rLoc = 3839;
+		rLoc = 3903;
 		rType = 0;
 		vrLen = 739;
 		vrLoc = 2686;
@@ -5456,7 +6558,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 123";
 		rLen = 0;
-		rLoc = 3752;
+		rLoc = 3816;
 		rType = 0;
 		vrLen = 686;
 		vrLoc = 2686;
@@ -5466,7 +6568,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 123";
 		rLen = 0;
-		rLoc = 3752;
+		rLoc = 3816;
 		rType = 0;
 		vrLen = 686;
 		vrLoc = 2686;
@@ -5476,7 +6578,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 123";
 		rLen = 0;
-		rLoc = 3752;
+		rLoc = 3816;
 		rType = 0;
 		vrLen = 686;
 		vrLoc = 2686;
@@ -5496,7 +6598,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 50";
 		rLen = 0;
-		rLoc = 1926;
+		rLoc = 2058;
 		rType = 0;
 		vrLen = 799;
 		vrLoc = 495;
@@ -5556,7 +6658,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 73";
 		rLen = 0;
-		rLoc = 2190;
+		rLoc = 2214;
 		rType = 0;
 		vrLen = 1176;
 		vrLoc = 1637;
@@ -5566,7 +6668,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 30";
 		rLen = 0;
-		rLoc = 972;
+		rLoc = 1018;
 		rType = 0;
 		vrLen = 910;
 		vrLoc = 379;
@@ -5576,7 +6678,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 117";
 		rLen = 0;
-		rLoc = 3646;
+		rLoc = 3710;
 		rType = 0;
 		vrLen = 773;
 		vrLoc = 2598;
@@ -5586,7 +6688,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 125";
 		rLen = 0;
-		rLoc = 3814;
+		rLoc = 3878;
 		rType = 0;
 		vrLen = 661;
 		vrLoc = 2712;
@@ -5596,7 +6698,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 125";
 		rLen = 0;
-		rLoc = 3814;
+		rLoc = 3878;
 		rType = 0;
 		vrLen = 661;
 		vrLoc = 2712;
@@ -5616,7 +6718,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1097;
 		vrLoc = 1636;
@@ -5626,7 +6728,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 126";
 		rLen = 0;
-		rLoc = 3829;
+		rLoc = 3893;
 		rType = 0;
 		vrLen = 778;
 		vrLoc = 2598;
@@ -5676,7 +6778,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1177;
 		vrLoc = 1636;
@@ -5686,7 +6788,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1179;
 		vrLoc = 1636;
@@ -5696,7 +6798,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 65";
 		rLen = 0;
-		rLoc = 1986;
+		rLoc = 2010;
 		rType = 0;
 		vrLen = 1097;
 		vrLoc = 1636;
@@ -5706,7 +6808,7 @@
 		fRef = DACEFEAC10B3365E00944021 /* RegisterViewController.m */;
 		name = "RegisterViewController.m: 67";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2088;
 		rType = 0;
 		vrLen = 1179;
 		vrLoc = 1636;
@@ -5718,7 +6820,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 0;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -5768,9 +6870,9 @@
 	};
 	DAE6556A10A25042007BB25E /* MapViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1111, 2080}}";
-			sepNavSelRange = "{3320, 25}";
-			sepNavVisRange = "{3143, 431}";
+			sepNavIntBoundsRect = "{{0, 0}, {1336, 1872}}";
+			sepNavSelRange = "{2317, 0}";
+			sepNavVisRange = "{81, 2435}";
 			sepNavWindowFrame = "{{7, 0}, {945, 773}}";
 		};
 	};
@@ -5790,9 +6892,9 @@
 	};
 	DAE6558810A250D0007BB25E /* GroupiesViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1336, 3562}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1483}";
+			sepNavIntBoundsRect = "{{0, 0}, {1097, 3536}}";
+			sepNavSelRange = "{7502, 0}";
+			sepNavVisRange = "{6938, 569}";
 		};
 	};
 	DAE6558E10A250FB007BB25E /* FeedViewController.h */ = {
@@ -5806,7 +6908,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1336, 871}}";
 			sepNavSelRange = "{1075, 292}";
-			sepNavVisRange = "{144, 1569}";
+			sepNavVisRange = "{82, 1632}";
 			sepNavWindowFrame = "{{15, 0}, {945, 773}}";
 		};
 	};
