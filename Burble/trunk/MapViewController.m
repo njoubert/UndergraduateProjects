@@ -55,35 +55,21 @@
 	groupLabel.text = [[NSString alloc] initWithFormat:@"%@, Join a Group!", [[BurbleDataManager sharedDataManager] getName]];
 }
 
+
+
 /*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+ ================================================================================
+					WAYPOINT ACTIONS
+ ================================================================================ 
+ */
 
 -(IBAction)waypointButtonPressed {
-	/*
-	NSString *message= [[NSString alloc] initWithString: @"Waypoint added"];
-	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle: @"Waypoint" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	[message release];
-	*/
 	
 	self.title = kAddWaypointTitle;
 	self.navigationItem.leftBarButtonItem = cancelWaypointButton;
 	self.navigationItem.rightBarButtonItem = approveWaypointButton;
 	waypointOverlay = [[AddWaypointOverlayView alloc] initWithFrame:myMap.bounds];
 	[myMap addSubview:waypointOverlay];
-	
-	
-	
-	//AddWaypointViewController *wC = [[AddWaypointViewController alloc] initWithNibName:nil bundle:nil];
-
-	//[self.navigationController pushViewController:wC animated:YES];
 	
 }
 
@@ -100,11 +86,22 @@
 	[self removeWayPOverlay];
 }
 -(IBAction)approveWaypointButtonPressed {
-	[self removeWayPOverlay ];
+	[self removeWayPOverlay];
+	
+	//Get the center of the map - this is the coordinates of this waypoint
+	
+	//Pass it to this controller:
 	AddWaypointViewController *approveController = [[[AddWaypointViewController alloc] initWithNibName:nil bundle:nil] autorelease];
 	[self presentModalViewController:approveController animated:YES];
 	
 }
+
+
+/*
+ ================================================================================
+							OTHER ACTIONS
+ ================================================================================ 
+ */
 
 -(IBAction)selectorButtonPressed {
 	if (mapTypeSegmentedControl.selectedSegmentIndex == 0) {

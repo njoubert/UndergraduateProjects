@@ -416,16 +416,16 @@
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {961, 689}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 759}}";
 			sepNavSelRange = "{738, 0}";
-			sepNavVisRange = "{379, 910}";
+			sepNavVisRange = "{0, 1294}";
 		};
 	};
 	B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {961, 2353}}";
-			sepNavSelRange = "{3218, 0}";
-			sepNavVisRange = "{2598, 778}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 2496}}";
+			sepNavSelRange = "{3372, 202}";
+			sepNavVisRange = "{2521, 1224}";
 		};
 	};
 	DACE000010B38D3C00944021 /* PBXTextBookmark */ = {
@@ -593,7 +593,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 56";
 		rLen = 0;
-		rLoc = 3099;
+		rLoc = 2710;
 		rType = 0;
 		vrLen = 1199;
 		vrLoc = 898;
@@ -603,7 +603,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 57";
 		rLen = 0;
-		rLoc = 3099;
+		rLoc = 2710;
 		rType = 0;
 		vrLen = 1211;
 		vrLoc = 898;
@@ -613,7 +613,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 60";
 		rLen = 0;
-		rLoc = 3187;
+		rLoc = 2798;
 		rType = 0;
 		vrLen = 1118;
 		vrLoc = 898;
@@ -623,7 +623,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 60";
 		rLen = 0;
-		rLoc = 3187;
+		rLoc = 2798;
 		rType = 0;
 		vrLen = 1093;
 		vrLoc = 898;
@@ -633,7 +633,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 60";
 		rLen = 0;
-		rLoc = 3182;
+		rLoc = 2793;
 		rType = 0;
 		vrLen = 1065;
 		vrLoc = 898;
@@ -643,7 +643,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 59";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 1066;
 		vrLoc = 898;
@@ -653,7 +653,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 59";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 1065;
 		vrLoc = 898;
@@ -673,7 +673,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 56";
 		rLen = 0;
-		rLoc = 2971;
+		rLoc = 2582;
 		rType = 0;
 		vrLen = 1098;
 		vrLoc = 898;
@@ -690,16 +690,16 @@
 	};
 	DACE005B10B3939500944021 /* AddWaypointViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1361, 736}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 759}}";
 			sepNavSelRange = "{355, 0}";
 			sepNavVisRange = "{0, 361}";
 		};
 	};
 	DACE005C10B3939500944021 /* AddWaypointViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1146, 728}}";
-			sepNavSelRange = "{804, 0}";
-			sepNavVisRange = "{590, 302}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 806}}";
+			sepNavSelRange = "{793, 0}";
+			sepNavVisRange = "{35, 1420}";
 			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};
@@ -738,7 +738,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 65";
 		rLen = 0;
-		rLoc = 3393;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1170;
 		vrLoc = 1045;
@@ -748,7 +748,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 65";
 		rLen = 0;
-		rLoc = 3393;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1170;
 		vrLoc = 1045;
@@ -758,7 +758,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 65";
 		rLen = 0;
-		rLoc = 3393;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1137;
 		vrLoc = 1045;
@@ -778,7 +778,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 63";
 		rLen = 0;
-		rLoc = 3237;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1170;
 		vrLoc = 1045;
@@ -888,7 +888,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 65";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 1087;
 		vrLoc = 1738;
@@ -948,7 +948,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 69";
 		rLen = 0;
-		rLoc = 3393;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1187;
 		vrLoc = 1644;
@@ -988,7 +988,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 67";
 		rLen = 0;
-		rLoc = 3222;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1865;
 		vrLoc = 1395;
@@ -1128,7 +1128,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 65";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 1699;
 		vrLoc = 1391;
@@ -1328,7 +1328,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 74";
 		rLen = 0;
-		rLoc = 3326;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 2012;
 		vrLoc = 1731;
@@ -1378,7 +1378,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 73";
 		rLen = 0;
-		rLoc = 3253;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 2029;
 		vrLoc = 1730;
@@ -1388,7 +1388,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 74";
 		rLen = 0;
-		rLoc = 3326;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 1913;
 		vrLoc = 1731;
@@ -1448,7 +1448,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 74";
 		rLen = 0;
-		rLoc = 3326;
+		rLoc = 2829;
 		rType = 0;
 		vrLen = 2042;
 		vrLoc = 1731;
@@ -1458,7 +1458,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 71";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 1700;
 		vrLoc = 1731;
@@ -1496,7 +1496,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 70";
 		rLen = 0;
-		rLoc = 3100;
+		rLoc = 2711;
 		rType = 0;
 		vrLen = 2314;
 		vrLoc = 774;
@@ -1526,7 +1526,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 95";
 		rLen = 0;
-		rLoc = 3705;
+		rLoc = 3139;
 		rType = 0;
 		vrLen = 2160;
 		vrLoc = 1439;
@@ -1556,7 +1556,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 99";
 		rLen = 0;
-		rLoc = 3977;
+		rLoc = 3712;
 		rType = 0;
 		vrLen = 1778;
 		vrLoc = 2313;
@@ -1567,7 +1567,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 158;
+		rLoc = 155;
 		rType = 1;
 	};
 	DACE012F10B3BFFF00944021 /* PBXTextBookmark */ = {
@@ -1575,7 +1575,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 152";
 		rLen = 0;
-		rLoc = 5291;
+		rLoc = 5026;
 		rType = 0;
 		vrLen = 158;
 		vrLoc = 4913;
@@ -1596,7 +1596,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 158;
+		rLoc = 155;
 		rType = 1;
 	};
 	DACE013A10B3C04200944021 /* PBXTextBookmark */ = {
@@ -1664,7 +1664,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 101";
 		rLen = 0;
-		rLoc = 3976;
+		rLoc = 3516;
 		rType = 0;
 		vrLen = 2600;
 		vrLoc = 283;
@@ -1674,7 +1674,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 105";
 		rLen = 0;
-		rLoc = 3976;
+		rLoc = 3516;
 		rType = 0;
 		vrLen = 1742;
 		vrLoc = 3377;
@@ -1764,14 +1764,14 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 84";
 		rLen = 0;
-		rLoc = 3187;
+		rLoc = 2798;
 		rType = 0;
 		vrLen = 2373;
 		vrLoc = 1289;
 	};
 	DACE015410B3C4C300944021 /* AddWaypointOverlayView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1361, 736}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 759}}";
 			sepNavSelRange = "{199, 0}";
 			sepNavVisRange = "{0, 255}";
 		};
@@ -2216,7 +2216,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 157";
 		rLen = 0;
-		rLoc = 5291;
+		rLoc = 5026;
 		rType = 0;
 		vrLen = 320;
 		vrLoc = 4990;
@@ -2245,7 +2245,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 103";
 		rLen = 0;
-		rLoc = 3767;
+		rLoc = 3201;
 		rType = 0;
 		vrLen = 1744;
 		vrLoc = 2647;
@@ -2255,7 +2255,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 103";
 		rLen = 0;
-		rLoc = 3767;
+		rLoc = 3201;
 		rType = 0;
 		vrLen = 2505;
 		vrLoc = 894;
@@ -2420,7 +2420,7 @@
 	};
 	DACEFEA610B3360400944021 /* MapNavigationController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1361, 736}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 759}}";
 			sepNavSelRange = "{240, 0}";
 			sepNavVisRange = "{0, 312}";
 		};
@@ -2428,8 +2428,8 @@
 	DACEFEA710B3360400944021 /* MapNavigationController.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1361, 884}}";
-			sepNavSelRange = "{1040, 0}";
-			sepNavVisRange = "{151, 1599}";
+			sepNavSelRange = "{733, 0}";
+			sepNavVisRange = "{0, 1705}";
 		};
 	};
 	DACEFEAB10B3365E00944021 /* RegisterViewController.h */ = {
@@ -3366,7 +3366,7 @@
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
 		name = "MapViewController.m: 48";
 		rLen = 0;
-		rLoc = 2689;
+		rLoc = 2547;
 		rType = 0;
 		vrLen = 1158;
 		vrLoc = 854;
@@ -3488,9 +3488,9 @@
 	};
 	DAE6556A10A25042007BB25E /* MapViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1361, 2080}}";
-			sepNavSelRange = "{3767, 0}";
-			sepNavVisRange = "{894, 2505}";
+			sepNavIntBoundsRect = "{{0, 0}, {1361, 1755}}";
+			sepNavSelRange = "{2323, 0}";
+			sepNavVisRange = "{1669, 1873}";
 			sepNavWindowFrame = "{{16, 0}, {945, 773}}";
 		};
 	};
