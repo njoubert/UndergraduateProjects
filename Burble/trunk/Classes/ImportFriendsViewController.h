@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+//The FB friends importation view
 
 @interface ImportFriendsViewController : UIViewController {
 
