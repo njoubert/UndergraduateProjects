@@ -92,8 +92,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 280223499;
-			PBXWorkspaceStateSaveDate = 280223499;
+			PBXPerProjectTemplateStateSaveDate = 280224163;
+			PBXWorkspaceStateSaveDate = 280224163;
 		};
 		perUserProjectItems = {
 			B832F8B910B230A600F50C41 = B832F8B910B230A600F50C41 /* PBXTextBookmark */;
@@ -146,22 +146,22 @@
 			B87257A310B3DEE1002AFC97 = B87257A310B3DEE1002AFC97 /* PBXTextBookmark */;
 			B87257A410B3DEE1002AFC97 = B87257A410B3DEE1002AFC97 /* PBXTextBookmark */;
 			B87257A510B3DEE1002AFC97 = B87257A510B3DEE1002AFC97 /* PBXTextBookmark */;
-			B87257B710B3DF0E002AFC97 /* PBXTextBookmark */ = B87257B710B3DF0E002AFC97 /* PBXTextBookmark */;
-			B87257E710B3DF5B002AFC97 /* PBXTextBookmark */ = B87257E710B3DF5B002AFC97 /* PBXTextBookmark */;
-			B87257E810B3DF5B002AFC97 /* PBXTextBookmark */ = B87257E810B3DF5B002AFC97 /* PBXTextBookmark */;
-			B87257E910B3DF5B002AFC97 /* PBXTextBookmark */ = B87257E910B3DF5B002AFC97 /* PBXTextBookmark */;
-			B87257EC10B3DF5B002AFC97 /* XCDiffFileBookmark */ = B87257EC10B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B87257ED10B3DF5B002AFC97 /* PBXBookmark */ = B87257ED10B3DF5B002AFC97 /* PBXBookmark */;
-			B87257F110B3DF5B002AFC97 /* XCDiffFileBookmark */ = B87257F110B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B87257F210B3DF5B002AFC97 /* PBXBookmark */ = B87257F210B3DF5B002AFC97 /* PBXBookmark */;
-			B87257F610B3DF5B002AFC97 /* XCDiffFileBookmark */ = B87257F610B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B87257F710B3DF5B002AFC97 /* PBXBookmark */ = B87257F710B3DF5B002AFC97 /* PBXBookmark */;
-			B87257FB10B3DF5B002AFC97 /* XCDiffFileBookmark */ = B87257FB10B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B87257FC10B3DF5B002AFC97 /* PBXBookmark */ = B87257FC10B3DF5B002AFC97 /* PBXBookmark */;
-			B872580010B3DF5B002AFC97 /* XCDiffFileBookmark */ = B872580010B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B872580110B3DF5B002AFC97 /* PBXBookmark */ = B872580110B3DF5B002AFC97 /* PBXBookmark */;
-			B872580510B3DF5B002AFC97 /* XCDiffFileBookmark */ = B872580510B3DF5B002AFC97 /* XCDiffFileBookmark */;
-			B872580610B3DF5B002AFC97 /* PBXBookmark */ = B872580610B3DF5B002AFC97 /* PBXBookmark */;
+			B87257B710B3DF0E002AFC97 = B87257B710B3DF0E002AFC97 /* PBXTextBookmark */;
+			B87257E710B3DF5B002AFC97 = B87257E710B3DF5B002AFC97 /* PBXTextBookmark */;
+			B87257E810B3DF5B002AFC97 = B87257E810B3DF5B002AFC97 /* PBXTextBookmark */;
+			B87257E910B3DF5B002AFC97 = B87257E910B3DF5B002AFC97 /* PBXTextBookmark */;
+			B87257EC10B3DF5B002AFC97 = B87257EC10B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B87257ED10B3DF5B002AFC97 = B87257ED10B3DF5B002AFC97 /* PBXBookmark */;
+			B87257F110B3DF5B002AFC97 = B87257F110B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B87257F210B3DF5B002AFC97 = B87257F210B3DF5B002AFC97 /* PBXBookmark */;
+			B87257F610B3DF5B002AFC97 = B87257F610B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B87257F710B3DF5B002AFC97 = B87257F710B3DF5B002AFC97 /* PBXBookmark */;
+			B87257FB10B3DF5B002AFC97 = B87257FB10B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B87257FC10B3DF5B002AFC97 = B87257FC10B3DF5B002AFC97 /* PBXBookmark */;
+			B872580010B3DF5B002AFC97 = B872580010B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B872580110B3DF5B002AFC97 = B872580110B3DF5B002AFC97 /* PBXBookmark */;
+			B872580510B3DF5B002AFC97 = B872580510B3DF5B002AFC97 /* XCDiffFileBookmark */;
+			B872580610B3DF5B002AFC97 = B872580610B3DF5B002AFC97 /* PBXBookmark */;
 			B88BA78410B2076B00E832B6 = B88BA78410B2076B00E832B6 /* PBXTextBookmark */;
 			B88C002E10B28984002BDA85 = B88C002E10B28984002BDA85 /* PBXTextBookmark */;
 			B88C002F10B28984002BDA85 = B88C002F10B28984002BDA85 /* PBXTextBookmark */;
@@ -824,6 +824,7 @@
 	};
 	B87257EE10B3DF5B002AFC97 /* Compare BASE vs. Local — MapViewController.m */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
 		path = "Compare BASE vs. Local — MapViewController.m";
 		sourceTree = "<group>";
 	};
@@ -837,6 +838,7 @@
 	};
 	B87257F310B3DF5B002AFC97 /* Compare BASE vs. Local — project.pbxproj */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = text.pbxproject;
 		path = "Compare BASE vs. Local — project.pbxproj";
 		sourceTree = "<group>";
 	};
@@ -850,6 +852,7 @@
 	};
 	B87257F810B3DF5B002AFC97 /* Compare BASE vs. Local — MapViewController.xib */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = file.xib;
 		path = "Compare BASE vs. Local — MapViewController.xib";
 		sourceTree = "<group>";
 	};
@@ -863,6 +866,7 @@
 	};
 	B87257FD10B3DF5B002AFC97 /* Compare BASE vs. Local — MainWindow.xib */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = file.xib;
 		path = "Compare BASE vs. Local — MainWindow.xib";
 		sourceTree = "<group>";
 	};
@@ -876,6 +880,7 @@
 	};
 	B872580210B3DF5B002AFC97 /* Compare BASE vs. Local — niels.pbxuser */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = file;
 		path = "Compare BASE vs. Local — niels.pbxuser";
 		sourceTree = "<group>";
 	};
@@ -889,6 +894,7 @@
 	};
 	B872580710B3DF5B002AFC97 /* Compare BASE vs. Local — MapViewController.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		path = "Compare BASE vs. Local — MapViewController.h";
 		sourceTree = "<group>";
 	};

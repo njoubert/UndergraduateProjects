@@ -197,248 +197,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B87257EA10B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — MapViewController.m</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B87257EB10B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — MapViewController.m</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B87257ED10B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B87257EC10B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>130 266 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B87257EF10B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — project.pbxproj</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B87257F010B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — project.pbxproj</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B87257F210B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B87257F110B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>107 287 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B87257F410B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — MapViewController.xib</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B87257F510B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — MapViewController.xib</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B87257F710B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B87257F610B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>84 308 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B87257F910B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — MainWindow.xib</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B87257FA10B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — MainWindow.xib</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B87257FC10B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B87257FB10B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>61 329 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B87257FE10B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — niels.pbxuser</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B87257FF10B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — niels.pbxuser</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B872580110B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B872580010B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>38 350 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B872580310B3DF5B002AFC97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Compare BASE vs. Local — MapViewController.h</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B872580410B3DF5B002AFC97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Compare BASE vs. Local — MapViewController.h</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B872580610B3DF5B002AFC97</string>
-						<key>history</key>
-						<array>
-							<string>B872580510B3DF5B002AFC97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {750, 461}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>15 371 750 502 0 0 1440 878 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -522,12 +281,11 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>101</integer>
-									<integer>88</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1276}, {332, 764}}</string>
+							<string>{{0, 0}, {332, 764}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -562,7 +320,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.h</string>
+								<string>Test1AppDelegate.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -570,11 +328,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MapViewController.h</string>
-										<key>_historyCapacity</key>
-										<integer>0</integer>
-										<key>bookmark</key>
-										<string>B87257E910B3DF5B002AFC97</string>
+										<string>Test1AppDelegate.m</string>
 										<key>history</key>
 										<array>
 											<string>B8E46A3510AFC1D9000A27C5</string>
@@ -605,7 +359,6 @@
 											<string>B832FA1D10B270C000F50C41</string>
 											<string>B86A54BD10B277EF00A946C7</string>
 											<string>B8F57A9410B27C310053A3F3</string>
-											<string>B88CFFD010B287C2002BDA85</string>
 											<string>B88C002E10B28984002BDA85</string>
 											<string>B88C002F10B28984002BDA85</string>
 											<string>B88C005610B33CBD002BDA85</string>
@@ -633,7 +386,7 @@
 											<string>B87257A210B3DEE1002AFC97</string>
 											<string>B87257A310B3DEE1002AFC97</string>
 											<string>B87257E710B3DF5B002AFC97</string>
-											<string>B87257E810B3DF5B002AFC97</string>
+											<string>B88CFFD010B287C2002BDA85</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -645,14 +398,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1019, 447}}</string>
+								<string>{{0, 0}, {1019, 438}}</string>
 								<key>RubberWindowFrame</key>
 								<string>2 55 1373 823 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>447pt</string>
+							<string>438pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -665,14 +418,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 452}, {1019, 330}}</string>
+								<string>{{0, 443}, {1019, 339}}</string>
 								<key>RubberWindowFrame</key>
 								<string>2 55 1373 823 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>330pt</string>
+							<string>339pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -691,9 +444,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>B87257B810B3DF0E002AFC97</string>
+				<string>B872582210B3E1A7002AFC97</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>B87257B910B3DF0E002AFC97</string>
+				<string>B872582310B3E1A7002AFC97</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -831,21 +584,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>B872580810B3DF5B002AFC97</string>
-		<string>B872580910B3DF5B002AFC97</string>
-		<string>B872580A10B3DF5B002AFC97</string>
-		<string>B872580B10B3DF5B002AFC97</string>
-		<string>B872580C10B3DF5B002AFC97</string>
-		<string>B87257C310B3DF0E002AFC97</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>B83265C010A40C7B009C048E</string>
-		<string>B872580310B3DF5B002AFC97</string>
-		<string>B87257FE10B3DF5B002AFC97</string>
-		<string>B87257F910B3DF5B002AFC97</string>
-		<string>B87257F410B3DF5B002AFC97</string>
-		<string>B87257EF10B3DF5B002AFC97</string>
-		<string>B87257EA10B3DF5B002AFC97</string>
 		<string>/Users/niels/Desktop/Burble/trunk/Test1.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -926,7 +665,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>B83265C010A40C7B009C048E</string>
-				<string>B87257BA10B3DF0E002AFC97</string>
+				<string>B872582410B3E1A7002AFC97</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

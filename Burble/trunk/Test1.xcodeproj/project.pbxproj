@@ -14,6 +14,8 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		B832FA0E10B26FBB00F50C41 /* GroupiesNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B832FA0D10B26FBB00F50C41 /* GroupiesNavigationController.m */; };
+		B8456D4710B37C45005EA08C /* ImportFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8456D4510B37C45005EA08C /* ImportFriendsViewController.m */; };
+		B8456D4810B37C45005EA08C /* ImportFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8456D4610B37C45005EA08C /* ImportFriendsViewController.xib */; };
 		B8632D8410B013F10025684E /* groupies.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8632D8310B013F10025684E /* groupies.plist */; };
 		B8632DC210B026140025684E /* NSDictionary-MutableDeepCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */; };
 		B86A54AC10B2740D00A946C7 /* MyGroupNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86A54AB10B2740D00A946C7 /* MyGroupNavigationController.m */; };
@@ -77,6 +79,9 @@
 		8D1107310486CEB800E47090 /* Test1-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Test1-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		B832FA0C10B26FBB00F50C41 /* GroupiesNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupiesNavigationController.h; sourceTree = "<group>"; };
 		B832FA0D10B26FBB00F50C41 /* GroupiesNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupiesNavigationController.m; sourceTree = "<group>"; };
+		B8456D4410B37C45005EA08C /* ImportFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportFriendsViewController.h; sourceTree = "<group>"; };
+		B8456D4510B37C45005EA08C /* ImportFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImportFriendsViewController.m; sourceTree = "<group>"; };
+		B8456D4610B37C45005EA08C /* ImportFriendsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportFriendsViewController.xib; sourceTree = "<group>"; };
 		B8632D8310B013F10025684E /* groupies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = groupies.plist; sourceTree = SOURCE_ROOT; };
 		B8632D9110B025AC0025684E /* NSDictionary-MutableDeepCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary-MutableDeepCopy.h"; path = "../NSDictionary-MutableDeepCopy.h"; sourceTree = "<group>"; };
 		B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary-MutableDeepCopy.m"; sourceTree = "<group>"; };
@@ -277,6 +282,9 @@
 		B832F9B410B2644E00F50C41 /* Groupies */ = {
 			isa = PBXGroup;
 			children = (
+				B8456D4410B37C45005EA08C /* ImportFriendsViewController.h */,
+				B8456D4510B37C45005EA08C /* ImportFriendsViewController.m */,
+				B8456D4610B37C45005EA08C /* ImportFriendsViewController.xib */,
 				DAE6558710A250D0007BB25E /* GroupiesViewController.h */,
 				DAE6558810A250D0007BB25E /* GroupiesViewController.m */,
 				DAE6558910A250D0007BB25E /* GroupiesViewController.xib */,
@@ -431,6 +439,7 @@
 				B86A54BA10B2778300A946C7 /* GroupiesDetailViewController.xib in Resources */,
 				DACEFF1610B3465A00944021 /* RegisterViewController.xib in Resources */,
 				DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */,
+				B8456D4810B37C45005EA08C /* ImportFriendsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +477,7 @@
 				B88C002A10B2891B002BDA85 /* Position.m in Sources */,
 				DACEFEA810B3360400944021 /* MapNavigationController.m in Sources */,
 				DACEFF1510B3465A00944021 /* RegisterViewController.m in Sources */,
+				B8456D4710B37C45005EA08C /* ImportFriendsViewController.m in Sources */,
 				DACE005E10B3939500944021 /* AddWaypointViewController.m in Sources */,
 				DACE015610B3C4C300944021 /* AddWaypointOverlayView.m in Sources */,
 			);
