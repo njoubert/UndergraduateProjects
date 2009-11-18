@@ -12,13 +12,20 @@
 #import <MapKit/MKGeometry.h>
 #import <MapKit/MKMapView.h>
 #import "BurbleDataManager.h"
-#import "RegisterViewController.h"
-#import "AddWaypointViewController.h"
+#import "AddWaypointOverlayView.h"
 
-@interface MapViewController : UIViewController {
+#define kMapTitle			@"Map"
+#define kAddWaypointTitle	@"Add Waypoint"
+
+@interface MapViewController : UIViewController <MKMapViewDelegate> {
 	MKMapView *myMap;
 	UISegmentedControl *mapTypeSegmentedControl;
 	UILabel *groupLabel;
+	AddWaypointOverlayView *waypointOverlay;
+	UIBarButtonItem *locateButton;
+	UIBarButtonItem *waypointButton;
+	UIBarButtonItem *cancelWaypointButton;
+	UIBarButtonItem *approveWaypointButton;
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationBar *topBar;
@@ -28,6 +35,8 @@
 
 
 -(IBAction)waypointButtonPressed;
+-(IBAction)cancelWaypointButtonPressed;
+-(IBAction)approveWaypointButtonPressed;
 -(IBAction)selectorButtonPressed;
 -(IBAction)locateButtonPressed;
 

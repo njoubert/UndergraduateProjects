@@ -269,12 +269,13 @@
 								<string>B832F9B210B2644500F50C41</string>
 								<string>B832F9B510B2645600F50C41</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
+								<string>29B97323FDCFA39411CA2CEA</string>
 								<string>1C37FABC05509CD000000102</string>
+								<string>E2644B35053B69B200211256</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>31</integer>
 									<integer>29</integer>
 									<integer>25</integer>
 									<integer>13</integer>
@@ -282,7 +283,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 87}, {232, 936}}</string>
+							<string>{{0, 362}, {232, 936}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -319,7 +320,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.m</string>
+								<string>AddWaypointOverlayView.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -327,11 +328,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MapViewController.m</string>
+										<string>AddWaypointOverlayView.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DACE00EF10B3A4E900944021</string>
+										<string>DACE020A10B3D2E400944021</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323910B22CBA00D08F61</string>
@@ -344,14 +345,23 @@
 											<string>DACE000110B38D3C00944021</string>
 											<string>DACE003510B3907E00944021</string>
 											<string>DACE003610B3907E00944021</string>
-											<string>DACE00BE10B3A00200944021</string>
-											<string>DACE00BF10B3A00200944021</string>
-											<string>DACE00DD10B3A33800944021</string>
-											<string>DACE00DE10B3A33800944021</string>
-											<string>DACE00DF10B3A33800944021</string>
-											<string>DACE00E810B3A3E700944021</string>
-											<string>DACE00E910B3A3E700944021</string>
-											<string>DACE00E010B3A33800944021</string>
+											<string>DACE011210B3BD3500944021</string>
+											<string>DACE013D10B3C0EC00944021</string>
+											<string>DACE013E10B3C0EC00944021</string>
+											<string>DACE019C10B3CA5F00944021</string>
+											<string>DACE019D10B3CA5F00944021</string>
+											<string>DACE019E10B3CA5F00944021</string>
+											<string>DACE019F10B3CA5F00944021</string>
+											<string>DACE01A010B3CA5F00944021</string>
+											<string>DACE01AB10B3CBBE00944021</string>
+											<string>DACE01AC10B3CBBE00944021</string>
+											<string>DACE01CD10B3CDFE00944021</string>
+											<string>DACE01D010B3CDFE00944021</string>
+											<string>DACE01D110B3CDFE00944021</string>
+											<string>DACE01D210B3CDFE00944021</string>
+											<string>DACE01EA10B3CFE600944021</string>
+											<string>DACE01EB10B3CFE600944021</string>
+											<string>DACE01CE10B3CDFE00944021</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -549,6 +559,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>DACE020B10B3D2E400944021</string>
 		<string>DACEFF8E10B3663400944021</string>
 		<string>DACEFF8F10B3663400944021</string>
 		<string>1C78EAAD065D492600B07095</string>
@@ -578,7 +589,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.m</string>
+								<string>AddWaypointViewController.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>

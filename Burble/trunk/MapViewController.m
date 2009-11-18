@@ -7,6 +7,8 @@
 //
 
 #import "MapViewController.h"
+#import "RegisterViewController.h"
+#import "AddWaypointViewController.h"
 
 @implementation MapViewController
 
@@ -36,8 +38,14 @@
 	self.navigationItem.backBarButtonItem = backButton;
 	[backButton release];
 	
-	UIBarButtonItem *waypointButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map-marker.png"] style:UIBarButtonItemStylePlain target:self action:@selector(waypointButtonPressed)];
-	UIBarButtonItem *locateButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"74-location.png"] style:UIBarButtonItemStylePlain target:self action:@selector(locateButtonPressed)];
+	
+	//Set up waypoint overlay	
+	//Create buttons
+	cancelWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelWaypointButtonPressed)];
+	approveWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(approveWaypointButtonPressed)];
+	waypointButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map-marker.png"] style:UIBarButtonItemStylePlain target:self action:@selector(waypointButtonPressed)];
+	locateButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"74-location.png"] style:UIBarButtonItemStylePlain target:self action:@selector(locateButtonPressed)];
+	
 	self.navigationItem.leftBarButtonItem = locateButton;
 	self.navigationItem.rightBarButtonItem = waypointButton;
 	
@@ -65,13 +73,36 @@
 	[message release];
 	*/
 	
+	self.title = kAddWaypointTitle;
+	self.navigationItem.leftBarButtonItem = cancelWaypointButton;
+	self.navigationItem.rightBarButtonItem = approveWaypointButton;
+	waypointOverlay = [[AddWaypointOverlayView alloc] initWithFrame:myMap.bounds];
+	[myMap addSubview:waypointOverlay];
 	
-	//UIView* overlay = [[UIView alloc] initWithFrame:myMap.frame];
-	//[overlay setOpaque:NO];
-	//[self.view addSubview:overlay];
 	
-	AddWaypointViewController *wC = [[AddWaypointViewController alloc] initWithNibName:nil bundle:nil];
-	[self.navigationController pushViewController:wC animated:YES];
+	
+	//AddWaypointViewController *wC = [[AddWaypointViewController alloc] initWithNibName:nil bundle:nil];
+
+	//[self.navigationController pushViewController:wC animated:YES];
+	
+}
+
+-(void)removeWayPOverlay {
+	[waypointOverlay removeFromSuperview];
+	[waypointOverlay release];
+	self.title = kMapTitle;
+	self.navigationItem.rightBarButtonItem = waypointButton;
+	self.navigationItem.leftBarButtonItem = locateButton;
+	
+}
+
+-(IBAction)cancelWaypointButtonPressed {
+	[self removeWayPOverlay];
+}
+-(IBAction)approveWaypointButtonPressed {
+	[self removeWayPOverlay ];
+	AddWaypointViewController *approveController = [[[AddWaypointViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+	[self presentModalViewController:approveController animated:YES];
 	
 }
 

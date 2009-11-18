@@ -1,5 +1,5 @@
 //
-//  AddWaypointViewController.h
+//  AddWaypointOverlayView.h
 //  Test1
 //
 //  Created by Niels Joubert on 11/17/09.
@@ -8,15 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import <MapKit/MKTypes.h>
-#import <MapKit/MKGeometry.h>
-#import <MapKit/MKMapView.h>
 
+@interface AddWaypointOverlayView : UIView {
 
-@interface AddWaypointViewController : UIViewController {
-
-	
 }
-
 
 @end
