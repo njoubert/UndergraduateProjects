@@ -18,20 +18,15 @@
 //current group membership, distance away, locate page on map, message page, invite to group page (grayed)
 
 @interface GroupiesDetailViewController : UIViewController {
-	UILabel *label;
-	NSString *message;
-	
 	UITableView *table;
 	NSArray *functions;
 	
+	//create a new map view
 	MapViewController *map;
 	FeedViewController *msg;
 	MyGroupViewController *invite;
 	
 }
-
-@property (nonatomic, retain) IBOutlet UILabel *label;
-@property (nonatomic, retain) NSString *message;
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) NSArray *functions;
