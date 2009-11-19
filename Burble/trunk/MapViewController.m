@@ -39,7 +39,6 @@
 	self.navigationItem.backBarButtonItem = backButton;
 	[backButton release];
 	
-	
 	//Set up waypoint overlay	
 	//Create buttons
 	cancelWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelWaypointButtonPressed)];

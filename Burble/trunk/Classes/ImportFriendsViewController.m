@@ -18,6 +18,8 @@
 	[alert show];
 	[alert release];
 	[message release];
+	
+	//This will later add Facebook friends to our current list of groupies
 }
 
 /*

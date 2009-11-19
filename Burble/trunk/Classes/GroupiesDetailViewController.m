@@ -124,17 +124,35 @@
 	NSUInteger row = [indexPath row];
 	
 	//Assumes we have the location of the friend to show on the map
+	//How to make the back bar show up again? CREATE A NEW MAP CONTROLLER
 	if (row == 2) { 
 		if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
 		map.title = name;
 		[self.navigationController pushViewController:map animated:YES];
+		
 	}
-	
+		
 	//Should actually go to create new message screen
 	if (row == 3) {
 		if (msg == nil) msg = [[FeedViewController alloc] initWithNibName:@"FeedViewController" bundle:nil];
 		msg.title = name;
 		[self.navigationController pushViewController:msg animated:YES];
+		
+		
+		
+		//create a new property in the map view
+		//person to locate
+		//when you hit the groupies thing
+		//you'll get the current map view
+		//need to be able to get the controller that's actually instantiated
+		
+		// set up a cancel button
+		/*
+		UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
+		self.navigationItem.backBarButtonItem = backButton;
+		[backButton release];
+		// set up a boolean that the cancel button is there
+		*/
 	}
 	
 	//Should show invitation page
@@ -145,6 +163,17 @@
 	}
 	
 }
+
+//HAVE TO DO THIS WITH GROUPIE NAMES, TOO!
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *hey = [[NSString alloc] initWithFormat: @"You've selected: %Cool"];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend selected" message:hey delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alert show];
+	[hey release];
+	[alert release];
+	//[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+	
 
 
 @end
