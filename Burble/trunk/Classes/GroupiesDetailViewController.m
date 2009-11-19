@@ -10,17 +10,12 @@
 
 
 @implementation GroupiesDetailViewController
-@synthesize label;
-@synthesize message;
 
 @synthesize table;
 @synthesize functions;
 
 -(void)viewWillAppear:(BOOL)animated {
-	label.text = message;
 	[super viewWillAppear:animated];
-	//this view will have more:
-	//current group info, map page for current location, message screen, distance away, invite to group screen
 }
 
 /*
@@ -58,9 +53,6 @@
 }
 
 - (void)viewDidUnload {
-	self.label = nil;
-	self.message = nil;
-	
 	self.table = nil;
 	self.functions = nil;
 	
@@ -72,9 +64,6 @@
 
 
 - (void)dealloc {
-	[label release];
-	[message release];
-
     [table release];
 	[functions release];
 	
@@ -124,7 +113,7 @@
 	NSUInteger row = [indexPath row];
 	
 	//Assumes we have the location of the friend to show on the map
-	//How to make the back bar show up again? CREATE A NEW MAP CONTROLLER
+	//CREATE A NEW MAP CONTROLLER
 	if (row == 2) { 
 		if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
 		map.title = name;
@@ -137,27 +126,11 @@
 		if (msg == nil) msg = [[FeedViewController alloc] initWithNibName:@"FeedViewController" bundle:nil];
 		msg.title = name;
 		[self.navigationController pushViewController:msg animated:YES];
-		
-		
-		
-		//create a new property in the map view
-		//person to locate
-		//when you hit the groupies thing
-		//you'll get the current map view
-		//need to be able to get the controller that's actually instantiated
-		
-		// set up a cancel button
-		/*
-		UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
-		self.navigationItem.backBarButtonItem = backButton;
-		[backButton release];
-		// set up a boolean that the cancel button is there
-		*/
 	}
 	
 	//Should show invitation page
 	if (row == 4) {
-		if (invite == nil) message = [[MyGroupViewController alloc] initWithNibName:@"MyGroupViewController" bundle:nil];
+		if (invite == nil) invite = [[MyGroupViewController alloc] initWithNibName:@"MyGroupViewController" bundle:nil];
 		invite.title = name;
 		[self.navigationController pushViewController:invite animated:YES];
 	}
@@ -166,7 +139,7 @@
 
 //HAVE TO DO THIS WITH GROUPIE NAMES, TOO!
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *hey = [[NSString alloc] initWithFormat: @"You've selected: %Cool"];
+	NSString *hey = [[NSString alloc] initWithFormat: @"You've selected: Cool"];
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend selected" message:hey delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alert show];
 	[hey release];
