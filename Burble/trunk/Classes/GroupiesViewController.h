@@ -11,7 +11,6 @@
 #import "GroupiesDetailViewController.h"
 #import "Test1AppDelegate.h"
 #import "BurbleDataManager.h"
-
 #import "ImportFriendsViewController.h"
 
 //This is the root view for the Groupies navigation controller
@@ -24,24 +23,13 @@
 	UIView *addFriendView;
 	
 	UITableView *table;
-	UISearchBar *search;
 	
 	//Contains all People objects
 	NSArray *people;
 	
-	//These were used for search, but they need to be fixed??
-	NSDictionary *allNames;
-	NSMutableDictionary *names;
-	NSMutableArray *keys;
-	
 	BurbleDataManager *dataManager;
 	GroupiesDetailViewController *childController;
 	ImportFriendsViewController *import;
-	
-	//For search??
-	NSMutableArray *namesForSearch;
-	NSMutableArray *nameCopies;
-	BOOL searching;
 
 }
 
@@ -49,27 +37,21 @@
 @property (nonatomic, retain) IBOutlet UIView *mainView;
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
-@property (nonatomic, retain) IBOutlet UISearchBar *search;
 
 @property (nonatomic, retain) NSArray *people;
 
-@property (nonatomic, retain) NSDictionary *allNames;
-@property (nonatomic, retain) NSMutableDictionary *names;
-@property (nonatomic, retain) NSMutableArray *keys;
-
-@property (nonatomic, retain) NSMutableArray *namesForSearch;
-@property (nonatomic, retain) NSMutableArray *nameCopies;
-
-
--(void)resetSearch;
--(void)handleSearchForTerm:(NSString *)searchTerm;
 
 //Methods for adding FB friends
+//Only simulates the add
 -(IBAction)addFriends:(id)sender;
 -(IBAction)importFriends:(id)sender;
 
-//Sort methods to be implemented
+//Sort methods 
+//MUST BE IMPLEMENTED
 -(IBAction)alphaSort;
 -(IBAction)distSort;
+
+//Search methods
+//MUST BE IMPLEMENTED
 
 @end
