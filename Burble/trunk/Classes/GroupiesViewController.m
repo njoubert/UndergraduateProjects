@@ -183,9 +183,6 @@
 #pragma mark Table View Data Source Methods
 
 //This draws our list table for all of our Groupies
-
-
-
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [people count];
 }

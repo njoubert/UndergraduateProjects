@@ -254,7 +254,24 @@ static BurbleDataManager *sharedDataManager;
 - (NSString*) getNextWaypointDesc {
 	NSString *retVal = [[NSString alloc] initWithFormat:@"Placed by %@", [self getName]];
 	return retVal;
-}	
+}
+
+- (NSArray*) getMessages {
+// TODO: For now, this data is faked!
+	
+	Message* m1 = [[Message alloc] init];
+	[m1 setSender:@"Niels"];
+	
+	Message* m2 = [[Message alloc] init];
+	[m2 setSender:@"Janelle"];
+	
+	Message* m3 = [[Message alloc] init];
+	[m3 setSender:@"Chris"];
+	
+	NSArray* msgs = [NSArray arrayWithObjects:m1, m2, m3, nil];
+	return msgs;
+	
+}
 /*
  ================================================================================
 			DELEGATE METHODS	

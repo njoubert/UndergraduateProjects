@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Person.h"
+#import "Message.h"
 #import "Waypoint.h"
 #import <MapKit/MapKit.h>
 #import <MapKit/MKTypes.h>

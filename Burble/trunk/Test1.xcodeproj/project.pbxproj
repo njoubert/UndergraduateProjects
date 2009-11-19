@@ -62,10 +62,11 @@
 		DAE6558A10A250D0007BB25E /* GroupiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */; };
 		DAE6558B10A250D0007BB25E /* GroupiesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6558910A250D0007BB25E /* GroupiesViewController.xib */; };
 		DAE6559110A250FB007BB25E /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */; };
-		DAE6559210A250FB007BB25E /* FeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6559010A250FB007BB25E /* FeedViewController.xib */; };
 		DAE6559A10A25DBC007BB25E /* Icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE6559910A25DBC007BB25E /* Icon2.png */; };
 		DAE655B410A26C38007BB25E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE655B310A26C38007BB25E /* MapKit.framework */; };
 		DAE6562010A2745E007BB25E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE6561F10A2745E007BB25E /* CoreLocation.framework */; };
+		F98A184210B4C8C700CF204B /* FeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98A184110B4C8C700CF204B /* FeedViewController.xib */; };
+		F98A184910B4C93100CF204B /* FeedNagivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F98A184810B4C93100CF204B /* FeedNagivationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -158,10 +159,12 @@
 		DAE6558910A250D0007BB25E /* GroupiesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupiesViewController.xib; sourceTree = "<group>"; };
 		DAE6558E10A250FB007BB25E /* FeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewController.h; sourceTree = "<group>"; };
 		DAE6558F10A250FB007BB25E /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
-		DAE6559010A250FB007BB25E /* FeedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedViewController.xib; sourceTree = "<group>"; };
 		DAE6559910A25DBC007BB25E /* Icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon2.png; sourceTree = "<group>"; };
 		DAE655B310A26C38007BB25E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DAE6561F10A2745E007BB25E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F98A184110B4C8C700CF204B /* FeedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedViewController.xib; sourceTree = "<group>"; };
+		F98A184710B4C93100CF204B /* FeedNagivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedNagivationController.h; sourceTree = "<group>"; };
+		F98A184810B4C93100CF204B /* FeedNagivationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedNagivationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,9 +325,11 @@
 		B832F9B610B2645B00F50C41 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				F98A184710B4C93100CF204B /* FeedNagivationController.h */,
+				F98A184810B4C93100CF204B /* FeedNagivationController.m */,
+				F98A184110B4C8C700CF204B /* FeedViewController.xib */,
 				DAE6558E10A250FB007BB25E /* FeedViewController.h */,
 				DAE6558F10A250FB007BB25E /* FeedViewController.m */,
-				DAE6559010A250FB007BB25E /* FeedViewController.xib */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
@@ -430,7 +435,6 @@
 				DAE6556D10A25042007BB25E /* MapViewController.xib in Resources */,
 				DAE6558410A250B9007BB25E /* MyGroupViewController.xib in Resources */,
 				DAE6558B10A250D0007BB25E /* GroupiesViewController.xib in Resources */,
-				DAE6559210A250FB007BB25E /* FeedViewController.xib in Resources */,
 				DAE6559A10A25DBC007BB25E /* Icon2.png in Resources */,
 				DA71078E10A295B100DAD536 /* 103-map.png in Resources */,
 				DA71079010A295E400DAD536 /* map-marker.png in Resources */,
@@ -449,6 +453,7 @@
 				DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */,
 				B8456D4810B37C45005EA08C /* ImportFriendsViewController.xib in Resources */,
 				DAB5E69C10B3F20300AF521B /* AddWaypointViewController.xib in Resources */,
+				F98A184210B4C8C700CF204B /* FeedViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +495,7 @@
 				DACE005E10B3939500944021 /* AddWaypointViewController.m in Sources */,
 				DACE015610B3C4C300944021 /* AddWaypointOverlayView.m in Sources */,
 				DACE023610B3E2D800944021 /* Waypoint.m in Sources */,
+				F98A184910B4C93100CF204B /* FeedNagivationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

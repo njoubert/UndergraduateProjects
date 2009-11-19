@@ -8,9 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+#define kMessageSenderKey	@"MessageSender"
+#define kMessageMessageKey	@"MessageMessage"
 
-@interface Message : NSObject {
-
+@interface Message : NSObject <NSCoding> {
+	NSString *sender;
+	NSString *message;
 }
+
+@property (nonatomic, retain) NSString *sender;
+@property (nonatomic, retain) NSString *message;
+
+- (NSString*) getSender;
 
 @end
