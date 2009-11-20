@@ -15,10 +15,19 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   
   # POST a new group
   def create
+    # Leave the group if he is currently in a group!
+    # When he creates, he also joins!
     if request.post?
-      
+      @group = Group.new(params[:group])
+      begin
+        @group.save!
+        @user.group = @group
+        render :xml => @group, :status => :created     #returns 201 if it was created
+      rescue Exception => ex
+        render_error("Could not create new group!", ex)
+      end
     else
-      
+      render_error("Request type not supported. Expected POST.", nil)
     end
   end
   
@@ -47,9 +56,10 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   # POST that you want to leave your current group
   def leave
     if request.post?
-      
+      @user.group = nil
+      head :ok
     else
-      
+      render_error("Request type not supported. Expected POST.", nil)
     end
   end
   
