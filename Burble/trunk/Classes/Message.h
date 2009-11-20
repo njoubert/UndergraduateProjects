@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteModelProtocol.h"
+#import "RemoteModel.h"
 
 #define kMessageSenderKey	@"MessageSender"
 #define kMessageMessageKey	@"MessageMessage"
 
-@interface Message : NSObject <NSCoding, RemoteModelProtocol> {
+@interface Message : RemoteModel <NSCoding>{
 	NSString *sender;
 	NSString *message;
 }

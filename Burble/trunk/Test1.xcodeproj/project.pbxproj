@@ -50,6 +50,9 @@
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
+		DAA6DA5210B6A9FC00E2E0B0 /* XMLEventParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6DA5110B6A9FC00E2E0B0 /* XMLEventParser.m */; };
+		DAA6DA6E10B6AD0E00E2E0B0 /* XMLPersonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6DA6D10B6AD0E00E2E0B0 /* XMLPersonParser.m */; };
+		DAA6DB8B10B7120000E2E0B0 /* RemoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6DB8A10B7120000E2E0B0 /* RemoteModel.m */; };
 		DAB5E69C10B3F20300AF521B /* AddWaypointViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAB5E69B10B3F20300AF521B /* AddWaypointViewController.xib */; };
 		DACE005E10B3939500944021 /* AddWaypointViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE005C10B3939500944021 /* AddWaypointViewController.m */; };
 		DACE015610B3C4C300944021 /* AddWaypointOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE015510B3C4C300944021 /* AddWaypointOverlayView.m */; };
@@ -138,13 +141,18 @@
 		DA7107C310A29C9300DAD536 /* 30x-Scanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "30x-Scanner.png"; sourceTree = "<group>"; };
 		DA7107C510A29D6D00DAD536 /* icon_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_user.png; sourceTree = "<group>"; };
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
-		DAA6D64410B61E8700E2E0B0 /* RemoteModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModelProtocol.h; sourceTree = "<group>"; };
+		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
 		DAA6D77210B64BA600E2E0B0 /* RPCURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCURLConnection.h; sourceTree = "<group>"; };
 		DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCURLConnection.m; sourceTree = "<group>"; };
 		DAA6D8D110B683C800E2E0B0 /* RPCPostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostRequest.h; sourceTree = "<group>"; };
 		DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostRequest.m; sourceTree = "<group>"; };
+		DAA6DA5010B6A9FC00E2E0B0 /* XMLEventParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLEventParser.h; sourceTree = "<group>"; };
+		DAA6DA5110B6A9FC00E2E0B0 /* XMLEventParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLEventParser.m; sourceTree = "<group>"; };
+		DAA6DA6C10B6AD0E00E2E0B0 /* XMLPersonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLPersonParser.h; sourceTree = "<group>"; };
+		DAA6DA6D10B6AD0E00E2E0B0 /* XMLPersonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLPersonParser.m; sourceTree = "<group>"; };
+		DAA6DB8A10B7120000E2E0B0 /* RemoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteModel.m; sourceTree = "<group>"; };
 		DAB5E69B10B3F20300AF521B /* AddWaypointViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWaypointViewController.xib; sourceTree = "<group>"; };
 		DACE005B10B3939500944021 /* AddWaypointViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWaypointViewController.h; sourceTree = "<group>"; };
 		DACE005C10B3939500944021 /* AddWaypointViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWaypointViewController.m; sourceTree = "<group>"; };
@@ -366,9 +374,10 @@
 		B873401E10B27EF400F24336 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DAA6DA4F10B6A9E900E2E0B0 /* XML */,
 				DAA6D65D10B62B4F00E2E0B0 /* RPC */,
-				B873402010B27F0F00F24336 /* BurbleDataManager.m */,
 				B873401F10B27F0F00F24336 /* BurbleDataManager.h */,
+				B873402010B27F0F00F24336 /* BurbleDataManager.m */,
 				B88CFFA410B27FD5002BDA85 /* Person.h */,
 				B88CFFA510B27FD5002BDA85 /* Person.m */,
 				B88C002210B2890A002BDA85 /* Group.h */,
@@ -403,7 +412,8 @@
 		DAA6D65D10B62B4F00E2E0B0 /* RPC */ = {
 			isa = PBXGroup;
 			children = (
-				DAA6D64410B61E8700E2E0B0 /* RemoteModelProtocol.h */,
+				DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */,
+				DAA6DB8A10B7120000E2E0B0 /* RemoteModel.m */,
 				DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */,
 				DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */,
 				DAA6D77210B64BA600E2E0B0 /* RPCURLConnection.h */,
@@ -412,6 +422,17 @@
 				DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */,
 			);
 			name = RPC;
+			sourceTree = "<group>";
+		};
+		DAA6DA4F10B6A9E900E2E0B0 /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				DAA6DA5010B6A9FC00E2E0B0 /* XMLEventParser.h */,
+				DAA6DA5110B6A9FC00E2E0B0 /* XMLEventParser.m */,
+				DAA6DA6C10B6AD0E00E2E0B0 /* XMLPersonParser.h */,
+				DAA6DA6D10B6AD0E00E2E0B0 /* XMLPersonParser.m */,
+			);
+			name = XML;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -524,6 +545,9 @@
 				DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */,
 				DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */,
 				DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */,
+				DAA6DA5210B6A9FC00E2E0B0 /* XMLEventParser.m in Sources */,
+				DAA6DA6E10B6AD0E00E2E0B0 /* XMLPersonParser.m in Sources */,
+				DAA6DB8B10B7120000E2E0B0 /* RemoteModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

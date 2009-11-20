@@ -26,6 +26,16 @@
 	return result;
 }
 
+-(void)convertToData:(RPCPostData*)pData {
+	NSString* uidStr = [[NSString alloc] initWithFormat:@"%d", uid];	
+	[pData appendValue:uidStr forKey:kRPC_PersonIdKey];
+	[pData appendValue:guid forKey:kRPC_PersonGuidKey];
+	[pData appendValue:name forKey:kRPC_PersonNameKey];
+	[pData appendValue:number forKey:kRPC_PersonNumberKey];
+	[pData appendValue:email forKey:kRPC_PersonEmailKey];
+	[uidStr release];
+}
+
 #pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -43,13 +53,5 @@
 	}
 	return self;
 }
--(void)convertToData:(RPCPostData*)pData {
-	NSString* uidStr = [[NSString alloc] initWithFormat:@"%d", uid];	
-	[pData appendValue:uidStr forKey:kRPC_PersonIdKey];
-	[pData appendValue:guid forKey:kRPC_PersonGuidKey];
-	[pData appendValue:name forKey:kRPC_PersonNameKey];
-	[pData appendValue:number forKey:kRPC_PersonNumberKey];
-	[pData appendValue:email forKey:kRPC_PersonEmailKey];
-	[uidStr release];
-}
+
 @end

@@ -19,54 +19,20 @@
 @synthesize mainView;
 
 @synthesize table;
-@synthesize search;
 
 @synthesize people;
 
 //For old search methods
-@synthesize names; //a dictionary
-@synthesize keys; //an array
-@synthesize allNames; //a mutable dictionary
-
-@synthesize namesForSearch;
-@synthesize nameCopies;
-
 #pragma mark -
 #pragma mark Custom Methods
 
 //REWRITE THESE to search the array
 -(void)resetSearch {
-	NSMutableDictionary *allNamesCopy = [self.allNames mutableDeepCopy];
-	self.names = allNamesCopy;
-	[allNamesCopy release];
-	
-	NSMutableArray *keyArray = [[NSMutableArray alloc] init];
-	[keyArray addObjectsFromArray:[[self.allNames allKeys]
-								   sortedArrayUsingSelector:@selector(compare:)]];
-	self.keys = keyArray;
-	[keyArray release];
+
 }
 
 -(void)handleSearchForTerm:(NSString *)searchTerm {
-	NSMutableArray *sectionsToRemove = [[NSMutableArray alloc] init];
-	[self resetSearch];
-	
-	for (NSString *key in self.keys) {
-		NSMutableArray *array = [names valueForKey:key];
-		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
-		for (NSString *name in array) {
-			if ([name rangeOfString:searchTerm
-							options:NSCaseInsensitiveSearch].location == NSNotFound)
-							[toRemove addObject:name];
-		}
-		if([array count] == [toRemove count]) 
-			[sectionsToRemove addObject:key];
-		[array removeObjectsInArray:toRemove];
-		[toRemove release];
-	}
-	[self.keys removeObjectsInArray:sectionsToRemove];
-	[sectionsToRemove release];
-	[table reloadData];
+
 }
 
 
@@ -108,23 +74,6 @@
 	[ar release];
 	self.title = @"Groupies";
 	
-	//copy of friends' names
-	self.namesForSearch = [[NSMutableArray alloc] init];
-	for (int i = 0; i < [people count]; i++) {
-		Person *thisPerson = [people objectAtIndex:i];
-		NSString *currentName = [thisPerson name];
-		[self.namesForSearch addObject:currentName];
-	}
-	//fill dictionary
-	NSDictionary *dict = [NSDictionary dictionaryWithObject:self.namesForSearch forKey:@"Names"];
-	self.allNames = dict;
-	
-	
-	[self resetSearch];
-	[table reloadData]; 
-	[table setContentOffset:CGPointMake(0.0, 44.0) animated:NO];
-	
-	
 	[super viewDidLoad];
 }
 
@@ -146,10 +95,6 @@
 
 - (void)viewDidUnload {
 	self.table = nil;
-	self.search = nil;
-	self.allNames = nil;
-	self.names= nil;
-	self.keys = nil;
 	
 	self.people = nil;
 	childController = nil;
@@ -164,14 +109,9 @@
 	[mainView release];
 	
 	[table release];
-	[search release];
 	
 	[people release];
-	
-	[allNames release];
-	[names release];
-	[keys release];
-	
+		
 	[dataManager release];
 	[childController release];
 	[import release];
@@ -208,7 +148,6 @@
 //This handles what happens when Groupies cells are tapped
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-	[search resignFirstResponder];
 	return indexPath;
 }
 
@@ -244,7 +183,6 @@
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	search.text = @"";
 	[self resetSearch];
 	[table reloadData];
 	[searchBar resignFirstResponder];

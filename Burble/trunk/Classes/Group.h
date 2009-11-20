@@ -7,14 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteModelProtocol.h"
+#import "RemoteModel.h"
 
-@interface Group : NSObject <RemoteModelProtocol> {
+#define kRPC_GroupIdKey				@"group[id]"
+#define kRPC_GroupNameKey			@"group[name]"
+#define kRPC_GroupDescriptionKey	@"group[description]"
+
+@interface Group : RemoteModel <NSCoding> {
 	int group_id;
 	NSString* name;
 	NSString* description;
 }
 @property (retain, nonatomic) NSString* name;
 @property (retain, nonatomic) NSString* description;
+@property int group_id;
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "BurbleDataManager.h"
+#import "XMLPersonParser.h"
+#import "XMLGroupParser.h"
 
 
 @implementation BurbleDataManager
@@ -72,6 +74,8 @@ static BurbleDataManager *sharedDataManager;
 		self.currentDirectoryPath = documentsDirectory;
 		
 		baseUrl = [[NSURL alloc] initWithString:kBaseUrlStr];
+		
+		myGroup = nil; //load this from presistent later
 		
 		CLLocationCoordinate2D locCor;
 		locCor.longitude = 0;
@@ -160,6 +164,20 @@ static BurbleDataManager *sharedDataManager;
 	return result;
 }
 
+- (void)updatePresistentWithPerson: (Person*)p {
+	[presistent setObject:[[NSString stringWithFormat:@"%d", p.uid] retain] forKey:@"uid"];
+	if ([p.name length] != 0) { 
+		[presistent setObject:[[NSString alloc] initWithString:p.name] forKey:@"name"];
+	}
+	if ([p.email length] != 0) { 
+		[presistent setObject:[[NSString alloc] initWithString:p.email] forKey:@"email"];
+	}
+	if ([p.number length] != 0) { 
+		[presistent setObject:[[NSString alloc] initWithString:p.number] forKey:@"number"];
+	}
+	[self saveData];
+}
+
 /*
  ================================================================================
 					DATA CALLS for DEVICE DATA
@@ -183,8 +201,32 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Data Calls for Server Data
 
+- (void)messageForCouldNotConnectToServer {
+	NSString *message= [[NSString alloc] initWithString:@"We could not connect to our server. Check your internet connectivity!"];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+	[message release];	
+}
+
+- (void)messageForUnrecognizedStatusCode:(NSHTTPURLResponse*)res {
+	NSString *title = [[NSString alloc] initWithFormat:@"Error code %d", [res statusCode]];
+	NSString *message = [[NSString alloc] initWithString:@"Unfortunately our server reported an error. Sorry, this sucks, but email us and yell at us!"];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle: title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+	[message release];	
+	[title release];
+}
+
+
+/*********************** LOGIN STUFF *****************************/
+
 //calls back [target selector] with boolean indicating success
-- (BOOL)startTryToRegister:(NSString*) name caller:(id)obj {
+//Caller must be a UIViewController displaying a modal view to be dismissed on success.
+- (BOOL)startTryToRegister:(NSString*)name caller:(id)obj {
 	if ([name length] == 0)
 		return NO;
 	
@@ -196,21 +238,16 @@ static BurbleDataManager *sharedDataManager;
 	Person* me = [[Person alloc] init];
 	[me setName:name];
 	[me setGuid:[presistent objectForKey:@"guid"]];	
-	RPCPostData* pData = [[RPCPostData alloc] init];
-	[me convertToData:pData];
 	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/create", [presistent objectForKey:@"guid"]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
-	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	[request setHTTPBodyPostData:pData];
-	
+	RPCPostRequest* request = [me getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+
 	[name retain];
 	tryToRegister_Name = name;
 	
 	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(receiveTryToRegisterCallback:withValue:)];
 	[urlString release];
-	[regUrl release];
 	if (connection)
 		return YES;
 	return NO;
@@ -220,50 +257,51 @@ static BurbleDataManager *sharedDataManager;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
 	if (urlres == nil) { //we have an error
-		
-		NSString *message= [[NSString alloc] initWithString:@"We could not connect to our server. Check your internet connectivity!"];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];		
-	
+		[self messageForCouldNotConnectToServer];	
 	} else if ([urlres statusCode] == 201) { //created new person
 
 		[presistent setValue:tryToRegister_Name forKey:@"name"];
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+		if (![pparser hasError]) {
+			Person *p = [[pparser getPerson] retain];
+			[self updatePresistentWithPerson:p];
+			[p release];
+		}
+		[pparser release];
 		[self saveData];
 		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
 
 	} else if ([urlres statusCode] == 200) { //found you as a current person
 		
-		//TODO: Read XML here, save as actual name.
-		
-		//[presistent setValue:@"Niels Joubert" forKey:@"name"];
-		//[self saveData];
 		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
-
-		NSString *message= [[NSString alloc] initWithString:@"Oh, apparently you and your phone is already in our database! We associated this phone with your account. If this is not what you want, you can manage your account in more detail on our website."];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"Snap! We know you!" message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];		
 		
-	} else {	//something fucked up
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+		if (![pparser hasError]) {
+			Person *p = [[pparser getPerson] retain];
+			[self updatePresistentWithPerson:p];
+			
+			NSString *title= [[NSString alloc] initWithFormat:@"Welcome back %@", p.name];
+			NSString *message= [[NSString alloc] initWithString:@"Oh, apparently you and your phone is already in our database! We associated this phone with your account. If this is not what you want, you can manage your account in more detail on our website."];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			[message release];		
+			[title release];
+			
+			[p release];
+		} else {
+			//wtf xml parse error??
+		}
+		[pparser release];
 
-		NSString *message= [[NSString alloc] initWithString:@"Unfortunately our server reported an error. Sorry, this sucks, but email us and yell at us!"];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"500 Server Error!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];		
-		
+	} else {
+		[self messageForUnrecognizedStatusCode:urlres];
 	}
 	tryToRegister_Caller = nil;
 	[tryToRegister_Name release];
 	tryToRegister_Name = nil;
 }
-
 
 - (void)login {	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/index", [presistent objectForKey:@"guid"]];
@@ -273,21 +311,107 @@ static BurbleDataManager *sharedDataManager;
 	
 }
 - (void)loginCallback:(NSHTTPURLResponse*)response withValue:(id)a2 {
-	if (response != nil && [response statusCode] == 200) {
-		
-		NSString *message = [[NSString alloc] initWithData:(NSData*)a2 encoding:NSUTF8StringEncoding];
-		
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle: @"Response:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		[message release];
+	if (response != nil && [response statusCode] == 200) {		
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+		if (![pparser hasError]) {
+			Person *p = [[pparser getPerson] retain];
+			[self updatePresistentWithPerson:p];
+			[p release];
+		}
+		[response release];
+		[a2 release];
+		[pparser release];
 	}
 }
 
 
-- (BOOL) createGroup:(Group*)g {
+/*********************** GROUP STUFF *****************************/
+#pragma mark -
+
+
+- (BOOL) startCreateGroup:(NSString*)name withDesc:(NSString*)desc target:(id)obj selector:(SEL)s {
+	createGroupCallbackObj = obj;
+	createGroupCallbackSel = s;
 	
+	if (myGroup != nil) {
+		//what do we do when you're currently in a group? we have to leave it, but we'll let the server take care of that.
+		[myGroup release];
+		myGroup = nil;
+	}
+
+	Group* newG = [[Group alloc] init];
+	NSString* gN = [[NSString alloc] initWithString:name];
+	NSString* gD = [[NSString alloc] initWithString:desc];
+	[newG setName:gN];
+	[newG setDescription:gD];
+	
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/create", [presistent objectForKey:@"guid"]];
+	RPCPostRequest* request = [newG getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+	[newG release];
+	
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(callbackForCreateGroup:withValue:)];
+
+	[urlString release];
+	if (connection) {
+		[[Test1AppDelegate sharedAppDelegate] showActivityViewer]; //Block the user
+		return YES;
+	}
+	return NO;
+}
+
+- (void) callbackForCreateGroup:(NSHTTPURLResponse*)response withValue:(id)a2 {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	if (response == nil) { //we have an error
+	
+		[self messageForCouldNotConnectToServer];	
+		[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
+	
+	} else if ([response statusCode] == 201) {
+		
+		
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData*)a2];
+		
+		
+		
+		//XMLGroupParser* pparser = [[XMLGroupParser alloc] initWithData:(NSData *)a2];
+		
+		/*
+		if (![pparser hasError]) {
+			Group *g = [[pparser getGroup] retain];
+			myGroup = g;
+			
+			NSString *title= [[NSString alloc] initWithFormat:@"Created group %d!", g.group_id];
+			NSString *message= [[NSString alloc] initWithFormat:@"Name: %@ Description: %@", g.name, g.description];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			[message release];		
+			[title release];
+			
+			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:myGroup];
+		} else {
+
+			NSString *title= [[NSString alloc] initWithString:@"Parsing server data failed!"];
+			NSString *message= [[NSString alloc] initWithString:@"OK we didn't expect this to happen... Email us and yell at us."];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK!" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			[message release];		
+			[title release];
+			
+			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
+		}
+		 */
+		//[pparser release];
+		
+	} else  {
+		
+		[self messageForUnrecognizedStatusCode:response];
+		[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
+	
+	}
 }
 
 - (BOOL)isInGroup {
@@ -297,6 +421,9 @@ static BurbleDataManager *sharedDataManager;
 - (Group*) getMyGroup {
  	
 }
+
+/*********************** FRIEND STUFF *****************************/
+#pragma mark -
 
 - (NSArray*) getFriends {
 	Person* p1 = [[Person alloc] init];

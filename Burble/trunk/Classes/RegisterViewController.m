@@ -59,6 +59,7 @@
 	if (buttonIndex == 0) {
 		//don't do anything, he decided not to go
 	} else if (buttonIndex == 1) {
+		
 		if (![[BurbleDataManager sharedDataManager] startTryToRegister:nameField.text caller:self]) {
 			
 			NSString *message= [[NSString alloc] initWithFormat:@"We could not create a connection object! This is madness!"];
@@ -69,6 +70,7 @@
 			[message release];
 			
 		}
+		
 	}
 }
 

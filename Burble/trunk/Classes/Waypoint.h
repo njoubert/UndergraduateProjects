@@ -11,9 +11,9 @@
 #import <MapKit/MKTypes.h>
 #import <MapKit/MKGeometry.h>
 #import <MapKit/MKMapView.h>
-#import "RemoteModelProtocol.h"
+#import "RemoteModel.h"
 
-@interface Waypoint : NSObject <MKAnnotation, RemoteModelProtocol> {
+@interface Waypoint : RemoteModel <MKAnnotation> {
 	NSString* name;
 	NSString* description;
 	BOOL syncedWithServer;

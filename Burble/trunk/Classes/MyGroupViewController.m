@@ -7,6 +7,7 @@
 //
 
 #import "MyGroupViewController.h"
+#import "BurbleDataManager.h"
 
 @implementation MyGroupViewController
 
@@ -50,14 +51,24 @@
 		
 	} else {
 		
-		groupTextField.text = @"";
-		UIAlertView *newGroupAlert = [[UIAlertView alloc]
-									  initWithTitle: @"Your new group is called:" message:nameString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[newGroupAlert show];
-		[newGroupAlert release];
+		NSString* nameString = [[NSString alloc] initWithString:groupTextField.text];
 		
+		if ([[BurbleDataManager sharedDataManager] startCreateGroup:nameString withDesc:@"" target:self selector:@selector(groupCreated:)]) {
+			//we started connection, now we just wait for groupCreated to be called.
+			
+		} else {
+			[[BurbleDataManager sharedDataManager] messageForCouldNotConnectToServer];
+		}
+		[nameString release];
+		
+	}
+}
+-(void)groupCreated:(Group*)returnValue {
+
+	if (returnValue != nil) {
+		groupTextField.text = @"";	
 		self.view = myGroupView;
-		groupLabel.text = nameString;
+		groupLabel.text = returnValue.name;
 	}
 }
 
@@ -132,6 +143,8 @@
 	[groupLabel release];
     [super dealloc];
 }
-
+-(void)logMeInPressed {
+	[[BurbleDataManager sharedDataManager] login];
+}
 
 @end

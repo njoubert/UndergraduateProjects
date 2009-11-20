@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Group.h"
 
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
@@ -32,10 +33,12 @@
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
 
 -(IBAction)leaveGroup:(id)sender;
--(IBAction)createGroup:(id)sender;
+-(IBAction)createGroup:(id)sender;			//calls out to server
+-(void)groupCreated:(Group*)returnValue;	//receives callback from server
 -(IBAction)backToGroup:(id)sender;
 -(IBAction)inviteToGroup:(id)sender;
 -(IBAction)messageGroup:(id)sender;
 -(IBAction)goToMyGroupView;
+-(IBAction)logMeInPressed;
 
 @end

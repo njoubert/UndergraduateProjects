@@ -30,8 +30,14 @@ static NSMutableArray *pendingRequestsQueue;
 	if (c.conn) {
 		c.receivedData = [[NSMutableData alloc] init];
 		[pendingRequestsQueue addObject:c];
+		if ([pendingRequestsQueue count] > 0) {
+			UIApplication* app = [UIApplication sharedApplication]; 
+			app.networkActivityIndicatorVisible = YES; // to stop it, set this to NO 
+		}
+			
 		return c;
 	} else {
+		[c.conn release];
 		return nil;
 	}
 }
@@ -61,11 +67,18 @@ static NSMutableArray *pendingRequestsQueue;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	[pendingRequestsQueue removeObject:self];
+	if ([pendingRequestsQueue count] == 0) {
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO]; // to stop it, set this to NO 
+	}
+	[receivedData retain];
 	[connection release];	
 	[target performSelector:selector withObject:response withObject:receivedData];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	[pendingRequestsQueue removeObject:self];
+	if ([pendingRequestsQueue count] == 0) {
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO]; // to stop it, set this to NO 
+	}	
 	[receivedData release];
 	[connection release];
 	[target performSelector:selector withObject:nil withObject:error];

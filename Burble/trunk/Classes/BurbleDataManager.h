@@ -20,21 +20,26 @@
 #import "Test1AppDelegate.h"
 #import "RegisterViewController.h"
 
+
+//#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
+#define kBaseUrlStr @"http://localhost:3000/iphone/"
+
 #define kPresistentFilename @"BurbleData.plist"
-
-#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
-//#define kBaseUrlStr @"http://localhost:3000/iphone/"
-
 
 @interface BurbleDataManager : NSObject <CLLocationManagerDelegate> {
 	NSString *currentDirectoryPath;					//The path where we store data. Set by init.
 	BOOL bIsFirstLaunch;								//Indicates whether this is the app's first launch
 	NSMutableDictionary *presistent;
-	
 	NSURL *baseUrl;
 	
+	//LOGIN STUFF:
 	id tryToRegister_Caller;
 	NSString* tryToRegister_Name;
+	
+	//GROUP STUFF:
+	id createGroupCallbackObj;
+	SEL createGroupCallbackSel;
+	Group* myGroup;
 	
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
@@ -46,6 +51,7 @@
 + (BurbleDataManager *) sharedDataManager;
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
+@property (nonatomic, retain) NSURL *baseUrl;
 
 // ============= INTERNAL STATE MANAGEMENT
 
@@ -62,12 +68,17 @@
 - (NSString*) getName;
 - (NSString*) getFirstName;
 
+//Updates the internal presistent data with the given Person
+- (void) updatePresistentWithPerson:(Person*)p;
+
 // ============= DATA CALLS for DEVICE DATA (Managed internally)
 
 - (CLLocation*) getLocation; //This returns what the device thinks is our location (not necessarily the latest Position as sent to the server)
 
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
+- (void)messageForCouldNotConnectToServer;
+- (void)messageForUnrecognizedStatusCode:(NSHTTPURLResponse*)res;
 
 //puts up a spinner that blocks the user from doing anything until we get a receiveTryToRegisterCallback
 - (BOOL)startTryToRegister:(NSString*)name caller:(id)obj;
@@ -77,9 +88,11 @@
 - (void)login;
 - (void)loginCallback:(id)a1 withValue:(id)a2;
 
+//will call selector with group or error indicating success.
+- (BOOL) startCreateGroup:(NSString*)name withDesc:(NSString*)desc target:(id)obj selector:(SEL)s;		
+- (void) createGroupCallback:(NSHTTPURLResponse*)response withValue:(id)a2;
 - (BOOL)isInGroup;
 - (Group*) getMyGroup;
-- (BOOL) createGroup:(Group*)g;
 
 - (int) getFriendsCount;
 - (NSArray*) getFriends;

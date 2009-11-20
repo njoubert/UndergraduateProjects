@@ -30,15 +30,17 @@
 	}
 	
 	//escape the values
-	NSString* valEsc = [val stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	NSString* keyEsc = [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	NSString* valEsc = [[val stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] retain];
+	NSString* keyEsc = [[key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] retain];
 	
 	//now decide how to add it to the mutable datastr
 	if ([dataStr length] == 0) {
 		[dataStr appendFormat:@"%@=%@", keyEsc, valEsc];			//just add it
 	} else {
 		[dataStr appendFormat:@"&%@=%@", keyEsc, valEsc]; 		//first stick an & in front
-	}	 
+	}
+	[valEsc release];
+	[keyEsc release];
 }
 
 @end

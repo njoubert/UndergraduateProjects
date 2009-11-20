@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteModelProtocol.h"
+#import "RemoteModel.h"
 
-@interface Position : NSObject <RemoteModelProtocol> {
+@interface Position : RemoteModel {
 
 }
 

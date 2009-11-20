@@ -20,9 +20,9 @@
 
 
 #import <Foundation/Foundation.h>
-#import "RemoteModelProtocol.h"
+#import "RemoteModel.h"
 
-@interface Person : NSObject <NSCoding, RemoteModelProtocol> {
+@interface Person : RemoteModel <NSCoding> {
 	int uid;
 	NSString	*guid;
 	NSString	*name;
