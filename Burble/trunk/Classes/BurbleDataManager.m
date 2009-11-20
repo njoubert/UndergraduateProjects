@@ -8,7 +8,6 @@
 
 #import "BurbleDataManager.h"
 #import "XMLPersonParser.h"
-#import "XMLGroupParser.h"
 
 
 @implementation BurbleDataManager
@@ -371,9 +370,6 @@ static BurbleDataManager *sharedDataManager;
 		
 		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData*)a2];
 		
-		
-		
-		//XMLGroupParser* pparser = [[XMLGroupParser alloc] initWithData:(NSData *)a2];
 		
 		/*
 		if (![pparser hasError]) {

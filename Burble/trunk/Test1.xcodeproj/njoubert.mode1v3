@@ -281,14 +281,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>15</integer>
+									<integer>29</integer>
 									<integer>14</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 104}, {257, 688}}</string>
+							<string>{{0, 303}, {257, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -325,7 +325,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>XMLEventParser.m</string>
+								<string>BurbleDataManager.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -333,11 +333,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>XMLEventParser.m</string>
+										<string>BurbleDataManager.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA62F59410B7534F008655A9</string>
+										<string>DA62F5A310B75420008655A9</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -382,22 +382,22 @@
 											<string>DAA6DCD610B740CC00E2E0B0</string>
 											<string>DAA6DD4410B746FF00E2E0B0</string>
 											<string>DAA6DD4610B746FF00E2E0B0</string>
-											<string>DAA6DD6F10B7484A00E2E0B0</string>
 											<string>DAA6DD7910B7488F00E2E0B0</string>
 											<string>DA62F51F10B74F58008655A9</string>
 											<string>DA62F52010B74F58008655A9</string>
-											<string>DA62F52110B74F58008655A9</string>
 											<string>DA62F52210B74F58008655A9</string>
 											<string>DA62F52310B74F58008655A9</string>
 											<string>DA62F55B10B751CB008655A9</string>
-											<string>DA62F55C10B751CB008655A9</string>
 											<string>DA62F56410B751CB008655A9</string>
 											<string>DA62F56F10B751FD008655A9</string>
-											<string>DA62F59010B7534F008655A9</string>
-											<string>DA62F59110B7534F008655A9</string>
 											<string>DA62F59210B7534F008655A9</string>
-											<string>DA62F59310B7534F008655A9</string>
-											<string>DA62F58410B752F1008655A9</string>
+											<string>DA62F59C10B75420008655A9</string>
+											<string>DA62F59D10B75420008655A9</string>
+											<string>DA62F59E10B75420008655A9</string>
+											<string>DA62F59F10B75420008655A9</string>
+											<string>DA62F5A010B75420008655A9</string>
+											<string>DA62F5A110B75420008655A9</string>
+											<string>DA62F5A210B75420008655A9</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -595,6 +595,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>DA62F53D10B7501F008655A9</string>
 		<string>DA62F4F010B74BD8008655A9</string>
 		<string>DA62F4E510B74B52008655A9</string>
@@ -836,12 +837,14 @@
 							<key>Dock</key>
 							<array>
 								<dict>
+									<key>BecomeActive</key>
+									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string></string>
+										<string>BurbleDataManager.m</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -862,8 +865,6 @@
 							<string>212pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -899,8 +900,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>DAA6D8FF10B6875B00E2E0B0</string>
-				<string>DAA6D90010B6875B00E2E0B0</string>
+				<string>DA62F59A10B7541D008655A9</string>
+				<string>DA62F59B10B7541D008655A9</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>
