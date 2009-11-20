@@ -59,24 +59,15 @@
 	if (buttonIndex == 0) {
 		//don't do anything, he decided not to go
 	} else if (buttonIndex == 1) {
-		
-		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
-		
-		BOOL success = [[BurbleDataManager sharedDataManager] tryToRegister:nameField.text];
-		
-		[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
-		
-		if (success) {
+		if (![[BurbleDataManager sharedDataManager] startTryToRegister:nameField.text caller:self]) {
 			
-			[self dismissModalViewControllerAnimated:YES];
-			
-		} else {
-			NSString *message= [[NSString alloc] initWithString:@"We could not connect to our server. Check your internet connectivity!"];
+			NSString *message= [[NSString alloc] initWithFormat:@"We could not create a connection object! This is madness!"];
 			UIAlertView *alert = [[UIAlertView alloc]
-								  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+								  initWithTitle: @"CRITICAL ERROR!" message:message delegate:self cancelButtonTitle:@"Oh damn, stop!" otherButtonTitles:nil];
 			[alert show];
 			[alert release];
 			[message release];
+			
 		}
 	}
 }

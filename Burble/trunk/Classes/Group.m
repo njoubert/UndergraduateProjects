@@ -11,4 +11,9 @@
 
 @implementation Group
 
+
+-(NSData*) convertToData {
+	
+}
+
 @end

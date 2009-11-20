@@ -23,6 +23,9 @@
 	return sender;
 }
 
+-(NSData*) convertToData {
+	
+}
 
 #pragma mark -
 #pragma mark NSCoding

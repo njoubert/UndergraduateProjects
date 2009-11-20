@@ -39,7 +39,6 @@
 	self.navigationItem.backBarButtonItem = backButton;
 	[backButton release];
 	
-	//Set up waypoint overlay	
 	//Create buttons
 	cancelWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelWaypointButtonPressed)];
 	approveWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(approveWaypointButtonPressed)];
@@ -48,6 +47,8 @@
 	
 	self.navigationItem.leftBarButtonItem = locateButton;
 	self.navigationItem.rightBarButtonItem = waypointButton;
+	
+	[self refreshView];
 	
 }
 
@@ -64,10 +65,19 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
-	[self refreshWaypoints];
+	[self refreshView];
 }
 
+- (void) refreshView {
+	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
+		waypointButton.enabled = YES;
+		groupLabel.text = [[NSString alloc] initWithFormat:@"In %@!", [[[BurbleDataManager sharedDataManager] getMyGroup] getName]];
+	} else {
+		waypointButton.enabled = NO;
+		groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
+	}
+	[self refreshWaypoints];
+}
 
 
 /*
@@ -105,6 +115,7 @@
 	AddWaypointViewController *approveController = [[[AddWaypointViewController alloc] initWithNibName:@"AddWaypointViewController" bundle:nil] autorelease];
 	CLLocationCoordinate2D centerCoordinate = [myMap centerCoordinate];
 	[approveController setWaypointLocation:centerCoordinate];
+	[approveController setMapViewToRefresh:self];
 	[self presentModalViewController:approveController animated:YES];
 	
 }

@@ -12,7 +12,7 @@
 
 @implementation AddWaypointViewController
 
-@synthesize nameField, descField, isHereSwitch;
+@synthesize nameField, descField, isHereSwitch, mapViewToRefresh;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -32,7 +32,7 @@
 	wP->iAmHere = self.isHereSwitch.state;
 	[[BurbleDataManager sharedDataManager] addWaypoint:wP];
 	
-	//TODO: force a map reload
+	[self.mapViewToRefresh refreshView];
 	
 	[self dismissModalViewControllerAnimated:YES];
 }

@@ -59,12 +59,6 @@ static Test1AppDelegate *burbleApp = NULL;
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-    
-	//TODO: Do not do this here, you should do an actual spinner view and show the user without interrupting him.
-	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	[dataManager login];
-	
-	//If this is the first launch, we need to popup a "type your name bitch!" tab
 	[window addSubview:rootTabBarController.view];	
     [window makeKeyAndVisible];
 }

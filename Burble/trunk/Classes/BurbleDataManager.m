@@ -16,6 +16,7 @@ static BurbleDataManager *sharedDataManager;
 @synthesize currentDirectoryPath;
 
 - (void)dealloc {
+	[baseUrl release];
 	[presistent release];
 	[super dealloc];
 }
@@ -70,6 +71,8 @@ static BurbleDataManager *sharedDataManager;
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		self.currentDirectoryPath = documentsDirectory;
 		
+		baseUrl = [[NSURL alloc] initWithString:kBaseUrlStr];
+		
 		CLLocationCoordinate2D locCor;
 		locCor.longitude = 0;
 		locCor.latitude = 0;
@@ -83,6 +86,8 @@ static BurbleDataManager *sharedDataManager;
 		[myLocationManager startUpdatingLocation];
 		
 		locallyAddedWaypoints = [[NSMutableArray alloc] init];
+		
+		myG = nil;
 	}
 	return self;
 }
@@ -133,35 +138,6 @@ static BurbleDataManager *sharedDataManager;
 	return bIsFirstLaunch;
 }
 
-//Blocks until registered or failed.
--(BOOL)tryToRegister:(NSString *)name {
-	[presistent setValue:name forKey:@"name"];
-	[self saveData];
-	return YES;
-	//return NO;
-}
-
-
-/*
- ================================================================================
-								CONNECTION MANAGEMENT
- ================================================================================ 
- */
-
-#pragma mark -
-#pragma mark Connection Management
-
-- (BOOL)login {
-	//create a request
-	
-	//send it to the server
-	
-	//check the response
-		//if not 200, error!
-	
-	return YES;	
-}
-
 /*
  ================================================================================
 								DATA CALLS for INTERNAL DATA
@@ -206,6 +182,121 @@ static BurbleDataManager *sharedDataManager;
 
 #pragma mark -
 #pragma mark Data Calls for Server Data
+
+//calls back [target selector] with boolean indicating success
+- (BOOL)startTryToRegister:(NSString*) name caller:(id)obj {
+	if ([name length] == 0)
+		return NO;
+	
+	if (tryToRegister_Caller != nil)
+		return NO;
+	
+	tryToRegister_Caller = obj;
+	
+	Person* me = [[Person alloc] init];
+	[me setName:name];
+	[me setGuid:[presistent objectForKey:@"guid"]];	
+	RPCPostData* pData = [[RPCPostData alloc] init];
+	[me convertToData:pData];
+	
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/create", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	[request setHTTPBodyPostData:pData];
+	
+	[name retain];
+	tryToRegister_Name = name;
+	
+	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(receiveTryToRegisterCallback:withValue:)];
+	[urlString release];
+	[regUrl release];
+	if (connection)
+		return YES;
+	return NO;
+}
+
+- (void)receiveTryToRegisterCallback:(NSHTTPURLResponse *)urlres withValue:(id)a2 {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	
+	if (urlres == nil) { //we have an error
+		
+		NSString *message= [[NSString alloc] initWithString:@"We could not connect to our server. Check your internet connectivity!"];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Confirm!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+	
+	} else if ([urlres statusCode] == 201) { //created new person
+
+		[presistent setValue:tryToRegister_Name forKey:@"name"];
+		[self saveData];
+		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
+
+	} else if ([urlres statusCode] == 200) { //found you as a current person
+		
+		//TODO: Read XML here, save as actual name.
+		
+		//[presistent setValue:@"Niels Joubert" forKey:@"name"];
+		//[self saveData];
+		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
+
+		NSString *message= [[NSString alloc] initWithString:@"Oh, apparently you and your phone is already in our database! We associated this phone with your account. If this is not what you want, you can manage your account in more detail on our website."];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Snap! We know you!" message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+		
+	} else {	//something fucked up
+
+		NSString *message= [[NSString alloc] initWithString:@"Unfortunately our server reported an error. Sorry, this sucks, but email us and yell at us!"];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"500 Server Error!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+		
+	}
+	tryToRegister_Caller = nil;
+	[tryToRegister_Name release];
+	tryToRegister_Name = nil;
+}
+
+
+- (void)login {	
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/index", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	[RPCURLConnection sendAsyncRequest:request target:self selector:@selector(loginCallback:withValue:)];
+	
+}
+- (void)loginCallback:(NSHTTPURLResponse*)response withValue:(id)a2 {
+	if (response != nil && [response statusCode] == 200) {
+		
+		NSString *message = [[NSString alloc] initWithData:(NSData*)a2 encoding:NSUTF8StringEncoding];
+		
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle: @"Response:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];
+	}
+}
+
+
+- (BOOL) createGroup:(Group*)g {
+	
+}
+
+- (BOOL)isInGroup {
+	return (nil != myG);
+}
+
+- (Group*) getMyGroup {
+ 	
+}
 
 - (NSArray*) getFriends {
 	Person* p1 = [[Person alloc] init];

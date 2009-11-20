@@ -11,15 +11,26 @@
 #define kPersonNumberKey	@"PersonNumber"
 #define kPersonEmailKey		@"PersonEmail"
 
-#import <Foundation/Foundation.h>
+#define kRPC_PersonIdKey		@"person[id]"
+#define kRPC_PersonGuidKey		@"person[guid]"
+#define kRPC_PersonNameKey		@"person[name]"
+#define kRPC_PersonNumberKey	@"person[number]"
+#define kRPC_PersonEmailKey		@"person[email]"
 
-@interface Person : NSObject <NSCoding> {
+
+
+#import <Foundation/Foundation.h>
+#import "RemoteModelProtocol.h"
+
+@interface Person : NSObject <NSCoding, RemoteModelProtocol> {
 	int uid;
+	NSString	*guid;
 	NSString	*name;
 	NSString	*number;
 	NSString	*email;
 }
 @property int uid;
+@property (nonatomic, retain) NSString *guid;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *number;
 @property (nonatomic, retain) NSString *email;

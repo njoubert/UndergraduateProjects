@@ -42,4 +42,6 @@
 -(IBAction)selectorButtonPressed;
 -(IBAction)locateButtonPressed;
 
+- (void) refreshView;
+
 @end

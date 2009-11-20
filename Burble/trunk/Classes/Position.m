@@ -11,4 +11,8 @@
 
 @implementation Position
 
+-(NSData*) convertToData {
+	
+}
+
 @end

@@ -31,4 +31,8 @@
 	return description;
 }
 
+-(NSData*) convertToData {
+	
+}
+
 @end

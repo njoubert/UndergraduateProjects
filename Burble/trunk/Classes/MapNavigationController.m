@@ -33,6 +33,8 @@
 	if (![[BurbleDataManager sharedDataManager] isRegistered]) {
 		RegisterViewController *rVC = [[[RegisterViewController alloc] initWithNibName:nil bundle:nil] autorelease];
 		[self presentModalViewController:rVC animated:YES];
+	} else {
+		[[BurbleDataManager sharedDataManager] login];
 	}
     [super viewDidLoad];
 }
