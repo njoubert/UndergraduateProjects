@@ -5,7 +5,7 @@ class Iphone::PositionController < Iphone::AbstractIphoneController
   # GET latest position for ME
   # POST new position for me
   def index
-    if request.post?
+    if request.post
       @position = Position.new(params[:position])
       begin
         @position.save!

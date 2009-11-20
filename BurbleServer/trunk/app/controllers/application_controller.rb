@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
         @user = Person.find_by_guid(params[:guid])
         raise "no person with supplied guid found" if @user == nil
       rescue Exception => ex
-        logger.error "An iPhone without a uuid in params attempted to access something!"
+        logger.error "An iPhone without a recognized UUID attempted to access something!"
         @iphoneError[:error] = "User not logged in!"
         @iphoneError[:exception] = ex.to_s
         render :status => 500, :template => 'iphone/error.rxml'
