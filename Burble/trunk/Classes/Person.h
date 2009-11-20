@@ -17,8 +17,6 @@
 #define kRPC_PersonNumberKey	@"person[number]"
 #define kRPC_PersonEmailKey		@"person[email]"
 
-
-
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
 

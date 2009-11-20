@@ -14,8 +14,9 @@
 -(id)initWithData:(NSData*)data {
 	if (self = [super init]) {
 		
-		/*
+		
 		//THIS SHOWS THE XML IF YOU WANNA SEE IT
+		/*
 		NSString *message= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:@"RESULT" message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];

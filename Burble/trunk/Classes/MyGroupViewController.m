@@ -64,7 +64,6 @@
 	}
 }
 -(void)groupCreated:(Group*)returnValue {
-
 	if (returnValue != nil) {
 		groupTextField.text = @"";	
 		self.view = myGroupView;

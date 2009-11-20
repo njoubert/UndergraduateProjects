@@ -36,6 +36,7 @@
 		B8E46A2210AFBCB2000A27C5 /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1710AFBCB2000A27C5 /* FBSession.m */; };
 		B8E46A2310AFBCB2000A27C5 /* FBStreamDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1810AFBCB2000A27C5 /* FBStreamDialog.m */; };
 		B8E46A2410AFBCB2000A27C5 /* FBXMLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */; };
+		DA62F5B210B75949008655A9 /* XMLGroupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA62F5B110B75949008655A9 /* XMLGroupParser.m */; };
 		DA71078E10A295B100DAD536 /* 103-map.png in Resources */ = {isa = PBXBuildFile; fileRef = DA71078D10A295B100DAD536 /* 103-map.png */; };
 		DA71079010A295E400DAD536 /* map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = DA71078F10A295E400DAD536 /* map-marker.png */; };
 		DA71079E10A2973200DAD536 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = DA71079D10A2973200DAD536 /* 74-location.png */; };
@@ -130,6 +131,8 @@
 		B8E46A1810AFBCB2000A27C5 /* FBStreamDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBStreamDialog.m; sourceTree = "<group>"; };
 		B8E46A1910AFBCB2000A27C5 /* FBXMLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBXMLHandler.h; sourceTree = "<group>"; };
 		B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBXMLHandler.m; sourceTree = "<group>"; };
+		DA62F5B010B75949008655A9 /* XMLGroupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLGroupParser.h; sourceTree = "<group>"; };
+		DA62F5B110B75949008655A9 /* XMLGroupParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLGroupParser.m; sourceTree = "<group>"; };
 		DA71078D10A295B100DAD536 /* 103-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "103-map.png"; sourceTree = "<group>"; };
 		DA71078F10A295E400DAD536 /* map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-marker.png"; sourceTree = "<group>"; };
 		DA71079D10A2973200DAD536 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "74-location.png"; sourceTree = "<group>"; };
@@ -431,6 +434,8 @@
 				DAA6DA5110B6A9FC00E2E0B0 /* XMLEventParser.m */,
 				DAA6DA6C10B6AD0E00E2E0B0 /* XMLPersonParser.h */,
 				DAA6DA6D10B6AD0E00E2E0B0 /* XMLPersonParser.m */,
+				DA62F5B010B75949008655A9 /* XMLGroupParser.h */,
+				DA62F5B110B75949008655A9 /* XMLGroupParser.m */,
 			);
 			name = XML;
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 				DAA6DA5210B6A9FC00E2E0B0 /* XMLEventParser.m in Sources */,
 				DAA6DA6E10B6AD0E00E2E0B0 /* XMLPersonParser.m in Sources */,
 				DAA6DB8B10B7120000E2E0B0 /* RemoteModel.m in Sources */,
+				DA62F5B210B75949008655A9 /* XMLGroupParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

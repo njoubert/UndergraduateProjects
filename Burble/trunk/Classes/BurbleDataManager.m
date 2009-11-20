@@ -8,6 +8,7 @@
 
 #import "BurbleDataManager.h"
 #import "XMLPersonParser.h"
+#import "XMLGroupParser.h"
 
 
 @implementation BurbleDataManager
@@ -367,13 +368,10 @@ static BurbleDataManager *sharedDataManager;
 	
 	} else if ([response statusCode] == 201) {
 		
+		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:(NSData*)a2];
 		
-		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData*)a2];
-		
-		
-		/*
-		if (![pparser hasError]) {
-			Group *g = [[pparser getGroup] retain];
+		if (![gparser hasError]) {
+			Group *g = [[gparser getGroup] retain];
 			myGroup = g;
 			
 			NSString *title= [[NSString alloc] initWithFormat:@"Created group %d!", g.group_id];
@@ -399,8 +397,8 @@ static BurbleDataManager *sharedDataManager;
 			
 			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
 		}
-		 */
-		//[pparser release];
+		 
+		[gparser release];
 		
 	} else  {
 		
