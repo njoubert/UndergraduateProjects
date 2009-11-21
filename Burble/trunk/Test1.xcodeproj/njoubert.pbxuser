@@ -25,7 +25,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Release;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphonesimulator3.1.2;
+		activeSDKPreference = iphoneos3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -887,6 +887,8 @@
 			DA62FAD910B808EC008655A9 /* PBXTextBookmark */ = DA62FAD910B808EC008655A9 /* PBXTextBookmark */;
 			DA62FADE10B808F7008655A9 /* PBXTextBookmark */ = DA62FADE10B808F7008655A9 /* PBXTextBookmark */;
 			DA62FAE210B8094D008655A9 /* PBXTextBookmark */ = DA62FAE210B8094D008655A9 /* PBXTextBookmark */;
+			DA62FAEB10B80A8F008655A9 /* PBXTextBookmark */ = DA62FAEB10B80A8F008655A9 /* PBXTextBookmark */;
+			DA62FAEC10B80A8F008655A9 /* PBXTextBookmark */ = DA62FAEC10B80A8F008655A9 /* PBXTextBookmark */;
 			DAA6D5A510B4E3C600E2E0B0 = DAA6D5A510B4E3C600E2E0B0 /* PBXTextBookmark */;
 			DAA6D5AE10B4E3DA00E2E0B0 = DAA6D5AE10B4E3DA00E2E0B0 /* PBXTextBookmark */;
 			DAA6D5AF10B4E3DA00E2E0B0 = DAA6D5AF10B4E3DA00E2E0B0 /* PBXTextBookmark */;
@@ -1789,17 +1791,17 @@
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1051, 1833}}";
-			sepNavSelRange = "{2409, 0}";
-			sepNavVisRange = "{1417, 1480}";
+			sepNavIntBoundsRect = "{{0, 0}, {929, 1846}}";
+			sepNavSelRange = "{635, 0}";
+			sepNavVisRange = "{0, 1317}";
 			sepNavWindowFrame = "{{1280, 256}, {1110, 778}}";
 		};
 	};
 	B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1034, 10374}}";
-			sepNavSelRange = "{18172, 0}";
-			sepNavVisRange = "{17481, 515}";
+			sepNavIntBoundsRect = "{{0, 0}, {1069, 9958}}";
+			sepNavSelRange = "{10483, 0}";
+			sepNavVisRange = "{8141, 581}";
 			sepNavWindowFrame = "{{26, 0}, {1110, 778}}";
 		};
 	};
@@ -9555,6 +9557,26 @@
 		vrLen = 2038;
 		vrLoc = 3805;
 	};
+	DA62FAEB10B80A8F008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 180";
+		rLen = 0;
+		rLoc = 5797;
+		rType = 0;
+		vrLen = 724;
+		vrLoc = 5026;
+	};
+	DA62FAEC10B80A8F008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 533";
+		rLen = 0;
+		rLoc = 18172;
+		rType = 0;
+		vrLen = 602;
+		vrLoc = 17481;
+	};
 	DAA6D5A510B4E3C600E2E0B0 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
@@ -13886,9 +13908,9 @@
 	};
 	DAA6DA5010B6A9FC00E2E0B0 /* XMLEventParser.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1321, 624}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1321, 637}}";
 			sepNavSelRange = "{220, 0}";
-			sepNavVisRange = "{0, 1258}";
+			sepNavVisRange = "{0, 1357}";
 			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};
@@ -13896,7 +13918,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {950, 728}}";
 			sepNavSelRange = "{627, 0}";
-			sepNavVisRange = "{138, 990}";
+			sepNavVisRange = "{142, 1006}";
 		};
 	};
 	DAA6DA5710B6AB5000E2E0B0 /* PBXTextBookmark */ = {
@@ -17995,7 +18017,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 1;
+		breakpointsEnabled = 0;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -18047,7 +18069,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1279, 2548}}";
 			sepNavSelRange = "{5797, 0}";
-			sepNavVisRange = "{5026, 642}";
+			sepNavVisRange = "{5026, 724}";
 			sepNavWindowFrame = "{{7, 0}, {945, 773}}";
 		};
 	};

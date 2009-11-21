@@ -23,8 +23,8 @@
 
 #define kNumOfConcurrentRequestsFromQueue 3
 
-//#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
-#define kBaseUrlStr @"http://localhost:3000/iphone/"
+#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
+//#define kBaseUrlStr @"http://localhost:3000/iphone/"
 
 #define kPresistentFilename @"BurbleData.plist"
 
