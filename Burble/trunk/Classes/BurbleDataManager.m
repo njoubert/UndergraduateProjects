@@ -695,7 +695,6 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
-
 - (BOOL)isInGroup {
 	return (nil != myGroup);
 }

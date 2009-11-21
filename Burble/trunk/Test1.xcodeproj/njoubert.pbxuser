@@ -23,9 +23,9 @@
 		);
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Release;
+		activeBuildConfigurationName = Debug;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphonesimulator3.1.2;
+		activeSDKPreference = iphoneos3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -1080,6 +1080,14 @@
 			DA62FC9210B88C28008655A9 /* PBXTextBookmark */ = DA62FC9210B88C28008655A9 /* PBXTextBookmark */;
 			DA62FC9310B88C28008655A9 /* PBXTextBookmark */ = DA62FC9310B88C28008655A9 /* PBXTextBookmark */;
 			DA62FC9410B88C28008655A9 /* PBXTextBookmark */ = DA62FC9410B88C28008655A9 /* PBXTextBookmark */;
+			DA62FCB710B89B4C008655A9 /* PBXTextBookmark */ = DA62FCB710B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCB810B89B4C008655A9 /* PBXTextBookmark */ = DA62FCB810B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCB910B89B4C008655A9 /* PBXTextBookmark */ = DA62FCB910B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCBA10B89B4C008655A9 /* PBXTextBookmark */ = DA62FCBA10B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCBB10B89B4C008655A9 /* PBXTextBookmark */ = DA62FCBB10B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCBC10B89B4C008655A9 /* PBXTextBookmark */ = DA62FCBC10B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCBD10B89B4C008655A9 /* PBXTextBookmark */ = DA62FCBD10B89B4C008655A9 /* PBXTextBookmark */;
+			DA62FCBE10B89B4C008655A9 /* PBXTextBookmark */ = DA62FCBE10B89B4C008655A9 /* PBXTextBookmark */;
 			DAA6D5A510B4E3C600E2E0B0 = DAA6D5A510B4E3C600E2E0B0 /* PBXTextBookmark */;
 			DAA6D5AE10B4E3DA00E2E0B0 = DAA6D5AE10B4E3DA00E2E0B0 /* PBXTextBookmark */;
 			DAA6D5AF10B4E3DA00E2E0B0 = DAA6D5AF10B4E3DA00E2E0B0 /* PBXTextBookmark */;
@@ -1982,15 +1990,15 @@
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1006, 1755}}";
-			sepNavSelRange = "{4242, 30}";
-			sepNavVisRange = "{2390, 1889}";
+			sepNavIntBoundsRect = "{{0, 0}, {929, 1898}}";
+			sepNavSelRange = "{610, 0}";
+			sepNavVisRange = "{0, 1269}";
 			sepNavWindowFrame = "{{1280, 256}, {1110, 778}}";
 		};
 	};
 	B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1097, 10907}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 10647}}";
 			sepNavSelRange = "{13904, 336}";
 			sepNavVisRange = "{13108, 2072}";
 			sepNavWindowFrame = "{{1414, 241}, {1110, 778}}";
@@ -2024,22 +2032,22 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {929, 1625}}";
 			sepNavSelRange = "{1459, 0}";
-			sepNavVisRange = "{913, 1451}";
+			sepNavVisRange = "{913, 1571}";
 			sepNavWindowFrame = "{{1479, 124}, {658, 753}}";
 		};
 	};
 	B88C002810B2891B002BDA85 /* Position.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 663}}";
-			sepNavSelRange = "{878, 0}";
-			sepNavVisRange = "{28, 1261}";
+			sepNavIntBoundsRect = "{{0, 0}, {929, 650}}";
+			sepNavSelRange = "{950, 6}";
+			sepNavVisRange = "{18, 1222}";
 		};
 	};
 	B88C002910B2891B002BDA85 /* Position.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 962}}";
-			sepNavSelRange = "{457, 0}";
-			sepNavVisRange = "{0, 1701}";
+			sepNavIntBoundsRect = "{{0, 0}, {929, 923}}";
+			sepNavSelRange = "{606, 0}";
+			sepNavVisRange = "{184, 1706}";
 			sepNavWindowFrame = "{{1341, 250}, {658, 753}}";
 		};
 	};
@@ -3508,7 +3516,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 25";
 		rLen = 0;
-		rLoc = 2305;
+		rLoc = 2171;
 		rType = 0;
 		vrLen = 302;
 		vrLoc = 0;
@@ -3868,7 +3876,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 457";
 		rLen = 0;
-		rLoc = 24403;
+		rLoc = 24402;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 14458;
@@ -3888,7 +3896,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 460";
 		rLen = 0;
-		rLoc = 24457;
+		rLoc = 24456;
 		rType = 0;
 		vrLen = 1308;
 		vrLoc = 14442;
@@ -4073,7 +4081,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 460";
 		rLen = 0;
-		rLoc = 24457;
+		rLoc = 24456;
 		rType = 0;
 		vrLen = 1236;
 		vrLoc = 14721;
@@ -4370,7 +4378,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 26";
 		rLen = 0;
-		rLoc = 2304;
+		rLoc = 2170;
 		rType = 0;
 		vrLen = 399;
 		vrLoc = 0;
@@ -5145,7 +5153,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 551";
 		rLen = 0;
-		rLoc = 25246;
+		rLoc = 25245;
 		rType = 0;
 		vrLen = 1070;
 		vrLoc = 17903;
@@ -6426,7 +6434,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 820;
+		rLoc = 819;
 		rType = 1;
 	};
 	DA62F8BD10B7CCEF008655A9 /* PBXTextBookmark */ = {
@@ -6434,7 +6442,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 630";
 		rLen = 0;
-		rLoc = 27366;
+		rLoc = 27365;
 		rType = 0;
 		vrLen = 908;
 		vrLoc = 19874;
@@ -6454,7 +6462,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 630";
 		rLen = 0;
-		rLoc = 27366;
+		rLoc = 27365;
 		rType = 0;
 		vrLen = 908;
 		vrLoc = 19874;
@@ -7323,7 +7331,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 26";
 		rLen = 0;
-		rLoc = 2304;
+		rLoc = 2170;
 		rType = 0;
 		vrLen = 399;
 		vrLoc = 0;
@@ -7547,7 +7555,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 26";
 		rLen = 0;
-		rLoc = 2304;
+		rLoc = 2170;
 		rType = 0;
 		vrLen = 399;
 		vrLoc = 0;
@@ -7657,7 +7665,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 676";
 		rLen = 0;
-		rLoc = 25120;
+		rLoc = 25119;
 		rType = 0;
 		vrLen = 1591;
 		vrLoc = 8905;
@@ -7931,7 +7939,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 27";
 		rLen = 0;
-		rLoc = 614;
+		rLoc = 623;
 		rType = 0;
 		vrLen = 820;
 		vrLoc = 0;
@@ -7941,7 +7949,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 31";
 		rLen = 0;
-		rLoc = 1857;
+		rLoc = 1664;
 		rType = 0;
 		vrLen = 832;
 		vrLoc = 0;
@@ -7951,7 +7959,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 17";
 		rLen = 0;
-		rLoc = 1857;
+		rLoc = 1664;
 		rType = 0;
 		vrLen = 470;
 		vrLoc = 0;
@@ -8041,7 +8049,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 31";
 		rLen = 0;
-		rLoc = 662;
+		rLoc = 671;
 		rType = 0;
 		vrLen = 934;
 		vrLoc = 0;
@@ -8071,7 +8079,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 31";
 		rLen = 0;
-		rLoc = 661;
+		rLoc = 670;
 		rType = 0;
 		vrLen = 958;
 		vrLoc = 0;
@@ -8131,7 +8139,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8201,7 +8209,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 732";
 		rLen = 28;
-		rLoc = 27000;
+		rLoc = 26999;
 		rType = 0;
 		vrLen = 1450;
 		vrLoc = 23324;
@@ -8211,7 +8219,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 736";
 		rLen = 0;
-		rLoc = 27118;
+		rLoc = 27117;
 		rType = 0;
 		vrLen = 1360;
 		vrLoc = 23389;
@@ -8221,7 +8229,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8281,7 +8289,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 736";
 		rLen = 0;
-		rLoc = 27118;
+		rLoc = 27117;
 		rType = 0;
 		vrLen = 1367;
 		vrLoc = 23389;
@@ -8291,7 +8299,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 733";
 		rLen = 0;
-		rLoc = 26998;
+		rLoc = 26997;
 		rType = 0;
 		vrLen = 1302;
 		vrLoc = 23456;
@@ -8301,7 +8309,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8351,7 +8359,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 737";
 		rLen = 0;
-		rLoc = 27092;
+		rLoc = 27091;
 		rType = 0;
 		vrLen = 1300;
 		vrLoc = 23458;
@@ -8361,7 +8369,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8438,7 +8446,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8538,7 +8546,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8648,7 +8656,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 31";
 		rLen = 0;
-		rLoc = 662;
+		rLoc = 671;
 		rType = 0;
 		vrLen = 1416;
 		vrLoc = 0;
@@ -8668,7 +8676,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 737";
 		rLen = 0;
-		rLoc = 27064;
+		rLoc = 27063;
 		rType = 0;
 		vrLen = 1300;
 		vrLoc = 23540;
@@ -8678,7 +8686,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8758,7 +8766,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8868,7 +8876,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -8968,7 +8976,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1609;
 		vrLoc = 411;
@@ -9038,7 +9046,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 33";
 		rLen = 0;
-		rLoc = 824;
+		rLoc = 820;
 		rType = 0;
 		vrLen = 1437;
 		vrLoc = 863;
@@ -9098,7 +9106,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 411;
@@ -9178,7 +9186,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1706;
 		vrLoc = 411;
@@ -9238,7 +9246,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1706;
 		vrLoc = 411;
@@ -9298,7 +9306,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 411;
@@ -9358,7 +9366,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1706;
 		vrLoc = 411;
@@ -9418,7 +9426,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 411;
@@ -9478,7 +9486,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1706;
 		vrLoc = 411;
@@ -9538,7 +9546,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 33";
 		rLen = 0;
-		rLoc = 824;
+		rLoc = 820;
 		rType = 0;
 		vrLen = 1416;
 		vrLoc = 0;
@@ -9568,7 +9576,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1768;
 		vrLoc = 185;
@@ -9648,7 +9656,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 45";
 		rLen = 0;
-		rLoc = 1566;
+		rLoc = 1533;
 		rType = 0;
 		vrLen = 1768;
 		vrLoc = 185;
@@ -9842,7 +9850,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 728";
 		rLen = 0;
-		rLoc = 25864;
+		rLoc = 25863;
 		rType = 0;
 		vrLen = 1190;
 		vrLoc = 23276;
@@ -9882,7 +9890,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 719";
 		rLen = 0;
-		rLoc = 25774;
+		rLoc = 25773;
 		rType = 0;
 		vrLen = 1190;
 		vrLoc = 23276;
@@ -10243,7 +10251,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 666";
 		rLen = 0;
-		rLoc = 24864;
+		rLoc = 24863;
 		rType = 0;
 		vrLen = 911;
 		vrLoc = 22224;
@@ -10303,7 +10311,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 719";
 		rLen = 0;
-		rLoc = 25939;
+		rLoc = 25938;
 		rType = 0;
 		vrLen = 1116;
 		vrLoc = 22924;
@@ -10463,7 +10471,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 719";
 		rLen = 0;
-		rLoc = 25939;
+		rLoc = 25938;
 		rType = 0;
 		vrLen = 1116;
 		vrLoc = 22924;
@@ -10473,7 +10481,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 697";
 		rLen = 0;
-		rLoc = 25514;
+		rLoc = 25513;
 		rType = 0;
 		vrLen = 1571;
 		vrLoc = 19441;
@@ -10770,7 +10778,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 725";
 		rLen = 11;
-		rLoc = 25873;
+		rLoc = 25872;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 23616;
@@ -10969,7 +10977,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 776";
 		rLen = 0;
-		rLoc = 25924;
+		rLoc = 25923;
 		rType = 0;
 		vrLen = 1034;
 		vrLoc = 25113;
@@ -10979,7 +10987,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 784";
 		rLen = 0;
-		rLoc = 26133;
+		rLoc = 26132;
 		rType = 0;
 		vrLen = 950;
 		vrLoc = 25185;
@@ -11079,7 +11087,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 778";
 		rLen = 0;
-		rLoc = 25941;
+		rLoc = 25940;
 		rType = 0;
 		vrLen = 1155;
 		vrLoc = 25315;
@@ -11089,7 +11097,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 778";
 		rLen = 0;
-		rLoc = 25973;
+		rLoc = 25972;
 		rType = 0;
 		vrLen = 1017;
 		vrLoc = 25315;
@@ -11109,7 +11117,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 778";
 		rLen = 0;
-		rLoc = 25973;
+		rLoc = 25972;
 		rType = 0;
 		vrLen = 1056;
 		vrLoc = 25276;
@@ -11352,7 +11360,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 765";
 		rLen = 0;
-		rLoc = 25769;
+		rLoc = 25768;
 		rType = 0;
 		vrLen = 1104;
 		vrLoc = 25249;
@@ -11638,6 +11646,86 @@
 		vrLoc = 913;
 	};
 	DA62FC9410B88C28008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 421";
+		rLen = 336;
+		rLoc = 13904;
+		rType = 0;
+		vrLen = 2072;
+		vrLoc = 13108;
+	};
+	DA62FCB710B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002610B28914002BDA85 /* Message.m */;
+		name = "Message.m: 64";
+		rLen = 0;
+		rLoc = 1459;
+		rType = 0;
+		vrLen = 1571;
+		vrLoc = 913;
+	};
+	DA62FCB810B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 27";
+		rLen = 0;
+		rLoc = 610;
+		rType = 0;
+		vrLen = 1269;
+		vrLoc = 0;
+	};
+	DA62FCB910B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAA6DB8A10B7120000E2E0B0 /* RemoteModel.m */;
+		name = "RemoteModel.m: 21";
+		rLen = 0;
+		rLoc = 621;
+		rType = 0;
+		vrLen = 733;
+		vrLoc = 0;
+	};
+	DA62FCBA10B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 807";
+		rLen = 0;
+		rLoc = 26999;
+		rType = 0;
+		vrLen = 1396;
+		vrLoc = 25974;
+	};
+	DA62FCBB10B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002810B2891B002BDA85 /* Position.h */;
+		name = "Position.h: 35";
+		rLen = 6;
+		rLoc = 950;
+		rType = 0;
+		vrLen = 1222;
+		vrLoc = 18;
+	};
+	DA62FCBC10B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002910B2891B002BDA85 /* Position.m */;
+		name = "Position.m: 27";
+		rLen = 0;
+		rLoc = 606;
+		rType = 0;
+		vrLen = 1547;
+		vrLoc = 28;
+	};
+	DA62FCBD10B89B4C008655A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002910B2891B002BDA85 /* Position.m */;
+		name = "Position.m: 25";
+		rLen = 0;
+		rLoc = 606;
+		rType = 0;
+		vrLen = 1706;
+		vrLoc = 184;
+	};
+	DA62FCBE10B89B4C008655A9 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 421";
@@ -12389,7 +12477,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 17";
 		rLen = 0;
-		rLoc = 2305;
+		rLoc = 2171;
 		rType = 0;
 		vrLen = 222;
 		vrLoc = 0;
@@ -12678,7 +12766,7 @@
 		ignoreCount = 0;
 		lineNumber = 164;
 		location = Test1;
-		modificationTime = 280529906.830957;
+		modificationTime = 280533828.266411;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -17382,7 +17470,7 @@
 	DAA6DB8A10B7120000E2E0B0 /* RemoteModel.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1104, 594}}";
-			sepNavSelRange = "{687, 0}";
+			sepNavSelRange = "{621, 0}";
 			sepNavVisRange = "{0, 733}";
 		};
 	};
@@ -17631,7 +17719,7 @@
 		fRef = B88C002910B2891B002BDA85 /* Position.m */;
 		name = "Position.m: 17";
 		rLen = 0;
-		rLoc = 2305;
+		rLoc = 2171;
 		rType = 0;
 		vrLen = 222;
 		vrLoc = 0;
@@ -19903,7 +19991,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 213";
 		rLen = 0;
-		rLoc = 24405;
+		rLoc = 24404;
 		rType = 0;
 		vrLen = 925;
 		vrLoc = 3920;

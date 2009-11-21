@@ -22,19 +22,19 @@
 		speed = loc.speed;
 		heading = loc.course;
 		elevation = loc.altitude;
-		timestamp = loc.timestamp;
+		timestamp = [loc.timestamp retain];
 	}
 	return self;
 }
 
 -(void)convertToData:(RPCPostData*)pData {
-	NSString* latStr = [[NSString alloc] initWithFormat:@"%f", lat];	
-	NSString* lonStr = [[NSString alloc] initWithFormat:@"%f", lon];	
-	NSString* vaccuracyStr = [[NSString alloc] initWithFormat:@"%f", vaccuracy];	
-	NSString* haccuracyStr = [[NSString alloc] initWithFormat:@"%f", haccuracy];	
-	NSString* speedStr = [[NSString alloc] initWithFormat:@"%f", speed];	
-	NSString* elevationStr = [[NSString alloc] initWithFormat:@"%f", elevation];	
-	NSString* headingStr = [[NSString alloc] initWithFormat:@"%f", heading];	
+	NSString* latStr = [NSString stringWithFormat:@"%f", lat];	
+	NSString* lonStr = [NSString stringWithFormat:@"%f", lon];	
+	NSString* vaccuracyStr = [NSString stringWithFormat:@"%f", vaccuracy];	
+	NSString* haccuracyStr = [NSString stringWithFormat:@"%f", haccuracy];	
+	NSString* speedStr = [NSString stringWithFormat:@"%f", speed];	
+	NSString* elevationStr = [NSString stringWithFormat:@"%f", elevation];	
+	NSString* headingStr = [NSString stringWithFormat:@"%f", heading];	
 
 	[pData appendValue:latStr forKey:kRPC_PositionLatKey];
 	[pData appendValue:lonStr forKey:kRPC_PositionLonKey];
@@ -43,16 +43,12 @@
 	[pData appendValue:speedStr forKey:kRPC_PositionSpeedKey];
 	[pData appendValue:elevationStr forKey:kRPC_PositionElevationKey];
 	[pData appendValue:headingStr forKey:kRPC_PositionHeadingKey];
-	
 	[pData appendValue:[timestamp description] forKey:kRPC_PositionDateTimeKey];
-	
-	[latStr release];
-	[lonStr release];
-	[vaccuracyStr release];
-	[haccuracyStr release];
-	[speedStr release];
-	[elevationStr release];
-	[headingStr release];
+
+}
+-(void)dealloc {
+	[timestamp release];
+	[super dealloc];
 }
 
 #pragma mark -
