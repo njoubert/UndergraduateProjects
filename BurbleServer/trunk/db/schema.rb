@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091111194449) do
+ActiveRecord::Schema.define(:version => 20091121094904) do
 
   create_table "beta_testers", :force => true do |t|
     t.string   "email"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20091111194449) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "timestamp"
   end
 
   create_table "waypoints", :force => true do |t|
