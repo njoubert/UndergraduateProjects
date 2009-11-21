@@ -33,7 +33,6 @@
 	[[BurbleDataManager sharedDataManager] addWaypoint:wP];
 	
 	[self.mapViewToRefresh refreshView];
-	
 	[self dismissModalViewControllerAnimated:YES];
 }
 

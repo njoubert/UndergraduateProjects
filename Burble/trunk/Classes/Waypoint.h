@@ -13,10 +13,16 @@
 #import <MapKit/MKMapView.h>
 #import "RemoteModel.h"
 
+#define kRPC_WaypointNameKey		@"waypoint[name]"
+#define kRPC_WaypointDescKey		@"waypoint[description]"
+#define kRPC_WaypointLatKey			@"waypoint[latitude]"
+#define kRPC_WaypointLonKey			@"waypoint[longitude]"
+
+
 @interface Waypoint : RemoteModel <NSCopying, MKAnnotation> {
 	NSString* name;
 	NSString* description;
-	BOOL syncedWithServer;
+	int uid;
 @public
 	BOOL iAmHere;
 	NSDate* createdAt;	
@@ -24,6 +30,7 @@
 	CLLocationDistance elevation;
 }
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property int uid;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription;
 -(NSString*) title;

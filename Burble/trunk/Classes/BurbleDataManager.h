@@ -17,8 +17,11 @@
 #import "Message.h"
 #import "Position.h"
 #import "RPCURLConnection.h"
+#import "RPCURLResponse.h"
 #import "Test1AppDelegate.h"
+#import "XMLEventParser.h"
 
+#define kNumOfConcurrentRequestsFromQueue 3
 
 //#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
 #define kBaseUrlStr @"http://localhost:3000/iphone/"
@@ -42,19 +45,22 @@
 	SEL createGroupCallbackSel;
 	id leaveGroupCallbackObj;
 	SEL leaveGroupCallbackSel;
+	id joinGroupCallbackObj;
+	SEL joinGroupCallbackSel;
 	
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
 	
 	NSMutableArray* locallyAddedWaypoints;
+	
+	//QUEUES:
+	NSMutableArray* waypointQueue;
+	NSMutableArray* positionQueue;
 }
 + (BurbleDataManager *) sharedDataManager;
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
 @property (nonatomic, retain) NSURL *baseUrl;
-
--(void)showBlockingActivityIndicator;
--(void)hideBlockingActivityIndicator;
 
 // ============= INTERNAL STATE MANAGEMENT
 
@@ -63,7 +69,6 @@
 
 - (BOOL)isFirstLaunch;
 - (BOOL)isRegistered;
-
 
 // ============= DATA CALLS for INTERNAL STATE DATA
 
@@ -79,14 +84,20 @@
 
 - (CLLocation*) getLocation; //This returns what the device thinks is our location (not necessarily the latest Position as sent to the server)
 
+// ============= QUEUE MANAGEMENT  for SERVER DATA
+
+- (void)flushPositionQueue;
+- (void)flushWaypointQueue;
+
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
 - (void)messageForCouldNotConnectToServer;
 - (void)messageForUnrecognizedStatusCode:(NSHTTPURLResponse*)res;
+- (void)messageForParserError:(XMLEventParser*)ps;
 
 //puts up a spinner that blocks the user from doing anything until we get a receiveTryToRegisterCallback
 - (BOOL)startTryToRegister:(NSString*)name caller:(id)obj;
-- (void)receiveTryToRegisterCallback:(id)a1 withValue:(id)a2;
+- (void)receiveTryToRegisterCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 
 //runs in the background and tries to update your account info, make sure you're all good to go.
 - (void)login;
@@ -94,9 +105,11 @@
 
 //will call selector with group or error indicating success.
 - (BOOL) startCreateGroup:(NSString*)name withDesc:(NSString*)desc target:(id)obj selector:(SEL)s;		
-- (void) createGroupCallback:(NSHTTPURLResponse*)response withValue:(id)a2;
+- (void) createGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 - (BOOL) startLeaveGroup:target:(id)obj selector:(SEL)s;
-- (void) leaveGroupCallback:(NSHTTPURLResponse*)response withValue:(id)a2;
+- (void) leaveGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
+- (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s;
+- (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 - (BOOL)isInGroup;
 - (Group*) getMyGroup;
 
@@ -108,12 +121,13 @@
 - (NSArray*) getMessages;
 - (NSArray*) getUnreadMessages;
 
+- (BOOL)sendMessage:(Message*)msg toPerson:(Person*)p;
+- (BOOL)sendMessage:(Message*)msg toPeople:(NSArray*)people;
+
 - (NSString*) getNextWaypointName;
 - (NSString*) getNextWaypointDesc;
 - (void)addWaypoint:(Waypoint*) wP;
 - (int)getWaypointCount;
 - (NSArray*)getWaypoints;
-
-
 
 @end

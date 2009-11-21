@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RPCPostRequest.h"
+#import "RPCURLResponse.h"
 
 /*
  * Use this to send asyncronous requests but you dont want to deal with receiving partial data
@@ -21,19 +22,21 @@
 	NSURLResponse* response;
 	id target;
 	SEL selector;
+	id _userObj;
 }
 @property (assign, nonatomic) NSURLConnection* conn;
 @property (assign, nonatomic) id target;
 @property (assign, nonatomic) SEL selector;
 @property (assign, nonatomic) NSMutableData* receivedData;
 @property (assign, nonatomic) NSURLResponse* response;
+@property (retain, nonatomic) id _userObj;
 
 // This is how you start a request. 
 // You will get a callback on selector.
-// SELECTOR: must be function:object_A:object_B
-//	if object_A in nil, object_B is an NSError
-//	if object_A is not nil, object_A in a NSURLResponse, object_B is a NSMutableData
+// SELECTOR: must be function:RPCURLResponse:userObj
 +(RPCURLConnection*)sendAsyncRequest: (NSURLRequest*)request target:(id)t selector:(SEL)s;
+
++(RPCURLConnection*)sendAsyncRequest: (NSURLRequest*)request target:(id)t selector:(SEL)s withUserObject:(id)obj;
 
 -(id)initWithTarget:(id)t andSelector:(SEL)s;
 

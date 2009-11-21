@@ -10,12 +10,11 @@
 #import "XMLPersonParser.h"
 #import "XMLGroupParser.h"
 
-
 @implementation BurbleDataManager
 
 static BurbleDataManager *sharedDataManager;
 
-@synthesize currentDirectoryPath;
+@synthesize currentDirectoryPath, baseUrl;
 
 - (void)dealloc {
 	[baseUrl release];
@@ -93,6 +92,17 @@ static BurbleDataManager *sharedDataManager;
 		
 		locallyAddedWaypoints = [[NSMutableArray alloc] init];
 		
+		joinGroupCallbackSel = nil;
+		joinGroupCallbackObj = nil;
+		createGroupCallbackObj = nil;
+		createGroupCallbackSel = nil;
+		leaveGroupCallbackObj = nil;
+		leaveGroupCallbackSel = nil;
+		
+		
+		//QUEUES:
+		waypointQueue = [[NSMutableArray alloc] init];
+		positionQueue = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -213,6 +223,126 @@ static BurbleDataManager *sharedDataManager;
 	return retVal;
 }
 
+
+/*
+ ================================================================================
+						QUEUE MANAGEMENT  for SERVER DATA
+ ================================================================================ 
+ */
+#pragma mark -
+#pragma mark Queue Management for Server Data
+
+/************** Positions ****************/
+
+- (void) sendPositionToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Position*)p {
+	if (rpcResponse.response == nil) {
+		[positionQueue addObject:p];
+	} else if (rpcResponse.response.statusCode == 201) {
+		; //done!
+	} else {
+		[positionQueue addObject:p];
+		[self messageForUnrecognizedStatusCode:rpcResponse.response];
+	}
+}
+
+- (void)sendPositionToServer:(Position*)p {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/position", [presistent objectForKey:@"guid"]];
+	RPCPostRequest* request = [p getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendPositionToServerCallback:withObject:) withUserObject:p]) {
+		[positionQueue addObject:p];
+	}
+}
+
+- (void)firePositionToServer:(NSTimer*)timer {
+	[self sendPositionToServer:[timer userInfo]];
+}
+
+//Starts the process of sending all the positions in the queue to the server
+- (void)flushPositionQueue {
+	if ([positionQueue count] == 0)
+		return;
+	
+	Position* p;
+	int numRequests = 1;
+	
+	while ([positionQueue count] > 0) {
+		p = [positionQueue lastObject];
+		[positionQueue removeLastObject];
+		if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+			[self sendPositionToServer:p];
+			numRequests++;
+		} else {
+			//we set up a timer to send a sync request.
+			//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+			[NSTimer scheduledTimerWithTimeInterval:0.5*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+											 target:self
+										   selector:@selector(firePositionToServer:) 
+										   userInfo:p 
+											repeats:NO];
+			numRequests++;
+		}
+	}
+}
+
+/************** Waypoints ****************/
+
+//cathes the callback from the server for sending a waypoint
+- (void) sendWaypointToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Waypoint*)wp {
+	if (rpcResponse.response == nil) {
+		[waypointQueue addObject:wp];
+	} else if (rpcResponse.response.statusCode == 201) {
+		NSString* uidStr = [[NSString alloc] initWithData:rpcResponse.data encoding:NSUTF8StringEncoding];
+		wp.uid = [uidStr intValue];
+	} else {
+		[waypointQueue addObject:wp];
+		[self messageForUnrecognizedStatusCode:rpcResponse.response];
+	}
+}
+
+//sends the given waypoint to the server
+- (void)sendWaypointToServer:(Waypoint*)wp {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/add_waypoint", [presistent objectForKey:@"guid"]];
+	RPCPostRequest* request = [wp getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendWaypointToServerCallback:withObject:) withUserObject:wp]) {
+		[waypointQueue addObject:wp];
+	}
+}
+
+//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
+- (void)fireWaypointToServer:(NSTimer*)timer {
+	[self sendWaypointToServer:[timer userInfo]];
+}
+
+
+// Starts the actual process of sending waypoints to the server, using the three helpers above.
+- (void)flushWaypointQueue {
+	if ([waypointQueue count] == 0)
+		return;
+	
+	Waypoint* wp;
+	int numRequests = 1;
+	
+	while ([waypointQueue count] > 0) {
+		wp = [waypointQueue lastObject];
+		[waypointQueue removeLastObject];
+		if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+			[self sendWaypointToServer:wp];
+			numRequests++;
+		} else {
+			//we set up a timer to send a sync request.
+			//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+			[NSTimer scheduledTimerWithTimeInterval:0.5*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+											 target:self
+										   selector:@selector(fireWaypointToServer:) 
+										   userInfo:wp 
+											repeats:NO];
+			numRequests++;
+		}
+	}
+}
+
+
+
 /*
  ================================================================================
 					DATA CALLS for SERVER MANAGED DATA (Cached locally)
@@ -242,6 +372,16 @@ static BurbleDataManager *sharedDataManager;
 	[message release];	
 	[title release];
 }
+- (void)messageForParserError:(XMLEventParser*)ps {
+	NSString *title= [[NSString alloc] initWithString:@"Parsing server data failed!"];
+	NSString *message= [[NSString alloc] initWithString:@"OK we didn't expect this to happen... Email us and yell at us."];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK!" otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+	[message release];		
+	[title release];
+}
 
 
 /*********************** LOGIN STUFF *****************************/
@@ -268,22 +408,23 @@ static BurbleDataManager *sharedDataManager;
 	tryToRegister_Name = name;
 	
 	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
-	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(receiveTryToRegisterCallback:withValue:)];
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(receiveTryToRegisterCallback:withObject:)];
 	[urlString release];
 	if (connection)
 		return YES;
 	return NO;
 }
 
-- (void)receiveTryToRegisterCallback:(NSHTTPURLResponse *)urlres withValue:(id)a2 {
+- (void)receiveTryToRegisterCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
+	NSHTTPURLResponse* urlres = rpcResponse.response;
 	if (urlres == nil) { //we have an error
 		[self messageForCouldNotConnectToServer];	
-	} else if ([urlres statusCode] == 201) { //created new person
+	} else if (urlres.statusCode == 201) { //created new person
 
 		[presistent setValue:tryToRegister_Name forKey:@"name"];
-		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
 		if (![pparser hasError]) {
 			Person *p = [[pparser getPerson] retain];
 			[self updatePresistentWithPerson:p];
@@ -293,11 +434,11 @@ static BurbleDataManager *sharedDataManager;
 		[self saveData];
 		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
 
-	} else if ([urlres statusCode] == 200) { //found you as a current person
+	} else if (urlres.statusCode == 200) { //found you as a current person
 		
 		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
 		
-		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
 		if (![pparser hasError]) {
 			Person *p = [[pparser getPerson] retain];
 			[self updatePresistentWithPerson:p];
@@ -313,13 +454,14 @@ static BurbleDataManager *sharedDataManager;
 			
 			[p release];
 		} else {
-			//wtf xml parse error??
+			[self messageForParserError:pparser];
 		}
 		[pparser release];
 
 	} else {
 		[self messageForUnrecognizedStatusCode:urlres];
 	}
+	[rpcResponse release];
 	tryToRegister_Caller = nil;
 	[tryToRegister_Name release];
 	tryToRegister_Name = nil;
@@ -329,12 +471,12 @@ static BurbleDataManager *sharedDataManager;
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/index", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	[RPCURLConnection sendAsyncRequest:request target:self selector:@selector(loginCallback:withValue:)];
+	[RPCURLConnection sendAsyncRequest:request target:self selector:@selector(loginCallback:withObject:)];
 	
 }
-- (void)loginCallback:(NSHTTPURLResponse*)response withValue:(id)a2 {
-	if (response != nil && [response statusCode] == 200) {		
-		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
+- (void)loginCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
+		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
 		if (![pparser hasError]) {
 			
 			Group* g = [pparser getGroup];
@@ -346,8 +488,7 @@ static BurbleDataManager *sharedDataManager;
 			[self updatePresistentWithMyGroup];
 
 		}
-		[response release];
-		[a2 release];
+		[rpcResponse release];
 		[pparser release];
 	}
 }
@@ -376,7 +517,7 @@ static BurbleDataManager *sharedDataManager;
 	RPCPostRequest* request = [newG getPostRequestToMethod:urlString withBaseUrl:baseUrl];
 	[newG release];
 	
-	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(callbackForCreateGroup:withValue:)];
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(callbackForCreateGroup:withObject:)];
 
 	[urlString release];
 	if (connection) {
@@ -386,43 +527,34 @@ static BurbleDataManager *sharedDataManager;
 	return NO;
 }
 
-- (void) callbackForCreateGroup:(NSHTTPURLResponse*)response withValue:(id)a2 {
+- (void) callbackForCreateGroup:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
-	if (response == nil) { //we have an error
+	if (rpcResponse.response == nil) { //we have an error
 	
 		[self messageForCouldNotConnectToServer];	
 		[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
 	
-	} else if ([response statusCode] == 201) {
+	} else if (rpcResponse.response.statusCode == 201) {
 		
-		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:(NSData*)a2];
+		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:rpcResponse.data];
 		
 		if (![gparser hasError]) {
 			Group *g = [gparser getGroup];
 			myGroup = [g copy];
 			[self saveData];
 			
-			NSString *title= [[NSString alloc] initWithFormat:@"Created group %d!", g.group_id];
-			NSString *message= [[NSString alloc] initWithFormat:@"Name: %@ Description: %@", g.name, g.description];
+			NSString *title= [[NSString alloc] initWithFormat:@"Created group %@!", g.name];
+			NSString *message= [[NSString alloc] initWithString:@"You can now invite your friends to join, and save waypoints."];
 			UIAlertView *alert = [[UIAlertView alloc]
 								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
 			[alert show];
 			[alert release];
 			[message release];		
 			[title release];
-			
+
 			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:myGroup];
 		} else {
-
-			NSString *title= [[NSString alloc] initWithString:@"Parsing server data failed!"];
-			NSString *message= [[NSString alloc] initWithString:@"OK we didn't expect this to happen... Email us and yell at us."];
-			UIAlertView *alert = [[UIAlertView alloc]
-								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK!" otherButtonTitles:nil];
-			[alert show];
-			[alert release];
-			[message release];		
-			[title release];
-			
+			[self messageForParserError:gparser];
 			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
 		}
 		 
@@ -430,7 +562,7 @@ static BurbleDataManager *sharedDataManager;
 		
 	} else  {
 		
-		[self messageForUnrecognizedStatusCode:response];
+		[self messageForUnrecognizedStatusCode:rpcResponse.response];
 		[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
 	
 	}
@@ -446,23 +578,59 @@ static BurbleDataManager *sharedDataManager;
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/leave", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(leaveGroupCallback:withValue:)]) {
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(leaveGroupCallback:withObject:)]) {
 		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 		return YES;
 	}
 	return NO;
 }
 
-- (void) leaveGroupCallback:(NSHTTPURLResponse*)response withValue:(id)a2 {
+- (void) leaveGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
-	if (response != nil && [response statusCode] == 200) {		
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
 		[myGroup release];
 		myGroup = nil;
 		[self saveData];
 	}
-	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:response];	
+	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
 }
+
+- (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s {
+	joinGroupCallbackObj = obj;
+	joinGroupCallbackSel = s;
+	
+	if (group_id < 0)
+		return NO;
+	
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/join/%d", [presistent objectForKey:@"guid"], group_id];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(joinGroupCallback:withObject:)]) {
+		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+		return YES;
+	}
+	return NO;
+	
+}
+- (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
+		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:rpcResponse.data];
+		if (![gparser hasError]) {
+			Group *g = [gparser getGroup];
+			myGroup = [g copy];
+			[self saveData];
+			[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:rpcResponse.response];	
+		} else {
+			[self messageForParserError:gparser];
+			[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:nil];	
+		}
+	} else {
+		[self messageForCouldNotConnectToServer];
+		[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:nil];	
+	}
+}
+
 
 - (BOOL)isInGroup {
 	return (nil != myGroup);
@@ -504,6 +672,8 @@ static BurbleDataManager *sharedDataManager;
 
 - (void)addWaypoint:(Waypoint *)wP {
 	[locallyAddedWaypoints addObject:wP];
+	[waypointQueue addObject:wP];
+	[self flushWaypointQueue];
 }
 
 - (int)getWaypointCount {

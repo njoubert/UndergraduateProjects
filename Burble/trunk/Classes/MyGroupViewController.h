@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
-#import "GroupiesViewController.h"
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
 	UITextField *groupTextField;

@@ -10,7 +10,7 @@
 
 
 @implementation Waypoint
-@synthesize coordinate;
+@synthesize coordinate, uid;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription; {
 	if (self = [super init]) {
@@ -18,8 +18,7 @@
 		[name retain];
 		description = [[NSString alloc] initWithString:myDescription];
 		[description retain];
-		
-		syncedWithServer = NO;
+		uid = -1;
 	}
 	return self;
 }
@@ -28,11 +27,21 @@
 	return name;
 }
 -(NSString*) subtitle {
-	return description;
+	if (uid <= 0)
+		return [NSString stringWithFormat:@"%@ (local only)", description];
+	else 
+		return [NSString stringWithFormat:@"%@ (synced)", description];
 }
 
--(NSData*) convertToData {
-	
+-(void)convertToData:(RPCPostData*)pData {
+	[pData appendValue:name forKey:kRPC_WaypointNameKey];
+	[pData appendValue:description forKey:kRPC_WaypointDescKey];
+	NSString* latStr = [[NSString alloc] initWithFormat:@"%f", coordinate.latitude];
+	[pData appendValue:latStr forKey:kRPC_WaypointLatKey];
+	NSString* lonStr = [[NSString alloc] initWithFormat:@"%f", coordinate.longitude];
+	[pData appendValue:lonStr forKey:kRPC_WaypointLonKey];
+	[latStr release];
+	[lonStr release];
 }
 
 #pragma mark -

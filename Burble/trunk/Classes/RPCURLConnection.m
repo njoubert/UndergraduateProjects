@@ -13,7 +13,7 @@
 
 static NSMutableArray *pendingRequestsQueue;
 
-@synthesize target, selector, conn, receivedData, response;
+@synthesize target, selector, conn, receivedData, response, _userObj;
 
 + (void)initialize {
 	pendingRequestsQueue = nil;
@@ -25,16 +25,21 @@ static NSMutableArray *pendingRequestsQueue;
 }
 
 +(RPCURLConnection*)sendAsyncRequest: (NSURLRequest*)request target:(id)t selector:(SEL)s; {
+	return [RPCURLConnection sendAsyncRequest:request target:t selector:s withUserObject:nil];
+}
+
++(RPCURLConnection*)sendAsyncRequest: (NSURLRequest*)request target:(id)t selector:(SEL)s withUserObject:(id)obj {
 	RPCURLConnection* c = [[RPCURLConnection alloc] initWithTarget:t andSelector:s];
 	c.conn = [[NSURLConnection alloc] initWithRequest:request delegate:c startImmediately:YES];
 	if (c.conn) {
+		[obj retain];
+		c._userObj = obj;
 		c.receivedData = [[NSMutableData alloc] init];
 		[pendingRequestsQueue addObject:c];
 		if ([pendingRequestsQueue count] > 0) {
 			UIApplication* app = [UIApplication sharedApplication]; 
 			app.networkActivityIndicatorVisible = YES; // to stop it, set this to NO 
 		}
-			
 		return c;
 	} else {
 		[c.conn release];
@@ -54,6 +59,10 @@ static NSMutableArray *pendingRequestsQueue;
  ================================================================================
  DELEGATE METHODS FOR NSURLCONNECTION
  ================================================================================
+ 
+ callbackFnct:(RPCURLResponse*)rpcResponse withObject:(id)userObj
+	it's your job to release the rpcResponse
+ 
  */
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)resp {
 	[response release];
@@ -70,9 +79,11 @@ static NSMutableArray *pendingRequestsQueue;
 	if ([pendingRequestsQueue count] == 0) {
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO]; // to stop it, set this to NO 
 	}
-	[receivedData retain];
-	[connection release];	
-	[target performSelector:selector withObject:response withObject:receivedData];
+	[connection release];
+	RPCURLResponse* rpcResponse = [[RPCURLResponse alloc] init];
+	[rpcResponse setResponse:response];
+	[rpcResponse setData:receivedData];
+	[target performSelector:selector withObject:rpcResponse withObject:_userObj];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	[pendingRequestsQueue removeObject:self];
@@ -81,7 +92,9 @@ static NSMutableArray *pendingRequestsQueue;
 	}	
 	[receivedData release];
 	[connection release];
-	[target performSelector:selector withObject:nil withObject:error];
+	RPCURLResponse* rpcResponse = [[RPCURLResponse alloc] init];
+	[rpcResponse setError:error];
+	[target performSelector:selector withObject:rpcResponse withObject:_userObj];
 }
 
 
