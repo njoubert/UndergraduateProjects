@@ -48,9 +48,20 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   # POST a group to join
   def join
     if request.post?
-      
+      @group = Group.find(params[:id])
+      if @group
+        begin
+          @user.group = @group
+          @user.save!
+          render :xml => @group
+        rescue Exception => ex
+          render_error("Could not join you to group!", ex)
+        end
+      else
+        render_error("Could not find the group you requested", nil)
+      end
     else
-      
+      render_error("Request type not supported. Expected POST.", nil)
     end
   end
   # POST that you want to leave your current group
@@ -60,6 +71,22 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
       head :ok
     else
       render_error("Request type not supported. Expected POST.", nil)
+    end
+  end
+  
+  def add_waypoint
+    if request.post?
+      begin 
+        @waypoint = Waypoint.new(params[:waypoint])
+        @waypoint.person = @user
+        @waypoint.group = @user.group
+        @waypoint.save!
+        render :xml => @waypoint, :status => :created
+      rescue Exception => ex
+        render_error("Could not add waypoint!", ex)
+      end
+    else
+      render_error("Request type not supported. Expected POST.", nil)      
     end
   end
   
