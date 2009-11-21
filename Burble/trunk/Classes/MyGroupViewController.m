@@ -14,11 +14,13 @@
 @synthesize groupTextField;
 @synthesize groupMsgText;
 @synthesize groupString;
+@synthesize groupMsgString;
 @synthesize myGroupView;
 @synthesize createGroupView;
 @synthesize inviteToGroupView;
 @synthesize messageGroupView;
 @synthesize groupLabel;
+@synthesize groupMsgLabel;
 @synthesize myGroup;
 
 
@@ -26,8 +28,20 @@
 	if(theTextField == groupTextField) {
 		[groupTextField resignFirstResponder];
 	}
-	
 	return YES;
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+	if([text isEqualToString:@"\n"]){
+		[textView resignFirstResponder];
+		return NO;
+	}
+	return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	if([@"Press to enter text." isEqualToString:textView.text])
+		textView.text = @"";
 }
 
 //Creates new group with specified title.
@@ -70,12 +84,23 @@
 }
 
 -(IBAction)sendMsgToGroup:(id)sender {
-	self.view = myGroupView;
+	groupMsgString = groupMsgText.text;
 	
-	UIAlertView *msgSentAlert = [[UIAlertView alloc]
+	if(![@"" isEqualToString:groupMsgString] && ![@"Press to enter text." isEqualToString:groupMsgString]){
+	
+		self.view = myGroupView;
+	
+		UIAlertView *msgSentAlert = [[UIAlertView alloc]
 											 initWithTitle: @"Message sent!" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[msgSentAlert show];
-	[msgSentAlert release];
+		[msgSentAlert show];
+		[msgSentAlert release];
+	}else{
+		
+		UIAlertView *msgFailedAlert = [[UIAlertView alloc]
+									 initWithTitle: @"Message was not sent!" message:@"Please enter text" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[msgFailedAlert show];
+		[msgFailedAlert release];
+	}
 }
 
 -(IBAction)leaveGroup:(id)sender {
@@ -87,6 +112,10 @@
 }
 
 -(IBAction)messageGroup:(id)sender {
+	groupMsgText.text = @"Press to enter text.";
+	
+	groupMsgLabel.text = [@"Msg to " stringByAppendingString:@"groupString"]; // groupString];
+	
 	self.view = messageGroupView;
 }
 
@@ -167,11 +196,13 @@
 	[groupTextField release];
 	[groupMsgText release];
 	[groupString release];
+	[groupMsgString release];
 	[myGroupView release];
 	[createGroupView release];
 	[inviteToGroupView release];
 	[messageGroupView release];
 	[groupLabel release];
+	[groupMsgLabel release];
 	[myGroup release];
     [super dealloc];
 }

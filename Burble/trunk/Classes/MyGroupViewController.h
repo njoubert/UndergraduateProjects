@@ -15,11 +15,13 @@
 	UITextField *groupTextField;
 	UITextView *groupMsgText;
 	NSString *groupString;
+	NSString *groupMsgString;
 	UIView *myGroupView;
 	UIView *createGroupView;
 	UIView *inviteToGroupView;
 	UIView *messageGroupView;
 	UILabel *groupLabel;
+	UILabel *groupMsgLabel;
 	BurbleDataManager *dataManager;
 	Group *myGroup;
 }
@@ -27,11 +29,13 @@
 @property (nonatomic, retain) IBOutlet UITextField *groupTextField;
 @property (nonatomic, retain) IBOutlet UITextView *groupMsgText;
 @property (nonatomic, copy) NSString *groupString;
+@property (nonatomic, copy) NSString *groupMsgString;
 @property (nonatomic, retain) IBOutlet UIView *myGroupView;
 @property (nonatomic, retain) IBOutlet UIView *createGroupView;
 @property (nonatomic, retain) IBOutlet UIView *inviteToGroupView;
 @property (nonatomic, retain) IBOutlet UIView *messageGroupView;
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
+@property (nonatomic, retain) IBOutlet UILabel *groupMsgLabel;
 @property (nonatomic, retain) Group *myGroup;
 
 

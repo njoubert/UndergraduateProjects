@@ -388,51 +388,34 @@
 							<object class="IBUINavigationItem" id="1043410699">
 								<reference key="IBUINavigationBar" ref="569346570"/>
 								<string key="IBUITitle"/>
+								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="10466601">
+									<string key="IBUITitle">Cancel</string>
+									<int key="IBUIStyle">1</int>
+								</object>
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="841254398">
+									<string key="IBUITitle">Send</string>
+									<int key="IBUIStyle">1</int>
+								</object>
 							</object>
 						</object>
 					</object>
-					<object class="IBUIToolbar" id="679951556">
-						<reference key="NSNextResponder" ref="864672596"/>
-						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
-						<reference key="NSSuperview" ref="864672596"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<object class="NSMutableArray" key="IBUIItems">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="10466601">
-								<string key="IBUITitle">Cancel</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="679951556"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="243737739">
-								<reference key="IBUIToolbar" ref="679951556"/>
-								<int key="IBUISystemItemIdentifier">5</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="841254398">
-								<string key="IBUITitle">Send</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="679951556"/>
-							</object>
-						</object>
-					</object>
-					<object class="IBUILabel" id="564704594">
+					<object class="IBUILabel" id="966795436">
 						<reference key="NSNextResponder" ref="864672596"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 11}, {280, 21}}</string>
+						<string key="NSFrame">{{72, 11}, {176, 21}}</string>
 						<reference key="NSSuperview" ref="864672596"/>
 						<reference key="IBUIBackgroundColor" ref="588246845"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Msg to cool kids</string>
+						<string key="IBUIText"/>
 						<reference key="IBUITextColor" ref="313374263"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUITextAlignment">1</int>
 					</object>
-					<object class="IBUITextView" id="319069658">
+					<object class="IBUITextView" id="621232468">
 						<reference key="NSNextResponder" ref="864672596"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 44}, {320, 162}}</string>
@@ -448,7 +431,7 @@
 						<bool key="IBUIDelaysContentTouches">NO</bool>
 						<bool key="IBUICanCancelContentTouches">NO</bool>
 						<bool key="IBUIBouncesZoom">NO</bool>
-						<string key="IBUIText">Press to enter text.</string>
+						<string key="IBUIText"/>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 							<int key="IBUIAutocapitalizationType">2</int>
 						</object>
@@ -594,6 +577,30 @@
 					</object>
 					<int key="connectionID">166</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="621232468"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">167</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">groupMsgText</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="621232468"/>
+					</object>
+					<int key="connectionID">168</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">groupMsgLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="966795436"/>
+					</object>
+					<int key="connectionID">169</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -721,9 +728,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="569346570"/>
-							<reference ref="564704594"/>
-							<reference ref="319069658"/>
-							<reference ref="679951556"/>
+							<reference ref="966795436"/>
+							<reference ref="621232468"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">MessageGroupView</string>
@@ -767,22 +773,6 @@
 						<reference key="parent" ref="157569550"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">108</int>
-						<reference key="object" ref="679951556"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="841254398"/>
-							<reference ref="10466601"/>
-							<reference ref="243737739"/>
-						</object>
-						<reference key="parent" ref="864672596"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">126</int>
-						<reference key="object" ref="841254398"/>
-						<reference key="parent" ref="679951556"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">148</int>
 						<reference key="object" ref="78626592"/>
 						<object class="NSMutableArray" key="children">
@@ -816,6 +806,8 @@
 						<reference key="object" ref="1043410699"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="10466601"/>
+							<reference ref="841254398"/>
 						</object>
 						<reference key="parent" ref="569346570"/>
 					</object>
@@ -830,24 +822,24 @@
 						<reference key="parent" ref="1007663560"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">102</int>
-						<reference key="object" ref="10466601"/>
-						<reference key="parent" ref="679951556"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">163</int>
-						<reference key="object" ref="243737739"/>
-						<reference key="parent" ref="679951556"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">164</int>
-						<reference key="object" ref="564704594"/>
+						<reference key="object" ref="966795436"/>
 						<reference key="parent" ref="864672596"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">165</int>
-						<reference key="object" ref="319069658"/>
+						<reference key="object" ref="621232468"/>
 						<reference key="parent" ref="864672596"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">102</int>
+						<reference key="object" ref="10466601"/>
+						<reference key="parent" ref="1043410699"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">126</int>
+						<reference key="object" ref="841254398"/>
+						<reference key="parent" ref="1043410699"/>
 					</object>
 				</object>
 			</object>
@@ -863,14 +855,12 @@
 					<string>101.IBPluginDependency</string>
 					<string>102.IBPluginDependency</string>
 					<string>106.IBPluginDependency</string>
-					<string>108.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>148.IBPluginDependency</string>
 					<string>153.IBPluginDependency</string>
 					<string>154.IBPluginDependency</string>
 					<string>161.IBPluginDependency</string>
-					<string>163.IBPluginDependency</string>
 					<string>164.IBPluginDependency</string>
 					<string>165.IBPluginDependency</string>
 					<string>34.IBEditorWindowLastContentRect</string>
@@ -899,8 +889,6 @@
 					<string>MyGroupViewController</string>
 					<string>UIResponder</string>
 					<string>{{658, 276}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -952,7 +940,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">166</int>
+			<int key="maxID">169</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -991,8 +979,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>createGroupView</string>
 							<string>groupLabel</string>
-							<string>groupMsgRecTextField</string>
-							<string>groupMsgTextField</string>
+							<string>groupMsgLabel</string>
+							<string>groupMsgText</string>
 							<string>groupTextField</string>
 							<string>inviteToGroupView</string>
 							<string>messageGroupView</string>
@@ -1002,8 +990,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
 							<string>UILabel</string>
-							<string>UITextField</string>
-							<string>UITextField</string>
+							<string>UILabel</string>
+							<string>UITextView</string>
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIView</string>
@@ -1249,14 +1237,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UIToolbar</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">UIKit.framework/Headers/UIToolbar.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
