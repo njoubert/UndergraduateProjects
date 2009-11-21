@@ -109,7 +109,9 @@
 		}
 	}
 	if (_state == person_position) {
-		//do something awesome here
+		if ([elementName isEqualToString:@"position"]) {
+			_state = person;
+		}
 	}
 	if (_state == person) {
 		if ([elementName isEqualToString:@"id"]) {

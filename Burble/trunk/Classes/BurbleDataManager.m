@@ -100,6 +100,7 @@ static BurbleDataManager *sharedDataManager;
 		leaveGroupCallbackSel = nil;
 		
 		
+			NSLog(@"weefdffde");
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
 		positionQueue = [[NSMutableArray alloc] init];
@@ -237,7 +238,7 @@ static BurbleDataManager *sharedDataManager;
 - (void) sendPositionToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Position*)p {
 	if (rpcResponse.response == nil) {
 		[positionQueue addObject:p];
-	} else if (rpcResponse.response.statusCode == 201) {
+	} else if (rpcResponse.response.statusCode == 200) {
 		; //done!
 	} else {
 		[positionQueue addObject:p];
@@ -261,7 +262,7 @@ static BurbleDataManager *sharedDataManager;
 - (void)flushPositionQueue {
 	if ([positionQueue count] == 0)
 		return;
-	
+	NSLog(@"weeeeeee");
 	Position* p;
 	int numRequests = 1;
 	
@@ -727,11 +728,15 @@ static BurbleDataManager *sharedDataManager;
 	// in most cases you will not want to rely on cached measurements
 	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
 	if (locationAge > 5.0) return;
-	// store all of the measurements, just so we can see what kind of data we might receive
+
+	[positionQueue addObject:[[Position alloc] initWithCLLocation:newLocation]];
+	
 	[newLocation retain];
 	[lastKnownLocation release];
 	lastKnownLocation = newLocation;
-	//update views and shit
+	
+	 //update views and shit
+	[self flushPositionQueue];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
