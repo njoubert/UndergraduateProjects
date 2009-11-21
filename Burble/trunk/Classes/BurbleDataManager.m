@@ -157,7 +157,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (BOOL)isRegistered {
-	return (nil != [presistent objectForKey:@"name"]);
+	return (nil != [presistent objectForKey:@"name"] && nil != [presistent objectForKey:@"uid"]);
 }
 - (BOOL)isFirstLaunch {
 	return bIsFirstLaunch;
@@ -265,6 +265,8 @@ static BurbleDataManager *sharedDataManager;
 //Starts the process of sending all the positions in the queue to the server
 - (void)flushPositionQueue {
 	@synchronized(positionQueue) {
+		if (![self isRegistered])
+			return;
 		if ([positionQueue count] == 0)
 			return;
 		Position* p;
@@ -323,6 +325,8 @@ static BurbleDataManager *sharedDataManager;
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushWaypointQueue {
 	@synchronized(waypointQueue) {
+		if (![self isRegistered])
+			return;
 		if ([waypointQueue count] == 0)
 			return;
 		
@@ -381,6 +385,8 @@ static BurbleDataManager *sharedDataManager;
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushOutgoingMessagesQueue {
 	@synchronized(outgoingMessagesQueue) {
+		if (![self isRegistered])
+			return;
 		if ([outgoingMessagesQueue count] == 0)
 			return;
 		
