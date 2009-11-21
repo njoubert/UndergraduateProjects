@@ -58,6 +58,12 @@
 	NSMutableArray* waypointQueue;
 	NSMutableArray* positionQueue;
 	NSMutableArray* outgoingMessagesQueue;
+	NSMutableArray* outgoingRequestsQueue; //for stuff you dont care about what comes back
+	
+	//MESSAGES:
+	NSMutableArray* allMessages;	//This is a sorted-by-arrival-time messages
+	NSMutableArray* unreadMessages;	//	only the unread messages in allMessages
+	NSMutableArray* readMessages;	//	only the read messages in allMessages
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -93,6 +99,11 @@
 - (void)flushWaypointQueue;
 - (void)flushOutgoingMessagesQueue;
 
+// =============  QUEUE MANAGEMENT for PUSHED-FROM-SERVER DATA
+
+//This will attempt to pull new messages from the server. Should be called periodically
+-(void)downloadUnreadMessages;
+
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
 - (void)messageForCouldNotConnectToServer;
@@ -120,8 +131,10 @@
 - (NSString*) getNextWaypointName;
 - (NSString*) getNextWaypointDesc;
 - (void)addWaypoint:(Waypoint*) wP;
+- (void)clearWaypoints;
 - (int)getWaypointCount;
 - (NSArray*)getWaypoints;
+
 - (int) getFriendsCount;
 - (NSArray*) getFriends;
 

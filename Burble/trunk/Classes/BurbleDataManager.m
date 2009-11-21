@@ -99,12 +99,17 @@ static BurbleDataManager *sharedDataManager;
 		leaveGroupCallbackObj = nil;
 		leaveGroupCallbackSel = nil;
 		
-		
-			NSLog(@"weefdffde");
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
 		positionQueue = [[NSMutableArray alloc] init];
 		outgoingMessagesQueue = [[NSMutableArray alloc] init];
+		outgoingRequestsQueue = [[NSMutableArray alloc] init];
+		
+		//MESSAGES:
+		allMessages = [[NSMutableArray alloc] init];	//This is a sorted-by-arrival-time messages
+		unreadMessages = [[NSMutableArray alloc] init];	//	only the unread messages in allMessages
+		readMessages = [[NSMutableArray alloc] init];	//	only the read messages in allMessages
+		
 	}
 	return self;
 }
@@ -413,6 +418,68 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
+/************** Just Send the Request Queue ****************/
+
+- (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)m {
+	return;
+}
+
+- (void)sendRequestToServer:(RPCPostRequest*)r {
+	if (nil == [RPCURLConnection sendAsyncRequest:r target:self selector:@selector(sendRequestToServerCallback:withObject:) withUserObject:nil]) {
+		[outgoingRequestsQueue addObject:r];
+	}
+}
+
+//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
+- (void)fireRequestToServer:(NSTimer*)timer {
+	[self sendRequestToServer:[timer userInfo]];
+}
+
+
+// Starts the actual process of sending waypoints to the server, using the three helpers above.
+- (void)flushOutgoingQueue {
+	@synchronized(outgoingRequestsQueue) {
+		if (![self isRegistered])
+			return;
+		if ([outgoingRequestsQueue count] == 0)
+			return;
+		
+		RPCPostRequest* r;
+		int numRequests = 1;
+		
+		while ([outgoingRequestsQueue count] > 0) {
+			r = [outgoingRequestsQueue lastObject];
+			[outgoingRequestsQueue removeLastObject];
+			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+				[self sendRequestToServer:r];
+				numRequests++;
+			} else {
+				//we set up a timer to send a sync request.
+				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+												 target:self
+											   selector:@selector(fireRequestToServer:) 
+											   userInfo:r
+												repeats:NO];
+				numRequests++;
+			}
+		}
+	}
+}
+
+/*
+ ================================================================================
+					QUEUE MANAGEMENT for PUSHED-FROM-SERVER DATA
+ ================================================================================ 
+ */
+#pragma mark -
+#pragma mark Queue Management for Pushed-From-Server Data
+
+//This will attempt to pull new messages from the server. Should be called periodically
+-(void)downloadUnreadMessages {
+		
+}
+
 /*
  ================================================================================
 					DATA CALLS for SERVER MANAGED DATA (Cached locally)
@@ -645,6 +712,9 @@ static BurbleDataManager *sharedDataManager;
 	if (myGroup == nil)
 		return YES;
 
+	//kill all waypoints you saved so far. They're on the server anyways.
+	[self clearWaypoints];
+	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/leave", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
@@ -748,6 +818,12 @@ static BurbleDataManager *sharedDataManager;
 	[self flushWaypointQueue];
 }
 
+- (void)clearWaypoints {
+	[self flushWaypointQueue];
+	[locallyAddedWaypoints release];								
+	locallyAddedWaypoints = [[NSMutableArray alloc] init];
+}
+
 - (int)getWaypointCount {
 	return [locallyAddedWaypoints count];
 }
@@ -767,14 +843,14 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (NSArray*) getMessages {
-	return nil;	
+	return allMessages;
 }
 
 - (int) getMessagesCount {
-	return 3;
+	return [allMessages count];
 }
 - (int) getUnreadMessagesCount {
-	return 1;
+	return [unreadMessages count];
 }
 
 - (BOOL)sendMessage:(Message*)msg {
