@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
 
+#define kRPC_PositionIdKey			@"position[id]"
+
 @interface Position : RemoteModel <NSCopying> {
 
 }

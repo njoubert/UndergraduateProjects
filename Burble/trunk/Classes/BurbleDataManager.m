@@ -301,7 +301,7 @@ static BurbleDataManager *sharedDataManager;
 
 //sends the given waypoint to the server
 - (void)sendWaypointToServer:(Waypoint*)wp {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/add_waypoint", [presistent objectForKey:@"guid"]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/add_waypoint_for_group/%d", [presistent objectForKey:@"guid"], wp.group_id];
 	RPCPostRequest* request = [wp getPostRequestToMethod:urlString withBaseUrl:baseUrl];
 	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendWaypointToServerCallback:withObject:) withUserObject:wp]) {
 		[waypointQueue addObject:wp];
@@ -671,6 +671,9 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)addWaypoint:(Waypoint *)wP {
+	if (myGroup == nil)
+		return;
+	wP.group_id = myGroup.group_id;
 	[locallyAddedWaypoints addObject:wP];
 	[waypointQueue addObject:wP];
 	[self flushWaypointQueue];

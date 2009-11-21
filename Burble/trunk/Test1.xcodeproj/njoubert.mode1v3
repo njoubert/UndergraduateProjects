@@ -202,46 +202,6 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>DA62F96710B7E1F6008655A9</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>Waypoint.m</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>DA62F96810B7E1F6008655A9</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>Waypoint.m</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>DA62F97010B7E203008655A9</string>
-						<key>history</key>
-						<array>
-							<string>DA62F96010B7E183008655A9</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {701, 670}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>1318 313 701 711 1280 0 1680 1050 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
 				<string>DA62F94C10B7DF6F008655A9</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>BurbleDataManager.h</string>
@@ -256,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DA62F97110B7E203008655A9</string>
+						<string>DA62F99F10B7EAEA008655A9</string>
 						<key>history</key>
 						<array>
 							<string>DA62F94010B7DD68008655A9</string>
@@ -296,7 +256,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DA62F97210B7E203008655A9</string>
+						<string>DA62F9A010B7EAEA008655A9</string>
 						<key>history</key>
 						<array>
 							<string>DA62F81B10B7C4D1008655A9</string>
@@ -316,6 +276,46 @@
 				<false/>
 				<key>RubberWindowFrame</key>
 				<string>2285 335 658 697 1280 0 1680 1050 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>DA62F96710B7E1F6008655A9</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>Waypoint.m</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>DA62F96810B7E1F6008655A9</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>Waypoint.m</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>DA62F9A110B7EAEA008655A9</string>
+						<key>history</key>
+						<array>
+							<string>DA62F96010B7E183008655A9</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {701, 670}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>1318 313 701 711 1280 0 1680 1050 </string>
 			</dict>
 		</dict>
 	</array>
@@ -352,8 +352,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -377,7 +375,7 @@
 						<dict>
 							<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 							<array>
-								<real>257</real>
+								<real>264</real>
 							</array>
 							<key>PBXSmartGroupTreeModuleColumnsKey_v4</key>
 							<array>
@@ -394,6 +392,7 @@
 								<string>DAA6DA4F10B6A9E900E2E0B0</string>
 								<string>DAA6D65D10B62B4F00E2E0B0</string>
 								<string>B832F9B210B2644500F50C41</string>
+								<string>B832F9B510B2645600F50C41</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -406,7 +405,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 100}, {257, 688}}</string>
+							<string>{{0, 168}, {264, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -418,11 +417,11 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {274, 706}}</string>
+						<string>{{0, 0}, {281, 706}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
-							<real>257</real>
+							<real>264</real>
 						</array>
 						<key>RubberWindowFrame</key>
 						<string>-3 31 1276 747 0 0 1280 778 </string>
@@ -430,18 +429,20 @@
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
 					<key>Proportion</key>
-					<string>274pt</string>
+					<string>281pt</string>
 				</dict>
 				<dict>
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BurbleDataManager.m</string>
+								<string>Waypoint.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -449,11 +450,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BurbleDataManager.m</string>
+										<string>Waypoint.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA62F96F10B7E203008655A9</string>
+										<string>DA62F99E10B7EAEA008655A9</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -488,37 +489,37 @@
 											<string>DA62F78E10B78731008655A9</string>
 											<string>DA62F79110B78731008655A9</string>
 											<string>DA62F79210B78731008655A9</string>
-											<string>DA62F79410B78731008655A9</string>
 											<string>DA62F79610B78731008655A9</string>
 											<string>DA62F79710B78731008655A9</string>
 											<string>DA62F79810B78731008655A9</string>
 											<string>DA62F7B010B79F04008655A9</string>
 											<string>DA62F7BF10B7ADA7008655A9</string>
-											<string>DA62F7C110B7ADA7008655A9</string>
-											<string>DA62F7C210B7ADA7008655A9</string>
-											<string>DA62F7CC10B7AE9A008655A9</string>
 											<string>DA62F7EE10B7C089008655A9</string>
-											<string>DA62F7EF10B7C089008655A9</string>
 											<string>DA62F81510B7C3B5008655A9</string>
-											<string>DA62F82A10B7C634008655A9</string>
 											<string>DA62F82B10B7C634008655A9</string>
 											<string>DA62F83F10B7C6EB008655A9</string>
 											<string>DA62F84210B7C6EB008655A9</string>
 											<string>DA62F8CB10B7CD91008655A9</string>
 											<string>DA62F8CC10B7CD91008655A9</string>
-											<string>DA62F8FA10B7D6ED008655A9</string>
 											<string>DA62F93010B7DCDE008655A9</string>
 											<string>DA62F93910B7DD53008655A9</string>
 											<string>DA62F93A10B7DD53008655A9</string>
-											<string>DA62F95710B7E126008655A9</string>
-											<string>DA62F95810B7E126008655A9</string>
 											<string>DA62F95910B7E126008655A9</string>
 											<string>DA62F95A10B7E126008655A9</string>
-											<string>DA62F95B10B7E126008655A9</string>
-											<string>DA62F96310B7E1F6008655A9</string>
 											<string>DA62F96410B7E1F6008655A9</string>
 											<string>DA62F96510B7E1F6008655A9</string>
-											<string>DA62F95610B7E126008655A9</string>
+											<string>DA62F97810B7E9F9008655A9</string>
+											<string>DA62F97910B7E9F9008655A9</string>
+											<string>DA62F97A10B7E9F9008655A9</string>
+											<string>DA62F97B10B7E9F9008655A9</string>
+											<string>DA62F97C10B7E9F9008655A9</string>
+											<string>DA62F97F10B7E9F9008655A9</string>
+											<string>DA62F98010B7E9F9008655A9</string>
+											<string>DA62F98110B7E9F9008655A9</string>
+											<string>DA62F98210B7E9F9008655A9</string>
+											<string>DA62F99510B7EAAD008655A9</string>
+											<string>DA62F99610B7EAAD008655A9</string>
+											<string>DA62F97D10B7E9F9008655A9</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -530,7 +531,7 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {997, 649}}</string>
+								<string>{{0, 0}, {990, 649}}</string>
 								<key>RubberWindowFrame</key>
 								<string>-3 31 1276 747 0 0 1280 778 </string>
 							</dict>
@@ -550,7 +551,7 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 654}, {997, 52}}</string>
+								<string>{{0, 654}, {990, 52}}</string>
 								<key>RubberWindowFrame</key>
 								<string>-3 31 1276 747 0 0 1280 778 </string>
 							</dict>
@@ -561,7 +562,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>997pt</string>
+					<string>990pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -716,7 +717,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DA62F97310B7E203008655A9</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>DA62F53D10B7501F008655A9</string>
 		<string>DA62F4F010B74BD8008655A9</string>
@@ -724,10 +724,10 @@
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>DA6B30C810A26D38008847D8</string>
+		<string>DA62F96710B7E1F6008655A9</string>
 		<string>DA62F83310B7C634008655A9</string>
 		<string>DA62F94C10B7DF6F008655A9</string>
 		<string>/Users/njoubert/Code/iPhone/Burble/trunk/Test1.xcodeproj</string>
-		<string>DA62F96710B7E1F6008655A9</string>
 	</array>
 	<key>WindowString</key>
 	<string>-3 31 1276 747 0 0 1280 778 </string>
@@ -964,8 +964,6 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -992,6 +990,8 @@
 							<string>212pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

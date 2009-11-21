@@ -10,7 +10,7 @@
 
 
 @implementation Waypoint
-@synthesize coordinate, uid;
+@synthesize coordinate, uid, group_id;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription; {
 	if (self = [super init]) {

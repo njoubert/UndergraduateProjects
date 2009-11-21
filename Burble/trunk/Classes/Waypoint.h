@@ -23,6 +23,7 @@
 	NSString* name;
 	NSString* description;
 	int uid;
+	int group_id;
 @public
 	BOOL iAmHere;
 	NSDate* createdAt;	
@@ -31,6 +32,7 @@
 }
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property int uid;
+@property int group_id;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription;
 -(NSString*) title;
