@@ -22,6 +22,20 @@
 			44CCE70D10B20D82006ED4E7 /* Test1 */,
 		);
 		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					720.58349609375,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
 			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
 				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
@@ -52,7 +66,7 @@
 					20,
 					809,
 					20,
-					48.16259765625,
+					48,
 					43,
 					43,
 					20,
@@ -68,22 +82,78 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 280105578;
-			PBXWorkspaceStateSaveDate = 280105578;
+			PBXPerProjectTemplateStateSaveDate = 280460933;
+			PBXWorkspaceStateSaveDate = 280460933;
 		};
 		perUserProjectItems = {
+			44170F6D10B77E95004D4679 /* PBXTextBookmark */ = 44170F6D10B77E95004D4679 /* PBXTextBookmark */;
+			44170F8B10B77ECF004D4679 /* PBXTextBookmark */ = 44170F8B10B77ECF004D4679 /* PBXTextBookmark */;
+			44170F8C10B77ECF004D4679 /* PBXTextBookmark */ = 44170F8C10B77ECF004D4679 /* PBXTextBookmark */;
+			44170F8E10B77ECF004D4679 /* PBXTextBookmark */ = 44170F8E10B77ECF004D4679 /* PBXTextBookmark */;
 			44CCE74C10B211F1006ED4E7 = 44CCE74C10B211F1006ED4E7 /* PBXTextBookmark */;
 			44CCE74D10B211F1006ED4E7 = 44CCE74D10B211F1006ED4E7 /* PBXTextBookmark */;
 			44CCE74E10B211F1006ED4E7 = 44CCE74E10B211F1006ED4E7 /* PBXTextBookmark */;
 			44CCE74F10B211F1006ED4E7 = 44CCE74F10B211F1006ED4E7 /* PBXTextBookmark */;
-			44E6189110B212B7001ABCDB /* PBXTextBookmark */ = 44E6189110B212B7001ABCDB /* PBXTextBookmark */;
-			44E6189210B212B7001ABCDB /* PBXTextBookmark */ = 44E6189210B212B7001ABCDB /* PBXTextBookmark */;
-			44E6189410B212B7001ABCDB /* PBXBookmark */ = 44E6189410B212B7001ABCDB /* PBXBookmark */;
-			44E6189510B212B7001ABCDB /* PBXTextBookmark */ = 44E6189510B212B7001ABCDB /* PBXTextBookmark */;
+			44E6189110B212B7001ABCDB = 44E6189110B212B7001ABCDB /* PBXTextBookmark */;
+			44E6189210B212B7001ABCDB = 44E6189210B212B7001ABCDB /* PBXTextBookmark */;
+			44E6189410B212B7001ABCDB = 44E6189410B212B7001ABCDB /* PBXBookmark */;
+			44E6189510B212B7001ABCDB = 44E6189510B212B7001ABCDB /* PBXTextBookmark */;
 		};
 		sourceControlManager = 44CCE73310B20D8E006ED4E7 /* Source Control */;
 		userBuildSettings = {
 		};
+	};
+	44170F6D10B77E95004D4679 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 26";
+		rLen = 0;
+		rLoc = 623;
+		rType = 0;
+		vrLen = 681;
+		vrLoc = 1582;
+	};
+	44170F8B10B77ECF004D4679 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 26";
+		rLen = 0;
+		rLoc = 623;
+		rType = 0;
+		vrLen = 707;
+		vrLoc = 1582;
+	};
+	44170F8C10B77ECF004D4679 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 44170F8D10B77ECF004D4679 /* christopherscales.pbxuser */;
+		name = "christopherscales.pbxuser: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1118;
+		vrLoc = 0;
+	};
+	44170F8D10B77ECF004D4679 /* christopherscales.pbxuser */ = {
+		isa = PBXFileReference;
+		name = christopherscales.pbxuser;
+		path = "/My Documents/STANFORD/Classes '09-'10/CS 147/Burble/trunk/Test1.xcodeproj/christopherscales.pbxuser";
+		sourceTree = "<absolute>";
+	};
+	44170F8E10B77ECF004D4679 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 44170F8F10B77ECF004D4679 /* christopherscales.pbxuser */;
+		name = "christopherscales.pbxuser: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1118;
+		vrLoc = 0;
+	};
+	44170F8F10B77ECF004D4679 /* christopherscales.pbxuser */ = {
+		isa = PBXFileReference;
+		name = christopherscales.pbxuser;
+		path = "/My Documents/STANFORD/Classes '09-'10/CS 147/Burble/trunk/Test1.xcodeproj/christopherscales.pbxuser";
+		sourceTree = "<absolute>";
 	};
 	44CCE70D10B20D82006ED4E7 /* Test1 */ = {
 		isa = PBXExecutable;
@@ -191,6 +261,7 @@
 	};
 	44E6189310B212B7001ABCDB /* christopherscales.pbxuser */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = file;
 		name = christopherscales.pbxuser;
 		path = /Users/christopherscales/Desktop/Burble/Test1.xcodeproj/christopherscales.pbxuser;
 		sourceTree = "<absolute>";
@@ -233,9 +304,9 @@
 	};
 	DAE6558110A250B9007BB25E /* MyGroupViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1328, 1755}}";
-			sepNavSelRange = "{1874, 0}";
-			sepNavVisRange = "{1600, 788}";
+			sepNavIntBoundsRect = "{{0, 0}, {1328, 1963}}";
+			sepNavSelRange = "{623, 0}";
+			sepNavVisRange = "{1582, 707}";
 		};
 	};
 }
