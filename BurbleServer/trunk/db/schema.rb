@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091121094904) do
+ActiveRecord::Schema.define(:version => 20091121112100) do
 
   create_table "beta_testers", :force => true do |t|
     t.string   "email"
@@ -76,17 +76,15 @@ ActiveRecord::Schema.define(:version => 20091121094904) do
   add_index "people", ["guid"], :name => "index_people_on_guid"
 
   create_table "positions", :force => true do |t|
-    t.integer  "person_id",  :null => false
-    t.float    "latitude",   :null => false
-    t.float    "longitude",  :null => false
+    t.integer  "person_id", :null => false
+    t.float    "latitude",  :null => false
+    t.float    "longitude", :null => false
     t.float    "vaccuracy"
     t.float    "haccuracy"
     t.float    "speed"
     t.float    "elevation"
     t.float    "heading"
     t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.datetime "timestamp"
   end
 
