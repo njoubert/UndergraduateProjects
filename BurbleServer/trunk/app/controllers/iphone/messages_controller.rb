@@ -26,11 +26,25 @@ class Iphone::MessagesController < Iphone::AbstractIphoneController
   end
   
   # POST a new message to a list of users.
-  def send
+  def sendMsg
     if request.post?
-      
+      #TODO: check that sender_id is the same as the current user_id
+      @message = Message.factory!(params[:type], params[:message])
+      if (@message.sender != @user)
+        render_error("You can only send messages on behalf of yourself.")
+      else
+        @receiver_ids = ActiveSupport::JSON.decode(params[:receivers])
+        @receiver_ids.each do |r|
+          p = Person.find(r)
+          if p
+            @message.people << p
+          end
+        end
+        @message.save
+      render :text => "yays!", :status => :created
+      end
     else
-      
+      render_error("Request type not supported. Expected POST.", nil) 
     end
   end
       
