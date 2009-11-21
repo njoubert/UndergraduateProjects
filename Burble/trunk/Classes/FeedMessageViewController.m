@@ -1,15 +1,15 @@
 //
-//  FeedNagivationController.m
+//  FeedMessageViewController.m
 //  Test1
 //
-//  Created by Jonathan Wang on 11/17/09.
+//  Created by Jonathan Wang on 11/20/09.
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "FeedNagivationController.h"
+#import "FeedMessageViewController.h"
 
 
-@implementation FeedNagivationController
+@implementation FeedMessageViewController
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -53,6 +53,7 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
+
 
 - (void)dealloc {
     [super dealloc];

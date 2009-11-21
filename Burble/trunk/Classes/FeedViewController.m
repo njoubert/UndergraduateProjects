@@ -13,6 +13,8 @@
 
 @synthesize table;
 @synthesize messages;
+@synthesize childView;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -25,14 +27,31 @@
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	self.title = @"Feed";
 	
 	// Load up messages
 	dataManager = [BurbleDataManager sharedDataManager];
-	NSArray *reqmessages = [dataManager getMessages];
-	self.messages = reqmessages;
-	[reqmessages release];
+	//NSArray *reqmessages = [dataManager getMessages];
+	
+	// dummy messages
+	NSDictionary *row1 = [[NSDictionary alloc] initWithObjectsAndKeys:
+						   @"Jon", @"sender", @"message", @"type", @"Hi!", @"content", nil];
+	NSDictionary *row2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+						   @"Niels", @"sender", @"routing", @"type", @"Yo!", @"content", nil];
+	NSDictionary *row3 = [[NSDictionary alloc] initWithObjectsAndKeys:
+						   @"Janelle", @"sender", @"invite", @"type", @"Ey!", @"content", nil];
+	
+	NSArray *array = [[NSArray alloc] initWithObjects:
+					  row1, row2, row3, nil];
+
+	self.messages = array;
+	
+	[row1 release];
+	[row2 release];
+	[row3 release];
+	[array release];
 	
     [super viewDidLoad];
 }
@@ -45,32 +64,123 @@
 }
 */
 
--(IBAction)buttonPressed {
-	NSString *message= [[NSString alloc] initWithString: @"Why did we do this again?"];
-	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle: @"Jon wonders:" message:message delegate:nil cancelButtonTitle:@"Very hot" otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	[message release];
+#pragma mark -
+#pragma mark Table View Data Source Methods
+
+- (NSInteger) tableView:(UITableView *)tableView
+  numberOfRowsInSection:(NSInteger)section
+{
+	return [self.messages count];
 }
 
-//This draws our list table for all of our Messages
+- (UITableViewCell *)tableView:(UITableView *)tableView 
+		cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellTableIdentifier = @"CellTableIdentifier ";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
+							 CellTableIdentifier];
+	
+	if (cell == nil)
+	{
+		cell = [[[UITableViewCell alloc]
+				 initWithStyle:UITableViewCellStyleDefault
+				 reuseIdentifier:CellTableIdentifier] autorelease];
+		
+		CGRect senderLabelRect = CGRectMake(0, 5, 70, 15);
+		UILabel *senderLabel = [[UILabel alloc] initWithFrame:senderLabelRect];
+		senderLabel.textAlignment = UITextAlignmentRight;
+		senderLabel.text = @"sender";
+		senderLabel.font = [UIFont boldSystemFontOfSize:12];
+		senderLabel.textColor = [UIColor lightGrayColor];
+		[cell.contentView addSubview: senderLabel];
+		[senderLabel release];
+		
+		CGRect typeLabelRect = CGRectMake(0, 26, 70, 15); 
+		UILabel *typeLabel = [[UILabel alloc] initWithFrame:typeLabelRect];
+		typeLabel.textAlignment = UITextAlignmentRight;
+		typeLabel.text = @"type";
+		typeLabel.font = [UIFont boldSystemFontOfSize:12];
+		typeLabel.textColor = [UIColor lightGrayColor];
+		[cell.contentView addSubview: typeLabel];
+		[typeLabel release];
 
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [messages count];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *MessageCell = @"MessageCell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MessageCell];
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MessageCell] autorelease];
+		CGRect senderValueRect = CGRectMake(80, 5, 200, 15);
+		UILabel *senderValue = [[UILabel alloc] initWithFrame:
+			senderValueRect];
+		senderValue.tag = kSenderValueTag;
+		[cell.contentView addSubview:senderValue];
+		[senderValue release];
+		
+		CGRect typeValueRect = CGRectMake(80, 25, 200, 15);
+		UILabel *typeValue = [[UILabel alloc] initWithFrame:
+			typeValueRect];
+		typeValue.tag = kTypeValueTag;
+		[cell.contentView addSubview:typeValue];
+		[typeValue release];
 	}
+
 	NSUInteger row = [indexPath row];
-	Message *m = [messages objectAtIndex:row];
-	cell.textLabel.text = [m sender];
-	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+	NSDictionary *rowData = [self.messages objectAtIndex:row];
+	UILabel *sender = (UILabel *)[cell.contentView viewWithTag:
+									kSenderValueTag];
+	sender.text = [rowData objectForKey:@"sender"];
+	sender.font = [UIFont boldSystemFontOfSize:12];
+
+	
+	UILabel *type = (UILabel *)[cell.contentView viewWithTag:
+									kTypeValueTag];
+	type.text = [rowData objectForKey:@"type"];
+	type.font = [UIFont boldSystemFontOfSize:12];
+
 	return cell;
+}
+
+/* Transition to message contents */
+- (NSIndexPath *)tableView:(UITableView *)tableView
+	willSelectRowAtIndexPath: (NSIndexPath *)indexPath
+{
+	NSUInteger row = [indexPath row];
+	if (row == 0)
+	{
+		return nil;
+	}
+	return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView
+	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSUInteger row = [indexPath row]; 
+	NSString *rowValue = [messages objectAtIndex:row];
+	
+	NSString *message = [[NSString alloc] initWithFormat:
+						 @"Invitation from %@", rowValue];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle:@"Invitation from"
+								message:message
+								delegate:nil
+						  cancelButtonTitle:@"Accept"
+						  otherButtonTitles:nil];
+	[alert show];
+	
+	[message release];
+	[alert release];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	
+	/*
+	//UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	//NSString *sender = cell.textLabel.text;
+	
+	if (self.childView == nil)
+	{
+		self.childView = [[FeedMessageViewController alloc]
+						  initWithNibName:@"FeedMessageViewController" bundle:nil];
+	}
+	childView.title = @"Message Details";
+	[self.navigationController pushViewController:self.childView animated:YES];
+	 */
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,10 +197,10 @@
 	// e.g. self.myOutlet = nil;
 }
 
-
 - (void)dealloc {
+	[messages release];
+	[table release];
     [super dealloc];
 }
-
 
 @end

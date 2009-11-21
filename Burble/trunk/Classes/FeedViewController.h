@@ -9,19 +9,22 @@
 #import <UIKit/UIKit.h>
 #import "Test1AppDelegate.h"
 #import "BurbleDataManager.h"
+#import "FeedMessageViewController.h"
 
+#define kSenderValueTag		1
+#define kTypeValueTag		2
 
-@interface FeedViewController : UIViewController {
+@interface FeedViewController : UIViewController
+	<UITableViewDataSource, UITableViewDelegate>
+{
 	NSArray *messages;
-	
 	UITableView *table;
-	
 	BurbleDataManager *dataManager;
+	FeedMessageViewController *childView;
 }
 
 @property (nonatomic, retain) NSArray *messages;
 @property (nonatomic, retain) IBOutlet UITableView *table;
-
--(IBAction)buttonPressed;
+@property (nonatomic, retain) FeedMessageViewController *childView;
 
 @end
