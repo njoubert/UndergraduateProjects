@@ -74,16 +74,21 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
     end
   end
   
-  def add_waypoint
+  def add_waypoint_for_group
     if request.post?
-      begin 
-        @waypoint = Waypoint.new(params[:waypoint])
-        @waypoint.person = @user
-        @waypoint.group = @user.group
-        @waypoint.save!
-        render :xml => @waypoint, :status => :created
-      rescue Exception => ex
-        render_error("Could not add waypoint!", ex)
+      @group = Group.find(params[:id])
+      if not @group
+        render_error("Could not find group!", nil)
+      else
+        begin 
+          @waypoint = Waypoint.new(params[:waypoint])
+          @waypoint.person = @user
+          @waypoint.group = @group
+          @waypoint.save!
+          render :text => @waypoint.id, :status => :created
+        rescue Exception => ex
+          render_error("Could not add waypoint!", ex)
+        end
       end
     else
       render_error("Request type not supported. Expected POST.", nil)      

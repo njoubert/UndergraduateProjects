@@ -55,7 +55,7 @@ class Person < ActiveRecord::Base
   #waypoints
   has_many :waypoints
   has_many :positions
-  has_one :position, :order => "id DESC" #DOES THIS WORK RIGHT? IS THIS THE LATEST POSITION?
+  has_one :position, :order => "created_at DESC" #DOES THIS WORK RIGHT? IS THIS THE LATEST POSITION?
   
   #groups
   has_many :group_memberships, :order => "created_at DESC" #HERE you can get when they've joined and when they've left, etc.
