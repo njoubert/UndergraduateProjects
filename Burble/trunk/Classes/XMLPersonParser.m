@@ -73,7 +73,20 @@
 				_currentElementText = [[NSMutableString alloc] init];
 		} 
 	}
-	
+	if (_state == person_position) {
+		if ([elementName isEqualToString:@"id"] || 
+			[elementName isEqualToString:@"person-id"] || 
+			[elementName isEqualToString:@"latitude"] || 
+			[elementName isEqualToString:@"longitude"] || 
+			[elementName isEqualToString:@"vaccuracy"] || 
+			[elementName isEqualToString:@"haccuracy"] || 
+			[elementName isEqualToString:@"elevation"] || 
+			[elementName isEqualToString:@"heading"] || 
+			[elementName isEqualToString:@"speed"] ||
+			[elementName isEqualToString:@"timestamp"]) {
+			_currentElementText = [[NSMutableString alloc] init];
+		} 
+	}	
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName 
@@ -93,6 +106,7 @@
 		_state = kruft;
 	}
 	if (_state == person_group) {
+		
 		if ([elementName isEqualToString:@"group"]) {
 			_state = person;
 		}
@@ -107,13 +121,40 @@
 		} else if ([elementName isEqualToString:@"decription"]) {
 			_group.description = [[NSString alloc] initWithString:_currentElementText];
 		}
+		
 	}
 	if (_state == person_position) {
+		
 		if ([elementName isEqualToString:@"position"]) {
 			_state = person;
 		}
+		if ([elementName isEqualToString:@"id"]) {
+			_position.uid = [_currentElementText intValue];
+		} else if ([elementName isEqualToString:@"person-id"]) {
+			_position.person_id = [_currentElementText intValue];
+		} else if ([elementName isEqualToString:@"latitude"]) {
+			_position.lat = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"longitude"]) {
+			_position.lon = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"vaccuracy"]) {
+			_position.vaccuracy = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"haccuracy"]) {
+			_position.haccuracy = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"elevation"]) {
+			_position.elevation = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"heading"]) {
+			_position.heading = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"speed"]) {
+			_position.speed = [_currentElementText doubleValue];
+		} else if ([elementName isEqualToString:@"timestamp"]) {
+			NSDateFormatter *dF = [[NSDateFormatter alloc] init];
+			[dF setDateFormat:@"yyyy-MM-dd'T'hh:mm:ss'Z'"];
+			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+			_position.timestamp = [dF dateFromString:_currentElementText];
+		}
 	}
 	if (_state == person) {
+		
 		if ([elementName isEqualToString:@"id"]) {
 			if (_currentElementText != nil) {
 				_person.uid = [_currentElementText intValue];
@@ -127,6 +168,7 @@
 		} else if ([elementName isEqualToString:@"number"]) {
 			_person.number = [[NSString alloc] initWithString:_currentElementText];
 		} 
+		
 	}
 	
 	if (_currentElementName != nil) {

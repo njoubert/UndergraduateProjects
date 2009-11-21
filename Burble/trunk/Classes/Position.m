@@ -11,7 +11,7 @@
 
 @implementation Position
 
-@synthesize uid, lat, lon, vaccuracy, haccuracy, speed, elevation, heading, timestamp;
+@synthesize uid, lat, lon, vaccuracy, haccuracy, speed, elevation, heading, timestamp, person_id;
 
 -(id)initWithCLLocation:(CLLocation*)loc {
 	if (self = [super init]) {
@@ -60,7 +60,16 @@
 -(id)copyWithZone:(NSZone *)zone {
 	Position *newPos;
 	newPos = [[[self class] allocWithZone:zone] init];
-	
+	newPos.lat = lat;
+	newPos.lon = lon;
+	newPos.vaccuracy = vaccuracy;
+	newPos.haccuracy = haccuracy;
+	newPos.speed = speed;
+	newPos.elevation = elevation;
+	newPos.heading = heading;
+	newPos.timestamp = [timestamp copyWithZone:zone];
+	newPos.person_id = person_id;
+	newPos.uid = uid;
 	return newPos;
 }
 

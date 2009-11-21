@@ -24,6 +24,7 @@
 
 @interface Position : RemoteModel <NSCopying> {
 	int uid;
+	int person_id;
 	double lat;
 	double lon;
 	double vaccuracy;
@@ -34,6 +35,7 @@
 	NSDate* timestamp;
 }
 @property int uid;
+@property int person_id;
 @property double lat;
 @property double lon;
 @property double vaccuracy;
