@@ -104,6 +104,7 @@ static BurbleDataManager *sharedDataManager;
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
 		positionQueue = [[NSMutableArray alloc] init];
+		outgoingMessagesQueue = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -173,6 +174,9 @@ static BurbleDataManager *sharedDataManager;
 
 - (NSString*) getGUID {
 	return [presistent objectForKey:@"guid"];
+}
+-(int) getUid {
+	return [[presistent objectForKey:@"uid"] intValue];;
 }
 
 - (NSString*) getName {
@@ -260,27 +264,28 @@ static BurbleDataManager *sharedDataManager;
 
 //Starts the process of sending all the positions in the queue to the server
 - (void)flushPositionQueue {
-	if ([positionQueue count] == 0)
-		return;
-	NSLog(@"weeeeeee");
-	Position* p;
-	int numRequests = 1;
-	
-	while ([positionQueue count] > 0) {
-		p = [positionQueue lastObject];
-		[positionQueue removeLastObject];
-		if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-			[self sendPositionToServer:p];
-			numRequests++;
-		} else {
-			//we set up a timer to send a sync request.
-			//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-			[NSTimer scheduledTimerWithTimeInterval:0.5*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-											 target:self
-										   selector:@selector(firePositionToServer:) 
-										   userInfo:p 
-											repeats:NO];
-			numRequests++;
+	@synchronized(positionQueue) {
+		if ([positionQueue count] == 0)
+			return;
+		Position* p;
+		int numRequests = 1;
+		
+		while ([positionQueue count] > 0) {
+			p = [positionQueue lastObject];
+			[positionQueue removeLastObject];
+			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+				[self sendPositionToServer:p];
+				numRequests++;
+			} else {
+				//we set up a timer to send a sync request.
+				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+												 target:self
+											   selector:@selector(firePositionToServer:) 
+											   userInfo:p 
+												repeats:NO];
+				numRequests++;
+			}
 		}
 	}
 }
@@ -317,32 +322,90 @@ static BurbleDataManager *sharedDataManager;
 
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushWaypointQueue {
-	if ([waypointQueue count] == 0)
-		return;
-	
-	Waypoint* wp;
-	int numRequests = 1;
-	
-	while ([waypointQueue count] > 0) {
-		wp = [waypointQueue lastObject];
-		[waypointQueue removeLastObject];
-		if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-			[self sendWaypointToServer:wp];
-			numRequests++;
-		} else {
-			//we set up a timer to send a sync request.
-			//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-			[NSTimer scheduledTimerWithTimeInterval:0.5*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-											 target:self
-										   selector:@selector(fireWaypointToServer:) 
-										   userInfo:wp 
-											repeats:NO];
-			numRequests++;
+	@synchronized(waypointQueue) {
+		if ([waypointQueue count] == 0)
+			return;
+		
+		Waypoint* wp;
+		int numRequests = 1;
+		
+		while ([waypointQueue count] > 0) {
+			wp = [waypointQueue lastObject];
+			[waypointQueue removeLastObject];
+			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+				[self sendWaypointToServer:wp];
+				numRequests++;
+			} else {
+				//we set up a timer to send a sync request.
+				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+												 target:self
+											   selector:@selector(fireWaypointToServer:) 
+											   userInfo:wp 
+												repeats:NO];
+				numRequests++;
+			}
 		}
 	}
 }
 
+/************** Outgoing Messages ****************/
 
+//cathes the callback from the server for sending a waypoint
+- (void) sendMessageToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Message*)m {
+	if (rpcResponse.response == nil) {
+		[outgoingMessagesQueue addObject:m];
+	} else if (rpcResponse.response.statusCode == 201) {
+		m.sent = YES;
+	} else {
+		[outgoingMessagesQueue addObject:m];
+		[self messageForUnrecognizedStatusCode:rpcResponse.response];
+	}
+}
+
+//sends the given waypoint to the server
+- (void)sendMessageToServer:(Message*)m {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/sendMsg", [presistent objectForKey:@"guid"]];
+	RPCPostRequest* request = [m getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendMessageToServerCallback:withObject:) withUserObject:m]) {
+		[outgoingMessagesQueue addObject:m];
+	}
+}
+
+//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
+- (void)fireMessageToServer:(NSTimer*)timer {
+	[self sendMessageToServer:[timer userInfo]];
+}
+
+
+// Starts the actual process of sending waypoints to the server, using the three helpers above.
+- (void)flushOutgoingMessagesQueue {
+	@synchronized(outgoingMessagesQueue) {
+		if ([outgoingMessagesQueue count] == 0)
+			return;
+		
+		Message* m;
+		int numRequests = 1;
+		
+		while ([outgoingMessagesQueue count] > 0) {
+			m = [outgoingMessagesQueue lastObject];
+			[outgoingMessagesQueue removeLastObject];
+			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+				[self sendMessageToServer:m];
+				numRequests++;
+			} else {
+				//we set up a timer to send a sync request.
+				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+												 target:self
+											   selector:@selector(fireMessageToServer:) 
+											   userInfo:m
+												repeats:NO];
+				numRequests++;
+			}
+		}
+	}
+}
 
 /*
  ================================================================================
@@ -699,21 +762,31 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (NSArray*) getMessages {
-// TODO: For now, this data is faked!
-	
-	Message* m1 = [[Message alloc] init];
-	[m1 setSender:@"Niels"];
-	
-	Message* m2 = [[Message alloc] init];
-	[m2 setSender:@"Janelle"];
-	
-	Message* m3 = [[Message alloc] init];
-	[m3 setSender:@"Chris"];
-	
-	NSArray* msgs = [NSArray arrayWithObjects:m1, m2, m3, nil];
-	return msgs;
-	
+	return nil;	
 }
+
+- (int) getMessagesCount {
+	return 3;
+}
+- (int) getUnreadMessagesCount {
+	return 1;
+}
+
+- (BOOL)sendMessage:(Message*)msg {
+	if ([self getUid] <= 0)
+		return NO;
+	[msg setSender_uid:[self getUid]];
+	[outgoingMessagesQueue addObject:msg];
+	[self flushOutgoingMessagesQueue];
+	return YES;
+}
+- (int)unsentMessagesCount {
+	return [outgoingMessagesQueue count];
+}
+- (NSArray*)getUnsentMessages {
+	return [[NSArray alloc] initWithArray:outgoingMessagesQueue copyItems:NO];
+}
+
 /*
  ================================================================================
 			DELEGATE METHODS	

@@ -11,38 +11,118 @@
 
 @implementation Message
 
-@synthesize sender, message;
+@synthesize text, sender_uid, read, sent;
 
 -(void) dealloc {
-	[sender release];
-	[message release];
+	[receiver_uids release];
+	[text release];
+	[type release];
 	[super dealloc];
 }
 
-- (NSString*) getSender {;
-	return sender;
+-(id)initWithText:(NSString *)msg {
+	if (self = [super init]) {
+		read = NO;
+		sent = NO;
+		type = [[NSString alloc] initWithString:kMessageTypeText];
+		text = [[NSString alloc] initWithString:msg];
+		receiver_uids = [[NSMutableArray alloc] init];
+		waypoint_id = -1;
+		group_id = -1;
+	}
+	return self;
+}
+-(id)initWithText:(NSString*)comment waypoint:(int)wp_id {
+	if (self = [super init]) {
+		read = NO;
+		sent = NO;
+		type = [[NSString alloc] initWithString:kMessageTypeRoutingRequest];
+		text = [[NSString alloc] initWithString:comment];
+		receiver_uids = [[NSMutableArray alloc] init];
+		waypoint_id = wp_id;
+		group_id = -1;
+	}	
+	return self;
+}
+-(id)initWithText:(NSString*)comment group:(int)gp_id {
+	if (self = [super init]) {
+		read = NO;
+		sent = NO;
+		type = [[NSString alloc] initWithString:kMessageTypeGroupInvite];
+		text = [[NSString alloc] initWithString:comment];
+		receiver_uids = [[NSMutableArray alloc] init];
+		waypoint_id = -1;
+		group_id = gp_id;
+		
+	}
+	return self;
 }
 
--(NSData*) convertToData {
+-(void)appendReceiverUid:(int)receiver_uid {
+	if (receiver_uid <= 0)
+		return;
+	[receiver_uids addObject:[NSNumber numberWithInt:receiver_uid]];
+}
+-(void)appendReceiver:(Person*)receiver {
+	if (receiver == nil)
+		return;
+	[self appendReceiverUid:receiver.uid];
+}
+
+
+-(void) convertToData:(RPCPostData*)pData {
+	NSString* senderIdStr = [[NSString alloc] initWithFormat:@"%d", sender_uid];
+	NSString* waypointIdStr = [[NSString alloc] initWithFormat:@"%d", waypoint_id];
+	NSString* groupIdStr = [[NSString alloc] initWithFormat:@"%d", group_id];
 	
+	[pData appendValue:senderIdStr forKey:kRPC_MessageSenderIDKey];
+	[pData appendValue:waypointIdStr forKey:kRPC_MessageWaypointIDKey];
+	[pData appendValue:groupIdStr forKey:kRPC_MessageGroupIDKey];
+	[pData appendValue:type forKey:kRPC_MessageTypeKey];
+	[pData appendValue:text forKey:kRPC_MessageTextKey];
+	
+	//JSON the receiver list to the server
+	NSMutableString* receiversString = [[NSMutableString alloc] init];
+	[receiversString appendString:@"["];
+	for (int i = 0; i < [receiver_uids count]; i++) {
+		if (i+1 == [receiver_uids count])
+			[receiversString appendFormat:@"%d",[[receiver_uids objectAtIndex:i] intValue]];
+		else
+			[receiversString appendFormat:@"%d,",[[receiver_uids objectAtIndex:i] intValue]];
+	}
+	[receiversString appendString:@"]"];
+	[pData appendValue:receiversString forKey:kRPC_MessageReceiversKey];
+	
+	
+	[senderIdStr release];
+	[waypointIdStr release];
+	[groupIdStr release];
+	[receiversString release];
 }
 
 #pragma mark -
 #pragma mark NSCopying
 -(id)copyWithZone:(NSZone *)zone {
-	
+	Message* newMsg;
+	newMsg = [[[self class] allocWithZone:zone] init];
+	newMsg->read = read;
+	newMsg->sender_uid = sender_uid;
+	newMsg->waypoint_id = waypoint_id;
+	newMsg->group_id = group_id;
+	newMsg->type = [[NSString allocWithZone:zone] initWithString:type];
+	newMsg->text = [[NSString allocWithZone:zone] initWithString:text];
+	newMsg->receiver_uids = [[NSMutableArray allocWithZone:zone] initWithArray:receiver_uids];
+	return newMsg;
 }
 
 #pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:self.sender		forKey:kMessageSenderKey];
-	[coder encodeObject:self.message	forKey:kMessageMessageKey];
+
 }
 -(id)initWithCoder:(NSCoder *)coder {
 	if (self = [super init]) {
-		self.sender = [coder decodeObjectForKey:kMessageSenderKey];
-		self.message = [coder decodeObjectForKey:kMessageMessageKey];
+
 	}
 	return self;
 }

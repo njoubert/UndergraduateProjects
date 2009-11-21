@@ -21,10 +21,11 @@
 #import "Test1AppDelegate.h"
 #import "XMLEventParser.h"
 
-#define kNumOfConcurrentRequestsFromQueue 3
+#define kNumOfConcurrentRequestsFromQueue 2
+#define kTimeBetweenRequests 1.0
 
-#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
-//#define kBaseUrlStr @"http://localhost:3000/iphone/"
+//#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
+#define kBaseUrlStr @"http://localhost:3000/iphone/"
 
 #define kPresistentFilename @"BurbleData.plist"
 
@@ -56,6 +57,7 @@
 	//QUEUES:
 	NSMutableArray* waypointQueue;
 	NSMutableArray* positionQueue;
+	NSMutableArray* outgoingMessagesQueue;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -73,6 +75,7 @@
 // ============= DATA CALLS for INTERNAL STATE DATA
 
 - (NSString*) getGUID;
+- (int) getUid;
 - (NSString*) getName;
 - (NSString*) getFirstName;
 
@@ -88,6 +91,7 @@
 
 - (void)flushPositionQueue;
 - (void)flushWaypointQueue;
+- (void)flushOutgoingMessagesQueue;
 
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
@@ -113,21 +117,20 @@
 - (BOOL)isInGroup;
 - (Group*) getMyGroup;
 
-- (int) getFriendsCount;
-- (NSArray*) getFriends;
-
-- (int) getMessagesCount;
-- (int) getUnreadMessagesCount;
-- (NSArray*) getMessages;
-- (NSArray*) getUnreadMessages;
-
-- (BOOL)sendMessage:(Message*)msg toPerson:(Person*)p;
-- (BOOL)sendMessage:(Message*)msg toPeople:(NSArray*)people;
-
 - (NSString*) getNextWaypointName;
 - (NSString*) getNextWaypointDesc;
 - (void)addWaypoint:(Waypoint*) wP;
 - (int)getWaypointCount;
 - (NSArray*)getWaypoints;
+- (int) getFriendsCount;
+- (NSArray*) getFriends;
+
+- (NSArray*) getMessages;		//returns a list of Message* objects
+- (int) getMessagesCount;
+- (int) getUnreadMessagesCount;
+
+- (BOOL)sendMessage:(Message*)msg; //given a message and a list of uids we add it to the queue. You only set message and type
+- (int)unsentMessagesCount;
+- (NSArray*)getUnsentMessages;
 
 @end

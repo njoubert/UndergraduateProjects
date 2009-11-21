@@ -38,6 +38,10 @@
 -(IBAction)inviteToGroup:(id)sender;
 -(IBAction)messageGroup:(id)sender;
 -(IBAction)goToMyGroupView;
--(IBAction)logMeInPressed;
+
+
+-(IBAction)inviteIdOneFUCKYEA;
+
+
 
 @end
