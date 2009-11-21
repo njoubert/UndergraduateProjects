@@ -24,6 +24,7 @@
 	UILabel *groupMsgLabel;
 	BurbleDataManager *dataManager;
 	Group *myGroup;
+	NSArray *groupies;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *groupTextField;
@@ -37,6 +38,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
 @property (nonatomic, retain) IBOutlet UILabel *groupMsgLabel;
 @property (nonatomic, retain) Group *myGroup;
+@property (nonatomic, retain) NSArray *groupies;
 
 
 -(IBAction)leaveGroup:(id)sender;
@@ -45,6 +47,7 @@
 -(IBAction)backToGroup:(id)sender;
 -(IBAction)sendMsgToGroup:(id)sender;
 -(IBAction)inviteToGroup:(id)sender;
+-(IBAction)sendInvites:(id)sender;
 -(IBAction)messageGroup:(id)sender;
 -(IBAction)goToMyGroupView;
 

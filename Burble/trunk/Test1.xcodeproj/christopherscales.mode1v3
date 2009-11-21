@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -267,17 +265,19 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
+								<string>B873401E10B27EF400F24336</string>
 								<string>B832F9B210B2644500F50C41</string>
 								<string>B832F9B710B2646200F50C41</string>
 								<string>B832F9B510B2645600F50C41</string>
+								<string>B832F9B410B2644E00F50C41</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>19</integer>
-									<integer>17</integer>
-									<integer>15</integer>
+									<integer>33</integer>
+									<integer>31</integer>
+									<integer>29</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
@@ -313,6 +313,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -327,18 +329,29 @@
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
 										<string>MyGroupViewController.m</string>
+										<key>_historyCapacity</key>
+										<integer>0</integer>
+										<key>bookmark</key>
+										<string>4417108610B8A6BC004D4679</string>
 										<key>history</key>
 										<array>
 											<string>44CCE74C10B211F1006ED4E7</string>
 											<string>44170FB710B7847F004D4679</string>
 											<string>44170FB810B7847F004D4679</string>
-											<string>44170FC810B784E3004D4679</string>
-											<string>44170FC910B784E3004D4679</string>
 											<string>44170FCA10B784E3004D4679</string>
 											<string>44170FE110B786A5004D4679</string>
 											<string>44170FE510B78857004D4679</string>
-											<string>44170FE610B78857004D4679</string>
-											<string>44170FD310B7860C004D4679</string>
+											<string>4417107510B8A690004D4679</string>
+											<string>4417107610B8A690004D4679</string>
+											<string>4417107710B8A690004D4679</string>
+											<string>4417107810B8A690004D4679</string>
+											<string>4417107910B8A690004D4679</string>
+											<string>4417107A10B8A690004D4679</string>
+											<string>4417107B10B8A690004D4679</string>
+											<string>4417107C10B8A690004D4679</string>
+											<string>4417107D10B8A690004D4679</string>
+											<string>4417108510B8A6BC004D4679</string>
+											<string>4417107E10B8A690004D4679</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -350,14 +363,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {982, 480}}</string>
+								<string>{{0, 0}, {982, 575}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>480pt</string>
+							<string>575pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -370,14 +383,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 485}, {982, 193}}</string>
+								<string>{{0, 580}, {982, 98}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>193pt</string>
+							<string>98pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -536,7 +549,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>44170FFD10B88502004D4679</string>
+		<string>4417108710B8A6BC004D4679</string>
+		<string>4417108210B8A690004D4679</string>
 		<string>44170FFE10B88502004D4679</string>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>

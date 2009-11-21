@@ -22,9 +22,10 @@
 @synthesize groupLabel;
 @synthesize groupMsgLabel;
 @synthesize myGroup;
+@synthesize groupies;
 
 
-- (BOOL)textFieldShouldReturn:(UITextField *)theTextField {
+-(BOOL)textFieldShouldReturn:(UITextField *)theTextField {
 	if(theTextField == groupTextField) {
 		[groupTextField resignFirstResponder];
 	}
@@ -39,7 +40,7 @@
 	return YES;
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+-(void)textViewDidBeginEditing:(UITextView *)textView {
 	if([@"Press to enter text." isEqualToString:textView.text])
 		textView.text = @"";
 }
@@ -83,6 +84,16 @@
 	self.view = myGroupView;
 }
 
+//Switches to group message view.
+-(IBAction)messageGroup:(id)sender {
+	groupMsgText.text = @"Press to enter text.";
+	
+	groupMsgLabel.text = [@"Msg to " stringByAppendingString:@"groupString"]; // groupString];
+	
+	self.view = messageGroupView;
+}
+
+//Sends message to group.
 -(IBAction)sendMsgToGroup:(id)sender {
 	groupMsgString = groupMsgText.text;
 	
@@ -103,20 +114,34 @@
 	}
 }
 
+//Leaves group and sets view to create group view.
 -(IBAction)leaveGroup:(id)sender {
 	self.view = createGroupView;
 }
 
+//Switches to group invite view.
 -(IBAction)inviteToGroup:(id)sender {
 	self.view = inviteToGroupView;
 }
 
--(IBAction)messageGroup:(id)sender {
-	groupMsgText.text = @"Press to enter text.";
+//Sends invites to group.
+-(IBAction)sendInvites:(id)sender {
 	
-	groupMsgLabel.text = [@"Msg to " stringByAppendingString:@"groupString"]; // groupString];
-	
-	self.view = messageGroupView;
+	if(NO){ // if(friends have been selected)
+		
+		self.view = myGroupView;
+		
+		UIAlertView *inviteSentAlert = [[UIAlertView alloc]
+									 initWithTitle: @"Invite(s) sent!" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[inviteSentAlert show];
+		[inviteSentAlert release];
+	}else{
+		
+		UIAlertView *inviteFailedAlert = [[UIAlertView alloc]
+									   initWithTitle: @"No invites sent!" message:@"Please select friends to invite." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[inviteFailedAlert show];
+		[inviteFailedAlert release];
+	}
 }
 
 -(IBAction)goToMyGroupView {
@@ -136,6 +161,11 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	
+	NSArray *array = [[NSArray alloc] initWithObjects:@"Jon", @"JT", @"Niels", nil];
+	self.groupies = array; 
+	[array release];
+	
 	self.title = @"My Group";
 
 	dataManager = [BurbleDataManager sharedDataManager];
@@ -144,7 +174,7 @@
 		
 		myGroup = [dataManager getMyGroup];
 		groupString = [myGroup name];
-		groupLabel.text = groupString;
+		groupLabel.text = @"groupString"; // groupString;
 		self.view = myGroupView;
 		
 	} else {
@@ -189,6 +219,8 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	self.groupies = nil;
+	[super viewDidUnload]; 
 }
 
 
@@ -204,6 +236,7 @@
 	[groupLabel release];
 	[groupMsgLabel release];
 	[myGroup release];
+	[groupies release];
     [super dealloc];
 }
 -(IBAction)inviteIdOneFUCKYEA {
@@ -218,5 +251,51 @@
 	[dataManager sendMessage:inviteMsg];
 	
 }
+
+#pragma mark - 
+#pragma mark Table View Data Source Methods 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section { 
+	return [self.groupies count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	static NSString *SimpleTableIdentifier = @"SimpleTableIdentifier";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
+	
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SimpleTableIdentifier] autorelease];
+	}
+	
+	UIImage *image = [UIImage imageNamed:@"star.png"]; 
+	cell.imageView.image = image;
+	
+	NSUInteger row = [indexPath row];
+	cell.textLabel.text = [groupies objectAtIndex:row];
+		
+	return cell;
+}
+
+#pragma mark -
+#pragma mark Table Delegate Methods
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSUInteger row = [indexPath row];
+	return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSUInteger row = [indexPath row];
+	NSString *rowValue = [groupies objectAtIndex:row];
+	
+	NSString *message = [[NSString alloc] initWithFormat:@"You selected %@", rowValue];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Row Selected!" message:message delegate:nil cancelButtonTitle:@"Yes I Did" otherButtonTitles:nil];
+	[alert show];
+	
+	[message release];
+	[alert release];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 
 @end
