@@ -13,8 +13,7 @@
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
 	UITextField *groupTextField;
-	UITextField *groupMsgTextField;
-	UITextField *groupMsgRecTextField;
+	UITextView *groupMsgText;
 	NSString *groupString;
 	UIView *myGroupView;
 	UIView *createGroupView;
@@ -26,8 +25,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *groupTextField;
-@property (nonatomic, retain) IBOutlet UITextField *groupMsgTextField;
-@property (nonatomic, retain) IBOutlet UITextField *groupMsgRecTextField;
+@property (nonatomic, retain) IBOutlet UITextView *groupMsgText;
 @property (nonatomic, copy) NSString *groupString;
 @property (nonatomic, retain) IBOutlet UIView *myGroupView;
 @property (nonatomic, retain) IBOutlet UIView *createGroupView;
@@ -41,6 +39,7 @@
 -(IBAction)createGroup:(id)sender;			//calls out to server
 -(void)groupCreated:(Group*)returnValue;	//receives callback from server
 -(IBAction)backToGroup:(id)sender;
+-(IBAction)sendMsgToGroup:(id)sender;
 -(IBAction)inviteToGroup:(id)sender;
 -(IBAction)messageGroup:(id)sender;
 -(IBAction)goToMyGroupView;

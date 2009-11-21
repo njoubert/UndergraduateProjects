@@ -12,8 +12,7 @@
 @implementation MyGroupViewController
 
 @synthesize groupTextField;
-@synthesize groupMsgTextField;
-@synthesize groupMsgRecTextField;
+@synthesize groupMsgText;
 @synthesize groupString;
 @synthesize myGroupView;
 @synthesize createGroupView;
@@ -26,14 +25,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField {
 	if(theTextField == groupTextField) {
 		[groupTextField resignFirstResponder];
-	}
-	
-	if(theTextField == groupMsgTextField) {
-		[groupMsgTextField resignFirstResponder];
-	}
-	
-	if(theTextField == groupMsgRecTextField) {
-		[groupMsgRecTextField resignFirstResponder];
 	}
 	
 	return YES;
@@ -65,6 +56,7 @@
 		
 	}
 }
+
 -(void)groupCreated:(Group*)returnValue {
 	if (returnValue != nil) {
 		groupTextField.text = @"";	
@@ -75,6 +67,15 @@
 
 -(IBAction)backToGroup:(id)sender {
 	self.view = myGroupView;
+}
+
+-(IBAction)sendMsgToGroup:(id)sender {
+	self.view = myGroupView;
+	
+	UIAlertView *msgSentAlert = [[UIAlertView alloc]
+											 initWithTitle: @"Message sent!" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[msgSentAlert show];
+	[msgSentAlert release];
 }
 
 -(IBAction)leaveGroup:(id)sender {
@@ -110,10 +111,11 @@
 
 	dataManager = [BurbleDataManager sharedDataManager];
 	
-	if ([dataManager isInGroup]){  
+	if (YES){ //[dataManager isInGroup]){  
 		
 		myGroup = [dataManager getMyGroup];
 		groupString = [myGroup name];
+		groupLabel.text = groupString;
 		self.view = myGroupView;
 		
 	} else {
@@ -163,8 +165,7 @@
 
 - (void)dealloc {
 	[groupTextField release];
-	[groupMsgTextField release];
-	[groupMsgRecTextField release];
+	[groupMsgText release];
 	[groupString release];
 	[myGroupView release];
 	[createGroupView release];
