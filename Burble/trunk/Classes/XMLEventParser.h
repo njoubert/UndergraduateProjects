@@ -13,6 +13,7 @@ typedef enum parserState {
 	person,
 	group,
 	person_group,
+	person_position,
 	done
 } parserState;
 

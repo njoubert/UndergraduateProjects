@@ -16,9 +16,22 @@
 		return nil;
 	return _person;
 }
+-(Group*)getGroup {
+	if (_hasError || _group == nil)
+		return nil;
+	return _group;
+}
+-(Position*)getPosition {
+	if (_hasError || _position == nil)
+		return nil;
+	return _position;
+}
+
 
 -(void)parserDidStartDocument:(NSXMLParser *)parser {
 	_person = [[Person alloc] init];
+	_group = [[Group alloc] init];
+	_position = [[Position alloc] init];
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName 
@@ -40,20 +53,24 @@
 
 	if ([elementName isEqualToString:@"person"]) {
 		_state = person;
-	}
+	}	
 	if (_state == person) {
 		if ([elementName isEqualToString:@"group"]) {
 			_state = person_group;
-		} else if ([elementName isEqualToString:@"id"]) {
-			if (![[attributeDict valueForKey:@"nil"] isEqualToString:@"true"]) {
+		} else if ([elementName isEqualToString:@"position"]) {
+			_state = person_position;
+		} else if ([elementName isEqualToString:@"id"] ||
+					[elementName isEqualToString:@"email"] || 
+					[elementName isEqualToString:@"name"] || 
+					[elementName isEqualToString:@"number"]) {
 				_currentElementText = [[NSMutableString alloc] init];
-			}
-		} else if ([elementName isEqualToString:@"email"]) {
-			_currentElementText = [[NSMutableString alloc] init];
-		} else if ([elementName isEqualToString:@"name"]) {
-			_currentElementText = [[NSMutableString alloc] init];
-		} else if ([elementName isEqualToString:@"number"]) {
-			_currentElementText = [[NSMutableString alloc] init];
+		} 
+	}
+	if (_state == person_group) {
+		if ([elementName isEqualToString:@"id"] || 
+				   [elementName isEqualToString:@"name"] || 
+				   [elementName isEqualToString:@"description"]) {
+				_currentElementText = [[NSMutableString alloc] init];
 		} 
 	}
 	
@@ -79,6 +96,20 @@
 		if ([elementName isEqualToString:@"group"]) {
 			_state = person;
 		}
+		if ([elementName isEqualToString:@"id"]) {
+			if (_currentElementText != nil) {
+				_group.group_id = [_currentElementText intValue];
+			} else {
+				_group.group_id = -1;
+			}
+		} else if ([elementName isEqualToString:@"name"]) {
+			_group.name = [[NSString alloc] initWithString:_currentElementText];			
+		} else if ([elementName isEqualToString:@"decription"]) {
+			_group.description = [[NSString alloc] initWithString:_currentElementText];
+		}
+	}
+	if (_state == person_position) {
+		//do something awesome here
 	}
 	if (_state == person) {
 		if ([elementName isEqualToString:@"id"]) {

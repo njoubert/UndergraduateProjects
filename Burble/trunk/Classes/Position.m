@@ -11,8 +11,18 @@
 
 @implementation Position
 
+
 -(NSData*) convertToData {
+	return nil;
+}
+
+#pragma mark -
+#pragma mark NSCopying
+-(id)copyWithZone:(NSZone *)zone {
+	Position *newPos;
+	newPos = [[[self class] allocWithZone:zone] init];
 	
+	return newPos;
 }
 
 @end

@@ -12,7 +12,7 @@
 #define kMessageSenderKey	@"MessageSender"
 #define kMessageMessageKey	@"MessageMessage"
 
-@interface Message : RemoteModel <NSCoding>{
+@interface Message : RemoteModel <NSCopying, NSCoding> {
 	NSString *sender;
 	NSString *message;
 }

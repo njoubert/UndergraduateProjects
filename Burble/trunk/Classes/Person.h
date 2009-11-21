@@ -20,7 +20,7 @@
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
 
-@interface Person : RemoteModel <NSCoding> {
+@interface Person : RemoteModel <NSCopying, NSCoding> {
 	int uid;
 	NSString	*guid;
 	NSString	*name;

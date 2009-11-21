@@ -37,6 +37,24 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+-(id)copyWithZone:(NSZone *)zone {
+	Person* newPerson;
+	newPerson = [[[self class] allocWithZone:zone] init];
+	newPerson.uid = self.uid;
+	newPerson.guid = newPerson.name = newPerson.number = newPerson.email = nil;
+	if (nil != guid)
+		newPerson.guid = [[NSString alloc] initWithString:guid];
+	if (nil != name)
+		newPerson.name = [[NSString alloc] initWithString:name];
+	if (nil != number)
+		newPerson.number = [[NSString alloc] initWithString:number];
+	if (nil != email)
+		newPerson.email = [[NSString alloc] initWithString:email];
+	return newPerson;
+}
+
+#pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeInt:self.uid					forKey:kPersonIdKey];

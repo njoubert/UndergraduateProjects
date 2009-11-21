@@ -13,6 +13,7 @@
 #import <MapKit/MKMapView.h>
 #import "BurbleDataManager.h"
 #import "AddWaypointOverlayView.h"
+#import "Group.h"
 
 #define kMapTitle			@"Map"
 #define kAddWaypointTitle	@"Add Waypoint"

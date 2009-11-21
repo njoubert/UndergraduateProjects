@@ -35,4 +35,12 @@
 	
 }
 
+#pragma mark -
+#pragma mark NSCopying
+-(id)copyWithZone:(NSZone *)zone {
+	
+}
+
+
+
 @end

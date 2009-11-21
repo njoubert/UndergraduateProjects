@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
 
-@interface Position : RemoteModel {
+@interface Position : RemoteModel <NSCopying> {
 
 }
 

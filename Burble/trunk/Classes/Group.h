@@ -13,7 +13,7 @@
 #define kRPC_GroupNameKey			@"group[name]"
 #define kRPC_GroupDescriptionKey	@"group[description]"
 
-@interface Group : RemoteModel <NSCoding> {
+@interface Group : RemoteModel <NSCopying, NSCoding> {
 	int group_id;
 	NSString* name;
 	NSString* description;

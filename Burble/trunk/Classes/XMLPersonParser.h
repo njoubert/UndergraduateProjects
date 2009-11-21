@@ -9,11 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "XMLEventParser.h"
 #import "Person.h"
+#import "Group.h"
+#import "Position.h"
 
 @interface XMLPersonParser : XMLEventParser {
 	Person* _person;
+	Group* _group;
+	Position* _position;
 }
 -(Person*)getPerson;
-
+-(Group*)getGroup;
+-(Position*)getPosition;
 
 @end

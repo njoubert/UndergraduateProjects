@@ -32,7 +32,7 @@
     [super viewDidLoad];
 	numOfWaypoints = 0;
 	myMap.showsUserLocation = true;
-	self.title = @"Map View";
+	self.title = @"Map";
 	
 	//Set the button that will appear as the "Back" button on any view that is pushed on top of this navigation controller.
 	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -71,7 +71,7 @@
 - (void) refreshView {
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		waypointButton.enabled = YES;
-		groupLabel.text = [[NSString alloc] initWithFormat:@"In %@!", [[[BurbleDataManager sharedDataManager] getMyGroup] getName]];
+		groupLabel.text = [[NSString alloc] initWithFormat:@"In %@!", [[BurbleDataManager sharedDataManager] getMyGroup].name];
 	} else {
 		waypointButton.enabled = NO;
 		groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];

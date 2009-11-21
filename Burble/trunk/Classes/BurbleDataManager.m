@@ -73,6 +73,8 @@ static BurbleDataManager *sharedDataManager;
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		self.currentDirectoryPath = documentsDirectory;
 		
+		//viewsToRefreshOnLogins = [[NSMutableDictionary alloc] init];
+		
 		baseUrl = [[NSURL alloc] initWithString:kBaseUrlStr];
 		
 		myGroup = nil; //load this from presistent later
@@ -91,7 +93,6 @@ static BurbleDataManager *sharedDataManager;
 		
 		locallyAddedWaypoints = [[NSMutableArray alloc] init];
 		
-		myG = nil;
 	}
 	return self;
 }
@@ -122,6 +123,13 @@ static BurbleDataManager *sharedDataManager;
 	NSString *presistentFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:presistentFilePath]) {
 		presistent = [[NSMutableDictionary alloc] initWithContentsOfFile:presistentFilePath];
+		if (nil != [presistent objectForKey:@"myGroup.group_id"]) {
+			myGroup = [[Group alloc] init];
+			myGroup.group_id = [[presistent objectForKey:@"myGroup.group_id"] intValue];
+			myGroup.name = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.name"]];
+			if (nil != [presistent objectForKey:@"myGroup.description"])
+				myGroup.description = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.description"]];
+		}
 		bIsFirstLaunch = FALSE;
 	} else {
 		presistent = [[NSMutableDictionary alloc] init];
@@ -132,6 +140,7 @@ static BurbleDataManager *sharedDataManager;
 	 
 //Run right before app terminates
 - (void)saveData {
+	[self updatePresistentWithMyGroup];
 	[self checkAndSavePresistentFile];
 }
 
@@ -165,6 +174,8 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)updatePresistentWithPerson: (Person*)p {
+	if (nil == p)
+		return;
 	[presistent setObject:[[NSString stringWithFormat:@"%d", p.uid] retain] forKey:@"uid"];
 	if ([p.name length] != 0) { 
 		[presistent setObject:[[NSString alloc] initWithString:p.name] forKey:@"name"];
@@ -176,6 +187,17 @@ static BurbleDataManager *sharedDataManager;
 		[presistent setObject:[[NSString alloc] initWithString:p.number] forKey:@"number"];
 	}
 	[self saveData];
+}
+- (void)updatePresistentWithMyGroup {
+	if (nil == myGroup) {
+		[presistent removeObjectForKey:@"myGroup.group_id"];
+		[presistent removeObjectForKey:@"myGroup.name"];
+		[presistent removeObjectForKey:@"myGroup.description"];
+	} else {
+		[presistent setValue:[[[NSString alloc] initWithFormat:@"%d", myGroup.group_id] autorelease] forKey:@"myGroup.group_id"];
+		[presistent setValue:myGroup.name forKey:@"myGroup.name"];
+		[presistent setValue:myGroup.description forKey:@"myGroup.description"];	
+	}
 }
 
 /*
@@ -314,16 +336,21 @@ static BurbleDataManager *sharedDataManager;
 	if (response != nil && [response statusCode] == 200) {		
 		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:(NSData *)a2];
 		if (![pparser hasError]) {
-			Person *p = [[pparser getPerson] retain];
-			[self updatePresistentWithPerson:p];
-			[p release];
+			
+			Group* g = [pparser getGroup];
+			if (nil != g) {
+				[myGroup release];
+				myGroup = g;
+			}
+			[self updatePresistentWithPerson:[pparser getPerson]];
+			[self updatePresistentWithMyGroup];
+
 		}
 		[response release];
 		[a2 release];
 		[pparser release];
 	}
 }
-
 
 /*********************** GROUP STUFF *****************************/
 #pragma mark -
@@ -371,8 +398,9 @@ static BurbleDataManager *sharedDataManager;
 		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:(NSData*)a2];
 		
 		if (![gparser hasError]) {
-			Group *g = [[gparser getGroup] retain];
-			myGroup = g;
+			Group *g = [gparser getGroup];
+			myGroup = [g copy];
+			[self saveData];
 			
 			NSString *title= [[NSString alloc] initWithFormat:@"Created group %d!", g.group_id];
 			NSString *message= [[NSString alloc] initWithFormat:@"Name: %@ Description: %@", g.name, g.description];
@@ -408,12 +436,40 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
+- (BOOL) startLeaveGroup:target:(id)obj selector:(SEL)s {
+	leaveGroupCallbackObj = obj;
+	leaveGroupCallbackSel = s;
+	
+	if (myGroup == nil)
+		return YES;
+
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/leave", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(leaveGroupCallback:withValue:)]) {
+		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+		return YES;
+	}
+	return NO;
+}
+
+- (void) leaveGroupCallback:(NSHTTPURLResponse*)response withValue:(id)a2 {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	
+	if (response != nil && [response statusCode] == 200) {		
+		[myGroup release];
+		myGroup = nil;
+		[self saveData];
+	}
+	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:response];	
+}
+
 - (BOOL)isInGroup {
-	return (nil != myG);
+	return (nil != myGroup);
 }
 
 - (Group*) getMyGroup {
- 	
+ 	return [myGroup copy];
 }
 
 /*********************** FRIEND STUFF *****************************/

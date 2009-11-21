@@ -13,7 +13,7 @@
 
 @synthesize name, description, group_id;
 
--(void) convertToData:(RPCPostData*)pData  {
+-(void) convertToData:(RPCPostData*)pData {
 	if (group_id > 0) {
 		NSString* idStr = [[NSString alloc] initWithFormat:@"%d", group_id];	
 		[pData appendValue:idStr forKey:kRPC_GroupIdKey];
@@ -22,6 +22,21 @@
 	[pData appendValue:name forKey:kRPC_GroupNameKey];
 	[pData appendValue:description forKey:kRPC_GroupDescriptionKey];
 }
+
+#pragma mark -
+#pragma mark NSCopying
+-(id)copyWithZone:(NSZone *)zone {
+	Group* newGroup;
+	newGroup = [[[self class] allocWithZone:zone] init];
+	newGroup.group_id = self.group_id;
+	newGroup.name = newGroup.description = nil;
+	if (nil != name)
+		newGroup.name = [[NSString alloc] initWithString:name];
+	if (nil != description)
+		newGroup.description = [[NSString alloc] initWithString:description];
+	return newGroup;
+}
+
 
 #pragma mark -
 #pragma mark NSCoding

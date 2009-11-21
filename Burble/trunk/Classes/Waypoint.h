@@ -13,7 +13,7 @@
 #import <MapKit/MKMapView.h>
 #import "RemoteModel.h"
 
-@interface Waypoint : RemoteModel <MKAnnotation> {
+@interface Waypoint : RemoteModel <NSCopying, MKAnnotation> {
 	NSString* name;
 	NSString* description;
 	BOOL syncedWithServer;

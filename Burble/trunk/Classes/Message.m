@@ -28,6 +28,12 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+-(id)copyWithZone:(NSZone *)zone {
+	
+}
+
+#pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:self.sender		forKey:kMessageSenderKey];
