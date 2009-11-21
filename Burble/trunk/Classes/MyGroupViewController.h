@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
+#import "BurbleDataManager.h"
+
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
 	UITextField *groupTextField;
@@ -19,6 +21,8 @@
 	UIView *inviteToGroupView;
 	UIView *messageGroupView;
 	UILabel *groupLabel;
+	BurbleDataManager *dataManager;
+	Group *myGroup;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *groupTextField;
@@ -30,6 +34,8 @@
 @property (nonatomic, retain) IBOutlet UIView *inviteToGroupView;
 @property (nonatomic, retain) IBOutlet UIView *messageGroupView;
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
+@property (nonatomic, retain) Group *myGroup;
+
 
 -(IBAction)leaveGroup:(id)sender;
 -(IBAction)createGroup:(id)sender;			//calls out to server

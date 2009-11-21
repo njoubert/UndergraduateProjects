@@ -20,6 +20,8 @@
 @synthesize inviteToGroupView;
 @synthesize messageGroupView;
 @synthesize groupLabel;
+@synthesize myGroup;
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField {
 	if(theTextField == groupTextField) {
@@ -105,9 +107,38 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	self.title = @"My Group";
+
+	dataManager = [BurbleDataManager sharedDataManager];
+	
+	if ([dataManager isInGroup]){  
+		
+		myGroup = [dataManager getMyGroup];
+		groupString = [myGroup name];
+		self.view = myGroupView;
+		
+	} else {
+		
+		self.view = createGroupView;
+	
+	}
+	
 	//This is displayed in the navigation title bar
 	[super viewDidLoad];
 }
+
+/*
+- (void)viewDidLoad {
+	//loading up this particular user's friends
+	dataManager = [BurbleDataManager sharedDataManager];
+	NSArray *ar = [dataManager getFriends];
+	self.people = ar; //this is an array of people objects
+	[ar release];
+	self.title = @"Groupies";
+	
+	[super viewDidLoad];
+}
+*/
+
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -140,6 +171,7 @@
 	[inviteToGroupView release];
 	[messageGroupView release];
 	[groupLabel release];
+	[myGroup release];
     [super dealloc];
 }
 -(IBAction)inviteIdOneFUCKYEA {

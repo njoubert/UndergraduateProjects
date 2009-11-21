@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface MyGroupNavigationController : UINavigationController {
-	
+
 }
 
 @end
