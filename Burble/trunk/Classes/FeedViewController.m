@@ -37,11 +37,11 @@
 	
 	// dummy messages
 	NSDictionary *row1 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Jon", @"sender", @"message", @"type", @"Hi!", @"content", nil];
+						   @"Jon", @"sender", @"message", @"type", @"Hi! How's your day going?", @"content", nil];
 	NSDictionary *row2 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Niels", @"sender", @"routing", @"type", @"Yo!", @"content", nil];
+						   @"Niels", @"sender", @"routing", @"type", nil, @"content", nil];
 	NSDictionary *row3 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Janelle", @"sender", @"invite", @"type", @"Ey!", @"content", nil];
+						   @"Janelle", @"sender", @"invite", @"type", nil, @"content", nil];
 	
 	NSArray *array = [[NSArray alloc] initWithObjects:
 					  row1, row2, row3, nil];
@@ -140,11 +140,6 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView
 	willSelectRowAtIndexPath: (NSIndexPath *)indexPath
 {
-	NSUInteger row = [indexPath row];
-	if (row == 0)
-	{
-		return nil;
-	}
 	return indexPath;
 }
 
@@ -152,35 +147,52 @@
 	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSUInteger row = [indexPath row]; 
-	NSString *rowValue = [messages objectAtIndex:row];
-	
-	NSString *message = [[NSString alloc] initWithFormat:
-						 @"Invitation from %@", rowValue];
-	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle:@"Invitation from"
-								message:message
-								delegate:nil
-						  cancelButtonTitle:@"Accept"
-						  otherButtonTitles:nil];
-	[alert show];
-	
-	[message release];
-	[alert release];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	
-	/*
-	//UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	//NSString *sender = cell.textLabel.text;
-	
-	if (self.childView == nil)
+	NSDictionary *rowData = [self.messages objectAtIndex:row];
+
+	if ([rowData objectForKey:@"type"] == @"message")
 	{
-		self.childView = [[FeedMessageViewController alloc]
-						  initWithNibName:@"FeedMessageViewController" bundle:nil];
+		NSString *message = [[NSString alloc] initWithFormat:
+							 @"%@", [rowData objectForKey:@"content"]];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:(@"Message Details")
+							  message:message
+							  delegate:nil
+							  cancelButtonTitle:@"Done"
+							  otherButtonTitles:nil];
+		[alert show];
+		[message release];
+		[alert release];
 	}
-	childView.title = @"Message Details";
-	[self.navigationController pushViewController:self.childView animated:YES];
-	 */
+	if ([rowData objectForKey:@"type"] == @"invite")
+	{
+		NSString *message = [[NSString alloc] initWithFormat:
+							 @"Invitation from %@", [rowData objectForKey:@"sender"]];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:@"Group Invitation"
+							  message:message
+							  delegate:nil
+							  cancelButtonTitle:@"Accept"
+							  otherButtonTitles:@"Decline"];
+		[alert show];
+		[message release];
+		[alert release];
+	}
+	if ([rowData objectForKey:@"type"] == @"routing")
+	{
+		NSString *message = [[NSString alloc] initWithFormat:
+							 @"Routing request from %@", [rowData objectForKey:@"sender"]];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:@"Routing Request"
+							  message:message
+							  delegate:nil
+							  cancelButtonTitle:@"View"
+							  otherButtonTitles:@"Dismiss"];
+		[alert show];
+		[message release];
+		[alert release];
+	}
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
