@@ -10,6 +10,19 @@
 #import "XMLPersonParser.h"
 #import "XMLGroupParser.h"
 
+@interface TimerQueueAdapter : NSObject {
+	SEL selToCall;
+	id objToCallWith;
+}
+@property (assign, nonatomic) SEL selToCall;
+@property (assign, nonatomic) id objToCallWith;
+@end
+
+@implementation TimerQueueAdapter
+@synthesize selToCall, objToCallWith;
+@end
+
+
 @implementation BurbleDataManager
 
 static BurbleDataManager *sharedDataManager;
@@ -242,6 +255,51 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Queue Management for Server Data
 
+-(void)fireQueueEvent:(NSTimer*)timer {
+	TimerQueueAdapter* adapter = [timer userInfo];
+	if ([self respondsToSelector:adapter.selToCall]) {
+		[self performSelector:adapter.selToCall withObject:adapter.objToCallWith];
+	}
+	[adapter release];
+}
+
+// Flushes any queue using the given selector to send each item. Does nice things like
+// slow requests down to do sets of concurrent requests.
+// One of two scenarios:Will send an element in the queue one by one to the given selector, OR will send a NSTimer
+- (void)flushQueue:(NSMutableArray*)queue usingSender:(SEL)s {
+	@synchronized(queue) {
+		if (![self isRegistered])
+			return;
+		if ([queue count] == 0)
+			return;
+		id element;
+		int numRequests = 1;
+		
+		while ([queue count] > 0) {
+			element = [queue lastObject];
+			[queue removeLastObject];
+			if (element == nil)
+				continue;
+			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
+				[self performSelector:s withObject:element];
+				numRequests++;
+			} else {
+				//we set up a timer to send a sync request.
+				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
+				TimerQueueAdapter* adapter = [[TimerQueueAdapter alloc] init];
+				adapter.selToCall = s;
+				adapter.objToCallWith = element;
+				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
+												 target:self
+											   selector:@selector(fireQueueEvent:)
+											   userInfo:adapter 
+												repeats:NO];
+				numRequests++;
+			}
+		}
+	}
+}
+
 /************** Positions ****************/
 
 - (void) sendPositionToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Position*)p {
@@ -263,38 +321,9 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
-- (void)firePositionToServer:(NSTimer*)timer {
-	[self sendPositionToServer:[timer userInfo]];
-}
-
 //Starts the process of sending all the positions in the queue to the server
 - (void)flushPositionQueue {
-	@synchronized(positionQueue) {
-		if (![self isRegistered])
-			return;
-		if ([positionQueue count] == 0)
-			return;
-		Position* p;
-		int numRequests = 1;
-		
-		while ([positionQueue count] > 0) {
-			p = [positionQueue lastObject];
-			[positionQueue removeLastObject];
-			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-				[self sendPositionToServer:p];
-				numRequests++;
-			} else {
-				//we set up a timer to send a sync request.
-				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-												 target:self
-											   selector:@selector(firePositionToServer:) 
-											   userInfo:p 
-												repeats:NO];
-				numRequests++;
-			}
-		}
-	}
+	[self flushQueue:positionQueue usingSender:@selector(sendPositionToServer:)];
 }
 
 /************** Waypoints ****************/
@@ -321,41 +350,9 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
-//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
-- (void)fireWaypointToServer:(NSTimer*)timer {
-	[self sendWaypointToServer:[timer userInfo]];
-}
-
-
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushWaypointQueue {
-	@synchronized(waypointQueue) {
-		if (![self isRegistered])
-			return;
-		if ([waypointQueue count] == 0)
-			return;
-		
-		Waypoint* wp;
-		int numRequests = 1;
-		
-		while ([waypointQueue count] > 0) {
-			wp = [waypointQueue lastObject];
-			[waypointQueue removeLastObject];
-			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-				[self sendWaypointToServer:wp];
-				numRequests++;
-			} else {
-				//we set up a timer to send a sync request.
-				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-												 target:self
-											   selector:@selector(fireWaypointToServer:) 
-											   userInfo:wp 
-												repeats:NO];
-				numRequests++;
-			}
-		}
-	}
+	[self flushQueue:waypointQueue usingSender:@selector(sendWaypointToServer:)];
 }
 
 /************** Outgoing Messages ****************/
@@ -381,41 +378,9 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
-//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
-- (void)fireMessageToServer:(NSTimer*)timer {
-	[self sendMessageToServer:[timer userInfo]];
-}
-
-
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushOutgoingMessagesQueue {
-	@synchronized(outgoingMessagesQueue) {
-		if (![self isRegistered])
-			return;
-		if ([outgoingMessagesQueue count] == 0)
-			return;
-		
-		Message* m;
-		int numRequests = 1;
-		
-		while ([outgoingMessagesQueue count] > 0) {
-			m = [outgoingMessagesQueue lastObject];
-			[outgoingMessagesQueue removeLastObject];
-			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-				[self sendMessageToServer:m];
-				numRequests++;
-			} else {
-				//we set up a timer to send a sync request.
-				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-												 target:self
-											   selector:@selector(fireMessageToServer:) 
-											   userInfo:m
-												repeats:NO];
-				numRequests++;
-			}
-		}
-	}
+	[self flushQueue:outgoingMessagesQueue usingSender:@selector(sendMessageToServer:)];
 }
 
 /************** Just Send the Request Queue ****************/
@@ -424,47 +389,15 @@ static BurbleDataManager *sharedDataManager;
 	return;
 }
 
-- (void)sendRequestToServer:(RPCPostRequest*)r {
+- (void)sendRequestToServer:(RPCPostRequest*) r {
 	if (nil == [RPCURLConnection sendAsyncRequest:r target:self selector:@selector(sendRequestToServerCallback:withObject:) withUserObject:nil]) {
 		[outgoingRequestsQueue addObject:r];
 	}
 }
 
-//Helper for NSTimer to postpone sending waypoint to server if there are already a bunch of requests running
-- (void)fireRequestToServer:(NSTimer*)timer {
-	[self sendRequestToServer:[timer userInfo]];
-}
-
-
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
 - (void)flushOutgoingQueue {
-	@synchronized(outgoingRequestsQueue) {
-		if (![self isRegistered])
-			return;
-		if ([outgoingRequestsQueue count] == 0)
-			return;
-		
-		RPCPostRequest* r;
-		int numRequests = 1;
-		
-		while ([outgoingRequestsQueue count] > 0) {
-			r = [outgoingRequestsQueue lastObject];
-			[outgoingRequestsQueue removeLastObject];
-			if (numRequests <= kNumOfConcurrentRequestsFromQueue) {
-				[self sendRequestToServer:r];
-				numRequests++;
-			} else {
-				//we set up a timer to send a sync request.
-				//we catch the requests coming back and check if they have succeeded. if not we add back to the queue.
-				[NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRequests*(numRequests/kNumOfConcurrentRequestsFromQueue) 
-												 target:self
-											   selector:@selector(fireRequestToServer:) 
-											   userInfo:r
-												repeats:NO];
-				numRequests++;
-			}
-		}
-	}
+	[self flushQueue:outgoingRequestsQueue usingSender:@selector(sendRequestToServer:)];
 }
 
 /*
