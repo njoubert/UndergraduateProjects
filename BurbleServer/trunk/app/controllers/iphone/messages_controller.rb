@@ -10,7 +10,7 @@ class Iphone::MessagesController < Iphone::AbstractIphoneController
   # GET all unread messages
   def unread
     @messages = @user.unread_messages
-    render :action => :messages
+    render :action => :index
   end
 
   # POST a mesage as marked
@@ -26,7 +26,7 @@ class Iphone::MessagesController < Iphone::AbstractIphoneController
   end
   
   # POST a new message to a list of users.
-  def sendMsg
+  def send_msg
     if request.post?
       #TODO: check that sender_id is the same as the current user_id
       @message = Message.factory!(params[:type], params[:message])

@@ -1,9 +1,6 @@
 xml.instruct!
 
-xml.result do
-  
-  render :partial => "iphone/person", :object => @user, :locals => {:rootxml => xml}
-  
+xml.result do  
   xml.messages do
     if @messages
       @messages.each do |ms|
