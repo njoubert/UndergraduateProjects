@@ -279,7 +279,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>44</integer>
+									<integer>27</integer>
+									<integer>22</integer>
 									<integer>14</integer>
 									<integer>13</integer>
 									<integer>0</integer>
@@ -305,7 +306,7 @@
 							<real>264</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 31 1276 747 0 0 1280 778 </string>
+						<string>-17 31 1276 747 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -335,7 +336,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA62FD8D10B94E72008655A9</string>
+										<string>DA0AF11710BA1A3000220C1D</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -400,7 +401,7 @@
 											<string>DA62FD7D10B94DF1008655A9</string>
 											<string>DA62FD7E10B94DF1008655A9</string>
 											<string>DA62FD7F10B94DF1008655A9</string>
-											<string>DA62FD7910B94DEB008655A9</string>
+											<string>DA62FD9610B9EFF5008655A9</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -412,14 +413,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {990, 650}}</string>
+								<string>{{0, 0}, {990, 600}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 31 1276 747 0 0 1280 778 </string>
+								<string>-17 31 1276 747 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>650pt</string>
+							<string>600pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -432,14 +433,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 655}, {990, 51}}</string>
+								<string>{{0, 605}, {990, 101}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 31 1276 747 0 0 1280 778 </string>
+								<string>-17 31 1276 747 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>51pt</string>
+							<string>101pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -458,9 +459,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>DA62FD0B10B93B97008655A9</string>
+				<string>DA0AF11810BA1A3000220C1D</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>DA62FD0C10B93B97008655A9</string>
+				<string>DA0AF11910BA1A3000220C1D</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -598,17 +599,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DA62FD8E10B94E72008655A9</string>
-		<string>DA62FD7110B94D26008655A9</string>
-		<string>DA62FD7210B94D26008655A9</string>
 		<string>DA6B30C810A26D38008847D8</string>
 		<string>/Users/njoubert/Code/iPhone/Burble/trunk/Test1.xcodeproj</string>
-		<string>DA62FD8110B94DF1008655A9</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 31 1276 747 0 0 1280 778 </string>
+	<string>-17 31 1276 747 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -685,7 +680,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>DA6B30C810A26D38008847D8</string>
-				<string>DA62FD0D10B93B97008655A9</string>
+				<string>DA0AF11A10BA1A3000220C1D</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -822,7 +817,7 @@
 			<key>WindowToolGUID</key>
 			<string>1CD10A99069EF8BA00B06720</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -979,7 +974,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

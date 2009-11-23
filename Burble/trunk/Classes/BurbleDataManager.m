@@ -322,9 +322,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 //Starts the process of sending all the positions in the queue to the server
-- (void)flushPositionQueue {
-	[self flushQueue:positionQueue usingSender:@selector(sendPositionToServer:)];
-}
+- (void)flushPositionQueue { [self flushQueue:positionQueue usingSender:@selector(sendPositionToServer:)]; }
 
 /************** Waypoints ****************/
 
@@ -351,9 +349,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
-- (void)flushWaypointQueue {
-	[self flushQueue:waypointQueue usingSender:@selector(sendWaypointToServer:)];
-}
+- (void)flushWaypointQueue { [self flushQueue:waypointQueue usingSender:@selector(sendWaypointToServer:)]; }
 
 /************** Outgoing Messages ****************/
 
@@ -379,26 +375,18 @@ static BurbleDataManager *sharedDataManager;
 }
 
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
-- (void)flushOutgoingMessagesQueue {
-	[self flushQueue:outgoingMessagesQueue usingSender:@selector(sendMessageToServer:)];
-}
+- (void)flushOutgoingMessagesQueue { [self flushQueue:outgoingMessagesQueue usingSender:@selector(sendMessageToServer:)]; }
 
 /************** Just Send the Request Queue ****************/
 
-- (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)m {
-	return;
-}
-
+- (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)o { return; }
 - (void)sendRequestToServer:(RPCPostRequest*) r {
 	if (nil == [RPCURLConnection sendAsyncRequest:r target:self selector:@selector(sendRequestToServerCallback:withObject:) withUserObject:nil]) {
 		[outgoingRequestsQueue addObject:r];
 	}
 }
-
-// Starts the actual process of sending waypoints to the server, using the three helpers above.
-- (void)flushOutgoingQueue {
-	[self flushQueue:outgoingRequestsQueue usingSender:@selector(sendRequestToServer:)];
-}
+// Starts the actual process of sending shit to the server
+- (void)flushOutgoingQueue { [self flushQueue:outgoingRequestsQueue usingSender:@selector(sendRequestToServer:)]; }
 
 /*
  ================================================================================
