@@ -38,6 +38,7 @@
 		B8E46A2410AFBCB2000A27C5 /* FBXMLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */; };
 		DA0AF12D10BA21B900220C1D /* XMLMessagesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0AF12C10BA21B900220C1D /* XMLMessagesParser.m */; };
 		DA0AF1A810BA5BFF00220C1D /* README.MODEL.txt in Resources */ = {isa = PBXBuildFile; fileRef = DA0AF1A710BA5BFF00220C1D /* README.MODEL.txt */; };
+		DA0AF2B710BA721500220C1D /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = DA0AF2B610BA721500220C1D /* README.txt */; };
 		DA62F5B210B75949008655A9 /* XMLGroupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA62F5B110B75949008655A9 /* XMLGroupParser.m */; };
 		DA62F7EA10B7BE87008655A9 /* RPCURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DA62F7E910B7BE87008655A9 /* RPCURLResponse.m */; };
 		DA71078E10A295B100DAD536 /* 103-map.png in Resources */ = {isa = PBXBuildFile; fileRef = DA71078D10A295B100DAD536 /* 103-map.png */; };
@@ -137,6 +138,7 @@
 		DA0AF12B10BA21B900220C1D /* XMLMessagesParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLMessagesParser.h; sourceTree = "<group>"; };
 		DA0AF12C10BA21B900220C1D /* XMLMessagesParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLMessagesParser.m; sourceTree = "<group>"; };
 		DA0AF1A710BA5BFF00220C1D /* README.MODEL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.MODEL.txt; sourceTree = "<group>"; };
+		DA0AF2B610BA721500220C1D /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		DA62F5B010B75949008655A9 /* XMLGroupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLGroupParser.h; sourceTree = "<group>"; };
 		DA62F5B110B75949008655A9 /* XMLGroupParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLGroupParser.m; sourceTree = "<group>"; };
 		DA62F7E810B7BE87008655A9 /* RPCURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCURLResponse.h; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DA0AF2B610BA721500220C1D /* README.txt */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -519,6 +522,7 @@
 				DAB5E69C10B3F20300AF521B /* AddWaypointViewController.xib in Resources */,
 				F98A184210B4C8C700CF204B /* FeedViewController.xib in Resources */,
 				DA0AF1A810BA5BFF00220C1D /* README.MODEL.txt in Resources */,
+				DA0AF2B710BA721500220C1D /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
