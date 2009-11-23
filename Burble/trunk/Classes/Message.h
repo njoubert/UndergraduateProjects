@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
 #import "Person.h"
+#import "Group.h"
 
 #define kMessageTypeText			@"TextMessage"
 #define kMessageTypeGroupInvite		@"GroupInviteMessage"
@@ -36,9 +37,8 @@
 	/* Things you can set and get */
 	NSString *text;	//text message to send
 	int waypoint_id;	//waypoint to route to. Ignores this if <= 0
-	int group_id;
 	NSDate* sent_time;
-	
+	Group* group;
 }
 @property BOOL iSentThis;
 @property int uid;
@@ -48,8 +48,8 @@
 @property (nonatomic, assign) int sender_uid;
 @property (nonatomic, copy) NSString *text;
 @property int waypoint_id;
-@property int group_id;
 @property (nonatomic, copy) NSDate* sent_time;
+@property (nonatomic, retain) Group* group;
 
 // To init a message I received. Sets iSentThis to NO
 -(id)init;
@@ -58,11 +58,13 @@
 // To send a routing request message.  Sets iSentThis to YES
 -(id)initWithText:(NSString*)comment waypoint:(int)wp_id;
 // To send a group invite message.  Sets iSentThis to YES
--(id)initWithText:(NSString*)comment group:(int)gp_id;
+-(id)initWithText:(NSString*)comment group:(Group*)gp;
 
 -(void)appendReceiverUid:(int)receiver_uid;
 -(void)appendReceiver:(Person*)receiver;
 
 -(id)copyWithZone:(NSZone *)zone;
+
+-(BOOL)isEqual:(id)otherMsg;
 
 @end

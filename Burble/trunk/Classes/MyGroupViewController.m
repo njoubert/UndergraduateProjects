@@ -241,7 +241,7 @@
 }
 -(IBAction)inviteIdOneFUCKYEA {
 	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	[dataManager startDownloadUnreadMessages];
+	[dataManager startDownloadMessages];
 }
 
 #pragma mark - 

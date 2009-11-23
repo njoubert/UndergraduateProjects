@@ -24,6 +24,8 @@
 #define kNumOfConcurrentRequestsFromQueue 2
 #define kTimeBetweenRequests 1.0
 
+#define pollMessageFrequency 5000
+
 //#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
 #define kBaseUrlStr @"http://localhost:3000/iphone/"
 
@@ -62,8 +64,6 @@
 	
 	//MESSAGES:
 	NSMutableArray* allMessages;	//This is a sorted-by-arrival-time messages
-	NSMutableArray* unreadMessages;	//	only the unread messages in allMessages
-	NSMutableArray* readMessages;	//	only the read messages in allMessages
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -102,7 +102,7 @@
 // =============  QUEUE MANAGEMENT for PUSHED-FROM-SERVER DATA
 
 //This will attempt to pull new messages from the server. Should be called periodically
--(BOOL)startDownloadUnreadMessages;
+-(BOOL)startDownloadMessages;
 
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 

@@ -11,7 +11,7 @@
 
 @implementation Message
 
-@synthesize read, sent, type, sender_uid, text, waypoint_id, group_id, sent_time, uid, iSentThis;
+@synthesize read, sent, type, sender_uid, text, waypoint_id, sent_time, uid, iSentThis, group;
 
 -(void) dealloc {
 	[receiver_uids release];
@@ -26,7 +26,7 @@
 		read = NO;
 		sent = NO;
 		waypoint_id = -1;
-		group_id = -1;
+		group = nil;
 	}
 	return self;
 	
@@ -40,7 +40,7 @@
 		text = [[NSString alloc] initWithString:msg];
 		receiver_uids = [[NSMutableArray alloc] init];
 		waypoint_id = -1;
-		group_id = -1;
+		group = nil;
 	}
 	return self;
 }
@@ -53,11 +53,11 @@
 		text = [[NSString alloc] initWithString:comment];
 		receiver_uids = [[NSMutableArray alloc] init];
 		waypoint_id = wp_id;
-		group_id = -1;
+		group = nil;
 	}	
 	return self;
 }
--(id)initWithText:(NSString*)comment group:(int)gp_id {
+-(id)initWithText:(NSString*)comment group:(Group*)gp {
 	if (self = [super init]) {
 		iSentThis = YES;
 		read = NO;
@@ -66,7 +66,7 @@
 		text = [[NSString alloc] initWithString:comment];
 		receiver_uids = [[NSMutableArray alloc] init];
 		waypoint_id = -1;
-		group_id = gp_id;
+		group = [gp retain];
 		
 	}
 	return self;
@@ -85,9 +85,9 @@
 
 
 -(void) convertToData:(RPCPostData*)pData {
-	NSString* senderIdStr = [[NSString alloc] initWithFormat:@"%d", sender_uid];
-	NSString* waypointIdStr = [[NSString alloc] initWithFormat:@"%d", waypoint_id];
-	NSString* groupIdStr = [[NSString alloc] initWithFormat:@"%d", group_id];
+	NSString* senderIdStr = [NSString stringWithFormat:@"%d", sender_uid];
+	NSString* waypointIdStr = [NSString stringWithFormat:@"%d", waypoint_id];
+	NSString* groupIdStr = [NSString stringWithFormat:@"%d", group.group_id];
 	
 	[pData appendValue:senderIdStr forKey:kRPC_MessageSenderIDKey];
 	[pData appendValue:waypointIdStr forKey:kRPC_MessageWaypointIDKey];
@@ -107,11 +107,6 @@
 	}
 	[receiversString appendString:@"]"];
 	[pData appendValue:receiversString forKey:kRPC_MessageReceiversKey];
-	
-	
-	[senderIdStr release];
-	[waypointIdStr release];
-	[groupIdStr release];
 	[receiversString release];
 }
 
@@ -123,7 +118,7 @@
 	newMsg->read = read;
 	newMsg->sender_uid = sender_uid;
 	newMsg->waypoint_id = waypoint_id;
-	newMsg->group_id = group_id;
+	newMsg->group = [group copy];
 	newMsg->type = [[NSString allocWithZone:zone] initWithString:type];
 	newMsg->text = [[NSString allocWithZone:zone] initWithString:text];
 	newMsg->receiver_uids = [[NSMutableArray allocWithZone:zone] initWithArray:receiver_uids];
@@ -140,6 +135,13 @@
 
 	}
 	return self;
+}
+
+#pragma mark -
+#pragma mark isEqual
+
+-(BOOL)isEqual:(Message*)otherMsg {
+	return (uid == otherMsg.uid);
 }
 
 @end

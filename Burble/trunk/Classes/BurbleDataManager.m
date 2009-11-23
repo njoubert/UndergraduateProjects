@@ -109,6 +109,7 @@ static BurbleDataManager *sharedDataManager;
 		leaveGroupCallbackObj = nil;
 		leaveGroupCallbackSel = nil;
 		
+		
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
 		positionQueue = [[NSMutableArray alloc] init];
@@ -117,9 +118,6 @@ static BurbleDataManager *sharedDataManager;
 		
 		//MESSAGES:
 		allMessages = [[NSMutableArray alloc] init];	//This is a sorted-by-arrival-time messages
-		unreadMessages = [[NSMutableArray alloc] init];	//	only the unread messages in allMessages
-		readMessages = [[NSMutableArray alloc] init];	//	only the read messages in allMessages
-		
 	}
 	return self;
 }
@@ -149,7 +147,8 @@ static BurbleDataManager *sharedDataManager;
 	NSString *presistentFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:presistentFilePath]) {
 		presistent = [[NSMutableDictionary alloc] initWithContentsOfFile:presistentFilePath];
-		if (nil != [presistent objectForKey:@"myGroup.group_id"]) {
+		if (nil != [presistent objectForKey:@"myGroup.group_id"] && 
+				nil != [presistent objectForKey:@"myGroup.name"]) {
 			myGroup = [[Group alloc] init];
 			myGroup.group_id = [[presistent objectForKey:@"myGroup.group_id"] intValue];
 			myGroup.name = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.name"]];
@@ -395,28 +394,48 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Queue Management for Pushed-From-Server Data
 
--(void)downloadUnreadMessagesCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+-(void)downloadMessagesCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
-		//*
 		XMLMessagesParser* mparser = [[XMLMessagesParser alloc] initWithData:rpcResponse.data];
 		if (![mparser hasError]) {
 			NSArray* messages = [[mparser getMessages] retain];
-			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[messages count]];
-			//set the little indicator to show the number of messages.
+			NSEnumerator* enumerator = [messages objectEnumerator];
+			Message* m;
+			while (m = [enumerator nextObject]) {
+				if ([allMessages containsObject:m]) {
+					Message* alreadyM = [allMessages objectAtIndex:[allMessages indexOfObject:m]];
+					if (m.read && !alreadyM.read) {
+						//fukkin server thinks we havent read this but fuck we already have, goddaaaam!
+						//we should tell the server that this is fucking read already, dayamn!
+					}
+				} else {
+					//fukkin yay message received! Now we can decide what to do with this.
+					[allMessages addObject:m];
+					if ([m.type isEqualToString:kMessageTypeGroupInvite]) {
+						NSString *message= [[NSString alloc] initWithFormat:@"Invitation to group %@. Check your feed to respond.", m.group.name];
+						UIAlertView *alert = [[UIAlertView alloc]
+											  initWithTitle: @"Group Invite Received!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+						[alert show];
+						[alert release];
+						[message release];		
+					} else if ([m.type isEqualToString:kMessageTypeRoutingRequest]) {
+						
+					}
+				}
+			}
+			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[self getUnreadMessagesCount]];
 		}
-		// */
-		
 	}
 }
 
 //This will attempt to pull new messages from the server. Should be called periodically
--(BOOL)startDownloadUnreadMessages {
+-(BOOL)startDownloadMessages {
 	if (![self isRegistered])
 		return NO;
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/unread", [presistent objectForKey:@"guid"]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/index", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadUnreadMessagesCallback:withObject:)]) {
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadMessagesCallback:withObject:)]) {
 		return YES;
 	}
 	return NO;
@@ -792,7 +811,14 @@ static BurbleDataManager *sharedDataManager;
 	return [allMessages count];
 }
 - (int) getUnreadMessagesCount {
-	return [unreadMessages count];
+	int unreadCount = 0;
+	NSEnumerator* enumerator = [allMessages objectEnumerator];
+	Message* m;
+	while (m = [enumerator nextObject]) {
+		if (!m.read)
+			unreadCount += 1;
+	}
+	return unreadCount;
 }
 
 - (BOOL)sendMessage:(Message*)msg {

@@ -18,8 +18,8 @@
 	NSString* name;
 	NSString* description;
 }
-@property (retain, nonatomic) NSString* name;
-@property (retain, nonatomic) NSString* description;
+@property (copy, nonatomic) NSString* name;
+@property (copy, nonatomic) NSString* description;
 @property int group_id;
 
 @end

@@ -17,6 +17,7 @@ static Test1AppDelegate *burbleApp = NULL;
 @synthesize groupiesNavigationController;
 @synthesize myGroupNavigationController;
 @synthesize feedViewController;
+@synthesize mapNavigationController;
 
 - (id) init {
 	if (!burbleApp) {
@@ -70,8 +71,9 @@ static Test1AppDelegate *burbleApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[window addSubview:rootTabBarController.view];	
+	[[BurbleDataManager sharedDataManager] startDownloadMessages];
 	[self setUnreadMessageDisplay:0];
-    [window makeKeyAndVisible];
+	    [window makeKeyAndVisible];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

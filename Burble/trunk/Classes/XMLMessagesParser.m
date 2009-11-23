@@ -64,7 +64,17 @@
 			[elementName isEqualToString:@"text"] || 
 			[elementName isEqualToString:@"read"]) {
 			_currentElementText = [[NSMutableString alloc] init];
+		} else if ([elementName isEqualToString:@"group"]) {
+			_currentMessage.group = [[Group alloc] init];
+			_state = messages_message_group;
 		}
+	}
+	if (_state == messages_message_group) {
+		if ([elementName isEqualToString:@"id"] || 
+			[elementName isEqualToString:@"name"] || 
+			[elementName isEqualToString:@"description"]) {
+			_currentElementText = [[NSMutableString alloc] init];
+		} 
 	}
 }
 
@@ -101,8 +111,6 @@
 			_state = person;
 		} else if ([elementName isEqualToString:@"id"]) {
 			_currentMessage.uid = [_currentElementText intValue];
-		} else if ([elementName isEqualToString:@"group-id"]) {
-			_currentMessage.group_id = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"sender-id"]) {
 			_currentMessage.sender_uid = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"waypoint-id"]) {
@@ -116,6 +124,18 @@
 			_currentMessage.text = _currentElementText;
 		} else if ([elementName isEqualToString:@"read"]) {
 			_currentMessage.read = [_currentElementText boolValue];
+		}
+	}
+	
+	if (_state == messages_message_group) {
+		if ([elementName isEqualToString:@"group"]) {
+			_state = messages_message;	
+		} else if ([elementName isEqualToString:@"id"]) {
+			_currentMessage.group.group_id = [_currentElementText intValue];
+		} else if ([elementName isEqualToString:@"name"]) {
+			_currentMessage.group.name = _currentElementText;
+		} else if ([elementName isEqualToString:@"description"]) {
+			_currentMessage.group.description = _currentElementText;
 		}
 	}
 	

@@ -16,6 +16,7 @@ typedef enum parserState {
 	person_position,
 	messages,
 	messages_message,
+	messages_message_group,
 	done
 } parserState;
 
