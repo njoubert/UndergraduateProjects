@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BurbleDataManager.h"
-#import "RegisterViewController.h"
 
 @interface MapNavigationController : UINavigationController {
 

@@ -8,6 +8,8 @@
 
 #import "MapNavigationController.h"
 
+#import "BurbleDataManager.h"
+#import "RegisterViewController.h"
 
 @implementation MapNavigationController
 

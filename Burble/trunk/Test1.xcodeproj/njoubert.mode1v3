@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DA0AF29810BA706100220C1D</string>
+						<string>DA0AF2AA10BA71EF00220C1D</string>
 						<key>history</key>
 						<array>
 							<string>DA0AF1A610BA5B9100220C1D</string>
@@ -256,7 +256,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DA0AF29910BA706100220C1D</string>
+						<string>DA0AF2AB10BA71EF00220C1D</string>
 						<key>history</key>
 						<array>
 							<string>DA0AF19010BA550500220C1D</string>
@@ -353,20 +353,22 @@
 								<string>DAA6D65D10B62B4F00E2E0B0</string>
 								<string>B832F9B210B2644500F50C41</string>
 								<string>B832F9B710B2646200F50C41</string>
+								<string>B832F9B510B2645600F50C41</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>36</integer>
-									<integer>14</integer>
+									<integer>59</integer>
+									<integer>57</integer>
+									<integer>48</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 371}, {264, 688}}</string>
+							<string>{{0, 621}, {264, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -403,7 +405,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Test1AppDelegate.m</string>
+								<string>MapNavigationController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -411,11 +413,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Test1AppDelegate.m</string>
+										<string>MapNavigationController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA0AF29710BA706100220C1D</string>
+										<string>DA0AF2A910BA71EF00220C1D</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -446,8 +448,6 @@
 											<string>DA62FC6010B88978008655A9</string>
 											<string>DA62FC6210B88978008655A9</string>
 											<string>DA62FC8A10B88BF0008655A9</string>
-											<string>DA62FCCC10B89F93008655A9</string>
-											<string>DA62FCCD10B89F93008655A9</string>
 											<string>DA62FCCE10B89F93008655A9</string>
 											<string>DA62FD5F10B94BFA008655A9</string>
 											<string>DA62FD7E10B94DF1008655A9</string>
@@ -465,7 +465,6 @@
 											<string>DA0AF1CE10BA652600220C1D</string>
 											<string>DA0AF1D010BA652600220C1D</string>
 											<string>DA0AF1D110BA652600220C1D</string>
-											<string>DA0AF1D210BA652600220C1D</string>
 											<string>DA0AF20510BA67AE00220C1D</string>
 											<string>DA0AF20610BA67AE00220C1D</string>
 											<string>DA0AF24A10BA6A1500220C1D</string>
@@ -480,10 +479,13 @@
 											<string>DA0AF27410BA6E7200220C1D</string>
 											<string>DA0AF27510BA6E7200220C1D</string>
 											<string>DA0AF27610BA6E7200220C1D</string>
-											<string>DA0AF27710BA6E7200220C1D</string>
 											<string>DA0AF27910BA6E7200220C1D</string>
-											<string>DA0AF28410BA6F3C00220C1D</string>
-											<string>DA0AF28510BA6F3C00220C1D</string>
+											<string>DA0AF2A310BA71EF00220C1D</string>
+											<string>DA0AF2A410BA71EF00220C1D</string>
+											<string>DA0AF2A510BA71EF00220C1D</string>
+											<string>DA0AF2A610BA71EF00220C1D</string>
+											<string>DA0AF2A710BA71EF00220C1D</string>
+											<string>DA0AF2A810BA71EF00220C1D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -713,7 +715,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>XMLMessagesParser.m</string>
+								<string>Test1AppDelegate.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
