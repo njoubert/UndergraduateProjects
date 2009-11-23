@@ -102,7 +102,7 @@
 // =============  QUEUE MANAGEMENT for PUSHED-FROM-SERVER DATA
 
 //This will attempt to pull new messages from the server. Should be called periodically
--(void)downloadUnreadMessages;
+-(BOOL)startDownloadUnreadMessages;
 
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 

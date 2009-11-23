@@ -45,10 +45,8 @@
 		_error = [[NSMutableDictionary alloc] init];
 	} else if ([elementName isEqualToString:@"description"] && _error != nil) {
 		_currentElementText = [[NSMutableString alloc] init];
-		_currentElementName = elementName;
 	} else if ([elementName isEqualToString:@"exception"] && _error != nil) {
 		_currentElementText = [[NSMutableString alloc] init];
-		_currentElementName = elementName;
 	}
 
 	if ([elementName isEqualToString:@"person"]) {
@@ -171,21 +169,11 @@
 		
 	}
 	
-	if (_currentElementName != nil) {
-		[_currentElementName release];
-		_currentElementName = nil;
-	}
 	if (_currentElementText != nil) {
 		[_currentElementText release];
 		_currentElementText = nil;
 		
 	}
-}
-
-
--(void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-	if (_hasError)
-		return;
 }
 
 -(void)dealloc {

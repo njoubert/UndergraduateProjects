@@ -11,7 +11,7 @@
 
 @implementation Message
 
-@synthesize text, sender_uid, read, sent;
+@synthesize read, sent, type, sender_uid, text, waypoint_id, group_id, sent_time, uid, iSentThis;
 
 -(void) dealloc {
 	[receiver_uids release];
@@ -20,8 +20,20 @@
 	[super dealloc];
 }
 
+-(id)init {
+	if (self = [super init]) {
+		iSentThis = NO;
+		read = NO;
+		sent = NO;
+		waypoint_id = -1;
+		group_id = -1;
+	}
+	return self;
+	
+}
 -(id)initWithText:(NSString *)msg {
 	if (self = [super init]) {
+		iSentThis = YES;
 		read = NO;
 		sent = NO;
 		type = [[NSString alloc] initWithString:kMessageTypeText];
@@ -34,6 +46,7 @@
 }
 -(id)initWithText:(NSString*)comment waypoint:(int)wp_id {
 	if (self = [super init]) {
+		iSentThis = YES;
 		read = NO;
 		sent = NO;
 		type = [[NSString alloc] initWithString:kMessageTypeRoutingRequest];
@@ -46,6 +59,7 @@
 }
 -(id)initWithText:(NSString*)comment group:(int)gp_id {
 	if (self = [super init]) {
+		iSentThis = YES;
 		read = NO;
 		sent = NO;
 		type = [[NSString alloc] initWithString:kMessageTypeGroupInvite];
@@ -80,6 +94,7 @@
 	[pData appendValue:groupIdStr forKey:kRPC_MessageGroupIDKey];
 	[pData appendValue:type forKey:kRPC_MessageTypeKey];
 	[pData appendValue:text forKey:kRPC_MessageTextKey];
+	[pData appendValue:[sent_time description] forKey:kRPC_MessageSentTimeKey];
 	
 	//JSON the receiver list to the server
 	NSMutableString* receiversString = [[NSMutableString alloc] init];

@@ -16,6 +16,7 @@ static Test1AppDelegate *burbleApp = NULL;
 @synthesize rootTabBarController;
 @synthesize groupiesNavigationController;
 @synthesize myGroupNavigationController;
+@synthesize feedViewController;
 
 - (id) init {
 	if (!burbleApp) {
@@ -58,8 +59,18 @@ static Test1AppDelegate *burbleApp = NULL;
 	[[[activityView subviews] objectAtIndex:0] startAnimating];
 }
 
+-(void)setUnreadMessageDisplay:(int)nr {
+	if (nr == 0) {
+		feedViewController.tabBarItem.badgeValue = nil;
+	} else {
+		feedViewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", nr];
+	}
+
+}
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[window addSubview:rootTabBarController.view];	
+	[self setUnreadMessageDisplay:0];
     [window makeKeyAndVisible];
 }
 

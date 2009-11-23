@@ -14,12 +14,13 @@ typedef enum parserState {
 	group,
 	person_group,
 	person_position,
+	messages,
+	messages_message,
 	done
 } parserState;
 
 @interface XMLEventParser : NSObject {
 	NSXMLParser* _parser;
-	NSString* _currentElementName;
 	NSMutableString* _currentElementText;
 	BOOL _hasError;
 	NSMutableDictionary* _error;

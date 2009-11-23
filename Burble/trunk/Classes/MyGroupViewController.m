@@ -241,15 +241,7 @@
 }
 -(IBAction)inviteIdOneFUCKYEA {
 	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	if (![dataManager isInGroup])
-		return;
-	
-	int gID = [dataManager getMyGroup].group_id;	
-
-	Message* inviteMsg = [[Message alloc] initWithText:@"Join the group buddy!" group:gID];
-	[inviteMsg appendReceiverUid:1];
-	[dataManager sendMessage:inviteMsg];
-	
+	[dataManager startDownloadUnreadMessages];
 }
 
 #pragma mark - 

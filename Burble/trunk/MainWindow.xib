@@ -13,7 +13,6 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="2"/>
-			<integer value="10"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -54,55 +53,53 @@
 			<object class="IBUITabBarController" id="754087327">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="1038071413">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="585731770">
-						<string key="IBUITitle">Map</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="933072031">
+					<string key="IBUITitle">Feed</string>
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="1072088770">
+						<string key="IBUITitle">Feed</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">103-map.png</string>
+							<string key="NSResourceName">30x-Chats.png</string>
 						</object>
-						<reference key="IBUITabBar"/>
+						<string key="IBUIBadgeValue"/>
 					</object>
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="754087327"/>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="785760646">
-						<nil key="NSNextResponder"/>
-						<int key="NSvFlags">256</int>
-						<string key="NSFrameSize">{320, 44}</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-					</object>
-					<object class="NSArray" key="IBUIViewControllers">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="611212632">
-							<reference key="IBUIToolbarItems" ref="0"/>
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="922689822">
-								<reference key="IBUINavigationBar"/>
-								<string key="IBUITitle">Item</string>
-							</object>
-							<reference key="IBUIParentViewController" ref="1038071413"/>
-							<string key="IBUINibName">MapViewController</string>
-						</object>
-					</object>
+					<string key="IBUINibName">FeedViewController</string>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<reference ref="1038071413"/>
-					<object class="IBUIViewController" id="933072031">
-						<string key="IBUITitle">Feed</string>
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="1072088770">
-							<string key="IBUITitle">Feed</string>
+					<object class="IBUINavigationController" id="1038071413">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="585731770">
+							<string key="IBUITitle">Map</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">30x-Chats.png</string>
+								<string key="NSResourceName">103-map.png</string>
 							</object>
-							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="754087327"/>
-						<string key="IBUINibName">FeedViewController</string>
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="785760646">
+							<nil key="NSNextResponder"/>
+							<int key="NSvFlags">256</int>
+							<string key="NSFrameSize">{320, 44}</string>
+							<bool key="IBUIOpaque">NO</bool>
+							<bool key="IBUIClipsSubviews">YES</bool>
+							<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						</object>
+						<object class="NSMutableArray" key="IBUIViewControllers">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUIViewController" id="611212632">
+								<reference key="IBUIToolbarItems" ref="0"/>
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="922689822">
+									<string key="IBUITitle">Item</string>
+								</object>
+								<reference key="IBUIParentViewController" ref="1038071413"/>
+								<string key="IBUINibName">MapViewController</string>
+							</object>
+						</object>
 					</object>
+					<reference ref="933072031"/>
 					<object class="IBUINavigationController" id="892534564">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="174106730">
 							<string key="IBUITitle">My Group</string>
@@ -110,7 +107,6 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">30x-Scanner.png</string>
 							</object>
-							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="754087327"/>
@@ -141,7 +137,6 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">icon_users.png</string>
 							</object>
-							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="754087327"/>
@@ -221,6 +216,14 @@
 						<reference key="destination" ref="892534564"/>
 					</object>
 					<int key="connectionID">44</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">feedViewController</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="933072031"/>
+					</object>
+					<int key="connectionID">51</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -434,7 +437,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 					</object>
-					<string>{{690, 276}, {320, 480}}</string>
+					<string>{{329, 276}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>Test1AppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -462,7 +465,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">50</int>
+			<int key="maxID">51</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -470,9 +473,9 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">FeedViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">buttonPressed</string>
-						<string key="NS.object.0">id</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">table</string>
+						<string key="NS.object.0">UITableView</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
@@ -496,13 +499,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addFriends:</string>
 							<string>alphaSort</string>
-							<string>backToMain:</string>
 							<string>distSort</string>
 							<string>importFriends:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -515,14 +516,12 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addFriendView</string>
 							<string>mainView</string>
-							<string>search</string>
 							<string>table</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
 							<string>UIView</string>
-							<string>UISearchBar</string>
 							<string>UITableView</string>
 						</object>
 					</object>
@@ -546,12 +545,16 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>approveWaypointButtonPressed</string>
+							<string>cancelWaypointButtonPressed</string>
 							<string>locateButtonPressed</string>
 							<string>selectorButtonPressed</string>
 							<string>waypointButtonPressed</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -597,12 +600,18 @@
 							<string>backToGroup:</string>
 							<string>createGroup:</string>
 							<string>goToMyGroupView</string>
+							<string>inviteIdOneFUCKYEA</string>
 							<string>inviteToGroup:</string>
 							<string>leaveGroup:</string>
 							<string>messageGroup:</string>
+							<string>sendInvites:</string>
+							<string>sendMsgToGroup:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -617,8 +626,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>createGroupView</string>
 							<string>groupLabel</string>
-							<string>groupMsgRecTextField</string>
-							<string>groupMsgTextField</string>
+							<string>groupMsgLabel</string>
+							<string>groupMsgText</string>
 							<string>groupTextField</string>
 							<string>inviteToGroupView</string>
 							<string>messageGroupView</string>
@@ -628,8 +637,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
 							<string>UILabel</string>
-							<string>UITextField</string>
-							<string>UITextField</string>
+							<string>UILabel</string>
+							<string>UITextView</string>
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIView</string>
@@ -648,6 +657,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>feedViewController</string>
 							<string>groupiesNavigationController</string>
 							<string>myGroupNavigationController</string>
 							<string>rootTabBarController</string>
@@ -655,6 +665,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIViewController</string>
 							<string>GroupiesNavigationController</string>
 							<string>MyGroupNavigationController</string>
 							<string>UITabBarController</string>
@@ -940,6 +951,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="173541660">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextField.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UITextView</string>
+					<string key="superclassName">UIScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">UIKit.framework/Headers/UITextView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -9,6 +9,7 @@
 #import "BurbleDataManager.h"
 #import "XMLPersonParser.h"
 #import "XMLGroupParser.h"
+#import "XMLMessagesParser.h"
 
 @interface TimerQueueAdapter : NSObject {
 	SEL selToCall;
@@ -22,11 +23,8 @@
 @synthesize selToCall, objToCallWith;
 @end
 
-
 @implementation BurbleDataManager
-
 static BurbleDataManager *sharedDataManager;
-
 @synthesize currentDirectoryPath, baseUrl;
 
 - (void)dealloc {
@@ -34,7 +32,6 @@ static BurbleDataManager *sharedDataManager;
 	[presistent release];
 	[super dealloc];
 }
-
 
 // Initialize the singleton instance if needed and return
 +(BurbleDataManager *)sharedDataManager {
@@ -127,7 +124,6 @@ static BurbleDataManager *sharedDataManager;
 	return self;
 }
 
-
  /*
  ================================================================================
 							INTERNAL STATE MANAGEMENT
@@ -173,7 +169,6 @@ static BurbleDataManager *sharedDataManager;
 	[self updatePresistentWithMyGroup];
 	[self checkAndSavePresistentFile];
 }
-
 - (BOOL)isRegistered {
 	return (nil != [presistent objectForKey:@"name"] && nil != [presistent objectForKey:@"uid"]);
 }
@@ -253,7 +248,7 @@ static BurbleDataManager *sharedDataManager;
  ================================================================================ 
  */
 #pragma mark -
-#pragma mark Queue Management for Server Data
+#pragma mark Queue Management for Server Data --- general queues
 
 -(void)fireQueueEvent:(NSTimer*)timer {
 	TimerQueueAdapter* adapter = [timer userInfo];
@@ -301,6 +296,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 /************** Positions ****************/
+#pragma mark Queue Management for Server Data --- positions
 
 - (void) sendPositionToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Position*)p {
 	if (rpcResponse.response == nil) {
@@ -325,6 +321,7 @@ static BurbleDataManager *sharedDataManager;
 - (void)flushPositionQueue { [self flushQueue:positionQueue usingSender:@selector(sendPositionToServer:)]; }
 
 /************** Waypoints ****************/
+#pragma mark Queue Management for Server Data --- waypoints
 
 //cathes the callback from the server for sending a waypoint
 - (void) sendWaypointToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Waypoint*)wp {
@@ -352,6 +349,7 @@ static BurbleDataManager *sharedDataManager;
 - (void)flushWaypointQueue { [self flushQueue:waypointQueue usingSender:@selector(sendWaypointToServer:)]; }
 
 /************** Outgoing Messages ****************/
+#pragma mark Queue Management for Server Data --- outgoing messages
 
 //cathes the callback from the server for sending a waypoint
 - (void) sendMessageToServerCallback:(RPCURLResponse*)rpcResponse withObject:(Message*)m {
@@ -367,7 +365,7 @@ static BurbleDataManager *sharedDataManager;
 
 //sends the given waypoint to the server
 - (void)sendMessageToServer:(Message*)m {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/sendMsg", [presistent objectForKey:@"guid"]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/send_msg", [presistent objectForKey:@"guid"]];
 	RPCPostRequest* request = [m getPostRequestToMethod:urlString withBaseUrl:baseUrl];
 	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendMessageToServerCallback:withObject:) withUserObject:m]) {
 		[outgoingMessagesQueue addObject:m];
@@ -378,6 +376,7 @@ static BurbleDataManager *sharedDataManager;
 - (void)flushOutgoingMessagesQueue { [self flushQueue:outgoingMessagesQueue usingSender:@selector(sendMessageToServer:)]; }
 
 /************** Just Send the Request Queue ****************/
+#pragma mark Queue Management for Server Data --- general RPCrequests
 
 - (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)o { return; }
 - (void)sendRequestToServer:(RPCPostRequest*) r {
@@ -396,9 +395,31 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Queue Management for Pushed-From-Server Data
 
-//This will attempt to pull new messages from the server. Should be called periodically
--(void)downloadUnreadMessages {
+-(void)downloadUnreadMessagesCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		//*
+		XMLMessagesParser* mparser = [[XMLMessagesParser alloc] initWithData:rpcResponse.data];
+		if (![mparser hasError]) {
+			NSArray* messages = [[mparser getMessages] retain];
+			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[messages count]];
+			//set the little indicator to show the number of messages.
+		}
+		// */
 		
+	}
+}
+
+//This will attempt to pull new messages from the server. Should be called periodically
+-(BOOL)startDownloadUnreadMessages {
+	if (![self isRegistered])
+		return NO;
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/unread", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadUnreadMessagesCallback:withObject:)]) {
+		return YES;
+	}
+	return NO;
 }
 
 /*
@@ -778,6 +799,8 @@ static BurbleDataManager *sharedDataManager;
 	if ([self getUid] <= 0)
 		return NO;
 	[msg setSender_uid:[self getUid]];
+	[msg setSent_time:[[NSDate date] retain]];
+	[msg setISentThis:YES];
 	[outgoingMessagesQueue addObject:msg];
 	[self flushOutgoingMessagesQueue];
 	return YES;

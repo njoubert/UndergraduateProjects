@@ -14,7 +14,6 @@
 -(id)initWithData:(NSData*)data {
 	if (self = [super init]) {
 		
-		
 		//THIS SHOWS THE XML IF YOU WANNA SEE IT
 		/*
 		NSString *message= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -23,12 +22,11 @@
 		[alert show];
 		[alert release];
 		[message release];	
-		*/
+		// */
 		
 		_hasError = NO;
 		_error = nil;
 		_currentElementText = nil;
-		_currentElementName = nil;
 		_parser = [[NSXMLParser alloc] initWithData:data];
 		[_parser setDelegate:self];
 
@@ -43,6 +41,12 @@
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
 	[_currentElementText appendString:string];
 }
+
+-(void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
+	_hasError = YES;
+	_error = [parseError retain];
+}
+
 
 -(BOOL)hasError {
 	return _hasError;

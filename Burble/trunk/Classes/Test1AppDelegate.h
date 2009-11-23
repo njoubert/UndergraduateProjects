@@ -16,6 +16,7 @@
 	UITabBarController *rootTabBarController;
 	GroupiesNavigationController *groupiesNavigationController;
 	MyGroupNavigationController *myGroupNavigationController;
+	UIViewController *feedViewController;
 	UIActivityIndicatorView *activityView;
 }
 
@@ -23,11 +24,13 @@
 
 -(void)hideActivityViewer;
 -(void)showActivityViewer;
+-(void)setUnreadMessageDisplay:(int)nr;
 
 
 @property (nonatomic, retain) IBOutlet UITabBarController *rootTabBarController;
 @property (nonatomic, retain) IBOutlet GroupiesNavigationController *groupiesNavigationController;
 @property (nonatomic, retain) IBOutlet MyGroupNavigationController *myGroupNavigationController;
+@property (nonatomic, retain) IBOutlet UIViewController *feedViewController;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @end
