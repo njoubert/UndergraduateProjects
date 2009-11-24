@@ -22,14 +22,4 @@ class Iphone::FriendsController < Iphone::AbstractIphoneController
     end
   end
   
-  # POST a list of facebook ids to add as friends
-  # RETURNS the number of new friends you have!
-  def add_facebook_friends
-    if request.post?
-      
-    else
-      render_error("Request type not supported. Expected POST.", nil)
-    end
-  end
-  
 end

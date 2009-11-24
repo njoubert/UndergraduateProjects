@@ -30,5 +30,41 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
       render_error("Request type not supported. Expected POST.", nil)
     end
   end
+  
+  def set_fbuid
+    if request.post?
+      begin
+        @fbuid = params[:fbuid]
+        @user.fbuid = @fbuid
+        @user.save!
+        head :ok
+      rescue  Exception => ex
+          render_error("Could not associate FB uid with user", ex)
+      end
+    else
+      render_error("Request type not supported. Expected POST.", nil)
+    end
+  end
+  
+  def scan_fb_friends
+    if request.post?
+      begin
+         @fbfriendids = ActiveSupport::JSON.decode(params[:friendsfbids])
+         found = 0
+         @fbfriendids.each do |fid|
+           @possibleFriend = Person.find_by_fbuid(fid)
+           if @possibleFriend
+             found += 1
+             Friendship.makeFriends(@user, @possibleFriend)
+           end
+         end
+         render :text => found
+        rescue  Exception => ex
+            render_error("An error occurred while scanning for friends.", ex)
+        end
+    else
+      render_error("Request type not supported. Expected POST.", nil) 
+    end
+  end
 
 end
