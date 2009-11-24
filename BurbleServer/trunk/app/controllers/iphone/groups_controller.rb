@@ -95,4 +95,9 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
     end
   end
   
+  def waypoints
+    @waypoints = @user.group.waypoints
+    render :xml => @waypoints
+  end
+  
 end

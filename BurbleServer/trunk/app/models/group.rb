@@ -10,4 +10,5 @@ class Group < ActiveRecord::Base
               :through => :group_memberships, 
               :source => :person,
               :select => "distinct people.*"
+  has_many :waypoints
 end
