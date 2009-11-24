@@ -534,6 +534,56 @@ static BurbleDataManager *sharedDataManager;
 	 
 }
 
+-(void)downloadFriendsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		
+		XMLWaypointsParser* wparser = [[XMLWaypointsParser alloc] initWithData:rpcResponse.data];
+		if (![wparser hasError]) {
+			NSArray* wpts = [[wparser getWaypoints] retain];
+			NSEnumerator* enumerator = [wpts objectEnumerator];
+			Waypoint* w;
+			
+			while (w = [enumerator nextObject]) {
+				if (w.person_id == [self getUid]) {
+					//search to check whether there
+					//if this is one of our waypoints (person-id matches) check if the name matches, then set the uid
+					if (![groupWaypoints containsObject:w]) {
+						[groupWaypoints addObject:w];
+					} else {
+						Waypoint* wM = [groupWaypoints objectAtIndex:[groupWaypoints indexOfObject:w]];
+						wM.person_id = [self getUid];
+					}
+				} else {
+					if (![groupWaypoints containsObject:w]) {
+						[groupWaypoints addObject:w];
+					}
+				}
+			}
+			[wpts release];
+		}
+		[wparser release];						 
+		
+	}
+	
+}
+
+
+-(BOOL)startDownloadFriends {
+	
+	if (![self isRegistered])
+		return NO;
+	if (![self isInGroup])
+		return NO;
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/friends/index", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadFriendsCallback:withObject:)]) {
+		return YES;
+	}
+	return NO;
+	
+}
+
 /*
  ================================================================================
 					DATA CALLS for SERVER MANAGED DATA (Cached locally)
@@ -987,17 +1037,30 @@ static BurbleDataManager *sharedDataManager;
 
 -(void)scannedFBFriendsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
-	NSString* uidStr = [[NSString alloc] initWithData:rpcResponse.data encoding:NSUTF8StringEncoding];
-	int friendCount = [uidStr intValue];
 	
-	NSString *title= [[NSString alloc] initWithString:@"Scanned Facebook Friends!"];
-	NSString *message= [[NSString alloc] initWithFormat:@"We connected you with %d friends.", friendCount];
-	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	[message release];		
-	[title release];
+	if (rpcResponse != nil && rpcResponse.response.statusCode == 200) {
+	
+		NSString* uidStr = [[NSString alloc] initWithData:rpcResponse.data encoding:NSUTF8StringEncoding];
+		int friendCount = [uidStr intValue];
+		
+		NSString *title= [[NSString alloc] initWithString:@"Scanned Facebook Friends!"];
+		NSString *message= [[NSString alloc] initWithFormat:@"We connected you with %d friends. Your facebook ID has also been associated, so that your facebook friends can find you.", friendCount];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+		[title release];
+	} else {
+		NSString *title= [[NSString alloc] initWithString:@"Server Error!"];
+		NSString *message= [[NSString alloc] initWithString:@"Something went wrong on the server side. Sorry, we messed up!"];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+		[title release];
+	}
 	
 }
 - (void)geFBFriendsList {
