@@ -22,7 +22,7 @@
 #define kRPC_PositionHeadingKey				@"position[heading]"
 #define kRPC_PositionDateTimeKey			@"position[timestamp]"
 
-@interface Position : RemoteModel <NSCopying> {
+@interface Position : RemoteModel <NSCopying, NSCoding> {
 	int uid;
 	int person_id;
 	double lat;

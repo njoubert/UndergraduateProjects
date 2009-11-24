@@ -11,5 +11,4 @@
 @interface MapNavigationController : UINavigationController {
 
 }
-
 @end

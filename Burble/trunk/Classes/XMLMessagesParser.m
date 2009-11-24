@@ -18,7 +18,7 @@
 -(void)parserDidStartDocument:(NSXMLParser *)parser {
 	_messages = [[NSMutableArray alloc] init];
 	_currentMessage = nil;
-	_state = kruft;
+	_state = ePS_kruft;
 }
 
 
@@ -38,24 +38,24 @@
 	}
 	
 	if ([elementName isEqualToString:@"messages"]) {
-		_state = messages;
+		_state = ePS_messages;
 	}	
-	if (_state == messages) {
-		if ([elementName isEqualToString:@"text-message"]) {
+	if (_state == ePS_messages) {
+		if ([elementName isEqualToString:kMessageTypeText]) {
 			_currentMessage = [[Message alloc] init];
 			_currentMessage.type = kMessageTypeText;
-			_state = messages_message;
-		} else if ([elementName isEqualToString:@"group-invite-message"]) {
+			_state = ePS_messages_message;
+		} else if ([elementName isEqualToString:kMessageTypeGroupInvite]) {
 			_currentMessage = [[Message alloc] init];
 			_currentMessage.type = kMessageTypeGroupInvite;
-			_state = messages_message;
-		} else if([elementName isEqualToString:@"routing-request-message"]) {
+			_state = ePS_messages_message;
+		} else if([elementName isEqualToString:kMessageTypeRoutingRequest]) {
 			_currentMessage = [[Message alloc] init];
 			_currentMessage.type = kMessageTypeRoutingRequest;
-			_state = messages_message;
+			_state = ePS_messages_message;
 		} 
 	}
-	if (_state == messages_message) {
+	if (_state == ePS_messages_message) {
 		if ([elementName isEqualToString:@"id"] || 
 			[elementName isEqualToString:@"group-id"] || 
 			[elementName isEqualToString:@"waypoint-id"] ||
@@ -66,10 +66,10 @@
 			_currentElementText = [[NSMutableString alloc] init];
 		} else if ([elementName isEqualToString:@"group"]) {
 			_currentMessage.group = [[Group alloc] init];
-			_state = messages_message_group;
+			_state = ePS_messages_message_group;
 		}
 	}
-	if (_state == messages_message_group) {
+	if (_state == ePS_messages_message_group) {
 		if ([elementName isEqualToString:@"id"] || 
 			[elementName isEqualToString:@"name"] || 
 			[elementName isEqualToString:@"description"]) {
@@ -93,22 +93,20 @@
 		[_error setObject:_currentElementText forKey:@"exception"];
 	}
 
-	if (_state == messages) {	// we have received all the messages. we are basically donezo.
+	if (_state == ePS_messages) {	// we have received all the messages. we are basically donezo.
 		if ([elementName isEqualToString:@"messages"]) {
-			_state = kruft;
+			_state = ePS_kruft;
 		}		
 	}
-	if (_state == messages_message) {	// we are currently parsing a message
+	if (_state == ePS_messages_message) {	// we are currently parsing a message
 		if ([elementName isEqualToString:@"messages"]) {
-			_state = kruft;
-		} else if ([elementName isEqualToString:@"text-message"] || 
-			[elementName isEqualToString:@"group-invite-message"] || 
-			[elementName isEqualToString:@"routing-request-message"]) { //snap we are done with this message
+			_state = ePS_kruft;
+		} else if ([elementName isEqualToString:kMessageTypeText] || 
+			[elementName isEqualToString:kMessageTypeGroupInvite] || 
+			[elementName isEqualToString:kMessageTypeRoutingRequest]) { //snap we are done with this message
 			[_messages addObject:_currentMessage];
 			_currentMessage = nil;
-			_state = messages;
-		} else if ([elementName isEqualToString:@"position"]) {
-			_state = person;
+			_state = ePS_messages;
 		} else if ([elementName isEqualToString:@"id"]) {
 			_currentMessage.uid = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"sender-id"]) {
@@ -127,9 +125,9 @@
 		}
 	}
 	
-	if (_state == messages_message_group) {
+	if (_state == ePS_messages_message_group) {
 		if ([elementName isEqualToString:@"group"]) {
-			_state = messages_message;	
+			_state = ePS_messages_message;	
 		} else if ([elementName isEqualToString:@"id"]) {
 			_currentMessage.group.group_id = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"name"]) {
@@ -147,8 +145,8 @@
 }
 
 -(void)dealloc {
+	[_messages release];
 	[super dealloc];
-	[_messages dealloc];
 }
 
 @end

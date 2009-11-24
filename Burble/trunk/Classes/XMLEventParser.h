@@ -9,15 +9,17 @@
 #import <Foundation/Foundation.h>
 
 typedef enum parserState {
-	kruft,
-	person,
-	group,
-	person_group,
-	person_position,
-	messages,
-	messages_message,
-	messages_message_group,
-	done
+	ePS_kruft,
+	ePS_person,
+	ePS_group,
+	ePS_person_group,
+	ePS_person_position,
+	ePS_messages,
+	ePS_messages_message,
+	ePS_messages_message_group,
+	ePS_waypoints,
+	ePS_waypoints_waypoint,
+	ePS_done
 } parserState;
 
 @interface XMLEventParser : NSObject {

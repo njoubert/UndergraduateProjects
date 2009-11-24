@@ -10,6 +10,7 @@
 #import "XMLPersonParser.h"
 #import "XMLGroupParser.h"
 #import "XMLMessagesParser.h"
+#import "XMLWaypointsParser.h"
 
 @interface TimerQueueAdapter : NSObject {
 	SEL selToCall;
@@ -100,7 +101,7 @@ static BurbleDataManager *sharedDataManager;
 		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:40] doubleValue];
 		[myLocationManager startUpdatingLocation];
 		
-		locallyAddedWaypoints = [[NSMutableArray alloc] init];
+		groupWaypoints = [[NSMutableArray alloc] init];
 		
 		joinGroupCallbackSel = nil;
 		joinGroupCallbackObj = nil;
@@ -395,36 +396,45 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark Queue Management for Pushed-From-Server Data
 
 -(void)downloadMessagesCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	NSLog(@"callback to downloading messages");
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		NSLog(@"start parsing downloaded messages");
 		XMLMessagesParser* mparser = [[XMLMessagesParser alloc] initWithData:rpcResponse.data];
 		if (![mparser hasError]) {
-			NSArray* messages = [[mparser getMessages] retain];
-			NSEnumerator* enumerator = [messages objectEnumerator];
+			NSArray* rcvdMsgs = [[mparser getMessages] retain];
+			NSLog(@"got pointer to all message objects parsed from xml");
+			NSEnumerator* enumerator = [rcvdMsgs objectEnumerator];
 			Message* m;
 			while (m = [enumerator nextObject]) {
+				[m retain];
+				NSLog(@"processing a parsed message.");
 				if ([allMessages containsObject:m]) {
 					Message* alreadyM = [allMessages objectAtIndex:[allMessages indexOfObject:m]];
 					if (m.read && !alreadyM.read) {
 						//fukkin server thinks we havent read this but fuck we already have, goddaaaam!
 						//we should tell the server that this is fucking read already, dayamn!
+						//[self markMessageAsRead:m];
 					}
 				} else {
 					//fukkin yay message received! Now we can decide what to do with this.
 					[allMessages addObject:m];
-					if ([m.type isEqualToString:kMessageTypeGroupInvite]) {
+					if ([m.type isEqualToString:kMessageTypeGroupInvite] && !m.read) {
 						NSString *message= [[NSString alloc] initWithFormat:@"Invitation to group %@. Check your feed to respond.", m.group.name];
 						UIAlertView *alert = [[UIAlertView alloc]
 											  initWithTitle: @"Group Invite Received!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 						[alert show];
 						[alert release];
 						[message release];		
-					} else if ([m.type isEqualToString:kMessageTypeRoutingRequest]) {
+					} else if ([m.type isEqualToString:kMessageTypeRoutingRequest] && !m.read) {
 						
 					}
 				}
 			}
+			NSLog(@"now we are finishing up processing messages.");
+			[rcvdMsgs release];
 			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[self getUnreadMessagesCount]];
 		}
+		[mparser release];
 	}
 }
 
@@ -432,6 +442,7 @@ static BurbleDataManager *sharedDataManager;
 -(BOOL)startDownloadMessages {
 	if (![self isRegistered])
 		return NO;
+	NSLog(@"start downloading messages");
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/index", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
@@ -439,6 +450,56 @@ static BurbleDataManager *sharedDataManager;
 		return YES;
 	}
 	return NO;
+}
+
+-(void)downloadWaypointsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		
+		XMLWaypointsParser* wparser = [[XMLWaypointsParser alloc] initWithData:rpcResponse.data];
+		if (![wparser hasError]) {
+			NSArray* wpts = [[wparser getWaypoints] retain];
+			NSEnumerator* enumerator = [wpts objectEnumerator];
+			Waypoint* w;
+			
+			while (w = [enumerator nextObject]) {
+				if (w.person_id == [self getUid]) {
+					//search to check whether there
+					//if this is one of our waypoints (person-id matches) check if the name matches, then set the uid
+					if (![groupWaypoints containsObject:w]) {
+						[groupWaypoints addObject:w];
+					} else {
+						Waypoint* wM = [groupWaypoints objectAtIndex:[groupWaypoints indexOfObject:w]];
+						wM.person_id = [self getUid];
+					}
+				} else {
+					if (![groupWaypoints containsObject:w]) {
+						[groupWaypoints addObject:w];
+					}
+				}
+			}
+			[wpts release];
+		}
+		[wparser release];						 
+							
+	}
+	 
+}
+
+
+-(BOOL)startDownloadWaypoints {
+	
+	if (![self isRegistered])
+		return NO;
+	if (![self isInGroup])
+		return NO;
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/waypoints", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadWaypointsCallback:withObject:)]) {
+		return YES;
+	}
+	return NO;
+	 
 }
 
 /*
@@ -584,7 +645,6 @@ static BurbleDataManager *sharedDataManager;
 			}
 			[self updatePresistentWithPerson:[pparser getPerson]];
 			[self updatePresistentWithMyGroup];
-
 		}
 		[rpcResponse release];
 		[pparser release];
@@ -774,23 +834,24 @@ static BurbleDataManager *sharedDataManager;
 	if (myGroup == nil)
 		return;
 	wP.group_id = myGroup.group_id;
-	[locallyAddedWaypoints addObject:wP];
+	wP.person_id = [self getUid];
+	[groupWaypoints addObject:wP];
 	[waypointQueue addObject:wP];
 	[self flushWaypointQueue];
 }
 
 - (void)clearWaypoints {
 	[self flushWaypointQueue];
-	[locallyAddedWaypoints release];								
-	locallyAddedWaypoints = [[NSMutableArray alloc] init];
+	[groupWaypoints release];								
+	groupWaypoints = [[NSMutableArray alloc] init];
 }
 
 - (int)getWaypointCount {
-	return [locallyAddedWaypoints count];
+	return [groupWaypoints count];
 }
 
 - (NSArray*) getWaypoints {
-	NSArray* retVal = [[NSArray alloc] initWithArray:locallyAddedWaypoints];
+	NSArray* retVal = [[NSArray alloc] initWithArray:groupWaypoints];
 	return retVal;
 }
 
@@ -836,6 +897,16 @@ static BurbleDataManager *sharedDataManager;
 }
 - (NSArray*)getUnsentMessages {
 	return [[NSArray alloc] initWithArray:outgoingMessagesQueue copyItems:NO];
+}
+- (void) markMessageAsRead:(Message*)m {
+	if (m == nil)
+		return;
+	m.read = YES;
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/mark/%d", [presistent objectForKey:@"guid"], m.uid];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	[outgoingRequestsQueue addObject:request];
+	[self flushOutgoingQueue];
 }
 
 /*

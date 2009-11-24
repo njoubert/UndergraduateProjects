@@ -30,7 +30,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	numOfWaypoints = 0;
 	myMap.showsUserLocation = true;
 	self.title = @"Map";
 	
@@ -54,13 +53,10 @@
 
 - (void)refreshWaypoints {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
-	if ([dM getWaypointCount] > numOfWaypoints) {
-		NSArray* wayPoints = [dM getWaypoints];
-		int i;
-		for (i = numOfWaypoints; i < [wayPoints count]; i++) {
-			[myMap addAnnotation:[wayPoints objectAtIndex:i]];
-		}
-		numOfWaypoints = i;
+	[myMap removeAnnotations:[myMap annotations]];
+	NSArray* wayPoints = [dM getWaypoints];
+	for (int i = 0; i < [wayPoints count]; i++) {
+		[myMap addAnnotation:[wayPoints objectAtIndex:i]];
 	}
 }
 

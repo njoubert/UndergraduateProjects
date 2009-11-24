@@ -19,22 +19,30 @@
 #define kRPC_WaypointLonKey			@"waypoint[longitude]"
 
 
-@interface Waypoint : RemoteModel <NSCopying, MKAnnotation> {
+@interface Waypoint : RemoteModel <NSCopying, MKAnnotation, NSCoding> {
 	NSString* name;
 	NSString* description;
 	int uid;
 	int group_id;
+	int person_id;
 @public
 	BOOL iAmHere;
 	NSDate* createdAt;	
 	CLLocationCoordinate2D coordinate;
 	CLLocationDistance elevation;
 }
+@property (nonatomic, copy) NSString* name;
+@property (nonatomic, copy) NSString* description;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property CLLocationDistance elevation;
 @property int uid;
 @property int group_id;
+@property int person_id;
 
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription;
 -(NSString*) title;
 -(NSString*) subtitle;
+-(void)setLatitude:(double)lat;
+-(void)setLongitude:(double)lon;
+
 @end

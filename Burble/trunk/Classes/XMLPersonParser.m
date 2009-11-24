@@ -50,13 +50,13 @@
 	}
 
 	if ([elementName isEqualToString:@"person"]) {
-		_state = person;
+		_state = ePS_person;
 	}	
-	if (_state == person) {
+	if (_state == ePS_person) {
 		if ([elementName isEqualToString:@"group"]) {
-			_state = person_group;
+			_state = ePS_person_group;
 		} else if ([elementName isEqualToString:@"position"]) {
-			_state = person_position;
+			_state = ePS_person_position;
 		} else if ([elementName isEqualToString:@"id"] ||
 					[elementName isEqualToString:@"email"] || 
 					[elementName isEqualToString:@"name"] || 
@@ -64,14 +64,14 @@
 				_currentElementText = [[NSMutableString alloc] init];
 		} 
 	}
-	if (_state == person_group) {
+	if (_state == ePS_person_group) {
 		if ([elementName isEqualToString:@"id"] || 
 				   [elementName isEqualToString:@"name"] || 
 				   [elementName isEqualToString:@"description"]) {
 				_currentElementText = [[NSMutableString alloc] init];
 		} 
 	}
-	if (_state == person_position) {
+	if (_state == ePS_person_position) {
 		if ([elementName isEqualToString:@"id"] || 
 			[elementName isEqualToString:@"person-id"] || 
 			[elementName isEqualToString:@"latitude"] || 
@@ -101,12 +101,12 @@
 		[_error setObject:_currentElementText forKey:@"exception"];
 	}
 	if ([elementName isEqualToString:@"person"]) {
-		_state = kruft;
+		_state = ePS_kruft;
 	}
-	if (_state == person_group) {
+	if (_state == ePS_person_group) {
 		
 		if ([elementName isEqualToString:@"group"]) {
-			_state = person;
+			_state = ePS_person;
 		}
 		if ([elementName isEqualToString:@"id"]) {
 			if (_currentElementText != nil) {
@@ -121,10 +121,10 @@
 		}
 		
 	}
-	if (_state == person_position) {
+	if (_state == ePS_person_position) {
 		
 		if ([elementName isEqualToString:@"position"]) {
-			_state = person;
+			_state = ePS_person;
 		}
 		if ([elementName isEqualToString:@"id"]) {
 			_position.uid = [_currentElementText intValue];
@@ -151,7 +151,7 @@
 			_position.timestamp = [dF dateFromString:_currentElementText];
 		}
 	}
-	if (_state == person) {
+	if (_state == ePS_person) {
 		
 		if ([elementName isEqualToString:@"id"]) {
 			if (_currentElementText != nil) {

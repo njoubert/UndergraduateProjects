@@ -54,7 +54,7 @@
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
 	
-	NSMutableArray* locallyAddedWaypoints;
+	NSMutableArray* groupWaypoints;
 	
 	//QUEUES:
 	NSMutableArray* waypointQueue;
@@ -103,6 +103,7 @@
 
 //This will attempt to pull new messages from the server. Should be called periodically
 -(BOOL)startDownloadMessages;
+-(BOOL)startDownloadWaypoints;
 
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
@@ -141,6 +142,7 @@
 - (NSArray*) getMessages;		//returns a list of Message* objects
 - (int) getMessagesCount;
 - (int) getUnreadMessagesCount;
+- (void) markMessageAsRead:(Message*)m;
 
 - (BOOL)sendMessage:(Message*)msg; //given a message and a list of uids we add it to the queue. You only set message and type
 - (int)unsentMessagesCount;

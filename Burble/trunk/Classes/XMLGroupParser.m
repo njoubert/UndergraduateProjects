@@ -36,9 +36,9 @@
 	}
 	
 	if ([elementName isEqualToString:@"group"]) {
-		_state = group;
+		_state = ePS_group;
 	}
-	if (_state == group) {
+	if (_state == ePS_group) {
 		if ([elementName isEqualToString:@"id"]) {
 			if (![[attributeDict valueForKey:@"nil"] isEqualToString:@"true"]) {
 				_currentElementText = [[NSMutableString alloc] init];
@@ -66,9 +66,9 @@
 		[_error setObject:_currentElementText forKey:@"exception"];
 	}
 	if ([elementName isEqualToString:@"group"]) {
-		_state = kruft;
+		_state = ePS_kruft;
 	}
-	if (_state == group) {
+	if (_state == ePS_group) {
 		if ([elementName isEqualToString:@"id"]) {
 			if (_currentElementText != nil) {
 				_group.group_id = [_currentElementText intValue];

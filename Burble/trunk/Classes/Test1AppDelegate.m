@@ -71,9 +71,12 @@ static Test1AppDelegate *burbleApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[window addSubview:rootTabBarController.view];	
-	[[BurbleDataManager sharedDataManager] startDownloadMessages];
 	[self setUnreadMessageDisplay:0];
-	    [window makeKeyAndVisible];
+
+	[[BurbleDataManager sharedDataManager] startDownloadMessages];
+	[[BurbleDataManager sharedDataManager] startDownloadWaypoints];
+	
+	[window makeKeyAndVisible];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
