@@ -17,7 +17,6 @@ rootxml.tag!(message.class.name) do
   else
     rootxml.tag!("sent-time", nil, :type => :datetime, :nil => :true)
   end
-  rootxml.tag!("created-at", formatter.call(message.created_at), :type => :datetime)
   rootxml.text(message.text)
   rootxml.read(message.read?(person))
   if message.group
