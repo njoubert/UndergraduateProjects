@@ -54,8 +54,10 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
          @fbfriendids.each do |fid|
            @possibleFriend = Person.find_by_fbuid(fid)
            if @possibleFriend
+             logger.warn "We found a possible friend, this is cool!"
              found += 1
              Friendship.makeFriends(@user, @possibleFriend)
+             logger.warn "and we created a friendship, this is too cool."
            end
          end
          render :text => found
