@@ -14,11 +14,15 @@ class Friendship < ActiveRecord::Base
   end
 
   def self.makeFriends(p1, p2)
-    Friendship.transaction do
-      p1.friends << p2
-      p2.friends << p1
-      p1.save
-      p2.save
+    begin
+      Friendship.transaction do
+        p1.friends << p2
+        p2.friends << p1
+        p1.save
+        p2.save
+      end
+    rescue Exception => ex
+      logger.error ex
     end
   end
   
