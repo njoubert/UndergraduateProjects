@@ -17,8 +17,8 @@ class Friendship < ActiveRecord::Base
     Friendship.transaction do
       p1.friends << p2
       p2.friends << p1
-      p1.save!
-      p2.save!
+      p1.save
+      p2.save
     end
   end
   

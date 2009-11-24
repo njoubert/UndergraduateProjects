@@ -57,12 +57,11 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
              logger.warn "We found a possible friend, this is cool!"
              logger.warn @possibleFriend.name
              Friendship.makeFriends(@user, @possibleFriend)
-             #found += 1
+             found += 1
              logger.warn "and we created a friendship, this is too cool."
            end
          end
-         head :ok
-        # render :text => "1"
+        render :text => "1"
         rescue  Exception => ex
             render_error("An error occurred while scanning for friends.", ex)
         end
