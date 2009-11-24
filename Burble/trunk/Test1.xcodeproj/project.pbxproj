@@ -56,6 +56,7 @@
 		DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F3D10BBD722000EB4CC /* Connect_iphone.png */; };
 		DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */; };
 		DA7210AB10BBF74F000EB4CC /* dist.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA7210AA10BBF74F000EB4CC /* dist.plist */; };
+		DA7210E510BC0956000EB4CC /* XMLFriendsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7210E410BC0956000EB4CC /* XMLFriendsParser.m */; };
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
@@ -163,6 +164,8 @@
 		DA720F3D10BBD722000EB4CC /* Connect_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_iphone.png; sourceTree = "<group>"; };
 		DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_with_facebook_iphone.png; sourceTree = "<group>"; };
 		DA7210AA10BBF74F000EB4CC /* dist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dist.plist; sourceTree = "<group>"; };
+		DA7210E310BC0956000EB4CC /* XMLFriendsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLFriendsParser.h; sourceTree = "<group>"; };
+		DA7210E410BC0956000EB4CC /* XMLFriendsParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLFriendsParser.m; sourceTree = "<group>"; };
 		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
@@ -466,6 +469,8 @@
 				DA0AF12C10BA21B900220C1D /* XMLMessagesParser.m */,
 				DA0AF3C010BB645500220C1D /* XMLWaypointsParser.h */,
 				DA0AF3C110BB645500220C1D /* XMLWaypointsParser.m */,
+				DA7210E310BC0956000EB4CC /* XMLFriendsParser.h */,
+				DA7210E410BC0956000EB4CC /* XMLFriendsParser.m */,
 			);
 			name = XML;
 			sourceTree = "<group>";
@@ -592,6 +597,7 @@
 				DA62F7EA10B7BE87008655A9 /* RPCURLResponse.m in Sources */,
 				DA0AF12D10BA21B900220C1D /* XMLMessagesParser.m in Sources */,
 				DA0AF3C210BB645500220C1D /* XMLWaypointsParser.m in Sources */,
+				DA7210E510BC0956000EB4CC /* XMLFriendsParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

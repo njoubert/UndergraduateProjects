@@ -11,7 +11,15 @@
 
 @implementation Person
 
-@synthesize uid, name, number, email, guid;
+@synthesize uid, name, number, email, guid, position, group;
+
+-(id)init {
+	if (self = [super init]) {
+		position = nil;
+		group = nil;
+	}
+	return self;
+}
 
 -(void) dealloc {
 	[name release];

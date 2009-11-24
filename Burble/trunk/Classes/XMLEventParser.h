@@ -19,6 +19,7 @@ typedef enum parserState {
 	ePS_messages_message_group,
 	ePS_waypoints,
 	ePS_waypoints_waypoint,
+	ePS_friendslist,
 	ePS_done
 } parserState;
 

@@ -11,6 +11,7 @@
 #import "XMLGroupParser.h"
 #import "XMLMessagesParser.h"
 #import "XMLWaypointsParser.h"
+#import "XMLFriendsParser.h"
 
 @interface TimerQueueAdapter : NSObject {
 	SEL selToCall;
@@ -120,6 +121,9 @@ static BurbleDataManager *sharedDataManager;
 		
 		//MESSAGES:
 		allMessages = [[NSMutableArray alloc] init];	//This is a sorted-by-arrival-time messages
+		
+		//FRIENDS:
+		allFriends = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -536,43 +540,32 @@ static BurbleDataManager *sharedDataManager;
 
 -(void)downloadFriendsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
-		
-		XMLWaypointsParser* wparser = [[XMLWaypointsParser alloc] initWithData:rpcResponse.data];
-		if (![wparser hasError]) {
-			NSArray* wpts = [[wparser getWaypoints] retain];
-			NSEnumerator* enumerator = [wpts objectEnumerator];
-			Waypoint* w;
-			
-			while (w = [enumerator nextObject]) {
-				if (w.person_id == [self getUid]) {
-					//search to check whether there
-					//if this is one of our waypoints (person-id matches) check if the name matches, then set the uid
-					if (![groupWaypoints containsObject:w]) {
-						[groupWaypoints addObject:w];
-					} else {
-						Waypoint* wM = [groupWaypoints objectAtIndex:[groupWaypoints indexOfObject:w]];
-						wM.person_id = [self getUid];
-					}
+		NSLog(@"receiving friendslist");
+		XMLFriendsParser* fparser = [[XMLFriendsParser alloc] initWithData:rpcResponse.data];
+		if (![fparser hasError]) {
+			NSArray* friends = [[fparser getFriends] retain];
+			NSLog(@"got friends array with %d entries", [friends count]);
+			NSEnumerator* enumerator = [friends objectEnumerator];
+			Person* f;
+			while (f = [enumerator nextObject]) {
+				[allFriends addObject:f];
+				NSLog(@"friend name: %@", f.name);
+				if ([allFriends containsObject:f]) {
+				
 				} else {
-					if (![groupWaypoints containsObject:w]) {
-						[groupWaypoints addObject:w];
-					}
+					[allFriends addObject:f];
 				}
 			}
-			[wpts release];
+			[friends release];
 		}
-		[wparser release];						 
-		
+		[fparser release];						 
 	}
 	
 }
 
 
 -(BOOL)startDownloadFriends {
-	
 	if (![self isRegistered])
-		return NO;
-	if (![self isInGroup])
 		return NO;
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/friends/index", [presistent objectForKey:@"guid"]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
@@ -889,30 +882,7 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 
 - (NSArray*) getFriends {
-	Person* p1 = [[Person alloc] init];
-	
-	[p1 setUid:1];
-	[p1 setName:@"Niels"];
-	
-	Person* p2 = [[Person alloc] init];
-	[p2 setUid:2];
-	[p2 setName:@"Janelle"];
-	
-	Person* p3 = [[Person alloc] init];
-	[p3 setUid:3];
-	[p3 setName:@"Chris"];
-
-	Person* p4 = [[Person alloc] init];
-	[p4 setUid:4];
-	[p4 setName:@"Jon"];
-	
-	Person* p5 = [[Person alloc] init];
-	[p5 setUid:5];
-	[p5 setName:@"Gleb"];
-
-	NSArray* a = [NSArray arrayWithObjects:p1, p2, p3, p4, p5, nil];
-	return a;
-	
+	return allFriends;
 }
 
 - (void)addWaypoint:(Waypoint *)wP {
@@ -1039,7 +1009,8 @@ static BurbleDataManager *sharedDataManager;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
 	if (rpcResponse != nil && rpcResponse.response.statusCode == 200) {
-	
+		[self startDownloadFriends];
+		
 		NSString* uidStr = [[NSString alloc] initWithData:rpcResponse.data encoding:NSUTF8StringEncoding];
 		int friendCount = [uidStr intValue];
 		
@@ -1158,8 +1129,6 @@ static BurbleDataManager *sharedDataManager;
 	[self cacheFBUID:uid];
 	[self checkAndSavePresistentFile];
 	[self startAssociateFBUID];
-	
-	NSLog(@"User with id %lld logged in.", uid); 	
 }
 
 @end

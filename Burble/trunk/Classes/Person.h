@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 #import "RemoteModel.h"
+#import "Position.h"
+#import "Group.h"
 
 @interface Person : RemoteModel <NSCopying, NSCoding> {
 	int uid;
@@ -26,12 +28,17 @@
 	NSString	*name;
 	NSString	*number;
 	NSString	*email;
+	Position*	position;
+	Group*		group;
 }
 @property int uid;
 @property (nonatomic, retain) NSString *guid;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *number;
 @property (nonatomic, retain) NSString *email;
+@property (nonatomic, retain) Position *position;
+@property (nonatomic, retain) Group *group;
+
 
 - (NSString*) getFirstName;
 
