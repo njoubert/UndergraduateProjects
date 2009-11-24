@@ -164,6 +164,9 @@ static BurbleDataManager *sharedDataManager;
 		NSString* guid = [[UIDevice currentDevice] uniqueIdentifier];
 		[presistent setValue:guid forKey:@"guid"];
 	}
+	if ([presistent objectForKey:@"myGroup.group_id"] != nil && [[presistent objectForKey:@"myGroup.group_id"] isEqualToString:@"0"]) {
+		[presistent removeObjectForKey:@"myGroup.group_id"];
+	}
 	[presistent writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
 }
 
@@ -175,11 +178,14 @@ static BurbleDataManager *sharedDataManager;
 		presistent = [[NSMutableDictionary alloc] initWithContentsOfFile:presistentFilePath];
 		if (nil != [presistent objectForKey:@"myGroup.group_id"] && 
 				nil != [presistent objectForKey:@"myGroup.name"]) {
+			NSLog(@"loading group id from disk");
 			myGroup = [[Group alloc] init];
 			myGroup.group_id = [[presistent objectForKey:@"myGroup.group_id"] intValue];
 			myGroup.name = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.name"]];
 			if (nil != [presistent objectForKey:@"myGroup.description"])
 				myGroup.description = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.description"]];
+		} else {
+			myGroup = nil;
 		}
 		if (nil != [presistent objectForKey:@"myFBUID"])
 			myFBUID = [[presistent objectForKey:@"myFBUID"] longLongValue];
@@ -834,9 +840,9 @@ static BurbleDataManager *sharedDataManager;
 		myGroup = nil;
 		[self saveData];
 	}
-	//if ([leaveGroupCallbackObj respondsToSelector:leaveGroupCallbackSel]) {
-		[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
-	//}
+	[myGroup release];
+	myGroup = nil;
+	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
 }
 
 - (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s {
@@ -875,7 +881,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (BOOL)isInGroup {
-	return (nil != myGroup);
+	return (nil != myGroup) && (myGroup.group_id > 0);
 }
 
 - (Group*) getMyGroup {

@@ -175,7 +175,7 @@
 
 	dataManager = [BurbleDataManager sharedDataManager];
 	
-	if (YES){ //[dataManager isInGroup]){  
+	if ([dataManager isInGroup]){  
 		
 		myGroup = [dataManager getMyGroup];
 		groupString = [myGroup name];
@@ -192,6 +192,21 @@
 	[super viewDidLoad];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	if ([dataManager isInGroup]){  
+		NSLog(@"view did appear AND IN GROUP");
+		myGroup = [dataManager getMyGroup];
+		groupString = [myGroup name];
+		groupLabel.text = @"groupString"; // groupString;
+		self.view = myGroupView;
+		
+	} else {
+		NSLog(@"view did appear AND NOT IN A GROUP NO NO GROUP!");
+		self.view = createGroupView;
+		
+	}
+	
+}
 /*
 - (void)viewDidLoad {
 	//loading up this particular user's friends
