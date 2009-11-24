@@ -56,8 +56,8 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
            if @possibleFriend
              logger.warn "We found a possible friend, this is cool!"
              logger.warn @possibleFriend.name
-             found += 1
              Friendship.makeFriends(@user, @possibleFriend)
+             found += 1
              logger.warn "and we created a friendship, this is too cool."
            end
          end
