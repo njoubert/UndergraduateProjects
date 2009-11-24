@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FBConnect/FBConnect.h"
 
 //The FB friends importation view
 
@@ -14,6 +15,6 @@
 
 }
 
--(IBAction)importFriends;
+-(IBAction)importFriendsButtonPressed;
 
 @end

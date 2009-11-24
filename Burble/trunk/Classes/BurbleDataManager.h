@@ -20,9 +20,17 @@
 #import "RPCURLResponse.h"
 #import "Test1AppDelegate.h"
 #import "XMLEventParser.h"
+#import "FBConnect/FBConnect.h"
+
+#define kfbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
+#define kfbSecretKey	@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
 #define kNumOfConcurrentRequestsFromQueue 2
 #define kTimeBetweenRequests 1.0
+
+#define fbAppID			#"177510903250"
+#define fbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
+#define fbSecretKey		@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
 #define pollMessageFrequency 5000
 
@@ -30,8 +38,9 @@
 #define kBaseUrlStr @"http://localhost:3000/iphone/"
 
 #define kPresistentFilename @"BurbleData.plist"
+#define kWaypointsCacheFilename @"waypoints"
 
-@interface BurbleDataManager : NSObject <CLLocationManagerDelegate> {
+@interface BurbleDataManager : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate> {
 	NSString *currentDirectoryPath;					//The path where we store data. Set by init.
 	BOOL bIsFirstLaunch;								//Indicates whether this is the app's first launch
 	NSMutableDictionary *presistent;
@@ -64,6 +73,10 @@
 	
 	//MESSAGES:
 	NSMutableArray* allMessages;	//This is a sorted-by-arrival-time messages
+	
+	//FACEBOOK:
+	FBUID myFBUID;
+	FBSession* _fbsession;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -147,5 +160,11 @@
 - (BOOL)sendMessage:(Message*)msg; //given a message and a list of uids we add it to the queue. You only set message and type
 - (int)unsentMessagesCount;
 - (NSArray*)getUnsentMessages;
+
+// =============  FACEBOOK INTEGRATION
+
+-(void)fbShowLoginBox;
+-(FBSession*)fbGetSession;
+
 
 @end

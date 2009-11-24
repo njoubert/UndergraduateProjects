@@ -47,8 +47,13 @@
 	[pData appendValue:latStr forKey:kRPC_WaypointLatKey];
 	NSString* lonStr = [[NSString alloc] initWithFormat:@"%f", coordinate.longitude];
 	[pData appendValue:lonStr forKey:kRPC_WaypointLonKey];
+	NSString* eleStr = [[NSString alloc] initWithFormat:@"%f", elevation];
+	[pData appendValue:eleStr forKey:kRPC_WaypointEleKey];
+	[pData appendValue:[createdAt description] forKey:kRPC_WaypointCreatedAtKey];
+	
 	[latStr release];
 	[lonStr release];
+	[eleStr release];
 }
 
 -(BOOL)isEqual:(Waypoint*)otherW {
@@ -84,11 +89,29 @@
 #pragma mark -
 #pragma mark NSCoding
 -(void)encodeWithCoder:(NSCoder *)coder {
-	
+	[coder encodeObject:name		forKey:kWaypointNameK ];
+	[coder encodeObject:description	forKey:kWaypointDescK ];
+	[coder encodeObject:createdAt	forKey:kWaypointcreatedAtK ];
+	[coder encodeInt:uid			forKey:kWaypointUIDK];
+	[coder encodeInt:group_id		forKey:kWaypointGIDK];
+	[coder encodeInt:person_id		forKey:kWaypointPIDK];
+	[coder encodeBool:iAmHere		forKey:kWaypointIAmHereK];
+	[coder encodeDouble:coordinate.latitude		forKey:kWaypointLatK];
+	[coder encodeDouble:coordinate.longitude	forKey:kWaypointLonK];
+	[coder encodeDouble:elevation				forKey:kWaypointEleK];
 }
 -(id)initWithCoder:(NSCoder *)coder {
 	if (self = [super init]) {
-		
+		self.name = [coder decodeObjectForKey:kWaypointNameK];
+		self.description = [coder decodeObjectForKey:kWaypointDescK];
+		self->createdAt = [coder decodeObjectForKey:kWaypointcreatedAtK];
+		self.uid = [coder decodeIntForKey:kWaypointUIDK];
+		self.group_id = [coder decodeIntForKey:kWaypointGIDK];
+		self.person_id = [coder decodeIntForKey:kWaypointPIDK];
+		self->iAmHere = [coder decodeBoolForKey:kWaypointIAmHereK];
+		[self setLatitude:[coder decodeDoubleForKey:kWaypointLatK]];
+		[self setLongitude:[coder decodeDoubleForKey:kWaypointLonK]];
+		self.elevation = [coder decodeDoubleForKey:kWaypointEleK];
 	}
 	return self;
 }

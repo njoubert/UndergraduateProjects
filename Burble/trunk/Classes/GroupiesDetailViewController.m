@@ -13,6 +13,7 @@
 
 @synthesize table;
 @synthesize functions;
+@synthesize person;
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];

@@ -17,7 +17,19 @@
 #define kRPC_WaypointDescKey		@"waypoint[description]"
 #define kRPC_WaypointLatKey			@"waypoint[latitude]"
 #define kRPC_WaypointLonKey			@"waypoint[longitude]"
+#define kRPC_WaypointEleKey			@"waypoint[elevation]"
+#define kRPC_WaypointCreatedAtKey	@"waypoint[created_at]"
 
+#define kWaypointNameK		@"WaypointName"
+#define kWaypointDescK		@"WaypointDesc"
+#define kWaypointUIDK		@"WaypointUID"
+#define kWaypointGIDK		@"WaypoingGID"
+#define kWaypointPIDK		@"WaypointKID"
+#define kWaypointIAmHereK	@"WaypoingIAmHereK"
+#define kWaypointcreatedAtK	@"WaypoingCreatedAtK"
+#define kWaypointLatK		@"WaypoingLatK"
+#define kWaypointLonK		@"WaypoingLonK"
+#define kWaypointEleK		@"WaypointEleK"
 
 @interface Waypoint : RemoteModel <NSCopying, MKAnnotation, NSCoding> {
 	NSString* name;

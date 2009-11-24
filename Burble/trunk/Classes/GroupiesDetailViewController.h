@@ -21,6 +21,8 @@
 	UITableView *table;
 	NSArray *functions;
 	
+	Person* person;
+	
 	//create a new map view
 	MapViewController *map;
 	FeedViewController *msg;
@@ -28,6 +30,7 @@
 	
 }
 
+@property (nonatomic, retain) Person* person;
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) NSArray *functions;
 

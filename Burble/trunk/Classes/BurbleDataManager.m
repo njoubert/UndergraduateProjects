@@ -109,6 +109,7 @@ static BurbleDataManager *sharedDataManager;
 		createGroupCallbackSel = nil;
 		leaveGroupCallbackObj = nil;
 		leaveGroupCallbackSel = nil;
+		myFBUID = 0;
 		
 		
 		//QUEUES:
@@ -132,6 +133,26 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Internal State Management
 
+- (void)deleteWaypintsCache {
+	NSString *waypointsFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kWaypointsCacheFilename];
+	[[NSFileManager defaultManager] removeItemAtPath:waypointsFilePath error:NULL];
+}
+
+- (void)loadWaypointsCache {
+	NSString *waypointsFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kWaypointsCacheFilename];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:waypointsFilePath]) {
+		NSMutableArray* loadedCache = [NSKeyedUnarchiver unarchiveObjectWithFile:waypointsFilePath];
+		NSLog(@"Unarchived waypoints file.");
+		[groupWaypoints release];
+		groupWaypoints = [loadedCache retain];
+	}
+}
+
+- (void)saveWaypointsCache {
+	[self deleteWaypintsCache];
+	NSString *waypointsFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kWaypointsCacheFilename];
+	[NSKeyedArchiver archiveRootObject:groupWaypoints toFile:waypointsFilePath];
+}
 //This checks that the presistent dictionary contains all the appropriate keys, and saves it.
 //Assumes that presistent exists, and sets presistent to the value.
 - (void)checkAndSavePresistentFile {
@@ -156,18 +177,29 @@ static BurbleDataManager *sharedDataManager;
 			if (nil != [presistent objectForKey:@"myGroup.description"])
 				myGroup.description = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.description"]];
 		}
+		if (nil != [presistent objectForKey:@"myFBUID"])
+			myFBUID = [[presistent objectForKey:@"myFBUID"] longLongValue];
 		bIsFirstLaunch = FALSE;
 	} else {
 		presistent = [[NSMutableDictionary alloc] init];
 		[self checkAndSavePresistentFile];
 		bIsFirstLaunch = TRUE;
 	}
+	[self loadWaypointsCache];
 }
-	 
+
+- (void)cacheFBUID:(FBUID)fbuid {
+	myFBUID = fbuid;
+	[presistent setObject:[[NSNumber numberWithLongLong:fbuid] retain] forKey:@"myFBUID"];
+	[self checkAndSavePresistentFile];
+}
+
 //Run right before app terminates
 - (void)saveData {
 	[self updatePresistentWithMyGroup];
 	[self checkAndSavePresistentFile];
+	[self saveWaypointsCache];
+	
 }
 - (BOOL)isRegistered {
 	return (nil != [presistent objectForKey:@"name"] && nil != [presistent objectForKey:@"uid"]);
@@ -571,6 +603,7 @@ static BurbleDataManager *sharedDataManager;
 	[urlString release];
 	if (connection)
 		return YES;
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	return NO;
 }
 
@@ -620,6 +653,8 @@ static BurbleDataManager *sharedDataManager;
 	} else {
 		[self messageForUnrecognizedStatusCode:urlres];
 	}
+	[[BurbleDataManager sharedDataManager] startDownloadMessages];
+	[[BurbleDataManager sharedDataManager] startDownloadWaypoints];
 	[rpcResponse release];
 	tryToRegister_Caller = nil;
 	[tryToRegister_Name release];
@@ -940,4 +975,128 @@ static BurbleDataManager *sharedDataManager;
 		
 	}
 }
+
+/*
+ ================================================================================
+ DELEGATE METHODS	
+ ================================================================================ 
+ */
+#pragma mark -
+#pragma mark Facebook Connect
+
+
+-(void)scannedFBFriendsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	NSString* uidStr = [[NSString alloc] initWithData:rpcResponse.data encoding:NSUTF8StringEncoding];
+	int friendCount = [uidStr intValue];
+	
+	NSString *title= [[NSString alloc] initWithString:@"Scanned Facebook Friends!"];
+	NSString *message= [[NSString alloc] initWithFormat:@"We connected you with %d friends.", friendCount];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+	[message release];		
+	[title release];
+	
+}
+- (void)geFBFriendsList {
+	NSString* fql = [NSString stringWithFormat:@"SELECT uid, name from user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1=%lld)", myFBUID];
+	NSDictionary* params = [NSDictionary dictionaryWithObject:fql forKey:@"query"];
+	[[FBRequest requestWithSession:[self fbGetSession] delegate:self] call:@"facebook.friends.get" params:params]; 
+	NSLog(@"sent fb username request");
+} 
+- (void)request:(FBRequest*)request didLoad:(id)result { 
+	NSArray* users = result; 
+	NSMutableArray* alluids = [[NSMutableArray alloc] initWithCapacity:[users count]];
+	NSLog(@"how many did we get: %d", [users count]);
+	for (NSInteger i=0; i<[users count];i++) {
+		NSDictionary *user = [users objectAtIndex:i];
+		NSString* uid = [user objectForKey:@"uid"];
+		[alluids addObject:uid];
+	}
+	
+	//JSON THIS SHIT!! JSON >>> XML! FUCK XML! I HATE XML! JSON RULES THE WORLD! XML IS JSON'S BITCH!
+	//READ IT AND WEEP BITCHES!
+	NSMutableString* friendsIdsString = [[NSMutableString alloc] init];
+	[friendsIdsString appendString:@"["];
+	for (int i = 0; i < [alluids count]; i++) {
+		if (i+1 == [alluids count]) {
+			[friendsIdsString appendFormat:@"%@", [alluids objectAtIndex:i]];
+		} else {
+			[friendsIdsString appendFormat:@"%@,",[alluids objectAtIndex:i]];
+		}
+	}
+	[friendsIdsString appendString:@"]"];
+	
+	//fukkin post this shit to the server, we're doing it live!!
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/scan_fb_friends", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* brequest = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	RPCPostData* pData = [[RPCPostData alloc] init];
+	[pData appendValue:friendsIdsString forKey:@"friendsfbids"];
+	[brequest setHTTPBodyPostData:pData];
+	
+	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:brequest target:self selector:@selector(scannedFBFriendsCallback:withObject:)];
+	[urlString release];
+	[pData release];
+	if (!connection) {
+		[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+		NSString *title= [[NSString alloc] initWithString:@"Error!"];
+		NSString *message= [[NSString alloc] initWithString:@"We could not create a connection to the server, this is strange!"];
+		UIAlertView *alert = [[UIAlertView alloc]
+							  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK!" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		[message release];		
+		[title release];
+	}
+
+}
+
+-(void)fbShowLoginBox {
+	FBSession* session = [self fbGetSession];
+	FBLoginDialog* dialog = [[[FBLoginDialog alloc] initWithSession:session] autorelease]; 
+	[dialog show];
+}
+
+-(FBSession*)fbGetSession {
+	if (_fbsession == nil)
+		_fbsession = [[FBSession sessionForApplication:kfbAPIKey secret:kfbSecretKey delegate:self] retain];
+	return _fbsession;
+}	
+
+
+-(BOOL)startAssociateFBUID {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/set_fbuid", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	RPCPostData* pData = [[RPCPostData alloc] init];
+	[pData appendValue:[[NSNumber numberWithLongLong:myFBUID] stringValue] forKey:@"fbuid"];
+	[request setHTTPBodyPostData:pData];
+	
+	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(associateFBUIDCallback:withObject:)];
+	[urlString release];
+	[pData release];
+	if (connection)
+		return YES;
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	return NO;
+	
+}
+-(void)associateFBUIDCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+	[self geFBFriendsList];
+}
+//delegate method for facebook login
+-(void)session:(FBSession*)session didLogin:(FBUID)uid {
+	[self cacheFBUID:uid];
+	[self checkAndSavePresistentFile];
+	[self startAssociateFBUID];
+	
+	NSLog(@"User with id %lld logged in.", uid); 	
+}
+
 @end

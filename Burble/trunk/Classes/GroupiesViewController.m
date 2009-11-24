@@ -63,29 +63,22 @@
     return self;
 }
 */
-
+- (void)refreshViewData {
+	dataManager = [BurbleDataManager sharedDataManager];
+	if (people != nil)
+		[people release];
+	people = [[dataManager getFriends] retain]; //this is an array of people object
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	//loading up this particular user's friends
-	dataManager = [BurbleDataManager sharedDataManager];
-	NSArray *ar = [dataManager getFriends];
-	self.people = ar; //this is an array of people objects
-	[ar release];
-	self.title = @"Groupies";
-	
+	[self refreshViewData];
+	self.title = @"Groupies";	
 	[super viewDidLoad];
 }
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void)viewDidAppear:(BOOL)animated {
+	[self refreshViewData];
 }
-*/
-
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -156,8 +149,10 @@
 	NSString *name = cell.textLabel.text;
 	if (childController == nil) 
 		childController = [[GroupiesDetailViewController alloc] initWithNibName:@"GroupiesDetailViewController" bundle:nil];
-	//childController.message = test; //this doesn't really do anything right now
+	NSUInteger row = [indexPath row];
+	Person *p = [people objectAtIndex:row];
 	childController.title = name;
+	childController.person = p;
 	[self.navigationController pushViewController:childController animated:YES];
 	 
 }

@@ -53,6 +53,8 @@
 		DA7107C410A29C9300DAD536 /* 30x-Scanner.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C310A29C9300DAD536 /* 30x-Scanner.png */; };
 		DA7107C710A29D6D00DAD536 /* icon_user.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C510A29D6D00DAD536 /* icon_user.png */; };
 		DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C610A29D6D00DAD536 /* icon_users.png */; };
+		DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F3D10BBD722000EB4CC /* Connect_iphone.png */; };
+		DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */; };
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
@@ -157,6 +159,8 @@
 		DA7107C310A29C9300DAD536 /* 30x-Scanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "30x-Scanner.png"; sourceTree = "<group>"; };
 		DA7107C510A29D6D00DAD536 /* icon_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_user.png; sourceTree = "<group>"; };
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
+		DA720F3D10BBD722000EB4CC /* Connect_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_iphone.png; sourceTree = "<group>"; };
+		DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_with_facebook_iphone.png; sourceTree = "<group>"; };
 		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
@@ -275,6 +279,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */,
+				DA720F3D10BBD722000EB4CC /* Connect_iphone.png */,
 				DACEFF1810B3473500944021 /* Icon1_bigger.png */,
 				DA7107BF10A29C2700DAD536 /* 30x-Chat.png */,
 				B8632D8310B013F10025684E /* groupies.plist */,
@@ -528,6 +534,8 @@
 				F98A184210B4C8C700CF204B /* FeedViewController.xib in Resources */,
 				DA0AF1A810BA5BFF00220C1D /* README.MODEL.txt in Resources */,
 				DA0AF2B710BA721500220C1D /* README.txt in Resources */,
+				DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */,
+				DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
