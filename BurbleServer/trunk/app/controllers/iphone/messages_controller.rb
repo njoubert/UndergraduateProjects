@@ -13,15 +13,20 @@ class Iphone::MessagesController < Iphone::AbstractIphoneController
     render :action => :index
   end
 
-  # POST a mesage as marked
+  # POST a message as marked
   def mark
-    begin
-      @message = Message.find(params[:message_id])
-      @message.mark(@user, true)
-      head :ok
-    rescue
-      @iphoneError[:error] = "Could not mark message as read"
-      render(:status => 500, :template => 'iphone/error.rxml')
+    if request.post?
+      begin
+        @message = Message.find(params[:message_id])
+        status = params[:message_read].to_boolean
+        @message.mark(@user, status)
+        head :ok
+      rescue
+        @iphoneError[:error] = "Could not mark message as read"
+        render(:status => 500, :template => 'iphone/error.rxml')
+      end
+    else
+      render_error("Request type not supported. Expected POST.", nil)
     end
   end
   

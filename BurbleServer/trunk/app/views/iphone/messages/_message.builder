@@ -2,4 +2,4 @@
 
 readStatus = Proc.new {|opts| opts[:builder].read(message.read?(person))}
 
-message.to_xml(:builder => rootxml, :skip_instruct => true, :procs => [readStatus])
+message.to_xml(:builder => rootxml, :skip_instruct => true, :procs => [readStatus], :include => :group, :include => :waypoint)
