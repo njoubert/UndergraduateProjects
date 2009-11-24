@@ -21,8 +21,10 @@ class Friendship < ActiveRecord::Base
         p1.save
         p2.save
       end
+      return true
     rescue Exception => ex
       logger.error ex
+      return false
     end
   end
   

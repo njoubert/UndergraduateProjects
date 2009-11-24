@@ -52,7 +52,7 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
          @fbfriendids = ActiveSupport::JSON.decode(params[:friendsfbids])
          found = 0
          @fbfriendids.each do |fid|
-           @possibleFriend = Person.find_by_fbuid!(fid)
+           @possibleFriend = Person.find_by_fbuid(fid)
            if @possibleFriend
              logger.warn @possibleFriend.name
              Friendship.makeFriends(@user, @possibleFriend)
