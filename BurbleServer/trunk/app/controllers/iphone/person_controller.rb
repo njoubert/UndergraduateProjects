@@ -61,7 +61,8 @@ class Iphone::PersonController < Iphone::AbstractIphoneController
              logger.warn "and we created a friendship, this is too cool."
            end
          end
-         render :text => "1"
+         head :ok
+        # render :text => "1"
         rescue  Exception => ex
             render_error("An error occurred while scanning for friends.", ex)
         end
