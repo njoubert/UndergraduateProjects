@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">784</int>
-		<string key="IBDocument.SystemVersion">10C540</string>
+		<string key="IBDocument.SystemVersion">10B504</string>
 		<string key="IBDocument.InterfaceBuilderVersion">740</string>
-		<string key="IBDocument.AppKitVersion">1038.25</string>
-		<string key="IBDocument.HIToolboxVersion">458.00</string>
+		<string key="IBDocument.AppKitVersion">1038.2</string>
+		<string key="IBDocument.HIToolboxVersion">437.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">62</string>
@@ -13,9 +13,9 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="88"/>
-			<integer value="89"/>
-			<integer value="71"/>
 			<integer value="1"/>
+			<integer value="89"/>
+			<integer value="34"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -209,7 +209,7 @@
 					<object class="IBUIButton" id="665645507">
 						<reference key="NSNextResponder" ref="1007663560"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 49}, {131, 37}}</string>
+						<string key="NSFrame">{{20, 49}, {280, 37}}</string>
 						<reference key="NSSuperview" ref="1007663560"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -218,25 +218,6 @@
 						<reference key="IBUIFont" ref="253199545"/>
 						<int key="IBUIButtonType">1</int>
 						<string key="IBUINormalTitle">Send Invitations</string>
-						<reference key="IBUIHighlightedTitleColor" ref="969170992"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="346433157"/>
-					</object>
-					<object class="IBUIButton" id="935537918">
-						<reference key="NSNextResponder" ref="1007663560"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{159, 49}, {141, 37}}</string>
-						<reference key="NSSuperview" ref="1007663560"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="253199545"/>
-						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Invite id 1</string>
 						<reference key="IBUIHighlightedTitleColor" ref="969170992"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -499,15 +480,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">inviteIdOneFUCKYEA</string>
-						<reference key="source" ref="935537918"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">162</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">sendMsgToGroup:</string>
 						<reference key="source" ref="841254398"/>
 						<reference key="destination" ref="372490531"/>
@@ -624,7 +596,6 @@
 							<reference ref="338477908"/>
 							<reference ref="1037305612"/>
 							<reference ref="665645507"/>
-							<reference ref="935537918"/>
 							<reference ref="1039298141"/>
 						</object>
 						<reference key="parent" ref="0"/>
@@ -757,11 +728,6 @@
 						<reference key="parent" ref="1007663560"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">161</int>
-						<reference key="object" ref="935537918"/>
-						<reference key="parent" ref="1007663560"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">164</int>
 						<reference key="object" ref="168429472"/>
 						<reference key="parent" ref="864672596"/>
@@ -797,7 +763,6 @@
 					<string>106.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
-					<string>161.IBPluginDependency</string>
 					<string>164.IBPluginDependency</string>
 					<string>165.IBPluginDependency</string>
 					<string>34.IBEditorWindowLastContentRect</string>
@@ -825,7 +790,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>MyGroupViewController</string>
 					<string>UIResponder</string>
-					<string>{{658, 276}, {320, 480}}</string>
+					<string>{{329, 276}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -835,8 +800,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{326, 30}, {320, 480}}</string>
+					<string>{{310, 59}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -850,7 +814,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{338, 296}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{661, 16}, {320, 460}}</string>
+					<string>{{329, 16}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

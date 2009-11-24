@@ -114,13 +114,18 @@
 	}
 }
 
+
+-(void)doneLeaveGroup:(id)response {
+	self.view = createGroupView;
+}	
 //Leaves group and sets view to create group view.
 -(IBAction)leaveGroup:(id)sender {
-	self.view = createGroupView;
+	[[BurbleDataManager sharedDataManager] startLeaveGroupWithTarget:self selector:@selector(doneLeaveGroup:)];
 }
 
 //Switches to group invite view.
 -(IBAction)inviteToGroup:(id)sender {
+
 	self.view = inviteToGroupView;
 }
 
@@ -239,11 +244,6 @@
 	[groupies release];
     [super dealloc];
 }
--(IBAction)inviteIdOneFUCKYEA {
-	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	[dataManager startDownloadMessages];
-}
-
 #pragma mark - 
 #pragma mark Table View Data Source Methods 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section { 

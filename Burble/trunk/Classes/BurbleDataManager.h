@@ -139,7 +139,7 @@
 //will call selector with group or error indicating success.
 - (BOOL) startCreateGroup:(NSString*)name withDesc:(NSString*)desc target:(id)obj selector:(SEL)s;		
 - (void) createGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
-- (BOOL) startLeaveGroup:target:(id)obj selector:(SEL)s;
+- (BOOL) startLeaveGroupWithTarget:(id)obj selector:(SEL)s;
 - (void) leaveGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 - (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s;
 - (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;

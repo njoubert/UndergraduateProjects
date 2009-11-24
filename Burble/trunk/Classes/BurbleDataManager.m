@@ -744,7 +744,7 @@ static BurbleDataManager *sharedDataManager;
 		[myGroup release];
 		myGroup = nil;
 	}
-
+	[self clearWaypoints];
 	Group* newG = [[Group alloc] init];
 	NSString* gN = [[NSString alloc] initWithString:name];
 	NSString* gD = [[NSString alloc] initWithString:desc];
@@ -806,7 +806,7 @@ static BurbleDataManager *sharedDataManager;
 	}
 }
 
-- (BOOL) startLeaveGroup:target:(id)obj selector:(SEL)s {
+- (BOOL) startLeaveGroupWithTarget:(id)obj selector:(SEL)s {
 	leaveGroupCallbackObj = obj;
 	leaveGroupCallbackSel = s;
 	
@@ -834,7 +834,9 @@ static BurbleDataManager *sharedDataManager;
 		myGroup = nil;
 		[self saveData];
 	}
-	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
+	//if ([leaveGroupCallbackObj respondsToSelector:leaveGroupCallbackSel]) {
+		[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
+	//}
 }
 
 - (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s {
@@ -843,7 +845,7 @@ static BurbleDataManager *sharedDataManager;
 	
 	if (group_id < 0)
 		return NO;
-	
+	[self clearWaypoints];
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/join/%d", [presistent objectForKey:@"guid"], group_id];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
