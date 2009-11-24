@@ -9,8 +9,7 @@
 #import "FeedViewController.h"
 
 
-@implementation FeedViewController
-
+@implementation FeedViewController;
 @synthesize table;
 @synthesize messages;
 @synthesize childView;
@@ -25,6 +24,11 @@
 }
 */
 
+-(void)refreshMessages  {
+	if (messages != nil)
+		[messages release];
+	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
@@ -33,9 +37,11 @@
 	
 	// Load up messages
 	dataManager = [BurbleDataManager sharedDataManager];
+	_currentMessage = nil;
 	//NSArray *reqmessages = [dataManager getMessages];
 	
 	// dummy messages
+	/*
 	NSDictionary *row1 = [[NSDictionary alloc] initWithObjectsAndKeys:
 						   @"Jon", @"sender", @"message", @"type", @"Hi! How's your day going?", @"content", nil];
 	NSDictionary *row2 = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -52,8 +58,13 @@
 	[row2 release];
 	[row3 release];
 	[array release];
-	
+	*/
+	[self refreshMessages];
     [super viewDidLoad];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+	[self refreshMessages];
 }
 
 /*
@@ -121,16 +132,24 @@
 	}
 
 	NSUInteger row = [indexPath row];
-	NSDictionary *rowData = [self.messages objectAtIndex:row];
+	//NSDictionary *rowData = [self.messages objectAtIndex:row];
+	Message* msg = [self.messages objectAtIndex:row];
 	UILabel *sender = (UILabel *)[cell.contentView viewWithTag:
 									kSenderValueTag];
-	sender.text = [rowData objectForKey:@"sender"];
+	Person* friend = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	if (friend == nil) {
+		sender.text = [NSString stringWithFormat:@"Friend ID %d", msg.sender_uid];
+	} else {
+		sender.text = [NSString stringWithString:friend.name];		
+	}
 	sender.font = [UIFont boldSystemFontOfSize:12];
 
-	
+	if (msg.read)
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+	//cell.accessoryType = UITableViewCellAcc
 	UILabel *type = (UILabel *)[cell.contentView viewWithTag:
 									kTypeValueTag];
-	type.text = [rowData objectForKey:@"type"];
+	type.text = msg.type;
 	type.font = [UIFont boldSystemFontOfSize:12];
 
 	return cell;
@@ -143,16 +162,38 @@
 	return indexPath;
 }
 
+-(void)joinedGroup:(NSURLRequest*) req {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (_currentMessage) {
+		NSLog(@"clicked index %d", buttonIndex);
+		if (buttonIndex == 0 && _currentMessage.group != nil) {
+			if ([[BurbleDataManager sharedDataManager] startJoinGroup:_currentMessage.group.group_id target:self selector:@selector(joinedGroup:)])
+				[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+		}
+		_currentMessage = nil;
+	}
+}
+
 - (void)tableView:(UITableView *)tableView
 	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSUInteger row = [indexPath row]; 
-	NSDictionary *rowData = [self.messages objectAtIndex:row];
-
-	if ([rowData objectForKey:@"type"] == @"message")
+	Message *msg = [self.messages objectAtIndex:row];
+	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
+	
+	//TODO: need to update the look of the cell to show that this has now been read.
+	
+	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	if (sender == nil) {
+		sender = [[Person alloc] init];
+		sender.name = [NSString stringWithFormat:@"Sender ID %d", msg.sender_uid];
+	}
+	if ([msg.type isEqualToString:kMessageTypeText])
 	{
-		NSString *message = [[NSString alloc] initWithFormat:
-							 @"%@", [rowData objectForKey:@"content"]];
+		NSString *message = [[NSString alloc] initWithString:msg.text];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:(@"Message Details")
 							  message:message
@@ -163,24 +204,31 @@
 		[message release];
 		[alert release];
 	}
-	if ([rowData objectForKey:@"type"] == @"invite")
+	if ([msg.type isEqualToString:kMessageTypeGroupInvite])
 	{
+		Group *g = msg.group;
+		_currentMessage = msg;
+		if (g == nil)
+			NSLog(@"nil message group");
+		else
+			NSLog(@"%@", g.name);
 		NSString *message = [[NSString alloc] initWithFormat:
-							 @"Invitation from %@", [rowData objectForKey:@"sender"]];
+							 @"Invitation to group %@", g.name];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:@"Group Invitation"
 							  message:message
-							  delegate:nil
+							  delegate:self
 							  cancelButtonTitle:@"Accept"
-							  otherButtonTitles:@"Decline"];
+							  otherButtonTitles:nil];
+		[alert addButtonWithTitle:@"Ignore"];
 		[alert show];
 		[message release];
 		[alert release];
 	}
-	if ([rowData objectForKey:@"type"] == @"routing")
+	if ([msg.type isEqualToString:kMessageTypeRoutingRequest])
 	{
 		NSString *message = [[NSString alloc] initWithFormat:
-							 @"Routing request from %@", [rowData objectForKey:@"sender"]];
+							 @"Routing request from %@", sender.name];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:@"Routing Request"
 							  message:message

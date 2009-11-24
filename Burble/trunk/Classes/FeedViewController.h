@@ -17,6 +17,7 @@
 @interface FeedViewController : UIViewController
 	<UITableViewDataSource, UITableViewDelegate>
 {
+	Message* _currentMessage;
 	NSArray *messages;
 	UITableView *table;
 	BurbleDataManager *dataManager;

@@ -420,9 +420,15 @@ static BurbleDataManager *sharedDataManager;
 /************** Just Send the Request Queue ****************/
 #pragma mark Queue Management for Server Data --- general RPCrequests
 
-- (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)o { return; }
+- (void) sendRequestToServerCallback:(RPCURLResponse*)rpcResponse withObject:(id)o { 
+	if (rpcResponse == nil || rpcResponse.response.statusCode == 500) {
+		[outgoingRequestsQueue addObject:o];
+	}
+	return; 
+
+}
 - (void)sendRequestToServer:(RPCPostRequest*) r {
-	if (nil == [RPCURLConnection sendAsyncRequest:r target:self selector:@selector(sendRequestToServerCallback:withObject:) withUserObject:nil]) {
+	if (nil == [RPCURLConnection sendAsyncRequest:r target:self selector:@selector(sendRequestToServerCallback:withObject:) withUserObject:r]) {
 		[outgoingRequestsQueue addObject:r];
 	}
 }
@@ -894,6 +900,15 @@ static BurbleDataManager *sharedDataManager;
 - (NSArray*) getFriends {
 	return allFriends;
 }
+- (Person*) getFriend:(int)uid {
+	Person* friend = nil;
+	NSEnumerator *enumerator = [allFriends objectEnumerator];
+	while (friend = [enumerator nextObject]) {
+		if (friend.uid == uid)
+			return friend;
+	}
+	return nil;
+}
 
 - (void)addWaypoint:(Waypoint *)wP {
 	if (myGroup == nil)
@@ -972,6 +987,8 @@ static BurbleDataManager *sharedDataManager;
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
 	[outgoingRequestsQueue addObject:request];
 	[self flushOutgoingQueue];
+	[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[self getUnreadMessagesCount]];
+
 }
 
 /*
