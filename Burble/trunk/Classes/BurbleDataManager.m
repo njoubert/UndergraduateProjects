@@ -543,20 +543,22 @@ static BurbleDataManager *sharedDataManager;
 		NSLog(@"receiving friendslist");
 		XMLFriendsParser* fparser = [[XMLFriendsParser alloc] initWithData:rpcResponse.data];
 		if (![fparser hasError]) {
-			NSArray* friends = [[fparser getFriends] retain];
+			NSMutableArray* friends = [[fparser getFriends] retain];
+			[allFriends release];
+			allFriends = friends;
 			NSLog(@"got friends array with %d entries", [friends count]);
-			NSEnumerator* enumerator = [friends objectEnumerator];
-			Person* f;
-			while (f = [enumerator nextObject]) {
-				[allFriends addObject:f];
-				NSLog(@"friend name: %@", f.name);
-				if ([allFriends containsObject:f]) {
-				
-				} else {
-					[allFriends addObject:f];
-				}
-			}
-			[friends release];
+//			NSEnumerator* enumerator = [friends objectEnumerator];
+//			Person* f;
+//			while (f = [enumerator nextObject]) {
+//				[allFriends addObject:f];
+//				NSLog(@"friend name: %@", f.name);
+//				if ([allFriends containsObject:f]) {
+//				
+//				} else {
+//					[allFriends addObject:f];
+//				}
+//			}
+//			[friends release];
 		}
 		[fparser release];						 
 	}

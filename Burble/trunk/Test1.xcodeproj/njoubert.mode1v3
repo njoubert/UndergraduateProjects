@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DA72115F10BC1090000EB4CC</string>
+						<string>DA72116C10BC10FE000EB4CC</string>
 						<key>history</key>
 						<array>
 							<string>DA7210E610BC0992000EB4CC</string>
@@ -320,15 +320,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>27</integer>
-									<integer>15</integer>
+									<integer>40</integer>
 									<integer>14</integer>
 									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 281}, {291, 688}}</string>
+							<string>{{0, 236}, {291, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -365,7 +364,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>XMLFriendsParser.m</string>
+								<string>BurbleDataManager.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -373,11 +372,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>XMLFriendsParser.m</string>
+										<string>BurbleDataManager.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA72115E10BC1090000EB4CC</string>
+										<string>DA72116B10BC10FE000EB4CC</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -462,9 +461,9 @@
 											<string>DA72112F10BC0E63000EB4CC</string>
 											<string>DA72113010BC0E63000EB4CC</string>
 											<string>DA72113110BC0E63000EB4CC</string>
-											<string>DA72113E10BC0F6C000EB4CC</string>
-											<string>DA72113F10BC0F6C000EB4CC</string>
-											<string>DA72114010BC0F6C000EB4CC</string>
+											<string>DA72116810BC10FE000EB4CC</string>
+											<string>DA72116910BC10FE000EB4CC</string>
+											<string>DA72116A10BC10FE000EB4CC</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
