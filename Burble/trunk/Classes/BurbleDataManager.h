@@ -67,6 +67,8 @@
 	SEL downloadedWaypointsSelector;	
 	id  downloadedFriendsTarget;
 	SEL downloadedFriendsSelector;	
+	id  downloadedGroupMembersTarget;
+	SEL downloadedGroupMembersSelector;	
 	
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
@@ -133,6 +135,9 @@
 -(BOOL)startDownloadWaypointsAndCall:(id)target withSelector:(SEL)s;
 -(BOOL)startDownloadFriends;
 -(BOOL)startDownloadFriendsAndCall:(id)target withSelector:(SEL)s;
+-(BOOL)startDownloadGroupMembers;						//We should call this frequently and update shit!
+-(BOOL)startDownloadGroupMembersAndCall:(id)target withSelector:(SEL)s;
+
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
 - (void)messageForCouldNotConnectToServer;

@@ -118,7 +118,8 @@ static BurbleDataManager *sharedDataManager;
 		downloadedWaypointsSelector = nil;	
 		downloadedFriendsTarget = nil;
 		downloadedFriendsSelector = nil;
-		
+		downloadedGroupMembersTarget = nil;
+		downloadedGroupMembersSelector = nil;
 		
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
@@ -616,6 +617,59 @@ static BurbleDataManager *sharedDataManager;
 	downloadedFriendsSelector = s;
 	return [self startDownloadFriends];
 }
+
+
+////////////////////////////
+
+-(void)downloadGroupMembersCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		XMLFriendsParser* fparser = [[XMLFriendsParser alloc] initWithData:rpcResponse.data];
+		if (![fparser hasError]) {
+			NSMutableArray* friends = [[fparser getFriends] retain];
+			[allFriends release];
+			allFriends = friends;
+			NSLog(@"got friends array with %d entries", [friends count]);
+			//			NSEnumerator* enumerator = [friends objectEnumerator];
+			//			Person* f;
+			//			while (f = [enumerator nextObject]) {
+			//				[allFriends addObject:f];
+			//				NSLog(@"friend name: %@", f.name);
+			//				if ([allFriends containsObject:f]) {
+			//				
+			//				} else {
+			//					[allFriends addObject:f];
+			//				}
+			//			}
+			//			[friends release];
+		}
+		[fparser release];						 
+	}
+	if (downloadedGroupMembersTarget != nil && [downloadedGroupMembersTarget respondsToSelector:downloadedGroupMembersSelector]) {
+		[downloadedGroupMembersTarget performSelector:downloadedGroupMembersSelector];
+		downloadedGroupMembersTarget = nil;
+		downloadedGroupMembersSelector = nil;
+	}
+	
+}
+
+
+-(BOOL)startDownloadGroupMembers {
+	if (![self isRegistered])
+		return NO;
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/friends/index", [presistent objectForKey:@"guid"]];
+	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadFriendsCallback:withObject:)]) {
+		return YES;
+	}
+	return NO;
+}
+-(BOOL)startDownloadGroupMembersAndCall:(id)target withSelector:(SEL)s {
+	downloadedGroupMembersTarget = target;
+	downloadedGroupMembersSelector = s;
+	return [self startDownloadGroupMembers];
+}
+
 
 
 /*
