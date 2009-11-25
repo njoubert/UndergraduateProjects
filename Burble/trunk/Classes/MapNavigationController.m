@@ -29,14 +29,23 @@
 }
 */
 
+- (void)showRegisterDialog {
+	RegisterViewController *rVC = [[[RegisterViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+	[self presentModalViewController:rVC animated:YES];
+}
+
+-(void)loginCallback:(NSNumber*)successObj {
+	BOOL success = [successObj boolValue];
+	if (!success)
+		[self showRegisterDialog];
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	if (![[BurbleDataManager sharedDataManager] isRegistered]) {
-		RegisterViewController *rVC = [[[RegisterViewController alloc] initWithNibName:nil bundle:nil] autorelease];
-		[self presentModalViewController:rVC animated:YES];
+		[self showRegisterDialog];
 	} else {
-		[[BurbleDataManager sharedDataManager] login];
+		[[BurbleDataManager sharedDataManager] loginWithCallback:self selector:@selector(loginCallback:)];
 	}
     [super viewDidLoad];
 }

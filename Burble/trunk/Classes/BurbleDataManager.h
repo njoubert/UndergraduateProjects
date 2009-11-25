@@ -55,6 +55,8 @@
 	Group* myGroup;
 
 	//CALLBACKS:
+	id callbackForLoginTarget;
+	SEL callbackForLoginSelector;
 	id createGroupCallbackObj;
 	SEL createGroupCallbackSel;
 	id leaveGroupCallbackObj;
@@ -150,7 +152,8 @@
 
 //runs in the background and tries to update your account info, make sure you're all good to go.
 - (void)login;
-- (void)loginCallback:(id)a1 withValue:(id)a2;
+-(void)loginWithCallback:(id)target selector:(SEL)s;
+//- (void)loginCallback:(id)a1 withValue:(id)a2;
 
 //will call selector with group or error indicating success.
 - (BOOL) startCreateGroup:(NSString*)name withDesc:(NSString*)desc target:(id)obj selector:(SEL)s;		

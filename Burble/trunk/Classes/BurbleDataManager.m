@@ -104,6 +104,9 @@ static BurbleDataManager *sharedDataManager;
 		
 		groupWaypoints = [[NSMutableArray alloc] init];
 		
+		
+		callbackForLoginTarget = nil;
+		callbackForLoginSelector = nil;
 		joinGroupCallbackSel = nil;
 		joinGroupCallbackObj = nil;
 		createGroupCallbackObj = nil;
@@ -250,7 +253,13 @@ static BurbleDataManager *sharedDataManager;
 	NSString *result = [firstWords componentsJoinedByString:@" "];
 	return result;
 }
-
+- (void)updatePresistRemovePerson {
+	[presistent removeObjectForKey:@"uid"];
+	[presistent removeObjectForKey:@"name"];
+	[presistent removeObjectForKey:@"email"];
+	[presistent removeObjectForKey:@"number"];
+	[self saveData];
+}
 - (void)updatePresistentWithPerson: (Person*)p {
 	if (nil == p)
 		return;
@@ -806,21 +815,41 @@ static BurbleDataManager *sharedDataManager;
 	[RPCURLConnection sendAsyncRequest:request target:self selector:@selector(loginCallback:withObject:)];
 	
 }
+-(void)loginWithCallback:(id)target selector:(SEL)s {
+	callbackForLoginTarget = target;
+	callbackForLoginSelector = s;
+	[self login];
+}
 - (void)loginCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
-	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
-		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
-		if (![pparser hasError]) {
-			Group* g = [pparser getGroup];
-			if (nil != g) {
-				[myGroup release];
-				myGroup = g;
+	BOOL success = YES; //so that if we could not get a response that is cool...
+	if (rpcResponse.response != nil) {
+		if (rpcResponse.response.statusCode == 200) {		
+			XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
+			if (![pparser hasError]) {
+				Group* g = [pparser getGroup];
+				if (nil != g) {
+					[myGroup release];
+					myGroup = g;
+				}
+				NSLog(@"successfull login!");
+				success = YES;
+				[self updatePresistentWithPerson:[pparser getPerson]];
+				[self updatePresistentWithMyGroup];
 			}
-			[self updatePresistentWithPerson:[pparser getPerson]];
-			[self updatePresistentWithMyGroup];
+			[rpcResponse release];
+			[pparser release];
+		} else if (rpcResponse.response.statusCode == 500) {
+			//remove the presist value of us, and we need to fukkin register shoit!
+			[self updatePresistRemovePerson];
+			success = NO;
 		}
-		[rpcResponse release];
-		[pparser release];
 	}
+	
+	 if (callbackForLoginTarget != nil && [callbackForLoginTarget respondsToSelector:callbackForLoginSelector]) {
+		 [callbackForLoginTarget performSelector:callbackForLoginSelector withObject:[NSNumber numberWithBool:success]];
+		 callbackForLoginTarget = nil;
+		 callbackForLoginSelector = nil;
+	 }
 }
 
 /*********************** GROUP STUFF *****************************/
