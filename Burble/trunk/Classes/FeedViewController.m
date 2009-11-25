@@ -64,7 +64,8 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-	[self refreshMessages];
+	
+	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
 }
 
 /*
@@ -170,8 +171,19 @@
 	if (_currentMessage) {
 		NSLog(@"clicked index %d", buttonIndex);
 		if (buttonIndex == 0 && _currentMessage.group != nil) {
-			if ([[BurbleDataManager sharedDataManager] startJoinGroup:_currentMessage.group.group_id target:self selector:@selector(joinedGroup:)])
-				[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
+			if (![[BurbleDataManager sharedDataManager] startJoinGroup:_currentMessage.group.group_id target:self selector:@selector(joinedGroup:)]) {
+				[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
+				NSString *message = [[NSString alloc] initWithString:@"Please try again"];
+				UIAlertView *alert = [[UIAlertView alloc]
+									  initWithTitle:(@"Could not start connection!")
+									  message:message
+									  delegate:nil
+									  cancelButtonTitle:@"Done"
+									  otherButtonTitles:nil];
+				[alert show];
+				[message release];
+				[alert release];
+			}
 		}
 		_currentMessage = nil;
 	}

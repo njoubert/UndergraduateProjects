@@ -112,6 +112,13 @@ static BurbleDataManager *sharedDataManager;
 		leaveGroupCallbackSel = nil;
 		myFBUID = 0;
 		
+		downloadedMessagesTarget = nil;
+		downloadedMessagesSelector = nil;
+		downloadedWaypointsTarget = nil;
+		downloadedWaypointsSelector = nil;	
+		downloadedFriendsTarget = nil;
+		downloadedFriendsSelector = nil;
+		
 		
 		//QUEUES:
 		waypointQueue = [[NSMutableArray alloc] init];
@@ -444,24 +451,20 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark Queue Management for Pushed-From-Server Data
 
 -(void)downloadMessagesCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
-	NSLog(@"callback to downloading messages");
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
-		NSLog(@"start parsing downloaded messages");
 		XMLMessagesParser* mparser = [[XMLMessagesParser alloc] initWithData:rpcResponse.data];
 		if (![mparser hasError]) {
 			NSArray* rcvdMsgs = [[mparser getMessages] retain];
-			NSLog(@"got pointer to all message objects parsed from xml");
 			NSEnumerator* enumerator = [rcvdMsgs objectEnumerator];
 			Message* m;
 			while (m = [enumerator nextObject]) {
 				[m retain];
-				NSLog(@"processing a parsed message.");
 				if ([allMessages containsObject:m]) {
 					Message* alreadyM = [allMessages objectAtIndex:[allMessages indexOfObject:m]];
 					if (m.read && !alreadyM.read) {
 						//fukkin server thinks we havent read this but fuck we already have, goddaaaam!
 						//we should tell the server that this is fucking read already, dayamn!
-						//[self markMessageAsRead:m];
+						[self markMessageAsRead:m];
 					}
 				} else {
 					//fukkin yay message received! Now we can decide what to do with this.
@@ -478,11 +481,15 @@ static BurbleDataManager *sharedDataManager;
 					}
 				}
 			}
-			NSLog(@"now we are finishing up processing messages.");
 			[rcvdMsgs release];
 			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[self getUnreadMessagesCount]];
 		}
 		[mparser release];
+	}
+	if (downloadedMessagesTarget != nil && [downloadedMessagesTarget respondsToSelector:downloadedMessagesSelector]) {
+		[downloadedMessagesTarget performSelector:downloadedMessagesSelector];
+		downloadedMessagesTarget = nil;
+		downloadedMessagesSelector = nil;
 	}
 }
 
@@ -498,6 +505,11 @@ static BurbleDataManager *sharedDataManager;
 		return YES;
 	}
 	return NO;
+}
+-(BOOL)startDownloadMessagesAndCall:(id)target withSelector:(SEL)s {
+	downloadedMessagesTarget = target;
+	downloadedMessagesSelector = s;
+	return [self startDownloadMessages];
 }
 
 -(void)downloadWaypointsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
@@ -528,14 +540,16 @@ static BurbleDataManager *sharedDataManager;
 			[wpts release];
 		}
 		[wparser release];						 
-							
 	}
-	 
+	if (downloadedWaypointsTarget != nil && [downloadedWaypointsTarget respondsToSelector:downloadedWaypointsSelector]) {
+		[downloadedWaypointsTarget performSelector:downloadedWaypointsSelector];
+		downloadedWaypointsTarget = nil;
+		downloadedWaypointsSelector = nil;
+	}
 }
 
 
 -(BOOL)startDownloadWaypoints {
-	
 	if (![self isRegistered])
 		return NO;
 	if (![self isInGroup])
@@ -547,12 +561,15 @@ static BurbleDataManager *sharedDataManager;
 		return YES;
 	}
 	return NO;
-	 
+}
+-(BOOL)startDownloadWaypointsAndCall:(id)target withSelector:(SEL)s {
+	downloadedWaypointsTarget = target;
+	downloadedWaypointsSelector = s;
+	return [self startDownloadWaypoints];
 }
 
 -(void)downloadFriendsCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
-		NSLog(@"receiving friendslist");
 		XMLFriendsParser* fparser = [[XMLFriendsParser alloc] initWithData:rpcResponse.data];
 		if (![fparser hasError]) {
 			NSMutableArray* friends = [[fparser getFriends] retain];
@@ -574,6 +591,11 @@ static BurbleDataManager *sharedDataManager;
 		}
 		[fparser release];						 
 	}
+	if (downloadedFriendsTarget != nil && [downloadedFriendsTarget respondsToSelector:downloadedFriendsSelector]) {
+		[downloadedFriendsTarget performSelector:downloadedFriendsSelector];
+		downloadedFriendsTarget = nil;
+		downloadedFriendsSelector = nil;
+	}
 	
 }
 
@@ -588,8 +610,13 @@ static BurbleDataManager *sharedDataManager;
 		return YES;
 	}
 	return NO;
-	
 }
+-(BOOL)startDownloadFriendsAndCall:(id)target withSelector:(SEL)s {
+	downloadedFriendsTarget = target;
+	downloadedFriendsSelector = s;
+	return [self startDownloadFriends];
+}
+
 
 /*
  ================================================================================
@@ -729,7 +756,6 @@ static BurbleDataManager *sharedDataManager;
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
 		XMLPersonParser* pparser = [[XMLPersonParser alloc] initWithData:rpcResponse.data];
 		if (![pparser hasError]) {
-			
 			Group* g = [pparser getGroup];
 			if (nil != g) {
 				[myGroup release];
@@ -875,6 +901,7 @@ static BurbleDataManager *sharedDataManager;
 			Group *g = [gparser getGroup];
 			myGroup = [g copy];
 			[self saveData];
+			[self startDownloadWaypoints];
 			[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:rpcResponse.response];	
 		} else {
 			[self messageForParserError:gparser];

@@ -53,17 +53,26 @@
 	
 	//GROUP STUFF:
 	Group* myGroup;
+
+	//CALLBACKS:
 	id createGroupCallbackObj;
 	SEL createGroupCallbackSel;
 	id leaveGroupCallbackObj;
 	SEL leaveGroupCallbackSel;
 	id joinGroupCallbackObj;
 	SEL joinGroupCallbackSel;
+	id  downloadedMessagesTarget;
+	SEL downloadedMessagesSelector;
+	id  downloadedWaypointsTarget;
+	SEL downloadedWaypointsSelector;	
+	id  downloadedFriendsTarget;
+	SEL downloadedFriendsSelector;	
 	
 	CLLocationManager *myLocationManager;
 	CLLocation *lastKnownLocation;
 	
 	NSMutableArray* groupWaypoints;
+	
 	
 	//QUEUES:
 	NSMutableArray* waypointQueue;
@@ -119,9 +128,11 @@
 
 //This will attempt to pull new messages from the server. Should be called periodically
 -(BOOL)startDownloadMessages;
+-(BOOL)startDownloadMessagesAndCall:(id)target withSelector:(SEL)s;
 -(BOOL)startDownloadWaypoints;
+-(BOOL)startDownloadWaypointsAndCall:(id)target withSelector:(SEL)s;
 -(BOOL)startDownloadFriends;
-
+-(BOOL)startDownloadFriendsAndCall:(id)target withSelector:(SEL)s;
 // ============= DATA CALLS for SERVER MANAGED DATA (Cached locally)
 
 - (void)messageForCouldNotConnectToServer;

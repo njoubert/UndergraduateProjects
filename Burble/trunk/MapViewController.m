@@ -62,6 +62,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[self refreshView];
+	[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshView)];
 }
 
 - (void) refreshView {

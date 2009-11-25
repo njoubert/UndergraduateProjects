@@ -77,7 +77,7 @@
 	[super viewDidLoad];
 }
 - (void)viewDidAppear:(BOOL)animated {
-	[self refreshViewData];
+	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData:)];
 }
 
 - (void)didReceiveMemoryWarning {
