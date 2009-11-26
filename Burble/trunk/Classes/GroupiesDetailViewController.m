@@ -52,16 +52,19 @@
 	
 	if ([[BurbleDataManager sharedDataManager] isInGroup])
 		[functionSectionData addObject:@"Invite to Group"];
+	
+	[table reloadData];
 		
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+	[self setupViewData];
 	[super viewWillAppear:animated];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	[self setupViewData];
+
 	[super viewDidLoad];
 }
 
@@ -162,24 +165,23 @@
 }
  */
 
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+-(void)doFunctionForTable:(UITableView *)tableView atIndex:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	NSString *name = cell.textLabel.text;
 	NSUInteger row = [indexPath row];
 	
 	
 	//Assumes we have the location of the friend to show on the map
 	//CREATE A NEW MAP CONTROLLER
 	if (row == 0) { 
-		if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
-		map.title = name;
-		[self.navigationController pushViewController:map animated:YES];
+		//if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
+		//map.title = name;
+		//[self.navigationController pushViewController:map animated:YES];
 		
 	}
-		
+	
 	//Should actually go to create new message screen
 	if (row == 1) {
-
+		
 	}
 	
 	//Should show invitation page
@@ -190,7 +192,7 @@
 			Message* invite = [[Message alloc] initWithText:@"" group:myG];
 			[invite appendReceiver:person];
 			if ([[BurbleDataManager sharedDataManager] sendMessage:invite]) {
-
+				
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend invited!" message:@"Your invite was added to your outgoing messages queue and is being sent." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[alert show];
 				[alert release];
@@ -207,10 +209,12 @@
 			[alert show];
 			[alert release];			
 		}
-
+		
 	}
-	 
-	
+}
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self doFunctionForTable:tableView atIndex:indexPath];
 }
 
 -(NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -223,12 +227,8 @@
 
 //HAVE TO DO THIS WITH GROUPIE NAMES, TOO!
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *hey = [[NSString alloc] initWithFormat: @"You've selected: Cool"];
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend selected" message:hey delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[hey release];
-	[alert release];
-	//[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[self doFunctionForTable:tableView atIndex:indexPath];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 	
 

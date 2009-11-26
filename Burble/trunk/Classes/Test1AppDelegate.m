@@ -85,7 +85,7 @@ static Test1AppDelegate *burbleApp = NULL;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
-	[dataManager presistMapRegion:mapViewController.myMap.region];
+	[dataManager presistMapState:mapViewController.myMap.region withType:mapViewController.myMap.mapType];
 	[dataManager saveData];
 	
 }

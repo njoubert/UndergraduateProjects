@@ -52,6 +52,7 @@
 	
 	BOOL hasLastMapRegion;
 	MKCoordinateRegion lastMapRegion;
+	MKMapType lastMapType;
 	
 	//LOGIN STUFF:
 	id tryToRegister_Caller;
@@ -111,10 +112,11 @@
 @property (nonatomic, retain) NSURL *baseUrl;
 @property (readonly) BOOL hasLastMapRegion;
 @property (readonly) MKCoordinateRegion lastMapRegion;
+@property (readonly) MKMapType lastMapType;
 
 // ============= INTERNAL STATE MANAGEMENT
 
-- (void)presistMapRegion:(MKCoordinateRegion)region;
+- (void)presistMapState:(MKCoordinateRegion)region withType:(MKMapType)type;
 - (void)loadData;
 - (void)saveData;
 

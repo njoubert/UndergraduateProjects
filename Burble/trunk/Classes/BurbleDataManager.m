@@ -28,7 +28,7 @@
 
 @implementation BurbleDataManager
 static BurbleDataManager *sharedDataManager;
-@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion;
+@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion, lastMapType;
 
 - (void)dealloc {
 	[baseUrl release];
@@ -183,21 +183,25 @@ static BurbleDataManager *sharedDataManager;
 	[presistent writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
 }
 
-- (void)presistMapRegion:(MKCoordinateRegion)region {
+- (void)presistMapState:(MKCoordinateRegion)region withType:(MKMapType)type {
 	hasLastMapRegion = YES;
 	lastMapRegion = region;
+	lastMapType = type;
 	[presistent removeObjectForKey:kPresistMapLat];
 	[presistent removeObjectForKey:kPresistMapLon];
 	[presistent removeObjectForKey:kPresistMapLatDelta];
 	[presistent removeObjectForKey:kPresistMapLonDelta];
+	[presistent removeObjectForKey:kPresistMapType];
 	NSString *a1 = [[NSString stringWithFormat:@"%lf", region.center.latitude] retain];
 	NSString *a2 = [[NSString stringWithFormat:@"%lf", region.center.longitude] retain];
 	NSString *a3 = [[NSString stringWithFormat:@"%lf", region.span.latitudeDelta] retain];
 	NSString *a4 = [[NSString stringWithFormat:@"%lf", region.span.longitudeDelta] retain];
+	NSString *a5 = [NSString stringWithFormat:@"%d", type];
 	[presistent setObject:a1 forKey:kPresistMapLat];
 	[presistent setObject:a2 forKey:kPresistMapLon];
 	[presistent setObject:a3 forKey:kPresistMapLatDelta];
 	[presistent setObject:a4 forKey:kPresistMapLonDelta];
+	[presistent setObject:a5 forKey:kPresistMapType];
 }
 
 //Runs after init, before anything else
@@ -223,6 +227,7 @@ static BurbleDataManager *sharedDataManager;
 			lastMapRegion.center.longitude = [[presistent objectForKey:kPresistMapLon] doubleValue];
 			lastMapRegion.span.latitudeDelta = [[presistent objectForKey:kPresistMapLatDelta] doubleValue];
 			lastMapRegion.span.longitudeDelta = [[presistent objectForKey:kPresistMapLonDelta] doubleValue];
+			lastMapType = (MKMapType) [[presistent objectForKey:kPresistMapType] intValue];
 		} else {
 			hasLastMapRegion = NO;
 		}

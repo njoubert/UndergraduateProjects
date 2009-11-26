@@ -66,11 +66,12 @@
 	BurbleDataManager* dm = [BurbleDataManager sharedDataManager];
 	if (dm.hasLastMapRegion) {
 		[myMap setRegion:dm.lastMapRegion animated: NO];
+		myMap.mapType = dm.lastMapType;
 	}
 	[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshView)];
 }
 - (void) viewDidDisappear:(BOOL)animated {
-	[[BurbleDataManager sharedDataManager] presistMapRegion:myMap.region];
+	[[BurbleDataManager sharedDataManager] presistMapState:myMap.region withType:myMap.mapType];
 }
 
 - (void) refreshView {
@@ -176,7 +177,7 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-	[[BurbleDataManager sharedDataManager] presistMapRegion:myMap.region];
+	[[BurbleDataManager sharedDataManager] presistMapState:myMap.region withType:myMap.mapType];
 }
 
 

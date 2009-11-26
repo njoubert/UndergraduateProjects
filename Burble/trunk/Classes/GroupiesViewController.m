@@ -67,20 +67,18 @@
 	if (people != nil)
 		[people release];
 	people = [[[BurbleDataManager sharedDataManager] getFriends] retain]; //this is an array of people object
+	[table reloadData];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	self.title = @"Groupies";
 	addFriendsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends:)];
-	
 	self.navigationItem.rightBarButtonItem = addFriendsButton;
-	
-	[self refreshViewData];
-	self.title = @"Groupies";	
 	[super viewDidLoad];
 }
 - (void)viewDidAppear:(BOOL)animated {
-	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData:)];
+	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData)];
 }
 
 - (void)didReceiveMemoryWarning {
