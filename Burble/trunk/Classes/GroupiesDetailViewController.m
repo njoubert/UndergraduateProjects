@@ -12,7 +12,6 @@
 
 #define kNumOfSections	2
 
-
 @implementation GroupiesDetailViewController
 
 @synthesize table;
@@ -40,7 +39,7 @@
 			pDist = [NSString stringWithFormat:@"Distance: Unknown"];
 		}
 		[infoSectionData addObject:pDist];
-		[infoSectionData addObject:[NSString stringWithFormat:@"Last Seen: %@ old", [Util prettyTimeAgo:person.position.timestamp]]];
+		[infoSectionData addObject:[NSString stringWithFormat:@"Last Seen: %@ ago", [Util prettyTimeAgo:person.position.timestamp]]];
 		[pL release];
 	} else {
 		pDist = [NSString stringWithFormat:@"Distance: Positon is Unavailable"];		
@@ -112,12 +111,11 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
-		[infoSectionData count];
+		return [infoSectionData count];
 	} else if (section == 1) {
-		[functionSectionData count];
-	} else {
-		return 0;
+		return [functionSectionData count];
 	}
+	return 0;
 }
 
 
@@ -128,7 +126,8 @@
 	
 	static NSString *FunctionCell = @"FunctionCell";
 	static NSString *InfoCell = @"InfoCell";
-	if (section == 0) {
+	if (section == 0) { //info cell
+		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:InfoCell];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
@@ -137,16 +136,19 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:15];
 		return cell;
 
-	} else if (section == 1) {
+	} else if (section == 1) { //functions cell
+		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FunctionCell];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
 		}
 		cell.textLabel.text = [functionSectionData objectAtIndex:row];
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
-		return cell;			
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
+		return cell;
+		
 	}
+	return nil;
 }
 
 #pragma mark -
@@ -168,7 +170,7 @@
 	
 	//Assumes we have the location of the friend to show on the map
 	//CREATE A NEW MAP CONTROLLER
-	if (row == 2) { 
+	if (row == 0) { 
 		if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
 		map.title = name;
 		[self.navigationController pushViewController:map animated:YES];
@@ -176,12 +178,12 @@
 	}
 		
 	//Should actually go to create new message screen
-	if (row == 3) {
+	if (row == 1) {
 
 	}
 	
 	//Should show invitation page
-	if (row == 4) {
+	if (row == 2) {
 		//try to send invite
 		Group *myG = [[BurbleDataManager sharedDataManager] getMyGroup];
 		if (myG != nil) {

@@ -117,7 +117,7 @@
 	[alert show];
 	[hey release];
 	[alert release];
-	//[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 	
 

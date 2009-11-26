@@ -25,7 +25,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphonesimulator3.1.2;
+		activeSDKPreference = iphoneos3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -587,7 +587,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1306, 1300}}";
 			sepNavSelRange = "{1467, 0}";
-			sepNavVisRange = "{893, 1843}";
+			sepNavVisRange = "{893, 1846}";
 		};
 	};
 	DA62F7E810B7BE87008655A9 /* RPCURLResponse.h */ = {
@@ -1402,7 +1402,7 @@
 		comments = "'functions' undeclared (first use in this function)";
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		rLen = 1;
-		rLoc = 135;
+		rLoc = 134;
 		rType = 1;
 	};
 	DA72168910BE9541000EB4CC /* PBXTextBookmark */ = {
@@ -1491,7 +1491,7 @@
 		ignoreCount = 0;
 		lineNumber = 258;
 		location = Test1;
-		modificationTime = 280925416.193227;
+		modificationTime = 280926168.996442;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
