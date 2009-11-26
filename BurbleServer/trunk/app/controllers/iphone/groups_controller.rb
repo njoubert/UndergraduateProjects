@@ -34,7 +34,6 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   # GET a list of people in this group
   def members
     @friends = @user.group.people
-    render :action => "../friends/index"
   end
   
   # POST a new person to add to this group
