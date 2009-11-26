@@ -35,7 +35,8 @@ class Message < ActiveRecord::Base
   
   #This returns whether a message has been read
   def read?(person)
-    return 0 < MessageReceiver.count(:all, :conditions => ["person_id = ? AND message_id = ? AND read = ?", person.id, self.id, true])
+    msgs = MessageReceiver.find(:all, :conditions => ["person_id = ? AND message_id = ? AND read = ?", person.id, self.id, true])
+    return msgs.length 
   end
   
 end
