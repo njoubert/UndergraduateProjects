@@ -22,10 +22,11 @@
 #import "XMLEventParser.h"
 #import "FBConnect/FBConnect.h"
 
-#define kPresistMapLat	@"map.region.lat"
-#define kPresistMapLon	@"map.region.lon"
-#define kPresistMapLatDelta	@"map.region.latDelta"
-#define kPresistMapLonDelta	@"map.region.lonDelta"
+#define kPresistMapLat				@"map.region.lat"
+#define kPresistMapLon				@"map.region.lon"
+#define kPresistMapLatDelta			@"map.region.latDelta"
+#define kPresistMapLonDelta			@"map.region.lonDelta"
+#define kPresistMapType				@"map.type"
 
 #define kPresistKeyGUID	@"guid"
 
@@ -37,8 +38,8 @@
 
 #define pollMessageFrequency 5000
 
-//#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
-#define kBaseUrlStr @"http://localhost:3000/iphone/"
+#define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
+//#define kBaseUrlStr @"http://localhost:3000/iphone/"
 
 #define kPresistentFilename @"BurbleData.plist"
 #define kWaypointsCacheFilename @"waypoints"
