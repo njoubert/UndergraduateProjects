@@ -72,6 +72,10 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	addFriendsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends:)];
+	
+	self.navigationItem.rightBarButtonItem = addFriendsButton;
+	
 	[self refreshViewData];
 	self.title = @"Groupies";	
 	[super viewDidLoad];
@@ -139,22 +143,27 @@
 #pragma mark Table View Delegate Methods
 
 //This handles what happens when Groupies cells are tapped
-
--(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-	return indexPath;
-}
-
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+-(void)showDetailController:(NSIndexPath *) indexPath {
+	UITableViewCell *cell = [table cellForRowAtIndexPath:indexPath];
 	NSString *name = cell.textLabel.text;
+	NSUInteger row = [indexPath row];
 	if (childController == nil) 
 		childController = [[GroupiesDetailViewController alloc] initWithNibName:@"GroupiesDetailViewController" bundle:nil];
-	NSUInteger row = [indexPath row];
 	Person *p = [people objectAtIndex:row];
 	childController.title = name;
 	childController.person = p;
-	[self.navigationController pushViewController:childController animated:YES];
-	 
+	[self.navigationController pushViewController:childController animated:YES];	
+}
+
+
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
+	[self showDetailController:indexPath]; 
+	return indexPath;
+	
+}
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self showDetailController:indexPath]; 
 }
 
 

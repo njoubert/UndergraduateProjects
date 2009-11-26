@@ -22,6 +22,8 @@
 #import "XMLEventParser.h"
 #import "FBConnect/FBConnect.h"
 
+#define kPresistKeyGUID	@"guid"
+
 #define kfbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
 #define kfbSecretKey	@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
@@ -53,6 +55,7 @@
 	
 	//GROUP STUFF:
 	Group* myGroup;
+	NSMutableArray* groupMembers;
 
 	//CALLBACKS:
 	id callbackForLoginTarget;
@@ -89,6 +92,8 @@
 	
 	//FRIENDS:
 	NSMutableArray* allFriends;
+	
+
 	
 	//FACEBOOK:
 	FBUID myFBUID;
@@ -164,6 +169,7 @@
 - (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 - (BOOL)isInGroup;
 - (Group*) getMyGroup;
+- (NSArray*) getGroupMembers;
 
 - (NSString*) getNextWaypointName;
 - (NSString*) getNextWaypointDesc;

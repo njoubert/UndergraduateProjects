@@ -14,20 +14,15 @@
 @synthesize messages;
 @synthesize childView;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
 -(void)refreshMessages  {
+	
 	if (messages != nil)
 		[messages release];
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
+	NSLog(@"refreshing messages, count %d", [messages count]);
+	[table reloadData];
+	[table setNeedsDisplay];
+	[self.view setNeedsDisplay];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -38,43 +33,14 @@
 	// Load up messages
 	dataManager = [BurbleDataManager sharedDataManager];
 	_currentMessage = nil;
-	//NSArray *reqmessages = [dataManager getMessages];
 	
-	// dummy messages
-	/*
-	NSDictionary *row1 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Jon", @"sender", @"message", @"type", @"Hi! How's your day going?", @"content", nil];
-	NSDictionary *row2 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Niels", @"sender", @"routing", @"type", nil, @"content", nil];
-	NSDictionary *row3 = [[NSDictionary alloc] initWithObjectsAndKeys:
-						   @"Janelle", @"sender", @"invite", @"type", nil, @"content", nil];
-	
-	NSArray *array = [[NSArray alloc] initWithObjects:
-					  row1, row2, row3, nil];
-
-	self.messages = array;
-	
-	[row1 release];
-	[row2 release];
-	[row3 release];
-	[array release];
-	*/
 	[self refreshMessages];
     [super viewDidLoad];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-	
 	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
 }
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
@@ -82,6 +48,7 @@
 - (NSInteger) tableView:(UITableView *)tableView
   numberOfRowsInSection:(NSInteger)section
 {
+	
 	return [self.messages count];
 }
 
@@ -131,9 +98,9 @@
 		[cell.contentView addSubview:typeValue];
 		[typeValue release];
 	}
-
+	 
 	NSUInteger row = [indexPath row];
-	//NSDictionary *rowData = [self.messages objectAtIndex:row];
+	NSLog(@"geting message from index %d, with %d msgs.", row, [self.messages count]);
 	Message* msg = [self.messages objectAtIndex:row];
 	UILabel *sender = (UILabel *)[cell.contentView viewWithTag:
 									kSenderValueTag];

@@ -250,18 +250,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				DA72140F10BE1BAB000EB4CC /* FB Sources */,
 				B8E46A0510AFBCB2000A27C5 /* FBConnect */,
-				B8E46A1010AFBCB2000A27C5 /* FBConnectGlobal.m */,
-				B8E46A1110AFBCB2000A27C5 /* FBDialog.m */,
-				B8E46A1210AFBCB2000A27C5 /* FBFeedDialog.m */,
-				B8E46A1310AFBCB2000A27C5 /* FBLoginButton.m */,
-				B8E46A1410AFBCB2000A27C5 /* FBLoginDialog.m */,
-				B8E46A1510AFBCB2000A27C5 /* FBPermissionDialog.m */,
-				B8E46A1610AFBCB2000A27C5 /* FBRequest.m */,
-				B8E46A1710AFBCB2000A27C5 /* FBSession.m */,
-				B8E46A1810AFBCB2000A27C5 /* FBStreamDialog.m */,
-				B8E46A1910AFBCB2000A27C5 /* FBXMLHandler.h */,
-				B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -327,9 +317,6 @@
 				B832F9B610B2645B00F50C41 /* Feed */,
 				B832F9B510B2645600F50C41 /* Map */,
 				B832F9B410B2644E00F50C41 /* Groupies */,
-				DACEFF1210B3465A00944021 /* RegisterViewController.h */,
-				DACEFF1310B3465A00944021 /* RegisterViewController.m */,
-				DACEFF1410B3465A00944021 /* RegisterViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -396,6 +383,9 @@
 		B8456CBD10B35CF9005EA08C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DACEFF1210B3465A00944021 /* RegisterViewController.h */,
+				DACEFF1310B3465A00944021 /* RegisterViewController.m */,
+				DACEFF1410B3465A00944021 /* RegisterViewController.xib */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -437,6 +427,24 @@
 				B8E46A0F10AFBCB2000A27C5 /* FBStreamDialog.h */,
 			);
 			path = FBConnect;
+			sourceTree = "<group>";
+		};
+		DA72140F10BE1BAB000EB4CC /* FB Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B8E46A1010AFBCB2000A27C5 /* FBConnectGlobal.m */,
+				B8E46A1110AFBCB2000A27C5 /* FBDialog.m */,
+				B8E46A1210AFBCB2000A27C5 /* FBFeedDialog.m */,
+				B8E46A1310AFBCB2000A27C5 /* FBLoginButton.m */,
+				B8E46A1410AFBCB2000A27C5 /* FBLoginDialog.m */,
+				B8E46A1510AFBCB2000A27C5 /* FBPermissionDialog.m */,
+				B8E46A1610AFBCB2000A27C5 /* FBRequest.m */,
+				B8E46A1710AFBCB2000A27C5 /* FBSession.m */,
+				B8E46A1810AFBCB2000A27C5 /* FBStreamDialog.m */,
+				B8E46A1910AFBCB2000A27C5 /* FBXMLHandler.h */,
+				B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */,
+			);
+			name = "FB Sources";
 			sourceTree = "<group>";
 		};
 		DAA6D65D10B62B4F00E2E0B0 /* RPC */ = {

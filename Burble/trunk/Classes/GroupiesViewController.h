@@ -23,6 +23,8 @@
 	UIView *addFriendView;
 	
 	UITableView *table;
+
+	UIBarButtonItem *addFriendsButton;
 	
 	//Contains all People objects
 	NSArray *people;

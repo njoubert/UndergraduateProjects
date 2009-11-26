@@ -128,7 +128,7 @@
 	if (mapTypeSegmentedControl.selectedSegmentIndex == 0) {
 		myMap.mapType = MKMapTypeStandard;
 	} else {
-		myMap.mapType = MKMapTypeSatellite;
+		myMap.mapType = MKMapTypeHybrid;
 	}	
 }
 

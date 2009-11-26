@@ -16,7 +16,7 @@ static Test1AppDelegate *burbleApp = NULL;
 @synthesize rootTabBarController;
 @synthesize groupiesNavigationController;
 @synthesize myGroupNavigationController;
-@synthesize feedViewController;
+@synthesize feedNavigationController;
 @synthesize mapNavigationController;
 
 - (id) init {
@@ -62,9 +62,9 @@ static Test1AppDelegate *burbleApp = NULL;
 
 -(void)setUnreadMessageDisplay:(int)nr {
 	if (nr == 0) {
-		feedViewController.tabBarItem.badgeValue = nil;
+		feedNavigationController.tabBarItem.badgeValue = nil;
 	} else {
-		feedViewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", nr];
+		feedNavigationController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", nr];
 	}
 
 }

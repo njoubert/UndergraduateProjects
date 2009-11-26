@@ -163,6 +163,9 @@
 }
 */
 
+- (void)refreshDataForView {
+	NSLog(@"Called to refresh mygroup data");
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -193,13 +196,14 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+	
 	if ([dataManager isInGroup]){  
 		NSLog(@"view did appear AND IN GROUP");
 		myGroup = [dataManager getMyGroup];
 		groupString = [myGroup name];
 		groupLabel.text = @"groupString"; // groupString;
 		self.view = myGroupView;
-		
+		[dataManager startDownloadGroupMembersAndCall:self withSelector:@selector(refreshDataForView:)];
 	} else {
 		NSLog(@"view did appear AND NOT IN A GROUP NO NO GROUP!");
 		self.view = createGroupView;
