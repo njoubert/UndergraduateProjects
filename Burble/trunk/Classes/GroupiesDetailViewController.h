@@ -17,9 +17,11 @@
 //Will contain more subviews for:
 //current group membership, distance away, locate page on map, message page, invite to group page (grayed)
 
-@interface GroupiesDetailViewController : UIViewController {
+@interface GroupiesDetailViewController : UIViewController <UITableViewDelegate> {
 	UITableView *table;
-	NSArray *functions;
+	
+	NSMutableArray *infoSectionData;
+	NSMutableArray *functionSectionData;
 	
 	Person* person;
 	
@@ -30,7 +32,6 @@
 
 @property (nonatomic, retain) Person* person;
 @property (nonatomic, retain) IBOutlet UITableView *table;
-@property (nonatomic, retain) NSArray *functions;
 
 
 @end

@@ -8,65 +8,62 @@
 
 #import "GroupiesDetailViewController.h"
 #import "BurbleDataManager.h"
+#import "Util.h"
+
+#define kNumOfSections	2
+
 
 @implementation GroupiesDetailViewController
 
 @synthesize table;
-@synthesize functions;
 @synthesize person;
+
+-(void)setupViewData {
+	NSString *pGroup;
+	NSString *pDist;
+	infoSectionData = [[NSMutableArray alloc] initWithCapacity:2];
+	functionSectionData = [[NSMutableArray alloc] initWithCapacity:2];
+	
+	if (person.group != nil) {
+		pGroup = [NSString stringWithFormat:@"Member Of: %@", person.group.name];
+	} else {
+		pGroup = [NSString stringWithString:@"Not in a group."];
+	}
+	[infoSectionData addObject:pGroup];
+	
+	if (person.position != nil) {
+		CLLocation *pL = [person.position getLocation];
+		double dist = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:pL];
+		if (dist > 0) {
+			pDist = [NSString stringWithFormat:@"Distance: %@", [Util prettyDistanceInMeters:dist]]; 
+		} else {
+			pDist = [NSString stringWithFormat:@"Distance: Unknown"];
+		}
+		[infoSectionData addObject:pDist];
+		[infoSectionData addObject:[NSString stringWithFormat:@"Last Seen: %@ old", [Util prettyTimeAgo:person.position.timestamp]]];
+		[pL release];
+	} else {
+		pDist = [NSString stringWithFormat:@"Distance: Positon is Unavailable"];		
+		[infoSectionData addObject:pDist];
+	}
+	
+	[functionSectionData addObject:@"Locate"];
+	[functionSectionData addObject:@"Send Message"];
+	
+	
+	if ([[BurbleDataManager sharedDataManager] isInGroup])
+		[functionSectionData addObject:@"Invite to Group"];
+		
+}
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 }
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
-- (void)viewDidAppear:(BOOL)animated {
-	
- 	
-}
- */
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	NSString *pGroup;
-	NSString *pDist;
-	if (person.group != nil) {
-		pGroup = [NSString stringWithFormat:@"In Group %@", person.group.name];
-	} else {
-		pGroup = [NSString stringWithString:@"Not in a group."];
-	}
-	if (person.position != nil) {
-		CLLocation *pL = [person.position getLocation];
-		double age = 1; //TODO: calculate age
-		double dist = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:pL];
-		if (dist > 0) {
-			pDist = [NSString stringWithFormat:@"Distance: %f m (%d mins old)", dist, age]; 
-		} else {
-			pDist = [NSString stringWithFormat:@"Distance: Unknown"];
-		}
-		[pL release];
-	} else {
-			pDist = [NSString stringWithFormat:@"Distance: Positon is Unavailable"];		
-	}
-	
-	NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:pGroup, pDist, @"Locate", @"Send Message", nil];
-	
-	if ([[BurbleDataManager sharedDataManager] isInGroup])
-		[array addObject:@"Invite to Group"];
-	
-	self.functions = array;
-	[array release];
-   [super viewDidLoad];
+	[self setupViewData];
+	[super viewDidLoad];
 }
 
 
@@ -86,7 +83,8 @@
 
 - (void)viewDidUnload {
 	self.table = nil;
-	self.functions = nil;
+	functionSectionData = nil;
+	infoSectionData = nil;
 	
 	map = nil;
 	[super viewDidUnload];
@@ -95,7 +93,8 @@
 
 - (void)dealloc {
     [table release];
-	[functions release];
+	[functionSectionData release];
+	[infoSectionData release];
 	
 	[map release];
 	[super dealloc];
@@ -107,21 +106,47 @@
 
 //This draws our list table for all of our Groupies
 
+- (NSInteger) numberOfSectionsInTableView:(UITableView*)tableView {
+	return kNumOfSections;
+}
+
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.functions count];
+	if (section == 0) {
+		[infoSectionData count];
+	} else if (section == 1) {
+		[functionSectionData count];
+	} else {
+		return 0;
+	}
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSUInteger section = indexPath.section;
+	NSUInteger row = indexPath.row;
+	
+	
 	static NSString *FunctionCell = @"FunctionCell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FunctionCell];
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
+	static NSString *InfoCell = @"InfoCell";
+	if (section == 0) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:InfoCell];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
+		}
+		cell.textLabel.text = [infoSectionData objectAtIndex:row];
+		cell.textLabel.font = [UIFont systemFontOfSize:15];
+		return cell;
+
+	} else if (section == 1) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FunctionCell];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
+		}
+		cell.textLabel.text = [functionSectionData objectAtIndex:row];
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
+		return cell;			
 	}
-	NSUInteger row = [indexPath row];
-	cell.textLabel.text = [functions objectAtIndex:row];
-	if (row > 1) cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	return cell;
 }
 
 #pragma mark -
@@ -184,6 +209,14 @@
 	}
 	 
 	
+}
+
+-(NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		return nil;
+	} else {
+		return indexPath;
+	}
 }
 
 //HAVE TO DO THIS WITH GROUPIE NAMES, TOO!

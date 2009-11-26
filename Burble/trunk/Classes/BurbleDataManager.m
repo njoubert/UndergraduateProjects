@@ -12,6 +12,7 @@
 #import "XMLMessagesParser.h"
 #import "XMLWaypointsParser.h"
 #import "XMLFriendsParser.h"
+#import "Util.h"
 
 @interface TimerQueueAdapter : NSObject {
 	SEL selToCall;
@@ -1212,7 +1213,7 @@ static BurbleDataManager *sharedDataManager;
 	}
 	
 }
-- (void)geFBFriendsList {
+- (void)getFBFriendsList {
 	NSString* fql = [NSString stringWithFormat:@"SELECT uid, name from user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1=%lld)", myFBUID];
 	NSDictionary* params = [NSDictionary dictionaryWithObject:fql forKey:@"query"];
 	[[FBRequest requestWithSession:[self fbGetSession] delegate:self] call:@"facebook.friends.get" params:params]; 
@@ -1301,7 +1302,7 @@ static BurbleDataManager *sharedDataManager;
 }
 -(void)associateFBUIDCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
-	[self geFBFriendsList];
+	[self getFBFriendsList];
 }
 //delegate method for facebook login
 -(void)session:(FBSession*)session didLogin:(FBUID)uid {
