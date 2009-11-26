@@ -83,6 +83,8 @@
 		DAE6562010A2745E007BB25E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE6561F10A2745E007BB25E /* CoreLocation.framework */; };
 		F98A184210B4C8C700CF204B /* FeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98A184110B4C8C700CF204B /* FeedViewController.xib */; };
 		F98A184910B4C93100CF204B /* FeedNagivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F98A184810B4C93100CF204B /* FeedNagivationController.m */; };
+		F9B7F8A610BE6885004FCC8A /* FeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9B7F8A410BE6885004FCC8A /* FeedDetailViewController.m */; };
+		F9B7F8A710BE6885004FCC8A /* FeedDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9B7F8A510BE6885004FCC8A /* FeedDetailViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,6 +210,9 @@
 		F98A184110B4C8C700CF204B /* FeedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedViewController.xib; sourceTree = "<group>"; };
 		F98A184710B4C93100CF204B /* FeedNagivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedNagivationController.h; sourceTree = "<group>"; };
 		F98A184810B4C93100CF204B /* FeedNagivationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedNagivationController.m; sourceTree = "<group>"; };
+		F9B7F8A310BE6885004FCC8A /* FeedDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedDetailViewController.h; sourceTree = "<group>"; };
+		F9B7F8A410BE6885004FCC8A /* FeedDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedDetailViewController.m; sourceTree = "<group>"; };
+		F9B7F8A510BE6885004FCC8A /* FeedDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedDetailViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +364,9 @@
 		B832F9B610B2645B00F50C41 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				F9B7F8A310BE6885004FCC8A /* FeedDetailViewController.h */,
+				F9B7F8A410BE6885004FCC8A /* FeedDetailViewController.m */,
+				F9B7F8A510BE6885004FCC8A /* FeedDetailViewController.xib */,
 				F98A184710B4C93100CF204B /* FeedNagivationController.h */,
 				F98A184810B4C93100CF204B /* FeedNagivationController.m */,
 				F98A184110B4C8C700CF204B /* FeedViewController.xib */,
@@ -553,6 +561,7 @@
 				DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */,
 				DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */,
 				DA7210AB10BBF74F000EB4CC /* dist.plist in Resources */,
+				F9B7F8A710BE6885004FCC8A /* FeedDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +615,7 @@
 				DA0AF12D10BA21B900220C1D /* XMLMessagesParser.m in Sources */,
 				DA0AF3C210BB645500220C1D /* XMLWaypointsParser.m in Sources */,
 				DA7210E510BC0956000EB4CC /* XMLFriendsParser.m in Sources */,
+				F9B7F8A610BE6885004FCC8A /* FeedDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
