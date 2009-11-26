@@ -29,13 +29,13 @@ class Message < ActiveRecord::Base
     if mr == nil
       raise "Attempting to set read status on a message and person that doesn't exist"
     end
-    mr.read = read
+    mr.has_read_bool = read
     mr.save!
   end
   
   #This returns whether a message has been read
   def read?(person)
-    msgs = MessageReceiver.find(:all, :conditions => ["person_id = ? AND message_id = ? AND read = ?", person.id, self.id, true])
+    msgs = MessageReceiver.find(:all, :conditions => ["person_id = ? AND message_id = ? AND has_read_bool = ?", person.id, self.id, true])
     return msgs.length 
   end
   

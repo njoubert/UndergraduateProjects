@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091124105912) do
+ActiveRecord::Schema.define(:version => 20091126073342) do
 
   create_table "beta_testers", :force => true do |t|
     t.string   "email"
@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(:version => 20091124105912) do
   end
 
   create_table "message_receivers", :force => true do |t|
-    t.integer "person_id",                     :null => false
-    t.integer "message_id",                    :null => false
-    t.boolean "read",       :default => false
+    t.integer "person_id",                        :null => false
+    t.integer "message_id",                       :null => false
+    t.boolean "has_read_bool", :default => false
   end
 
   add_index "message_receivers", ["message_id"], :name => "index_received_messages_on_message_id"
