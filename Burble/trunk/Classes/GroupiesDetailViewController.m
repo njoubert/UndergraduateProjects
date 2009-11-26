@@ -108,7 +108,7 @@
 //This draws our list table for all of our Groupies
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 5;
+	return [self.functions count];
 }
 
 

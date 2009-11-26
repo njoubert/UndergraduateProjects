@@ -25,7 +25,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphoneos3.1.2;
+		activeSDKPreference = iphonesimulator3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -1161,6 +1161,20 @@
 			DA7215A510BE5B0B000EB4CC /* PBXTextBookmark */ = DA7215A510BE5B0B000EB4CC /* PBXTextBookmark */;
 			DA7215A610BE5B0B000EB4CC /* PBXTextBookmark */ = DA7215A610BE5B0B000EB4CC /* PBXTextBookmark */;
 			DA7215A710BE5B0B000EB4CC /* PBXTextBookmark */ = DA7215A710BE5B0B000EB4CC /* PBXTextBookmark */;
+			DA7215A810BE5B5A000EB4CC /* PBXTextBookmark */ = DA7215A810BE5B5A000EB4CC /* PBXTextBookmark */;
+			DA7215A910BE61D1000EB4CC /* PBXTextBookmark */ = DA7215A910BE61D1000EB4CC /* PBXTextBookmark */;
+			DA7215AA10BE61D1000EB4CC /* XCBuildMessageTextBookmark */ = DA7215AA10BE61D1000EB4CC /* XCBuildMessageTextBookmark */;
+			DA7215AB10BE61D1000EB4CC /* PBXTextBookmark */ = DA7215AB10BE61D1000EB4CC /* PBXTextBookmark */;
+			DA7215AC10BE61D1000EB4CC /* PBXTextBookmark */ = DA7215AC10BE61D1000EB4CC /* PBXTextBookmark */;
+			DA7215AD10BE61DA000EB4CC /* PBXTextBookmark */ = DA7215AD10BE61DA000EB4CC /* PBXTextBookmark */;
+			DA7215AE10BE61DA000EB4CC /* PBXTextBookmark */ = DA7215AE10BE61DA000EB4CC /* PBXTextBookmark */;
+			DA7215AF10BE61DA000EB4CC /* PBXTextBookmark */ = DA7215AF10BE61DA000EB4CC /* PBXTextBookmark */;
+			DA7215B010BE61DA000EB4CC /* PBXTextBookmark */ = DA7215B010BE61DA000EB4CC /* PBXTextBookmark */;
+			DA7215B110BE6203000EB4CC /* PBXTextBookmark */ = DA7215B110BE6203000EB4CC /* PBXTextBookmark */;
+			DA7215B210BE62D4000EB4CC /* PBXTextBookmark */ = DA7215B210BE62D4000EB4CC /* PBXTextBookmark */;
+			DA7215B310BE62D4000EB4CC /* PBXTextBookmark */ = DA7215B310BE62D4000EB4CC /* PBXTextBookmark */;
+			DA7215B610BE6A6E000EB4CC /* PBXTextBookmark */ = DA7215B610BE6A6E000EB4CC /* PBXTextBookmark */;
+			DA7215B710BE6A6E000EB4CC /* PBXTextBookmark */ = DA7215B710BE6A6E000EB4CC /* PBXTextBookmark */;
 			DAA6D69C10B6337200E2E0B0 = DAA6D69C10B6337200E2E0B0 /* PBXTextBookmark */;
 			DAB5E7E410B407E500AF521B = DAB5E7E410B407E500AF521B /* PBXTextBookmark */;
 			DAB5E8BF10B411E400AF521B = DAB5E8BF10B411E400AF521B /* PBXTextBookmark */;
@@ -1256,17 +1270,17 @@
 	};
 	B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 2847}}";
-			sepNavSelRange = "{2630, 0}";
-			sepNavVisRange = "{2512, 201}";
+			sepNavIntBoundsRect = "{{0, 0}, {1146, 2808}}";
+			sepNavSelRange = "{2881, 0}";
+			sepNavVisRange = "{1888, 1695}";
 			sepNavWindowFrame = "{{1359, 107}, {1015, 778}}";
 		};
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {927, 2886}}";
-			sepNavSelRange = "{1055, 0}";
-			sepNavVisRange = "{337, 1930}";
+			sepNavIntBoundsRect = "{{0, 0}, {1006, 2756}}";
+			sepNavSelRange = "{6639, 0}";
+			sepNavVisRange = "{4076, 2569}";
 			sepNavWindowFrame = "{{1280, 256}, {1110, 778}}";
 		};
 	};
@@ -1288,17 +1302,17 @@
 	};
 	B88C002310B2890A002BDA85 /* Group.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {902, 741}}";
+			sepNavIntBoundsRect = "{{0, 0}, {927, 839}}";
 			sepNavSelRange = "{358, 5}";
-			sepNavVisRange = "{176, 1356}";
+			sepNavVisRange = "{0, 1532}";
 			sepNavWindowFrame = "{{2187, 138}, {658, 753}}";
 		};
 	};
 	B88C002510B28914002BDA85 /* Message.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {902, 923}}";
-			sepNavSelRange = "{1513, 0}";
-			sepNavVisRange = "{742, 1355}";
+			sepNavIntBoundsRect = "{{0, 0}, {927, 923}}";
+			sepNavSelRange = "{1130, 0}";
+			sepNavVisRange = "{131, 1966}";
 			sepNavWindowFrame = "{{442, 25}, {658, 753}}";
 		};
 	};
@@ -7775,7 +7789,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 183";
 		rLen = 0;
-		rLoc = 5798;
+		rLoc = 5875;
 		rType = 0;
 		vrLen = 1399;
 		vrLoc = 4904;
@@ -7785,7 +7799,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 201";
 		rLen = 0;
-		rLoc = 6393;
+		rLoc = 6470;
 		rType = 0;
 		vrLen = 1195;
 		vrLoc = 5684;
@@ -7795,7 +7809,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 192";
 		rLen = 0;
-		rLoc = 5931;
+		rLoc = 6008;
 		rType = 0;
 		vrLen = 1307;
 		vrLoc = 4880;
@@ -7805,7 +7819,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 190";
 		rLen = 0;
-		rLoc = 5896;
+		rLoc = 5973;
 		rType = 0;
 		vrLen = 1320;
 		vrLoc = 4901;
@@ -7815,7 +7829,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 200";
 		rLen = 0;
-		rLoc = 6234;
+		rLoc = 6311;
 		rType = 0;
 		vrLen = 1288;
 		vrLoc = 5359;
@@ -7825,7 +7839,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 200";
 		rLen = 0;
-		rLoc = 6231;
+		rLoc = 6308;
 		rType = 0;
 		vrLen = 1261;
 		vrLoc = 5425;
@@ -7835,7 +7849,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 200";
 		rLen = 0;
-		rLoc = 6235;
+		rLoc = 6312;
 		rType = 0;
 		vrLen = 1329;
 		vrLoc = 5425;
@@ -7845,7 +7859,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 200";
 		rLen = 0;
-		rLoc = 6276;
+		rLoc = 6353;
 		rType = 0;
 		vrLen = 1222;
 		vrLoc = 5771;
@@ -7985,7 +7999,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 201";
 		rLen = 0;
-		rLoc = 6270;
+		rLoc = 6347;
 		rType = 0;
 		vrLen = 1214;
 		vrLoc = 5602;
@@ -8025,7 +8039,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 203";
 		rLen = 0;
-		rLoc = 6313;
+		rLoc = 6390;
 		rType = 0;
 		vrLen = 1654;
 		vrLoc = 2997;
@@ -8115,7 +8129,7 @@
 		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
 		name = "FeedViewController.m: 203";
 		rLen = 0;
-		rLoc = 6166;
+		rLoc = 6243;
 		rType = 0;
 		vrLen = 1426;
 		vrLoc = 5348;
@@ -9860,7 +9874,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 199";
 		rLen = 0;
-		rLoc = 6646;
+		rLoc = 6645;
 		rType = 0;
 		vrLen = 1190;
 		vrLoc = 3871;
@@ -10172,7 +10186,7 @@
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		name = "GroupiesDetailViewController.m: 137";
 		rLen = 0;
-		rLoc = 5646;
+		rLoc = 5667;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 2621;
@@ -11207,7 +11221,7 @@
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		name = "GroupiesDetailViewController.m: 173";
 		rLen = 90;
-		rLoc = 5695;
+		rLoc = 5716;
 		rType = 0;
 		vrLen = 1478;
 		vrLoc = 3864;
@@ -11257,7 +11271,7 @@
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		name = "GroupiesDetailViewController.m: 173";
 		rLen = 90;
-		rLoc = 5695;
+		rLoc = 5716;
 		rType = 0;
 		vrLen = 1588;
 		vrLoc = 3754;
@@ -11327,7 +11341,7 @@
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		name = "GroupiesDetailViewController.m: 168";
 		rLen = 0;
-		rLoc = 4627;
+		rLoc = 4648;
 		rType = 0;
 		vrLen = 2075;
 		vrLoc = 3761;
@@ -11357,7 +11371,7 @@
 		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
 		name = "GroupiesDetailViewController.m: 163";
 		rLen = 0;
-		rLoc = 4581;
+		rLoc = 4602;
 		rType = 0;
 		vrLen = 1755;
 		vrLoc = 3565;
@@ -11391,6 +11405,145 @@
 		rType = 0;
 		vrLen = 1930;
 		vrLoc = 337;
+	};
+	DA7215A810BE5B5A000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 27";
+		rLen = 0;
+		rLoc = 686;
+		rType = 0;
+		vrLen = 1930;
+		vrLoc = 337;
+	};
+	DA7215A910BE61D1000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002910B2891B002BDA85 /* Position.m */;
+		name = "Position.m: 31";
+		rLen = 0;
+		rLoc = 655;
+		rType = 0;
+		vrLen = 954;
+		vrLoc = 655;
+	};
+	DA7215AA10BE61D1000EB4CC /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'invite' undeclared (first use in this function)";
+		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 99;
+		rType = 1;
+	};
+	DA7215AB10BE61D1000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
+		name = "GroupiesDetailViewController.m: 100";
+		rLen = 0;
+		rLoc = 2630;
+		rType = 0;
+		vrLen = 254;
+		vrLoc = 2512;
+	};
+	DA7215AC10BE61D1000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 75";
+		rLen = 0;
+		rLoc = 2044;
+		rType = 0;
+		vrLen = 866;
+		vrLoc = 1502;
+	};
+	DA7215AD10BE61DA000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002310B2890A002BDA85 /* Group.m */;
+		name = "Group.m: 19";
+		rLen = 5;
+		rLoc = 358;
+		rType = 0;
+		vrLen = 1532;
+		vrLoc = 0;
+	};
+	DA7215AE10BE61DA000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002510B28914002BDA85 /* Message.h */;
+		name = "Message.h: 39";
+		rLen = 0;
+		rLoc = 1130;
+		rType = 0;
+		vrLen = 1966;
+		vrLoc = 131;
+	};
+	DA7215AF10BE61DA000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 27";
+		rLen = 0;
+		rLoc = 686;
+		rType = 0;
+		vrLen = 1930;
+		vrLoc = 337;
+	};
+	DA7215B010BE61DA000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 120";
+		rLen = 0;
+		rLoc = 3253;
+		rType = 0;
+		vrLen = 1766;
+		vrLoc = 2340;
+	};
+	DA7215B110BE6203000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 210";
+		rLen = 0;
+		rLoc = 6639;
+		rType = 0;
+		vrLen = 2539;
+		vrLoc = 4106;
+	};
+	DA7215B210BE62D4000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 210";
+		rLen = 0;
+		rLoc = 6639;
+		rType = 0;
+		vrLen = 2569;
+		vrLoc = 4076;
+	};
+	DA7215B310BE62D4000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
+		name = "FeedViewController.m: 169";
+		rLen = 0;
+		rLoc = 5264;
+		rType = 0;
+		vrLen = 1949;
+		vrLoc = 4527;
+	};
+	DA7215B610BE6A6E000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */;
+		name = "FeedViewController.m: 169";
+		rLen = 0;
+		rLoc = 5264;
+		rType = 0;
+		vrLen = 1949;
+		vrLoc = 4527;
+	};
+	DA7215B710BE6A6E000EB4CC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
+		name = "GroupiesDetailViewController.m: 111";
+		rLen = 0;
+		rLoc = 2881;
+		rType = 0;
+		vrLen = 1695;
+		vrLoc = 1888;
 	};
 	DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {
 		uiCtxt = {
@@ -11727,7 +11880,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1328, 4134}}";
 			sepNavSelRange = "{2044, 0}";
-			sepNavVisRange = "{1502, 783}";
+			sepNavVisRange = "{1502, 866}";
 			sepNavWindowFrame = "{{1456, 145}, {658, 753}}";
 		};
 	};
@@ -11756,9 +11909,9 @@
 	};
 	DAE6558F10A250FB007BB25E /* FeedViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {902, 3341}}";
-			sepNavSelRange = "{120, 0}";
-			sepNavVisRange = "{0, 1008}";
+			sepNavIntBoundsRect = "{{0, 0}, {1062, 2951}}";
+			sepNavSelRange = "{5264, 0}";
+			sepNavVisRange = "{4527, 1949}";
 			sepNavWindowFrame = "{{15, 0}, {945, 773}}";
 		};
 	};

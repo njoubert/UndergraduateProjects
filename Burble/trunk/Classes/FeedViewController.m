@@ -166,6 +166,7 @@
 	//TODO: need to update the look of the cell to show that this has now been read.
 	
 	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	//TODO: if this person is a group member but not a friend, you should check
 	if (sender == nil) {
 		sender = [[Person alloc] init];
 		sender.name = [NSString stringWithFormat:@"Sender ID %d", msg.sender_uid];

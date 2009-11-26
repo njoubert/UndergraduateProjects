@@ -208,5 +208,4 @@
 -(void)fbShowLoginBox;
 -(FBSession*)fbGetSession;
 
-
 @end
