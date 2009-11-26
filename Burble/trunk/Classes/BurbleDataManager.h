@@ -103,6 +103,7 @@
 	//FACEBOOK:
 	FBUID myFBUID;
 	FBSession* _fbsession;
+	int _fbFriendsCount;
 }
 + (BurbleDataManager *) sharedDataManager;
 

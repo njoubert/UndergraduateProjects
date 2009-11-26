@@ -1193,7 +1193,7 @@ static BurbleDataManager *sharedDataManager;
 		int friendCount = [uidStr intValue];
 		
 		NSString *title= [[NSString alloc] initWithString:@"Scanned Facebook Friends!"];
-		NSString *message= [[NSString alloc] initWithFormat:@"We connected you with %d friends. Your facebook ID has also been associated, so that your facebook friends can find you.", friendCount];
+		NSString *message= [[NSString alloc] initWithFormat:@"We scanned your %d friends and connected you to %d Burble users. Your facebook ID has also been associated, so that your facebook friends can find you.", _fbFriendsCount, friendCount];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alert show];
@@ -1221,7 +1221,8 @@ static BurbleDataManager *sharedDataManager;
 - (void)request:(FBRequest*)request didLoad:(id)result { 
 	NSArray* users = result; 
 	NSMutableArray* alluids = [[NSMutableArray alloc] initWithCapacity:[users count]];
-	NSLog(@"how many did we get: %d", [users count]);
+	_fbFriendsCount = [users count];
+	NSLog(@"how many did we get: %d", _fbFriendsCount);
 	for (NSInteger i=0; i<[users count];i++) {
 		NSDictionary *user = [users objectAtIndex:i];
 		NSString* uid = [user objectForKey:@"uid"];
