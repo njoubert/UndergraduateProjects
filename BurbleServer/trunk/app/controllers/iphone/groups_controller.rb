@@ -4,7 +4,7 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   
   # GET your current group
   def index
-  
+    render :xml => @user.group
   end
   
   # GET a blank group
@@ -33,16 +33,18 @@ class Iphone::GroupsController < Iphone::AbstractIphoneController
   
   # GET a list of people in this group
   def members
-    
+    @friends = @user.group.people
+    render :action => "../friends/index"
   end
   
   # POST a new person to add to this group
   def add_member
-    if request.post?
+    render_error("Request type not supported at this time.", nil)
+#    if request.post?
       
-    else
+#    else
       
-    end
+#    end
   end
   
   # POST a group to join
