@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Test1AppDelegate.h"
-#import "FeedMessageViewController.h"
+#import "FeedDetailViewController.h"
 #import "Message.h"
 
 #define kSenderValueTag		1
@@ -20,11 +20,10 @@
 	Message* _currentMessage;
 	NSArray *messages;
 	UITableView *table;
-	FeedMessageViewController *childView;
+	FeedDetailViewController *childView;
 }
 
 @property (nonatomic, retain) NSArray *messages;
 @property (nonatomic, retain) IBOutlet UITableView *table;
-@property (nonatomic, retain) FeedMessageViewController *childView;
 
 @end
