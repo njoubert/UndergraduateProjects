@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
-#import "BurbleDataManager.h"
-
 
 @interface MyGroupViewController : UIViewController <UITextFieldDelegate>{
 	UITextField *groupTextField;
@@ -22,7 +20,6 @@
 	UIView *messageGroupView;
 	UILabel *groupLabel;
 	UILabel *groupMsgLabel;
-	BurbleDataManager *dataManager;
 	Group *myGroup;
 	NSArray *groupies;
 }

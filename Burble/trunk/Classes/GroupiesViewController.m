@@ -10,7 +10,7 @@
 #import "NSDictionary-MutableDeepCopy.h"
 #import "GroupiesDetailViewController.h"
 #import "Test1AppDelegate.h"
-
+#import "BurbleDataManager.h"
 #import "ImportFriendsViewController.h"
 
 @implementation GroupiesViewController
@@ -64,10 +64,9 @@
 }
 */
 - (void)refreshViewData {
-	dataManager = [BurbleDataManager sharedDataManager];
 	if (people != nil)
 		[people release];
-	people = [[dataManager getFriends] retain]; //this is an array of people object
+	people = [[[BurbleDataManager sharedDataManager] getFriends] retain]; //this is an array of people object
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -109,7 +108,6 @@
 	
 	[people release];
 		
-	[dataManager release];
 	[childController release];
 	[import release];
 	

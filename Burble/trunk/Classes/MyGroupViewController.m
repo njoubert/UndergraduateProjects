@@ -175,12 +175,9 @@
 	[array release];
 	
 	self.title = @"My Group";
-
-	dataManager = [BurbleDataManager sharedDataManager];
-	
-	if ([dataManager isInGroup]){  
+	if ([[BurbleDataManager sharedDataManager] isInGroup]){  
 		
-		myGroup = [dataManager getMyGroup];
+		myGroup = [[BurbleDataManager sharedDataManager] getMyGroup];
 		groupString = [myGroup name];
 		groupLabel.text = @"groupString"; // groupString;
 		self.view = myGroupView;
@@ -197,13 +194,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	
-	if ([dataManager isInGroup]){  
+	if ([[BurbleDataManager sharedDataManager] isInGroup]){  
 		NSLog(@"view did appear AND IN GROUP");
-		myGroup = [dataManager getMyGroup];
+		myGroup = [[BurbleDataManager sharedDataManager] getMyGroup];
 		groupString = [myGroup name];
 		groupLabel.text = @"groupString"; // groupString;
 		self.view = myGroupView;
-		[dataManager startDownloadGroupMembersAndCall:self withSelector:@selector(refreshDataForView:)];
+		[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshDataForView:)];
 	} else {
 		NSLog(@"view did appear AND NOT IN A GROUP NO NO GROUP!");
 		self.view = createGroupView;
@@ -291,7 +288,6 @@
 #pragma mark -
 #pragma mark Table Delegate Methods
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSUInteger row = [indexPath row];
 	return indexPath;
 }
 

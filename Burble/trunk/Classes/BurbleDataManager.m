@@ -27,7 +27,7 @@
 
 @implementation BurbleDataManager
 static BurbleDataManager *sharedDataManager;
-@synthesize currentDirectoryPath, baseUrl;
+@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion;
 
 - (void)dealloc {
 	[baseUrl release];
@@ -89,6 +89,7 @@ static BurbleDataManager *sharedDataManager;
 		baseUrl = [[NSURL alloc] initWithString:kBaseUrlStr];
 		
 		myGroup = nil; //load this from presistent later
+		hasLastMapRegion = NO;
 		
 		CLLocationCoordinate2D locCor;
 		locCor.longitude = 0;
@@ -181,6 +182,23 @@ static BurbleDataManager *sharedDataManager;
 	[presistent writeToFile:[[self currentDirectoryPath] stringByAppendingPathComponent:kPresistentFilename] atomically:YES];
 }
 
+- (void)presistMapRegion:(MKCoordinateRegion)region {
+	hasLastMapRegion = YES;
+	lastMapRegion = region;
+	[presistent removeObjectForKey:kPresistMapLat];
+	[presistent removeObjectForKey:kPresistMapLon];
+	[presistent removeObjectForKey:kPresistMapLatDelta];
+	[presistent removeObjectForKey:kPresistMapLonDelta];
+	NSString *a1 = [[NSString stringWithFormat:@"%lf", region.center.latitude] retain];
+	NSString *a2 = [[NSString stringWithFormat:@"%lf", region.center.longitude] retain];
+	NSString *a3 = [[NSString stringWithFormat:@"%lf", region.span.latitudeDelta] retain];
+	NSString *a4 = [[NSString stringWithFormat:@"%lf", region.span.longitudeDelta] retain];
+	[presistent setObject:a1 forKey:kPresistMapLat];
+	[presistent setObject:a2 forKey:kPresistMapLon];
+	[presistent setObject:a3 forKey:kPresistMapLatDelta];
+	[presistent setObject:a4 forKey:kPresistMapLonDelta];
+}
+
 //Runs after init, before anything else
 - (void)loadData {
 	//attempt to load PresistentData
@@ -197,6 +215,15 @@ static BurbleDataManager *sharedDataManager;
 				myGroup.description = [[NSString alloc] initWithString:[presistent objectForKey:@"myGroup.description"]];
 		} else {
 			myGroup = nil;
+		}
+		if (nil != [presistent objectForKey:kPresistMapLat]) {
+			hasLastMapRegion = YES;
+			lastMapRegion.center.latitude = [[presistent objectForKey:kPresistMapLat] doubleValue];
+			lastMapRegion.center.longitude = [[presistent objectForKey:kPresistMapLon] doubleValue];
+			lastMapRegion.span.latitudeDelta = [[presistent objectForKey:kPresistMapLatDelta] doubleValue];
+			lastMapRegion.span.longitudeDelta = [[presistent objectForKey:kPresistMapLonDelta] doubleValue];
+		} else {
+			hasLastMapRegion = NO;
 		}
 		if (nil != [presistent objectForKey:@"myFBUID"])
 			myFBUID = [[presistent objectForKey:@"myFBUID"] longLongValue];

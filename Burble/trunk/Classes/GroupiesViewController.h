@@ -10,7 +10,6 @@
 #import "FBConnect/FBConnect.h"
 #import "GroupiesDetailViewController.h"
 #import "Test1AppDelegate.h"
-#import "BurbleDataManager.h"
 #import "ImportFriendsViewController.h"
 
 //This is the root view for the Groupies navigation controller
@@ -29,7 +28,6 @@
 	//Contains all People objects
 	NSArray *people;
 	
-	BurbleDataManager *dataManager;
 	GroupiesDetailViewController *childController;
 	ImportFriendsViewController *import;
 

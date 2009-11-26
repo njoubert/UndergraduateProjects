@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Test1AppDelegate.h"
-#import "BurbleDataManager.h"
 #import "FeedMessageViewController.h"
+#import "Message.h"
 
 #define kSenderValueTag		1
 #define kTypeValueTag		2
@@ -20,7 +20,6 @@
 	Message* _currentMessage;
 	NSArray *messages;
 	UITableView *table;
-	BurbleDataManager *dataManager;
 	FeedMessageViewController *childView;
 }
 

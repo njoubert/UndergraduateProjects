@@ -54,8 +54,8 @@
 			<object class="IBUITabBarController" id="754087327">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="478271266">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="719299513">
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="25939155">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="210164293">
 						<string key="IBUITitle">Feed</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
@@ -66,7 +66,7 @@
 					</object>
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="754087327"/>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="401755517">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="544040910">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{320, 44}</string>
@@ -76,13 +76,13 @@
 					</object>
 					<object class="NSArray" key="IBUIViewControllers">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="862529850">
+						<object class="IBUIViewController" id="598646139">
 							<reference key="IBUIToolbarItems" ref="0"/>
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="757673417">
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="177240391">
 								<reference key="IBUINavigationBar"/>
 								<string key="IBUITitle">Item</string>
 							</object>
-							<reference key="IBUIParentViewController" ref="478271266"/>
+							<reference key="IBUIParentViewController" ref="25939155"/>
 							<string key="IBUINibName">FeedViewController</string>
 						</object>
 					</object>
@@ -120,7 +120,7 @@
 							</object>
 						</object>
 					</object>
-					<reference ref="478271266"/>
+					<reference ref="25939155"/>
 					<object class="IBUINavigationController" id="892534564">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="174106730">
 							<string key="IBUITitle">My Group</string>
@@ -252,9 +252,25 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">feedNavigationController</string>
 						<reference key="source" ref="664661524"/>
-						<reference key="destination" ref="478271266"/>
+						<reference key="destination" ref="25939155"/>
 					</object>
 					<int key="connectionID">58</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">mapViewController</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="611212632"/>
+					</object>
+					<int key="connectionID">59</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">myGroupViewController</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="887510601"/>
+					</object>
+					<int key="connectionID">60</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -299,7 +315,7 @@
 							<reference ref="437237498"/>
 							<reference ref="892534564"/>
 							<reference ref="1038071413"/>
-							<reference ref="478271266"/>
+							<reference ref="25939155"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -415,38 +431,38 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">53</int>
-						<reference key="object" ref="478271266"/>
+						<reference key="object" ref="25939155"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="719299513"/>
-							<reference ref="862529850"/>
-							<reference ref="401755517"/>
+							<reference ref="210164293"/>
+							<reference ref="598646139"/>
+							<reference ref="544040910"/>
 						</object>
 						<reference key="parent" ref="754087327"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">54</int>
-						<reference key="object" ref="719299513"/>
-						<reference key="parent" ref="478271266"/>
+						<reference key="object" ref="210164293"/>
+						<reference key="parent" ref="25939155"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">55</int>
-						<reference key="object" ref="862529850"/>
+						<reference key="object" ref="598646139"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="757673417"/>
+							<reference ref="177240391"/>
 						</object>
-						<reference key="parent" ref="478271266"/>
+						<reference key="parent" ref="25939155"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">56</int>
-						<reference key="object" ref="757673417"/>
-						<reference key="parent" ref="862529850"/>
+						<reference key="object" ref="177240391"/>
+						<reference key="parent" ref="598646139"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">57</int>
-						<reference key="object" ref="401755517"/>
-						<reference key="parent" ref="478271266"/>
+						<reference key="object" ref="544040910"/>
+						<reference key="parent" ref="25939155"/>
 					</object>
 				</object>
 			</object>
@@ -487,7 +503,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 					</object>
-					<string>{{132, 37}, {320, 480}}</string>
+					<string>{{14, 45}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>Test1AppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -517,7 +533,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">58</int>
+			<int key="maxID">60</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -720,7 +736,9 @@
 							<string>feedNavigationController</string>
 							<string>groupiesNavigationController</string>
 							<string>mapNavigationController</string>
+							<string>mapViewController</string>
 							<string>myGroupNavigationController</string>
+							<string>myGroupViewController</string>
 							<string>rootTabBarController</string>
 							<string>window</string>
 						</object>
@@ -729,7 +747,9 @@
 							<string>FeedNagivationController</string>
 							<string>GroupiesNavigationController</string>
 							<string>MapNavigationController</string>
+							<string>MapViewController</string>
 							<string>MyGroupNavigationController</string>
+							<string>MyGroupViewController</string>
 							<string>UITabBarController</string>
 							<string>UIWindow</string>
 						</object>

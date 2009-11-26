@@ -58,7 +58,6 @@
 	self.functions = nil;
 	
 	map = nil;
-	msg = nil;
 	invite = nil;
 	[super viewDidUnload];
 }
@@ -69,7 +68,6 @@
 	[functions release];
 	
 	[map release];
-	[msg release];
 	[invite release];
 	[super dealloc];
 }
@@ -113,6 +111,7 @@
 	NSString *name = cell.textLabel.text;
 	NSUInteger row = [indexPath row];
 	
+	/*
 	//Assumes we have the location of the friend to show on the map
 	//CREATE A NEW MAP CONTROLLER
 	if (row == 2) { 
@@ -135,6 +134,7 @@
 		invite.title = name;
 		[self.navigationController pushViewController:invite animated:YES];
 	}
+	 */
 	
 }
 

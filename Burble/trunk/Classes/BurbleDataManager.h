@@ -22,6 +22,11 @@
 #import "XMLEventParser.h"
 #import "FBConnect/FBConnect.h"
 
+#define kPresistMapLat	@"map.region.lat"
+#define kPresistMapLon	@"map.region.lon"
+#define kPresistMapLatDelta	@"map.region.latDelta"
+#define kPresistMapLonDelta	@"map.region.lonDelta"
+
 #define kPresistKeyGUID	@"guid"
 
 #define kfbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
@@ -29,10 +34,6 @@
 
 #define kNumOfConcurrentRequestsFromQueue 2
 #define kTimeBetweenRequests 1.0
-
-#define fbAppID			#"177510903250"
-#define fbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
-#define fbSecretKey		@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
 #define pollMessageFrequency 5000
 
@@ -47,6 +48,9 @@
 	BOOL bIsFirstLaunch;								//Indicates whether this is the app's first launch
 	NSMutableDictionary *presistent;
 	NSURL *baseUrl;
+	
+	BOOL hasLastMapRegion;
+	MKCoordinateRegion lastMapRegion;
 	
 	//LOGIN STUFF:
 	id tryToRegister_Caller;
@@ -103,9 +107,12 @@
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
 @property (nonatomic, retain) NSURL *baseUrl;
+@property (readonly) BOOL hasLastMapRegion;
+@property (readonly) MKCoordinateRegion lastMapRegion;
 
 // ============= INTERNAL STATE MANAGEMENT
 
+- (void)presistMapRegion:(MKCoordinateRegion)region;
 - (void)loadData;
 - (void)saveData;
 

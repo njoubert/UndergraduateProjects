@@ -10,8 +10,8 @@
 #import <Foundation/Foundation.h>
 
 #import "MapViewController.h" 
-#import "FeedViewController.h"
 #import "MyGroupViewController.h"
+#import "Person.h"
 
 //This is the subview for each individual Groupie
 //Will contain more subviews for:
@@ -25,7 +25,6 @@
 	
 	//create a new map view
 	MapViewController *map;
-	FeedViewController *msg;
 	MyGroupViewController *invite;
 	
 }

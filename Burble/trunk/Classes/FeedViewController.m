@@ -8,6 +8,7 @@
 
 #import "FeedViewController.h"
 
+#import "BurbleDataManager.h"
 
 @implementation FeedViewController;
 @synthesize table;
@@ -31,7 +32,6 @@
 	self.title = @"Feed";
 	
 	// Load up messages
-	dataManager = [BurbleDataManager sharedDataManager];
 	_currentMessage = nil;
 	
 	[self refreshMessages];

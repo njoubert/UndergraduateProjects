@@ -10,6 +10,7 @@
 #import "RegisterViewController.h"
 #import "AddWaypointViewController.h"
 
+#import "BurbleDataManager.h"
 @implementation MapViewController
 
 @synthesize myMap;
@@ -46,7 +47,7 @@
 	
 	self.navigationItem.leftBarButtonItem = locateButton;
 	self.navigationItem.rightBarButtonItem = waypointButton;
-	
+
 	[self refreshView];
 	
 }
@@ -62,7 +63,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[self refreshView];
+	BurbleDataManager* dm = [BurbleDataManager sharedDataManager];
+	if (dm.hasLastMapRegion) {
+		[myMap setRegion:dm.lastMapRegion animated: NO];
+	}
 	[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshView)];
+}
+- (void) viewDidDisappear:(BOOL)animated {
+	[[BurbleDataManager sharedDataManager] presistMapRegion:myMap.region];
 }
 
 - (void) refreshView {
@@ -142,6 +150,8 @@
 		mySpan.latitudeDelta = (CLLocationDegrees) 0.03;
 		mySpan.longitudeDelta = (CLLocationDegrees) 0.03;
 		myRegion.span = mySpan;
+		NSLog(@"%lf, %lf, %lf, %lf", myRegion.center.latitude, myRegion.center.longitude, myRegion.span.latitudeDelta, myRegion.span.longitudeDelta);
+		
 		[myMap setRegion: myRegion animated: true];
 		
 	} else {
@@ -166,6 +176,7 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	[[BurbleDataManager sharedDataManager] presistMapRegion:myMap.region];
 }
 
 

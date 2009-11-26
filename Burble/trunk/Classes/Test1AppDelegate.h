@@ -11,7 +11,10 @@
 #import "GroupiesNavigationController.h"
 #import "MyGroupNavigationController.h"
 #import "FeedNagivationController.h"
-#import "BurbleDataManager.h"
+#import "MapViewController.h"
+#import "FeedViewController.h"
+#import "MyGroupViewController.h"
+#import "GroupiesViewController.h"
 
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
@@ -21,6 +24,11 @@
 	FeedNagivationController *feedNavigationController;
 	MyGroupNavigationController *myGroupNavigationController;
 	GroupiesNavigationController *groupiesNavigationController;
+	
+	MapViewController *mapViewController;
+	//FeedViewController *feedViewController;
+	MyGroupViewController *myGroupViewController;
+	//GroupiesViewController *groupiesViewController;
 	UIActivityIndicatorView *activityView;
 }
 
@@ -36,6 +44,10 @@
 @property (nonatomic, retain) IBOutlet FeedNagivationController *feedNavigationController;
 @property (nonatomic, retain) IBOutlet MyGroupNavigationController *myGroupNavigationController;
 @property (nonatomic, retain) IBOutlet GroupiesNavigationController *groupiesNavigationController;
+@property (nonatomic, retain) IBOutlet MapViewController *mapViewController;
+//@property (nonatomic, retain) IBOutlet GroupiesNavigationController *feedViewController;
+@property (nonatomic, retain) IBOutlet MyGroupViewController *myGroupViewController;
+//@property (nonatomic, retain) IBOutlet GroupiesNavigationController *groupiesViewController;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @end

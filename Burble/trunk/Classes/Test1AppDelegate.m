@@ -8,6 +8,8 @@
 
 #import "Test1AppDelegate.h"
 
+#import "BurbleDataManager.h"
+
 @implementation Test1AppDelegate
 
 static Test1AppDelegate *burbleApp = NULL;
@@ -18,6 +20,7 @@ static Test1AppDelegate *burbleApp = NULL;
 @synthesize myGroupNavigationController;
 @synthesize feedNavigationController;
 @synthesize mapNavigationController;
+@synthesize mapViewController, myGroupViewController;
 
 - (id) init {
 	if (!burbleApp) {
@@ -82,6 +85,7 @@ static Test1AppDelegate *burbleApp = NULL;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	BurbleDataManager *dataManager = [BurbleDataManager sharedDataManager];
+	[dataManager presistMapRegion:mapViewController.myMap.region];
 	[dataManager saveData];
 	
 }
