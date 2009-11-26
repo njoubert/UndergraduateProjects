@@ -13,7 +13,6 @@
 @implementation FeedViewController;
 @synthesize table;
 @synthesize messages;
-@synthesize childView;
 
 -(void)refreshMessages  {
 	
@@ -35,6 +34,12 @@
 	_currentMessage = nil;
 	
 	[self refreshMessages];
+
+	Message* testMessage = [[Message alloc]initWithText:@"Wow"];
+	testMessage.type = kMessageTypeText;
+	//self.messages = [[NSArray alloc] initWithObjects:testMessage, nil];
+	[self.messages addObject: testMessage];
+
     [super viewDidLoad];
 }
 
@@ -173,6 +178,7 @@
 	}
 	if ([msg.type isEqualToString:kMessageTypeText])
 	{
+/*
 		NSString *message = [[NSString alloc] initWithString:msg.text];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:(@"Message Details")
@@ -183,6 +189,8 @@
 		[alert show];
 		[message release];
 		[alert release];
+*/
+		[self showDetailController:indexPath]; 
 	}
 	if ([msg.type isEqualToString:kMessageTypeGroupInvite])
 	{
@@ -199,7 +207,7 @@
 							  message:message
 							  delegate:self
 							  cancelButtonTitle:@"Accept"
-							  otherButtonTitles:nil];
+							  otherButtonTitles:@"Reply"];
 		[alert addButtonWithTitle:@"Ignore"];
 		[alert show];
 		[message release];
@@ -221,6 +229,25 @@
 	}
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+//This handles what happens when Groupies cells are tapped
+-(void)showDetailController:(NSIndexPath *) indexPath {
+	NSUInteger row = [indexPath row]; 
+	Message *msg = [self.messages objectAtIndex:row];
+	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
+	
+	//TODO: need to update the look of the cell to show that this has now been read.
+	
+	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	
+	if (childView == nil) 
+		childView = [[FeedDetailViewController alloc] initWithNibName:@"FeedDetailViewController" bundle:nil];
+	
+	childView.title = @"Message from %@", sender.name;
+	childView.message = msg;
+	[self.navigationController pushViewController:childView animated:YES];	
 }
 
 - (void)didReceiveMemoryWarning {
