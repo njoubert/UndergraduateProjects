@@ -47,4 +47,6 @@
 
 -(id)initWithCLLocation:(CLLocation*)loc;
 
+-(CLLocation*)getLocation;
+
 @end

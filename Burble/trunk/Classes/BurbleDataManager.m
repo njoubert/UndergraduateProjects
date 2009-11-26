@@ -1130,6 +1130,22 @@ static BurbleDataManager *sharedDataManager;
  ================================================================================ 
  */
 
+/*
+ ================================================================================
+ LOCATION STUFF	
+ ================================================================================ 
+ */
+#pragma mark -
+#pragma mark Location Stuff
+
+
+-(double) calculateDistanceFromMe:(const CLLocation*)other {
+	if (lastKnownLocation == nil || other == nil)
+		return -1;
+	
+	return [lastKnownLocation getDistanceFrom:other];
+	
+}
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 
@@ -1155,6 +1171,8 @@ static BurbleDataManager *sharedDataManager;
 		
 	}
 }
+
+
 
 /*
  ================================================================================

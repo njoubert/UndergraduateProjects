@@ -25,7 +25,6 @@
 	
 	//create a new map view
 	MapViewController *map;
-	MyGroupViewController *invite;
 	
 }
 

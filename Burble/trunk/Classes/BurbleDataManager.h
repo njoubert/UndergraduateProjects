@@ -198,6 +198,10 @@
 - (int)unsentMessagesCount;
 - (NSArray*)getUnsentMessages;
 
+// =============  LOCATION DATA
+
+-(double) calculateDistanceFromMe:(const CLLocation*)other;
+
 // =============  FACEBOOK INTEGRATION
 
 -(void)fbShowLoginBox;

@@ -153,11 +153,12 @@
 	[self.navigationController pushViewController:childController animated:YES];	
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self showDetailController:indexPath]; 
+}
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-	[self showDetailController:indexPath]; 
-	return indexPath;
-	
+	return indexPath;	
 }
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {

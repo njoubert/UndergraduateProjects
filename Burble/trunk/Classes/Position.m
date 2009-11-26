@@ -27,6 +27,14 @@
 	return self;
 }
 
+-(CLLocation*)getLocation {
+	CLLocationCoordinate2D coord;
+	coord.latitude = lat;
+	coord.longitude = lon;
+	CLLocation* loc = [[CLLocation alloc] initWithCoordinate:coord altitude:elevation horizontalAccuracy:haccuracy verticalAccuracy:vaccuracy timestamp:timestamp];
+	return loc;
+}
+
 -(void)convertToData:(RPCPostData*)pData {
 	NSString* latStr = [NSString stringWithFormat:@"%f", lat];	
 	NSString* lonStr = [NSString stringWithFormat:@"%f", lon];	
