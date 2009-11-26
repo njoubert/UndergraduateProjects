@@ -15,7 +15,6 @@
 @synthesize messages;
 
 -(void)refreshMessages  {
-	
 	if (messages != nil)
 		[messages release];
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];

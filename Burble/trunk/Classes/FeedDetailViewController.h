@@ -11,20 +11,17 @@
 
 #import "Message.h"
 
-//This is the subview for each individual Groupie
-//Will contain more subviews for:
-//current group membership, distance away, locate page on map, message page, invite to group page (grayed)
-
 @interface FeedDetailViewController : UIViewController {
-	UITableView *table;
 	NSArray *functions;
 	
+	UILabel *msgText;
 	Message* message;
 }
 
 @property (nonatomic, retain) Message* message;
-@property (nonatomic, retain) IBOutlet UITableView *table;
+@property (nonatomic, retain) IBOutlet UILabel *msgText;
 @property (nonatomic, retain) NSArray *functions;
 
+-(IBAction)replyTo:(id)sender;
 
 @end

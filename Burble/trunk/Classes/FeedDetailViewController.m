@@ -11,9 +11,16 @@
 
 @implementation FeedDetailViewController
 
-@synthesize table;
+@synthesize msgText;
 @synthesize functions;
 @synthesize message;
+
+-(IBAction)replyTo:(id)sender {
+	NSString *title = [sender titleForState:UIControlStateNormal];
+	NSString *newText = [[NSString alloc] initWithFormat:@"%@ button pressed.", title];
+	msgText.text = newText;
+	[newText release];
+}
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
@@ -38,6 +45,7 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	msgText.text = self.message.text;
    [super viewDidLoad];
 }
 
@@ -57,69 +65,18 @@
 }
 
 - (void)viewDidUnload {
-	self.table = nil;
 	self.functions = nil;
-	
+	self.msgText = nil;
+
 	[super viewDidUnload];
 }
 
 
 - (void)dealloc {
-    [table release];
 	[functions release];
+	[msgText release];
 	
 	[super dealloc];
 }
-
-
-#pragma mark -
-#pragma mark Table View Data Source Methods
-
-//This draws our list table for all of our Groupies
-
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 5;
-}
-
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *FunctionCell = @"FunctionCell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FunctionCell];
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FunctionCell] autorelease];
-	}
-	NSUInteger row = [indexPath row];
-	cell.textLabel.text = [functions objectAtIndex:row];
-	if (row > 1) cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	return cell;
-}
-
-#pragma mark -
-#pragma mark Table View Delegate Methods
-
-//This handles what happens when Functions cells are tapped
-/*
--(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-	[search resignFirstResponder];
-	return indexPath;
-}
- */
-
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	
-}
-
-//HAVE TO DO THIS WITH GROUPIE NAMES, TOO!
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *hey = [[NSString alloc] initWithFormat: @"You've selected: Cool"];
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend selected" message:hey delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[hey release];
-	[alert release];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-	
-
 
 @end
