@@ -146,7 +146,7 @@
 			_position.speed = [_currentElementText doubleValue];
 		} else if ([elementName isEqualToString:@"timestamp"]) {
 			NSDateFormatter *dF = [[NSDateFormatter alloc] init];
-			[dF setDateFormat:@"yyyy-MM-dd'T'hh:mm:ss'Z'"];
+			[dF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 			_position.timestamp = [dF dateFromString:_currentElementText];
 		}

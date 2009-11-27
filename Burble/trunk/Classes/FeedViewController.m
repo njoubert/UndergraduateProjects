@@ -21,7 +21,7 @@
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
 	NSLog(@"refreshing messages, count %d", [messages count]);
 	[table reloadData];
-	//[table setNeedsDisplay];
+	[table setNeedsDisplay];
 	//[self.view setNeedsDisplay];
 }
 

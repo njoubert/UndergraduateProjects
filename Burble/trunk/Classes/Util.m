@@ -19,6 +19,7 @@
 	int days;
 	
 	NSTimeInterval interval = [past timeIntervalSinceNow];
+	NSLog(@"interval: %f", interval);
 	seconds = -1*interval;
 	minutes = seconds / 60;
 	hours = minutes / 60;

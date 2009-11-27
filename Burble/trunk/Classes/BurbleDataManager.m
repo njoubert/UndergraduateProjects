@@ -528,6 +528,17 @@ static BurbleDataManager *sharedDataManager;
 				}
 			}
 			[rcvdMsgs release];
+			//now we sort the allMessages array
+			
+			NSSortDescriptor *sortDescriptor;
+			sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"sent_time"
+														  ascending:YES] autorelease];
+			NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+			NSArray *sortedArray;
+			sortedArray = [allMessages sortedArrayUsingDescriptors:sortDescriptors];
+			[allMessages release];
+			allMessages = [[NSMutableArray alloc] initWithArray:sortedArray];
+			
 			[[Test1AppDelegate sharedAppDelegate] setUnreadMessageDisplay:[self getUnreadMessagesCount]];
 		}
 		[mparser release];

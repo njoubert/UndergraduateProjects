@@ -115,9 +115,11 @@
 			_currentMessage.waypoint_id = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"sent-time"]) {
 			NSDateFormatter *dF = [[NSDateFormatter alloc] init];
-			[dF setDateFormat:@"yyyy-MM-dd'T'hh:mm:ss'Z'"];
+			[dF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 			_currentMessage.sent_time = [dF dateFromString:_currentElementText];
+			if (_currentMessage.sent_time == nil)
+				NSLog(@"WTF nil date noooooooo");			
 		} else if ([elementName isEqualToString:@"text"]) {
 			_currentMessage.text = _currentElementText;
 		} else if ([elementName isEqualToString:@"read"]) {
