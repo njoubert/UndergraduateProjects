@@ -9,6 +9,7 @@
 #import "FeedViewController.h"
 
 #import "BurbleDataManager.h"
+#import "Util.h"
 
 @implementation FeedViewController;
 @synthesize table;
@@ -20,29 +21,19 @@
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
 	NSLog(@"refreshing messages, count %d", [messages count]);
 	[table reloadData];
-	[table setNeedsDisplay];
-	[self.view setNeedsDisplay];
+	//[table setNeedsDisplay];
+	//[self.view setNeedsDisplay];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
 	self.title = @"Feed";
-	
-	// Load up messages
 	_currentMessage = nil;
-	
-	[self refreshMessages];
-
-	Message* testMessage = [[Message alloc]initWithText:@"Wow"];
-	testMessage.type = kMessageTypeText;
-	//self.messages = [[NSArray alloc] initWithObjects:testMessage, nil];
-	[self.messages addObject: testMessage];
-
     [super viewDidLoad];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
+	[self refreshMessages];
 	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
 }
 
@@ -50,9 +41,7 @@
 #pragma mark Table View Data Source Methods
 
 - (NSInteger) tableView:(UITableView *)tableView
-  numberOfRowsInSection:(NSInteger)section
-{
-	
+  numberOfRowsInSection:(NSInteger)section {
 	return [self.messages count];
 }
 
@@ -70,16 +59,16 @@
 				 initWithStyle:UITableViewCellStyleDefault
 				 reuseIdentifier:CellTableIdentifier] autorelease];
 		
-		CGRect senderLabelRect = CGRectMake(0, 5, 70, 15);
+		CGRect senderLabelRect = CGRectMake(0, 5, 40, 15);
 		UILabel *senderLabel = [[UILabel alloc] initWithFrame:senderLabelRect];
 		senderLabel.textAlignment = UITextAlignmentRight;
-		senderLabel.text = @"sender";
+		senderLabel.text = @"from";
 		senderLabel.font = [UIFont boldSystemFontOfSize:12];
 		senderLabel.textColor = [UIColor lightGrayColor];
 		[cell.contentView addSubview: senderLabel];
 		[senderLabel release];
 		
-		CGRect typeLabelRect = CGRectMake(0, 26, 70, 15); 
+		CGRect typeLabelRect = CGRectMake(0, 26, 40, 15); 
 		UILabel *typeLabel = [[UILabel alloc] initWithFrame:typeLabelRect];
 		typeLabel.textAlignment = UITextAlignmentRight;
 		typeLabel.text = @"type";
@@ -87,20 +76,29 @@
 		typeLabel.textColor = [UIColor lightGrayColor];
 		[cell.contentView addSubview: typeLabel];
 		[typeLabel release];
-
-		CGRect senderValueRect = CGRectMake(80, 5, 200, 15);
+		
+		CGRect senderValueRect = CGRectMake(50, 5, 200, 15);
 		UILabel *senderValue = [[UILabel alloc] initWithFrame:
 			senderValueRect];
 		senderValue.tag = kSenderValueTag;
 		[cell.contentView addSubview:senderValue];
 		[senderValue release];
 		
-		CGRect typeValueRect = CGRectMake(80, 25, 200, 15);
+		CGRect typeValueRect = CGRectMake(50, 25, 200, 15);
 		UILabel *typeValue = [[UILabel alloc] initWithFrame:
 			typeValueRect];
 		typeValue.tag = kTypeValueTag;
 		[cell.contentView addSubview:typeValue];
 		[typeValue release];
+
+		CGRect ageValueRect = CGRectMake(180, 5, 200, 15);
+		UILabel *ageValue = [[UILabel alloc] initWithFrame:
+							  ageValueRect];
+		ageValue.tag = kAgeValueTag;
+		[cell.contentView addSubview:ageValue];
+		[ageValue release];
+		
+	
 	}
 	 
 	NSUInteger row = [indexPath row];
@@ -124,6 +122,10 @@
 	type.text = msg.type;
 	type.font = [UIFont boldSystemFontOfSize:12];
 
+	UILabel *age = (UILabel*)[cell.contentView viewWithTag:kAgeValueTag];
+	age.text = [NSString stringWithFormat:@"%@ old", [Util prettyTimeAgo:msg.sent_time]];
+	age.font = [UIFont systemFontOfSize:12];
+	age.textColor = [UIColor lightGrayColor];
 	return cell;
 }
 
@@ -160,9 +162,8 @@
 	}
 }
 
-- (void)tableView:(UITableView *)tableView
-	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+//This handles what happens when Groupies cells are tapped
+-(void)showDetailController:(NSIndexPath *) indexPath {
 	NSUInteger row = [indexPath row]; 
 	Message *msg = [self.messages objectAtIndex:row];
 	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
@@ -170,7 +171,30 @@
 	//TODO: need to update the look of the cell to show that this has now been read.
 	
 	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
-	//TODO: if this person is a group member but not a friend, you should check
+	
+	if (childView == nil) 
+		childView = [[FeedDetailViewController alloc] initWithNibName:@"FeedDetailViewController" bundle:nil];
+	
+	childView.title = @"Message from %@", sender.name;
+	childView.message = msg;
+	[self.navigationController pushViewController:childView animated:YES];	
+}
+
+- (void)tableView:(UITableView *)tableView
+	didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSUInteger row = [indexPath row]; 
+	Message *msg = [self.messages objectAtIndex:row];
+	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
+	[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+	[tableView setNeedsDisplay];
+	
+	//TODO: need to update the look of the cell to show that this has now been read.
+	
+	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	if (sender == nil)
+		sender = [[BurbleDataManager sharedDataManager] getGroupMember:msg.sender_uid];
+
 	if (sender == nil) {
 		sender = [[Person alloc] init];
 		sender.name = [NSString stringWithFormat:@"Sender ID %d", msg.sender_uid];
@@ -206,7 +230,7 @@
 							  message:message
 							  delegate:self
 							  cancelButtonTitle:@"Accept"
-							  otherButtonTitles:@"Reply"];
+							  otherButtonTitles:nil];
 		[alert addButtonWithTitle:@"Ignore"];
 		[alert show];
 		[message release];
@@ -228,25 +252,6 @@
 	}
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-
-//This handles what happens when Groupies cells are tapped
--(void)showDetailController:(NSIndexPath *) indexPath {
-	NSUInteger row = [indexPath row]; 
-	Message *msg = [self.messages objectAtIndex:row];
-	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
-	
-	//TODO: need to update the look of the cell to show that this has now been read.
-	
-	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
-	
-	if (childView == nil) 
-		childView = [[FeedDetailViewController alloc] initWithNibName:@"FeedDetailViewController" bundle:nil];
-	
-	childView.title = @"Message from %@", sender.name;
-	childView.message = msg;
-	[self.navigationController pushViewController:childView animated:YES];	
 }
 
 - (void)didReceiveMemoryWarning {

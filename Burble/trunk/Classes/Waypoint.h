@@ -51,6 +51,8 @@
 @property int group_id;
 @property int person_id;
 
+-(BOOL)isSynced;
+-(BOOL)isMine;
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription;
 -(NSString*) title;
 -(NSString*) subtitle;

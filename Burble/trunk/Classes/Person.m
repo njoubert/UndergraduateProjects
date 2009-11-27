@@ -7,7 +7,7 @@
 //
 
 #import "Person.h"
-
+#import "Util.h"
 
 @implementation Person
 
@@ -42,6 +42,25 @@
 	[pData appendValue:number forKey:kRPC_PersonNumberKey];
 	[pData appendValue:email forKey:kRPC_PersonEmailKey];
 	[uidStr release];
+}
+
+#pragma mark -
+#pragma mark MKAnnotation
+
+- (CLLocationCoordinate2D) coordinate {
+	if (position != nil)
+		return position.coordinate;
+	CLLocationCoordinate2D blank;
+	return blank;
+}
+
+- (NSString*) title {
+	return name;
+}
+- (NSString*) subtitle {
+	if (position != nil)
+		return [NSString stringWithFormat:@"%@ old", [Util prettyTimeAgo:position.timestamp]];
+	return [NSString stringWithString:@"Unknown position"];
 }
 
 #pragma mark -

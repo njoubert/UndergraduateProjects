@@ -52,12 +52,20 @@
 	
 }
 
-- (void)refreshWaypoints {
+- (void)addAnnotations {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
-	[myMap removeAnnotations:[myMap annotations]];
+	
 	NSArray* wayPoints = [dM getWaypoints];
 	for (int i = 0; i < [wayPoints count]; i++) {
 		[myMap addAnnotation:[wayPoints objectAtIndex:i]];
+	}
+
+	if (![dM isInGroup])
+		return;
+	NSArray* groupMembers = [dM getGroupMembers];
+	
+	for (int i = 0; i < [groupMembers count]; i++) {
+		[myMap addAnnotation:[groupMembers objectAtIndex:i]];
 	}
 }
 
@@ -67,7 +75,11 @@
 	if (dm.hasLastMapRegion) {
 		[myMap setRegion:dm.lastMapRegion animated: NO];
 		myMap.mapType = dm.lastMapType;
+		if (dm.lastMapType == MKMapTypeHybrid) {
+			mapTypeSegmentedControl.selectedSegmentIndex = 1;
+		}
 	}
+	[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshView)];
 	[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshView)];
 }
 - (void) viewDidDisappear:(BOOL)animated {
@@ -82,7 +94,8 @@
 		waypointButton.enabled = NO;
 		groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
 	}
-	[self refreshWaypoints];
+	[myMap removeAnnotations:[myMap annotations]];
+	[self addAnnotations];
 }
 
 
@@ -185,5 +198,37 @@
     [super dealloc];
 }
 
+#pragma mark MKMapViewDelegate
+#pragma mark -
+
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+	MKPinAnnotationView *view = nil;
+	if ([annotation isKindOfClass:[Waypoint class]]) {
+		
+		view = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"waypoints"];
+		if (nil == view)
+			view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"waypoints"] autorelease];
+		if ([((Waypoint*) annotation) isMine]) {
+			[view setPinColor:MKPinAnnotationColorRed];
+		} else {
+			[view setPinColor:MKPinAnnotationColorPurple];
+		}
+		[view setCanShowCallout:YES];
+		[view setAnimatesDrop:NO];
+		
+	} else if ([annotation isKindOfClass:[Person class]]) {
+		
+		view = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"people"];
+		if (nil == view)
+			view = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"people"] autorelease];
+		view.image = [UIImage imageNamed:@"dot.png"];
+		[view setCanShowCallout:YES];
+		
+	} else {
+		//CLLocation *location = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
+		//[self setCurrentLocation:location];
+	}
+	return view;
+}
 
 @end

@@ -41,13 +41,13 @@
 		hStr = @"hour";
 	}
 	if (minutes > 1) {
-		mStr = @"minutes";
+		mStr = @"mins";
 	} else {
-		mStr = @"minute";
+		mStr = @"min";
 	}
 		
 	if (days > 0) {
-		retval = [NSString stringWithFormat:@"%d %@, %d %@, %d %@", days, dStr, hours, hStr, minutes, mStr];
+		retval = [NSString stringWithFormat:@"%d %@, %d %@", days, dStr, hours, hStr];
 	} else if (hours > 0) {
 		retval = [NSString stringWithFormat:@"%d %@, %d %@", hours, hStr, minutes, mStr];
 	} else {

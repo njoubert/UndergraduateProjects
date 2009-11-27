@@ -46,12 +46,12 @@
 		[infoSectionData addObject:pDist];
 	}
 	
-	[functionSectionData addObject:@"Locate"];
+	[functionSectionData addObject:@"Locate on Map"];
 	[functionSectionData addObject:@"Send Message"];
 	
 	
 	if ([[BurbleDataManager sharedDataManager] isInGroup])
-		[functionSectionData addObject:@"Invite to Group"];
+		[functionSectionData addObject:@"Invite to My Group"];
 	
 	[table reloadData];
 		

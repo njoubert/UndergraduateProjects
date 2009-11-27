@@ -13,6 +13,7 @@
 
 #define kSenderValueTag		1
 #define kTypeValueTag		2
+#define kAgeValueTag		3
 
 @interface FeedViewController : UIViewController
 	<UITableViewDataSource, UITableViewDelegate>

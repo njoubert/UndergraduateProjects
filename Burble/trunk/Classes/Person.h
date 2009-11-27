@@ -22,7 +22,7 @@
 #import "Position.h"
 #import "Group.h"
 
-@interface Person : RemoteModel <NSCopying, NSCoding> {
+@interface Person : RemoteModel <NSCopying, NSCoding, MKAnnotation> {
 	int uid;
 	NSString	*guid;
 	NSString	*name;

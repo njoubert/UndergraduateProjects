@@ -48,5 +48,6 @@
 -(id)initWithCLLocation:(CLLocation*)loc;
 
 -(CLLocation*)getLocation;
+-(CLLocationCoordinate2D) coordinate;
 
 @end

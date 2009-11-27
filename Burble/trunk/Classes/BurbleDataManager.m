@@ -1023,7 +1023,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (Group*) getMyGroup {
- 	return [myGroup copy];
+ 	return myGroup;
 }
 - (NSArray*) getGroupMembers {
 	if ([self isInGroup]) {
@@ -1032,6 +1032,21 @@ static BurbleDataManager *sharedDataManager;
 		return nil;
 	}
 }
+- (int) getGroupMembersCount {
+	if (groupMembers != nil)
+		return [groupMembers count];
+	return 0;
+}
+- (Person*) getGroupMember:(int)uid {
+	Person* member = nil;
+	NSEnumerator *enumerator = [groupMembers objectEnumerator];
+	while (member = [enumerator nextObject]) {
+		if (member.uid == uid) 
+			return member;
+	}
+	return nil;
+}
+
 
 /*********************** FRIEND STUFF *****************************/
 #pragma mark -
@@ -1058,6 +1073,8 @@ static BurbleDataManager *sharedDataManager;
 	[waypointQueue addObject:wP];
 	[self flushWaypointQueue];
 }
+
+
 
 - (void)clearWaypoints {
 	[self flushWaypointQueue];

@@ -54,6 +54,14 @@
 	[pData appendValue:[timestamp description] forKey:kRPC_PositionDateTimeKey];
 
 }
+
+-(CLLocationCoordinate2D) coordinate {
+	CLLocationCoordinate2D coord;
+	coord.latitude = lat;
+	coord.longitude = lon;
+	return coord;
+}
+
 -(void)dealloc {
 	[timestamp release];
 	[super dealloc];

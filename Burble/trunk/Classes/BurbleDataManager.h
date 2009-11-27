@@ -59,10 +59,31 @@
 	NSString* tryToRegister_Name;
 	//NSMutableDictionary* viewsToRefreshOnLogins;
 	
+	CLLocationManager *myLocationManager;
+	CLLocation *lastKnownLocation;
+	NSMutableArray* groupWaypoints;
+	
+	//QUEUES:
+	NSMutableArray* waypointQueue;
+	NSMutableArray* positionQueue;
+	NSMutableArray* outgoingMessagesQueue;
+	NSMutableArray* outgoingRequestsQueue; //for stuff you dont care about what comes back
+	
+	//MESSAGES:
+	NSMutableArray* allMessages;	//This is a sorted-by-arrival-time messages
+	
+	//FRIENDS:
+	NSMutableArray* allFriends;
+	
 	//GROUP STUFF:
 	Group* myGroup;
 	NSMutableArray* groupMembers;
-
+	
+	//FACEBOOK:
+	FBUID myFBUID;
+	FBSession* _fbsession;
+	int _fbFriendsCount;
+	
 	//CALLBACKS:
 	id callbackForLoginTarget;
 	SEL callbackForLoginSelector;
@@ -80,31 +101,6 @@
 	SEL downloadedFriendsSelector;	
 	id  downloadedGroupMembersTarget;
 	SEL downloadedGroupMembersSelector;	
-	
-	CLLocationManager *myLocationManager;
-	CLLocation *lastKnownLocation;
-	
-	NSMutableArray* groupWaypoints;
-	
-	
-	//QUEUES:
-	NSMutableArray* waypointQueue;
-	NSMutableArray* positionQueue;
-	NSMutableArray* outgoingMessagesQueue;
-	NSMutableArray* outgoingRequestsQueue; //for stuff you dont care about what comes back
-	
-	//MESSAGES:
-	NSMutableArray* allMessages;	//This is a sorted-by-arrival-time messages
-	
-	//FRIENDS:
-	NSMutableArray* allFriends;
-	
-
-	
-	//FACEBOOK:
-	FBUID myFBUID;
-	FBSession* _fbsession;
-	int _fbFriendsCount;
 }
 + (BurbleDataManager *) sharedDataManager;
 
@@ -178,9 +174,16 @@
 - (void) leaveGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
 - (BOOL) startJoinGroup:(int)group_id target:(id)obj selector:(SEL)s;
 - (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj;
+
+- (int) getFriendsCount;
+- (NSArray*) getFriends;
+- (Person*) getFriend:(int)uid;
+
 - (BOOL)isInGroup;
-- (Group*) getMyGroup;
+- (int) getGroupMembersCount;
 - (NSArray*) getGroupMembers;
+- (Person*) getGroupMember:(int)uid;
+- (Group*) getMyGroup;
 
 - (NSString*) getNextWaypointName;
 - (NSString*) getNextWaypointDesc;
@@ -188,10 +191,6 @@
 - (void)clearWaypoints;
 - (int)getWaypointCount;
 - (NSArray*)getWaypoints;
-
-- (int) getFriendsCount;
-- (NSArray*) getFriends;
-- (Person*) getFriend:(int)uid;
 
 - (NSArray*) getMessages;		//returns a list of Message* objects
 - (int) getMessagesCount;

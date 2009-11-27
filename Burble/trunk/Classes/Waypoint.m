@@ -7,7 +7,7 @@
 //
 
 #import "Waypoint.h"
-
+#import "BurbleDataManager.h"
 
 @implementation Waypoint
 @synthesize coordinate, uid, group_id, person_id, name, description, elevation;
@@ -23,14 +23,21 @@
 	return self;
 }
 
+-(BOOL)isSynced {
+	return (uid > 0);
+}
+-(BOOL)isMine {
+	return (uid <= 0) || (person_id == [[BurbleDataManager sharedDataManager] getUid]);
+}
+
 -(NSString*) title {
 	return name;
 }
 -(NSString*) subtitle {
-	if (uid <= 0)
-		return [NSString stringWithFormat:@"%@ (local only)", description];
-	else 
+	if ([self isSynced])
 		return [NSString stringWithFormat:@"%@ (synced)", description];
+	else 
+		return [NSString stringWithFormat:@"%@ (local only)", description];
 }
 -(void)setLatitude:(double)lat {
 	coordinate.latitude = lat;
