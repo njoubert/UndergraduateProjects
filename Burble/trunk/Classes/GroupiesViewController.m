@@ -17,9 +17,8 @@
 
 @synthesize addFriendView;
 @synthesize mainView;
-
 @synthesize table;
-
+@synthesize noFriendsNotificationView;
 @synthesize people;
 
 //For old search methods
@@ -78,6 +77,8 @@
 	[super viewDidLoad];
 }
 - (void)viewDidAppear:(BOOL)animated {
+	if ([[BurbleDataManager sharedDataManager] getFBUID] != 0)
+		[noFriendsNotificationView removeFromSuperview];
 	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData)];
 }
 

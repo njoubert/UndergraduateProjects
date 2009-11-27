@@ -55,7 +55,6 @@
 		DA7107C810A29D6D00DAD536 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7107C610A29D6D00DAD536 /* icon_users.png */; };
 		DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F3D10BBD722000EB4CC /* Connect_iphone.png */; };
 		DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */; };
-		DA7210AB10BBF74F000EB4CC /* dist.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA7210AA10BBF74F000EB4CC /* dist.plist */; };
 		DA7210E510BC0956000EB4CC /* XMLFriendsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7210E410BC0956000EB4CC /* XMLFriendsParser.m */; };
 		DA7215DC10BE7E66000EB4CC /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7215DB10BE7E66000EB4CC /* Util.m */; };
 		DA7217B510BF3F2E000EB4CC /* dot.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7217B410BF3F2E000EB4CC /* dot.png */; };
@@ -168,7 +167,6 @@
 		DA7107C610A29D6D00DAD536 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		DA720F3D10BBD722000EB4CC /* Connect_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_iphone.png; sourceTree = "<group>"; };
 		DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Connect_with_facebook_iphone.png; sourceTree = "<group>"; };
-		DA7210AA10BBF74F000EB4CC /* dist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dist.plist; sourceTree = "<group>"; };
 		DA7210E310BC0956000EB4CC /* XMLFriendsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLFriendsParser.h; sourceTree = "<group>"; };
 		DA7210E410BC0956000EB4CC /* XMLFriendsParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLFriendsParser.m; sourceTree = "<group>"; };
 		DA7215DA10BE7E66000EB4CC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				DA0AF2B610BA721500220C1D /* README.txt */,
-				DA7210AA10BBF74F000EB4CC /* dist.plist */,
 				DA72187210BF891A000EB4CC /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
@@ -571,7 +568,6 @@
 				DA0AF2B710BA721500220C1D /* README.txt in Resources */,
 				DA720F3E10BBD722000EB4CC /* Connect_iphone.png in Resources */,
 				DA720F4110BBD773000EB4CC /* Connect_with_facebook_iphone.png in Resources */,
-				DA7210AB10BBF74F000EB4CC /* dist.plist in Resources */,
 				F9B7F8A710BE6885004FCC8A /* FeedDetailViewController.xib in Resources */,
 				DA7217B510BF3F2E000EB4CC /* dot.png in Resources */,
 				DA72187310BF891A000EB4CC /* Entitlements.plist in Resources */,
@@ -694,13 +690,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Niels Joubert";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "./**";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "11D2E9B7-006F-4F75-8B24-38D9D68E22D5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.1.2;
 			};
 			name = Distribution;
@@ -718,6 +714,36 @@
 			};
 			name = Distribution;
 		};
+		DA7218CD10BFD8E6000EB4CC /* Distribution Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Niels Joubert";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "./**";
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "11D2E9B7-006F-4F75-8B24-38D9D68E22D5";
+				SDKROOT = iphoneos3.1.2;
+			};
+			name = "Distribution Debug";
+		};
+		DA7218CE10BFD8E6000EB4CC /* Distribution Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Test1_Prefix.pch;
+				INFOPLIST_FILE = "Test1-Info.plist";
+				PRODUCT_NAME = Test1;
+			};
+			name = "Distribution Debug";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -725,6 +751,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
+				DA7218CE10BFD8E6000EB4CC /* Distribution Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 				DA72186510BF882C000EB4CC /* Distribution */,
 			);
@@ -735,6 +762,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
+				DA7218CD10BFD8E6000EB4CC /* Distribution Debug */,
 				C01FCF5008A954540054247B /* Release */,
 				DA72186410BF882C000EB4CC /* Distribution */,
 			);

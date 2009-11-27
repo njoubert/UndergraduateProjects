@@ -28,6 +28,8 @@
 	//Contains all People objects
 	NSArray *people;
 	
+	UIView *noFriendsNotificationView;
+	
 	GroupiesDetailViewController *childController;
 	ImportFriendsViewController *import;
 
@@ -35,8 +37,8 @@
 
 @property (nonatomic, retain) IBOutlet UIView *addFriendView;
 @property (nonatomic, retain) IBOutlet UIView *mainView;
-
 @property (nonatomic, retain) IBOutlet UITableView *table;
+@property (nonatomic, retain) IBOutlet UIView *noFriendsNotificationView;
 
 @property (nonatomic, retain) NSArray *people;
 

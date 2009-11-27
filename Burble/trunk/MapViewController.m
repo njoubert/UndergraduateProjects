@@ -47,9 +47,8 @@
 	
 	self.navigationItem.leftBarButtonItem = locateButton;
 	self.navigationItem.rightBarButtonItem = waypointButton;
-
-	[self refreshView];
 	
+	[self refreshView];
 }
 
 - (void)addAnnotations {

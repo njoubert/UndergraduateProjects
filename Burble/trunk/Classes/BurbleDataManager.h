@@ -125,6 +125,7 @@
 - (int) getUid;
 - (NSString*) getName;
 - (NSString*) getFirstName;
+- (FBUID) getFBUID;
 
 //Updates the internal presistent data with the given Person
 - (void) updatePresistentWithPerson:(Person*)p;

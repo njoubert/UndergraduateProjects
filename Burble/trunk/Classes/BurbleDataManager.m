@@ -277,7 +277,9 @@ static BurbleDataManager *sharedDataManager;
 -(int) getUid {
 	return [[presistent objectForKey:@"uid"] intValue];;
 }
-
+- (FBUID) getFBUID {
+	return myFBUID;
+}
 - (NSString*) getName {
 	return [presistent objectForKey:@"name"];
 }
