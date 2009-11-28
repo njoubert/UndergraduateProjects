@@ -271,7 +271,9 @@
 }
 // ACTION FOR WAYPOINTS
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPathForWaypoints:(NSIndexPath *)indexPath {
-	
+	NSUInteger row = indexPath.row;
+	Waypoint* w = [waypoints objectAtIndex:row];
+	[[Test1AppDelegate sharedAppDelegate] locateWaypointOnMap:w];
 }
 // ACTION SELECTOR
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

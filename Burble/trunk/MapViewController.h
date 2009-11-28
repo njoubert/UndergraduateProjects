@@ -28,6 +28,10 @@
 	UIBarButtonItem *waypointButton;
 	UIBarButtonItem *cancelWaypointButton;
 	UIBarButtonItem *approveWaypointButton;
+	
+	NSMutableArray* currentWaypoints;
+	NSMutableArray* currentPeople;
+	Person*		currentMe;
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationBar *topBar;

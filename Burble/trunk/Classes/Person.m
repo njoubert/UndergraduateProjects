@@ -62,6 +62,14 @@
 		return [NSString stringWithFormat:@"%@ old", [Util prettyTimeAgo:position.timestamp]];
 	return [NSString stringWithString:@"Unknown position"];
 }
+-(BOOL)isEqual:(Person*)other {
+	if (uid > 0) {
+		return (uid == other.uid);
+	} else {
+		return ([name isEqualToString:other.name] && [guid isEqualToString:other.guid]);
+	}
+	
+}
 
 #pragma mark -
 #pragma mark NSCopying

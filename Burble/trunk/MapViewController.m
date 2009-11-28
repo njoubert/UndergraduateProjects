@@ -38,6 +38,10 @@
 	self.navigationItem.backBarButtonItem = backButton;
 	[backButton release];
 	
+	currentPeople = [[NSMutableArray alloc] initWithCapacity:4];
+	currentWaypoints = [[NSMutableArray alloc] initWithCapacity:4];
+	currentMe = nil;
+	
 	//Create buttons
 	cancelWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelWaypointButtonPressed)];
 	approveWaypointButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(approveWaypointButtonPressed)];
@@ -52,24 +56,67 @@
 
 - (void)addAnnotations {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
-	
-	NSArray* wayPoints = [dM getWaypoints];
-	for (int i = 0; i < [wayPoints count]; i++) {
-		[myMap addAnnotation:[wayPoints objectAtIndex:i]];
-	}
 
-	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0)
-		[myMap addAnnotation:[dM getMe]];
+	//First we update where I am
+	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0) {
+		if (currentMe != nil) {
+			[myMap removeAnnotation:currentMe];
+			[currentMe release];
+		}
+		currentMe = [dM getMe];
+		[myMap addAnnotation:currentMe];
+	}
+		
 	
-	if (![dM isInGroup])
-		return;
-	NSArray* groupMembers = [dM getGroupMembers];
-	int myUid = [dM getUid];
-	Person* p;
-	for (int i = 0; i < [groupMembers count]; i++) {
-		p = [groupMembers objectAtIndex:i];
-		if (p.uid != myUid) 
-			[myMap addAnnotation:p];
+	//Then we diff all the new waypoints
+	NSArray* newWaypoints = [dM getWaypoints];
+	for (Waypoint* cWP in newWaypoints) {		//only add new waypoints
+		if (![currentWaypoints containsObject:cWP]) {
+			[currentWaypoints addObject:cWP];
+			[myMap addAnnotation:cWP];
+		}
+	}
+	NSMutableArray *toDelete = [NSMutableArray array];
+	for (Waypoint* cWP in currentWaypoints) {			//delete waypoints that no longer exist
+		if (![newWaypoints containsObject:cWP]) {
+			NSLog(@"removing waypoint from map");
+			[myMap removeAnnotation:cWP];
+			[toDelete addObject: cWP];
+		}
+	}
+	[currentWaypoints removeObjectsInArray:toDelete];
+	
+	//Then we diff all the old waypoints
+	if (![dM isInGroup]) {
+		//ok remove all the current group members
+		for (Person* p in currentPeople) {
+			[myMap removeAnnotation:p];
+			NSLog(@"removing all group members");
+		}
+		[currentPeople release];
+		currentPeople = [[NSMutableArray alloc] initWithCapacity:4];
+		
+	} else {
+		
+		//Then we diff all the new waypoints
+		NSArray* groupMembers = [dM getGroupMembers];
+		int myUid = [dM getUid];
+		for (Person* p in groupMembers) {		//only add new waypoints
+			if (p.uid != myUid && ![currentPeople containsObject:p]) {
+				[currentPeople addObject:p];
+				[myMap addAnnotation:p];
+			}
+		}
+		NSMutableArray *toDelete = [NSMutableArray array];
+		for (Person* p in currentPeople) {			//delete waypoints that no longer exist
+			if (![groupMembers containsObject:p]) {
+				NSLog(@"removing person from map");
+				[myMap removeAnnotation:p];
+				[toDelete addObject: p];
+			}
+		}
+		[currentPeople removeObjectsInArray:toDelete];
+		
 	}
 }
 
@@ -98,7 +145,6 @@
 		waypointButton.enabled = NO;
 		groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
 	}
-	[myMap removeAnnotations:[myMap annotations]];
 	[self addAnnotations];
 }
 
