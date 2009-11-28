@@ -348,9 +348,6 @@
 				DAE6558910A250D0007BB25E /* GroupiesViewController.xib */,
 				B832FA0C10B26FBB00F50C41 /* GroupiesNavigationController.h */,
 				B832FA0D10B26FBB00F50C41 /* GroupiesNavigationController.m */,
-				B86A54B610B2778300A946C7 /* GroupiesDetailViewController.h */,
-				B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */,
-				B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */,
 			);
 			name = Groupies;
 			sourceTree = "<group>";
@@ -408,6 +405,9 @@
 				DACEFF1210B3465A00944021 /* RegisterViewController.h */,
 				DACEFF1310B3465A00944021 /* RegisterViewController.m */,
 				DACEFF1410B3465A00944021 /* RegisterViewController.xib */,
+				B86A54B610B2778300A946C7 /* GroupiesDetailViewController.h */,
+				B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */,
+				B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */,
 			);
 			name = Shared;
 			sourceTree = "<group>";

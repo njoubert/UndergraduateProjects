@@ -11,5 +11,4 @@
 @interface MyGroupNavigationController : UINavigationController {
 
 }
-
 @end

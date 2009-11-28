@@ -12,6 +12,13 @@
 
 @implementation CreateGroupModalViewController
 
+- (void)viewDidLoad {
+	self.title = @"Create Group";
+}
+- (void)viewDidDisappear:(BOOL)animated {
+	[self.navigationController popToRootViewControllerAnimated:NO];
+}
+
 - (void)createdGroup:(Group*) g {
 	if (g == nil) {
 		
@@ -23,6 +30,8 @@
 		[message release];
 		
 	} else {
+		
+		[self dismissModalViewControllerAnimated:YES];
 		
 		NSString *title= [[NSString alloc] initWithFormat:@"Created group %@!", g.name];
 		NSString *message= [[NSString alloc] initWithString:@"You can now invite your friends to join, and share waypoints and positions."];

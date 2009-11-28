@@ -71,6 +71,11 @@ static Test1AppDelegate *burbleApp = NULL;
 	}
 
 }
+-(void)locatePositionOnMap:(Position*)pos {
+	//we show the map view.
+	rootTabBarController.selectedViewController = mapViewController;
+	
+}
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[window addSubview:rootTabBarController.view];	

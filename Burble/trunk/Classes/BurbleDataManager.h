@@ -185,6 +185,7 @@
 - (Person*) getFriend:(int)uid;
 
 - (BOOL)isInGroup;
+- (BOOL)isInMyGroup:(Person*)p;
 - (int) getGroupMembersCount;
 - (NSArray*) getGroupMembers;
 - (Person*) getGroupMember:(int)uid;

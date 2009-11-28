@@ -24,7 +24,11 @@
 	functionSectionData = [[NSMutableArray alloc] initWithCapacity:2];
 	
 	if (person.group != nil) {
-		pGroup = [NSString stringWithFormat:@"Member Of: %@", person.group.name];
+		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {
+			pGroup = [NSString stringWithString:@"Member Of Your Group"];
+		} else {
+			pGroup = [NSString stringWithFormat:@"Member Of: %@", person.group.name];			
+		}
 	} else {
 		pGroup = [NSString stringWithString:@"Not in a group."];
 	}
@@ -46,13 +50,20 @@
 		[infoSectionData addObject:pDist];
 	}
 	
-	[functionSectionData addObject:@"Locate on Map"];
+	
 	[functionSectionData addObject:@"Send Message"];
 	
-	
-	if ([[BurbleDataManager sharedDataManager] isInGroup])
-		[functionSectionData addObject:@"Invite to My Group"];
-	
+	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
+		
+		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {
+			[functionSectionData addObject:@"Locate on Map"];
+		} else {
+			[functionSectionData addObject:@"Invite to My Group"];
+		}
+		
+		
+	}
+		
 	[table reloadData];
 		
 }
@@ -170,47 +181,52 @@
 	NSUInteger row = [indexPath row];
 	
 	
-	//Assumes we have the location of the friend to show on the map
-	//CREATE A NEW MAP CONTROLLER
+
 	if (row == 0) { 
-		//if (map == nil) map = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
-		//map.title = name;
-		//[self.navigationController pushViewController:map animated:YES];
+
+			//SEND THE DUDE A MESSAGE
 		
 	}
 	
 	//Should actually go to create new message screen
 	if (row == 1) {
-		
-	}
-	
-	//Should show invitation page
-	if (row == 2) {
-		//try to send invite
-		Group *myG = [[BurbleDataManager sharedDataManager] getMyGroup];
-		if (myG != nil) {
-			Message* invite = [[Message alloc] initWithText:@"" group:myG];
-			[invite appendReceiver:person];
-			if ([[BurbleDataManager sharedDataManager] sendMessage:invite]) {
-				
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend invited!" message:@"Your invite was added to your outgoing messages queue and is being sent." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[alert show];
-				[alert release];
-			} else {
-				
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You can't do that!" message:@"Your account is not recognized on the server (no user uid). You might not have an internet connection, try restarting the app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[alert show];
-				[alert release];
-			}
+		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {
+			//locate button
+			
+			if (person.position != nil)
+				[[Test1AppDelegate sharedAppDelegate] locatePositionOnMap:person.position];
+			
 			
 		} else {
-			NSLog(@"We tried to invite someone and we were not in a group. This should not be happening!");
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You can't do that!" message:@"You are not in a group!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alert show];
-			[alert release];			
+			//invite button
+			Group *myG = [[BurbleDataManager sharedDataManager] getMyGroup];
+			if (myG != nil) {
+				Message* invite = [[Message alloc] initWithText:@"" group:myG];
+				[invite appendReceiver:person];
+				if ([[BurbleDataManager sharedDataManager] sendMessage:invite]) {
+					
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend invited!" message:@"Your invite was added to your outgoing messages queue and is being sent." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[alert show];
+					[alert release];
+				} else {
+					
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You can't do that!" message:@"Your account is not recognized on the server (no user uid). You might not have an internet connection, try restarting the app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[alert show];
+					[alert release];
+				}
+				
+			} else {
+				
+				NSLog(@"We tried to invite someone and we were not in a group. This should not be happening!");
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You can't do that!" message:@"You are not in a group!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[alert show];
+				[alert release];			
+				
+			}
+			
 		}
-		
 	}
+	
 }
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {

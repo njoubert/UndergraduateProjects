@@ -1031,6 +1031,9 @@ static BurbleDataManager *sharedDataManager;
 - (BOOL)isInGroup {
 	return (nil != myGroup) && (myGroup.group_id > 0);
 }
+- (BOOL)isInMyGroup:(Person*)p {
+	return (p.group != nil) && (p.group.group_id == myGroup.group_id);
+}
 
 - (Group*) getMyGroup {
  	return myGroup;

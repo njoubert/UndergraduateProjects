@@ -27,15 +27,8 @@
 }
 */
 
-- (void)showRegisterDialog {
-	CreateGroupModalViewController *cVC = [[[CreateGroupModalViewController alloc] initWithNibName:@"CreateGroupModalViewController" bundle:nil] autorelease];
-	[self presentModalViewController:cVC animated:YES];
-}
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	if (![[BurbleDataManager sharedDataManager] isInGroup]) {
-		[self showRegisterDialog];
-	}
 	[super viewDidLoad];
 }
 

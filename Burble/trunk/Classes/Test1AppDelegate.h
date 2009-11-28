@@ -15,6 +15,8 @@
 #import "FeedViewController.h"
 #import "MyGroupViewController.h"
 #import "GroupiesViewController.h"
+#import "Person.h"
+
 
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
@@ -38,6 +40,7 @@
 -(void)showActivityViewer;
 -(void)setUnreadMessageDisplay:(int)nr;
 
+-(void)locatePositionOnMap:(Position*)pos;
 
 @property (nonatomic, retain) IBOutlet UITabBarController *rootTabBarController;
 @property (nonatomic, retain) IBOutlet MapNavigationController *mapNavigationController;
