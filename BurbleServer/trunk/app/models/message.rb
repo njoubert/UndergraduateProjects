@@ -9,6 +9,9 @@ class Message < ActiveRecord::Base
   has_many :message_receivers
   has_many :people, :through => :message_receivers
   
+  belongs_to :waypoint
+  belongs_to :group
+  
   #This is how you create messages
   def self.factory!(type, params = nil)
     if not type
@@ -48,9 +51,7 @@ class AudioMessage < Message
 end
 
 class RoutingRequestMessage < Message
-  belongs_to :waypoint
 end
 
 class GroupInviteMessage < Message
-  belongs_to :group
 end
