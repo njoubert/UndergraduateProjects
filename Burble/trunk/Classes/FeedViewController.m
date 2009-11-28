@@ -21,21 +21,37 @@
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
 	NSLog(@"refreshing messages, count %d", [messages count]);
 	[table reloadData];
-	[table setNeedsDisplay];
+	//[table setNeedsDisplay];
 	//[self.view setNeedsDisplay];
+}
+
+- (void)downloadAndRefreshMessages {
+	[self refreshMessages];
+	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	self.title = @"Feed";
 	_currentMessage = nil;
+	
+	composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed:)];
+	self.navigationItem.rightBarButtonItem = composeButton;
+	
+	refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(downloadAndRefreshMessages)];
+	self.navigationItem.leftBarButtonItem = refreshButton;
     [super viewDidLoad];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-	[self refreshMessages];
-	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
+	[self downloadAndRefreshMessages];
 }
+
+
+-(void)composeButtonPressed:(id)sender {
+	NSLog(@"wee ee ee eeee");
+}
+
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
@@ -44,6 +60,7 @@
   numberOfRowsInSection:(NSInteger)section {
 	return [self.messages count];
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView 
 		cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -59,44 +76,28 @@
 				 initWithStyle:UITableViewCellStyleDefault
 				 reuseIdentifier:CellTableIdentifier] autorelease];
 		
-		CGRect senderLabelRect = CGRectMake(0, 5, 40, 15);
-		UILabel *senderLabel = [[UILabel alloc] initWithFrame:senderLabelRect];
-		senderLabel.textAlignment = UITextAlignmentRight;
-		senderLabel.text = @"from";
-		senderLabel.font = [UIFont boldSystemFontOfSize:12];
-		senderLabel.textColor = [UIColor lightGrayColor];
-		[cell.contentView addSubview: senderLabel];
-		[senderLabel release];
-		
-		CGRect typeLabelRect = CGRectMake(0, 26, 40, 15); 
-		UILabel *typeLabel = [[UILabel alloc] initWithFrame:typeLabelRect];
-		typeLabel.textAlignment = UITextAlignmentRight;
-		typeLabel.text = @"type";
-		typeLabel.font = [UIFont boldSystemFontOfSize:12];
-		typeLabel.textColor = [UIColor lightGrayColor];
-		[cell.contentView addSubview: typeLabel];
-		[typeLabel release];
-		
-		CGRect senderValueRect = CGRectMake(50, 5, 200, 15);
+		CGRect senderValueRect = CGRectMake(10, 5, 200, 15);
 		UILabel *senderValue = [[UILabel alloc] initWithFrame:
 			senderValueRect];
 		senderValue.tag = kSenderValueTag;
 		[cell.contentView addSubview:senderValue];
 		[senderValue release];
-		
-		CGRect typeValueRect = CGRectMake(50, 25, 200, 15);
-		UILabel *typeValue = [[UILabel alloc] initWithFrame:
-			typeValueRect];
-		typeValue.tag = kTypeValueTag;
-		[cell.contentView addSubview:typeValue];
-		[typeValue release];
 
-		CGRect ageValueRect = CGRectMake(180, 5, 200, 15);
+		CGRect ageValueRect = CGRectMake(220, 5, 200, 15);
 		UILabel *ageValue = [[UILabel alloc] initWithFrame:
 							  ageValueRect];
 		ageValue.tag = kAgeValueTag;
 		[cell.contentView addSubview:ageValue];
 		[ageValue release];
+
+		CGRect typeLabelRect = CGRectMake(10, 24, 200, 15); 
+		UILabel *typeLabel = [[UILabel alloc] initWithFrame:typeLabelRect];
+		typeLabel.text = @"contents";
+		typeLabel.font = [UIFont systemFontOfSize:12];
+		typeLabel.textColor = [UIColor lightGrayColor];
+		typeLabel.tag = kContentsValueTag;
+		[cell.contentView addSubview: typeLabel];
+		[typeLabel release];
 		
 	
 	}
@@ -108,19 +109,30 @@
 									kSenderValueTag];
 	Person* friend = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
 	if (friend == nil) {
-		sender.text = [NSString stringWithFormat:@"Friend ID %d", msg.sender_uid];
+		sender.text = [NSString stringWithFormat:@"Friend ID %d sent", msg.sender_uid];
 	} else {
-		sender.text = [NSString stringWithString:friend.name];		
+		if (msg.type == kMessageTypeGroupInvite)
+			sender.text = [NSString stringWithFormat:@"Invite from %@:", friend.name];
+		else if (msg.type == kMessageTypeRoutingRequest)
+			sender.text = [NSString stringWithFormat:@"Route from %@:", friend.name];
+		else
+			sender.text = [NSString stringWithFormat:@"%@ said:", friend.name];	
+		
 	}
 	sender.font = [UIFont boldSystemFontOfSize:12];
 
 	if (msg.read)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	//cell.accessoryType = UITableViewCellAcc
-	UILabel *type = (UILabel *)[cell.contentView viewWithTag:
-									kTypeValueTag];
-	type.text = msg.type;
-	type.font = [UIFont boldSystemFontOfSize:12];
+	
+	UILabel *contents = (UILabel *)[cell.contentView viewWithTag: kContentsValueTag];
+	if (msg.type == kMessageTypeRoutingRequest) {
+		contents.text = [NSString stringWithString:msg.text];
+	} else if (msg.type == kMessageTypeGroupInvite) {
+		contents.text = [NSString stringWithFormat:@"Invitation to %@", msg.group.name];
+	} else if (msg.type == kMessageTypeText) {
+		contents.text = msg.text;
+	}
+	
 
 	UILabel *age = (UILabel*)[cell.contentView viewWithTag:kAgeValueTag];
 	age.text = [NSString stringWithFormat:@"%@ old", [Util prettyTimeAgo:msg.sent_time]];
@@ -170,12 +182,10 @@
 	
 	//TODO: need to update the look of the cell to show that this has now been read.
 	
-	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
-	
 	if (childView == nil) 
 		childView = [[FeedDetailViewController alloc] initWithNibName:@"FeedDetailViewController" bundle:nil];
 	
-	childView.title = @"Message from %@", sender.name;
+	childView.title = @"Message Details";
 	childView.message = msg;
 	[self.navigationController pushViewController:childView animated:YES];	
 }
@@ -188,9 +198,6 @@
 	[[BurbleDataManager sharedDataManager] markMessageAsRead:msg];
 	[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
 	[tableView setNeedsDisplay];
-	
-	//TODO: need to update the look of the cell to show that this has now been read.
-	
 	Person* sender = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
 	if (sender == nil)
 		sender = [[BurbleDataManager sharedDataManager] getGroupMember:msg.sender_uid];
@@ -199,24 +206,9 @@
 		sender = [[Person alloc] init];
 		sender.name = [NSString stringWithFormat:@"Sender ID %d", msg.sender_uid];
 	}
-	if ([msg.type isEqualToString:kMessageTypeText])
-	{
-/*
-		NSString *message = [[NSString alloc] initWithString:msg.text];
-		UIAlertView *alert = [[UIAlertView alloc]
-							  initWithTitle:(@"Message Details")
-							  message:message
-							  delegate:nil
-							  cancelButtonTitle:@"Done"
-							  otherButtonTitles:nil];
-		[alert show];
-		[message release];
-		[alert release];
-*/
+	if ([msg.type isEqualToString:kMessageTypeText]) {
 		[self showDetailController:indexPath]; 
-	}
-	if ([msg.type isEqualToString:kMessageTypeGroupInvite])
-	{
+	} else if ([msg.type isEqualToString:kMessageTypeGroupInvite]) {
 		Group *g = msg.group;
 		_currentMessage = msg;
 		if (g == nil)
@@ -235,9 +227,7 @@
 		[alert show];
 		[message release];
 		[alert release];
-	}
-	if ([msg.type isEqualToString:kMessageTypeRoutingRequest])
-	{
+	} else if ([msg.type isEqualToString:kMessageTypeRoutingRequest]) {
 		NSString *message = [[NSString alloc] initWithFormat:
 							 @"Routing request from %@", sender.name];
 		UIAlertView *alert = [[UIAlertView alloc]

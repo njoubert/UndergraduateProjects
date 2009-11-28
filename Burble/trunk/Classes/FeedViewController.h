@@ -12,8 +12,9 @@
 #import "Message.h"
 
 #define kSenderValueTag		1
-#define kTypeValueTag		2
+#define kContentsValueTag	2
 #define kAgeValueTag		3
+	
 
 @interface FeedViewController : UIViewController
 	<UITableViewDataSource, UITableViewDelegate>
@@ -22,6 +23,9 @@
 	NSArray *messages;
 	UITableView *table;
 	FeedDetailViewController *childView;
+	
+	UIBarButtonItem *composeButton;
+	UIBarButtonItem *refreshButton;
 }
 
 @property (nonatomic, retain) NSArray *messages;

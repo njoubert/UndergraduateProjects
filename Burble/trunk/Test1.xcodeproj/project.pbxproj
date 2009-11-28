@@ -18,7 +18,6 @@
 		B8456D4810B37C45005EA08C /* ImportFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8456D4610B37C45005EA08C /* ImportFriendsViewController.xib */; };
 		B8632D8410B013F10025684E /* groupies.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8632D8310B013F10025684E /* groupies.plist */; };
 		B8632DC210B026140025684E /* NSDictionary-MutableDeepCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */; };
-		B86A54AC10B2740D00A946C7 /* MyGroupNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86A54AB10B2740D00A946C7 /* MyGroupNavigationController.m */; };
 		B86A54B910B2778300A946C7 /* GroupiesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */; };
 		B86A54BA10B2778300A946C7 /* GroupiesDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */; };
 		B873402110B27F0F00F24336 /* BurbleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */; };
@@ -59,6 +58,11 @@
 		DA7215DC10BE7E66000EB4CC /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7215DB10BE7E66000EB4CC /* Util.m */; };
 		DA7217B510BF3F2E000EB4CC /* dot.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7217B410BF3F2E000EB4CC /* dot.png */; };
 		DA72187310BF891A000EB4CC /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA72187210BF891A000EB4CC /* Entitlements.plist */; };
+		DA7D033410C10BC000A58AC0 /* MyGroupNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D033010C10BC000A58AC0 /* MyGroupNavigationController.m */; };
+		DA7D033510C10BC000A58AC0 /* MyGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */; };
+		DA7D033610C10BC000A58AC0 /* MyGroupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA7D033310C10BC000A58AC0 /* MyGroupViewController.xib */; };
+		DA7D034510C10CB000A58AC0 /* CreateGroupModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */; };
+		DA7D034610C10CB000A58AC0 /* CreateGroupModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA7D034410C10CB000A58AC0 /* CreateGroupModalViewController.xib */; };
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
@@ -75,8 +79,6 @@
 		DACEFF1910B3473500944021 /* Icon1_bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = DACEFF1810B3473500944021 /* Icon1_bigger.png */; };
 		DAE6556C10A25042007BB25E /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6556A10A25042007BB25E /* MapViewController.m */; };
 		DAE6556D10A25042007BB25E /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6556B10A25042007BB25E /* MapViewController.xib */; };
-		DAE6558310A250B9007BB25E /* MyGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558110A250B9007BB25E /* MyGroupViewController.m */; };
-		DAE6558410A250B9007BB25E /* MyGroupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6558210A250B9007BB25E /* MyGroupViewController.xib */; };
 		DAE6558A10A250D0007BB25E /* GroupiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */; };
 		DAE6558B10A250D0007BB25E /* GroupiesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE6558910A250D0007BB25E /* GroupiesViewController.xib */; };
 		DAE6559110A250FB007BB25E /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE6558F10A250FB007BB25E /* FeedViewController.m */; };
@@ -108,8 +110,6 @@
 		B8632D8310B013F10025684E /* groupies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = groupies.plist; sourceTree = SOURCE_ROOT; };
 		B8632D9110B025AC0025684E /* NSDictionary-MutableDeepCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary-MutableDeepCopy.h"; path = "../NSDictionary-MutableDeepCopy.h"; sourceTree = "<group>"; };
 		B8632DC110B026140025684E /* NSDictionary-MutableDeepCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary-MutableDeepCopy.m"; sourceTree = "<group>"; };
-		B86A54AA10B2740D00A946C7 /* MyGroupNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGroupNavigationController.h; sourceTree = "<group>"; };
-		B86A54AB10B2740D00A946C7 /* MyGroupNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGroupNavigationController.m; sourceTree = "<group>"; };
 		B86A54B610B2778300A946C7 /* GroupiesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupiesDetailViewController.h; sourceTree = "<group>"; };
 		B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupiesDetailViewController.m; sourceTree = "<group>"; };
 		B86A54B810B2778300A946C7 /* GroupiesDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupiesDetailViewController.xib; sourceTree = "<group>"; };
@@ -173,6 +173,14 @@
 		DA7215DB10BE7E66000EB4CC /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		DA7217B410BF3F2E000EB4CC /* dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dot.png; sourceTree = "<group>"; };
 		DA72187210BF891A000EB4CC /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		DA7D032F10C10BC000A58AC0 /* MyGroupNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGroupNavigationController.h; sourceTree = "<group>"; };
+		DA7D033010C10BC000A58AC0 /* MyGroupNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGroupNavigationController.m; sourceTree = "<group>"; };
+		DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGroupViewController.h; sourceTree = "<group>"; };
+		DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGroupViewController.m; sourceTree = "<group>"; };
+		DA7D033310C10BC000A58AC0 /* MyGroupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyGroupViewController.xib; sourceTree = "<group>"; };
+		DA7D034210C10CB000A58AC0 /* CreateGroupModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateGroupModalViewController.h; sourceTree = "<group>"; };
+		DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateGroupModalViewController.m; sourceTree = "<group>"; };
+		DA7D034410C10CB000A58AC0 /* CreateGroupModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupModalViewController.xib; sourceTree = "<group>"; };
 		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
@@ -201,9 +209,6 @@
 		DAE6556910A25042007BB25E /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = ../MapViewController.h; sourceTree = "<group>"; };
 		DAE6556A10A25042007BB25E /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = ../MapViewController.m; sourceTree = "<group>"; };
 		DAE6556B10A25042007BB25E /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapViewController.xib; path = ../MapViewController.xib; sourceTree = "<group>"; };
-		DAE6558010A250B9007BB25E /* MyGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGroupViewController.h; sourceTree = "<group>"; };
-		DAE6558110A250B9007BB25E /* MyGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGroupViewController.m; sourceTree = "<group>"; };
-		DAE6558210A250B9007BB25E /* MyGroupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyGroupViewController.xib; sourceTree = "<group>"; };
 		DAE6558710A250D0007BB25E /* GroupiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupiesViewController.h; sourceTree = "<group>"; };
 		DAE6558810A250D0007BB25E /* GroupiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupiesViewController.m; sourceTree = "<group>"; };
 		DAE6558910A250D0007BB25E /* GroupiesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupiesViewController.xib; sourceTree = "<group>"; };
@@ -385,11 +390,14 @@
 		B832F9B710B2646200F50C41 /* MyGroup */ = {
 			isa = PBXGroup;
 			children = (
-				DAE6558010A250B9007BB25E /* MyGroupViewController.h */,
-				DAE6558110A250B9007BB25E /* MyGroupViewController.m */,
-				DAE6558210A250B9007BB25E /* MyGroupViewController.xib */,
-				B86A54AA10B2740D00A946C7 /* MyGroupNavigationController.h */,
-				B86A54AB10B2740D00A946C7 /* MyGroupNavigationController.m */,
+				DA7D032F10C10BC000A58AC0 /* MyGroupNavigationController.h */,
+				DA7D033010C10BC000A58AC0 /* MyGroupNavigationController.m */,
+				DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */,
+				DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */,
+				DA7D033310C10BC000A58AC0 /* MyGroupViewController.xib */,
+				DA7D034210C10CB000A58AC0 /* CreateGroupModalViewController.h */,
+				DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */,
+				DA7D034410C10CB000A58AC0 /* CreateGroupModalViewController.xib */,
 			);
 			name = MyGroup;
 			sourceTree = "<group>";
@@ -543,7 +551,6 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				DAE6556D10A25042007BB25E /* MapViewController.xib in Resources */,
-				DAE6558410A250B9007BB25E /* MyGroupViewController.xib in Resources */,
 				DAE6558B10A250D0007BB25E /* GroupiesViewController.xib in Resources */,
 				DAE6559A10A25DBC007BB25E /* Icon2.png in Resources */,
 				DA71078E10A295B100DAD536 /* 103-map.png in Resources */,
@@ -571,6 +578,8 @@
 				F9B7F8A710BE6885004FCC8A /* FeedDetailViewController.xib in Resources */,
 				DA7217B510BF3F2E000EB4CC /* dot.png in Resources */,
 				DA72187310BF891A000EB4CC /* Entitlements.plist in Resources */,
+				DA7D033610C10BC000A58AC0 /* MyGroupViewController.xib in Resources */,
+				DA7D034610C10CB000A58AC0 /* CreateGroupModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +593,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* Test1AppDelegate.m in Sources */,
 				DAE6556C10A25042007BB25E /* MapViewController.m in Sources */,
-				DAE6558310A250B9007BB25E /* MyGroupViewController.m in Sources */,
 				DAE6558A10A250D0007BB25E /* GroupiesViewController.m in Sources */,
 				DAE6559110A250FB007BB25E /* FeedViewController.m in Sources */,
 				B8E46A1B10AFBCB2000A27C5 /* FBConnectGlobal.m in Sources */,
@@ -599,7 +607,6 @@
 				B8E46A2410AFBCB2000A27C5 /* FBXMLHandler.m in Sources */,
 				B8632DC210B026140025684E /* NSDictionary-MutableDeepCopy.m in Sources */,
 				B832FA0E10B26FBB00F50C41 /* GroupiesNavigationController.m in Sources */,
-				B86A54AC10B2740D00A946C7 /* MyGroupNavigationController.m in Sources */,
 				B86A54B910B2778300A946C7 /* GroupiesDetailViewController.m in Sources */,
 				B873402110B27F0F00F24336 /* BurbleDataManager.m in Sources */,
 				B88CFFA610B27FD5002BDA85 /* Person.m in Sources */,
@@ -626,6 +633,9 @@
 				DA7210E510BC0956000EB4CC /* XMLFriendsParser.m in Sources */,
 				DA7215DC10BE7E66000EB4CC /* Util.m in Sources */,
 				F9B7F8A610BE6885004FCC8A /* FeedDetailViewController.m in Sources */,
+				DA7D033410C10BC000A58AC0 /* MyGroupNavigationController.m in Sources */,
+				DA7D033510C10BC000A58AC0 /* MyGroupViewController.m in Sources */,
+				DA7D034510C10CB000A58AC0 /* CreateGroupModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

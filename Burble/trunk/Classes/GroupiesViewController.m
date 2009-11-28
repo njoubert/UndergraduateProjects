@@ -68,18 +68,25 @@
 	people = [[[BurbleDataManager sharedDataManager] getFriends] retain]; //this is an array of people object
 	[table reloadData];
 }
+- (void)downloadAndRefreshViewData {
+	[self refreshViewData];
+	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData)];
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	self.title = @"Groupies";
 	addFriendsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriends:)];
 	self.navigationItem.rightBarButtonItem = addFriendsButton;
+	refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(downloadAndRefreshViewData)];
+	self.navigationItem.leftBarButtonItem = refreshButton;
+
 	[super viewDidLoad];
 }
 - (void)viewDidAppear:(BOOL)animated {
 	if ([[BurbleDataManager sharedDataManager] getFBUID] != 0)
 		[noFriendsNotificationView removeFromSuperview];
-	[[BurbleDataManager sharedDataManager] startDownloadFriendsAndCall:self withSelector:@selector(refreshViewData)];
+	[self downloadAndRefreshViewData];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -19,7 +19,6 @@
 	int days;
 	
 	NSTimeInterval interval = [past timeIntervalSinceNow];
-	NSLog(@"interval: %f", interval);
 	seconds = -1*interval;
 	minutes = seconds / 60;
 	hours = minutes / 60;
@@ -48,9 +47,9 @@
 	}
 		
 	if (days > 0) {
-		retval = [NSString stringWithFormat:@"%d %@, %d %@", days, dStr, hours, hStr];
+		retval = [NSString stringWithFormat:@"%d %@", days, dStr];
 	} else if (hours > 0) {
-		retval = [NSString stringWithFormat:@"%d %@, %d %@", hours, hStr, minutes, mStr];
+		retval = [NSString stringWithFormat:@"%d %@", hours, hStr];
 	} else {
 		retval = [NSString stringWithFormat:@"%d %@", minutes, mStr];		  
 	}

@@ -64,6 +64,7 @@
 -(void)appendReceiver:(Person*)receiver;
 
 -(id)copyWithZone:(NSZone *)zone;
+-(NSString*)shortType;
 
 -(BOOL)isEqual:(id)otherMsg;
 

@@ -28,7 +28,7 @@
 
 @implementation BurbleDataManager
 static BurbleDataManager *sharedDataManager;
-@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion, lastMapType;
+@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion, lastMapType, lastKnownLocation;
 
 - (void)dealloc {
 	[baseUrl release];
@@ -270,7 +270,15 @@ static BurbleDataManager *sharedDataManager;
 
 #pragma mark -
 #pragma mark Data Calls for Internal
-
+- (Person*) getMe {
+	Person* p = [[Person alloc] init];
+	p.position = [[Position alloc] initWithCLLocation:[self getLocation]];
+	p.name = [self getName];
+	p.uid = [self getUid];
+	p.guid = [self getGUID];
+	return p;
+	
+}
 - (NSString*) getGUID {
 	return [presistent objectForKey:kPresistKeyGUID];
 }
@@ -331,8 +339,7 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark Data Calls for Device Data
 
 - (CLLocation*) getLocation {
-	CLLocation* retVal = [[CLLocation alloc] initWithCoordinate:lastKnownLocation.coordinate altitude:lastKnownLocation.altitude horizontalAccuracy:lastKnownLocation.horizontalAccuracy verticalAccuracy:lastKnownLocation.verticalAccuracy timestamp:lastKnownLocation.timestamp];	
-	return retVal;
+	return [lastKnownLocation copy];
 }
 
 
@@ -532,7 +539,7 @@ static BurbleDataManager *sharedDataManager;
 			
 			NSSortDescriptor *sortDescriptor;
 			sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"sent_time"
-														  ascending:YES] autorelease];
+														  ascending:NO] autorelease];
 			NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
 			NSArray *sortedArray;
 			sortedArray = [allMessages sortedArrayUsingDescriptors:sortDescriptors];
@@ -936,16 +943,6 @@ static BurbleDataManager *sharedDataManager;
 			Group *g = [gparser getGroup];
 			myGroup = [g copy];
 			[self saveData];
-			
-			NSString *title= [[NSString alloc] initWithFormat:@"Created group %@!", g.name];
-			NSString *message= [[NSString alloc] initWithString:@"You can now invite your friends to join, and save waypoints."];
-			UIAlertView *alert = [[UIAlertView alloc]
-								  initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Great!" otherButtonTitles:nil];
-			[alert show];
-			[alert release];
-			[message release];		
-			[title release];
-
 			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:myGroup];
 		} else {
 			[self messageForParserError:gparser];

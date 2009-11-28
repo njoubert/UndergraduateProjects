@@ -16,10 +16,7 @@
 @synthesize message;
 
 -(IBAction)replyTo:(id)sender {
-	NSString *title = [sender titleForState:UIControlStateNormal];
-	NSString *newText = [[NSString alloc] initWithFormat:@"%@ button pressed.", title];
-	msgText.text = newText;
-	[newText release];
+	NSLog(@"wee mofo");
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -46,7 +43,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	msgText.text = self.message.text;
-   [super viewDidLoad];
+	replyButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(replyTo:)];
+	self.navigationItem.rightBarButtonItem = replyButton;
+	[super viewDidLoad];
 }
 
 

@@ -24,6 +24,7 @@
 	UITableView *table;
 
 	UIBarButtonItem *addFriendsButton;
+	UIBarButtonItem *refreshButton;
 	
 	//Contains all People objects
 	NSArray *people;

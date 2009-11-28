@@ -83,6 +83,16 @@
 	[self appendReceiverUid:receiver.uid];
 }
 
+-(NSString*)shortType {
+	if (self.type == kMessageTypeText)
+		return @"Text";
+	else if (self.type == kMessageTypeGroupInvite)
+		return @"Invite";
+	else if (self.type == kMessageTypeRoutingRequest)
+		return @"Route";
+	return @"";
+}
+
 
 -(void) convertToData:(RPCPostData*)pData {
 	NSString* senderIdStr = [NSString stringWithFormat:@"%d", sender_uid];

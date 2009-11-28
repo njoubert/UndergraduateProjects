@@ -54,6 +54,8 @@
 	MKCoordinateRegion lastMapRegion;
 	MKMapType lastMapType;
 	
+	Person* me;
+	
 	//LOGIN STUFF:
 	id tryToRegister_Caller;
 	NSString* tryToRegister_Name;
@@ -109,6 +111,7 @@
 @property (readonly) BOOL hasLastMapRegion;
 @property (readonly) MKCoordinateRegion lastMapRegion;
 @property (readonly) MKMapType lastMapType;
+@property (readonly) CLLocation *lastKnownLocation;
 
 // ============= INTERNAL STATE MANAGEMENT
 
@@ -121,6 +124,7 @@
 
 // ============= DATA CALLS for INTERNAL STATE DATA
 
+- (Person*) getMe;
 - (NSString*) getGUID;
 - (int) getUid;
 - (NSString*) getName;

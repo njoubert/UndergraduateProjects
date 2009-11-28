@@ -16,6 +16,8 @@
 	
 	UILabel *msgText;
 	Message* message;
+	UIBarButtonItem *replyButton;
+	
 }
 
 @property (nonatomic, retain) Message* message;

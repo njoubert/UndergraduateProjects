@@ -31,7 +31,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	myMap.showsUserLocation = true;
 	self.title = @"Map";
 	
 	//Set the button that will appear as the "Back" button on any view that is pushed on top of this navigation controller.
@@ -59,12 +58,18 @@
 		[myMap addAnnotation:[wayPoints objectAtIndex:i]];
 	}
 
+	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0)
+		[myMap addAnnotation:[dM getMe]];
+	
 	if (![dM isInGroup])
 		return;
 	NSArray* groupMembers = [dM getGroupMembers];
-	
+	int myUid = [dM getUid];
+	Person* p;
 	for (int i = 0; i < [groupMembers count]; i++) {
-		[myMap addAnnotation:[groupMembers objectAtIndex:i]];
+		p = [groupMembers objectAtIndex:i];
+		if (p.uid != myUid) 
+			[myMap addAnnotation:p];
 	}
 }
 
@@ -96,7 +101,6 @@
 	[myMap removeAnnotations:[myMap annotations]];
 	[self addAnnotations];
 }
-
 
 /*
  ================================================================================
@@ -154,17 +158,21 @@
 }
 
 -(IBAction)locateButtonPressed {
-	CLLocation *location = myMap.userLocation.location;
+	CLLocation *location = [BurbleDataManager sharedDataManager].lastKnownLocation;
 	if (location.horizontalAccuracy > 0) {
 	
 		MKCoordinateRegion myRegion;
 		MKCoordinateSpan mySpan;
 		myRegion.center = location.coordinate;
-		mySpan.latitudeDelta = (CLLocationDegrees) 0.03;
-		mySpan.longitudeDelta = (CLLocationDegrees) 0.03;
-		myRegion.span = mySpan;
-		NSLog(@"%lf, %lf, %lf, %lf", myRegion.center.latitude, myRegion.center.longitude, myRegion.span.latitudeDelta, myRegion.span.longitudeDelta);
-		
+		MKCoordinateSpan currentSpan = myMap.region.span;
+		if (currentSpan.latitudeDelta > 1.6 || currentSpan.longitudeDelta > 1.6) {
+			mySpan.latitudeDelta = (CLLocationDegrees) 0.05;
+			mySpan.longitudeDelta = (CLLocationDegrees) 0.05;
+			myRegion.span = mySpan;
+		} else {
+			myRegion.span = currentSpan;
+		}
+
 		[myMap setRegion: myRegion animated: true];
 		
 	} else {
@@ -223,7 +231,8 @@
 		view.image = [UIImage imageNamed:@"dot.png"];
 		[view setCanShowCallout:YES];
 		
-	} else {
+	} else  {
+		NSLog(@"user location annotiation");
 		//CLLocation *location = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
 		//[self setCurrentLocation:location];
 	}
