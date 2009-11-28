@@ -13,6 +13,8 @@
 #import <MapKit/MKMapView.h>
 #import "AddWaypointOverlayView.h"
 #import "Group.h"
+#import "Person.h"
+#import "Waypoint.h"
 
 #define kMapTitle			@"Map"
 #define kAddWaypointTitle	@"Add Waypoint"
@@ -33,6 +35,8 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mapTypeSegmentedControl;
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
 
+-(void)locatePersonOnMap:(Person*)person;
+-(void)locateWaypointOnMap:(Waypoint*)waypt;
 
 -(IBAction)waypointButtonPressed;
 -(IBAction)cancelWaypointButtonPressed;

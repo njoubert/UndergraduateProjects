@@ -107,7 +107,7 @@
 					WAYPOINT ACTIONS
  ================================================================================ 
  */
-
+#pragma mark -
 -(IBAction)waypointButtonPressed {
 	
 	self.title = kAddWaypointTitle;
@@ -148,7 +148,7 @@
 							OTHER ACTIONS
  ================================================================================ 
  */
-
+#pragma mark -
 -(IBAction)selectorButtonPressed {
 	if (mapTypeSegmentedControl.selectedSegmentIndex == 0) {
 		myMap.mapType = MKMapTypeStandard;
@@ -157,23 +157,29 @@
 	}	
 }
 
+-(void)panMapToLocation:(CLLocationCoordinate2D) coord{
+
+	MKCoordinateRegion myRegion;
+	MKCoordinateSpan mySpan;
+	myRegion.center = coord;
+	MKCoordinateSpan currentSpan = myMap.region.span;
+	if (currentSpan.latitudeDelta > 1.6 || currentSpan.longitudeDelta > 1.6) {
+		mySpan.latitudeDelta = (CLLocationDegrees) 0.05;
+		mySpan.longitudeDelta = (CLLocationDegrees) 0.05;
+		myRegion.span = mySpan;
+	} else {
+		myRegion.span = currentSpan;
+	}
+	
+	[myMap setRegion: myRegion animated: true];
+	
+}
+
 -(IBAction)locateButtonPressed {
 	CLLocation *location = [BurbleDataManager sharedDataManager].lastKnownLocation;
 	if (location.horizontalAccuracy > 0) {
 	
-		MKCoordinateRegion myRegion;
-		MKCoordinateSpan mySpan;
-		myRegion.center = location.coordinate;
-		MKCoordinateSpan currentSpan = myMap.region.span;
-		if (currentSpan.latitudeDelta > 1.6 || currentSpan.longitudeDelta > 1.6) {
-			mySpan.latitudeDelta = (CLLocationDegrees) 0.05;
-			mySpan.longitudeDelta = (CLLocationDegrees) 0.05;
-			myRegion.span = mySpan;
-		} else {
-			myRegion.span = currentSpan;
-		}
-
-		[myMap setRegion: myRegion animated: true];
+		[self panMapToLocation:location.coordinate];
 		
 	} else {
 		
@@ -186,6 +192,34 @@
 		
 	}
 }
+
+/*
+ ================================================================================
+ LOCATE ACTIONS
+ ================================================================================ 
+ */
+
+#pragma mark -
+
+-(void)locatePersonOnMap:(Person*)person {
+	if (person == nil || person.position == nil)
+		return;
+	[self panMapToLocation:[person.position getLocation].coordinate];	
+	[myMap selectAnnotation:person animated:YES];	
+}
+-(void)locateWaypointOnMap:(Waypoint*)waypt {
+	if (waypt == nil)
+		return;
+	[self panMapToLocation:waypt.coordinate];
+	[myMap selectAnnotation:waypt animated:YES];
+}
+
+/*
+ ================================================================================
+ DEFAULT STUFF
+ ================================================================================ 
+ */
+#pragma mark -
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

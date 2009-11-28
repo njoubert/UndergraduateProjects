@@ -69,12 +69,15 @@ static Test1AppDelegate *burbleApp = NULL;
 	} else {
 		feedNavigationController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", nr];
 	}
-
 }
--(void)locatePositionOnMap:(Position*)pos {
-	//we show the map view.
-	rootTabBarController.selectedViewController = mapViewController;
-	
+-(void)locatePersonOnMap:(Person*)person {
+	rootTabBarController.selectedViewController = mapNavigationController;
+	[mapViewController locatePersonOnMap:person];
+}
+
+-(void)locateWaypointOnMap:(Waypoint*)waypt {
+	rootTabBarController.selectedViewController = mapNavigationController;
+	[mapViewController locateWaypointOnMap:waypt];
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {

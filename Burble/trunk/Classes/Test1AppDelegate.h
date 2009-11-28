@@ -16,7 +16,7 @@
 #import "MyGroupViewController.h"
 #import "GroupiesViewController.h"
 #import "Person.h"
-
+#import "Waypoint.h"
 
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
@@ -40,7 +40,8 @@
 -(void)showActivityViewer;
 -(void)setUnreadMessageDisplay:(int)nr;
 
--(void)locatePositionOnMap:(Position*)pos;
+-(void)locatePersonOnMap:(Person*)person;
+-(void)locateWaypointOnMap:(Waypoint*)waypt;
 
 @property (nonatomic, retain) IBOutlet UITabBarController *rootTabBarController;
 @property (nonatomic, retain) IBOutlet MapNavigationController *mapNavigationController;

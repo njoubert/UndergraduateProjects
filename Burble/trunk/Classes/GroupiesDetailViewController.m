@@ -67,7 +67,9 @@
 	[table reloadData];
 		
 }
-
+-(void)viewDidDisappear:(BOOL)animated {
+	[self.navigationController popToRootViewControllerAnimated:NO];
+}
 -(void)viewWillAppear:(BOOL)animated {
 	[self setupViewData];
 	[super viewWillAppear:animated];
@@ -177,27 +179,22 @@
  */
 
 -(void)doFunctionForTable:(UITableView *)tableView atIndex:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	NSUInteger row = [indexPath row];
-	
-	
-
 	if (row == 0) { 
 
 			//SEND THE DUDE A MESSAGE
 		
-	}
-	
-	//Should actually go to create new message screen
-	if (row == 1) {
+	} else if (row == 1) {
 		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {
+			
 			//locate button
 			
 			if (person.position != nil)
-				[[Test1AppDelegate sharedAppDelegate] locatePositionOnMap:person.position];
+				[[Test1AppDelegate sharedAppDelegate] locatePersonOnMap:person];
 			
 			
 		} else {
+			
 			//invite button
 			Group *myG = [[BurbleDataManager sharedDataManager] getMyGroup];
 			if (myG != nil) {
