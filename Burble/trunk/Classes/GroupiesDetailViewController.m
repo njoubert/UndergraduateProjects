@@ -25,9 +25,9 @@
 	
 	if (person.group != nil) {
 		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {
-			pGroup = [NSString stringWithString:@"Member Of Your Group"];
+			pGroup = [NSString stringWithString:@"Member of your group."];
 		} else {
-			pGroup = [NSString stringWithFormat:@"Member Of: %@", person.group.name];			
+			pGroup = [NSString stringWithFormat:@"Member of: %@", person.group.name];			
 		}
 	} else {
 		pGroup = [NSString stringWithString:@"Not in a group."];

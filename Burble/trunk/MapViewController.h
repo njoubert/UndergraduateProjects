@@ -39,6 +39,7 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mapTypeSegmentedControl;
 @property (nonatomic, retain) IBOutlet UILabel *groupLabel;
 
+-(void)locateMeOnMap;
 -(void)locatePersonOnMap:(Person*)person;
 -(void)locateWaypointOnMap:(Waypoint*)waypt;
 

@@ -54,19 +54,25 @@
 	[self refreshView];
 }
 
+- (void)reloadMyLocationAndAnnotation {
+	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
+	
+	//First we update where I am
+	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0) {
+		if (currentMe == nil) {
+			currentMe = [dM getMe];
+			[myMap addAnnotation:currentMe];
+		} else {
+			[currentMe updateWith:[dM getMe]];
+		}
+		
+	}
+	
+}
 - (void)addAnnotations {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
 
-	//First we update where I am
-	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0) {
-		if (currentMe != nil) {
-			[myMap removeAnnotation:currentMe];
-			[currentMe release];
-		}
-		currentMe = [dM getMe];
-		[myMap addAnnotation:currentMe];
-	}
-		
+	[self reloadMyLocationAndAnnotation];
 	
 	//Then we diff all the new waypoints
 	NSArray* newWaypoints = [dM getWaypoints];
@@ -222,10 +228,10 @@
 }
 
 -(IBAction)locateButtonPressed {
-	CLLocation *location = [BurbleDataManager sharedDataManager].lastKnownLocation;
-	if (location.horizontalAccuracy > 0) {
+	CLLocation* l = [BurbleDataManager sharedDataManager].lastKnownLocation;
+	if (l.horizontalAccuracy > 0) {
 	
-		[self panMapToLocation:location.coordinate];
+		[self locateMeOnMap];
 		
 	} else {
 		
@@ -247,6 +253,11 @@
 
 #pragma mark -
 
+-(void)locateMeOnMap {
+	[self reloadMyLocationAndAnnotation];
+	[self panMapToLocation:currentMe.coordinate];
+	[myMap selectAnnotation:currentMe animated:YES];
+}
 -(void)locatePersonOnMap:(Person*)person {
 	if (person == nil || person.position == nil)
 		return;
@@ -312,7 +323,7 @@
 		[view setCanShowCallout:YES];
 		
 	} else  {
-		NSLog(@"user location annotiation");
+		//NSLog(@"user location annotiation");
 		//CLLocation *location = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
 		//[self setCurrentLocation:location];
 	}

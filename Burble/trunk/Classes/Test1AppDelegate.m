@@ -70,9 +70,17 @@ static Test1AppDelegate *burbleApp = NULL;
 		feedNavigationController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", nr];
 	}
 }
--(void)locatePersonOnMap:(Person*)person {
+-(void)locateMeOnMap {
 	rootTabBarController.selectedViewController = mapNavigationController;
-	[mapViewController locatePersonOnMap:person];
+	[mapViewController locateMeOnMap];	
+}
+-(void)locatePersonOnMap:(Person*)person {
+	if (person.uid == [[BurbleDataManager sharedDataManager] getUid]) {
+		[self locateMeOnMap];
+	} else {
+		rootTabBarController.selectedViewController = mapNavigationController;
+		[mapViewController locatePersonOnMap:person];
+	}
 }
 
 -(void)locateWaypointOnMap:(Waypoint*)waypt {

@@ -40,6 +40,7 @@
 -(void)showActivityViewer;
 -(void)setUnreadMessageDisplay:(int)nr;
 
+-(void)locateMeOnMap;
 -(void)locatePersonOnMap:(Person*)person;
 -(void)locateWaypointOnMap:(Waypoint*)waypt;
 

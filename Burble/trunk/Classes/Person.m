@@ -18,6 +18,9 @@
 		position = nil;
 		group = nil;
 		guid = [[NSString alloc] init];
+		name = [[NSString alloc] init];
+		number = [[NSString alloc] init];
+		email = [[NSString alloc] init];
 	}
 	return self;
 }
