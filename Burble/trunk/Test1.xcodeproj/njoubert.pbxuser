@@ -351,6 +351,15 @@
 			DA7D050D10C1EF2000A58AC0 /* PBXTextBookmark */ = DA7D050D10C1EF2000A58AC0 /* PBXTextBookmark */;
 			DA7D050E10C1EF2000A58AC0 /* PBXTextBookmark */ = DA7D050E10C1EF2000A58AC0 /* PBXTextBookmark */;
 			DA7D050F10C1EF2000A58AC0 /* PBXTextBookmark */ = DA7D050F10C1EF2000A58AC0 /* PBXTextBookmark */;
+			DA7D051510C1F17200A58AC0 /* PBXTextBookmark */ = DA7D051510C1F17200A58AC0 /* PBXTextBookmark */;
+			DA7D051610C1F17200A58AC0 /* PBXTextBookmark */ = DA7D051610C1F17200A58AC0 /* PBXTextBookmark */;
+			DA7D051710C1F17200A58AC0 /* PBXTextBookmark */ = DA7D051710C1F17200A58AC0 /* PBXTextBookmark */;
+			DA7D051810C1F17200A58AC0 /* PBXTextBookmark */ = DA7D051810C1F17200A58AC0 /* PBXTextBookmark */;
+			DA7D051910C1F17200A58AC0 /* PBXTextBookmark */ = DA7D051910C1F17200A58AC0 /* PBXTextBookmark */;
+			DA7D051B10C1F1F900A58AC0 /* PBXTextBookmark */ = DA7D051B10C1F1F900A58AC0 /* PBXTextBookmark */;
+			DA7D052210C1F23000A58AC0 /* PBXTextBookmark */ = DA7D052210C1F23000A58AC0 /* PBXTextBookmark */;
+			DA7D052310C1F23000A58AC0 /* PBXTextBookmark */ = DA7D052310C1F23000A58AC0 /* PBXTextBookmark */;
+			DA7D052410C1F23000A58AC0 /* PBXTextBookmark */ = DA7D052410C1F23000A58AC0 /* PBXTextBookmark */;
 			DA7DA73410BFDC8900216896 = DA7DA73410BFDC8900216896 /* PlistBookmark */;
 			DA7DA75F10C062B000216896 = DA7DA75F10C062B000216896 /* PBXTextBookmark */;
 			DA7DA77010C0631600216896 = DA7DA77010C0631600216896 /* PBXTextBookmark */;
@@ -1279,17 +1288,17 @@
 	};
 	DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {992, 624}}";
-			sepNavSelRange = "{430, 0}";
-			sepNavVisRange = "{44, 592}";
+			sepNavIntBoundsRect = "{{0, 0}, {992, 598}}";
+			sepNavSelRange = "{192, 0}";
+			sepNavVisRange = "{144, 1185}";
 			sepNavWindowFrame = "{{15, 0}, {1015, 778}}";
 		};
 	};
 	DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 3757}}";
-			sepNavSelRange = "{9590, 0}";
-			sepNavVisRange = "{8373, 1697}";
+			sepNavIntBoundsRect = "{{0, 0}, {929, 4030}}";
+			sepNavSelRange = "{10193, 0}";
+			sepNavVisRange = "{9322, 1616}";
 			sepNavWindowFrame = "{{15, 0}, {1015, 778}}";
 		};
 	};
@@ -1406,7 +1415,7 @@
 		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
 		name = "GroupiesViewController.m: 160";
 		rLen = 0;
-		rLoc = 4729;
+		rLoc = 4726;
 		rType = 0;
 		vrLen = 1382;
 		vrLoc = 3768;
@@ -1775,7 +1784,7 @@
 		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
 		name = "GroupiesViewController.m: 153";
 		rLen = 0;
-		rLoc = 4398;
+		rLoc = 4395;
 		rType = 0;
 		vrLen = 1282;
 		vrLoc = 3966;
@@ -1824,7 +1833,7 @@
 		isa = PBXTextBookmark;
 		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
 		name = "GroupiesViewController.m: 141";
-		rLen = 70;
+		rLen = 67;
 		rLoc = 3999;
 		rType = 0;
 		vrLen = 1001;
@@ -2546,6 +2555,96 @@
 		vrLen = 1697;
 		vrLoc = 8373;
 	};
+	DA7D051510C1F17200A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 276";
+		rLen = 0;
+		rLoc = 9590;
+		rType = 0;
+		vrLen = 1773;
+		vrLoc = 8414;
+	};
+	DA7D051610C1F17200A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 11";
+		rLen = 0;
+		rLoc = 192;
+		rType = 0;
+		vrLen = 1185;
+		vrLoc = 144;
+	};
+	DA7D051710C1F17200A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 315";
+		rLen = 0;
+		rLoc = 10485;
+		rType = 0;
+		vrLen = 1347;
+		vrLoc = 9338;
+	};
+	DA7D051810C1F17200A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
+		name = "GroupiesViewController.m: 141";
+		rLen = 67;
+		rLoc = 3999;
+		rType = 0;
+		vrLen = 1042;
+		vrLoc = 3101;
+	};
+	DA7D051910C1F17200A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
+		name = "GroupiesViewController.m: 141";
+		rLen = 0;
+		rLoc = 4065;
+		rType = 0;
+		vrLen = 1021;
+		vrLoc = 3119;
+	};
+	DA7D051B10C1F1F900A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556910A25042007BB25E /* MapViewController.h */;
+		name = "MapViewController.h: 17";
+		rLen = 0;
+		rLoc = 372;
+		rType = 0;
+		vrLen = 498;
+		vrLoc = 251;
+	};
+	DA7D052210C1F23000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6558810A250D0007BB25E /* GroupiesViewController.m */;
+		name = "GroupiesViewController.m: 170";
+		rLen = 152;
+		rLoc = 4992;
+		rType = 0;
+		vrLen = 1237;
+		vrLoc = 3925;
+	};
+	DA7D052310C1F23000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 315";
+		rLen = 0;
+		rLoc = 10485;
+		rType = 0;
+		vrLen = 1310;
+		vrLoc = 9380;
+	};
+	DA7D052410C1F23000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 291";
+		rLen = 0;
+		rLoc = 10193;
+		rType = 0;
+		vrLen = 1616;
+		vrLoc = 9322;
+	};
 	DA7DA73410BFDC8900216896 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = DA72187210BF891A000EB4CC /* Entitlements.plist */;
@@ -2885,7 +2984,7 @@
 		ignoreCount = 0;
 		lineNumber = 263;
 		location = Test1;
-		modificationTime = 281145118.27608;
+		modificationTime = 281145717.695939;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -3101,9 +3200,9 @@
 	};
 	DAE6556A10A25042007BB25E /* MapViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1300, 4225}}";
-			sepNavSelRange = "{3115, 0}";
-			sepNavVisRange = "{8143, 992}";
+			sepNavIntBoundsRect = "{{0, 0}, {1146, 4303}}";
+			sepNavSelRange = "{10485, 0}";
+			sepNavVisRange = "{9380, 1310}";
 			sepNavWindowFrame = "{{7, 0}, {945, 773}}";
 		};
 	};
@@ -3117,9 +3216,9 @@
 	};
 	DAE6558810A250D0007BB25E /* GroupiesViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1146, 2769}}";
-			sepNavSelRange = "{3999, 70}";
-			sepNavVisRange = "{3101, 1001}";
+			sepNavIntBoundsRect = "{{0, 0}, {1146, 2717}}";
+			sepNavSelRange = "{4992, 152}";
+			sepNavVisRange = "{3925, 1237}";
 			sepNavWindowFrame = "{{15, 0}, {1110, 778}}";
 		};
 	};

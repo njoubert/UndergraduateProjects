@@ -138,7 +138,7 @@
 	NSUInteger row = [indexPath row];
 	Person *p = [people objectAtIndex:row];
 	cell.textLabel.text = [p name];
-	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	return cell;
 }
 

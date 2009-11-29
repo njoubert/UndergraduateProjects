@@ -283,6 +283,27 @@
 		[self tableView:tableView didSelectRowAtIndexPathForWaypoints:indexPath];				
 }
 
+#pragma mark -
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForMembers:(NSIndexPath *)indexPath {
+	NSUInteger row = indexPath.row;
+	Person* p = [members objectAtIndex:row];
+	[[Test1AppDelegate sharedAppDelegate] locatePersonOnMap:p];
+}
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForWaypoints:(NSIndexPath *)indexPath {
+	NSUInteger row = indexPath.row;
+	Waypoint* w = [waypoints objectAtIndex:row];
+	[[Test1AppDelegate sharedAppDelegate] locateWaypointOnMap:w];
+}
+
+// ACCESSORY SELECTOR
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	if (tableView == membersTableView)
+		[self tableView:tableView accessoryButtonTappedForMembers:indexPath];
+	else if (tableView == waypointsTableView)
+		[self tableView:tableView accessoryButtonTappedForWaypoints:indexPath];	
+}
+
 //-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 //	return indexPath;
 //}
