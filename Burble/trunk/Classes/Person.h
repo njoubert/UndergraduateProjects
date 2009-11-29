@@ -43,4 +43,7 @@
 - (NSString*) getFirstName;
 - (void)updateWith:(Person*)p;
 
+-(CLLocation*)getLocation;
+
+
 @end

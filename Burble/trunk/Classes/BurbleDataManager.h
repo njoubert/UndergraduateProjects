@@ -210,6 +210,7 @@
 // =============  LOCATION DATA
 
 -(double) calculateDistanceFromMe:(const CLLocation*)other;
+-(NSArray*) sortByDistanceFromMe:(NSArray*)arr;
 
 // =============  FACEBOOK INTEGRATION
 
@@ -217,3 +218,5 @@
 -(FBSession*)fbGetSession;
 
 @end
+
+NSInteger distanceSortByGetLocation(id num1, id num2, void *context);

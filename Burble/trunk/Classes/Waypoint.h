@@ -37,6 +37,7 @@
 	int uid;
 	int group_id;
 	int person_id;
+	CLLocation* _loc;
 @public
 	BOOL iAmHere;
 	NSDate* createdAt;	
@@ -58,5 +59,8 @@
 -(NSString*) subtitle;
 -(void)setLatitude:(double)lat;
 -(void)setLongitude:(double)lon;
+
+-(CLLocation*)getLocation;
+
 
 @end

@@ -15,23 +15,21 @@
 	NSArray* members;
 	NSArray* waypoints;
 	
+	
+	UIBarButtonItem *refreshButton; //on the left
+	UIBarButtonItem *inviteButton;
 	UIBarButtonItem *createGroupButton;
 	UIBarButtonItem *composeButton;
-	UIBarButtonItem *refreshButton;
 	UIBarButtonItem *leaveButton;
 	UISegmentedControl *waypointsOrGroupControl;
 	
 	UIAlertView *leaveGroupAlertView;
 	UIAlertView *createGroupAlertView;
 	
-	
 	UIView *contentsView;
 	UITableView *waypointsTableView;
 	UITableView *membersTableView;
-//	UITableView *groupsTableView;
-	
 	GroupiesDetailViewController *personDetailController;
-	
 }
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *leaveButton;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *waypointsOrGroupControl;
@@ -41,5 +39,6 @@
 
 -(IBAction)leaveButtonPressed;
 -(IBAction)displaySelectorButtonPressed;
+-(IBAction)composeButtonPressed;
 
 @end

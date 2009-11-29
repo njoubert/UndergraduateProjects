@@ -13,7 +13,7 @@
 
 #define kNameValueTag	6
 #define kDistValueTag	7
-
+#define kOwnerValueTag	8
 @implementation MyGroupViewController
 
 @synthesize waypointsOrGroupControl, leaveButton, membersTableView, waypointsTableView;
@@ -54,6 +54,7 @@
 }
 */
 -(void)refreshGroup {
+	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
 	if (members != nil)
 		[members release];
 	if (waypoints != nil)
@@ -62,10 +63,10 @@
 	members = nil;
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		
-		members = [[[BurbleDataManager sharedDataManager] getGroupMembers] retain];
-		waypoints = [[[BurbleDataManager sharedDataManager] getWaypoints] retain];
+		members = [[dM sortByDistanceFromMe:[dM getGroupMembers]] retain];
+		waypoints = [[dM sortByDistanceFromMe:[dM getWaypoints]] retain];
 		leaveButton.enabled = YES;
-		self.navigationItem.rightBarButtonItem = composeButton;
+		self.navigationItem.rightBarButtonItem = inviteButton;
 		self.navigationItem.title = [[BurbleDataManager sharedDataManager] getMyGroup].name;
 		
 	} else {
@@ -90,9 +91,9 @@
 	refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(downloadAndRefreshGroup)];
 	self.navigationItem.leftBarButtonItem = refreshButton;
 	
-	composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
+	inviteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(inviteButtonPressed)];
 	createGroupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createGroupButtonPressed)];
-	
+
 	leaveGroupAlertView = [[UIAlertView alloc]
 							initWithTitle: @"Leaving Group?" 
 						   message:@"You are leaving your group! You will no longer see this group's members or waypoints until you join again." 
@@ -125,8 +126,12 @@
 		[self showCreateGroupView];
 }
 
+-(IBAction)inviteButtonPressed {
+	NSLog(@"Invite button pressed");
+}
+
 -(IBAction)composeButtonPressed {
-	
+	NSLog(@"Compose button pressed");	
 }
 
 //he pressed the create button
@@ -142,6 +147,7 @@
 -(IBAction)displaySelectorButtonPressed {
 	[membersTableView removeFromSuperview];
 	[waypointsTableView removeFromSuperview];
+	[self refreshGroup];
 	if (waypointsOrGroupControl.selectedSegmentIndex == 0) {			//members table
 		[contentsView addSubview:membersTableView];
 	} else {															//waypoints table
@@ -218,16 +224,16 @@
 		nameValue.textColor = [UIColor blackColor];
 		[cell.contentView addSubview:nameValue];
 		[nameValue release];
-
-		CGRect distLabelRect = CGRectMake(210, 5, 200, 15);
+		
+		CGRect distLabelRect = CGRectMake(210, 5, 200, 15);		
 		UILabel *distLabel = [[UILabel alloc] initWithFrame:distLabelRect];
 		distLabel.tag = kDistValueTag;
 		distLabel.font = [UIFont systemFontOfSize:12];
-		distLabel.textColor = [UIColor lightGrayColor];
+		distLabel.textColor = [UIColor blueColor];
 		[cell.contentView addSubview: distLabel];
 		[distLabel release];		
 
-		CGRect ageValueRect = CGRectMake(210, 24, 200, 15); 
+		CGRect ageValueRect = CGRectMake(210, 23, 200, 15); 
 		UILabel *ageValue = [[UILabel alloc] initWithFrame: ageValueRect];
 		ageValue.tag = kAgeValueTag;
 		ageValue.font = [UIFont systemFontOfSize:12];
@@ -259,10 +265,33 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:WaypointCell];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WaypointCell] autorelease];
+		
+		CGRect nameValueRect = CGRectMake(10, 10, 240, 25);
+		UILabel *nameValue = [[UILabel alloc] initWithFrame:nameValueRect];
+		nameValue.tag = kNameValueTag;
+		nameValue.font = [UIFont boldSystemFontOfSize:15];
+		nameValue.textColor = [UIColor blackColor];
+		[cell.contentView addSubview:nameValue];
+		[nameValue release];
+		
+		CGRect distLabelRect = CGRectMake(210, 1, 200, 15);
+		UILabel *distLabel = [[UILabel alloc] initWithFrame:distLabelRect];
+		distLabel.tag = kDistValueTag;
+		distLabel.font = [UIFont systemFontOfSize:12];
+		distLabel.textColor = [UIColor blueColor];
+		[cell.contentView addSubview: distLabel];
+		[distLabel release];	
+		
 	}
 	NSUInteger row = indexPath.row;
 	Waypoint* w = [waypoints objectAtIndex:row];
-	cell.textLabel.text = w.name;
+	
+	UILabel* name = (UILabel*)[cell.contentView viewWithTag:kNameValueTag];
+	name.text = w.name;
+	
+	UILabel* dist = (UILabel*)[cell.contentView viewWithTag:kDistValueTag];
+	double distMeters = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:[w getLocation]];
+	dist.text = [Util prettyDistanceInMeters:distMeters];
 	
 	/*
 	UIImage *image = [UIImage imageNamed:@"74-location.png"];

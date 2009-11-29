@@ -19,10 +19,17 @@
 		description = [[NSString alloc] initWithString:myDescription];
 		[description retain];
 		uid = -1;
+		_loc = nil;
 	}
 	return self;
 }
 
+-(CLLocation*)getLocation {
+	if (_loc == nil) {
+		_loc = [[CLLocation alloc] initWithCoordinate:coordinate altitude:elevation horizontalAccuracy:2 verticalAccuracy:2 timestamp:nil];
+	}
+	return _loc;
+}
 -(BOOL)isSynced {
 	return (uid > 0);
 }

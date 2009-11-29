@@ -44,7 +44,6 @@
 		}
 		[infoSectionData addObject:pDist];
 		[infoSectionData addObject:[NSString stringWithFormat:@"Last Seen: %@ ago", [Util prettyTimeAgo:person.position.timestamp]]];
-		[pL release];
 	} else {
 		pDist = [NSString stringWithFormat:@"Distance: Positon is Unavailable"];		
 		[infoSectionData addObject:pDist];

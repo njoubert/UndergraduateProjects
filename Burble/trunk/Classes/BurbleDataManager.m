@@ -1203,6 +1203,12 @@ static BurbleDataManager *sharedDataManager;
 	
 }
 
+-(NSArray*) sortByDistanceFromMe:(NSArray*)arr {
+	NSArray *sortedArray; 
+	sortedArray = [arr sortedArrayUsingFunction:distanceSortByGetLocation context:NULL];
+	return sortedArray;
+}
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 
 	if (newLocation.horizontalAccuracy < 0) return;
@@ -1367,3 +1373,17 @@ static BurbleDataManager *sharedDataManager;
 }
 
 @end
+
+NSInteger distanceSortByGetLocation(id num1, id num2, void *context) {
+	
+	double d1 = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:[num1 getLocation]];
+	double d2 = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:[num2 getLocation]];
+		
+    if (d1 < d2)
+        return NSOrderedAscending;
+    else if (d1 > d2)
+        return NSOrderedDescending;
+	return NSOrderedSame;
+	
+}
+

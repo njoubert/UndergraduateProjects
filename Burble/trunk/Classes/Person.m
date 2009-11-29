@@ -53,6 +53,12 @@
 	position = [p.position retain];
 }
 
+-(CLLocation*)getLocation {
+	if (position != nil)
+		return [position getLocation];
+	return nil;
+}
+
 -(void)convertToData:(RPCPostData*)pData {
 	NSString* uidStr = [[NSString alloc] initWithFormat:@"%d", uid];	
 	[pData appendValue:uidStr forKey:kRPC_PersonIdKey];

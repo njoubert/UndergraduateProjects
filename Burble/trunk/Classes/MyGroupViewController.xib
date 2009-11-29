@@ -14,7 +14,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="187"/>
 			<integer value="186"/>
-			<integer value="173"/>
+			<integer value="176"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -93,7 +93,7 @@
 							<object class="IBUISegmentedControl" id="483318332">
 								<reference key="NSNextResponder" ref="146936675"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{12, 8}, {174, 30}}</string>
+								<string key="NSFrame">{{12, 8}, {157, 30}}</string>
 								<reference key="NSSuperview" ref="146936675"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -141,9 +141,15 @@
 								<reference key="IBUIToolbar" ref="146936675"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
+							<object class="IBUIBarButtonItem" id="656110496">
+								<string key="IBUITitle">Item</string>
+								<float key="IBUIWidth">50</float>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="146936675"/>
+								<int key="IBUISystemItemIdentifier">7</int>
+							</object>
 							<object class="IBUIBarButtonItem" id="889226079">
 								<string key="IBUITitle">Leave</string>
-								<float key="IBUIWidth">77</float>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="146936675"/>
 							</object>
@@ -273,6 +279,14 @@
 					</object>
 					<int key="connectionID">195</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">composeButtonPressed</string>
+						<reference key="source" ref="656110496"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">199</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -321,16 +335,12 @@
 						<reference key="object" ref="146936675"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="135634207"/>
 							<reference ref="889226079"/>
 							<reference ref="698906975"/>
+							<reference ref="656110496"/>
+							<reference ref="135634207"/>
 						</object>
 						<reference key="parent" ref="524389340"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">181</int>
-						<reference key="object" ref="135634207"/>
-						<reference key="parent" ref="146936675"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">180</int>
@@ -357,6 +367,16 @@
 						<reference key="parent" ref="524389340"/>
 						<string key="objectName">Contents View</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">197</int>
+						<reference key="object" ref="656110496"/>
+						<reference key="parent" ref="146936675"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">198</int>
+						<reference key="object" ref="135634207"/>
+						<reference key="parent" ref="146936675"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -370,19 +390,19 @@
 					<string>176.IBPluginDependency</string>
 					<string>178.IBPluginDependency</string>
 					<string>180.IBPluginDependency</string>
-					<string>181.IBPluginDependency</string>
 					<string>186.IBEditorWindowLastContentRect</string>
 					<string>186.IBPluginDependency</string>
 					<string>187.IBEditorWindowLastContentRect</string>
 					<string>187.IBPluginDependency</string>
 					<string>194.IBPluginDependency</string>
+					<string>197.IBPluginDependency</string>
+					<string>198.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>MyGroupViewController</string>
 					<string>UIResponder</string>
-					<string>{{154, 218}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{336, 243}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -390,6 +410,8 @@
 					<string>{{333, 354}, {320, 343}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{42, 356}, {320, 343}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -410,7 +432,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">195</int>
+			<int key="maxID">199</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -422,11 +444,13 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>composeButtonPressed</string>
 							<string>displaySelectorButtonPressed</string>
 							<string>leaveButtonPressed</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
