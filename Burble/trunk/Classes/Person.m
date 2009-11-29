@@ -17,6 +17,7 @@
 	if (self = [super init]) {
 		position = nil;
 		group = nil;
+		guid = [[NSString alloc] init];
 	}
 	return self;
 }
@@ -32,6 +33,21 @@
 	NSArray *firstWords = [[name componentsSeparatedByString:@" "] subarrayWithRange:NSMakeRange(0,1)];
 	NSString *result = [firstWords componentsJoinedByString:@" "];
 	return result;
+}
+- (void)updateWith:(Person*)p {
+	uid = p.uid;
+	[guid release];
+	[name release];
+	[number release];
+	[email release];
+	guid = [[NSString alloc] initWithString:p.guid];
+	name = [[NSString alloc] initWithString:p.name];
+	number = [[NSString alloc] initWithString:p.number];
+	email = [[NSString alloc] initWithString:p.email];
+	[group release];
+	[position release];
+	group = [p.group retain];
+	position = [p.position retain];
 }
 
 -(void)convertToData:(RPCPostData*)pData {

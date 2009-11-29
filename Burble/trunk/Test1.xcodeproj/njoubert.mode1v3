@@ -281,15 +281,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>34</integer>
-									<integer>30</integer>
-									<integer>22</integer>
+									<integer>10</integer>
+									<integer>4</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 356}, {279, 688}}</string>
+							<string>{{0, 16}, {279, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -326,7 +325,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MyGroupViewController.m</string>
+								<string>Person.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -334,11 +333,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MyGroupViewController.m</string>
+										<string>Person.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA7D052410C1F23000A58AC0</string>
+										<string>DA7D055210C1F7B300A58AC0</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -432,18 +431,18 @@
 											<string>DA7D046410C1DA9C00A58AC0</string>
 											<string>DA7D04B210C1E50F00A58AC0</string>
 											<string>DA7D04B610C1E58B00A58AC0</string>
-											<string>DA7D04E810C1EBC900A58AC0</string>
-											<string>DA7D04E910C1EBC900A58AC0</string>
 											<string>DA7D050710C1EF2000A58AC0</string>
-											<string>DA7D050810C1EF2000A58AC0</string>
-											<string>DA7D050910C1EF2000A58AC0</string>
 											<string>DA7D050A10C1EF2000A58AC0</string>
 											<string>DA7D050B10C1EF2000A58AC0</string>
 											<string>DA7D050D10C1EF2000A58AC0</string>
 											<string>DA7D051610C1F17200A58AC0</string>
 											<string>DA7D052210C1F23000A58AC0</string>
-											<string>DA7D052310C1F23000A58AC0</string>
-											<string>DA7D051510C1F17200A58AC0</string>
+											<string>DA7D052E10C1F56C00A58AC0</string>
+											<string>DA7D053110C1F56C00A58AC0</string>
+											<string>DA7D053210C1F56C00A58AC0</string>
+											<string>DA7D053710C1F6AE00A58AC0</string>
+											<string>DA7D054110C1F74D00A58AC0</string>
+											<string>DA7D054210C1F74D00A58AC0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -641,7 +640,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DA7D052510C1F23000A58AC0</string>
 		<string>DA7D03C710C1C87000A58AC0</string>
 		<string>DA7D03C810C1C87000A58AC0</string>
 		<string>1CD10A99069EF8BA00B06720</string>

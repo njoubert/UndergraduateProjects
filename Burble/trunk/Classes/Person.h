@@ -41,5 +41,6 @@
 
 
 - (NSString*) getFirstName;
+- (void)updateWith:(Person*)p;
 
 @end

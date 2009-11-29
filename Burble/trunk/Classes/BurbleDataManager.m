@@ -686,10 +686,28 @@ static BurbleDataManager *sharedDataManager;
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
 		XMLFriendsParser* fparser = [[XMLFriendsParser alloc] initWithData:rpcResponse.data];
 		if (![fparser hasError]) {
-			NSMutableArray* groupmembers = [[fparser getFriends] retain];
-			[groupMembers release];
-			groupMembers = groupmembers;
-			NSLog(@"got a group members array with %d entries", [groupmembers count]);
+			NSMutableArray* newGroupMembers = [[fparser getFriends] retain];
+			if (groupMembers == nil)
+				groupMembers = [[NSMutableArray alloc] initWithCapacity:[newGroupMembers count]];
+			NSLog(@"got a group members array with %d entries", [newGroupMembers count]);
+			
+			for (Person* p in newGroupMembers) {
+				if ([groupMembers containsObject:p]) {
+					Person* original = [groupMembers objectAtIndex:[groupMembers indexOfObject:p]];
+					[original updateWith:p];
+				} else {
+					[groupMembers addObject:p];
+				}
+			}
+			NSMutableArray *toDelete = [NSMutableArray array];
+			for (Person* p in groupMembers) {			//delete waypoints that no longer exist
+				if (![newGroupMembers containsObject:p]) {
+					[toDelete addObject: p];
+				}
+			}
+			[groupMembers removeObjectsInArray:toDelete];
+
+			//insert new ones if we do not have it already. else update position.
 		}
 		[fparser release];						 
 	}
@@ -777,12 +795,12 @@ static BurbleDataManager *sharedDataManager;
 	
 	tryToRegister_Caller = obj;
 	
-	Person* me = [[Person alloc] init];
-	[me setName:name];
-	[me setGuid:[presistent objectForKey:kPresistKeyGUID]];	
+	Person* _me = [[Person alloc] init];
+	[_me setName:name];
+	[_me setGuid:[presistent objectForKey:kPresistKeyGUID]];	
 	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/create", [presistent objectForKey:kPresistKeyGUID]];
-	RPCPostRequest* request = [me getPostRequestToMethod:urlString withBaseUrl:baseUrl];
+	RPCPostRequest* request = [_me getPostRequestToMethod:urlString withBaseUrl:baseUrl];
 
 	[name retain];
 	tryToRegister_Name = name;
@@ -985,6 +1003,8 @@ static BurbleDataManager *sharedDataManager;
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
 		[myGroup release];
 		myGroup = nil;
+		[groupMembers release];
+		groupMembers = nil;
 		[self saveData];
 	}
 	[myGroup release];
