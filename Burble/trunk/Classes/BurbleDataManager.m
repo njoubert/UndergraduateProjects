@@ -101,7 +101,7 @@ static BurbleDataManager *sharedDataManager;
 		myLocationManager = [[CLLocationManager alloc] init];
 		myLocationManager.delegate = self;
 		myLocationManager.desiredAccuracy = [[NSNumber numberWithDouble:kCLLocationAccuracyBest] doubleValue];
-		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:40] doubleValue];
+		myLocationManager.distanceFilter  = [[NSNumber numberWithDouble:kMinDistanceForUpdate] doubleValue];
 		[myLocationManager startUpdatingLocation];
 		
 		groupWaypoints = [[NSMutableArray alloc] init];
@@ -1127,6 +1127,11 @@ static BurbleDataManager *sharedDataManager;
 			return friend;
 	}
 	return nil;
+}
+- (int) getFriendsCount {
+	if (allFriends != nil)
+		return [allFriends count];
+	return 0;
 }
 
 - (void)addWaypoint:(Waypoint *)wP {

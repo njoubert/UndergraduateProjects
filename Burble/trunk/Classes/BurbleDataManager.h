@@ -33,10 +33,10 @@
 #define kfbAPIKey		@"e26ae2fc668e7ed1bc8f0322d2ec122d"
 #define kfbSecretKey	@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
-#define kNumOfConcurrentRequestsFromQueue 2
-#define kTimeBetweenRequests 1.0
-
-#define pollMessageFrequency 5000
+#define kNumOfConcurrentRequestsFromQueue	2
+#define kTimeBetweenRequests				1.0
+#define kMinDistanceForUpdate				50
+#define pollMessageFrequency				5000
 
 #define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
 //#define kBaseUrlStr @"http://localhost:3000/iphone/"

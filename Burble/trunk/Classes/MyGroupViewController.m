@@ -217,6 +217,7 @@
 		UILabel *distLabel = [[UILabel alloc] initWithFrame:distLabelRect];
 		distLabel.tag = kDistValueTag;
 		distLabel.font = [UIFont systemFontOfSize:12];
+
 		distLabel.textColor = [UIColor blueColor];
 		[cell.contentView addSubview: distLabel];
 		[distLabel release];		
@@ -262,10 +263,11 @@
 		[cell.contentView addSubview:nameValue];
 		[nameValue release];
 		
-		CGRect distLabelRect = CGRectMake(210, 1, 200, 15);
+		CGRect distLabelRect = CGRectMake(190, 1, 80, 15);
 		UILabel *distLabel = [[UILabel alloc] initWithFrame:distLabelRect];
 		distLabel.tag = kDistValueTag;
 		distLabel.font = [UIFont systemFontOfSize:12];
+		distLabel.textAlignment = UITextAlignmentRight;
 		distLabel.textColor = [UIColor blueColor];
 		[cell.contentView addSubview: distLabel];
 		[distLabel release];	
