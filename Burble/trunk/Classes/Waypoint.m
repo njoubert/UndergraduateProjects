@@ -15,13 +15,19 @@
 -(id)initWithNameAndDescription:(NSString*)myName description:(NSString*)myDescription; {
 	if (self = [super init]) {
 		name = [[NSString alloc] initWithString:myName];
-		[name retain];
 		description = [[NSString alloc] initWithString:myDescription];
-		[description retain];
 		uid = -1;
 		_loc = nil;
 	}
 	return self;
+}
+
+-(void) dealloc {
+	[name release];
+	[description release];
+	[_loc release];
+	[createdAt release];
+	[super dealloc];
 }
 
 -(CLLocation*)getLocation {

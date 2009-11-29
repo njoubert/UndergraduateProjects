@@ -44,10 +44,14 @@
 	} else if (_state == ePS_person) {
 		if ([elementName isEqualToString:@"group"]) {
 			_state = ePS_person_group;
-			_currentPerson.group = [[Group alloc] init];
+			Group* g = [[Group alloc] init];
+			_currentPerson.group = g;
+			[g release];
 		} else if ([elementName isEqualToString:@"position"]) {
 			_state = ePS_person_position;
-			_currentPerson.position = [[Position alloc] init];
+			Position* p = [[Position alloc] init];
+			_currentPerson.position = p;
+			[p release];
 		} else if ([elementName isEqualToString:@"id"] ||
 				   [elementName isEqualToString:@"email"] || 
 				   [elementName isEqualToString:@"name"] || 
@@ -138,11 +142,13 @@ qualifiedName:(NSString *)qName {
 			[dF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 			_currentPerson.position.timestamp = [dF dateFromString:_currentElementText];
+			[dF release];
 		}
 	}
 	if (_state == ePS_person) {
 		if ([elementName isEqualToString:@"person"]) {
 			[_friends addObject:_currentPerson];
+			[_currentPerson release];
 			_currentPerson = nil;
 			_state = ePS_friendslist;
 		} else if ([elementName isEqualToString:@"id"]) {
@@ -170,8 +176,6 @@ qualifiedName:(NSString *)qName {
 
 -(void)dealloc {
 	[_friends release];
-	if (_error != nil)
-		[_error release];
 	[super dealloc];
 }
 

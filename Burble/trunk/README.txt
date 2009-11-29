@@ -10,15 +10,21 @@ Check README.MODEL.txt for stuff on ow the back end talks to the rails server.
 
 TODO:
 ======
+Sending Messages - to selected poeople
+Sending Messages - to group
+Reply to Messages from feed
+Invite selected people to group
+Refresh map view when other people update the map! Push notifications! Something awesome@
+Limit number of group invites to only one per sender per group for a specific receiver. 
+
 xx - Sort the messages view. and make it look better.
 Queues of views to refresh on certain occurrance?
-Limit the amount of position messages you send. Cache? Send if moved further than x? Limited rate?
+xx - Limit the amount of position messages you send. Cache? Send if moved further than x? Limited rate?
 Show sent messages (and delivery confirmation?)
 Waypoint box that pops up that allows you to send routing request and delete awaypoints.
-List of group members
-List of waypoints
-Groups History (so you can jump back into old groups)
-Refresh map view when other people update the map! Push notifications! Something awesome@
+xx - List of group members
+xx - List of waypoints
+xx - Groups History (so you can jump back into old groups)
 
 Custom Icons for people...
 

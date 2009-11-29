@@ -91,7 +91,6 @@
 
 -(void)dealloc {
 	[_group release];
-	[_error release];
 	[super dealloc];
 }
 

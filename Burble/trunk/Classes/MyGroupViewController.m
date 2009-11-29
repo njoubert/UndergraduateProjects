@@ -32,23 +32,8 @@
 	waypoints = nil;
 	members = nil;
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
-		
-		
 		members = [[dM sortByDistanceFromMe:[dM getGroupMembers]] retain];
 		waypoints = [[dM sortByDistanceFromMe:[dM getWaypoints]] retain];
-		
-		leaveButton.enabled = YES;
-		actionsToolbar.hidden = NO;
-		self.navigationItem.rightBarButtonItem = inviteButton;
-		self.navigationItem.title = [[BurbleDataManager sharedDataManager] getMyGroup].name;
-		
-	} else {
-
-		actionsToolbar.hidden = YES;
-		leaveButton.enabled = NO;
-		self.navigationItem.rightBarButtonItem = createGroupButton;
-		self.navigationItem.title = @"Previous Groups";
-		
 	}
 	[membersTableView reloadData];
 	[waypointsTableView reloadData];
@@ -64,12 +49,29 @@
 	[self refreshGroup];
 	
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
+
+		leaveButton.enabled = YES;
+		actionsToolbar.hidden = NO;
+		self.navigationItem.rightBarButtonItem = inviteButton;		
 		if (waypointsOrGroupControl.selectedSegmentIndex == 0) {			//members table
+			self.navigationItem.title = [NSString stringWithFormat:@"%@ (%d)", 
+										 [[BurbleDataManager sharedDataManager] getMyGroup].name,
+										 [members count]];			
 			[contentsView addSubview:membersTableView];
 		} else {															//waypoints table
+			self.navigationItem.title = [NSString stringWithFormat:@"%@ (%d)", 
+										 [[BurbleDataManager sharedDataManager] getMyGroup].name,
+										 [waypoints count]];
 			[contentsView addSubview:waypointsTableView];
 		}
+	
 	} else {
+		
+		actionsToolbar.hidden = YES;
+		leaveButton.enabled = NO;
+		self.navigationItem.rightBarButtonItem = createGroupButton;
+		self.navigationItem.title = @"Previous Groups";
+		
 		[totalView addSubview:groupsTableView];	
 		if ([[[BurbleDataManager sharedDataManager] groupsHistory] count] == 0)
 			[self showCreateGroupView];

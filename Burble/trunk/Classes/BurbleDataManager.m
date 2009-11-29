@@ -95,7 +95,7 @@ static BurbleDataManager *sharedDataManager;
 		CLLocationCoordinate2D locCor;
 		locCor.longitude = 0;
 		locCor.latitude = 0;
-		NSDate *d = [[NSDate alloc] init];
+		NSDate *d = [NSDate date];
 		lastKnownLocation = [[CLLocation alloc] initWithCoordinate:locCor altitude:0 horizontalAccuracy:-1 verticalAccuracy:-1 timestamp:d];
 		
 		myLocationManager = [[CLLocationManager alloc] init];
@@ -539,13 +539,13 @@ static BurbleDataManager *sharedDataManager;
 			Message* m;
 			NSLog(@"got %d messages", [rcvdMsgs count]);
 			while (m = [enumerator nextObject]) {
-				[m retain];
 				if ([allMessages containsObject:m]) {
 					Message* alreadyM = [allMessages objectAtIndex:[allMessages indexOfObject:m]];
 					if (m.read && !alreadyM.read) {
 						//fukkin server thinks we havent read this but fuck we already have, goddaaaam!
 						//we should tell the server that this is fucking read already, dayamn!
 						[self markMessageAsRead:m];
+						[m release];
 					}
 				} else {
 					//fukkin yay message received! Now we can decide what to do with this.
@@ -590,13 +590,12 @@ static BurbleDataManager *sharedDataManager;
 	if (![self isRegistered])
 		return NO;
 	NSLog(@"start downloading messages");
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/messages/index", [presistent objectForKey:kPresistKeyGUID]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSString *urlString = [NSString stringWithFormat:@"%@/messages/index", [presistent objectForKey:kPresistKeyGUID]];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadMessagesCallback:withObject:)]) {
-		return YES;
-	}
-	return NO;
+	BOOL success = (nil != [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadMessagesCallback:withObject:)]);
+	[request release];
+	return success;
 }
 -(BOOL)startDownloadMessagesAndCall:(id)target withSelector:(SEL)s {
 	downloadedMessagesTarget = target;
@@ -646,14 +645,12 @@ static BurbleDataManager *sharedDataManager;
 		return NO;
 	if (![self isInGroup])
 		return NO;
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/waypoints", [presistent objectForKey:kPresistKeyGUID]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSString *urlString = [NSString stringWithFormat:@"%@/groups/waypoints", [presistent objectForKey:kPresistKeyGUID]];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadWaypointsCallback:withObject:)]) {
-		NSLog(@"start downloading waypoints");
-		return YES;
-	}
-	return NO;
+	BOOL success = (nil != [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadWaypointsCallback:withObject:)]);
+	[request release];
+	return success;
 }
 -(BOOL)startDownloadWaypointsAndCall:(id)target withSelector:(SEL)s {
 	downloadedWaypointsTarget = target;
@@ -696,13 +693,12 @@ static BurbleDataManager *sharedDataManager;
 -(BOOL)startDownloadFriends {
 	if (![self isRegistered])
 		return NO;
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/friends/index", [presistent objectForKey:kPresistKeyGUID]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSString *urlString = [NSString stringWithFormat:@"%@/friends/index", [presistent objectForKey:kPresistKeyGUID]];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadFriendsCallback:withObject:)]) {
-		return YES;
-	}
-	return NO;
+	BOOL success = (nil != [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadFriendsCallback:withObject:)]);
+	[request release];
+	return success;
 }
 -(BOOL)startDownloadFriendsAndCall:(id)target withSelector:(SEL)s {
 	downloadedFriendsTarget = target;
@@ -753,13 +749,11 @@ static BurbleDataManager *sharedDataManager;
 		return NO;
 	if (![self isInGroup])
 		return NO;
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/members", [presistent objectForKey:kPresistKeyGUID]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSString *urlString = [NSString stringWithFormat:@"%@/groups/members", [presistent objectForKey:kPresistKeyGUID]];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadGroupMembersCallback:withObject:)]) {
-		return YES;
-	}
-	return NO;
+	BOOL success = (nil != [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadGroupMembersCallback:withObject:)]);
+	return success;
 }
 -(BOOL)startDownloadGroupMembersAndCall:(id)target withSelector:(SEL)s {
 	downloadedGroupMembersTarget = target;
@@ -827,15 +821,14 @@ static BurbleDataManager *sharedDataManager;
 	[_me setName:name];
 	[_me setGuid:[presistent objectForKey:kPresistKeyGUID]];	
 	
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/create", [presistent objectForKey:kPresistKeyGUID]];
+	NSString *urlString = [NSString stringWithFormat:@"%@/person/create", [presistent objectForKey:kPresistKeyGUID]];
 	RPCPostRequest* request = [_me getPostRequestToMethod:urlString withBaseUrl:baseUrl];
 
-	[name retain];
-	tryToRegister_Name = name;
+	tryToRegister_Name = [name retain];
 	
 	[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(receiveTryToRegisterCallback:withObject:)];
-	[urlString release];
+	[request release];
 	if (connection)
 		return YES;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
@@ -897,10 +890,11 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)login {	
-	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/person/index", [presistent objectForKey:kPresistKeyGUID]];
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSString *urlString = [NSString stringWithFormat:@"%@/person/index", [presistent objectForKey:kPresistKeyGUID]];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
 	[RPCURLConnection sendAsyncRequest:request target:self selector:@selector(loginCallback:withObject:)];
+	[request release];
 	
 }
 -(void)loginWithCallback:(id)target selector:(SEL)s {
@@ -1157,8 +1151,7 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (NSArray*) getWaypoints {
-	NSArray* retVal = [[NSArray alloc] initWithArray:groupWaypoints];
-	return retVal;
+	return groupWaypoints;
 }
 
 - (NSString*) getNextWaypointName {

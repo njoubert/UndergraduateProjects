@@ -83,6 +83,7 @@
 	if (_state == ePS_waypoints_waypoint) {	// we are currently parsing a waypoint
 		if ([elementName isEqualToString:@"waypoint"]) { //snap we are done with this waypoint
 			[_waypoints addObject:_currentWaypoint];
+			[_currentWaypoint release];
 			_currentWaypoint = nil;
 			_state = ePS_waypoints;
 		} else if ([elementName isEqualToString:@"id"]) {

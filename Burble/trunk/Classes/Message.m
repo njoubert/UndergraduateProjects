@@ -17,6 +17,8 @@
 	[receiver_uids release];
 	[text release];
 	[type release];
+	[group release];
+	[sent_time release];
 	[super dealloc];
 }
 

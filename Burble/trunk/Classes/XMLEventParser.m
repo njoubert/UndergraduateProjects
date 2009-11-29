@@ -56,4 +56,13 @@
 		return _error;
 	return nil;
 }
+-(void) dealloc {
+	[_parser release];
+	if (_currentElementText != nil)
+		[_currentElementText release];
+	if (_error != nil)
+		[_error release];
+	[super dealloc];
+}
+
 @end

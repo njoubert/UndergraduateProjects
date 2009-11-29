@@ -32,17 +32,19 @@ static NSMutableArray *pendingRequestsQueue;
 	RPCURLConnection* c = [[RPCURLConnection alloc] initWithTarget:t andSelector:s];
 	c.conn = [[NSURLConnection alloc] initWithRequest:request delegate:c startImmediately:YES];
 	if (c.conn) {
-		[obj retain];
 		c._userObj = obj;
-		c.receivedData = [[NSMutableData alloc] init];
+		NSMutableData *d = [[NSMutableData alloc] init];
+		c.receivedData = d;
+		[d release];
 		[pendingRequestsQueue addObject:c];
+		[c release];
 		if ([pendingRequestsQueue count] > 0) {
 			UIApplication* app = [UIApplication sharedApplication]; 
 			app.networkActivityIndicatorVisible = YES; // to stop it, set this to NO 
 		}
 		return c;
 	} else {
-		[c.conn release];
+		[c release];
 		return nil;
 	}
 }
@@ -66,7 +68,6 @@ static NSMutableArray *pendingRequestsQueue;
  */
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)resp {
 	[response release];
-	[resp retain];
 	[self setResponse:resp];
     [receivedData setLength:0];
 }
@@ -96,7 +97,12 @@ static NSMutableArray *pendingRequestsQueue;
 	[rpcResponse setError:error];
 	[target performSelector:selector withObject:rpcResponse withObject:_userObj];
 }
-
+-(void)dealloc {
+	[conn release];
+	[receivedData release];
+	[response release];
+	[super dealloc];
+}
 
 
 

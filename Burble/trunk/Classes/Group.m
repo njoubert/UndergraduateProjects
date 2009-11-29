@@ -13,6 +13,21 @@
 
 @synthesize name, description, group_id;
 
+-(id)init {
+	if (self = [super init]) {
+		name = nil;
+		description = nil;
+	}
+	return self;
+}
+-(void)dealloc {
+	if (name != nil)
+		[name release];
+	if (description != nil)
+		[description release];
+	[super dealloc];
+}
+
 -(void) convertToData:(RPCPostData*)pData {
 	if (group_id > 0) {
 		NSString* idStr = [[NSString alloc] initWithFormat:@"%d", group_id];	

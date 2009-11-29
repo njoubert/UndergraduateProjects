@@ -24,11 +24,11 @@
 	SEL selector;
 	id _userObj;
 }
-@property (assign, nonatomic) NSURLConnection* conn;
-@property (assign, nonatomic) id target;
-@property (assign, nonatomic) SEL selector;
-@property (assign, nonatomic) NSMutableData* receivedData;
-@property (assign, nonatomic) NSURLResponse* response;
+@property (retain, nonatomic) NSURLConnection* conn;
+@property (assign) id target;
+@property SEL selector;
+@property (retain, nonatomic) NSMutableData* receivedData;
+@property (retain, nonatomic) NSURLResponse* response;
 @property (retain, nonatomic) id _userObj;
 
 // This is how you start a request. 

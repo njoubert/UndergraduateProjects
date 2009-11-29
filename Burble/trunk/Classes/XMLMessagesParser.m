@@ -65,7 +65,9 @@
 			[elementName isEqualToString:@"read"]) {
 			_currentElementText = [[NSMutableString alloc] init];
 		} else if ([elementName isEqualToString:@"group"]) {
-			_currentMessage.group = [[Group alloc] init];
+			Group* g = [[Group alloc] init];
+			_currentMessage.group = g;
+			[g release];
 			_state = ePS_messages_message_group;
 		}
 	}
@@ -105,6 +107,7 @@
 			[elementName isEqualToString:kMessageTypeGroupInvite] || 
 			[elementName isEqualToString:kMessageTypeRoutingRequest]) { //snap we are done with this message
 			[_messages addObject:_currentMessage];
+			[_currentMessage release];
 			_currentMessage = nil;
 			_state = ePS_messages;
 		} else if ([elementName isEqualToString:@"id"]) {
@@ -118,6 +121,7 @@
 			[dF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 			_currentMessage.sent_time = [dF dateFromString:_currentElementText];
+			[dF release];
 			if (_currentMessage.sent_time == nil)
 				NSLog(@"WTF nil date noooooooo");			
 		} else if ([elementName isEqualToString:@"text"]) {

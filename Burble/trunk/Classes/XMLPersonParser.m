@@ -106,6 +106,7 @@
 	if (_state == ePS_person_group) {
 		
 		if ([elementName isEqualToString:@"group"]) {
+			_person.group = _group;
 			_state = ePS_person;
 		}
 		if ([elementName isEqualToString:@"id"]) {
@@ -124,6 +125,7 @@
 	if (_state == ePS_person_position) {
 		
 		if ([elementName isEqualToString:@"position"]) {
+			_person.position = _position;
 			_state = ePS_person;
 		}
 		if ([elementName isEqualToString:@"id"]) {
@@ -149,6 +151,7 @@
 			[dF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 			[dF setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 			_position.timestamp = [dF dateFromString:_currentElementText];
+			[dF release];
 		}
 	}
 	if (_state == ePS_person) {
@@ -178,7 +181,8 @@
 
 -(void)dealloc {
 	[_person release];
-	[_error release];
+	[_group release];
+	[_position release];
 	[super dealloc];
 }
 				
