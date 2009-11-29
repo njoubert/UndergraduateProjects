@@ -56,6 +56,9 @@
 	return retval;
 }
 +(NSString*)prettyDistanceInMeters:(double)dist {
+	if (dist < 0)
+		return @"Unknown";
+	
 	int meters = dist;
 	meters = meters % 1000;
 	int kilometers = dist / 1000;

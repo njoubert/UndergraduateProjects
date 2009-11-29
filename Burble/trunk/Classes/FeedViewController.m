@@ -77,8 +77,7 @@
 				 reuseIdentifier:CellTableIdentifier] autorelease];
 		
 		CGRect senderValueRect = CGRectMake(10, 5, 200, 15);
-		UILabel *senderValue = [[UILabel alloc] initWithFrame:
-			senderValueRect];
+		UILabel *senderValue = [[UILabel alloc] initWithFrame:senderValueRect];
 		senderValue.tag = kSenderValueTag;
 		[cell.contentView addSubview:senderValue];
 		[senderValue release];

@@ -15,6 +15,7 @@
 
 -(id)initWithCLLocation:(CLLocation*)loc {
 	if (self = [super init]) {
+		_loc = nil;
 		lat = loc.coordinate.latitude;
 		lon = loc.coordinate.longitude;
 		vaccuracy = loc.verticalAccuracy;
@@ -28,11 +29,13 @@
 }
 
 -(CLLocation*)getLocation {
-	CLLocationCoordinate2D coord;
-	coord.latitude = lat;
-	coord.longitude = lon;
-	CLLocation* loc = [[CLLocation alloc] initWithCoordinate:coord altitude:elevation horizontalAccuracy:haccuracy verticalAccuracy:vaccuracy timestamp:timestamp];
-	return loc;
+	if (_loc == nil) {
+		CLLocationCoordinate2D coord;
+		coord.latitude = lat;
+		coord.longitude = lon;
+		_loc = [[CLLocation alloc] initWithCoordinate:coord altitude:elevation horizontalAccuracy:haccuracy verticalAccuracy:vaccuracy timestamp:timestamp];
+	}
+	return _loc;
 }
 
 -(void)convertToData:(RPCPostData*)pData {
@@ -63,6 +66,7 @@
 }
 
 -(void)dealloc {
+	[_loc release];
 	[timestamp release];
 	[super dealloc];
 }

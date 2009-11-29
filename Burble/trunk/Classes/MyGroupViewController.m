@@ -9,6 +9,10 @@
 #import "MyGroupViewController.h"
 #import "BurbleDataManager.h"
 #import "CreateGroupModalViewController.h"
+#import "Util.h"
+
+#define kNameValueTag	6
+#define kDistValueTag	7
 
 @implementation MyGroupViewController
 
@@ -109,6 +113,11 @@
 	personDetailController = nil;
 }
 
+-(void)showCreateGroupView {
+	CreateGroupModalViewController *cVC = [[[CreateGroupModalViewController alloc] initWithNibName:@"CreateGroupModalViewController" bundle:nil] autorelease];
+	[self.navigationController pushViewController:cVC animated:NO];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[self downloadAndRefreshGroup];
 	[self displaySelectorButtonPressed];
@@ -118,11 +127,6 @@
 
 -(IBAction)composeButtonPressed {
 	
-}
-
--(void)showCreateGroupView {
-	CreateGroupModalViewController *cVC = [[[CreateGroupModalViewController alloc] initWithNibName:@"CreateGroupModalViewController" bundle:nil] autorelease];
-	[self.navigationController pushViewController:cVC animated:NO];
 }
 
 //he pressed the create button
@@ -206,13 +210,46 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MemberCell];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MemberCell] autorelease];
+		
+		CGRect nameValueRect = CGRectMake(10, 9, 200, 25);
+		UILabel *nameValue = [[UILabel alloc] initWithFrame:nameValueRect];
+		nameValue.tag = kNameValueTag;
+		nameValue.font = [UIFont boldSystemFontOfSize:20];
+		nameValue.textColor = [UIColor blackColor];
+		[cell.contentView addSubview:nameValue];
+		[nameValue release];
+
+		CGRect distLabelRect = CGRectMake(210, 5, 200, 15);
+		UILabel *distLabel = [[UILabel alloc] initWithFrame:distLabelRect];
+		distLabel.tag = kDistValueTag;
+		distLabel.font = [UIFont systemFontOfSize:12];
+		distLabel.textColor = [UIColor lightGrayColor];
+		[cell.contentView addSubview: distLabel];
+		[distLabel release];		
+
+		CGRect ageValueRect = CGRectMake(210, 24, 200, 15); 
+		UILabel *ageValue = [[UILabel alloc] initWithFrame: ageValueRect];
+		ageValue.tag = kAgeValueTag;
+		ageValue.font = [UIFont systemFontOfSize:12];
+		ageValue.textColor = [UIColor lightGrayColor];
+		[cell.contentView addSubview:ageValue];
+		[ageValue release];
+		
 	}
 	NSUInteger row = indexPath.row;
 	Person* m = [members objectAtIndex:row];
-	cell.textLabel.text = m.name;
-	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-
 	
+	UILabel* name = (UILabel*)[cell.contentView viewWithTag:kNameValueTag];
+	name.text = m.name;
+	
+	UILabel* dist = (UILabel*)[cell.contentView viewWithTag:kDistValueTag];
+	double distMeters = [[BurbleDataManager sharedDataManager] calculateDistanceFromMe:[m.position getLocation]];
+	dist.text = [Util prettyDistanceInMeters:distMeters];
+	
+	UILabel* age = (UILabel*)[cell.contentView viewWithTag:kAgeValueTag];
+	age.text = [Util prettyTimeAgo:m.position.timestamp];
+	
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	return cell;
 }
 
@@ -226,9 +263,21 @@
 	NSUInteger row = indexPath.row;
 	Waypoint* w = [waypoints objectAtIndex:row];
 	cell.textLabel.text = w.name;
-	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-
 	
+	/*
+	UIImage *image = [UIImage imageNamed:@"74-location.png"];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+	button.frame = frame;	// match the button's size with the image size
+	[button setBackgroundImage:image forState:UIControlStateNormal];
+	
+	// set the button's target to this table view controller so we can interpret touch events and map that to a NSIndexSet
+	//[button addTarget:self action:@selector(accessoryButtonTappedForRowWithIndexPath:event:) forControlEvents:UIControlEventTouchUpInside];
+	button.backgroundColor = [UIColor clearColor];
+	cell.accessoryView = button;
+	*/
+	
+	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	return cell;
 }
 

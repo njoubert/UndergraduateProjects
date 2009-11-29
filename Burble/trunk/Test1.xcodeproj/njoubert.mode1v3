@@ -272,6 +272,7 @@
 								<string>B832F9B210B2644500F50C41</string>
 								<string>B8456CBD10B35CF9005EA08C</string>
 								<string>B832F9B710B2646200F50C41</string>
+								<string>B832F9B610B2645B00F50C41</string>
 								<string>B832F9B510B2645600F50C41</string>
 								<string>B832F9B410B2644E00F50C41</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
@@ -281,15 +282,15 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>44</integer>
-									<integer>40</integer>
+									<integer>34</integer>
+									<integer>30</integer>
 									<integer>22</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 364}, {279, 688}}</string>
+							<string>{{0, 90}, {279, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -326,7 +327,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.m</string>
+								<string>MyGroupViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -334,11 +335,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MapViewController.m</string>
+										<string>MyGroupViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA7D05C810C2018D00A58AC0</string>
+										<string>DA7D067210C20ECB00A58AC0</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -383,7 +384,6 @@
 											<string>DA72168910BE9541000EB4CC</string>
 											<string>DA72169710BE9590000EB4CC</string>
 											<string>DA7216C310BE9F05000EB4CC</string>
-											<string>DA72179210BF3707000EB4CC</string>
 											<string>DA7217A210BF3944000EB4CC</string>
 											<string>DA7217A310BF3944000EB4CC</string>
 											<string>DA7217A410BF3944000EB4CC</string>
@@ -406,13 +406,10 @@
 											<string>DA7DA79310C06C2000216896</string>
 											<string>DA7DA7F010C0741800216896</string>
 											<string>DA7DA7FC10C0755F00216896</string>
-											<string>DA7DA89310C0A91900216896</string>
 											<string>DA7DA8E510C0D55300216896</string>
 											<string>DA7DA8EA10C0D5A400216896</string>
-											<string>DA7DA94710C0EB8700216896</string>
 											<string>DA7DA9D610C109D900216896</string>
 											<string>DA7DA9D710C109D900216896</string>
-											<string>DA7DA9E910C10A9A00216896</string>
 											<string>DA7DA9EA10C10A9A00216896</string>
 											<string>DA7DA9FA10C10B4100216896</string>
 											<string>DA7D03AA10C1C87000A58AC0</string>
@@ -420,11 +417,8 @@
 											<string>DA7D03AD10C1C87000A58AC0</string>
 											<string>DA7D03AF10C1C87000A58AC0</string>
 											<string>DA7D03B210C1C87000A58AC0</string>
-											<string>DA7D03B310C1C87000A58AC0</string>
 											<string>DA7D03F510C1CC4700A58AC0</string>
 											<string>DA7D040010C1D36900A58AC0</string>
-											<string>DA7D041910C1D53400A58AC0</string>
-											<string>DA7D044510C1D95100A58AC0</string>
 											<string>DA7D044E10C1D99300A58AC0</string>
 											<string>DA7D044F10C1D99300A58AC0</string>
 											<string>DA7D046410C1DA9C00A58AC0</string>
@@ -434,16 +428,23 @@
 											<string>DA7D053210C1F56C00A58AC0</string>
 											<string>DA7D054110C1F74D00A58AC0</string>
 											<string>DA7D056110C1F9AE00A58AC0</string>
-											<string>DA7D057810C1FAAD00A58AC0</string>
 											<string>DA7D058210C1FB0200A58AC0</string>
 											<string>DA7D058310C1FB0200A58AC0</string>
-											<string>DA7D059B10C1FDB200A58AC0</string>
-											<string>DA7D05A410C1FE6E00A58AC0</string>
 											<string>DA7D05A510C1FE6E00A58AC0</string>
-											<string>DA7D05AB10C1FF1100A58AC0</string>
-											<string>DA7D05AC10C1FF1100A58AC0</string>
 											<string>DA7D05AF10C1FF8E00A58AC0</string>
-											<string>DA7D05B010C1FF8E00A58AC0</string>
+											<string>DA7D05D110C2035D00A58AC0</string>
+											<string>DA7D05D210C2035D00A58AC0</string>
+											<string>DA7D05E910C2054100A58AC0</string>
+											<string>DA7D05F910C2080100A58AC0</string>
+											<string>DA7D05FA10C2080100A58AC0</string>
+											<string>DA7D062E10C20D4400A58AC0</string>
+											<string>DA7D062F10C20D4400A58AC0</string>
+											<string>DA7D063210C20D4400A58AC0</string>
+											<string>DA7D063310C20D4400A58AC0</string>
+											<string>DA7D063A10C20D9D00A58AC0</string>
+											<string>DA7D064010C20DBD00A58AC0</string>
+											<string>DA7D064110C20DBD00A58AC0</string>
+											<string>DA7D063010C20D4400A58AC0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -641,7 +642,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DA7D05C910C2018D00A58AC0</string>
+		<string>DA7D067310C20ECB00A58AC0</string>
 		<string>DA7D03C710C1C87000A58AC0</string>
 		<string>DA7D03C810C1C87000A58AC0</string>
 		<string>1CD10A99069EF8BA00B06720</string>
@@ -666,12 +667,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MapViewController.h</string>
+								<string>MyGroupViewController.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -688,8 +691,6 @@
 							<string>258pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

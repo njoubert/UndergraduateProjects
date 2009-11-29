@@ -33,6 +33,7 @@
 	double elevation;
 	double heading;
 	NSDate* timestamp;
+	CLLocation* _loc;
 }
 @property int uid;
 @property int person_id;
