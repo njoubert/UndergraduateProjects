@@ -14,7 +14,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="187"/>
 			<integer value="186"/>
-			<integer value="176"/>
+			<integer value="173"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -36,6 +36,25 @@
 			</object>
 			<object class="IBProxyObject" id="975951072">
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
+			</object>
+			<object class="IBUITableView" id="722712540">
+				<nil key="NSNextResponder"/>
+				<int key="NSvFlags">274</int>
+				<string key="NSFrame">{{0, 107}, {320, 247}}</string>
+				<object class="NSColor" key="IBUIBackgroundColor" id="946147477">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MQA</bytes>
+				</object>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIClipsSubviews">YES</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<bool key="IBUIBouncesZoom">NO</bool>
+				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
+				<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
+				<float key="IBUIRowHeight">44</float>
+				<float key="IBUISectionHeaderHeight">22</float>
+				<float key="IBUISectionFooterHeight">22</float>
 			</object>
 			<object class="IBUITableView" id="373595757">
 				<reference key="NSNextResponder"/>
@@ -63,12 +82,9 @@
 			<object class="IBUITableView" id="156192686">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
-				<string key="NSFrameSize">{320, 343}</string>
+				<string key="NSFrameSize">{288, 243}</string>
 				<reference key="NSSuperview"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-				</object>
+				<reference key="IBUIBackgroundColor" ref="946147477"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -141,7 +157,7 @@
 								<reference key="IBUIToolbar" ref="146936675"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="656110496">
+							<object class="IBUIBarButtonItem" id="1006990488">
 								<string key="IBUITitle">Item</string>
 								<float key="IBUIWidth">50</float>
 								<int key="IBUIStyle">1</int>
@@ -282,10 +298,50 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">composeButtonPressed</string>
-						<reference key="source" ref="656110496"/>
+						<reference key="source" ref="1006990488"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">199</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">actionsToolbar</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="146936675"/>
+					</object>
+					<int key="connectionID">200</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">groupsTableView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="722712540"/>
+					</object>
+					<int key="connectionID">202</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="722712540"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">203</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="722712540"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">204</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">totalView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="524389340"/>
+					</object>
+					<int key="connectionID">206</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -317,6 +373,7 @@
 							<reference ref="870421778"/>
 						</object>
 						<reference key="parent" ref="0"/>
+						<string key="objectName">Total View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">186</int>
@@ -337,7 +394,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="889226079"/>
 							<reference ref="698906975"/>
-							<reference ref="656110496"/>
+							<reference ref="1006990488"/>
 							<reference ref="135634207"/>
 						</object>
 						<reference key="parent" ref="524389340"/>
@@ -369,13 +426,19 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">197</int>
-						<reference key="object" ref="656110496"/>
+						<reference key="object" ref="1006990488"/>
 						<reference key="parent" ref="146936675"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">198</int>
 						<reference key="object" ref="135634207"/>
 						<reference key="parent" ref="146936675"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">201</int>
+						<reference key="object" ref="722712540"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Groups Table</string>
 					</object>
 				</object>
 			</object>
@@ -397,6 +460,8 @@
 					<string>194.IBPluginDependency</string>
 					<string>197.IBPluginDependency</string>
 					<string>198.IBPluginDependency</string>
+					<string>201.IBEditorWindowLastContentRect</string>
+					<string>201.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -409,10 +474,12 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{333, 354}, {320, 343}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{42, 356}, {320, 343}}</string>
+					<string>{{14, 437}, {288, 243}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{0, 498}, {320, 247}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -432,7 +499,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">199</int>
+			<int key="maxID">206</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -459,17 +526,23 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionsToolbar</string>
 							<string>contentsView</string>
+							<string>groupsTableView</string>
 							<string>leaveButton</string>
 							<string>membersTableView</string>
+							<string>totalView</string>
 							<string>waypointsOrGroupControl</string>
 							<string>waypointsTableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIToolbar</string>
 							<string>UIView</string>
+							<string>UITableView</string>
 							<string>UIBarButtonItem</string>
 							<string>UITableView</string>
+							<string>UIView</string>
 							<string>UISegmentedControl</string>
 							<string>UITableView</string>
 						</object>

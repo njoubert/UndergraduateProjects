@@ -16,43 +16,13 @@
 #define kOwnerValueTag	8
 @implementation MyGroupViewController
 
-@synthesize waypointsOrGroupControl, leaveButton, membersTableView, waypointsTableView;
-/*
-//Creates new group with specified title.
--(IBAction)createGroup:(id)sender {
-	self.groupString = groupTextField.text;
-	
-	NSString *nameString = groupString;
-	if([nameString length] == 0) {
-		
-		UIAlertView *groupCreationFailedAlert = [[UIAlertView alloc]
-									  initWithTitle: @"Group creation failed" message:@"You must enter a title for your group!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[groupCreationFailedAlert show];
-		[groupCreationFailedAlert release];
-		
-	} else {
-		
-		NSString* nameString = [[NSString alloc] initWithString:groupTextField.text];
-		
-		if ([[BurbleDataManager sharedDataManager] startCreateGroup:nameString withDesc:@"" target:self selector:@selector(groupCreated:)]) {
-			//we started connection, now we just wait for groupCreated to be called.
-			
-		} else {
-			[[BurbleDataManager sharedDataManager] messageForCouldNotConnectToServer];
-		}
-		[nameString release];
-		
-	}
+@synthesize waypointsOrGroupControl, leaveButton, membersTableView, waypointsTableView, actionsToolbar, groupsTableView, totalView;
+
+-(void)showCreateGroupView {
+	CreateGroupModalViewController *cVC = [[[CreateGroupModalViewController alloc] initWithNibName:@"CreateGroupModalViewController" bundle:nil] autorelease];
+	[self.navigationController pushViewController:cVC animated:YES];
 }
 
--(void)groupCreated:(Group*)returnValue {
-	if (returnValue != nil) {
-		groupTextField.text = @"";	
-		self.view = myGroupView;
-		groupLabel.text = returnValue.name;
-	}
-}
-*/
 -(void)refreshGroup {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
 	if (members != nil)
@@ -63,23 +33,51 @@
 	members = nil;
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		
+		
 		members = [[dM sortByDistanceFromMe:[dM getGroupMembers]] retain];
 		waypoints = [[dM sortByDistanceFromMe:[dM getWaypoints]] retain];
+		
 		leaveButton.enabled = YES;
+		actionsToolbar.hidden = NO;
 		self.navigationItem.rightBarButtonItem = inviteButton;
 		self.navigationItem.title = [[BurbleDataManager sharedDataManager] getMyGroup].name;
 		
 	} else {
-		
+
+		actionsToolbar.hidden = YES;
 		leaveButton.enabled = NO;
 		self.navigationItem.rightBarButtonItem = createGroupButton;
-		self.navigationItem.title = @"My Group";
+		self.navigationItem.title = @"Previous Groups";
+		
 	}
 	[membersTableView reloadData];
 	[waypointsTableView reloadData];
+	[groupsTableView reloadData];
 }
--(void)downloadAndRefreshGroup {
+- (void)displayCorrectTable {
+	[membersTableView removeFromSuperview];
+	[waypointsTableView removeFromSuperview];
+	[groupsTableView removeFromSuperview];
+	[membersTableView setFrame:[contentsView frame]];
+	[waypointsTableView setFrame:[contentsView frame]];
+	[groupsTableView setFrame:[totalView frame]];
 	[self refreshGroup];
+	
+	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
+		if (waypointsOrGroupControl.selectedSegmentIndex == 0) {			//members table
+			[contentsView addSubview:membersTableView];
+		} else {															//waypoints table
+			[contentsView addSubview:waypointsTableView];
+		}
+	} else {
+		[totalView addSubview:groupsTableView];	
+		if ([[[BurbleDataManager sharedDataManager] groupsHistory] count] == 0)
+			[self showCreateGroupView];
+	}
+}
+
+-(void)downloadAndRefreshGroup {
+	[self displayCorrectTable];
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshGroup)];
 		[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshGroup)];
@@ -114,16 +112,8 @@
 	personDetailController = nil;
 }
 
--(void)showCreateGroupView {
-	CreateGroupModalViewController *cVC = [[[CreateGroupModalViewController alloc] initWithNibName:@"CreateGroupModalViewController" bundle:nil] autorelease];
-	[self.navigationController pushViewController:cVC animated:NO];
-}
-
 - (void)viewDidAppear:(BOOL)animated {
 	[self downloadAndRefreshGroup];
-	[self displaySelectorButtonPressed];
-	if (![[BurbleDataManager sharedDataManager] isInGroup]) 
-		[self showCreateGroupView];
 }
 
 -(IBAction)inviteButtonPressed {
@@ -145,21 +135,11 @@
 
 //he pressed the display selector button
 -(IBAction)displaySelectorButtonPressed {
-	[membersTableView removeFromSuperview];
-	[waypointsTableView removeFromSuperview];
-	[self refreshGroup];
-	if (waypointsOrGroupControl.selectedSegmentIndex == 0) {			//members table
-		[contentsView addSubview:membersTableView];
-	} else {															//waypoints table
-		[contentsView addSubview:waypointsTableView];
-	}
-	
+	[self displayCorrectTable];
 }
 
 -(void)leftGroupCallback:(id)response {
-	//Here we clear our local view as necessary and show the "Create group" dialog.
 	[self downloadAndRefreshGroup];
-	[self showCreateGroupView];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -172,6 +152,9 @@
 		}		
 	} else if (alertView == createGroupAlertView && buttonIndex == 1) {
 		[self showCreateGroupView];
+	} else if (alertView == joinGroupAlertView && buttonIndex == 1) {
+		[[BurbleDataManager sharedDataManager] startJoinGroup:_toJoin.group_id target:self selector:@selector(joinedGroup:)];
+		[_toJoin release];
 	}
 }
 
@@ -187,7 +170,10 @@
 	[super viewDidUnload]; 
 }
 
-
+- (void)joinedGroup:(id)response {
+	[joinGroupAlertView release];
+	[self downloadAndRefreshGroup];
+}
 - (void)dealloc {
 	[members release];
 	[waypoints release];
@@ -199,12 +185,14 @@
 #pragma mark -
 #pragma mark Table View Data Source Methods
 
-// CELL COUNTS FOR BOTH
+// CELL COUNTS
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (tableView == membersTableView) {
 		return [members count];
 	} else if (tableView == waypointsTableView) {
 		return [waypoints count];
+	} else if (tableView == groupsTableView) {
+		return [[[BurbleDataManager sharedDataManager] groupsHistory] count];
 	}
 	return 0;
 }
@@ -266,7 +254,7 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WaypointCell] autorelease];
 		
-		CGRect nameValueRect = CGRectMake(10, 10, 240, 25);
+		CGRect nameValueRect = CGRectMake(10, 10, 260, 25);
 		UILabel *nameValue = [[UILabel alloc] initWithFrame:nameValueRect];
 		nameValue.tag = kNameValueTag;
 		nameValue.font = [UIFont boldSystemFontOfSize:15];
@@ -310,32 +298,33 @@
 	return cell;
 }
 
+// CELL FOR GROUPS
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPathForGroups:(NSIndexPath *)indexPath {
+	static NSString *HistoricGroupsCell = @"HistoricGroupsCell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HistoricGroupsCell];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HistoricGroupsCell] autorelease];
+	}
+	NSUInteger row = indexPath.row;
+	Group* g = [[[BurbleDataManager sharedDataManager] groupsHistory] objectAtIndex:row];
+	cell.textLabel.text = [NSString stringWithFormat:@"%d: %@", g.group_id, g.name];
+	return cell;
+}
+
+
 // CELL SELECTOR
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (tableView == membersTableView)
 		return [self tableView:tableView cellForRowAtIndexPathForMembers:indexPath];
 	else if (tableView == waypointsTableView)
 		return [self tableView:tableView cellForRowAtIndexPathForWaypoints:indexPath];				
+	else if (tableView == groupsTableView)
+		return [self tableView:tableView cellForRowAtIndexPathForGroups:indexPath];
 	return nil;
 }
 
 #pragma mark -
 #pragma mark Table View Delegate Methods
-
-//This handles what happens when Groupies cells are tapped
--(void)showDetailController:(NSIndexPath *) indexPath {
-
-//	UITableViewCell *cell = [table cellForRowAtIndexPath:indexPath];
-//	NSString *name = cell.textLabel.text;
-//	NSUInteger row = [indexPath row];
-//	if (childController == nil) 
-//		childController = [[GroupiesDetailViewController alloc] initWithNibName:@"GroupiesDetailViewController" bundle:nil];
-//	Person *p = [people objectAtIndex:row];
-//	childController.title = name;
-//	childController.person = p;
-//	[self.navigationController pushViewController:childController animated:YES];	
-
-}
 
 // ACTION FOR MEMBERS
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPathForMembers:(NSIndexPath *)indexPath {
@@ -353,12 +342,28 @@
 	Waypoint* w = [waypoints objectAtIndex:row];
 	[[Test1AppDelegate sharedAppDelegate] locateWaypointOnMap:w];
 }
+// ACTION FOR GROUPS
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPathForGroups:(NSIndexPath *)indexPath {
+	NSUInteger row = indexPath.row;
+	Group* g = [[[BurbleDataManager sharedDataManager] groupsHistory] objectAtIndex:row];
+	joinGroupAlertView = [[UIAlertView alloc]
+						  initWithTitle: @"Joining Group" 
+						  message:[NSString stringWithFormat:@"You are joining the group %@", g.name] 
+						  delegate:self cancelButtonTitle:@"Wait, no!" 
+						  otherButtonTitles:nil];
+	[joinGroupAlertView addButtonWithTitle:@"Do it!"];
+	_toJoin = [g retain];
+	[joinGroupAlertView show];
+}
 // ACTION SELECTOR
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (tableView == membersTableView)
 		[self tableView:tableView didSelectRowAtIndexPathForMembers:indexPath];
 	else if (tableView == waypointsTableView)
-		[self tableView:tableView didSelectRowAtIndexPathForWaypoints:indexPath];				
+		[self tableView:tableView didSelectRowAtIndexPathForWaypoints:indexPath];
+	else if (tableView == groupsTableView)
+		[self tableView:tableView didSelectRowAtIndexPathForGroups:indexPath];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark -
@@ -381,14 +386,5 @@
 	else if (tableView == waypointsTableView)
 		[self tableView:tableView accessoryButtonTappedForWaypoints:indexPath];	
 }
-
-//-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-//	return indexPath;
-//}
-
-//-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-//
-//}
-
 
 @end

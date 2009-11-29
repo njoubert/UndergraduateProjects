@@ -23,6 +23,12 @@
 	[pData appendValue:description forKey:kRPC_GroupDescriptionKey];
 }
 
+-(BOOL)isEqual:(Group*)other {
+	if (group_id > 0)
+		return (group_id == other.group_id);
+	else
+		return ([name isEqualToString:other.name] && [description isEqualToString:other.description]);
+}
 #pragma mark -
 #pragma mark NSCopying
 -(id)copyWithZone:(NSZone *)zone {

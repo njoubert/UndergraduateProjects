@@ -25,13 +25,13 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = DAE6553F10A24B98007BB25E /* Test1 */;
-		activeSDKPreference = iphoneos3.1.2;
+		activeSDKPreference = iphonesimulator3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
 		);
 		breakpoints = (
-			DAA6D6AC10B6346B00E2E0B0 /* BurbleDataManager.m:263 */,
+			DAA6D6AC10B6346B00E2E0B0 /* BurbleDataManager.m:291 */,
 		);
 		codeSenseManager = DAE6555D10A24BAF007BB25E /* Code sense */;
 		executables = (
@@ -550,6 +550,65 @@
 			DA7D073C10C2208100A58AC0 /* PBXTextBookmark */ = DA7D073C10C2208100A58AC0 /* PBXTextBookmark */;
 			DA7D073D10C2208100A58AC0 /* PBXTextBookmark */ = DA7D073D10C2208100A58AC0 /* PBXTextBookmark */;
 			DA7D073E10C2208100A58AC0 /* PBXTextBookmark */ = DA7D073E10C2208100A58AC0 /* PBXTextBookmark */;
+			DA7D074E10C2290600A58AC0 /* PBXTextBookmark */ = DA7D074E10C2290600A58AC0 /* PBXTextBookmark */;
+			DA7D074F10C2290600A58AC0 /* PBXTextBookmark */ = DA7D074F10C2290600A58AC0 /* PBXTextBookmark */;
+			DA7D075010C2290600A58AC0 /* PBXTextBookmark */ = DA7D075010C2290600A58AC0 /* PBXTextBookmark */;
+			DA7D075810C22A2C00A58AC0 /* PBXTextBookmark */ = DA7D075810C22A2C00A58AC0 /* PBXTextBookmark */;
+			DA7D075910C22A2C00A58AC0 /* PBXTextBookmark */ = DA7D075910C22A2C00A58AC0 /* PBXTextBookmark */;
+			DA7D075D10C22A4D00A58AC0 /* PBXTextBookmark */ = DA7D075D10C22A4D00A58AC0 /* PBXTextBookmark */;
+			DA7D076110C22A6F00A58AC0 /* PBXTextBookmark */ = DA7D076110C22A6F00A58AC0 /* PBXTextBookmark */;
+			DA7D076510C22A9C00A58AC0 /* PBXTextBookmark */ = DA7D076510C22A9C00A58AC0 /* PBXTextBookmark */;
+			DA7D076F10C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D076F10C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077010C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077010C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077110C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077110C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077210C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077210C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077310C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077310C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077410C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077410C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D077510C22FBF00A58AC0 /* PBXTextBookmark */ = DA7D077510C22FBF00A58AC0 /* PBXTextBookmark */;
+			DA7D078110C2321E00A58AC0 /* PBXTextBookmark */ = DA7D078110C2321E00A58AC0 /* PBXTextBookmark */;
+			DA7D078210C2321E00A58AC0 /* PBXTextBookmark */ = DA7D078210C2321E00A58AC0 /* PBXTextBookmark */;
+			DA7D078310C2321E00A58AC0 /* PBXTextBookmark */ = DA7D078310C2321E00A58AC0 /* PBXTextBookmark */;
+			DA7D078410C2321E00A58AC0 /* PBXTextBookmark */ = DA7D078410C2321E00A58AC0 /* PBXTextBookmark */;
+			DA7D078810C2328600A58AC0 /* PBXTextBookmark */ = DA7D078810C2328600A58AC0 /* PBXTextBookmark */;
+			DA7D078910C2328600A58AC0 /* PBXTextBookmark */ = DA7D078910C2328600A58AC0 /* PBXTextBookmark */;
+			DA7D078E10C233AC00A58AC0 /* PBXTextBookmark */ = DA7D078E10C233AC00A58AC0 /* PBXTextBookmark */;
+			DA7D078F10C233AC00A58AC0 /* PBXTextBookmark */ = DA7D078F10C233AC00A58AC0 /* PBXTextBookmark */;
+			DA7D079010C233AC00A58AC0 /* PBXTextBookmark */ = DA7D079010C233AC00A58AC0 /* PBXTextBookmark */;
+			DA7D079110C233AC00A58AC0 /* PBXTextBookmark */ = DA7D079110C233AC00A58AC0 /* PBXTextBookmark */;
+			DA7D079610C2341C00A58AC0 /* PBXTextBookmark */ = DA7D079610C2341C00A58AC0 /* PBXTextBookmark */;
+			DA7D079710C2341C00A58AC0 /* PBXTextBookmark */ = DA7D079710C2341C00A58AC0 /* PBXTextBookmark */;
+			DA7D079810C2341C00A58AC0 /* PBXTextBookmark */ = DA7D079810C2341C00A58AC0 /* PBXTextBookmark */;
+			DA7D079B10C2345D00A58AC0 /* PBXTextBookmark */ = DA7D079B10C2345D00A58AC0 /* PBXTextBookmark */;
+			DA7D079C10C2345D00A58AC0 /* PBXTextBookmark */ = DA7D079C10C2345D00A58AC0 /* PBXTextBookmark */;
+			DA7D079E10C2348900A58AC0 /* PBXTextBookmark */ = DA7D079E10C2348900A58AC0 /* PBXTextBookmark */;
+			DA7D07A710C2365C00A58AC0 /* PBXTextBookmark */ = DA7D07A710C2365C00A58AC0 /* PBXTextBookmark */;
+			DA7D07A810C2365C00A58AC0 /* PBXTextBookmark */ = DA7D07A810C2365C00A58AC0 /* PBXTextBookmark */;
+			DA7D07A910C2365C00A58AC0 /* PBXTextBookmark */ = DA7D07A910C2365C00A58AC0 /* PBXTextBookmark */;
+			DA7D07B110C2375700A58AC0 /* PBXTextBookmark */ = DA7D07B110C2375700A58AC0 /* PBXTextBookmark */;
+			DA7D07B510C237DF00A58AC0 /* PBXTextBookmark */ = DA7D07B510C237DF00A58AC0 /* PBXTextBookmark */;
+			DA7D07B610C237DF00A58AC0 /* PBXTextBookmark */ = DA7D07B610C237DF00A58AC0 /* PBXTextBookmark */;
+			DA7D07B710C237DF00A58AC0 /* PBXTextBookmark */ = DA7D07B710C237DF00A58AC0 /* PBXTextBookmark */;
+			DA7D07BD10C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07BD10C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07BE10C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07BE10C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07BF10C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07BF10C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07C010C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07C010C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07C110C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07C110C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07C210C23ADA00A58AC0 /* PBXTextBookmark */ = DA7D07C210C23ADA00A58AC0 /* PBXTextBookmark */;
+			DA7D07C810C23B2400A58AC0 /* PBXTextBookmark */ = DA7D07C810C23B2400A58AC0 /* PBXTextBookmark */;
+			DA7D07D210C23BE000A58AC0 /* PBXTextBookmark */ = DA7D07D210C23BE000A58AC0 /* PBXTextBookmark */;
+			DA7D07D310C23BE000A58AC0 /* PBXTextBookmark */ = DA7D07D310C23BE000A58AC0 /* PBXTextBookmark */;
+			DA7D07D410C23BE000A58AC0 /* PBXTextBookmark */ = DA7D07D410C23BE000A58AC0 /* PBXTextBookmark */;
+			DA7D07D610C23C2300A58AC0 /* PBXTextBookmark */ = DA7D07D610C23C2300A58AC0 /* PBXTextBookmark */;
+			DA7D07D710C23C2300A58AC0 /* PBXTextBookmark */ = DA7D07D710C23C2300A58AC0 /* PBXTextBookmark */;
+			DA7D07DC10C23C2700A58AC0 /* PBXTextBookmark */ = DA7D07DC10C23C2700A58AC0 /* PBXTextBookmark */;
+			DA7D07DD10C23C2700A58AC0 /* PBXTextBookmark */ = DA7D07DD10C23C2700A58AC0 /* PBXTextBookmark */;
+			DA7D07DE10C23C2700A58AC0 /* PBXTextBookmark */ = DA7D07DE10C23C2700A58AC0 /* PBXTextBookmark */;
+			DA7D07E410C23CDA00A58AC0 /* PBXTextBookmark */ = DA7D07E410C23CDA00A58AC0 /* PBXTextBookmark */;
+			DA7D07E510C23CDA00A58AC0 /* PBXTextBookmark */ = DA7D07E510C23CDA00A58AC0 /* PBXTextBookmark */;
+			DA7D07E610C23CDA00A58AC0 /* PBXTextBookmark */ = DA7D07E610C23CDA00A58AC0 /* PBXTextBookmark */;
+			DA7D07EE10C23DA900A58AC0 /* PBXTextBookmark */ = DA7D07EE10C23DA900A58AC0 /* PBXTextBookmark */;
+			DA7D07EF10C23DA900A58AC0 /* PBXTextBookmark */ = DA7D07EF10C23DA900A58AC0 /* PBXTextBookmark */;
+			DA7D07F710C23E0800A58AC0 /* PBXTextBookmark */ = DA7D07F710C23E0800A58AC0 /* PBXTextBookmark */;
 			DA7DA73410BFDC8900216896 = DA7DA73410BFDC8900216896 /* PlistBookmark */;
 			DA7DA75F10C062B000216896 = DA7DA75F10C062B000216896 /* PBXTextBookmark */;
 			DA7DA77010C0631600216896 = DA7DA77010C0631600216896 /* PBXTextBookmark */;
@@ -652,31 +711,31 @@
 	};
 	B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {943, 3263}}";
+			sepNavIntBoundsRect = "{{0, 0}, {943, 3237}}";
 			sepNavSelRange = "{962, 0}";
-			sepNavVisRange = "{317, 1300}";
+			sepNavVisRange = "{316, 1303}";
 			sepNavWindowFrame = "{{261, 0}, {1015, 778}}";
 		};
 	};
 	B873401F10B27F0F00F24336 /* BurbleDataManager.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1006, 2730}}";
-			sepNavSelRange = "{6862, 47}";
-			sepNavVisRange = "{6033, 1045}";
+			sepNavIntBoundsRect = "{{0, 0}, {1006, 3146}}";
+			sepNavSelRange = "{3370, 13}";
+			sepNavVisRange = "{2554, 1147}";
 			sepNavWindowFrame = "{{1280, 256}, {1110, 778}}";
 		};
 	};
 	B873402010B27F0F00F24336 /* BurbleDataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1104, 18252}}";
-			sepNavSelRange = "{50564, 0}";
-			sepNavVisRange = "{49737, 1163}";
+			sepNavIntBoundsRect = "{{0, 0}, {1734, 18785}}";
+			sepNavSelRange = "{40024, 0}";
+			sepNavVisRange = "{50321, 1563}";
 			sepNavWindowFrame = "{{1848, 2}, {1102, 1048}}";
 		};
 	};
 	B88C002210B2890A002BDA85 /* Group.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {902, 499}}";
+			sepNavIntBoundsRect = "{{0, 0}, {914, 495}}";
 			sepNavSelRange = "{569, 0}";
 			sepNavVisRange = "{0, 569}";
 			sepNavWindowFrame = "{{1410, 187}, {658, 753}}";
@@ -684,9 +743,9 @@
 	};
 	B88C002310B2890A002BDA85 /* Group.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {902, 741}}";
-			sepNavSelRange = "{358, 5}";
-			sepNavVisRange = "{3, 983}";
+			sepNavIntBoundsRect = "{{0, 0}, {914, 871}}";
+			sepNavSelRange = "{741, 0}";
+			sepNavVisRange = "{25, 1118}";
 			sepNavWindowFrame = "{{2187, 138}, {658, 753}}";
 		};
 	};
@@ -1478,17 +1537,17 @@
 	};
 	DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {992, 585}}";
-			sepNavSelRange = "{1364, 0}";
-			sepNavVisRange = "{148, 1223}";
+			sepNavIntBoundsRect = "{{0, 0}, {992, 702}}";
+			sepNavSelRange = "{967, 7}";
+			sepNavVisRange = "{190, 1397}";
 			sepNavWindowFrame = "{{15, 0}, {1015, 778}}";
 		};
 	};
 	DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {929, 5369}}";
-			sepNavSelRange = "{8525, 0}";
-			sepNavVisRange = "{6922, 846}";
+			sepNavIntBoundsRect = "{{0, 0}, {1118, 5304}}";
+			sepNavSelRange = "{768, 0}";
+			sepNavVisRange = "{147, 1243}";
 			sepNavWindowFrame = "{{15, 0}, {1015, 778}}";
 		};
 	};
@@ -1501,9 +1560,9 @@
 	};
 	DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1237, 1274}}";
-			sepNavSelRange = "{2198, 0}";
-			sepNavVisRange = "{1492, 1355}";
+			sepNavIntBoundsRect = "{{0, 0}, {1237, 1365}}";
+			sepNavSelRange = "{1037, 0}";
+			sepNavVisRange = "{249, 1310}";
 		};
 	};
 	DA7D03AA10C1C87000A58AC0 /* PBXBookmark */ = {
@@ -1625,7 +1684,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 963";
 		rLen = 0;
-		rLoc = 36882;
+		rLoc = 38112;
 		rType = 0;
 		vrLen = 1288;
 		vrLoc = 35956;
@@ -1655,7 +1714,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 19";
 		rLen = 23;
-		rLoc = 657;
+		rLoc = 683;
 		rType = 0;
 		vrLen = 1072;
 		vrLoc = 3;
@@ -1665,7 +1724,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 125";
 		rLen = 0;
-		rLoc = 5130;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 944;
 		vrLoc = 3289;
@@ -1675,7 +1734,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 128";
 		rLen = 0;
-		rLoc = 5291;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 892;
 		vrLoc = 3415;
@@ -1685,7 +1744,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 108";
 		rLen = 0;
-		rLoc = 4584;
+		rLoc = 4281;
 		rType = 0;
 		vrLen = 1141;
 		vrLoc = 2963;
@@ -1695,7 +1754,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 127";
 		rLen = 0;
-		rLoc = 5124;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1362;
 		vrLoc = 3847;
@@ -1705,7 +1764,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 127";
 		rLen = 0;
-		rLoc = 5124;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1394;
 		vrLoc = 3847;
@@ -1715,7 +1774,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 19";
 		rLen = 23;
-		rLoc = 657;
+		rLoc = 683;
 		rType = 0;
 		vrLen = 1075;
 		vrLoc = 0;
@@ -1725,7 +1784,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 34";
 		rLen = 0;
-		rLoc = 1257;
+		rLoc = 1460;
 		rType = 0;
 		vrLen = 1157;
 		vrLoc = 0;
@@ -1735,7 +1794,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 34";
 		rLen = 0;
-		rLoc = 1257;
+		rLoc = 1460;
 		rType = 0;
 		vrLen = 1157;
 		vrLoc = 0;
@@ -1745,7 +1804,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 131";
 		rLen = 0;
-		rLoc = 5304;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1399;
 		vrLoc = 3705;
@@ -1755,7 +1814,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 196";
 		rLen = 0;
-		rLoc = 8773;
+		rLoc = 8481;
 		rType = 0;
 		vrLen = 1475;
 		vrLoc = 5573;
@@ -1765,7 +1824,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 212";
 		rLen = 0;
-		rLoc = 10266;
+		rLoc = 9974;
 		rType = 0;
 		vrLen = 1192;
 		vrLoc = 5703;
@@ -1775,7 +1834,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 212";
 		rLen = 0;
-		rLoc = 10266;
+		rLoc = 9974;
 		rType = 0;
 		vrLen = 1192;
 		vrLoc = 5703;
@@ -1805,7 +1864,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 816";
 		rLen = 34;
-		rLoc = 31473;
+		rLoc = 32573;
 		rType = 0;
 		vrLen = 1472;
 		vrLoc = 29518;
@@ -1865,7 +1924,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 17";
 		rLen = 0;
-		rLoc = 597;
+		rLoc = 623;
 		rType = 0;
 		vrLen = 1145;
 		vrLoc = 0;
@@ -1875,7 +1934,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 212";
 		rLen = 0;
-		rLoc = 10266;
+		rLoc = 9974;
 		rType = 0;
 		vrLen = 1192;
 		vrLoc = 5703;
@@ -1885,7 +1944,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 87";
 		rLen = 0;
-		rLoc = 3387;
+		rLoc = 3463;
 		rType = 0;
 		vrLen = 1803;
 		vrLoc = 2074;
@@ -1906,7 +1965,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 31;
+		rLoc = 38;
 		rType = 1;
 	};
 	DA7D040C10C1D4F400A58AC0 /* PBXTextBookmark */ = {
@@ -1944,7 +2003,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 261";
 		rLen = 0;
-		rLoc = 12606;
+		rLoc = 12480;
 		rType = 0;
 		vrLen = 1546;
 		vrLoc = 7541;
@@ -2034,7 +2093,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 261";
 		rLen = 0;
-		rLoc = 12606;
+		rLoc = 12480;
 		rType = 0;
 		vrLen = 1546;
 		vrLoc = 7541;
@@ -2044,7 +2103,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 64";
 		rLen = 0;
-		rLoc = 2099;
+		rLoc = 1327;
 		rType = 0;
 		vrLen = 1302;
 		vrLoc = 1344;
@@ -2104,7 +2163,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 93";
 		rLen = 0;
-		rLoc = 3449;
+		rLoc = 3525;
 		rType = 0;
 		vrLen = 1148;
 		vrLoc = 3713;
@@ -2114,7 +2173,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 117";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1059;
 		vrLoc = 3938;
@@ -2154,7 +2213,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 117";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1030;
 		vrLoc = 3972;
@@ -2164,7 +2223,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 116";
 		rLen = 0;
-		rLoc = 4584;
+		rLoc = 4281;
 		rType = 0;
 		vrLen = 1130;
 		vrLoc = 3539;
@@ -2174,7 +2233,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 120";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1100;
 		vrLoc = 3713;
@@ -2184,7 +2243,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 119";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1100;
 		vrLoc = 3713;
@@ -2224,7 +2283,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 126";
 		rLen = 0;
-		rLoc = 4730;
+		rLoc = 4427;
 		rType = 0;
 		vrLen = 1136;
 		vrLoc = 4249;
@@ -2234,7 +2293,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 118";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1115;
 		vrLoc = 3713;
@@ -2244,7 +2303,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 118";
 		rLen = 0;
-		rLoc = 4587;
+		rLoc = 4284;
 		rType = 0;
 		vrLen = 1142;
 		vrLoc = 3851;
@@ -2254,7 +2313,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 188";
 		rLen = 31;
-		rLoc = 6085;
+		rLoc = 6223;
 		rType = 0;
 		vrLen = 1372;
 		vrLoc = 5397;
@@ -2264,7 +2323,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1034";
 		rLen = 11;
-		rLoc = 39674;
+		rLoc = 41073;
 		rType = 0;
 		vrLen = 1118;
 		vrLoc = 38119;
@@ -2560,7 +2619,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 189";
 		rLen = 0;
-		rLoc = 6146;
+		rLoc = 6284;
 		rType = 0;
 		vrLen = 1339;
 		vrLoc = 3406;
@@ -2570,7 +2629,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1034";
 		rLen = 11;
-		rLoc = 39674;
+		rLoc = 41073;
 		rType = 0;
 		vrLen = 1118;
 		vrLoc = 38119;
@@ -2730,7 +2789,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 274";
 		rLen = 0;
-		rLoc = 12856;
+		rLoc = 12730;
 		rType = 0;
 		vrLen = 1452;
 		vrLoc = 8647;
@@ -2740,7 +2799,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 276";
 		rLen = 0;
-		rLoc = 12877;
+		rLoc = 12751;
 		rType = 0;
 		vrLen = 1697;
 		vrLoc = 8373;
@@ -2750,7 +2809,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 276";
 		rLen = 0;
-		rLoc = 12877;
+		rLoc = 12751;
 		rType = 0;
 		vrLen = 1773;
 		vrLoc = 8414;
@@ -2830,7 +2889,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 291";
 		rLen = 0;
-		rLoc = 13480;
+		rLoc = 14125;
 		rType = 0;
 		vrLen = 1616;
 		vrLoc = 9322;
@@ -2840,7 +2899,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 291";
 		rLen = 0;
-		rLoc = 13480;
+		rLoc = 14125;
 		rType = 0;
 		vrLen = 1617;
 		vrLoc = 9322;
@@ -2880,7 +2939,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 189";
 		rLen = 0;
-		rLoc = 6146;
+		rLoc = 6284;
 		rType = 0;
 		vrLen = 909;
 		vrLoc = 1671;
@@ -2890,7 +2949,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 694";
 		rLen = 0;
-		rLoc = 26755;
+		rLoc = 27855;
 		rType = 0;
 		vrLen = 1711;
 		vrLoc = 24984;
@@ -2900,7 +2959,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 709";
 		rLen = 0;
-		rLoc = 26755;
+		rLoc = 27855;
 		rType = 0;
 		vrLen = 1457;
 		vrLoc = 25606;
@@ -2910,7 +2969,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 696";
 		rLen = 0;
-		rLoc = 26427;
+		rLoc = 27527;
 		rType = 0;
 		vrLen = 1442;
 		vrLoc = 25606;
@@ -2920,7 +2979,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 697";
 		rLen = 0;
-		rLoc = 26427;
+		rLoc = 27527;
 		rType = 0;
 		vrLen = 1545;
 		vrLoc = 25606;
@@ -3110,7 +3169,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 697";
 		rLen = 0;
-		rLoc = 26427;
+		rLoc = 27527;
 		rType = 0;
 		vrLen = 1583;
 		vrLoc = 25571;
@@ -3120,7 +3179,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 342";
 		rLen = 0;
-		rLoc = 11794;
+		rLoc = 12894;
 		rType = 0;
 		vrLen = 1199;
 		vrLoc = 11136;
@@ -3130,7 +3189,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 342";
 		rLen = 0;
-		rLoc = 11794;
+		rLoc = 12894;
 		rType = 0;
 		vrLen = 1453;
 		vrLoc = 11204;
@@ -3140,7 +3199,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 291";
 		rLen = 0;
-		rLoc = 13480;
+		rLoc = 14125;
 		rType = 0;
 		vrLen = 1617;
 		vrLoc = 9322;
@@ -3317,7 +3376,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 291";
 		rLen = 0;
-		rLoc = 13480;
+		rLoc = 14125;
 		rType = 0;
 		vrLen = 1880;
 		vrLoc = 1618;
@@ -3457,7 +3516,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 127";
 		rLen = 0;
-		rLoc = 4730;
+		rLoc = 4427;
 		rType = 0;
 		vrLen = 1336;
 		vrLoc = 6415;
@@ -3471,7 +3530,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 230";
 		rLen = 0;
-		rLoc = 10329;
+		rLoc = 10037;
 		rType = 0;
 		vrLen = 1415;
 		vrLoc = 7014;
@@ -3481,7 +3540,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 243";
 		rLen = 0;
-		rLoc = 11021;
+		rLoc = 10729;
 		rType = 0;
 		vrLen = 1690;
 		vrLoc = 7132;
@@ -3491,7 +3550,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 243";
 		rLen = 0;
-		rLoc = 11021;
+		rLoc = 10729;
 		rType = 0;
 		vrLen = 1548;
 		vrLoc = 7045;
@@ -3521,7 +3580,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 215";
 		rLen = 0;
-		rLoc = 8773;
+		rLoc = 8481;
 		rType = 0;
 		vrLen = 1719;
 		vrLoc = 6714;
@@ -3531,7 +3590,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 218";
 		rLen = 0;
-		rLoc = 7503;
+		rLoc = 7211;
 		rType = 0;
 		vrLen = 1360;
 		vrLoc = 6717;
@@ -3541,7 +3600,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 234";
 		rLen = 0;
-		rLoc = 8053;
+		rLoc = 7761;
 		rType = 0;
 		vrLen = 1398;
 		vrLoc = 7386;
@@ -3551,7 +3610,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 222";
 		rLen = 0;
-		rLoc = 7573;
+		rLoc = 7281;
 		rType = 0;
 		vrLen = 1545;
 		vrLoc = 6600;
@@ -3561,7 +3620,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 246";
 		rLen = 0;
-		rLoc = 8532;
+		rLoc = 8240;
 		rType = 0;
 		vrLen = 1444;
 		vrLoc = 7855;
@@ -3611,7 +3670,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 251;
+		rLoc = 239;
 		rType = 1;
 	};
 	DA7D062110C20CBD00A58AC0 /* PBXTextBookmark */ = {
@@ -3619,7 +3678,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 247";
 		rLen = 0;
-		rLoc = 8571;
+		rLoc = 8279;
 		rType = 0;
 		vrLen = 629;
 		vrLoc = 7968;
@@ -3649,7 +3708,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 246";
 		rLen = 0;
-		rLoc = 8503;
+		rLoc = 8211;
 		rType = 0;
 		vrLen = 1566;
 		vrLoc = 7533;
@@ -3669,7 +3728,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1200";
 		rLen = 0;
-		rLoc = 43399;
+		rLoc = 44798;
 		rType = 0;
 		vrLen = 1463;
 		vrLoc = 42527;
@@ -3769,7 +3828,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 230";
 		rLen = 0;
-		rLoc = 7895;
+		rLoc = 7603;
 		rType = 0;
 		vrLen = 1454;
 		vrLoc = 6596;
@@ -3779,7 +3838,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 230";
 		rLen = 0;
-		rLoc = 7895;
+		rLoc = 7603;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 6598;
@@ -3789,7 +3848,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 217";
 		rLen = 0;
-		rLoc = 7399;
+		rLoc = 7107;
 		rType = 0;
 		vrLen = 1546;
 		vrLoc = 6600;
@@ -3799,7 +3858,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1488;
 		vrLoc = 6734;
@@ -3809,7 +3868,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7243;
+		rLoc = 6951;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 6863;
@@ -3819,7 +3878,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1578;
 		vrLoc = 6883;
@@ -3829,7 +3888,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1608;
 		vrLoc = 6780;
@@ -3839,7 +3898,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1507;
 		vrLoc = 6883;
@@ -3849,7 +3908,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7243;
+		rLoc = 6951;
 		rType = 0;
 		vrLen = 1511;
 		vrLoc = 7005;
@@ -3859,7 +3918,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1524;
 		vrLoc = 6863;
@@ -3869,7 +3928,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7233;
+		rLoc = 6941;
 		rType = 0;
 		vrLen = 1577;
 		vrLoc = 6883;
@@ -3879,7 +3938,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7235;
+		rLoc = 6943;
 		rType = 0;
 		vrLen = 1507;
 		vrLoc = 6883;
@@ -3889,7 +3948,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7234;
+		rLoc = 6942;
 		rType = 0;
 		vrLen = 1510;
 		vrLoc = 7005;
@@ -3899,7 +3958,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 214";
 		rLen = 0;
-		rLoc = 7234;
+		rLoc = 6942;
 		rType = 0;
 		vrLen = 1582;
 		vrLoc = 7005;
@@ -3909,7 +3968,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1200";
 		rLen = 0;
-		rLoc = 43399;
+		rLoc = 44798;
 		rType = 0;
 		vrLen = 1996;
 		vrLoc = 46608;
@@ -4029,7 +4088,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 301";
 		rLen = 0;
-		rLoc = 10266;
+		rLoc = 9974;
 		rType = 0;
 		vrLen = 1578;
 		vrLoc = 9728;
@@ -4039,7 +4098,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 277";
 		rLen = 0;
-		rLoc = 9851;
+		rLoc = 9559;
 		rType = 0;
 		vrLen = 1633;
 		vrLoc = 8792;
@@ -4049,7 +4108,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 277";
 		rLen = 0;
-		rLoc = 9851;
+		rLoc = 9559;
 		rType = 0;
 		vrLen = 1593;
 		vrLoc = 9177;
@@ -4099,7 +4158,7 @@
 		fRef = DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */;
 		name = "CreateGroupModalViewController.m: 69";
 		rLen = 0;
-		rLoc = 2198;
+		rLoc = 2265;
 		rType = 0;
 		vrLen = 1355;
 		vrLoc = 1492;
@@ -4109,7 +4168,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 277";
 		rLen = 0;
-		rLoc = 9851;
+		rLoc = 9559;
 		rType = 0;
 		vrLen = 1696;
 		vrLoc = 9144;
@@ -4119,7 +4178,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 145";
 		rLen = 0;
-		rLoc = 5124;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1352;
 		vrLoc = 4526;
@@ -4129,7 +4188,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 145";
 		rLen = 0;
-		rLoc = 5124;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1389;
 		vrLoc = 4526;
@@ -4139,7 +4198,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 272";
 		rLen = 0;
-		rLoc = 9584;
+		rLoc = 9292;
 		rType = 0;
 		vrLen = 1465;
 		vrLoc = 8424;
@@ -4149,7 +4208,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 264";
 		rLen = 0;
-		rLoc = 9252;
+		rLoc = 8960;
 		rType = 0;
 		vrLen = 1569;
 		vrLoc = 8495;
@@ -4159,7 +4218,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 264";
 		rLen = 0;
-		rLoc = 9250;
+		rLoc = 8958;
 		rType = 0;
 		vrLen = 1567;
 		vrLoc = 8552;
@@ -4169,7 +4228,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 264";
 		rLen = 0;
-		rLoc = 9254;
+		rLoc = 8962;
 		rType = 0;
 		vrLen = 1489;
 		vrLoc = 8636;
@@ -4179,7 +4238,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 272";
 		rLen = 0;
-		rLoc = 9575;
+		rLoc = 9283;
 		rType = 0;
 		vrLen = 1611;
 		vrLoc = 8639;
@@ -4189,7 +4248,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 272";
 		rLen = 0;
-		rLoc = 9575;
+		rLoc = 9283;
 		rType = 0;
 		vrLen = 1499;
 		vrLoc = 8367;
@@ -4199,7 +4258,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 267";
 		rLen = 0;
-		rLoc = 9397;
+		rLoc = 9105;
 		rType = 0;
 		vrLen = 1463;
 		vrLoc = 8422;
@@ -4209,7 +4268,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 267";
 		rLen = 0;
-		rLoc = 9397;
+		rLoc = 9105;
 		rType = 0;
 		vrLen = 1467;
 		vrLoc = 8422;
@@ -4219,7 +4278,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 231";
 		rLen = 0;
-		rLoc = 7895;
+		rLoc = 7603;
 		rType = 0;
 		vrLen = 1456;
 		vrLoc = 6629;
@@ -4229,7 +4288,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 231";
 		rLen = 0;
-		rLoc = 7895;
+		rLoc = 7603;
 		rType = 0;
 		vrLen = 1529;
 		vrLoc = 6632;
@@ -4239,7 +4298,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 232";
 		rLen = 260;
-		rLoc = 7895;
+		rLoc = 7603;
 		rType = 0;
 		vrLen = 1485;
 		vrLoc = 7293;
@@ -4249,7 +4308,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 302";
 		rLen = 0;
-		rLoc = 10265;
+		rLoc = 9973;
 		rType = 0;
 		vrLen = 1418;
 		vrLoc = 9563;
@@ -4259,7 +4318,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 223";
 		rLen = 0;
-		rLoc = 7573;
+		rLoc = 7281;
 		rType = 0;
 		vrLen = 1457;
 		vrLoc = 6653;
@@ -4269,7 +4328,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 223";
 		rLen = 0;
-		rLoc = 7573;
+		rLoc = 7281;
 		rType = 0;
 		vrLen = 1528;
 		vrLoc = 6656;
@@ -4279,7 +4338,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 222";
 		rLen = 0;
-		rLoc = 7572;
+		rLoc = 7280;
 		rType = 0;
 		vrLen = 1551;
 		vrLoc = 6656;
@@ -4289,7 +4348,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 248";
 		rLen = 0;
-		rLoc = 8571;
+		rLoc = 8279;
 		rType = 0;
 		vrLen = 681;
 		vrLoc = 7386;
@@ -4309,7 +4368,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 140";
 		rLen = 11;
-		rLoc = 3865;
+		rLoc = 4003;
 		rType = 0;
 		vrLen = 1133;
 		vrLoc = 3451;
@@ -4319,7 +4378,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 341";
 		rLen = 11;
-		rLoc = 11747;
+		rLoc = 12847;
 		rType = 0;
 		vrLen = 1173;
 		vrLoc = 11136;
@@ -4369,7 +4428,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 288";
 		rLen = 11;
-		rLoc = 10195;
+		rLoc = 9903;
 		rType = 0;
 		vrLen = 1322;
 		vrLoc = 9612;
@@ -4476,7 +4535,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 268";
 		rLen = 0;
-		rLoc = 9463;
+		rLoc = 9171;
 		rType = 0;
 		vrLen = 1651;
 		vrLoc = 8956;
@@ -4486,7 +4545,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 264";
 		rLen = 0;
-		rLoc = 9250;
+		rLoc = 8958;
 		rType = 0;
 		vrLen = 1514;
 		vrLoc = 8574;
@@ -4496,7 +4555,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 231";
 		rLen = 0;
-		rLoc = 7861;
+		rLoc = 7569;
 		rType = 0;
 		vrLen = 1530;
 		vrLoc = 6656;
@@ -4506,7 +4565,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 145";
 		rLen = 0;
-		rLoc = 5111;
+		rLoc = 4717;
 		rType = 0;
 		vrLen = 1797;
 		vrLoc = 2298;
@@ -4526,7 +4585,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 23";
 		rLen = 0;
-		rLoc = 604;
+		rLoc = 630;
 		rType = 0;
 		vrLen = 1156;
 		vrLoc = 144;
@@ -4536,7 +4595,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 20";
 		rLen = 0;
-		rLoc = 534;
+		rLoc = 560;
 		rType = 0;
 		vrLen = 1248;
 		vrLoc = 85;
@@ -4546,7 +4605,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 75";
 		rLen = 0;
-		rLoc = 2265;
+		rLoc = 1522;
 		rType = 0;
 		vrLen = 1228;
 		vrLoc = 1450;
@@ -4556,7 +4615,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 134";
 		rLen = 0;
-		rLoc = 4708;
+		rLoc = 4405;
 		rType = 0;
 		vrLen = 1136;
 		vrLoc = 3860;
@@ -4566,7 +4625,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 132";
 		rLen = 34;
-		rLoc = 4658;
+		rLoc = 4355;
 		rType = 0;
 		vrLen = 1132;
 		vrLoc = 3754;
@@ -4576,7 +4635,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 42";
 		rLen = 0;
-		rLoc = 1364;
+		rLoc = 1691;
 		rType = 0;
 		vrLen = 1224;
 		vrLoc = 147;
@@ -4586,7 +4645,7 @@
 		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
 		name = "MyGroupViewController.h: 42";
 		rLen = 0;
-		rLoc = 1364;
+		rLoc = 1691;
 		rType = 0;
 		vrLen = 1223;
 		vrLoc = 148;
@@ -4596,7 +4655,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 132";
 		rLen = 34;
-		rLoc = 4658;
+		rLoc = 4355;
 		rType = 0;
 		vrLen = 1091;
 		vrLoc = 3795;
@@ -4606,7 +4665,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 131";
 		rLen = 0;
-		rLoc = 4657;
+		rLoc = 4354;
 		rType = 0;
 		vrLen = 1051;
 		vrLoc = 3880;
@@ -4616,7 +4675,7 @@
 		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
 		name = "MyGroupViewController.m: 131";
 		rLen = 0;
-		rLoc = 4657;
+		rLoc = 4354;
 		rType = 0;
 		vrLen = 1051;
 		vrLoc = 3880;
@@ -4666,7 +4725,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1390";
 		rLen = 0;
-		rLoc = 50899;
+		rLoc = 52298;
 		rType = 0;
 		vrLen = 758;
 		vrLoc = 49855;
@@ -4676,7 +4735,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 189";
 		rLen = 0;
-		rLoc = 6146;
+		rLoc = 6284;
 		rType = 0;
 		vrLen = 909;
 		vrLoc = 1671;
@@ -4686,7 +4745,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 214";
 		rLen = 0;
-		rLoc = 6862;
+		rLoc = 7002;
 		rType = 0;
 		vrLen = 1065;
 		vrLoc = 5902;
@@ -4696,7 +4755,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 213";
 		rLen = 47;
-		rLoc = 6862;
+		rLoc = 7002;
 		rType = 0;
 		vrLen = 1045;
 		vrLoc = 6033;
@@ -4706,7 +4765,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1390";
 		rLen = 0;
-		rLoc = 50899;
+		rLoc = 52298;
 		rType = 0;
 		vrLen = 775;
 		vrLoc = 49838;
@@ -4716,10 +4775,600 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 1208";
 		rLen = 0;
-		rLoc = 43639;
+		rLoc = 45038;
 		rType = 0;
 		vrLen = 1329;
 		vrLoc = 42527;
+	};
+	DA7D074E10C2290600A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1378";
+		rLen = 0;
+		rLoc = 51963;
+		rType = 0;
+		vrLen = 1163;
+		vrLoc = 49737;
+	};
+	DA7D074F10C2290600A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 131";
+		rLen = 0;
+		rLoc = 4354;
+		rType = 0;
+		vrLen = 1051;
+		vrLoc = 3880;
+	};
+	DA7D075010C2290600A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 67";
+		rLen = 0;
+		rLoc = 1179;
+		rType = 0;
+		vrLen = 1453;
+		vrLoc = 1575;
+	};
+	DA7D075810C22A2C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 67";
+		rLen = 0;
+		rLoc = 1179;
+		rType = 0;
+		vrLen = 1009;
+		vrLoc = 3926;
+	};
+	DA7D075910C22A2C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 155";
+		rLen = 0;
+		rLoc = 4717;
+		rType = 0;
+		vrLen = 1020;
+		vrLoc = 4585;
+	};
+	DA7D075D10C22A4D00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 117";
+		rLen = 0;
+		rLoc = 4206;
+		rType = 0;
+		vrLen = 1323;
+		vrLoc = 3433;
+	};
+	DA7D076110C22A6F00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 117";
+		rLen = 0;
+		rLoc = 4206;
+		rType = 0;
+		vrLen = 1718;
+		vrLoc = 2846;
+	};
+	DA7D076510C22A9C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 127";
+		rLen = 0;
+		rLoc = 4281;
+		rType = 0;
+		vrLen = 977;
+		vrLoc = 4064;
+	};
+	DA7D076F10C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 42";
+		rLen = 0;
+		rLoc = 1691;
+		rType = 0;
+		vrLen = 1224;
+		vrLoc = 147;
+	};
+	DA7D077010C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 272";
+		rLen = 0;
+		rLoc = 8962;
+		rType = 0;
+		vrLen = 1634;
+		vrLoc = 8681;
+	};
+	DA7D077110C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002310B2890A002BDA85 /* Group.m */;
+		name = "Group.m: 19";
+		rLen = 5;
+		rLoc = 358;
+		rType = 0;
+		vrLen = 1177;
+		vrLoc = 355;
+	};
+	DA7D077210C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002210B2890A002BDA85 /* Group.h */;
+		name = "Group.h: 26";
+		rLen = 0;
+		rLoc = 569;
+		rType = 0;
+		vrLen = 569;
+		vrLoc = 0;
+	};
+	DA7D077310C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 118";
+		rLen = 13;
+		rLoc = 3370;
+		rType = 0;
+		vrLen = 1147;
+		vrLoc = 2554;
+	};
+	DA7D077410C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1032";
+		rLen = 0;
+		rLoc = 39061;
+		rType = 0;
+		vrLen = 1785;
+		vrLoc = 38034;
+	};
+	DA7D077510C22FBF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 31";
+		rLen = 0;
+		rLoc = 794;
+		rType = 0;
+		vrLen = 926;
+		vrLoc = 260;
+	};
+	DA7D078110C2321E00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002210B2890A002BDA85 /* Group.h */;
+		name = "Group.h: 26";
+		rLen = 0;
+		rLoc = 569;
+		rType = 0;
+		vrLen = 569;
+		vrLoc = 0;
+	};
+	DA7D078210C2321E00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B88C002310B2890A002BDA85 /* Group.m */;
+		name = "Group.m: 30";
+		rLen = 0;
+		rLoc = 741;
+		rType = 0;
+		vrLen = 1118;
+		vrLoc = 25;
+	};
+	DA7D078310C2321E00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 992";
+		rLen = 0;
+		rLoc = 37579;
+		rType = 0;
+		vrLen = 1262;
+		vrLoc = 36759;
+	};
+	DA7D078410C2321E00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 992";
+		rLen = 0;
+		rLoc = 37579;
+		rType = 0;
+		vrLen = 1210;
+		vrLoc = 36873;
+	};
+	DA7D078810C2328600A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 992";
+		rLen = 0;
+		rLoc = 37579;
+		rType = 0;
+		vrLen = 1268;
+		vrLoc = 36873;
+	};
+	DA7D078910C2328600A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */;
+		name = "CreateGroupModalViewController.m: 35";
+		rLen = 0;
+		rLoc = 1037;
+		rType = 0;
+		vrLen = 1310;
+		vrLoc = 249;
+	};
+	DA7D078E10C233AC00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */;
+		name = "CreateGroupModalViewController.m: 35";
+		rLen = 0;
+		rLoc = 1037;
+		rType = 0;
+		vrLen = 1310;
+		vrLoc = 249;
+	};
+	DA7D078F10C233AC00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 42";
+		rLen = 0;
+		rLoc = 1691;
+		rType = 0;
+		vrLen = 1286;
+		vrLoc = 85;
+	};
+	DA7D079010C233AC00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 69";
+		rLen = 0;
+		rLoc = 1215;
+		rType = 0;
+		vrLen = 1320;
+		vrLoc = 1408;
+	};
+	DA7D079110C233AC00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 131";
+		rLen = 0;
+		rLoc = 4281;
+		rType = 0;
+		vrLen = 1172;
+		vrLoc = 3749;
+	};
+	DA7D079610C2341C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 39";
+		rLen = 14;
+		rLoc = 1570;
+		rType = 0;
+		vrLen = 1311;
+		vrLoc = 147;
+	};
+	DA7D079710C2341C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 131";
+		rLen = 0;
+		rLoc = 4281;
+		rType = 0;
+		vrLen = 1172;
+		vrLoc = 3749;
+	};
+	DA7D079810C2341C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 19";
+		rLen = 0;
+		rLoc = 515;
+		rType = 0;
+		vrLen = 1218;
+		vrLoc = 0;
+	};
+	DA7D079B10C2345D00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 19";
+		rLen = 0;
+		rLoc = 515;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 144;
+	};
+	DA7D079C10C2345D00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 70";
+		rLen = 0;
+		rLoc = 1215;
+		rType = 0;
+		vrLen = 1218;
+		vrLoc = 1588;
+	};
+	DA7D079E10C2348900A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 166";
+		rLen = 0;
+		rLoc = 4788;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 5045;
+	};
+	DA7D07A710C2365C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 41";
+		rLen = 15;
+		rLoc = 1384;
+		rType = 0;
+		vrLen = 1356;
+		vrLoc = 172;
+	};
+	DA7D07A810C2365C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 166";
+		rLen = 0;
+		rLoc = 4788;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 5045;
+	};
+	DA7D07A910C2365C00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 191";
+		rLen = 0;
+		rLoc = 5467;
+		rType = 0;
+		vrLen = 942;
+		vrLoc = 5818;
+	};
+	DA7D07B110C2375700A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 333";
+		rLen = 0;
+		rLoc = 10851;
+		rType = 0;
+		vrLen = 1451;
+		vrLoc = 11323;
+	};
+	DA7D07B510C237DF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 44";
+		rLen = 9;
+		rLoc = 1509;
+		rType = 0;
+		vrLen = 1417;
+		vrLoc = 148;
+	};
+	DA7D07B610C237DF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 333";
+		rLen = 0;
+		rLoc = 10851;
+		rType = 0;
+		vrLen = 1921;
+		vrLoc = 10678;
+	};
+	DA7D07B710C237DF00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 146";
+		rLen = 0;
+		rLoc = 4209;
+		rType = 0;
+		vrLen = 922;
+		vrLoc = 4578;
+	};
+	DA7D07BD10C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B86A54B710B2778300A946C7 /* GroupiesDetailViewController.m */;
+		name = "GroupiesDetailViewController.m: 38";
+		rLen = 0;
+		rLoc = 962;
+		rType = 0;
+		vrLen = 1303;
+		vrLoc = 316;
+	};
+	DA7D07BE10C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
+		name = "BurbleDataManager.h: 118";
+		rLen = 13;
+		rLoc = 3370;
+		rType = 0;
+		vrLen = 1147;
+		vrLoc = 2554;
+	};
+	DA7D07BF10C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1046";
+		rLen = 0;
+		rLoc = 39411;
+		rType = 0;
+		vrLen = 1658;
+		vrLoc = 4304;
+	};
+	DA7D07C010C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 28";
+		rLen = 18;
+		rLoc = 795;
+		rType = 0;
+		vrLen = 1450;
+		vrLoc = 190;
+	};
+	DA7D07C110C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 208";
+		rLen = 0;
+		rLoc = 5970;
+		rType = 0;
+		vrLen = 1037;
+		vrLoc = 5751;
+	};
+	DA7D07C210C23ADA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 85";
+		rLen = 0;
+		rLoc = 1674;
+		rType = 0;
+		vrLen = 1252;
+		vrLoc = 1624;
+	};
+	DA7D07C810C23B2400A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 87";
+		rLen = 0;
+		rLoc = 2482;
+		rType = 0;
+		vrLen = 1375;
+		vrLoc = 3752;
+	};
+	DA7D07D210C23BE000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033110C10BC000A58AC0 /* MyGroupViewController.h */;
+		name = "MyGroupViewController.h: 36";
+		rLen = 7;
+		rLoc = 967;
+		rType = 0;
+		vrLen = 1397;
+		vrLoc = 190;
+	};
+	DA7D07D310C23BE000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 391";
+		rLen = 0;
+		rLoc = 13307;
+		rType = 0;
+		vrLen = 1710;
+		vrLoc = 13234;
+	};
+	DA7D07D410C23BE000A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 211";
+		rLen = 0;
+		rLoc = 5970;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 5769;
+	};
+	DA7D07D610C23C2300A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 277";
+		rLen = 0;
+		rLoc = 8279;
+		rType = 0;
+		vrLen = 668;
+		vrLoc = 8180;
+	};
+	DA7D07D710C23C2300A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAE6556A10A25042007BB25E /* MapViewController.m */;
+		name = "MapViewController.m: 268";
+		rLen = 0;
+		rLoc = 8960;
+		rType = 0;
+		vrLen = 953;
+		vrLoc = 8380;
+	};
+	DA7D07DC10C23C2700A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 211";
+		rLen = 0;
+		rLoc = 5970;
+		rType = 0;
+		vrLen = 1263;
+		vrLoc = 5769;
+	};
+	DA7D07DD10C23C2700A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1046";
+		rLen = 0;
+		rLoc = 39411;
+		rType = 0;
+		vrLen = 1658;
+		vrLoc = 4304;
+	};
+	DA7D07DE10C23C2700A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1056";
+		rLen = 0;
+		rLoc = 40024;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 39385;
+	};
+	DA7D07E410C23CDA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
+		name = "BurbleDataManager.m: 1056";
+		rLen = 0;
+		rLoc = 40024;
+		rType = 0;
+		vrLen = 1563;
+		vrLoc = 50321;
+	};
+	DA7D07E510C23CDA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 211";
+		rLen = 0;
+		rLoc = 5970;
+		rType = 0;
+		vrLen = 1263;
+		vrLoc = 5769;
+	};
+	DA7D07E610C23CDA00A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 64";
+		rLen = 0;
+		rLoc = 1013;
+		rType = 0;
+		vrLen = 1261;
+		vrLoc = 1621;
+	};
+	DA7D07EE10C23DA900A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 64";
+		rLen = 0;
+		rLoc = 1013;
+		rType = 0;
+		vrLen = 1266;
+		vrLoc = 1619;
+	};
+	DA7D07EF10C23DA900A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 20";
+		rLen = 0;
+		rLoc = 517;
+		rType = 0;
+		vrLen = 1308;
+		vrLoc = 385;
+	};
+	DA7D07F710C23E0800A58AC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA7D033210C10BC000A58AC0 /* MyGroupViewController.m */;
+		name = "MyGroupViewController.m: 23";
+		rLen = 0;
+		rLoc = 768;
+		rType = 0;
+		vrLen = 1243;
+		vrLoc = 147;
 	};
 	DA7DA73410BFDC8900216896 /* PlistBookmark */ = {
 		isa = PlistBookmark;
@@ -4827,7 +5476,7 @@
 		fRef = B873401F10B27F0F00F24336 /* BurbleDataManager.h */;
 		name = "BurbleDataManager.h: 56";
 		rLen = 0;
-		rLoc = 1670;
+		rLoc = 1725;
 		rType = 0;
 		vrLen = 1154;
 		vrLoc = 2409;
@@ -4907,7 +5556,7 @@
 		fRef = B873402010B27F0F00F24336 /* BurbleDataManager.m */;
 		name = "BurbleDataManager.m: 256";
 		rLen = 0;
-		rLoc = 9071;
+		rLoc = 10171;
 		rType = 0;
 		vrLen = 1118;
 		vrLoc = 1519;
@@ -5046,7 +5695,7 @@
 			sepNavVisRange = "{0, 1167}";
 		};
 	};
-	DAA6D6AC10B6346B00E2E0B0 /* BurbleDataManager.m:263 */ = {
+	DAA6D6AC10B6346B00E2E0B0 /* BurbleDataManager.m:291 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -5058,9 +5707,9 @@
 		functionName = "-tryToRegister:";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 263;
+		lineNumber = 291;
 		location = Test1;
-		modificationTime = 281157962.136589;
+		modificationTime = 281165268.332715;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -5278,7 +5927,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1055, 4563}}";
 			sepNavSelRange = "{8960, 0}";
-			sepNavVisRange = "{8380, 953}";
+			sepNavVisRange = "{8380, 937}";
 			sepNavWindowFrame = "{{7, 0}, {945, 773}}";
 		};
 	};

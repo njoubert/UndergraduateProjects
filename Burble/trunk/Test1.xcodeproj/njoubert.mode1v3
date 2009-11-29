@@ -276,21 +276,21 @@
 								<string>B832F9B610B2645B00F50C41</string>
 								<string>B832F9B510B2645600F50C41</string>
 								<string>B832F9B410B2644E00F50C41</string>
-								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>19C28FACFE9D520D11CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>18</integer>
-									<integer>4</integer>
+									<integer>44</integer>
+									<integer>40</integer>
+									<integer>32</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 5}, {279, 688}}</string>
+							<string>{{0, 359}, {279, 688}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -327,7 +327,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BurbleDataManager.m</string>
+								<string>MyGroupViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -335,11 +335,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BurbleDataManager.m</string>
+										<string>MyGroupViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA7D073E10C2208100A58AC0</string>
+										<string>DA7D07F710C23E0800A58AC0</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -400,8 +400,6 @@
 											<string>DA72189410BF8D4A000EB4CC</string>
 											<string>DA7218BF10BFD8D1000EB4CC</string>
 											<string>DA7DA73410BFDC8900216896</string>
-											<string>DA7DA79210C06C2000216896</string>
-											<string>DA7DA79310C06C2000216896</string>
 											<string>DA7DA7F010C0741800216896</string>
 											<string>DA7DA7FC10C0755F00216896</string>
 											<string>DA7DA8E510C0D55300216896</string>
@@ -429,22 +427,24 @@
 											<string>DA7D05FA10C2080100A58AC0</string>
 											<string>DA7D068510C2101300A58AC0</string>
 											<string>DA7D068710C2101300A58AC0</string>
-											<string>DA7D069910C210B600A58AC0</string>
 											<string>DA7D06F910C2164F00A58AC0</string>
 											<string>DA7D06FA10C2164F00A58AC0</string>
 											<string>DA7D06FB10C2164F00A58AC0</string>
 											<string>DA7D06FC10C2164F00A58AC0</string>
 											<string>DA7D06FE10C2164F00A58AC0</string>
 											<string>DA7D06FF10C2164F00A58AC0</string>
-											<string>DA7D070010C2164F00A58AC0</string>
-											<string>DA7D072A10C21D0D00A58AC0</string>
-											<string>DA7D073410C2204000A58AC0</string>
 											<string>DA7D073510C2204000A58AC0</string>
 											<string>DA7D073610C2204000A58AC0</string>
 											<string>DA7D073710C2204000A58AC0</string>
 											<string>DA7D073810C2204000A58AC0</string>
-											<string>DA7D073C10C2208100A58AC0</string>
-											<string>DA7D073D10C2208100A58AC0</string>
+											<string>DA7D078110C2321E00A58AC0</string>
+											<string>DA7D078210C2321E00A58AC0</string>
+											<string>DA7D078E10C233AC00A58AC0</string>
+											<string>DA7D07BD10C23ADA00A58AC0</string>
+											<string>DA7D07BE10C23ADA00A58AC0</string>
+											<string>DA7D07D210C23BE000A58AC0</string>
+											<string>DA7D07E410C23CDA00A58AC0</string>
+											<string>DA7D07EE10C23DA900A58AC0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -642,12 +642,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>DA7D07F810C23E0800A58AC0</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>DA7D03C710C1C87000A58AC0</string>
 		<string>DA7D03C810C1C87000A58AC0</string>
+		<string>DA6B30C810A26D38008847D8</string>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>DA6B30C810A26D38008847D8</string>
 		<string>/Users/njoubert/Code/iPhone/Burble/trunk/Test1.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -867,7 +868,7 @@
 			<key>WindowToolGUID</key>
 			<string>1CD10A99069EF8BA00B06720</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -885,8 +886,6 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -913,6 +912,8 @@
 							<string>447pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

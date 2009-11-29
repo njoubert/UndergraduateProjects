@@ -28,7 +28,7 @@
 
 @implementation BurbleDataManager
 static BurbleDataManager *sharedDataManager;
-@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion, lastMapType, lastKnownLocation;
+@synthesize currentDirectoryPath, baseUrl, hasLastMapRegion, lastMapRegion, lastMapType, lastKnownLocation, groupsHistory;
 
 - (void)dealloc {
 	[baseUrl release];
@@ -131,6 +131,7 @@ static BurbleDataManager *sharedDataManager;
 		positionQueue = [[NSMutableArray alloc] init];
 		outgoingMessagesQueue = [[NSMutableArray alloc] init];
 		outgoingRequestsQueue = [[NSMutableArray alloc] init];
+		groupsHistory = [[NSMutableArray alloc] init];
 		
 		//MESSAGES:
 		allMessages = [[NSMutableArray alloc] init];	//This is a sorted-by-arrival-time messages
@@ -150,7 +151,9 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark -
 #pragma mark Internal State Management
 
-- (void)deleteWaypintsCache {
+////////// WAYPOINTS CACHE
+
+- (void)deleteWaypointsCache {
 	NSString *waypointsFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kWaypointsCacheFilename];
 	[[NSFileManager defaultManager] removeItemAtPath:waypointsFilePath error:NULL];
 }
@@ -166,10 +169,33 @@ static BurbleDataManager *sharedDataManager;
 }
 
 - (void)saveWaypointsCache {
-	[self deleteWaypintsCache];
+	[self deleteWaypointsCache];
 	NSString *waypointsFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kWaypointsCacheFilename];
 	[NSKeyedArchiver archiveRootObject:groupWaypoints toFile:waypointsFilePath];
 }
+
+/////// GROUP HISTORY
+
+- (void)deleteGroupHistoryCache {
+	NSString *groupHistoryFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kGroupHistoryCacheFilename];
+	[[NSFileManager defaultManager] removeItemAtPath:groupHistoryFilePath error:NULL];
+}
+
+- (void)loadGroupHistoryCache {
+	NSString *groupHistoryFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kGroupHistoryCacheFilename];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:groupHistoryFilePath]) {
+		NSMutableArray* loadedCache = [NSKeyedUnarchiver unarchiveObjectWithFile:groupHistoryFilePath];
+		[groupsHistory release];
+		groupsHistory = [loadedCache retain];
+	}
+}
+
+- (void)saveGroupHistoryCache {
+	[self deleteGroupHistoryCache];
+	NSString *groupHistoryFilePath = [[self currentDirectoryPath] stringByAppendingPathComponent:kGroupHistoryCacheFilename];
+	[NSKeyedArchiver archiveRootObject:groupsHistory toFile:groupHistoryFilePath];
+}
+
 //This checks that the presistent dictionary contains all the appropriate keys, and saves it.
 //Assumes that presistent exists, and sets presistent to the value.
 - (void)checkAndSavePresistentFile {
@@ -240,6 +266,7 @@ static BurbleDataManager *sharedDataManager;
 		bIsFirstLaunch = TRUE;
 	}
 	[self loadWaypointsCache];
+	[self loadGroupHistoryCache];
 }
 
 - (void)cacheFBUID:(FBUID)fbuid {
@@ -253,6 +280,7 @@ static BurbleDataManager *sharedDataManager;
 	[self updatePresistentWithMyGroup];
 	[self checkAndSavePresistentFile];
 	[self saveWaypointsCache];
+	[self saveGroupHistoryCache];
 	
 }
 - (BOOL)isRegistered {
@@ -960,6 +988,8 @@ static BurbleDataManager *sharedDataManager;
 		if (![gparser hasError]) {
 			Group *g = [gparser getGroup];
 			myGroup = [g copy];
+			if (![groupsHistory containsObject:myGroup]) //add it to our history queue
+				[groupsHistory insertObject:myGroup atIndex:0];
 			[self saveData];
 			[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:myGroup];
 		} else {
@@ -1001,7 +1031,6 @@ static BurbleDataManager *sharedDataManager;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
-		[myGroup release];
 		myGroup = nil;
 		[groupMembers release];
 		groupMembers = nil;
@@ -1030,11 +1059,14 @@ static BurbleDataManager *sharedDataManager;
 	
 }
 - (void) joinGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
+	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
 		XMLGroupParser* gparser = [[XMLGroupParser alloc] initWithData:rpcResponse.data];
 		if (![gparser hasError]) {
 			Group *g = [gparser getGroup];
 			myGroup = [g copy];
+			if (![groupsHistory containsObject:myGroup]) //add it to our history queue
+				[groupsHistory insertObject:myGroup atIndex:0];
 			[self saveData];
 			[self startDownloadWaypoints];
 			[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:rpcResponse.response];	

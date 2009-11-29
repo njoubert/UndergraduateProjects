@@ -32,6 +32,7 @@
 	} else {
 		
 		[self dismissModalViewControllerAnimated:YES];
+		[self.navigationController popToRootViewControllerAnimated:YES];
 		
 		NSString *title= [[NSString alloc] initWithFormat:@"Created group %@!", g.name];
 		NSString *message= [[NSString alloc] initWithString:@"You can now invite your friends to join, and share waypoints and positions."];

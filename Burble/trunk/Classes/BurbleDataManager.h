@@ -41,8 +41,10 @@
 #define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
 //#define kBaseUrlStr @"http://localhost:3000/iphone/"
 
-#define kPresistentFilename @"BurbleData.plist"
-#define kWaypointsCacheFilename @"waypoints"
+#define kPresistentFilename			@"BurbleData.plist"
+#define kWaypointsCacheFilename		@"waypoints"
+#define kGroupHistoryCacheFilename	@"GroupHistory"
+
 
 @interface BurbleDataManager : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate> {
 	NSString *currentDirectoryPath;					//The path where we store data. Set by init.
@@ -80,7 +82,8 @@
 	//GROUP STUFF:
 	Group* myGroup;
 	NSMutableArray* groupMembers;
-	
+	NSMutableArray* groupsHistory;
+
 	//FACEBOOK:
 	FBUID myFBUID;
 	FBSession* _fbsession;
@@ -112,6 +115,7 @@
 @property (readonly) MKCoordinateRegion lastMapRegion;
 @property (readonly) MKMapType lastMapType;
 @property (readonly) CLLocation *lastKnownLocation;
+@property (readonly) NSMutableArray *groupsHistory;
 
 // ============= INTERNAL STATE MANAGEMENT
 
@@ -206,6 +210,8 @@
 - (BOOL)sendMessage:(Message*)msg; //given a message and a list of uids we add it to the queue. You only set message and type
 - (int)unsentMessagesCount;
 - (NSArray*)getUnsentMessages;
+
+
 
 // =============  LOCATION DATA
 
