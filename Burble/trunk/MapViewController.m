@@ -209,21 +209,24 @@
 	}	
 }
 
--(void)panMapToLocation:(CLLocationCoordinate2D) coord{
-
-	MKCoordinateRegion myRegion;
-	MKCoordinateSpan mySpan;
-	myRegion.center = coord;
-	MKCoordinateSpan currentSpan = myMap.region.span;
-	if (currentSpan.latitudeDelta > 1.6 || currentSpan.longitudeDelta > 1.6) {
-		mySpan.latitudeDelta = (CLLocationDegrees) 0.05;
-		mySpan.longitudeDelta = (CLLocationDegrees) 0.05;
+-(void)panMapToLocation:(CLLocationCoordinate2D) coord {
+	
+	MKCoordinateSpan currentSpan = myMap.region.span;	
+	if (currentSpan.latitudeDelta > 1.6 || currentSpan.longitudeDelta > 1.6 ||
+		currentSpan.latitudeDelta < 0.006 || currentSpan.longitudeDelta < 0.006) {
+		MKCoordinateRegion myRegion;
+		MKCoordinateSpan mySpan;
+		myRegion.center = coord;
+		mySpan.latitudeDelta = (CLLocationDegrees) 0.04;
+		mySpan.longitudeDelta = (CLLocationDegrees) 0.04;
 		myRegion.span = mySpan;
+		[myMap setRegion: [myMap regionThatFits:myRegion] animated: true];
+
 	} else {
-		myRegion.span = currentSpan;
+		[myMap setCenterCoordinate:coord animated:YES];
 	}
 	
-	[myMap setRegion: myRegion animated: true];
+
 	
 }
 

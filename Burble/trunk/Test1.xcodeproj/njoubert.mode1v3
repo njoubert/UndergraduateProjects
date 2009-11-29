@@ -281,8 +281,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>28</integer>
-									<integer>23</integer>
+									<integer>44</integer>
+									<integer>40</integer>
 									<integer>22</integer>
 									<integer>3</integer>
 									<integer>0</integer>
@@ -308,7 +308,7 @@
 							<real>279</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 31 1276 747 0 0 1280 778 </string>
+						<string>-1 31 1276 747 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -326,7 +326,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>GroupiesDetailViewController.m</string>
+								<string>MapViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -334,11 +334,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>GroupiesDetailViewController.m</string>
+										<string>MapViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DA7D059D10C1FDB200A58AC0</string>
+										<string>DA7D05C810C2018D00A58AC0</string>
 										<key>history</key>
 										<array>
 											<string>DAF7323E10B22CBA00D08F61</string>
@@ -424,7 +424,6 @@
 											<string>DA7D03F510C1CC4700A58AC0</string>
 											<string>DA7D040010C1D36900A58AC0</string>
 											<string>DA7D041910C1D53400A58AC0</string>
-											<string>DA7D041C10C1D53400A58AC0</string>
 											<string>DA7D044510C1D95100A58AC0</string>
 											<string>DA7D044E10C1D99300A58AC0</string>
 											<string>DA7D044F10C1D99300A58AC0</string>
@@ -432,18 +431,19 @@
 											<string>DA7D050710C1EF2000A58AC0</string>
 											<string>DA7D050A10C1EF2000A58AC0</string>
 											<string>DA7D051610C1F17200A58AC0</string>
-											<string>DA7D052210C1F23000A58AC0</string>
 											<string>DA7D053210C1F56C00A58AC0</string>
 											<string>DA7D054110C1F74D00A58AC0</string>
 											<string>DA7D056110C1F9AE00A58AC0</string>
-											<string>DA7D056310C1F9AE00A58AC0</string>
 											<string>DA7D057810C1FAAD00A58AC0</string>
-											<string>DA7D057910C1FAAD00A58AC0</string>
 											<string>DA7D058210C1FB0200A58AC0</string>
 											<string>DA7D058310C1FB0200A58AC0</string>
-											<string>DA7D059510C1FCAA00A58AC0</string>
 											<string>DA7D059B10C1FDB200A58AC0</string>
-											<string>DA7D059C10C1FDB200A58AC0</string>
+											<string>DA7D05A410C1FE6E00A58AC0</string>
+											<string>DA7D05A510C1FE6E00A58AC0</string>
+											<string>DA7D05AB10C1FF1100A58AC0</string>
+											<string>DA7D05AC10C1FF1100A58AC0</string>
+											<string>DA7D05AF10C1FF8E00A58AC0</string>
+											<string>DA7D05B010C1FF8E00A58AC0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -457,7 +457,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {975, 552}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 31 1276 747 0 0 1280 778 </string>
+								<string>-1 31 1276 747 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -477,7 +477,7 @@
 								<key>Frame</key>
 								<string>{{0, 557}, {975, 149}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 31 1276 747 0 0 1280 778 </string>
+								<string>-1 31 1276 747 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -641,7 +641,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>DA7D059E10C1FDB200A58AC0</string>
+		<string>DA7D05C910C2018D00A58AC0</string>
 		<string>DA7D03C710C1C87000A58AC0</string>
 		<string>DA7D03C810C1C87000A58AC0</string>
 		<string>1CD10A99069EF8BA00B06720</string>
@@ -650,7 +650,7 @@
 		<string>/Users/njoubert/Code/iPhone/Burble/trunk/Test1.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 31 1276 747 0 0 1280 778 </string>
+	<string>-1 31 1276 747 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
