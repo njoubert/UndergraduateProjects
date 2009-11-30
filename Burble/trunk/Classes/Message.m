@@ -84,6 +84,11 @@
 		return;
 	[self appendReceiverUid:receiver.uid];
 }
+-(void)appendReceivers:(NSArray*)receivers {
+	for (Person* p in receivers) {
+		[self appendReceiver:p];
+	}
+}
 
 -(NSString*)shortType {
 	if (self.type == kMessageTypeText)

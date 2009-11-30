@@ -35,21 +35,16 @@
 		members = [[dM sortByDistanceFromMe:[dM getGroupMembers]] retain];
 		waypoints = [[dM sortByDistanceFromMe:[dM getWaypoints]] retain];
 	}
-	[membersTableView reloadData];
-	[waypointsTableView reloadData];
-	[groupsTableView reloadData];
-}
-- (void)displayCorrectTable {
+
 	[membersTableView removeFromSuperview];
 	[waypointsTableView removeFromSuperview];
 	[groupsTableView removeFromSuperview];
 	[membersTableView setFrame:[contentsView frame]];
 	[waypointsTableView setFrame:[contentsView frame]];
 	[groupsTableView setFrame:[totalView frame]];
-	[self refreshGroup];
 	
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
-
+		
 		leaveButton.enabled = YES;
 		actionsToolbar.hidden = NO;
 		self.navigationItem.rightBarButtonItem = inviteButton;		
@@ -64,7 +59,7 @@
 										 [waypoints count]];
 			[contentsView addSubview:waypointsTableView];
 		}
-	
+		
 	} else {
 		
 		actionsToolbar.hidden = YES;
@@ -76,10 +71,14 @@
 		if ([[[BurbleDataManager sharedDataManager] groupsHistory] count] == 0)
 			[self showCreateGroupView];
 	}
+	
+	[membersTableView reloadData];
+	[waypointsTableView reloadData];
+	[groupsTableView reloadData];
 }
 
 -(void)downloadAndRefreshGroup {
-	[self displayCorrectTable];
+	[self refreshGroup];
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshGroup)];
 		[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshGroup)];
@@ -115,16 +114,64 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[self downloadAndRefreshGroup];
+	if (composeView != nil) {
+		[composeView release];
+		composeView = nil;
+	} else {
+		[self downloadAndRefreshGroup];
+	}
 }
 
 -(IBAction)inviteButtonPressed {
-	NSLog(@"Invite button pressed");
+	NSMutableArray* toSelect = [[NSMutableArray alloc] init];
+	for (Person* p in [[BurbleDataManager sharedDataManager] getFriends]) {
+		if (![members containsObject:p])
+			[toSelect addObject:p];
+	}
+	inviteSelectionView = [[SelectRecipients alloc] initWithListOfPeople:toSelect selected:nil withCallbackTarget:self selector:@selector(inviteSelectionViewCallback)];
+	inviteSelectionView.title = @"Invite People";
+	[toSelect release];
+	[self.navigationController pushViewController:inviteSelectionView animated:YES];
+
+}
+-(void)inviteSelectionViewCallback {
+	NSMutableArray *selected = [inviteSelectionView getReferenceToSelectedPeople];
+	if ([selected count] > 0) {
+		
+		Message* msg = [[Message alloc] initWithText:@"" group:[[BurbleDataManager sharedDataManager] getMyGroup]];
+		[msg appendReceivers:selected];
+		if ([[BurbleDataManager sharedDataManager] sendMessage:msg]) {
+			NSString* message = [NSString stringWithFormat:@"We invited %d people to your group.", [selected count]];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle: @"Invite Sent" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		} else {
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle: @"Invite Failed" message:@"We could not create a connection to the server. This is wholly unexpected! Please do try again, and contact us." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			
+		}
+		[msg release];
+		
+	}
+	[inviteSelectionView release];
+	inviteSelectionView = nil;
 }
 
 -(IBAction)composeButtonPressed {
-	NSLog(@"Compose button pressed");	
+	Person* me = [[BurbleDataManager sharedDataManager] copyOfMe];
+	NSMutableArray* selected = [[NSMutableArray alloc] initWithArray:[[BurbleDataManager sharedDataManager] getGroupMembers]];
+	NSMutableArray* toSelect = [[NSMutableArray alloc] initWithArray:[[BurbleDataManager sharedDataManager] getGroupMembers]];
+	[selected removeObject:me];
+	[toSelect removeObject:me];
+	composeView = [[ComposeMessageViewController alloc] initWithListOfPeople:toSelect selected:selected withCallbackTarget:self selector:nil];
+	[selected release];
+	[toSelect release];
+	[self.navigationController pushViewController:composeView animated:YES];
 }
+
 
 //he pressed the create button
 -(IBAction)createGroupButtonPressed {
@@ -137,7 +184,7 @@
 
 //he pressed the display selector button
 -(IBAction)displaySelectorButtonPressed {
-	[self displayCorrectTable];
+	[self refreshGroup];
 }
 
 -(void)leftGroupCallback:(id)response {

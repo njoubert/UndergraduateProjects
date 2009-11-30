@@ -12,6 +12,7 @@
 #import "MapViewController.h" 
 #import "MyGroupViewController.h"
 #import "Person.h"
+#import "ComposeMessageViewController.h"
 
 //This is the subview for each individual Groupie
 //Will contain more subviews for:
@@ -27,6 +28,7 @@
 	
 	//create a new map view
 	MapViewController *map;
+	ComposeMessageViewController *composeView;
 	
 }
 

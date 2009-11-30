@@ -10,6 +10,7 @@
 #import "Test1AppDelegate.h"
 #import "FeedDetailViewController.h"
 #import "Message.h"
+#import "ComposeMessageViewController.h"
 
 #define kSenderValueTag		1
 #define kContentsValueTag	2
@@ -26,6 +27,8 @@
 	
 	UIBarButtonItem *composeButton;
 	UIBarButtonItem *refreshButton;
+	
+	ComposeMessageViewController *composeView;
 }
 
 @property (nonatomic, retain) NSArray *messages;

@@ -44,25 +44,21 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-	[self downloadAndRefreshMessages];
+	if (composeView != nil) {
+		[composeView release];
+		composeView = nil;
+	} else {
+		[self downloadAndRefreshMessages];
+	}
 }
 
 
 -(void)composeButtonPressed:(id)sender {
-	NSMutableArray* selected = [[NSMutableArray alloc] init];
-	NSMutableArray* toSelect = [[NSMutableArray alloc] init];
-	[selected addObjectsFromArray:[[BurbleDataManager sharedDataManager] getFriends]];
-	[toSelect addObjectsFromArray:[[BurbleDataManager sharedDataManager] getFriends]];
-	if ([[BurbleDataManager sharedDataManager] getGroupMembersCount] > 0) {
-		for (Person* p in [[BurbleDataManager sharedDataManager] getGroupMembers]) {
-			if (![toSelect containsObject:p])
-				[toSelect addObject:p];
-		}
-	}
-	SelectRecipients *selectVC = [[SelectRecipients alloc] initWithListOfPeople:toSelect selected:selected];
-	[self.navigationController pushViewController:selectVC animated:YES];
+	NSMutableArray* toSelect = [[BurbleDataManager sharedDataManager] copyOfAllPeople];
+	composeView = [[ComposeMessageViewController alloc] initWithListOfPeople:toSelect selected:nil withCallbackTarget:self selector:nil];
+	[toSelect release];
+	[self.navigationController pushViewController:composeView animated:YES];
 }
-
 
 #pragma mark -
 #pragma mark Table View Data Source Methods
@@ -117,7 +113,7 @@
 	Message* msg = [self.messages objectAtIndex:row];
 	UILabel *sender = (UILabel *)[cell.contentView viewWithTag:
 									kSenderValueTag];
-	Person* friend = [[BurbleDataManager sharedDataManager] getFriend:msg.sender_uid];
+	Person* friend = [[BurbleDataManager sharedDataManager] getPerson:msg.sender_uid];
 	if (friend == nil) {
 		sender.text = [NSString stringWithFormat:@"Friend ID %d sent", msg.sender_uid];
 	} else {
@@ -133,7 +129,10 @@
 
 	if (msg.read)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	
+	else {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+
 	UILabel *contents = (UILabel *)[cell.contentView viewWithTag: kContentsValueTag];
 	if (msg.type == kMessageTypeRoutingRequest) {
 		contents.text = [NSString stringWithString:msg.text];
@@ -217,7 +216,9 @@
 		sender.name = [NSString stringWithFormat:@"Sender ID %d", msg.sender_uid];
 	}
 	if ([msg.type isEqualToString:kMessageTypeText]) {
-		[self showDetailController:indexPath]; 
+		
+		[self showDetailController:indexPath];
+		
 	} else if ([msg.type isEqualToString:kMessageTypeGroupInvite]) {
 		Group *g = msg.group;
 		_currentMessage = msg;

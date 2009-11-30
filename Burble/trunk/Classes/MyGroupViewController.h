@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
+#import "SelectRecipients.h"
+#import "ComposeMessageViewController.h"
+
 //#import "GroupiesDetailViewController.h"
 @class GroupiesDetailViewController;
 
@@ -32,6 +35,8 @@
 	UITableView *waypointsTableView;
 	UITableView *membersTableView;
 	UITableView *groupsTableView;
+	SelectRecipients *inviteSelectionView;
+	ComposeMessageViewController *composeView;
 	
 	Group* _toJoin;
 	

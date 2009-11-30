@@ -67,7 +67,8 @@
 		
 }
 -(void)viewDidDisappear:(BOOL)animated {
-	[self.navigationController popToRootViewControllerAnimated:NO];
+	//This might just be problematic......
+	//[self.navigationController popToRootViewControllerAnimated:NO];
 }
 -(void)viewWillAppear:(BOOL)animated {
 	[self setupViewData];
@@ -76,18 +77,8 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-
 	[super viewDidLoad];
 }
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -115,6 +106,21 @@
 }
 
 
+
+-(IBAction)showComposeView {
+	NSMutableArray* selected = [[NSMutableArray alloc] initWithCapacity:1];
+	NSMutableArray* toSelect = [[BurbleDataManager sharedDataManager] copyOfAllPeople];
+	[selected addObject:person];
+	composeView = [[ComposeMessageViewController alloc] initWithListOfPeople:toSelect selected:selected withCallbackTarget:self selector:@selector(composeCallback)];
+	[selected release];
+	[toSelect release];
+	[self.navigationController pushViewController:composeView animated:YES];
+}
+
+-(void)composeCallback {
+	[composeView release];
+	composeView = nil;
+}
 #pragma mark -
 #pragma mark Table View Data Source Methods
 
@@ -180,8 +186,8 @@
 -(void)doFunctionForTable:(UITableView *)tableView atIndex:(NSIndexPath *)indexPath {
 	NSUInteger row = [indexPath row];
 	if (row == 0) { 
-
-			//SEND THE DUDE A MESSAGE
+		
+		[self showComposeView];
 		
 	} else if (row == 1) {
 		if ([[BurbleDataManager sharedDataManager] isInMyGroup:person]) {

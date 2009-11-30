@@ -67,6 +67,9 @@
 		DA9E28D210C3BE390065BB87 /* SelectRecipients.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */; };
 		DA9E28D910C3C9780065BB87 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D710C3C9780065BB87 /* checked.png */; };
 		DA9E28DA10C3C9780065BB87 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D810C3C9780065BB87 /* unchecked.png */; };
+		DA9E29D410C3EC870065BB87 /* ComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9E29D210C3EC870065BB87 /* ComposeMessageViewController.m */; };
+		DA9E29D510C3EC870065BB87 /* ComposeMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA9E29D310C3EC870065BB87 /* ComposeMessageViewController.xib */; };
+		DA9E2A2410C3F52D0065BB87 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9E2A2310C3F52D0065BB87 /* line.png */; };
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
@@ -190,6 +193,10 @@
 		DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectRecipients.xib; sourceTree = "<group>"; };
 		DA9E28D710C3C9780065BB87 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		DA9E28D810C3C9780065BB87 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
+		DA9E29D110C3EC870065BB87 /* ComposeMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeMessageViewController.h; sourceTree = "<group>"; };
+		DA9E29D210C3EC870065BB87 /* ComposeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeMessageViewController.m; sourceTree = "<group>"; };
+		DA9E29D310C3EC870065BB87 /* ComposeMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeMessageViewController.xib; sourceTree = "<group>"; };
+		DA9E2A2310C3F52D0065BB87 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
@@ -300,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				DA9E28D710C3C9780065BB87 /* checked.png */,
+				DA9E2A2310C3F52D0065BB87 /* line.png */,
 				DA9E28D810C3C9780065BB87 /* unchecked.png */,
 				DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */,
 				DA7217B410BF3F2E000EB4CC /* dot.png */,
@@ -489,6 +497,9 @@
 				DA9E28CE10C3BE390065BB87 /* SelectRecipients.h */,
 				DA9E28CF10C3BE390065BB87 /* SelectRecipients.m */,
 				DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */,
+				DA9E29D110C3EC870065BB87 /* ComposeMessageViewController.h */,
+				DA9E29D210C3EC870065BB87 /* ComposeMessageViewController.m */,
+				DA9E29D310C3EC870065BB87 /* ComposeMessageViewController.xib */,
 			);
 			name = Message;
 			sourceTree = "<group>";
@@ -605,6 +616,8 @@
 				DA9E28D210C3BE390065BB87 /* SelectRecipients.xib in Resources */,
 				DA9E28D910C3C9780065BB87 /* checked.png in Resources */,
 				DA9E28DA10C3C9780065BB87 /* unchecked.png in Resources */,
+				DA9E29D510C3EC870065BB87 /* ComposeMessageViewController.xib in Resources */,
+				DA9E2A2410C3F52D0065BB87 /* line.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,6 +675,7 @@
 				DA7D033510C10BC000A58AC0 /* MyGroupViewController.m in Sources */,
 				DA7D034510C10CB000A58AC0 /* CreateGroupModalViewController.m in Sources */,
 				DA9E28D110C3BE390065BB87 /* SelectRecipients.m in Sources */,
+				DA9E29D410C3EC870065BB87 /* ComposeMessageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

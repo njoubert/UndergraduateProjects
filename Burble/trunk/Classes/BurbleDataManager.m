@@ -1150,6 +1150,37 @@ static BurbleDataManager *sharedDataManager;
 	return 0;
 }
 
+-(NSMutableArray*)copyOfAllPeople {
+	NSMutableArray* everyone = [[NSMutableArray alloc] init];
+	[everyone addObjectsFromArray:allFriends];
+	if ([self getGroupMembersCount] > 0) {
+		for (Person* p in groupMembers) {
+			if (![everyone containsObject:p])
+				[everyone addObject:p];
+		}
+	}
+	Person* me = [self copyOfMe];
+	[everyone removeObject:me];
+	[me release];
+	return everyone;
+}
+- (Person*) getPerson:(int)uid {
+	Person* person = nil;
+	NSEnumerator *enumerator = [allFriends objectEnumerator];
+	while (person = [enumerator nextObject]) {
+		if (person.uid == uid)
+			return person;
+	}
+	if (myGroup != nil && groupMembers != nil) {
+		NSEnumerator *enumerator = [groupMembers objectEnumerator];
+		while (person = [enumerator nextObject]) {
+			if (person.uid == uid)
+				return person;
+		}
+	}
+	return nil;
+}
+
 - (void)addWaypoint:(Waypoint *)wP {
 	if (myGroup == nil)
 		return;

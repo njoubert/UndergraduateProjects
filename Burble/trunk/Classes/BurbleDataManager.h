@@ -34,8 +34,8 @@
 #define kfbSecretKey	@"8aeda7f2bc85ebdb0d7f39689ee14962"
 
 #define kNumOfConcurrentRequestsFromQueue	2
-#define kTimeBetweenRequests				1.0
-#define kMinDistanceForUpdate				50
+#define kTimeBetweenRequests				2.0
+#define kMinDistanceForUpdate				100
 #define pollMessageFrequency				5000
 
 #define kBaseUrlStr @"http://burble.njoubert.com/iphone/"
@@ -187,6 +187,9 @@
 - (int) getFriendsCount;
 - (NSArray*) getFriends;
 - (Person*) getFriend:(int)uid;
+
+- (NSMutableArray*) copyOfAllPeople;
+- (Person*) getPerson:(int)uid;
 
 - (BOOL)isInGroup;
 - (BOOL)isInMyGroup:(Person*)p;

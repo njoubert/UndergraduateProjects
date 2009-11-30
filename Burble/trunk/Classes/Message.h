@@ -62,6 +62,7 @@
 
 -(void)appendReceiverUid:(int)receiver_uid;
 -(void)appendReceiver:(Person*)receiver;
+-(void)appendReceivers:(NSArray*)receivers;
 
 -(id)copyWithZone:(NSZone *)zone;
 -(NSString*)shortType;
