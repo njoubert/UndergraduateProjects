@@ -63,6 +63,10 @@
 		DA7D033610C10BC000A58AC0 /* MyGroupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA7D033310C10BC000A58AC0 /* MyGroupViewController.xib */; };
 		DA7D034510C10CB000A58AC0 /* CreateGroupModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */; };
 		DA7D034610C10CB000A58AC0 /* CreateGroupModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA7D034410C10CB000A58AC0 /* CreateGroupModalViewController.xib */; };
+		DA9E28D110C3BE390065BB87 /* SelectRecipients.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9E28CF10C3BE390065BB87 /* SelectRecipients.m */; };
+		DA9E28D210C3BE390065BB87 /* SelectRecipients.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */; };
+		DA9E28D910C3C9780065BB87 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D710C3C9780065BB87 /* checked.png */; };
+		DA9E28DA10C3C9780065BB87 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9E28D810C3C9780065BB87 /* unchecked.png */; };
 		DAA6D65C10B62B4B00E2E0B0 /* RPCPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */; };
 		DAA6D77410B64BA600E2E0B0 /* RPCURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */; };
 		DAA6D8D310B683C800E2E0B0 /* RPCPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6D8D210B683C800E2E0B0 /* RPCPostRequest.m */; };
@@ -181,6 +185,11 @@
 		DA7D034310C10CB000A58AC0 /* CreateGroupModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateGroupModalViewController.m; sourceTree = "<group>"; };
 		DA7D034410C10CB000A58AC0 /* CreateGroupModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupModalViewController.xib; sourceTree = "<group>"; };
 		DA9E25C710C259D00065BB87 /* Test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA9E28CE10C3BE390065BB87 /* SelectRecipients.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecipients.h; sourceTree = "<group>"; };
+		DA9E28CF10C3BE390065BB87 /* SelectRecipients.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecipients.m; sourceTree = "<group>"; };
+		DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectRecipients.xib; sourceTree = "<group>"; };
+		DA9E28D710C3C9780065BB87 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		DA9E28D810C3C9780065BB87 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		DAA6D64410B61E8700E2E0B0 /* RemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteModel.h; sourceTree = "<group>"; };
 		DAA6D65A10B62B4B00E2E0B0 /* RPCPostData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCPostData.h; sourceTree = "<group>"; };
 		DAA6D65B10B62B4B00E2E0B0 /* RPCPostData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCPostData.m; sourceTree = "<group>"; };
@@ -290,6 +299,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA9E28D710C3C9780065BB87 /* checked.png */,
+				DA9E28D810C3C9780065BB87 /* unchecked.png */,
 				DA720F4010BBD773000EB4CC /* Connect_with_facebook_iphone.png */,
 				DA7217B410BF3F2E000EB4CC /* dot.png */,
 				DA720F3D10BBD722000EB4CC /* Connect_iphone.png */,
@@ -402,6 +413,7 @@
 		B8456CBD10B35CF9005EA08C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DA9E28CB10C3B0680065BB87 /* Message */,
 				DACEFF1210B3465A00944021 /* RegisterViewController.h */,
 				DACEFF1310B3465A00944021 /* RegisterViewController.m */,
 				DACEFF1410B3465A00944021 /* RegisterViewController.xib */,
@@ -469,6 +481,16 @@
 				B8E46A1A10AFBCB2000A27C5 /* FBXMLHandler.m */,
 			);
 			name = "FB Sources";
+			sourceTree = "<group>";
+		};
+		DA9E28CB10C3B0680065BB87 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				DA9E28CE10C3BE390065BB87 /* SelectRecipients.h */,
+				DA9E28CF10C3BE390065BB87 /* SelectRecipients.m */,
+				DA9E28D010C3BE390065BB87 /* SelectRecipients.xib */,
+			);
+			name = Message;
 			sourceTree = "<group>";
 		};
 		DAA6D65D10B62B4F00E2E0B0 /* RPC */ = {
@@ -580,6 +602,9 @@
 				DA72187310BF891A000EB4CC /* Entitlements.plist in Resources */,
 				DA7D033610C10BC000A58AC0 /* MyGroupViewController.xib in Resources */,
 				DA7D034610C10CB000A58AC0 /* CreateGroupModalViewController.xib in Resources */,
+				DA9E28D210C3BE390065BB87 /* SelectRecipients.xib in Resources */,
+				DA9E28D910C3C9780065BB87 /* checked.png in Resources */,
+				DA9E28DA10C3C9780065BB87 /* unchecked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,6 +661,7 @@
 				DA7D033410C10BC000A58AC0 /* MyGroupNavigationController.m in Sources */,
 				DA7D033510C10BC000A58AC0 /* MyGroupViewController.m in Sources */,
 				DA7D034510C10CB000A58AC0 /* CreateGroupModalViewController.m in Sources */,
+				DA9E28D110C3BE390065BB87 /* SelectRecipients.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

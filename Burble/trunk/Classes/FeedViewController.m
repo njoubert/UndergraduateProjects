@@ -7,7 +7,7 @@
 //
 
 #import "FeedViewController.h"
-
+#import "SelectRecipients.h"
 #import "BurbleDataManager.h"
 #import "Util.h"
 
@@ -49,7 +49,18 @@
 
 
 -(void)composeButtonPressed:(id)sender {
-	NSLog(@"wee ee ee eeee");
+	NSMutableArray* selected = [[NSMutableArray alloc] init];
+	NSMutableArray* toSelect = [[NSMutableArray alloc] init];
+	[selected addObjectsFromArray:[[BurbleDataManager sharedDataManager] getFriends]];
+	[toSelect addObjectsFromArray:[[BurbleDataManager sharedDataManager] getFriends]];
+	if ([[BurbleDataManager sharedDataManager] getGroupMembersCount] > 0) {
+		for (Person* p in [[BurbleDataManager sharedDataManager] getGroupMembers]) {
+			if (![toSelect containsObject:p])
+				[toSelect addObject:p];
+		}
+	}
+	SelectRecipients *selectVC = [[SelectRecipients alloc] initWithListOfPeople:toSelect selected:selected];
+	[self.navigationController pushViewController:selectVC animated:YES];
 }
 
 

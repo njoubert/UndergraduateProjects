@@ -1346,7 +1346,6 @@ static BurbleDataManager *sharedDataManager;
 	}
 	
 	//JSON THIS SHIT!! JSON >>> XML! FUCK XML! I HATE XML! JSON RULES THE WORLD! XML IS JSON'S BITCH!
-	//READ IT AND WEEP BITCHES!
 	NSMutableString* friendsIdsString = [[NSMutableString alloc] init];
 	[friendsIdsString appendString:@"["];
 	for (int i = 0; i < [alluids count]; i++) {
@@ -1370,6 +1369,7 @@ static BurbleDataManager *sharedDataManager;
 	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:brequest target:self selector:@selector(scannedFBFriendsCallback:withObject:)];
 	[urlString release];
 	[pData release];
+	[brequest release];
 	if (!connection) {
 		[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 		NSString *title= [[NSString alloc] initWithString:@"Error!"];
@@ -1409,6 +1409,7 @@ static BurbleDataManager *sharedDataManager;
 	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(associateFBUIDCallback:withObject:)];
 	[urlString release];
 	[pData release];
+	[request release];
 	if (connection)
 		return YES;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
@@ -1419,7 +1420,8 @@ static BurbleDataManager *sharedDataManager;
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	[self getFBFriendsList];
 }
-//delegate method for facebook login
+//Delegate method for facebook login
+//Called when the person successfuly logs in, and our start of processing facebook shit
 -(void)session:(FBSession*)session didLogin:(FBUID)uid {
 	[self cacheFBUID:uid];
 	[self checkAndSavePresistentFile];
