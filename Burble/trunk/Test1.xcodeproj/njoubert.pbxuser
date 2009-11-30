@@ -23,9 +23,9 @@
 		);
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = DA9E25C810C259D00065BB87 /* Test1 */;
-		activeSDKPreference = iphonesimulator3.1.2;
+		activeSDKPreference = iphoneos3.1.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Test1 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Test1 */,
@@ -781,6 +781,7 @@
 			DA9E270410C3232F0065BB87 /* PBXTextBookmark */ = DA9E270410C3232F0065BB87 /* PBXTextBookmark */;
 			DA9E270910C3233C0065BB87 /* PBXTextBookmark */ = DA9E270910C3233C0065BB87 /* PBXTextBookmark */;
 			DA9E270B10C323450065BB87 /* PBXTextBookmark */ = DA9E270B10C323450065BB87 /* PBXTextBookmark */;
+			DA9E270C10C32FBD0065BB87 /* PBXTextBookmark */ = DA9E270C10C32FBD0065BB87 /* PBXTextBookmark */;
 			DAF7323E10B22CBA00D08F61 = DAF7323E10B22CBA00D08F61 /* PBXTextBookmark */;
 			DAF7324A10B22CD200D08F61 = DAF7324A10B22CD200D08F61 /* PBXTextBookmark */;
 		};
@@ -7132,7 +7133,7 @@
 		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
 		name = "RPCURLConnection.m: 101";
 		rLen = 0;
-		rLoc = 3260;
+		rLoc = 3281;
 		rType = 0;
 		vrLen = 1272;
 		vrLoc = 1937;
@@ -7172,7 +7173,7 @@
 		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
 		name = "RPCURLConnection.m: 104";
 		rLen = 0;
-		rLoc = 3260;
+		rLoc = 3281;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 1863;
@@ -7182,7 +7183,7 @@
 		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
 		name = "RPCURLConnection.m: 96";
 		rLen = 1;
-		rLoc = 2987;
+		rLoc = 3008;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 2117;
@@ -7192,7 +7193,7 @@
 		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
 		name = "RPCURLConnection.m: 96";
 		rLen = 0;
-		rLoc = 2988;
+		rLoc = 3009;
 		rType = 0;
 		vrLen = 1139;
 		vrLoc = 2153;
@@ -7208,6 +7209,16 @@
 		vrLoc = 2117;
 	};
 	DA9E270B10C323450065BB87 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
+		name = "RPCURLConnection.m: 86";
+		rLen = 0;
+		rLoc = 2577;
+		rType = 0;
+		vrLen = 1237;
+		vrLoc = 2034;
+	};
+	DA9E270C10C32FBD0065BB87 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */;
 		name = "RPCURLConnection.m: 86";
@@ -7253,7 +7264,7 @@
 		ignoreCount = 0;
 		lineNumber = 291;
 		location = Test1;
-		modificationTime = 281223998.713178;
+		modificationTime = 281239285.038279;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
 	};
@@ -7267,9 +7278,9 @@
 	};
 	DAA6D77310B64BA600E2E0B0 /* RPCURLConnection.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {914, 1417}}";
-			sepNavSelRange = "{2577, 0}";
-			sepNavVisRange = "{2034, 1237}";
+			sepNavIntBoundsRect = "{{0, 0}, {914, 1378}}";
+			sepNavSelRange = "{3242, 0}";
+			sepNavVisRange = "{1976, 1309}";
 			sepNavWindowFrame = "{{2285, 279}, {658, 753}}";
 		};
 	};

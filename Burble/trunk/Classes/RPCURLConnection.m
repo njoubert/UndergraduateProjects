@@ -92,6 +92,7 @@ static NSMutableArray *pendingRequestsQueue;
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO]; // to stop it, set this to NO 
 	}	
 	[receivedData release];
+	receivedData = nil;
 	[connection release];
 	RPCURLResponse* rpcResponse = [[RPCURLResponse alloc] init];
 	[rpcResponse setError:error];
