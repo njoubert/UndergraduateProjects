@@ -86,7 +86,8 @@
 - (void)viewDidAppear:(BOOL)animated {
 	if ([[BurbleDataManager sharedDataManager] getFBUID] == 0 && [[BurbleDataManager sharedDataManager] getFriendsCount] == 0)
 		[self.view addSubview:noFriendsNotificationView];
-	[self downloadAndRefreshViewData];
+	//[self downloadAndRefreshViewData];
+	[self refreshViewData];
 }
 
 - (void)didReceiveMemoryWarning {

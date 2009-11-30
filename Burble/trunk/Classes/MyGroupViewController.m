@@ -23,7 +23,7 @@
 	[self.navigationController pushViewController:cVC animated:YES];
 }
 
--(void)refreshGroup {
+-(void)refreshView {
 	BurbleDataManager *dM = [BurbleDataManager sharedDataManager];
 	if (members != nil)
 		[members release];
@@ -78,10 +78,10 @@
 }
 
 -(void)downloadAndRefreshGroup {
-	[self refreshGroup];
+	[self refreshView];
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
-		[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshGroup)];
-		[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshGroup)];
+		[[BurbleDataManager sharedDataManager] startDownloadGroupMembersAndCall:self withSelector:@selector(refreshView)];
+		[[BurbleDataManager sharedDataManager] startDownloadWaypointsAndCall:self withSelector:@selector(refreshView)];
 	}
 }
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -184,7 +184,7 @@
 
 //he pressed the display selector button
 -(IBAction)displaySelectorButtonPressed {
-	[self refreshGroup];
+	[self refreshView];
 }
 
 -(void)leftGroupCallback:(id)response {

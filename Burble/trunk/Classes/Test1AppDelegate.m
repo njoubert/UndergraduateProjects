@@ -25,6 +25,7 @@ static Test1AppDelegate *burbleApp = NULL;
 - (id) init {
 	if (!burbleApp) {
 		burbleApp = [super init];
+		regularUpdatesTimer = [NSTimer scheduledTimerWithTimeInterval:kFrequencyOfRegularUpdates target:self selector:@selector(regularUpdateTimerCall) userInfo:nil repeats:YES];
 	}
 	return burbleApp;
 }
@@ -34,6 +35,19 @@ static Test1AppDelegate *burbleApp = NULL;
 		burbleApp = [[Test1AppDelegate alloc] init];
 	}
 	return burbleApp;
+}
+
+// This gets regularly called to poll the server.
+-(void)regularUpdateTimerCall {
+	
+	[[BurbleDataManager sharedDataManager] startDownloadMessages];
+	[[BurbleDataManager sharedDataManager] startDownloadWaypoints];	
+	[[BurbleDataManager sharedDataManager] startDownloadGroupMembers];
+	
+	[mapViewController refreshView];
+	//update the feed?
+	//[feedViewController refreshView];
+	[myGroupViewController refreshView];
 }
 
 -(void)hideActivityViewer {

@@ -1159,9 +1159,9 @@ static BurbleDataManager *sharedDataManager;
 				[everyone addObject:p];
 		}
 	}
-	Person* me = [self copyOfMe];
-	[everyone removeObject:me];
-	[me release];
+	Person* mep = [self copyOfMe];
+	[everyone removeObject:mep];
+	[mep release];
 	return everyone;
 }
 - (Person*) getPerson:(int)uid {

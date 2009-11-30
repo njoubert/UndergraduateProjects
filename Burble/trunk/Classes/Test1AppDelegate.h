@@ -18,6 +18,9 @@
 #import "Person.h"
 #import "Waypoint.h"
 
+
+#define kFrequencyOfRegularUpdates		30
+
 @interface Test1AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 	UITabBarController *rootTabBarController;
@@ -32,6 +35,8 @@
 	MyGroupViewController *myGroupViewController;
 	//GroupiesViewController *groupiesViewController;
 	UIActivityIndicatorView *activityView;
+	
+	NSTimer* regularUpdatesTimer;
 }
 
 +(Test1AppDelegate *) sharedAppDelegate;

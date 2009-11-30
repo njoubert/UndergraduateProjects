@@ -15,7 +15,7 @@
 @synthesize table;
 @synthesize messages;
 
--(void)refreshMessages  {
+-(void)refreshView  {
 	if (messages != nil)
 		[messages release];
 	messages = [[[BurbleDataManager sharedDataManager] getMessages] retain];
@@ -26,8 +26,8 @@
 }
 
 - (void)downloadAndRefreshMessages {
-	[self refreshMessages];
-	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshMessages)];
+	[self refreshView];
+	[[BurbleDataManager sharedDataManager] startDownloadMessagesAndCall:self withSelector:@selector(refreshView)];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
