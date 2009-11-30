@@ -93,9 +93,9 @@
 		} else if ([elementName isEqualToString:@"person-id"]) {
 			_currentWaypoint.person_id = [_currentElementText intValue];
 		} else if ([elementName isEqualToString:@"description"]) {
-			_currentWaypoint.description = [[NSString alloc] initWithString:_currentElementText];
+			_currentWaypoint.description = _currentElementText;
 		} else if ([elementName isEqualToString:@"name"]) {
-			_currentWaypoint.name = [[NSString alloc] initWithString:_currentElementText];
+			_currentWaypoint.name = _currentElementText;
 		} else if ([elementName isEqualToString:@"latitude"]) {
 			[_currentWaypoint setLatitude:[_currentElementText doubleValue]];
 		}  else if ([elementName isEqualToString:@"longitude"]) {

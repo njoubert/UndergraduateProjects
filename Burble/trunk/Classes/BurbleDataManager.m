@@ -298,9 +298,11 @@ static BurbleDataManager *sharedDataManager;
 
 #pragma mark -
 #pragma mark Data Calls for Internal
-- (Person*) getMe {
+- (Person*) copyOfMe {
 	Person* p = [[Person alloc] init];
-	p.position = [[Position alloc] initWithCLLocation:[self getLocation]];
+	Position* pos = [[Position alloc] initWithCLLocation:[self getLocation]];
+	p.position = pos;
+	[pos release];
 	p.name = [self getName];
 	p.uid = [self getUid];
 	p.guid = [self getGUID];
@@ -367,7 +369,7 @@ static BurbleDataManager *sharedDataManager;
 #pragma mark Data Calls for Device Data
 
 - (CLLocation*) getLocation {
-	return [lastKnownLocation copy];
+	return lastKnownLocation;
 }
 
 
@@ -401,6 +403,7 @@ static BurbleDataManager *sharedDataManager;
 		
 		while ([queue count] > 0) {
 			element = [queue lastObject];
+			[element retain];
 			[queue removeLastObject];
 			if (element == nil)
 				continue;
@@ -444,6 +447,8 @@ static BurbleDataManager *sharedDataManager;
 	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendPositionToServerCallback:withObject:) withUserObject:p]) {
 		[positionQueue addObject:p];
 	}
+	[p release];
+	[request release];
 }
 
 //Starts the process of sending all the positions in the queue to the server
@@ -472,6 +477,7 @@ static BurbleDataManager *sharedDataManager;
 	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendWaypointToServerCallback:withObject:) withUserObject:wp]) {
 		[waypointQueue addObject:wp];
 	}
+	[request release];
 }
 
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
@@ -499,6 +505,7 @@ static BurbleDataManager *sharedDataManager;
 	if (nil == [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(sendMessageToServerCallback:withObject:) withUserObject:m]) {
 		[outgoingMessagesQueue addObject:m];
 	}
+	[request release];
 }
 
 // Starts the actual process of sending waypoints to the server, using the three helpers above.
@@ -583,6 +590,7 @@ static BurbleDataManager *sharedDataManager;
 		downloadedMessagesTarget = nil;
 		downloadedMessagesSelector = nil;
 	}
+	[rpcResponse release];
 }
 
 //This will attempt to pull new messages from the server. Should be called periodically
@@ -637,6 +645,7 @@ static BurbleDataManager *sharedDataManager;
 		downloadedWaypointsTarget = nil;
 		downloadedWaypointsSelector = nil;
 	}
+	[rpcResponse release];
 }
 
 
@@ -686,6 +695,7 @@ static BurbleDataManager *sharedDataManager;
 		downloadedFriendsTarget = nil;
 		downloadedFriendsSelector = nil;
 	}
+	[rpcResponse release];
 	
 }
 
@@ -730,7 +740,7 @@ static BurbleDataManager *sharedDataManager;
 				}
 			}
 			[groupMembers removeObjectsInArray:toDelete];
-
+			[newGroupMembers release];
 			//insert new ones if we do not have it already. else update position.
 		}
 		[fparser release];						 
@@ -740,7 +750,7 @@ static BurbleDataManager *sharedDataManager;
 		downloadedGroupMembersTarget = nil;
 		downloadedGroupMembersSelector = nil;
 	}
-	
+	[rpcResponse release];
 }
 
 
@@ -753,6 +763,7 @@ static BurbleDataManager *sharedDataManager;
 	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest *request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
 	BOOL success = (nil != [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(downloadGroupMembersCallback:withObject:)]);
+	[request release];
 	return success;
 }
 -(BOOL)startDownloadGroupMembersAndCall:(id)target withSelector:(SEL)s {
@@ -911,9 +922,9 @@ static BurbleDataManager *sharedDataManager;
 				Group* g = [pparser getGroup];
 				if (nil != g) {
 					[myGroup release];
-					myGroup = g;
+					myGroup = [g retain];
 				}
-				NSLog(@"successfull login!");
+				NSLog(@"successful login!");
 				success = YES;
 				[self updatePresistentWithPerson:[pparser getPerson]];
 				[self updatePresistentWithMyGroup];
@@ -961,6 +972,7 @@ static BurbleDataManager *sharedDataManager;
 	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(callbackForCreateGroup:withObject:)];
 
 	[urlString release];
+	[request release];
 	if (connection) {
 		[[Test1AppDelegate sharedAppDelegate] showActivityViewer]; //Block the user
 		return YES;
@@ -981,6 +993,10 @@ static BurbleDataManager *sharedDataManager;
 		
 		if (![gparser hasError]) {
 			Group *g = [gparser getGroup];
+			if (myGroup != nil) {
+				[myGroup release];
+				myGroup = nil;
+			}
 			myGroup = [g copy];
 			if (![groupsHistory containsObject:myGroup]) //add it to our history queue
 				[groupsHistory insertObject:myGroup atIndex:0];
@@ -999,6 +1015,7 @@ static BurbleDataManager *sharedDataManager;
 		[createGroupCallbackObj performSelector:createGroupCallbackSel withObject:nil];
 	
 	}
+	[rpcResponse release];
 }
 
 - (BOOL) startLeaveGroupWithTarget:(id)obj selector:(SEL)s {
@@ -1014,7 +1031,9 @@ static BurbleDataManager *sharedDataManager;
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/leave", [presistent objectForKey:kPresistKeyGUID]];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(leaveGroupCallback:withObject:)]) {
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(leaveGroupCallback:withObject:)];
+	[request release];
+	if (connection) {
 		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 		return YES;
 	}
@@ -1024,14 +1043,14 @@ static BurbleDataManager *sharedDataManager;
 - (void) leaveGroupCallback:(RPCURLResponse*)rpcResponse withObject:(id)userObj {
 	[[Test1AppDelegate sharedAppDelegate] hideActivityViewer];
 	
-	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {		
+	if (rpcResponse.response != nil && rpcResponse.response.statusCode == 200) {
+		[myGroup release];
 		myGroup = nil;
 		[groupMembers release];
 		groupMembers = nil;
 		[self saveData];
 	}
-	[myGroup release];
-	myGroup = nil;
+	
 	[leaveGroupCallbackObj performSelector:leaveGroupCallbackSel withObject:rpcResponse.response];	
 }
 
@@ -1045,7 +1064,9 @@ static BurbleDataManager *sharedDataManager;
 	NSString *urlString = [[NSString alloc] initWithFormat:@"%@/groups/join/%d", [presistent objectForKey:kPresistKeyGUID], group_id];
 	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
-	if ([RPCURLConnection sendAsyncRequest:request target:self selector:@selector(joinGroupCallback:withObject:)]) {
+	RPCURLConnection *connection = [RPCURLConnection sendAsyncRequest:request target:self selector:@selector(joinGroupCallback:withObject:)];
+	[request release];
+	if (connection) {
 		[[Test1AppDelegate sharedAppDelegate] showActivityViewer];
 		return YES;
 	}
@@ -1068,6 +1089,7 @@ static BurbleDataManager *sharedDataManager;
 			[self messageForParserError:gparser];
 			[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:nil];	
 		}
+		[gparser release];
 	} else {
 		[self messageForCouldNotConnectToServer];
 		[joinGroupCallbackObj performSelector:joinGroupCallbackSel withObject:nil];	
@@ -1247,7 +1269,9 @@ static BurbleDataManager *sharedDataManager;
 	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
 	if (locationAge > 5.0) return;
 
-	[positionQueue addObject:[[Position alloc] initWithCLLocation:newLocation]];
+	Position* p = [[Position alloc] initWithCLLocation:newLocation];
+	[positionQueue addObject:p];
+	[p release];
 	
 	[newLocation retain];
 	[lastKnownLocation release];

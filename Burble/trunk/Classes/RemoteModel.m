@@ -15,12 +15,12 @@
 }
 
 - (RPCPostRequest*) getPostRequestToMethod:(NSString*)urlString withBaseUrl:(NSURL*)baseUrl {
-	NSURL *regUrl = [[NSURL alloc] initWithString:urlString relativeToURL:baseUrl];
+	NSURL *regUrl = [NSURL URLWithString:urlString relativeToURL:baseUrl];
 	RPCPostRequest* request = [[RPCPostRequest alloc] initWithURL:regUrl cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];	
 	RPCPostData* pData = [[RPCPostData alloc] init];
 	[self convertToData:pData];
 	[request setHTTPBodyPostData:pData];
-	[regUrl release];
+	[pData release];
 	return request;
 }
 

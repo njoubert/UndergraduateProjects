@@ -59,11 +59,13 @@
 	
 	//First we update where I am
 	if ([dM getLocation] != nil && [dM getLocation].horizontalAccuracy > 0) {
+		Person* me = [dM copyOfMe];
 		if (currentMe == nil) {
-			currentMe = [dM getMe];
+			currentMe = me;
 			[myMap addAnnotation:currentMe];
 		} else {
-			[currentMe updateWith:[dM getMe]];
+			[currentMe updateWith:me];
+			[me release];
 		}
 		
 	}
@@ -146,10 +148,10 @@
 - (void) refreshView {
 	if ([[BurbleDataManager sharedDataManager] isInGroup]) {
 		waypointButton.enabled = YES;
-		groupLabel.text = [[NSString alloc] initWithFormat:@"In %@!", [[BurbleDataManager sharedDataManager] getMyGroup].name];
+		groupLabel.text = [NSString stringWithFormat:@"In %@!", [[BurbleDataManager sharedDataManager] getMyGroup].name];
 	} else {
 		waypointButton.enabled = NO;
-		groupLabel.text = [[NSString alloc] initWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
+		groupLabel.text = [NSString stringWithFormat:@"Join a Group %@!", [[BurbleDataManager sharedDataManager] getFirstName]];
 	}
 	[self addAnnotations];
 }

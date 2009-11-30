@@ -128,7 +128,7 @@
 
 // ============= DATA CALLS for INTERNAL STATE DATA
 
-- (Person*) getMe;
+- (Person*) copyOfMe;
 - (NSString*) getGUID;
 - (int) getUid;
 - (NSString*) getName;

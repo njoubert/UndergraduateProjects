@@ -29,7 +29,7 @@
 @property SEL selector;
 @property (retain, nonatomic) NSMutableData* receivedData;
 @property (retain, nonatomic) NSURLResponse* response;
-@property (retain, nonatomic) id _userObj;
+@property (assign, nonatomic) id _userObj;
 
 // This is how you start a request. 
 // You will get a callback on selector.

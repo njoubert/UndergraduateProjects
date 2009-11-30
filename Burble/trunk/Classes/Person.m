@@ -26,6 +26,8 @@
 }
 
 -(void) dealloc {
+	[group release];
+	[position release];
 	[name release];
 	[number release];
 	[email release];

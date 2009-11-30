@@ -47,14 +47,6 @@
 //Methods for adding FB friends
 //Only simulates the add
 -(IBAction)addFriends:(id)sender;
--(IBAction)importFriends:(id)sender;
 
-//Sort methods 
-//MUST BE IMPLEMENTED
--(IBAction)alphaSort;
--(IBAction)distSort;
-
-//Search methods
-//MUST BE IMPLEMENTED
 
 @end

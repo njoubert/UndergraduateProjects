@@ -84,6 +84,12 @@ static NSMutableArray *pendingRequestsQueue;
 	RPCURLResponse* rpcResponse = [[RPCURLResponse alloc] init];
 	[rpcResponse setResponse:response];
 	[rpcResponse setData:receivedData];
+	[response release];
+	response = nil;
+	[receivedData release];
+	receivedData = nil;
+	[conn release];
+	conn = nil;
 	[target performSelector:selector withObject:rpcResponse withObject:_userObj];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -93,6 +99,10 @@ static NSMutableArray *pendingRequestsQueue;
 	}	
 	[receivedData release];
 	receivedData = nil;
+	[response release];
+	response = nil;
+	[conn release];
+	conn = nil;
 	[connection release];
 	RPCURLResponse* rpcResponse = [[RPCURLResponse alloc] init];
 	[rpcResponse setError:error];
