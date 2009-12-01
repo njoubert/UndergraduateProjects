@@ -928,6 +928,8 @@ static BurbleDataManager *sharedDataManager;
 				success = YES;
 				[self updatePresistentWithPerson:[pparser getPerson]];
 				[self updatePresistentWithMyGroup];
+				[self startDownloadFriends];		
+
 			}
 			[rpcResponse release];
 			[pparser release];

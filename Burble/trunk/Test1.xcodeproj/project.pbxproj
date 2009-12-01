@@ -771,11 +771,12 @@
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Niels Joubert";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "./**";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DE17AAF7-4BC1-4ACA-BDB3-A3DF359F3C35";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C7E3DA28-FF25-4FC0-A53A-FA4144D1B31C";
 				SDKROOT = iphoneos3.1.2;
 			};
 			name = "Distribution Debug";
@@ -790,6 +791,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Test1_Prefix.pch;
 				INFOPLIST_FILE = "Test1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = Test1;
 			};
 			name = "Distribution Debug";
