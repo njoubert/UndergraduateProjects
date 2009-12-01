@@ -863,6 +863,7 @@ static BurbleDataManager *sharedDataManager;
 		}
 		[pparser release];
 		[self saveData];
+		[self sendMyPosition];
 		[tryToRegister_Caller dismissModalViewControllerAnimated:YES];
 
 	} else if (urlres.statusCode == 200) { //found you as a current person
@@ -928,6 +929,7 @@ static BurbleDataManager *sharedDataManager;
 				success = YES;
 				[self updatePresistentWithPerson:[pparser getPerson]];
 				[self updatePresistentWithMyGroup];
+				[self sendMyPosition];
 				[self startDownloadFriends];		
 
 			}
@@ -1294,6 +1296,15 @@ static BurbleDataManager *sharedDataManager;
 	return sortedArray;
 }
 
+-(void)sendMyPosition {
+	Position* p = [[Position alloc] initWithCLLocation:lastKnownLocation];
+	[positionQueue addObject:p];
+	[p release];	
+	//update views and shit
+	[self flushPositionQueue];
+
+}
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 
 	if (newLocation.horizontalAccuracy < 0) return;
@@ -1301,17 +1312,11 @@ static BurbleDataManager *sharedDataManager;
 	// in most cases you will not want to rely on cached measurements
 	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
 	if (locationAge > 5.0) return;
-
-	Position* p = [[Position alloc] initWithCLLocation:newLocation];
-	[positionQueue addObject:p];
-	[p release];
 	
 	[newLocation retain];
 	[lastKnownLocation release];
 	lastKnownLocation = newLocation;
-	
-	 //update views and shit
-	[self flushPositionQueue];
+	[self sendMyPosition];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {

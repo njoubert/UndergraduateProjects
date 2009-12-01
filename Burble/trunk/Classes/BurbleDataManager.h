@@ -218,6 +218,7 @@
 
 // =============  LOCATION DATA
 
+-(void)sendMyPosition;
 -(double) calculateDistanceFromMe:(const CLLocation*)other;
 -(NSArray*) sortByDistanceFromMe:(NSArray*)arr;
 
