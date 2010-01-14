@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <title>CS149 PA1 Chat</title>
+ </head>
+ <body style="color: rgb(0, 0, 0); background-color: rgb(204, 204, 255);" onload="refresh(0)">
+  <form onsubmit="sendMessage()" action="javascript:void(0)" name="form">
+   <p>CS149 PA1 Chat</p>
+   <p><textarea style="font-family: inherit;" readonly="readonly" cols="50" rows="12" name="received">initializing...</textarea></p>
+   <p><input size="30" name="input">&nbsp;<button name="submit">Send</button></p>
+  </form>
+  <script>
+var lines = new Array(12);
+lines[11] = "connecting...";
+var last = 0;
+
+function incoming() {
+  if (this.readyState == 4) {
+    if (this.status == 200) {
+      a = this.responseText.split('\n');
+      gotData = false;
+      for (i = 0; i < a.length; ++i) {
+        s = a[i].split(': ',2);
+        if (s.length == 2) {
+          addLine(s[1]);
+          gotData = true;
+          last = s[0];
+        }
+      }
+      delay = 0;
+      if (!gotData) {
+        elapsed = (new Date().getTime()) - this.pullTime;
+        if (elapsed < 10000) {
+          addLine("server response was too soon: " + elapsed + " millis");
+          addLine("waiting 5 seconds...");
+          delay = 5000;
+        }
+      }
+      refresh(delay);
+    } else {
+      addLine("reconnecting in 5 seconds...");
+      refresh(5000);
+    }
+  }
+}
+
+function addLine(str) {
+  if (lines.length == 12) {
+    lines.splice(0,1);
+    lines.push(unescape(str));
+  }
+  document.form.received.value = lines.join('\n');
+}
+
+function refresh(delay) {
+  if (delay > 0) {
+    setTimeout('pull()', delay);
+  } else {
+    pull();
+  }
+}
+
+function pull() {
+  var req = new XMLHttpRequest();
+  req.pullTime = (new Date()).getTime();
+  //addLine("pull @ " + (new Date()));
+  req.onreadystatechange = incoming;
+  req.open("POST", "pull?last=" + last);
+  req.send(null);
+}
+
+function sendMessage() {
+  var req = new XMLHttpRequest();
+  req.open("POST", "push?msg=" + escape(document.form.input.value));
+  req.send(null);
+  document.form.input.value = '';
+}
+  </script>
+ </body>
+</html>
