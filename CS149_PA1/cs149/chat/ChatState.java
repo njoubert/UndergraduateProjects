@@ -49,12 +49,13 @@ public class ChatState {
     //right now this forces only one consumer at a time.
     //Really what you want is MANY consumers at a time, but they must all leave (or wait) if a producer is in there.
     synchronized public String recentMessages(long mostRecentSeenID) {
+    	if (mostRecentSeenID > lastID)
+    		mostRecentSeenID = lastID; //Little bit of error checking here.
     	if (mostRecentSeenID == lastID) {
     		try {
 				wait(SLEEP_TIMEOUT);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return "";
 			}
     	}
     	int msgsCount = (int) ((int) (lastID - mostRecentSeenID) < history.size() ? lastID - mostRecentSeenID : history.size());
