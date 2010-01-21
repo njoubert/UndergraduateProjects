@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -36,7 +37,6 @@ public class ChatServer {
 
     private final int port;
     private final Map<String,ChatState> stateByName = new HashMap<String,ChatState>();
-
     /** Constructs a new <code>ChatServer</code> that will service requests on
      *  the specified <code>port</code>.  <code>state</code> will be used to
      *  hold the current state of the chat.
@@ -48,8 +48,8 @@ public class ChatServer {
     public void runForever() throws Exception {
         final ServerSocket server = new ServerSocket(port);
         while (true) {
-            final Socket connection = server.accept();
-            (new Thread() { public void run() { handle(connection); } }).start();
+            final Socket connection = server.accept(); //only in scope for the thread we now create.
+            (new Thread() { public void run() { handle(connection);}}).start();
         }
     }
 
