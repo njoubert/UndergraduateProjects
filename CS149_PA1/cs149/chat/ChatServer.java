@@ -49,7 +49,7 @@ public class ChatServer {
         final ServerSocket server = new ServerSocket(port);
         while (true) {
             final Socket connection = server.accept();
-            handle(connection);
+            (new Thread() { public void run() { handle(connection); } }).start();
         }
     }
 
@@ -92,6 +92,7 @@ public class ChatServer {
                 // silently discard any exceptions here
             }
         }
+        
     }
 
     /** Writes a minimal-but-valid HTML response to <code>output</code>. */
@@ -113,7 +114,7 @@ public class ChatServer {
         System.out.println(Thread.currentThread() + ": replied with " + data.length + " bytes");
     }
 
-    private ChatState getState(final String room) {
+    synchronized private ChatState getState(final String room) {
         ChatState state = stateByName.get(room);
         if (state == null) {
             state = new ChatState(room);
