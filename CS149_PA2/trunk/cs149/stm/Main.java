@@ -15,7 +15,7 @@ public class Main {
 
     private static final IntSet[] implementations = {
             new CoarseLockTreap(),
-            //new STMTreap(),
+            new STMTreap(),
     };
 
     private int _keyRange = DEFAULT_KEY_RANGE;
