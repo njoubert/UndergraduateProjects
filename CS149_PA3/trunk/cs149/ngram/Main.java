@@ -204,7 +204,6 @@ public class Main {
 		}
 		
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
-			
 			//Do shit with page
 			Tokenizer tok = new Tokenizer(value.toString());
 			ArrayList<String> tokens = new ArrayList<String>();
@@ -241,9 +240,6 @@ public class Main {
 						bestPage = pageTitle;
 						bestPageScore = score;
 					}
-//
-//				    IntWritable result = new IntWritable(score);
-//					context.write(new Text(pageTitle), result);
 
 		      }
 		      IntWritable result = new IntWritable(bestPageScore);
