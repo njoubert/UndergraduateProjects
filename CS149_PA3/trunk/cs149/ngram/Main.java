@@ -76,6 +76,8 @@ public class Main {
 		    currentStream.seek(offset);
 		    currentReader = new BufferedReader(new InputStreamReader(currentStream));
 		    key = "randommapkey";
+		    
+		    System.out.println("PageRecordReader initialized with path " + split.getPath() + " and start " + offset);
 		}
 
 		@Override
@@ -89,7 +91,7 @@ public class Main {
 
 		private float getPos() throws IOException {
 			long currentOffset = currentStream == null ? 0 : currentStream.getPos();
-		    return offset + currentOffset;
+		    return currentOffset;
 		}
 
 		@Override
