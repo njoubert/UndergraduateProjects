@@ -3,6 +3,8 @@ package cs149.ngram;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,9 +19,107 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import MultiFileWordCount.WordOffset;
+
 
 public class Main {
 
+	/**
+	 * The PageOffset record keeps a page title.
+	 * We use this as the key to mapper, where the value is the page text.
+	 * @author njoubert
+	 *
+	 */
+	public static class PageOffset implements WritableComparable {
+		private String pageTitle;
+		
+		@Override
+		public void readFields(DataInput in) throws IOException {
+			this.pageTitle = Text.readString(in);	
+		}
+		@Override
+		public void write(DataOutput out) throws IOException {
+			Text.writeString(out, pageTitle);
+		}
+		public int compareTo(Object o) {
+			return pageTitle.compareTo(((PageOffset)o).pageTitle);
+		}
+	    @Override
+	    public boolean equals(Object obj) {
+	      if(obj instanceof PageOffset)
+	        return this.compareTo(obj) == 0;
+	      return false;
+	    }
+	    @Override
+	    public int hashCode() {
+	      assert false : "hashCode not designed";
+	      return 42; //an arbitrary constant
+	    }
+
+	}
+	
+	public static class HTMLInputFormat extends FileInputFormat<PageOffset,Text> {
+
+		@Override
+		public RecordReader<PageOffset, Text> createRecordReader(InputSplit split,
+				TaskAttemptContext arg1) throws IOException,
+				InterruptedException {
+			return new PageRecordReader(spl);
+		}
+		
+	}
+	
+	
+	/**
+	 * A record consisting of a single page
+	 * @author njoubert
+	 *
+	 */
+	public static class PageRecordReader extends RecordReader<PageOffset,Text> {
+
+		@Override
+		public void close() throws IOException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Object getCurrentKey() throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Text getCurrentValue() throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public float getProgress() throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void initialize(InputSplit arg0, TaskAttemptContext arg1)
+				throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean nextKeyValue() throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		
+		
+	}
+	
+	
+	
 	
 	/**
 	 * Generates n-grams of length n from tokens in tokens.
@@ -43,7 +143,7 @@ public class Main {
 		
 	}
 	
-	public static class NGramMapper extends Mapper<Object, Text, Text, Text> {
+	public static class NGramMapper extends Mapper<PageOffset, Text, Text, Text> {
 		private ArrayList<String> queryNGrams;
 		private int n;
 		
@@ -59,7 +159,7 @@ public class Main {
 			queryNGrams = getNGrams(tokens, n);
 		}
 		
-		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+		public void map(PageOffset key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
 
@@ -88,13 +188,12 @@ public class Main {
 				}
 				ArrayList<String> myNGrams = getNGrams(tokens, n);
 				int score = 0;
-				for(String gram : myNGrams) {
-					
+				for(String gram : myNGrams) {	
 					if(queryNGrams.contains(gram)) {
 						score++;
 					}
-					
 				}
+				
 				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
 					bestPage = pageTitle;
 					bestPageScore = score;
@@ -186,6 +285,7 @@ public class Main {
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
 		    job.setOutputValueClass(Text.class);
+		    job.setInputFormatClass(FileInputFormat.class);
 		    FileInputFormat.addInputPath(job, new Path(inputDir));
 		    FileOutputFormat.setOutputPath(job, new Path(outputDir));
 		    System.exit(job.waitForCompletion(true) ? 0 : 1);
