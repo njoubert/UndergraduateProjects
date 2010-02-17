@@ -138,12 +138,13 @@ public class MultiFileWordCount extends Configured implements Tool {
       fs = FileSystem.get(conf);
       this.paths = split.getPaths();
       this.totLength = split.getLength();
-      this.offset = 0;
+      
       
       //open the first file
       Path file = paths[count];
       currentStream = fs.open(file);
       currentReader = new BufferedReader(new InputStreamReader(currentStream));
+      
     }
 
     public void close() throws IOException { }

@@ -8,113 +8,124 @@ import java.io.DataOutput;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-
-import MultiFileWordCount.WordOffset;
 
 
 public class Main {
-
-	/**
-	 * The PageOffset record keeps a page title.
-	 * We use this as the key to mapper, where the value is the page text.
-	 * @author njoubert
-	 *
-	 */
-	public static class PageOffset implements WritableComparable {
-		private String pageTitle;
-		
-		@Override
-		public void readFields(DataInput in) throws IOException {
-			this.pageTitle = Text.readString(in);	
-		}
-		@Override
-		public void write(DataOutput out) throws IOException {
-			Text.writeString(out, pageTitle);
-		}
-		public int compareTo(Object o) {
-			return pageTitle.compareTo(((PageOffset)o).pageTitle);
-		}
-	    @Override
-	    public boolean equals(Object obj) {
-	      if(obj instanceof PageOffset)
-	        return this.compareTo(obj) == 0;
-	      return false;
-	    }
-	    @Override
-	    public int hashCode() {
-	      assert false : "hashCode not designed";
-	      return 42; //an arbitrary constant
-	    }
-
-	}
 	
-	public static class HTMLInputFormat extends FileInputFormat<PageOffset,Text> {
+	public static class HTMLInputFormat extends FileInputFormat<Text,Text> {
 
 		@Override
-		public RecordReader<PageOffset, Text> createRecordReader(InputSplit split,
+		public RecordReader<Text, Text> createRecordReader(InputSplit split,
 				TaskAttemptContext arg1) throws IOException,
 				InterruptedException {
 			PageRecordReader reader = new PageRecordReader();
 			reader.initialize(split, arg1);
+			return reader;
+		}
+		
+		protected boolean isSplitable() {
+			return false;
 		}
 		
 	}
 	
 	
 	/**
-	 * A record consisting of a single page
+	 * A record consisting of a single page. The input should be a single file?
 	 * @author njoubert
 	 *
 	 */
-	public static class PageRecordReader extends RecordReader<PageOffset,Text> {
+	public static class PageRecordReader extends RecordReader<Text,Text> {
 
+		private FileSplit split;
+		private FileSystem fs;
+		private long offset;
+		private long totLength;
+		
+		private FSDataInputStream currentStream;
+	    private BufferedReader currentReader;
+	    
+	    private String currentPageTitle = null;
+	    
+	    private String key;
+	    private String value;
+	    
 		@Override
-		public void close() throws IOException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public Object getCurrentKey() throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Text getCurrentValue() throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public float getProgress() throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public void initialize(InputSplit arg0, TaskAttemptContext arg1)
+		public void initialize(InputSplit arg0, TaskAttemptContext context)
 				throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
+			this.split = (FileSplit) arg0;
+			fs = FileSystem.get(context.getConfiguration());
+			this.offset = split.getStart();
+			this.totLength = split.getLength();
 			
+		    currentStream = fs.open(split.getPath());
+		    currentStream.seek(offset);
+		    currentReader = new BufferedReader(new InputStreamReader(currentStream));
+		    key = "randommapkey";
+		}
+
+		@Override
+		public void close() throws IOException { }
+
+
+		@Override
+	    public float getProgress() throws IOException {
+			return ((float)getPos()) / totLength;
+		}
+
+		private float getPos() {
+			long currentOffset = currentStream == null ? 0 : currentStream.getPos();
+		    return offset + currentOffset;
 		}
 
 		@Override
 		public boolean nextKeyValue() throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
-			return false;
+			//assume we have an buffer that we can read from. trying to find a page.
+			
+//			String line;
+//			int pageStart;
+//			while ((line = currentReader.readLine()) != null) {
+//				if ((pageStart = line.indexOf("<title>")) != -1) {
+//					//found a title
+//				
+//					 
+//				}
+//				
+//				
+//			}
+			
+			int count = 0;
+			String line;
+			String output = "";
+			while (count < 10 && (line = currentReader.readLine()) != null) {
+				output += line;
+			}
+			value = output;
+			
 		}
-		
+		@Override
+		public Text getCurrentKey() throws IOException, InterruptedException {
+			return new Text(key);
+		}
+
+		@Override
+		public Text getCurrentValue() throws IOException, InterruptedException {
+			return new Text(value);
+		}
 		
 		
 	}
@@ -144,7 +155,7 @@ public class Main {
 		
 	}
 	
-	public static class NGramMapper extends Mapper<PageOffset, Text, Text, Text> {
+	public static class NGramMapper extends Mapper<Text, Text, Text, Text> {
 		private ArrayList<String> queryNGrams;
 		private int n;
 		
@@ -160,10 +171,10 @@ public class Main {
 			queryNGrams = getNGrams(tokens, n);
 		}
 		
-		public void map(PageOffset key, Text value, Context context) throws IOException, InterruptedException {
+		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
-
+			System.out.println("Mapper got value: " + doc);
 			int start = doc.indexOf("<title>",index);
 			
 			String bestPage = null;
