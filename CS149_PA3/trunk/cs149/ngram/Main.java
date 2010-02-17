@@ -282,7 +282,7 @@ public class Main {
 			job = new Job(conf, "ngramifier");
 		    job.setJarByClass(Main.class);
 		    job.setMapperClass(NGramMapper.class);
-		    job.setCombinerClass(NGramReducer.class);
+		    //job.setCombinerClass(NGramReducer.class);
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
 		    job.setOutputValueClass(Text.class);
