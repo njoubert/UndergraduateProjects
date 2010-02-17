@@ -178,13 +178,14 @@ public class Main {
 				tokens.add(tok.next());
 			}
 			queryNGrams = getNGrams(tokens, n);
+
+			System.out.println("Mapper instantiated");
+
 		}
 		
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
-
-			System.out.println("Mapper got value: " + doc);
 			int start = doc.indexOf("<title>",index);
 			
 			String bestPage = null;
