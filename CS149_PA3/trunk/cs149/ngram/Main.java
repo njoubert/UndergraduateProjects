@@ -64,7 +64,8 @@ public class Main {
 		public RecordReader<PageOffset, Text> createRecordReader(InputSplit split,
 				TaskAttemptContext arg1) throws IOException,
 				InterruptedException {
-			return new PageRecordReader(spl);
+			PageRecordReader reader = new PageRecordReader();
+			reader.initialize(split, arg1);
 		}
 		
 	}
