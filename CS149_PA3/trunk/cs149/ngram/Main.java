@@ -76,7 +76,6 @@ public class Main {
 		    currentStream = fs.open(split.getPath());
 		    currentStream.seek(offset);
 		    currentReader = new BufferedReader(new InputStreamReader(currentStream));
-		    //key = "randommapkey";
 		    key = null;
 		    value = null;
 		    nextKey = null;
@@ -136,17 +135,7 @@ public class Main {
 				
 			}
 			
-			// Buffer end already reached
-			
 			return false;
-			
-//			int count = 0;
-//			String line;
-//			String output = "";
-//			while (count < 10 && (line = currentReader.readLine()) != null) {
-//				output += line;
-//			}
-//			value = output;
 			
 		}
 		@Override
@@ -266,10 +255,6 @@ public class Main {
 			System.out.println("USAGE: <n>, <query file>, <input dir>, <output dir>");
 			System.exit(1);
 		}
-
-		/*
-		 * Grabbing arguments
-		 */
 		
 		int n = Integer.parseInt(args[0]);
 		String queryFile = args[1];
@@ -297,6 +282,7 @@ public class Main {
 			job = new Job(conf, "ngramifier");
 		    job.setJarByClass(Main.class);
 		    job.setMapperClass(NGramMapper.class);
+		    job.setCombinerClass(NGramReducer.class);
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
 		    job.setOutputValueClass(Text.class);
