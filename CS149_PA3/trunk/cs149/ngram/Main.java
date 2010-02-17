@@ -206,8 +206,9 @@ public class Main {
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
-			System.out.println("Mapper got value: " + doc);
 			int start = doc.indexOf("<title>",index);
+			
+			System.out.println("Title: " + key);
 			
 			String bestPage = null;
 			int bestPageScore = -1;
