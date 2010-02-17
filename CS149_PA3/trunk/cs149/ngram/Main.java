@@ -204,6 +204,7 @@ public class Main {
 		}
 		
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+			
 			//Do shit with page
 			Tokenizer tok = new Tokenizer(value.toString());
 			ArrayList<String> tokens = new ArrayList<String>();
@@ -218,7 +219,9 @@ public class Main {
 				}
 			}
 			
-			context.write(new Text("best pages"), new Text(score + " " + key));
+			if(score != 0) {
+				context.write(new Text("best pages"), new Text(score + " " + key));
+			}
 		
 		}
 		
