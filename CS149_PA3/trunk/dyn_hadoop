@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# We will use HOD to dynamically allocate a hadoop instance, run
+# the hadoop job, then shut down the HOD reservation.
+
+NUM_NODES=4
+PROCS_PER_NODE=4
+MEM_PER_NODE=10g
+
+# this is where HOD will make the local files
+STATE_DIR="$PWD/.dyn_hadoop/tmp.$$"
+
+# this will be interpreted on each cluster node
+#TMP=/tmp/hod_tmp_$$
+TMP=/tmp/hod_`whoami`
+
+# run directly out of /kunle/user/nbronson, with the correct version of python
+BASE=/kunle/users/nbronson
+HDIR=$BASE/hadoop/hadoop-0.20.1
+export HOD_PYTHON_HOME=$BASE/python-2.5.4/bin/python
+export HOD_CONF_DIR=$HDIR/contrib/hod/conf
+export HADOOP_CONF_DIR="$STATE_DIR"
+export JAVA_HOME=$BASE/i686/jdk1.6.0_18
+
+HOD_OPTS="-d $STATE_DIR --hod.temp-dir=$TMP --ringmaster.temp-dir=$TMP --ringmaster.work-dirs=$TMP/1,$TMP/2 --hodring.temp-dir=$TMP"
+
+# this only affects the JVM on cyclades-master
+export HADOOP_HEAPSIZE=256
+
+# from here on out, bail if anything goes wrong
+set -e
+
+# Reserve some machines.  The hadoop config runs 4 clients per node
+# regardless of how many tasks are assigned.
+$HDIR/contrib/hod/bin/hod $HOD_OPTS --resource_manager.options=l:ppn=${PROCS_PER_NODE},l:mem=$MEM_PER_NODE -n $NUM_NODES allocate
+
+cleanup() {
+  set +e
+  #echo "Cleanup in 10 minutes"
+  #sleep 600
+  trap /bin/false INT
+  echo ""
+  #cd $STATE_DIR
+  #for n in $NODES; do
+  #  echo "Scheduling cleaning up of $TMP on $n"
+  #  echo "hostname ; rm -rf $TMP" | /usr/local/bin/qsub -l nodes=$n -W depend=afterany:$JOB -N "cleanup"
+  #done
+  #echo ""
+  echo "Deallocating cluster nodes"
+  $HDIR/contrib/hod/bin/hod $HOD_OPTS deallocate
+  #rm -rf $TMP
+}
+
+trap "echo 'ERROR: non-zero exit value, attempting to release cluster nodes'; cleanup" EXIT
+
+JOB=`cat "$STATE_DIR/hadoop-site.xml" | tr '[<>]' '[\n\n]' | awk -F/ '$2=="mapredsystem" {print $NF}'`
+NODES=`qstat -fn1 $JOB | tail -1 | awk '{print $NF}' | sed -e 's|/[0-9]||g' -e 's/+/ /g' | xargs -n1 | sort -u | xargs`
+export NODES
+echo
+echo "Running on $NODES"
+echo ""
+
+# Reduce the memory requirement to a more realistic value.
+#qalter -l pmem=4g $JOB
+
+# This is the actual map-reduce job.
+$HDIR/bin/hadoop "$@"
+
+# Release the machines.
+trap - EXIT
+cleanup

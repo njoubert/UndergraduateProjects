@@ -1,0 +1,19 @@
+Transactional Coherence and Consistency (TCC) is a novel coherence
+scheme for shared memory multiprocessors that uses programmer-defined
+transactions as the fundamental unit of parallel work, communication,
+and coherence. TCC has the potential to simplify parallel program
+development and optimization by providing a smooth transition from
+sequential to parallel programs. Preliminary results have shown that
+TCC systems can achieve good performance but could require substantial
+amounts of inter-processor communication bandwidth.
+
+In this paper, we characterize the performance of TCC in comparison to
+conventional snoopy cache coherence (SCC) using a detailed model for a
+CMP system and parallel applications optimized for each scheme. We
+conclude that the two coherence schemes perform similarly across a
+wide range of architectural parameters, with each scheme having a
+slight advantage for some applications. The bandwidth requirements of
+TCC are slightly higher than those of SCC but well within the
+capabilities of CMP systems. Our results suggest that TCC can provide
+its programming advantages without compromising the performance
+expected from well tuned shared memory multiprocessor applications.
