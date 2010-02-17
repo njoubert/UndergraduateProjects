@@ -51,6 +51,7 @@ public class Tokenizer implements Iterator<String> {
         return _avail != null;
     }
 
+    //returns a word or a sentence separator.
     public String next() {
         if (!hasNext()) {
             throw new IllegalStateException();
