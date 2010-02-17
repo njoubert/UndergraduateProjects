@@ -111,7 +111,7 @@ public class Main {
 			
 			
 			int count = 0;
-			String line;
+			String line = null;
 			String output = "";
 			while (count < 10 && (line = currentReader.readLine()) != null) {
 				output += line;
