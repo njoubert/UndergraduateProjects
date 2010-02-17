@@ -61,8 +61,9 @@ public class Main {
 	    
 	    private String currentPageTitle = null;
 	    
-	    private String key = "";
-	    private String value = "";
+	    private String key;
+	    private String value;
+	    private String nextKey;
 	    
 		@Override
 		public void initialize(InputSplit arg0, TaskAttemptContext context)
@@ -75,9 +76,10 @@ public class Main {
 		    currentStream = fs.open(split.getPath());
 		    currentStream.seek(offset);
 		    currentReader = new BufferedReader(new InputStreamReader(currentStream));
-		    key = "randommapkey";
-		    
-		    System.out.println("PageRecordReader initialized with path " + split.getPath() + " and start " + offset);
+		    //key = "randommapkey";
+		    key = null;
+		    value = null;
+		    nextKey = null;
 		}
 
 		@Override
@@ -98,32 +100,53 @@ public class Main {
 		public boolean nextKeyValue() throws IOException, InterruptedException {
 			//assume we have an buffer that we can read from. trying to find a page.
 			
-//			String line;
-//			int pageStart;
-//			while ((line = currentReader.readLine()) != null) {
-//				if ((pageStart = line.indexOf("<title>")) != -1) {
-//					//found a title
-//				
-//					 
-//				}
-//				
-//				
-//			}
-			
-			
-			
-			int count = 0;
-			String line = null;
-			String output = "";
-			while (count < 10 && (line = currentReader.readLine()) != null) {
-				output += line;
-				count++;
+			String line;
+			int pageStart;
+			String pageValue = "";
+			while ((line = currentReader.readLine()) != null) {
+				if ((pageStart = line.indexOf("<title>")) != -1) {
+					//found a title
+
+					int pageEnd = line.indexOf("</title>");
+					if(key == null) {
+						// This is the first page found
+						key = "";
+						nextKey = line.substring(pageStart+7,pageEnd);
+					} else {
+						key = nextKey;
+						value = pageValue;
+						nextKey = line.substring(pageStart+7,pageEnd);
+						return true;
+					}
+					 
+				} else if(nextKey != null) {
+					// Append to pageValue unless first title not found
+					pageValue += line;
+					
+				}
+				
+				
 			}
 			
-			if (line == null)
-				return false;
-			value = output;
-			return true;
+			if(pageValue.length() > 0) {
+				//
+				key = nextKey;
+				value = pageValue;
+				return true;
+				
+			}
+			
+			// Buffer end already reached
+			
+			return false;
+			
+//			int count = 0;
+//			String line;
+//			String output = "";
+//			while (count < 10 && (line = currentReader.readLine()) != null) {
+//				output += line;
+//			}
+//			value = output;
 			
 		}
 		@Override
@@ -178,14 +201,12 @@ public class Main {
 				tokens.add(tok.next());
 			}
 			queryNGrams = getNGrams(tokens, n);
-
-			System.out.println("Mapper instantiated");
-
 		}
 		
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
+			System.out.println("Mapper got value: " + doc);
 			int start = doc.indexOf("<title>",index);
 			
 			String bestPage = null;
