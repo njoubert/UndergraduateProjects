@@ -61,8 +61,8 @@ public class Main {
 	    
 	    private String currentPageTitle = null;
 	    
-	    private String key;
-	    private String value;
+	    private String key = "";
+	    private String value = "";
 	    
 		@Override
 		public void initialize(InputSplit arg0, TaskAttemptContext context)
@@ -117,10 +117,14 @@ public class Main {
 			String output = "";
 			while (count < 10 && (line = currentReader.readLine()) != null) {
 				output += line;
+				count++;
 			}
+			
 			if (line == null)
 				return false;
 			value = output;
+
+			System.out.println("Reader produced value: " + value);
 			return true;
 			
 		}
@@ -181,6 +185,7 @@ public class Main {
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 			String doc = value.toString();
 			int index = 0;
+
 			System.out.println("Mapper got value: " + doc);
 			int start = doc.indexOf("<title>",index);
 			
