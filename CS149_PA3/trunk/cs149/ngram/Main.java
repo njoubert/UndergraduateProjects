@@ -123,8 +123,6 @@ public class Main {
 			if (line == null)
 				return false;
 			value = output;
-
-			System.out.println("Reader produced value: " + value);
 			return true;
 			
 		}
