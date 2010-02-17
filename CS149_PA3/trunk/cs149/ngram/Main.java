@@ -87,7 +87,7 @@ public class Main {
 			return ((float)getPos()) / totLength;
 		}
 
-		private float getPos() {
+		private float getPos() throws IOException {
 			long currentOffset = currentStream == null ? 0 : currentStream.getPos();
 		    return offset + currentOffset;
 		}
@@ -108,13 +108,18 @@ public class Main {
 //				
 //			}
 			
+			
+			
 			int count = 0;
 			String line;
 			String output = "";
 			while (count < 10 && (line = currentReader.readLine()) != null) {
 				output += line;
 			}
+			if (line == null)
+				return false;
 			value = output;
+			return true;
 			
 		}
 		@Override
