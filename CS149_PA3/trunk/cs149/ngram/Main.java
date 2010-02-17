@@ -43,7 +43,7 @@ public class Main {
 		
 	}
 	
-	public static class NGramMapper extends Mapper<Object, Text, Text, IntWritable> {
+	public static class NGramMapper extends Mapper<Object, Text, Text, Text> {
 		private ArrayList<String> queryNGrams;
 		private int n;
 		
@@ -104,21 +104,35 @@ public class Main {
 					
 			}
 
-			context.write(new Text(bestPage), new IntWritable(bestPageScore));
+			context.write(new Text("best pages"), new Text(bestPageScore + " " + bestPage));
 		
 		}
 		
 	}
 	
-	public static class NGramReducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+	public static class NGramReducer extends Reducer<Text,Text,Text,IntWritable> {
 		
-		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-		      int sum = 0;
-		      for (IntWritable val : values) {
-		        sum += val.get();
+		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+		    
+			String bestPage = null;
+			int bestPageScore = -1;
+			
+		      for (Text val : values) {
+		    	  String v = val.toString();
+		    	  int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
+		    	  String pageTitle = v.substring(v.indexOf(" ")+1);
+		    	  
+					if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
+						bestPage = pageTitle;
+						bestPageScore = score;
+					}
+
+				    IntWritable result = new IntWritable(score);
+					context.write(new Text(pageTitle), result);
+
 		      }
-		      IntWritable result = new IntWritable(sum);
-			context.write(key, result);
+//		      IntWritable result = new IntWritable(bestPageScore);
+//			context.write(new Text(bestPage), result);
 		}
 	}
 	
@@ -172,7 +186,7 @@ public class Main {
 		    job.setMapperClass(NGramMapper.class);
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
-		    job.setOutputValueClass(IntWritable.class);
+		    job.setOutputValueClass(String.class);
 		    FileInputFormat.addInputPath(job, new Path(inputDir));
 		    FileOutputFormat.setOutputPath(job, new Path(outputDir));
 		    
