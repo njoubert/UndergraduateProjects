@@ -204,51 +204,22 @@ public class Main {
 		}
 		
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
-			String doc = value.toString();
-			int index = 0;
-			int start = doc.indexOf("<title>",index);
 			
-			System.out.println("Title: " + key);
-			
-			String bestPage = null;
-			int bestPageScore = -1;
-			
-			while(start != -1) {
-					
-				int end = doc.indexOf("</title>", start);
-				String pageTitle = doc.substring(start+7, end);
-				int nextTitle = doc.indexOf("<title>", end);
-				String page;
-				if(nextTitle == -1) {
-					page = doc.substring(end+8);
-				} else {
-					page = doc.substring(end+8,nextTitle);
+			//Do shit with page
+			Tokenizer tok = new Tokenizer(value.toString());
+			ArrayList<String> tokens = new ArrayList<String>();
+			while (tok.hasNext()) {
+				tokens.add(tok.next());
+			}
+			ArrayList<String> myNGrams = getNGrams(tokens, n);
+			int score = 0;
+			for(String gram : myNGrams) {	
+				if(queryNGrams.contains(gram)) {
+					score++;
 				}
-				
-				//Do shit with page
-				Tokenizer tok = new Tokenizer(page);
-				ArrayList<String> tokens = new ArrayList<String>();
-				while (tok.hasNext()) {
-					tokens.add(tok.next());
-				}
-				ArrayList<String> myNGrams = getNGrams(tokens, n);
-				int score = 0;
-				for(String gram : myNGrams) {	
-					if(queryNGrams.contains(gram)) {
-						score++;
-					}
-				}
-				
-				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
-					bestPage = pageTitle;
-					bestPageScore = score;
-				}
-				
-				start = nextTitle;
-					
 			}
 			
-			context.write(new Text("best pages"), new Text(bestPageScore + " " + bestPage));
+			context.write(new Text("best pages"), new Text(score + " " + key));
 		
 		}
 		
