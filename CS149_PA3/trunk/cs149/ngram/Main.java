@@ -103,7 +103,7 @@ public class Main {
 				start = nextTitle;
 					
 			}
-
+			
 			context.write(new Text("best pages"), new Text(bestPageScore + " " + bestPage));
 		
 		}
@@ -118,7 +118,7 @@ public class Main {
 			int bestPageScore = -1;
 			
 		      for (Text val : values) {
-		    	  String v = val.toString();
+		    	  String v = new String(val.toString());
 		    	  int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 		    	  String pageTitle = v.substring(v.indexOf(" ")+1);
 		    	  
@@ -126,13 +126,13 @@ public class Main {
 						bestPage = pageTitle;
 						bestPageScore = score;
 					}
-
-				    IntWritable result = new IntWritable(score);
-					context.write(new Text(pageTitle), result);
+//
+//				    IntWritable result = new IntWritable(score);
+//					context.write(new Text(pageTitle), result);
 
 		      }
-//		      IntWritable result = new IntWritable(bestPageScore);
-//			context.write(new Text(bestPage), result);
+		      IntWritable result = new IntWritable(bestPageScore);
+		      context.write(new Text(bestPage), result);
 		}
 	}
 	
@@ -177,7 +177,6 @@ public class Main {
 	    conf.setInt("number", n);
 	    conf.set("query", queryString);
 		
-		
 		Job job;
 		
 		try {
@@ -186,15 +185,10 @@ public class Main {
 		    job.setMapperClass(NGramMapper.class);
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
-		    job.setOutputValueClass(String.class);
+		    job.setOutputValueClass(Text.class);
 		    FileInputFormat.addInputPath(job, new Path(inputDir));
 		    FileOutputFormat.setOutputPath(job, new Path(outputDir));
-		    
-		    
-		    
-		    
 		    System.exit(job.waitForCompletion(true) ? 0 : 1);
-		
 		
 		} catch (IOException e) {
 			e.printStackTrace();
