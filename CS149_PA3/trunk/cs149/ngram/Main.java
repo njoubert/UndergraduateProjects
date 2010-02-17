@@ -302,7 +302,7 @@ public class Main {
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
 		    job.setOutputValueClass(Text.class);
-		    job.setInputFormatClass(FileInputFormat.class);
+		    job.setInputFormatClass(HTMLInputFormat.class);
 		    FileInputFormat.addInputPath(job, new Path(inputDir));
 		    FileOutputFormat.setOutputPath(job, new Path(outputDir));
 		    System.exit(job.waitForCompletion(true) ? 0 : 1);
