@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -100,7 +101,7 @@ public class Main {
 		public void initialize(InputSplit arg0, TaskAttemptContext context)
 				throws IOException, InterruptedException {
 			this.split = (FileSplit) arg0;
-			fs = FileSystem.get(context.getConfiguration());
+			fs = FileSystem.get(new URI(split.getPath().toString()), context.getConfiguration());
 			this.offset = split.getStart();
 			this.totLength = split.getLength();
 			
