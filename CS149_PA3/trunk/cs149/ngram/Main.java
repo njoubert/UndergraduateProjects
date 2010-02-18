@@ -101,16 +101,21 @@ public class Main {
 		public void initialize(InputSplit arg0, TaskAttemptContext context)
 				throws IOException, InterruptedException {
 			this.split = (FileSplit) arg0;
-			fs = FileSystem.get(new URI(split.getPath().toString()), context.getConfiguration());
-			this.offset = split.getStart();
-			this.totLength = split.getLength();
-			
-		    currentStream = fs.open(split.getPath());
-		    currentStream.seek(offset);
-		    currentReader = new BufferedReader(new InputStreamReader(currentStream));
-		    key = null;
-		    value = null;
-		    nextKey = null;
+			try {
+				fs = FileSystem.get(new URI(split.getPath().toString()), context.getConfiguration());
+				
+				this.offset = split.getStart();
+				this.totLength = split.getLength();
+				
+			    currentStream = fs.open(split.getPath());
+			    currentStream.seek(offset);
+			    currentReader = new BufferedReader(new InputStreamReader(currentStream));
+			    key = null;
+			    value = null;
+			    nextKey = null;
+			} catch (Exception e) {
+				
+			}
 		}
 
 		@Override
