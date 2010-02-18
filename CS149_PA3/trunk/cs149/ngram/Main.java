@@ -250,23 +250,25 @@ public class Main {
 		
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 			
-			String bestPage = null;
-			int bestPageScore = -1;
-			
+			PriorityQueue<Page> bestPages = new PriorityQueue<Page>();
+
 			for (Text val : values) {
 				String v = new String(val.toString());
 				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 				String pageTitle = v.substring(v.indexOf(" ")+1);
 
-				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
+				/*if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
 					bestPage = pageTitle;
 					bestPageScore = score;
-				}
+				}*/
+				
+				bestPages.add(new Page(pageTitle,score));
 
 			}
 			
-			if(bestPageScore != 0) {
-				context.write(new Text("best pages"), new Text(bestPageScore + " " + bestPage));
+			for(int i=0; i<20 && bestPages.size()>0; i++) {
+				Page p = bestPages.poll();
+				context.write(new Text("best pages"), new Text(p.getScore() + " " + p.getTitle()));
 			}
 			
 		}
@@ -276,7 +278,6 @@ public class Main {
 	public static class NGramReducer extends Reducer<Text,Text,Text,IntWritable> {
 		
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-
 			PriorityQueue<Page> bestPages = new PriorityQueue<Page>();
 
 			String bestPage = null;
@@ -301,10 +302,6 @@ public class Main {
 				Page p = bestPages.poll();
 				context.write(new Text(p.getTitle()), new IntWritable(p.getScore()));
 			}
-			
-			
-			//IntWritable result = new IntWritable(bestPageScore);
-			//context.write(new Text(bestPage), result);
 		}
 	}
 	
