@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -39,6 +40,31 @@ public class Main {
 		
 		protected boolean isSplitable() {
 			return false;
+		}
+		
+	}
+	
+	protected class Page implements Comparable<Page> {
+		
+		String myTitle;
+		int myScore;
+		
+		private Page(String title, int score) {
+			myTitle = title;
+			myScore = score;
+		}
+		
+		public int getScore() {
+			return myScore;
+		}
+		
+		public String getTitle() {
+			return myTitle;
+		}
+
+		@Override
+		public int compareTo(Page p) {
+			return myScore - p.getScore();
 		}
 		
 	}
@@ -250,7 +276,9 @@ public class Main {
 	public static class NGramReducer extends Reducer<Text,Text,Text,IntWritable> {
 		
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-		    
+
+			PriorityQueue<Page> bestPages = new PriorityQueue<Page>();
+
 			String bestPage = null;
 			int bestPageScore = -1;
 
@@ -258,16 +286,25 @@ public class Main {
 				String v = new String(val.toString());
 				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 				String pageTitle = v.substring(v.indexOf(" ")+1);
-				System.out.println("Reducing v: " + v + ", s:" + score);
-				
-				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
+
+				/*if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
 					bestPage = pageTitle;
 					bestPageScore = score;
-				}
+				}*/
+				
+				bestPages.add(new Page(pageTitle,score));
 
 			}
-			IntWritable result = new IntWritable(bestPageScore);
-			context.write(new Text(bestPage), result);
+			
+			for(int i=0; i<20 && bestPages.size()>0; i++) {
+				
+				Page p = bestPages.poll();
+				context.write(new Text(p.getTitle()), new IntWritable(p.getScore()));
+			}
+			
+			
+			//IntWritable result = new IntWritable(bestPageScore);
+			//context.write(new Text(bestPage), result);
 		}
 	}
 	
