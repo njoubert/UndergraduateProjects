@@ -192,9 +192,10 @@ public class Main {
 			queryNGrams = getNGrams(tokens, n);
 		}
 		
+		/**
+		 * Works on a single page, calculating the score of that page against the query.
+		 */
 		public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
-			
-			//Do shit with page
 			Tokenizer tok = new Tokenizer(value.toString());
 			ArrayList<String> tokens = new ArrayList<String>();
 			while (tok.hasNext()) {
@@ -211,7 +212,37 @@ public class Main {
 			if(score != 0) {
 				context.write(new Text("best pages"), new Text(score + " " + key));
 			}
+		}
+	}
+	
+	/**
+	 * Takes all the page scores of a single mapper and collapses it to a single best page per mapper
+	 * @author njoubert
+	 *
+	 */
+	public static class NGramCombiner extends Reducer<Text,Text,Text,Text> {
 		
+		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+			
+			String bestPage = null;
+			int bestPageScore = -1;
+			
+			for (Text val : values) {
+				String v = new String(val.toString());
+				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
+				String pageTitle = v.substring(v.indexOf(" ")+1);
+
+				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
+					bestPage = pageTitle;
+					bestPageScore = score;
+				}
+
+			}
+			
+			if(bestPageScore != 0) {
+				context.write(new Text("best pages"), new Text(bestPageScore + " " + key));
+			}
+			
 		}
 		
 	}
@@ -222,20 +253,20 @@ public class Main {
 		    
 			String bestPage = null;
 			int bestPageScore = -1;
-			
-		      for (Text val : values) {
-		    	  String v = new String(val.toString());
-		    	  int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
-		    	  String pageTitle = v.substring(v.indexOf(" ")+1);
-		    	  
-					if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
-						bestPage = pageTitle;
-						bestPageScore = score;
-					}
 
-		      }
-		      IntWritable result = new IntWritable(bestPageScore);
-		      context.write(new Text(bestPage), result);
+			for (Text val : values) {
+				String v = new String(val.toString());
+				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
+				String pageTitle = v.substring(v.indexOf(" ")+1);
+
+				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
+					bestPage = pageTitle;
+					bestPageScore = score;
+				}
+
+			}
+			IntWritable result = new IntWritable(bestPageScore);
+			context.write(new Text(bestPage), result);
 		}
 	}
 	
@@ -282,7 +313,7 @@ public class Main {
 			job = new Job(conf, "ngramifier");
 		    job.setJarByClass(Main.class);
 		    job.setMapperClass(NGramMapper.class);
-		    //job.setCombinerClass(NGramReducer.class);
+		    job.setCombinerClass(NGramCombiner.class);
 		    job.setReducerClass(NGramReducer.class);
 		    job.setOutputKeyClass(Text.class);
 		    job.setOutputValueClass(Text.class);
