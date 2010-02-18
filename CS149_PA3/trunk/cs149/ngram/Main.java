@@ -146,7 +146,7 @@ public class Main {
 					//found a title
 
 					int pageEnd = line.indexOf("</title>");
-					if (pageEnd > 0)
+					if (pageEnd < 0)
 						continue;
 					if(key == null) {
 						// This is the first page found
