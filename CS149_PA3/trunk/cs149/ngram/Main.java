@@ -140,7 +140,7 @@ public class Main {
 			int pageStart;
 			String pageValue = "";
 			while ((line = currentReader.readLine()) != null) {
-				if ((pageStart = line.indexOf("<title>")) != -1) {
+				if ((pageStart = line.indexOf("<title>")) > -1) {
 					//found a title
 
 					int pageEnd = line.indexOf("</title>");
@@ -267,12 +267,6 @@ public class Main {
 				String v = new String(val.toString());
 				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 				String pageTitle = v.substring(v.indexOf(" ")+1);
-
-				/*if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
-					bestPage = pageTitle;
-					bestPageScore = score;
-				}*/
-				
 				bestPages.add(new Page(pageTitle,score));
 
 			}
@@ -298,12 +292,6 @@ public class Main {
 				String v = new String(val.toString());
 				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 				String pageTitle = v.substring(v.indexOf(" ")+1);
-
-				/*if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
-					bestPage = pageTitle;
-					bestPageScore = score;
-				}*/
-				
 				bestPages.add(new Page(pageTitle,score));
 
 			}
