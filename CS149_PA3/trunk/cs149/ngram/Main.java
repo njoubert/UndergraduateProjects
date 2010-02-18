@@ -113,6 +113,8 @@ public class Main {
 			    key = null;
 			    value = null;
 			    nextKey = null;
+			    
+			    System.out.println("Initialized reader. Offset: " + this.offset + " File: " + split.getPath());
 			} catch (Exception e) {
 				
 			}
@@ -144,6 +146,8 @@ public class Main {
 					//found a title
 
 					int pageEnd = line.indexOf("</title>");
+					if (pageEnd > 0)
+						continue;
 					if(key == null) {
 						// This is the first page found
 						key = "";
@@ -227,6 +231,7 @@ public class Main {
 				tokens.add(tok.next());
 			}
 			queryNGrams = getNGrams(tokens, n);
+			System.out.println("Created Mapper.");
 		}
 		
 		/**
