@@ -64,7 +64,12 @@ public class Main {
 
 		@Override
 		public int compareTo(Page p) {
-			return myScore - p.getScore();
+			int diff = p.getScore() - myScore;
+			if(diff == 0) {
+				return myTitle.compareTo(p.getTitle());
+			}
+			else return diff;
+				
 		}
 		
 	}
