@@ -44,7 +44,7 @@ public class Main {
 		
 	}
 	
-	protected class Page implements Comparable<Page> {
+	protected static class Page implements Comparable<Page> {
 		
 		String myTitle;
 		int myScore;
