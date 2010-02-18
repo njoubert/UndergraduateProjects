@@ -240,7 +240,7 @@ public class Main {
 			}
 			
 			if(bestPageScore != 0) {
-				context.write(new Text("best pages"), new Text(bestPageScore + " " + key));
+				context.write(new Text("best pages"), new Text(bestPageScore + " " + bestPage));
 			}
 			
 		}
@@ -258,7 +258,8 @@ public class Main {
 				String v = new String(val.toString());
 				int score = Integer.parseInt(v.substring(0, v.indexOf(" ")));
 				String pageTitle = v.substring(v.indexOf(" ")+1);
-
+				System.out.println("Reducing v: " + v + ", s:" + score);
+				
 				if (bestPageScore < score || (bestPageScore == score && (bestPage == null || bestPage.compareTo(pageTitle) < 0))) {
 					bestPage = pageTitle;
 					bestPageScore = score;
