@@ -280,6 +280,14 @@ float openMPReferenceCleaner(float *real_image, float *imag_image, int size_x,
 
 	// End timing
 	gettimeofday(&tv2, &tz2);
+	int threadCount = 0;
+	#pragma omp parallel
+	{
+		#pragma omp master
+		{
+			threadCount = omp_get_num_threads();
+		}
+	}
 
 	// Compute the time difference in micro-seconds
 	float execution = ((tv2.tv_sec - tv1.tv_sec) * 1000000 + (tv2.tv_usec
@@ -288,6 +296,7 @@ float openMPReferenceCleaner(float *real_image, float *imag_image, int size_x,
 	execution /= 1000;
 	// Print some output
 	printf("OPENMP IMPLEMENTATION STATISTICS:\n");
-	printf("  OpenMP Kernel Execution Time: %f ms\n\n", execution);
+	printf("  OpenMP Kernel Execution Time: %f ms over %d threads\n", execution, threadCount);
+
 	return execution;
 }
