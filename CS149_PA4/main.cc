@@ -1,5 +1,8 @@
 #include "CpuReference.h"
+#include "OpenMPReference.h"
+
 #include "ImageCleaner.h"
+
 #ifdef BMPNOTJPEG
 	#include "BMPWriter.h"
 #else
@@ -35,6 +38,9 @@ int main(int argc, char **argv)
   // Also allocate space for the reference implementation
   float *real_image_ref = new float[size_x * size_y];
   float *imag_image_ref = new float[size_x * size_y];
+  // Also allocate space for the openmp implementation
+  float *real_image_omp = new float[size_x * size_y];
+  float *imag_image_omp = new float[size_x * size_y];
 
   // Read in the components
   for(unsigned int i=0; i< size_x; i++)
@@ -50,6 +56,9 @@ int main(int argc, char **argv)
       // Do the same for the reference
       real_image_ref[i*size_x + j] = real;
       imag_image_ref[i*size_x + j] = imag;
+      // Do the same for the omp
+      real_image_omp[i*size_x + j] = real;
+      imag_image_omp[i*size_x + j] = imag;
     }
   }
   // Close the file since we're done with it now
@@ -57,14 +66,19 @@ int main(int argc, char **argv)
 
   printf("Running reference implementation...\n");
   // Call the functions to perform both the reference and the CUDA implementations
-  float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
-/*
+  //float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
+
+  printf("Running openMP implementation...\n");
+  // Call the functions to perform both the reference and the CUDA implementations
+  float openMPTime = openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
+
+
   printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
 
   // Print out the speedup statistic
-  printf("TOTAL SPEEDUP: %f\n\n", (referenceTime/cudaTime));
-*/
+  //printf("TOTAL SPEEDUP: %f\n\n", (referenceTime/cudaTime));
+
   // Dump the image to jpeg format for the cuda implementation
   {
     std::string tempFileName(fileName);
@@ -74,6 +88,7 @@ int main(int argc, char **argv)
     assert(index >= 0);
     std::string outFileName = tempFileName.substr(0,index);
     std::string outFileNameRef = tempFileName.substr(0,index);
+    std::string outFileNameOmp = tempFileName.substr(0,index);
     printf("Writing out CUDA generated image to %s\n\n", outFileName.c_str());
 
 #ifdef BMPNOTJPEG
@@ -81,6 +96,8 @@ int main(int argc, char **argv)
     write_bmp(outFileName.c_str(), real_image, imag_image, size_x, size_y);
     outFileNameRef.append("_refout.bmp");
     write_bmp(outFileNameRef.c_str(), real_image_ref, imag_image_ref, size_x, size_y);
+    outFileNameOmp.append("_ompout.bmp");
+    write_bmp(outFileNameOmp.c_str(), real_image_omp, imag_image_omp, size_x, size_y);
 #else
     outFileName.append("_out.jpg");
     write_jpeg(outFileName.c_str(), real_image, imag_image, size_x, size_y); 

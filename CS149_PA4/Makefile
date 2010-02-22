@@ -1,7 +1,7 @@
 ###
 # This is to make things run on my own machine:
-#BMPNOTJPEG = 1
-#FORCE32BIT = 1
+BMPNOTJPEG = 1
+FORCE32BIT = 1
 ###
 
 DEBUG = 1
@@ -31,6 +31,8 @@ ifdef FORCE32BIT
 GCCFLAGS	+= -m32
 endif
 
+GCCFLAGS += -fopenmp
+
 ifeq ($(BMPNOTJPEG),1)
 	MACROS += -DBMPNOTJPEG
 	IMAGEOBJ := BMPWriter.o
@@ -40,8 +42,8 @@ else
 	IMGLIB := -ljpeg
 endif
 
-all: main.o ImageCleaner.o $(IMAGEOBJ) CpuReference.o
-	nvcc -L /usr/local/cuda/lib -lcudart $(IMGLIB) $(MACROS) -o ImageCleaner main.o ImageCleaner.o CpuReference.o $(IMAGEOBJ)
+all: main.o ImageCleaner.o $(IMAGEOBJ) CpuReference.o OpenMPReference.o
+	g++ -L/usr/local/cuda/lib -lcudart -arch i386 -fopenmp $(IMGLIB) $(MACROS) -o ImageCleaner main.o ImageCleaner.o CpuReference.o OpenMPReference.o $(IMAGEOBJ)
 
 main.o: main.cc
 	g++ -I /usr/local/cuda/include -c -o main.o main.cc $(GCCFLAGS) $(MACROS)
@@ -57,6 +59,9 @@ JPEGWriter.o: JPEGWriter.cc
 
 CpuReference.o: CpuReference.cc
 	g++ -c -o CpuReference.o CpuReference.cc $(GCCFLAGS) $(MACROS)
+
+OpenMPReference.o: OpenMPReference.cc
+	g++ -c -o OpenMPReference.o OpenMPReference.cc $(GCCFLAGS) $(MACROS)
 
 clean:
 	rm -f *~ *.o *.linkinfo ImageCleaner
