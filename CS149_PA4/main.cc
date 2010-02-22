@@ -1,6 +1,10 @@
 #include "CpuReference.h"
 #include "ImageCleaner.h"
-#include "JPEGWriter.h"
+#ifdef BMPNOTJPEG
+	#include "BMPWriter.h"
+#else
+	#include "JPEGWriter.h"
+#endif
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -13,6 +17,8 @@ int main(int argc, char **argv)
     printf("Usage: ImageCleaner noisy_image_file.nsy\n");
     return 1;	
   }
+  printf("Opening input image...\n");
+
   // Read in the noisy image file
   char *fileName = argv[1];
   std::ifstream ifs;
@@ -49,14 +55,16 @@ int main(int argc, char **argv)
   // Close the file since we're done with it now
   ifs.close();
 
+  printf("Running reference implementation...\n");
   // Call the functions to perform both the reference and the CUDA implementations
   float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
-
+/*
+  printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
 
   // Print out the speedup statistic
   printf("TOTAL SPEEDUP: %f\n\n", (referenceTime/cudaTime));
-
+*/
   // Dump the image to jpeg format for the cuda implementation
   {
     std::string tempFileName(fileName);
@@ -65,9 +73,18 @@ int main(int argc, char **argv)
     // Better have found it
     assert(index >= 0);
     std::string outFileName = tempFileName.substr(0,index);
-    outFileName.append("_out.jpg");
+    std::string outFileNameRef = tempFileName.substr(0,index);
     printf("Writing out CUDA generated image to %s\n\n", outFileName.c_str());
+
+#ifdef BMPNOTJPEG
+    outFileName.append("_out.bmp");
+    write_bmp(outFileName.c_str(), real_image, imag_image, size_x, size_y);
+    outFileNameRef.append("_refout.bmp");
+    write_bmp(outFileNameRef.c_str(), real_image_ref, imag_image_ref, size_x, size_y);
+#else
+    outFileName.append("_out.jpg");
     write_jpeg(outFileName.c_str(), real_image, imag_image, size_x, size_y); 
+#endif
   }
   // Clean up the memory
   delete [] real_image;
