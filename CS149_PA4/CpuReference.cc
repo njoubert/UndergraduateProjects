@@ -20,7 +20,16 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y) {
 		// Create some space for storing temporary values
 		float *realOutBuffer = new float[size_y];
 		float *imagOutBuffer = new float[size_y];
+
+		// This runs over each pixel in the row: (cols in row. y is the column)
+
 		for (unsigned int y = 0; y < size_y; y++) {
+
+			//-----------------------------------------------------------------------------------------------
+			//						THIS CALCULATES A SINGLE OUTPUT VALUE
+			//-----------------------------------------------------------------------------------------------
+
+
 			// Compute the local values
 			float *fft_real = new float[size_y];
 			float *fft_imag = new float[size_y];
@@ -47,6 +56,11 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y) {
 			// Reclaim memory
 			delete[] fft_real;
 			delete[] fft_imag;
+
+			//-----------------------------------------------------------------------------------------------
+			//						END END END END END END END END END END
+			//-----------------------------------------------------------------------------------------------
+
 		}
 		// Write the buffer back to were the original values were
 		for (unsigned int y = 0; y < size_y; y++) {

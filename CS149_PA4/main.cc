@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 #endif
 
   printf("Running openMP implementation...\n");
-  float openMPTime = openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
+  float openMPTime = 0;//openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
 
   printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
