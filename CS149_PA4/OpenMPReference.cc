@@ -23,7 +23,7 @@
 void omp_fftx(float *real_image, float *imag_image, int size_x, int size_y) {
 	#pragma omp parallel
 	{
-		int blockSize = ceil(((double) size_x) / (omp_get_num_threads()));
+		int blockSize = (int) ceil(((double) size_x) / (omp_get_num_threads()));
 		int id = omp_get_thread_num();
 		int st = id * blockSize;
 		int en = min(((id+1) * blockSize)-1, size_x-1);
@@ -80,7 +80,7 @@ void omp_fftx(float *real_image, float *imag_image, int size_x, int size_y) {
 void omp_ifftx(float *real_image, float *imag_image, int size_x, int size_y) {
 #pragma omp parallel
 {
-	int blockSize = ceil(((double) size_x) / (omp_get_num_threads()));
+	int blockSize = (int) ceil(((double) size_x) / (omp_get_num_threads()));
 	int id = omp_get_thread_num();
 	int st = id * blockSize;
 	int en = min(((id+1) * blockSize)-1, size_x-1);
@@ -134,7 +134,7 @@ void omp_ifftx(float *real_image, float *imag_image, int size_x, int size_y) {
 void omp_ffty(float *real_image, float *imag_image, int size_x, int size_y) {
 #pragma omp parallel
 {
-	int blockSize = ceil(((double) size_y) / (omp_get_num_threads()));
+	int blockSize = (int) ceil(((double) size_y) / (omp_get_num_threads()));
 	int id = omp_get_thread_num();
 	int st = id * blockSize;
 	int en = min(((id+1) * blockSize)-1, size_y-1);
@@ -186,7 +186,7 @@ void omp_ffty(float *real_image, float *imag_image, int size_x, int size_y) {
 void omp_iffty(float *real_image, float *imag_image, int size_x, int size_y) {
 #pragma omp parallel
 {
-	int blockSize = ceil(((double) size_y) / (omp_get_num_threads()));
+	int blockSize = (int) ceil(((double) size_y) / (omp_get_num_threads()));
 	int id = omp_get_thread_num();
 	int st = id * blockSize;
 	int en = min(((id+1) * blockSize)-1, size_y-1);
@@ -243,7 +243,7 @@ void omp_filter(float *real_image, float *imag_image, int size_x, int size_y) {
 	int eight7Y = size_y - eightY;
 #pragma omp parallel
 {
-	int blockSize = ceil(((double) size_x) / (omp_get_num_threads()));
+	int blockSize = (int) ceil(((double) size_x) / (omp_get_num_threads()));
 	int id = omp_get_thread_num();
 	int st = id * blockSize;
 	int en = min(((id+1) * blockSize)-1, size_x-1);

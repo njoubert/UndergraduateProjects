@@ -10,8 +10,10 @@ DEBUG = 1
 # as many threads as your operating system supports. 
 #DEVICE_EMULATION = 1
 
-MACROS := 
-NVCCFLAGS   = -arch sm_13
+MACROS 			:= 
+NVCCFLAGS   	= -arch sm_13
+LDFLAGS 		:= -lcudart  -fopenmp
+
 ifdef DEBUG
 NVCCFLAGS   += -g #-G
 else
@@ -27,8 +29,12 @@ GCCFLAGS    += -g
 else
 GCCFLAGS    +=
 endif
+
 ifdef FORCE32BIT
 GCCFLAGS	+= -m32
+LDFLAGS		+= -arch i386 -L/usr/local/cuda/lib
+else
+LDFLAGS		+= -L/usr/local/cuda/lib64
 endif
 
 GCCFLAGS += -fopenmp
@@ -43,7 +49,7 @@ else
 endif
 
 all: main.o ImageCleaner.o $(IMAGEOBJ) CpuReference.o OpenMPReference.o
-	g++ -L/usr/local/cuda/lib -lcudart -arch i386 -fopenmp $(IMGLIB) $(MACROS) -o ImageCleaner main.o ImageCleaner.o CpuReference.o OpenMPReference.o $(IMAGEOBJ)
+	g++ $(LDFLAGS) $(IMGLIB) $(MACROS) -o ImageCleaner main.o ImageCleaner.o CpuReference.o OpenMPReference.o $(IMAGEOBJ)
 
 main.o: main.cc
 	g++ -I /usr/local/cuda/include -c -o main.o main.cc $(GCCFLAGS) $(MACROS)
