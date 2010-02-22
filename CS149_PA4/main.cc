@@ -65,19 +65,17 @@ int main(int argc, char **argv)
   ifs.close();
 
   printf("Running reference implementation...\n");
-  // Call the functions to perform both the reference and the CUDA implementations
-  //float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
+  float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
 
   printf("Running openMP implementation...\n");
-  // Call the functions to perform both the reference and the CUDA implementations
   float openMPTime = openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
-
 
   printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
 
-  // Print out the speedup statistic
-  //printf("TOTAL SPEEDUP: %f\n\n", (referenceTime/cudaTime));
+  printf("TOTAL SPEEDUP FOR OPENMP: %f\n\n", (referenceTime/openMPTime));
+  printf("TOTAL SPEEDUP FOR CUDA: %f\n\n", (referenceTime/cudaTime));
+
 
   // Dump the image to jpeg format for the cuda implementation
   {

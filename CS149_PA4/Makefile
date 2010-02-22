@@ -1,7 +1,10 @@
 ###
 # This is to make things run on my own machine:
-BMPNOTJPEG = 1
-FORCE32BIT = 1
+HP_64 =	$(shell uname -m | grep 64)
+ifeq "$(strip $(HP_64))" ""
+	BMPNOTJPEG = 1
+	FORCE32BIT = 1
+endif
 ###
 
 DEBUG = 1
