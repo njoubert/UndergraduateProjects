@@ -1,7 +1,7 @@
 ###
 # This is to make things run on my own machine:
-BMPNOTJPEG = 1
-FORCE32BIT = 1
+#BMPNOTJPEG = 1
+#FORCE32BIT = 1
 ###
 
 DEBUG = 1
@@ -41,7 +41,7 @@ else
 endif
 
 all: main.o ImageCleaner.o $(IMAGEOBJ) CpuReference.o
-	nvcc -L /usr/local/cuda/lib -lcudart $(IMGLIB)  $(MACROS) -o ImageCleaner main.o ImageCleaner.o BMPWriter.o CpuReference.o
+	nvcc -L /usr/local/cuda/lib -lcudart $(IMGLIB) $(MACROS) -o ImageCleaner main.o ImageCleaner.o CpuReference.o $(IMAGEOBJ)
 
 main.o: main.cc
 	g++ -I /usr/local/cuda/include -c -o main.o main.cc $(GCCFLAGS) $(MACROS)
