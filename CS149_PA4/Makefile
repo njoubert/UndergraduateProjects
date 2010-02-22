@@ -1,12 +1,3 @@
-###
-# This is to make things run on my own machine:
-HP_64 =	$(shell uname -m | grep 64)
-ifeq "$(strip $(HP_64))" ""
-	BMPNOTJPEG = 1
-	FORCE32BIT = 1
-endif
-###
-
 DEBUG = 1
 # You can un-comment the following line to run in device emulation mode on the CPU
 # Just remember that only one thread block runs at a time and you can only launch
@@ -16,6 +7,17 @@ DEBUG = 1
 MACROS 			:= 
 NVCCFLAGS   	= -arch sm_13
 LDFLAGS 		:= -lcudart  -fopenmp
+
+###
+# This is to make things run on my own machine:
+HP_64 =	$(shell uname -m | grep 64)
+ifeq "$(strip $(HP_64))" ""
+	BMPNOTJPEG = 1
+	FORCE32BIT = 1
+	MACROS += -DSKIPREFERENCE	
+endif
+###
+
 
 ifdef DEBUG
 NVCCFLAGS   += -g #-G

@@ -296,7 +296,7 @@ float openMPReferenceCleaner(float *real_image, float *imag_image, int size_x,
 	execution /= 1000;
 	// Print some output
 	printf("OPENMP IMPLEMENTATION STATISTICS:\n");
-	printf("  OpenMP Kernel Execution Time: %f ms over %d threads\n", execution, threadCount);
+	printf("  OpenMP Kernel Execution Time: %f ms over %d threads\n\n", execution, threadCount);
 
 	return execution;
 }
