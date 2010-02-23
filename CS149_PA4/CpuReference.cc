@@ -80,6 +80,13 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y) {
 		float *realOutBuffer = new float[size_y];
 		float *imagOutBuffer = new float[size_y];
 		for (unsigned int y = 0; y < size_y; y++) {
+
+
+			//-----------------------------------------------------------------------------------------------
+			//						THIS CALCULATES A SINGLE OUTPUT VALUE
+			//-----------------------------------------------------------------------------------------------
+
+
 			// Compute the local values
 			float *fft_real = new float[size_y];
 			float *fft_imag = new float[size_y];
@@ -108,7 +115,14 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y) {
 			// Reclaim memory
 			delete[] fft_real;
 			delete[] fft_imag;
+
+
+			//-----------------------------------------------------------------------------------------------
+			//						END END END END END END END END END END
+			//-----------------------------------------------------------------------------------------------
+
 		}
+
 		// Write the buffer back to were the original values were
 		for (unsigned int y = 0; y < size_y; y++) {
 			real_image[x * size_x + y] = realOutBuffer[y];
@@ -126,6 +140,12 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y) {
 		float *realOutBuffer = new float[size_x];
 		float *imagOutBuffer = new float[size_x];
 		for (unsigned int x = 0; x < size_x; x++) {
+
+			//-----------------------------------------------------------------------------------------------
+			//						THIS CALCULATES A SINGLE OUTPUT VALUE
+			//-----------------------------------------------------------------------------------------------
+
+
 			// Compute the local values
 			float *fft_real = new float[size_x];
 			float *fft_imag = new float[size_x];
@@ -152,6 +172,13 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y) {
 			// Reclaim memory
 			delete[] fft_real;
 			delete[] fft_imag;
+
+
+			//-----------------------------------------------------------------------------------------------
+			//						END END END END END END END END END END
+			//-----------------------------------------------------------------------------------------------
+
+
 		}
 		// Write the buffer back to were the original values were
 		for (unsigned int x = 0; x < size_x; x++) {
@@ -171,6 +198,14 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y) {
 		float *realOutBuffer = new float[size_x];
 		float *imagOutBuffer = new float[size_x];
 		for (unsigned int x = 0; x < size_x; x++) {
+
+
+			//-----------------------------------------------------------------------------------------------
+			//						THIS CALCULATES A SINGLE OUTPUT VALUE
+			//-----------------------------------------------------------------------------------------------
+
+
+
 			// Compute the local values
 			float *fft_real = new float[size_x];
 			float *fft_imag = new float[size_x];
@@ -199,6 +234,13 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y) {
 			// Reclaim memory
 			delete[] fft_real;
 			delete[] fft_imag;
+
+
+			//-----------------------------------------------------------------------------------------------
+			//						END END END END END END END END END END
+			//-----------------------------------------------------------------------------------------------
+
+
 		}
 		// Write the buffer back to were the original values were
 		for (unsigned int x = 0; x < size_x; x++) {

@@ -13,7 +13,7 @@
 
 // no need to modify this:
 #define BLOCK_SIZE 512
-#define PI	3.14159256
+#define PI	3.14159256f
 
 __global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
 
@@ -29,8 +29,8 @@ __global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
 	float term, realTerm, imagTerm;
 	for (unsigned int n = 0; n < size_y; n++) { 				//(a+bi)(c+di) = (ac-bd) + (bc+ad)i
 		term = -2 * PI * myCol * n / size_y;
-		realTerm = term;//cos(term);
-		imagTerm = term;//sin(term);
+		realTerm = cos(term);
+		imagTerm = sin(term);
 
 		real_value += (dReal[myRow * size_x + n] * realTerm)
 				- (dImag[myRow * size_x + n] * imagTerm);
@@ -45,16 +45,44 @@ __global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
 	dImag[myRow * size_x + myCol] = imag_value;
 
 }
-__global__ void gpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y) {
+__global__ void gpu_ifftx(float *dReal, float *dImag, int size_x, int size_y) {
+
+	//responsible for a single output cell in the FFT'd image.
+	//runs in 512-wide threadblocks all working together
+
+	int myRow = blockIdx.y; //processed by the whole threadblock
+	int myCol = threadIdx.x + blockIdx.x * blockDim.x; //i calculate this result
+
+	// Compute the value for this index
+	float real_value = 0;
+	float imag_value = 0;
+	float term, realTerm, imagTerm;
+	for (unsigned int n = 0; n < size_y; n++) { 				//(a+bi)(c+di) = (ac-bd) + (bc+ad)i
+		term = 2 * PI * myCol * n / size_y;
+		realTerm = cos(term);
+		imagTerm = sin(term);
+
+		real_value += (dReal[myRow * size_x + n] * realTerm)
+				- (dImag[myRow * size_x + n] * imagTerm);
+
+		imag_value += (dImag[myRow * size_x + n] * realTerm)
+				+ (dReal[myRow * size_x + n] * imagTerm);
+
+	}
+
+	// Write the values back into the temporary buffer
+	dReal[myRow * size_x + myCol] = real_value;
+	dImag[myRow * size_x + myCol] = imag_value;
+
+
+}
+__global__ void gpu_ffty(float *dReal, float *dImag, int size_x, int size_y) {
   // Currently does nothing
 }
-__global__ void gpu_ffty(float *real_image, float *imag_image, int size_x, int size_y) {
+__global__ void gpu_iffty(float *dReal, float *dImag, int size_x, int size_y) {
   // Currently does nothing
 }
-__global__ void gpu_iffty(float *real_image, float *imag_image, int size_x, int size_y) {
-  // Currently does nothing
-}
-__global__ void gpu_filter(float *real_image, float *imag_image, int size_x, int size_y) {
+__global__ void gpu_filter(float *dReal, float *dImag, int size_x, int size_y) {
   // Currently does nothing
 }
 
@@ -124,6 +152,7 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
   //				access all the other cells in the row
 
 
+  // FOR ROW-BASED FFT (fftx and ifftx)
   //Here is how we split this up:
   // 	each threadblock is responsible for 512 elements in a row.
   //	threadblocks are arranged in a grid of 512-groups elements by all the rows.
@@ -134,12 +163,13 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
 
 
 
-  dim3 dimBlock(BLOCK_SIZE);
-  dim3 dimGrid((int)ceil((float)SIZEX/BLOCK_SIZE),SIZEY);
-  printf("  Launching kernel with %d threads per block arranged in a grid of %dx%d.\n", dimBlock.x, dimGrid.x, dimGrid.y);
-  gpu_fftx<<<dimGrid, dimBlock>>>(device_real,device_imag,size_x,size_y);
+  dim3 fftx_dimBlock(BLOCK_SIZE);
+  dim3 fftx_dimGrid((int)ceil((float)SIZEX/BLOCK_SIZE),SIZEY);
+  printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
+  gpu_fftx<<<fftx_dimGrid, fftx_dimBlock>>>(device_real,device_imag,size_x,size_y);
 
-
+  printf("  Launching ifftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
+  gpu_ifftx<<<fftx_dimGrid, fftx_dimBlock>>>(device_real,device_imag,size_x,size_y);
 
 
 

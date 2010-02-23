@@ -70,13 +70,13 @@ int main(int argc, char **argv)
   printf("Running reference implementation...\n");
   float referenceTime = referenceCleaner(real_image_ref, imag_image_ref, size_x, size_y);
 #endif
-
-  printf("Running openMP implementation...\n");
-  float openMPTime = 0;//openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
-
   printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
-#ifndef SKIPREFERENCE
+
+  printf("Running openMP implementation...\n");
+  float openMPTime = openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
+
+  #ifndef SKIPREFERENCE
   printf("TOTAL SPEEDUP FOR OPENMP: %f\n\n", (referenceTime/openMPTime));
   printf("TOTAL SPEEDUP FOR CUDA: %f\n\n", (referenceTime/cudaTime));
 #endif
