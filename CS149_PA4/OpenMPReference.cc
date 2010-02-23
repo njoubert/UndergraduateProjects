@@ -272,9 +272,7 @@ float openMPReferenceCleaner(float *real_image, float *imag_image, int size_x,
 
 	omp_fftx(real_image, imag_image, size_x, size_y);
 	omp_ffty(real_image, imag_image, size_x, size_y);
-
 	omp_filter(real_image, imag_image, size_x, size_y);
-
 	omp_ifftx(real_image, imag_image, size_x, size_y);
 	omp_iffty(real_image, imag_image, size_x, size_y);
 

@@ -135,7 +135,7 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
 
 
   dim3 dimBlock(BLOCK_SIZE);
-  dim3 dimGrid(ceil((float)SIZEX/BLOCK_SIZE),SIZEY);
+  dim3 dimGrid((int)ceil((float)SIZEX/BLOCK_SIZE),SIZEY);
   printf("  Launching kernel with %d threads per block arranged in a grid of %dx%d.\n", dimBlock.x, dimGrid.x, dimGrid.y);
   gpu_fftx<<<dimGrid, dimBlock>>>(device_real,device_imag,size_x,size_y);
 

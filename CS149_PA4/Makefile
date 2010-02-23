@@ -1,11 +1,11 @@
-DEBUG = 1
+#DEBUG = 1
 # You can un-comment the following line to run in device emulation mode on the CPU
 # Just remember that only one thread block runs at a time and you can only launch
 # as many threads as your operating system supports. 
 #DEVICE_EMULATION = 1
 
 MACROS 			:= 
-NVCCFLAGS   	= -arch sm_13
+NVCCFLAGS   	:= 
 LDFLAGS 		:= -lcudart  -fopenmp
 
 ###
@@ -14,7 +14,9 @@ HP_64 =	$(shell uname -m | grep 64)
 ifeq "$(strip $(HP_64))" ""
 	BMPNOTJPEG = 1
 	FORCE32BIT = 1
-	MACROS += -DSKIPREFERENCE	
+	MACROS += -DSKIPREFERENCE
+else
+	NVCCFLAGS	+= -arch sm_13	
 endif
 ###
 
