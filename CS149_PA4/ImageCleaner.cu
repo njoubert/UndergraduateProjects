@@ -12,7 +12,7 @@
 #define SIZEY    512
 
 // no need to modify this:
-#define BLOCK_SIZE 512
+#define BLOCK_SIZE 128
 #define PI	3.14159256f
 
 __global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
@@ -71,19 +71,78 @@ __global__ void gpu_ifftx(float *dReal, float *dImag, int size_x, int size_y) {
 	}
 
 	// Write the values back into the temporary buffer
-	dReal[myRow * size_x + myCol] = real_value;
-	dImag[myRow * size_x + myCol] = imag_value;
+	dReal[myRow * size_x + myCol] = real_value / size_y;
+	dImag[myRow * size_x + myCol] = imag_value / size_y;
 
 
 }
 __global__ void gpu_ffty(float *dReal, float *dImag, int size_x, int size_y) {
-  // Currently does nothing
+	int myRow = blockIdx.y * blockDim.y + threadIdx.y;
+	int myCol = blockIdx.x;
+
+	//runs over elements in column
+	// Compute the value for this index
+	float real_value = 0;
+	float imag_value = 0;
+	float term, realTerm, imagTerm;
+	for (unsigned int n = 0; n < size_x; n++) { 				//(a+bi)(c+di) = (ac-bd) + (bc+ad)i
+		term = -2 * PI * myRow * n / size_x;
+		realTerm = cos(term);
+		imagTerm = sin(term);
+
+		real_value += (dReal[n * size_x + myCol] * realTerm)
+				- (dImag[n * size_x + myCol] * imagTerm);
+
+		imag_value += (dImag[n * size_x + myCol] * realTerm)
+				+ (dReal[n * size_x + myCol] * imagTerm);
+	}
+
+	// Write the values back into the temporary buffer
+	dReal[myRow * size_x + myCol] = real_value;
+	dImag[myRow * size_x + myCol] = imag_value;
+
 }
 __global__ void gpu_iffty(float *dReal, float *dImag, int size_x, int size_y) {
-  // Currently does nothing
+	int myRow = blockIdx.y * blockDim.y + threadIdx.y;
+	int myCol = blockIdx.x;
+
+	//runs over elements in column
+	// Compute the value for this index
+	float real_value = 0;
+	float imag_value = 0;
+	float term, realTerm, imagTerm;
+	for (unsigned int n = 0; n < size_x; n++) { 				//(a+bi)(c+di) = (ac-bd) + (bc+ad)i
+		term = 2 * PI * myRow * n / size_x;
+		realTerm = cos(term);
+		imagTerm = sin(term);
+
+		real_value += (dReal[n * size_x + myCol] * realTerm)
+				- (dImag[n * size_x + myCol] * imagTerm);
+
+		imag_value += (dImag[n * size_x + myCol] * realTerm)
+				+ (dReal[n * size_x + myCol] * imagTerm);
+	}
+
+	// Write the values back into the temporary buffer
+	dReal[myRow * size_x + myCol] = real_value / size_x;
+	dImag[myRow * size_x + myCol] = imag_value / size_x;
 }
 __global__ void gpu_filter(float *dReal, float *dImag, int size_x, int size_y) {
-  // Currently does nothing
+	int x = blockIdx.x * blockDim.x + threadIdx.x;
+	int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+	int eightX = size_x / 8;
+	//int eight7X = size_x - eightX;
+	int eightY = size_y / 8;
+	int eight7Y = size_y - eightY;
+
+	if (!(x < eightX && y < eightY) && !(x < eightX && y >= eight7Y)
+			&& !(x >= eight7Y && y < eightY) && !(x >= eight7Y && y
+			>= eight7Y)) {
+		dReal[y * size_x + x] = 0;
+		dImag[y * size_x + x] = 0;
+	}
+
 }
 
 __host__ float filterImage(float *real_image, float *imag_image, int size_x, int size_y)
@@ -160,20 +219,30 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
   //	block this into a (SIZEX/512) by SIZEY grid
   //	each threadblock consists of 512 threads for a row in the grid.
 
-
-
-
-  dim3 fftx_dimBlock(BLOCK_SIZE);
+  dim3 fftx_dimBlock(BLOCK_SIZE,1);
   dim3 fftx_dimGrid((int)ceil((float)SIZEX/BLOCK_SIZE),SIZEY);
+
+  dim3 ffty_dimBlock(1,BLOCK_SIZE);
+  dim3 ffty_dimGrid(SIZEX, (int)ceil((float)SIZEY/BLOCK_SIZE));
+
+  dim3 filter_dimBlock(16,16);
+  dim3 filter_dimGrid((int)ceil((float)SIZEX/16), (int)ceil((float)SIZEY/16));
+
+
   printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
-  gpu_fftx<<<fftx_dimGrid, fftx_dimBlock>>>(device_real,device_imag,size_x,size_y);
+  gpu_fftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+  printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
+  gpu_ffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+
+
+  printf("  Launching filter kernel with %dx%d threads per block arranged in a grid of %dx%d.\n", filter_dimBlock.x,filter_dimBlock.y, filter_dimGrid.x, filter_dimGrid.y);
+  gpu_filter<<<filter_dimGrid, filter_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+
 
   printf("  Launching ifftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
-  gpu_ifftx<<<fftx_dimGrid, fftx_dimBlock>>>(device_real,device_imag,size_x,size_y);
-
-
-
-
+  gpu_ifftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+  printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
+  gpu_iffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
 
   // Finish timimg for the execution 
   cudaEventRecord(stop,filterStream);
