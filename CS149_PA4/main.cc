@@ -72,11 +72,10 @@ int main(int argc, char **argv)
 #endif
   printf("Running cuda implementation...\n");
   float cudaTime = filterImage(real_image, imag_image, size_x, size_y);
-
   printf("Running openMP implementation...\n");
   float openMPTime = openMPReferenceCleaner(real_image_omp, imag_image_omp, size_x, size_y);
 
-  #ifndef SKIPREFERENCE
+#ifndef SKIPREFERENCE
   printf("TOTAL SPEEDUP FOR OPENMP: %f\n\n", (referenceTime/openMPTime));
   printf("TOTAL SPEEDUP FOR CUDA: %f\n\n", (referenceTime/cudaTime));
 #endif
@@ -105,6 +104,8 @@ int main(int argc, char **argv)
 #else
     outFileName.append("_out.jpg");
     write_jpeg(outFileName.c_str(), real_image, imag_image, size_x, size_y); 
+    outFileName.append("_omp_out.jpg");
+    write_jpeg(outFileName.c_str(), real_image_omp, imag_image_omp, size_x, size_y);
 #endif
   }
   // Clean up the memory

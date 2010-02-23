@@ -21,7 +21,18 @@ __global__ void gpu_fftx(float *dReal, float *dImag, float *dRealOut, float *dIm
 	//runs in 512-wide threadblocks all working together
 
 	int myRow = blockIdx.y; //processed by the whole threadblock
-	int myCol = threadIdx.x + blockIdx.x * blockDim.x; //i calculate this result
+	int myCol = threadIdx.x + blockIdx.x * blockDim.x; //I calculate this result
+
+	__shared__ float reals[SIZEY];
+	__shared__ float imags[SIZEY];
+
+	for (unsigned int i = 0; i < gridDim.x; i++) {
+		int n = (threadIdx.x + i*blockDim.x);
+		reals[n] = dReal[myRow * size_x + n];
+		imags[n] = dImag[myRow * size_x + n];
+	}
+
+	__syncthreads();
 
 	// Compute the value for this index
 	float real_value = 0;
@@ -32,15 +43,10 @@ __global__ void gpu_fftx(float *dReal, float *dImag, float *dRealOut, float *dIm
 		realTerm = cos(term);
 		imagTerm = sin(term);
 
-		real_value += (dReal[myRow * size_x + n] * realTerm)
-				- (dImag[myRow * size_x + n] * imagTerm);
-
-		imag_value += (dImag[myRow * size_x + n] * realTerm)
-				+ (dReal[myRow * size_x + n] * imagTerm);
+		real_value += (reals[n] * realTerm) - (imags[n] * imagTerm);
+		imag_value += (imags[n] * realTerm) + (reals[n] * imagTerm);
 
 	}
-
-	__syncthreads();
 
 	// Write the values back into the temporary buffer
 	dRealOut[myRow * size_x + myCol] = real_value;
@@ -55,6 +61,17 @@ __global__ void gpu_ifftx(float *dReal, float *dImag, float *dRealOut, float *dI
 	int myRow = blockIdx.y; //processed by the whole threadblock
 	int myCol = threadIdx.x + blockIdx.x * blockDim.x; //i calculate this result
 
+	__shared__ float reals[SIZEY];
+	__shared__ float imags[SIZEY];
+
+	for (unsigned int i = 0; i < gridDim.x; i++) {
+		int n = (threadIdx.x + i*blockDim.x);
+		reals[n] = dReal[myRow * size_x + n];
+		imags[n] = dImag[myRow * size_x + n];
+	}
+
+	__syncthreads();
+
 	// Compute the value for this index
 	float real_value = 0;
 	float imag_value = 0;
@@ -64,15 +81,10 @@ __global__ void gpu_ifftx(float *dReal, float *dImag, float *dRealOut, float *dI
 		realTerm = cos(term);
 		imagTerm = sin(term);
 
-		real_value += (dReal[myRow * size_x + n] * realTerm)
-				- (dImag[myRow * size_x + n] * imagTerm);
-
-		imag_value += (dImag[myRow * size_x + n] * realTerm)
-				+ (dReal[myRow * size_x + n] * imagTerm);
+		real_value += (reals[n] * realTerm) - (imags[n] * imagTerm);
+		imag_value += (imags[n] * realTerm) + (reals[n] * imagTerm);
 
 	}
-
-	__syncthreads();
 
 	// Write the values back into the temporary buffer
 	dRealOut[myRow * size_x + myCol] = real_value / size_y;
@@ -81,8 +93,19 @@ __global__ void gpu_ifftx(float *dReal, float *dImag, float *dRealOut, float *dI
 
 }
 __global__ void gpu_ffty(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
-	int myRow = blockIdx.y * blockDim.y + threadIdx.y; //i calculate this result
+	int myRow = threadIdx.y + blockIdx.y * blockDim.y; //i calculate this result
 	int myCol = blockIdx.x; //calculated by the whole threadblock
+
+	__shared__ float reals[SIZEX];
+	__shared__ float imags[SIZEX];
+
+	for (unsigned int i = 0; i < gridDim.y; i++) {
+		int n = (threadIdx.y + i*blockDim.y);
+		reals[n] = dReal[n * size_x + myCol];
+		imags[n] = dImag[n * size_x + myCol];
+	}
+
+	__syncthreads();
 
 	//runs over elements in column
 	// Compute the value for this index
@@ -94,14 +117,10 @@ __global__ void gpu_ffty(float *dReal, float *dImag, float *dRealOut, float *dIm
 		realTerm = cos(term);
 		imagTerm = sin(term);
 
-		real_value += (dReal[n * size_x + myCol] * realTerm)
-				- (dImag[n * size_x + myCol] * imagTerm);
+		real_value += (reals[n] * realTerm) - (imags[n] * imagTerm);
+		imag_value += (imags[n] * realTerm) + (reals[n] * imagTerm);
 
-		imag_value += (dImag[n * size_x + myCol] * realTerm)
-				+ (dReal[n * size_x + myCol] * imagTerm);
 	}
-
-	__syncthreads();
 
 	// Write the values back into the temporary buffer
 	dRealOut[myRow * size_x + myCol] = real_value;
@@ -111,6 +130,17 @@ __global__ void gpu_ffty(float *dReal, float *dImag, float *dRealOut, float *dIm
 __global__ void gpu_iffty(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
 	int myRow = blockIdx.y * blockDim.y + threadIdx.y;
 	int myCol = blockIdx.x;
+
+	__shared__ float reals[SIZEX];
+	__shared__ float imags[SIZEX];
+
+	for (unsigned int i = 0; i < gridDim.y; i++) {
+		int n = (threadIdx.y + i*blockDim.y);
+		reals[n] = dReal[n * size_x + myCol];
+		imags[n] = dImag[n * size_x + myCol];
+	}
+
+	__syncthreads();
 
 	//runs over elements in column
 	// Compute the value for this index
@@ -122,14 +152,9 @@ __global__ void gpu_iffty(float *dReal, float *dImag, float *dRealOut, float *dI
 		realTerm = cos(term);
 		imagTerm = sin(term);
 
-		real_value += (dReal[n * size_x + myCol] * realTerm)
-				- (dImag[n * size_x + myCol] * imagTerm);
-
-		imag_value += (dImag[n * size_x + myCol] * realTerm)
-				+ (dReal[n * size_x + myCol] * imagTerm);
+		real_value += (reals[n] * realTerm) - (imags[n] * imagTerm);
+		imag_value += (imags[n] * realTerm) + (reals[n] * imagTerm);
 	}
-
-	__syncthreads();
 
 	// Write the values back into the temporary buffer
 	dRealOut[myRow * size_x + myCol] = real_value / size_x;
