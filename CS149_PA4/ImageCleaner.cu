@@ -27,6 +27,7 @@ __global__ void gpu_fftx(float *dReal, float *dImag, float *dRealOut, float *dIm
 	__shared__ float imags[SIZEY];
 
 	for (unsigned int i = 0; i < gridDim.x; i++) {
+		//each thread loads the pixel value in each grid for which it is responsible.
 		int n = (threadIdx.x + i*blockDim.x);
 		reals[n] = dReal[myRow * size_x + n];
 		imags[n] = dImag[myRow * size_x + n];
