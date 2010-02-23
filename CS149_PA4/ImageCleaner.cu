@@ -12,10 +12,10 @@
 #define SIZEY    512
 
 // no need to modify this:
-#define BLOCK_SIZE 128
+#define BLOCK_SIZE 256			//The amount of threads in a threadblock for the fft routines
 #define PI	3.14159256f
 
-__global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
+__global__ void gpu_fftx(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
 
 	//responsible for a single output cell in the FFT'd image.
 	//runs in 512-wide threadblocks all working together
@@ -40,12 +40,14 @@ __global__ void gpu_fftx(float *dReal, float *dImag, int size_x, int size_y) {
 
 	}
 
+	__syncthreads();
+
 	// Write the values back into the temporary buffer
-	dReal[myRow * size_x + myCol] = real_value;
-	dImag[myRow * size_x + myCol] = imag_value;
+	dRealOut[myRow * size_x + myCol] = real_value;
+	dImagOut[myRow * size_x + myCol] = imag_value;
 
 }
-__global__ void gpu_ifftx(float *dReal, float *dImag, int size_x, int size_y) {
+__global__ void gpu_ifftx(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
 
 	//responsible for a single output cell in the FFT'd image.
 	//runs in 512-wide threadblocks all working together
@@ -70,15 +72,17 @@ __global__ void gpu_ifftx(float *dReal, float *dImag, int size_x, int size_y) {
 
 	}
 
+	__syncthreads();
+
 	// Write the values back into the temporary buffer
-	dReal[myRow * size_x + myCol] = real_value / size_y;
-	dImag[myRow * size_x + myCol] = imag_value / size_y;
+	dRealOut[myRow * size_x + myCol] = real_value / size_y;
+	dImagOut[myRow * size_x + myCol] = imag_value / size_y;
 
 
 }
-__global__ void gpu_ffty(float *dReal, float *dImag, int size_x, int size_y) {
-	int myRow = blockIdx.y * blockDim.y + threadIdx.y;
-	int myCol = blockIdx.x;
+__global__ void gpu_ffty(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
+	int myRow = blockIdx.y * blockDim.y + threadIdx.y; //i calculate this result
+	int myCol = blockIdx.x; //calculated by the whole threadblock
 
 	//runs over elements in column
 	// Compute the value for this index
@@ -97,12 +101,14 @@ __global__ void gpu_ffty(float *dReal, float *dImag, int size_x, int size_y) {
 				+ (dReal[n * size_x + myCol] * imagTerm);
 	}
 
+	__syncthreads();
+
 	// Write the values back into the temporary buffer
-	dReal[myRow * size_x + myCol] = real_value;
-	dImag[myRow * size_x + myCol] = imag_value;
+	dRealOut[myRow * size_x + myCol] = real_value;
+	dImagOut[myRow * size_x + myCol] = imag_value;
 
 }
-__global__ void gpu_iffty(float *dReal, float *dImag, int size_x, int size_y) {
+__global__ void gpu_iffty(float *dReal, float *dImag, float *dRealOut, float *dImagOut, int size_x, int size_y) {
 	int myRow = blockIdx.y * blockDim.y + threadIdx.y;
 	int myCol = blockIdx.x;
 
@@ -123,9 +129,11 @@ __global__ void gpu_iffty(float *dReal, float *dImag, int size_x, int size_y) {
 				+ (dReal[n * size_x + myCol] * imagTerm);
 	}
 
+	__syncthreads();
+
 	// Write the values back into the temporary buffer
-	dReal[myRow * size_x + myCol] = real_value / size_x;
-	dImag[myRow * size_x + myCol] = imag_value / size_x;
+	dRealOut[myRow * size_x + myCol] = real_value / size_x;
+	dImagOut[myRow * size_x + myCol] = imag_value / size_x;
 }
 __global__ void gpu_filter(float *dReal, float *dImag, int size_x, int size_y) {
 	int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -164,9 +172,11 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
   cudaStreamCreate(&filterStream);
 
   // Alloc space on the device
-  float *device_real, *device_imag;
+  float *device_real, *device_imag, *device_real2, *device_imag2;
   cudaMalloc((void**)&device_real, matSize);
   cudaMalloc((void**)&device_imag, matSize);
+  cudaMalloc((void**)&device_real2, matSize);
+  cudaMalloc((void**)&device_imag2, matSize);
 
   // Start timing for transfer down
   cudaEventRecord(start,filterStream);
@@ -230,9 +240,9 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
 
 
   printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
-  gpu_fftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
-  printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
-  gpu_ffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+  gpu_fftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,device_real2,device_imag2,size_x,size_y);
+  printf("  Launching ffty kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
+  gpu_ffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real2,device_imag2,device_real,device_imag,size_x,size_y);
 
 
   printf("  Launching filter kernel with %dx%d threads per block arranged in a grid of %dx%d.\n", filter_dimBlock.x,filter_dimBlock.y, filter_dimGrid.x, filter_dimGrid.y);
@@ -240,9 +250,9 @@ __host__ float filterImage(float *real_image, float *imag_image, int size_x, int
 
 
   printf("  Launching ifftx kernel with %d threads per block arranged in a grid of %dx%d.\n", fftx_dimBlock.x, fftx_dimGrid.x, fftx_dimGrid.y);
-  gpu_ifftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
-  printf("  Launching fftx kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
-  gpu_iffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real,device_imag,size_x,size_y);
+  gpu_ifftx<<<fftx_dimGrid, fftx_dimBlock, 0, filterStream>>>(device_real,device_imag,device_real2,device_imag2,size_x,size_y);
+  printf("  Launching iffty kernel with %d threads per block arranged in a grid of %dx%d.\n", ffty_dimBlock.y, ffty_dimGrid.x, ffty_dimGrid.y);
+  gpu_iffty<<<ffty_dimGrid, ffty_dimBlock, 0, filterStream>>>(device_real2,device_imag2,device_real,device_imag,size_x,size_y);
 
   // Finish timimg for the execution 
   cudaEventRecord(stop,filterStream);
