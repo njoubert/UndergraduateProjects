@@ -19,7 +19,7 @@ DISCLAIMER: Much of the code here was written for class assignments. THIS IS PRO
 |[CS184 AS3: Shader](https://github.com/njoubert/UndergraduateProjects/tree/master/CS184_as3/trunk)|This program implements a shader using the Phong Illumination Model. |
 |[CS184 AS4: Ray Tracer](https://github.com/njoubert/UndergraduateProjects/tree/master/CS184_as4)|A from-scratch stand-alone Raytracer implementation for CS184 at UC Berkeley|
 |[CS184 AS5: Parametric Surfaces](https://github.com/njoubert/UndergraduateProjects/tree/master/CS184_as5/trunk)| Converts a Bezier Surface representation to a polygon representation and display with OpenGL |
-
+|[EE122 P1: HTTP Server and Client](https://github.com/njoubert/UndergraduateProjects/tree/master/EE122_p1/trunk)| A HTTP1.1-complient HTTP Server and Client in pure POSIX C, with no external dependencies. |
 
 
 
